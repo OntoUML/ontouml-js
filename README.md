@@ -1,5 +1,7 @@
 # OntoUML JS
 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/OntoUML/ontouml-js/Node%20CI?style=flat-square)
+
 Javascript library utility for manipulating OntoUML models.
 
 ## Getting Start
