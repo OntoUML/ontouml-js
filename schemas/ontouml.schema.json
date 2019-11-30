@@ -1,0 +1,358 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontouml.org/OntoUMLSchema/v1/Model",
+  "title": "Model",
+  "definitions": {
+    "name": {
+      "description": "The name of the field's container.",
+      "type": "string",
+      "minLength": 1
+    },
+    "url": {
+      "description": "URL towards some resource diretcly related to the field's container.",
+      "type": "string",
+      "format": "uri"
+    },
+    "uri": {
+      "description": "Element URI (under RFC 3986) used to represent resources' unique identies and non-containment references between entities.",
+      "type": "string",
+      "format": "uri"
+    },
+    "authors": {
+      "description": "Aliases for the ontology's authors.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+
+    "structuralElements": {
+      "description": "This field contains entities present in OntoUML structural aspects (packages, classes, relations, generalizations and so on). Contained packages may have their on fields 'structuralElements'.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/definitions/Package"
+          },
+          {
+            "$ref": "#/definitions/Class"
+          },
+          {
+            "$ref": "#/definitions/Relation"
+          },
+          {
+            "$ref": "#/definitions/GeneralizationLink"
+          },
+          {
+            "$ref": "#/definitions/GeneralizationSet"
+          }
+        ]
+      }
+    },
+    "tuple": {
+      "description": "Tuples of URIs following some predicative statement. Used to represent relations' instances and/or links. The elements are ordered and the positions follow the semantics of some specified predicated (e.g., loves(a,b) = 'a loves b').",
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 2,
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "stereotypes": {
+      "description": "List of stereotypes of annotating the field's container.",
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/Stereotype"
+      }
+    },
+
+    "Package": {
+      "description": "Model element container used to support modularization.",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "const": "Package"
+        },
+        "name": {
+          "$ref": "#/definitions/name"
+        },
+        "url": {
+          "$ref": "#/definitions/url"
+        },
+        "uri": {
+          "$ref": "#/definitions/uri"
+        },
+        "structuralElements": {
+          "$ref": "#/definitions/structuralElements"
+        }
+      },
+      "required": [
+        "@type",
+        "uri"
+      ],
+      "additionalProperties": false
+    },
+    "Class": {
+      "description": "Predicative entities representing bundle of aspects exhibited by its instances (e.g., 'Person', 'Organization', 'Cointract').",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "const": "Class"
+        },
+        "name": {
+          "$ref": "#/definitions/name"
+        },
+        "url": {
+          "$ref": "#/definitions/url"
+        },
+        "uri": {
+          "$ref": "#/definitions/uri"
+        },
+        "stereotypes": {
+          "$ref": "#/definitions/stereotypes"
+        },
+        "properties": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/Property"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "uri"
+      ],
+      "additionalProperties": false
+    },
+    "Relation": {
+      "description": "Predicative entities representing bundle of aspects exhibited by tuples that isntantiate it (e.g., 'loves' as in 'John loves Marry' or 'buys-with' as in 'Bob buys a Cellphone with a Credit Card').",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "const": "Relation"
+        },
+        "name": {
+          "$ref": "#/definitions/name"
+        },
+        "url": {
+          "$ref": "#/definitions/url"
+        },
+        "uri": {
+          "$ref": "#/definitions/uri"
+        },
+        "stereotypes": {
+          "$ref": "#/definitions/stereotypes"
+        },
+        "properties": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/Property"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "uri",
+        "properties"
+      ],
+      "additionalProperties": false
+    },
+    "GeneralizationLink": {
+      "description": "A link between two classifiers (either classes or relations) where the instances of the latter (the specific) are necessarily instances of the former (the general).",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "const": "GeneralizationLink"
+        },
+        "name": {
+          "$ref": "#/definitions/name"
+        },
+        "url": {
+          "$ref": "#/definitions/url"
+        },
+        "uri": {
+          "$ref": "#/definitions/uri"
+        },
+        "tuple": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/tuple"
+            }
+          ],
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "@type",
+        "uri",
+        "tuple"
+      ],
+      "additionalProperties": false
+    },
+    "GeneralizationSet": {
+      "description": "Bundles of generalization links sharing a common general classifier and defined according a common specialization criteria. Generalization sets may be declared as disjoint and/or complete, being assumed as overllaping and incomplete otherwise. A categorizer may be declared in multi-level contexts where the categorizer is instantiated by the specializations of the general classifier present in the set.",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "const": "GeneralizationSet"
+        },
+        "name": {
+          "$ref": "#/definitions/name"
+        },
+        "url": {
+          "$ref": "#/definitions/url"
+        },
+        "uri": {
+          "$ref": "#/definitions/uri"
+        },
+        "isDisjoint": {
+          "type": "boolean"
+        },
+        "isComplete": {
+          "type": "boolean"
+        },
+        "categorizer": {
+          "type": "string",
+          "format": "uri"
+        },
+        "tuple": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/tuple"
+            }
+          ]
+        }
+      },
+      "required": [
+        "@type",
+        "uri",
+        "tuple"
+      ],
+      "additionalProperties": false
+    },
+    "Property": {
+      "description": "Represents some property of a classifier (either a class of a relation) that captures some valued aspect of instances of the said classifier (e.g., instances of 'Person' holding values for the property 'name'). Values instantiating properties must conform to the property's type and multiplicity.",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "const": "Property"
+        },
+        "name": {
+          "$ref": "#/definitions/name"
+        },
+        "uri": {
+          "$ref": "#/definitions/uri"
+        },
+        "url": {
+          "$ref": "#/definitions/url"
+        },
+        "propertyType": {
+          "$ref": "#/definitions/uri"
+        },
+        "lowerbound": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "upperbound": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "const": "*"
+            }
+          ]
+        },
+        "constraints": {
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "uri"
+      ],
+      "additionalProperties": false
+    },
+    "Stereotype": {
+      "description": "The field stereotype allows the flexible annotation of model elements with meta-properties. BEAWARE that the current strategy for dealing with stereotypes in the OntoUML Schema may change soon as we try to incorporate tagged values and avoid unnecessary duplication of stereotypes (potentially relying on URIs for the latter).",
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": {
+              "const": "Stereotype"
+            },
+            "name": {
+              "$ref": "#/definitions/name"
+            },
+            "uri": {
+              "$ref": "#/definitions/uri"
+            },
+            "url": {
+              "$ref": "#/definitions/url"
+            }
+          },
+          "required": [
+            "@type",
+            "uri"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+
+  "description": "Container of a OntoUML ontology.",
+  "type": "object",
+  "properties": {
+    "@type": {
+      "const": "Model"
+    },
+    "name": {
+      "$ref": "#/definitions/name"
+    },
+    "url": {
+      "$ref": "#/definitions/url"
+    },
+    "uri": {
+      "$ref": "#/definitions/uri"
+    },
+    "authors": {
+      "$ref": "#/definitions/authors"
+    },
+    "structuralElements": {
+      "$ref": "#/definitions/structuralElements"
+    }
+  },
+  "required": [
+    "@type",
+    "uri"
+  ],
+  "additionalProperties": false
+}
