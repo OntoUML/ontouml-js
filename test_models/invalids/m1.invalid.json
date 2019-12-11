@@ -1,0 +1,54 @@
+{
+  "@type": "Model",
+  "uri": "https://example.com/model/",
+  "url": "https://example.com/model/",
+  "name": "Something Else",
+  "authors": [
+    "Bob",
+    "Dan"
+  ],
+  "structuralElements": [
+    {
+      "@type": "GeneralizationLink",
+      "uri": "ontouml:model.g1",
+      "tuple": [
+        "ontouml:model.p1.c1",
+        "ontouml:model.c2"
+      ]
+    },
+    {
+      "@type": "GeneralizationLink",
+      "uri": "ontouml:model.g2",
+      "tuple": [
+        "ontouml:model.p1.c1",
+        "ontouml:model.c3"
+      ]
+    },
+    {
+      "@type": "Package",
+      "uri": "ontouml:model.p1",
+      "structuralElements": [
+        {
+          "@type": "Class",
+          "uri": "ontouml:model.p1.c1"
+        }
+      ]
+    },
+    {
+      "@type": "Class",
+      "uri": "ontouml:model.c2"
+    },
+    {
+      "@type": "Class",
+      "uri": "ontouml:model.c3"
+    },
+    {
+      "@type": "GeneralizationSet",
+      "uri": "ontouml:gs1",
+      "tuple": [
+        "ontouml:model.g1",
+        "ontouml:model.g2"
+      ]
+    }
+  ]
+}

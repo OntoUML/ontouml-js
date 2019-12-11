@@ -1,0 +1,24 @@
+{
+  "@type": "Model",
+  "uri": "https://example.com/model/m3",
+  "url": "https://example.com/model/m3",
+  "name": "Invalid stereotype model",
+  "structuralElements": [
+      {
+          "@type": "Class",
+          "name": "Person",
+          "uri": "model:#/class/Person",
+          "stereotypes": [
+              "ontouml/1.0/kind"
+          ]
+      },
+      {
+          "@type": "Class",
+          "name": "Machine",
+          "uri": "model:#/class/Machine",
+          "stereotypes": [
+              "ontouml/1.0/machine"
+          ]
+      }
+  ]
+}

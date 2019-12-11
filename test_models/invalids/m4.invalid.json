@@ -1,0 +1,24 @@
+{
+  "@type": "Model",
+  "uri": "https://example.com/model/m4",
+  "url": "https://example.com/model/m4",
+  "name": "Endurant sortal <<role>> without specialization",
+  "structuralElements": [
+      {
+          "@type": "Class",
+          "name": "Person",
+          "uri": "model:#/class/Person",
+          "stereotypes": [
+              "ontouml/1.0/kind"
+          ]
+      },
+      {
+          "@type": "Class",
+          "name": "Teacher",
+          "uri": "model:#/class/Teacher",
+          "stereotypes": [
+              "ontouml/1.0/role"
+          ]
+      }
+  ]
+}
