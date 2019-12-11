@@ -1,5 +1,6 @@
 import Ajv from 'ajv';
 import schema from '@schemas/ontouml.schema.json';
+import { OntoUMLParserError } from '@error/ontouml_parser';
 import OntoUMLParserClass from './ontouml_parser_class';
 import OntoUMLParserGeneralizationLink from './ontouml_parser_generalization_link';
 
@@ -28,7 +29,7 @@ class OntoUMLParser {
     const isModelValid = ajv.validate('OntoUMLModel', model);
 
     if (!isModelValid) {
-      throw new Error(ajv.errorsText());
+      throw new OntoUMLParserError(model, ajv.errorsText());
     }
 
     this._valid = isModelValid ? true : false;

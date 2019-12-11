@@ -1,4 +1,4 @@
-import { modelExample1 } from 'ontouml-example-models';
+import { modelInvalidExample1 } from '@test-models/invalids';
 import OntoUMLParser from '@libs/ontouml_model/services/ontouml_parser';
 import { CLASS_TYPE } from '@constants/model_types';
 
@@ -11,13 +11,13 @@ describe('OntoUML Parser', () => {
           uri: 'invalid.model',
         });
       } catch (error) {
-        expect(error.message).toBe('data.uri should match format "uri"');
+        expect(error.detail).toBe('data.uri should match format "uri"');
       }
     });
   });
 
   describe('OntoUML Example Model 1', () => {
-    const parser = new OntoUMLParser(modelExample1);
+    const parser = new OntoUMLParser(modelInvalidExample1);
 
     it('Should return a valid model', async () => {
       expect(parser.isValid()).toBe(true);
