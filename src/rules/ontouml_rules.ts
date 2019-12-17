@@ -10,6 +10,7 @@ interface IFilter {
 
 class OntoUMLRules {
   private _stereotypes: IStereotype[];
+  private _relationships: IRelationship[];
   private _version: string;
 
   constructor(version?: string) {
@@ -19,6 +20,7 @@ class OntoUMLRules {
     };
 
     this._stereotypes = ontoUMLRules[version || '1.0'].STEREOTYPES;
+    this._relationships = ontoUMLRules[version || '1.0'].RELATIONSHIPS;
     this._version = version || '1.0';
 
     this.getStereotypesURI = memoizee(this.getStereotypesURI);
@@ -93,6 +95,12 @@ class OntoUMLRules {
     return stereotype
       ? stereotype.specializes.includes(parentStereotypeUri)
       : false;
+  }
+
+  getRelationshipNameByURI(relationshipUri: string): string {
+    return this._relationships.filter(
+      (relationship: IRelationship) => relationship.uri === relationshipUri,
+    )[0].name;
   }
 }
 

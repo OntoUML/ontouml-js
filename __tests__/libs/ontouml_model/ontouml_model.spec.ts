@@ -1,4 +1,4 @@
-import { modelInvalidExample1 } from 'ontouml-example-models';
+import { modelInvalidExample1 } from '@test-models/invalids';
 import OntoUMLModel from '@libs/ontouml_model';
 
 describe('OntoUML Model', () => {

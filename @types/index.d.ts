@@ -16,10 +16,18 @@ interface IModel {
   structuralElements?: IStructuralElement[];
 }
 
+interface IRelationship {
+  name: string;
+  uri: string;
+}
+
 interface IStereotype {
   name: string;
   uri: string;
   specializes: string[];
+  relations: {
+    [key: string]: string[];
+  };
   rigidity: string;
   sortality: string;
   ultimateSortal: boolean;
