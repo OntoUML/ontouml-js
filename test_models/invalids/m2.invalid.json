@@ -1,0 +1,164 @@
+{
+  "@type": "Model",
+  "uri": "https://example.com/model/m2",
+  "url": "https://example.com/model/m2",
+  "name": "Something Else",
+  "authors": [
+    "Bob",
+    "Dan"
+  ],
+  "structuralElements": [
+    {
+      "@type": "Package",
+      "uri": "ontouml:model.p1",
+      "name": "clean model package",
+      "structuralElements": [
+        {
+          "@type": "GeneralizationLink",
+          "uri": "ontouml:model.g1",
+          "tuple": [
+            "ontouml:model.p1.c1",
+            "ontouml:model.c2"
+          ]
+        },
+        {
+          "@type": "GeneralizationLink",
+          "uri": "ontouml:model.g2",
+          "tuple": [
+            "ontouml:model.p1.c1",
+            "ontouml:model.c3"
+          ]
+        },
+        {
+          "@type": "Class",
+          "uri": "ontouml:model.p1.c1"
+        },
+        {
+          "@type": "Class",
+          "uri": "ontouml:model.c2"
+        },
+        {
+          "@type": "Class",
+          "uri": "ontouml:model.c3"
+        },
+        {
+          "@type": "GeneralizationSet",
+          "uri": "ontouml:gs1",
+          "tuple": [
+            "ontouml:model.g1",
+            "ontouml:model.g2"
+          ]
+        }
+      ]
+    },
+
+    {
+      "@type": "Package",
+      "uri": "ontouml:pkg.cyclical.hierarchy.1",
+      "name": "cyclical model package",
+      "structuralElements": [
+        {
+          "@type": "Class",
+          "uri": "ontouml:cycle1",
+          "name": "Ring one of cycle"
+        },
+        {
+          "@type": "Class",
+          "uri": "ontouml:cycle2",
+          "name": "Ring two of cycle"
+        },
+        {
+          "@type": "GeneralizationLink",
+          "uri": "ontouml:cycle.g1",
+          "tuple": [
+            "ontouml:cycle1",
+            "ontouml:cycle2"
+          ]
+        },
+        {
+          "@type": "GeneralizationLink",
+          "uri": "ontouml:cycle.g2",
+          "tuple": [
+            "ontouml:cycle2",
+            "ontouml:cycle1"
+          ]
+        }
+      ]
+    },
+
+    {
+      "@type": "Package",
+      "uri": "ontouml:pkg.missmatching.generalization.1",
+      "name": "missmatching generalization model package",
+      "structuralElements": [
+        {
+          "@type": "Class",
+          "uri": "ontouml:miss.c1",
+          "name": "Miss Class"
+        },
+        {
+          "@type": "Package",
+          "uri": "ontouml:miss.p1",
+          "name": "Miss Package"
+        },
+        {
+          "@type": "GeneralizationLink",
+          "uri": "ontouml:missmatching.g1",
+          "tuple": [
+            "ontouml:miss.c1",
+            "ontouml:miss.p1"
+          ]
+        }
+      ]
+    },
+
+    {
+      "@type": "Package",
+      "uri": "ontouml:pkg.matching.general.gs.1",
+      "name": "cyclical model package",
+      "structuralElements": [
+        {
+          "@type": "Class",
+          "uri": "ontouml:general.1",
+          "name": "General Class 1"
+        },
+        {
+          "@type": "Class",
+          "uri": "ontouml:general.2",
+          "name": "General Class 2"
+        },
+        {
+
+          "@type": "Class",
+          "uri": "ontouml:specific",
+          "name": "Specific Class"
+        },
+        {
+          "@type": "GeneralizationLink",
+          "uri": "ontouml:matching.g1",
+          "tuple": [
+            "ontouml:general.1",
+            "ontouml:specific"
+          ]
+        },
+        {
+          "@type": "GeneralizationLink",
+          "uri": "ontouml:matching.g2",
+          "tuple": [
+            "ontouml:general.2",
+            "ontouml:specific"
+          ]
+        },
+        {
+          "@type": "GeneralizationSet",
+          "uri": "ontouml:matching.gs1",
+          "tuple": [
+            "ontouml:matching.g1",
+            "ontouml:matching.g2"
+          ]
+        }
+      ]
+    }
+
+  ]
+}

@@ -1,14 +1,33 @@
 import OntoUMLParser from '../ontouml_parser';
+import OntoUMLSyntaxEndurants from './ontouml_syntax_endurants';
 
 class OntoUMLSyntax {
-  private _parser: OntoUMLParser;
+  verifyEndurantTypes: () => Promise<IOntoUMLError[]>;
 
   constructor(parser: OntoUMLParser) {
-    this._parser = parser;
-  }
+    const syntaxEndurants = new OntoUMLSyntaxEndurants(parser);
 
-  get parser() {
-    return this._parser;
+    const serviceMethods = [
+      {
+        service: syntaxEndurants,
+        serviceClass: OntoUMLSyntaxEndurants,
+        ignoreMethods: [],
+      },
+    ];
+
+    for (const { service, serviceClass, ignoreMethods } of serviceMethods) {
+      const methods = [
+        ...Object.getOwnPropertyNames(service),
+        ...Object.getOwnPropertyNames(serviceClass.prototype),
+      ];
+      const ignore = ['constructor', ...ignoreMethods];
+
+      for (const method of methods) {
+        if (!ignore.includes(method) && typeof service[method] === 'function') {
+          this[method] = service[method].bind(service);
+        }
+      }
+    }
   }
 }
 

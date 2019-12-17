@@ -1,0 +1,32 @@
+{
+  "@type": "Model",
+  "uri": "https://example.com/model/m5",
+  "url": "https://example.com/model/m5",
+  "name": "Kind cannot specialize another kind.",
+  "structuralElements": [
+      {
+          "@type": "Class",
+          "name": "Person",
+          "uri": "model:#/class/Person",
+          "stereotypes": [
+              "ontouml/1.0/kind"
+          ]
+      },
+      {
+          "@type": "Class",
+          "name": "Machine",
+          "uri": "model:#/class/Machine",
+          "stereotypes": [
+              "ontouml/1.0/kind"
+          ]
+      },
+      {
+        "@type": "GeneralizationLink",
+        "uri": "model:#/generalization/PersonMachine",
+        "tuple": [
+            "model:#/class/Person",
+            "model:#/class/Machine"
+        ]
+    }
+  ]
+}

@@ -21,8 +21,11 @@
     "pre-push": "npm run lint && npm test"
   },
   "_moduleAliases": {
+    "@test-models": "test_models",
     "@constants": "src/constants",
+    "@error": "src/error",
     "@libs": "src/libs",
+    "@rules": "src/rules",
     "@schemas": "schemas",
     "@utils": "src/utils"
   },
@@ -33,7 +36,8 @@
     "memoizee": "^0.4.14",
     "nodemon": "^1.19.4",
     "regenerator-runtime": "^0.13.3",
-    "tslib": "~1.10.0"
+    "tslib": "~1.10.0",
+    "uniqid": "^5.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
@@ -51,7 +55,7 @@
     "module-alias": "^2.2.2",
     "npm-run-all": "^4.1.5",
     "onchange": "^6.1.0",
-    "ontouml-example-models": "https://github.com/OntoUML/ontouml-example-models",
+    "ontouml-example-models": "git+https://github.com/OntoUML/ontouml-example-models.git",
     "prettier": "~1.18.2",
     "rimraf": "^3.0.0",
     "ts-jest": "^24.0.0",
