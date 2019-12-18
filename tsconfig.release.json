@@ -1,12 +1,16 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "rootDir": ".",
-    "outDir": "build",
-    "removeComments": true
+    "target": "es5",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "allowJs": false,
+    "declaration": true,
+    "removeComments": true,
+    "strict": true
   },
   "include": [
-    "src/**/*",
+    "tmp/**/*",
     "@types/**/*"
   ]
 }

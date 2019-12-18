@@ -1,3 +1,3 @@
-import OntoUMLModel from '@libs/ontouml_model';
+import OntoUMLModel from './libs/ontouml_model';
 
 export { OntoUMLModel };

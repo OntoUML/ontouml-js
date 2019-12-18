@@ -1,23 +1,31 @@
 {
   "name": "ontouml-js",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha.4",
   "description": "Javascript library utility for manipulating OntoUML models.",
   "license": "Apache-2.0",
   "engines": {
-    "node": ">= 10.13 <11"
+    "node": ">= 10.13"
   },
-  "main": "build/src/index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist/**/*",
+    "@types/**/*"
+  ],
   "scripts": {
     "start": "npm-run-all -p format:watch start:watch",
     "start:watch": "TS_NODE_FILES=true nodemon index.ts",
     "format:watch": "onchange '**/*.ts' -- prettier --write {{changed}}",
-    "clean": "rimraf coverage build tmp",
-    "build": "TS_NODE_FILES=true tsc -p tsconfig.release.json",
+    "clean": "rimraf coverage dist tmp",
+    "build": "rm -rf ./dist && npm run build:js && npm run build:schemas",
+    "build:schemas": "cp -R src/schemas dist/schemas",
+    "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",
     "build:watch": "TS_NODE_FILES=true tsc -w -p tsconfig.release.json",
+    "bundle": "webpack",
     "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'",
     "test": "jest --coverage",
     "test:clean": "jest --clearCache",
     "test:watch": "jest --watch",
+    "prepublish": "npm run build",
     "pre-push": "npm run lint && npm test"
   },
   "_moduleAliases": {
@@ -26,7 +34,7 @@
     "@error": "src/error",
     "@libs": "src/libs",
     "@rules": "src/rules",
-    "@schemas": "schemas",
+    "@schemas": "src/schemas",
     "@utils": "src/utils"
   },
   "dependencies": {
@@ -40,6 +48,7 @@
     "uniqid": "^5.2.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.7.5",
     "@babel/core": "^7.6.4",
     "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.6.3",
@@ -48,6 +57,8 @@
     "@types/jest": "^24.0.18",
     "@types/node": "^10.14.17",
     "babel-jest": "^24.9.0",
+    "babel-loader": "^8.0.4",
+    "babel-plugin-module-resolver": "^4.0.0",
     "dotenv": "^8.2.0",
     "grpc_tools_node_protoc_ts": "^2.5.5",
     "husky": "^3.1.0",
@@ -55,7 +66,6 @@
     "module-alias": "^2.2.2",
     "npm-run-all": "^4.1.5",
     "onchange": "^6.1.0",
-    "ontouml-example-models": "git+https://github.com/OntoUML/ontouml-example-models.git",
     "prettier": "~1.18.2",
     "rimraf": "^3.0.0",
     "ts-jest": "^24.0.0",
@@ -63,6 +73,8 @@
     "tslint-config-prettier": "1.18.0",
     "tslint-microsoft-contrib": "~6.2.0",
     "tsutils": "~3.17.0",
-    "typescript": "~3.6.0"
+    "typescript": "~3.6.0",
+    "webpack": "^4.41.3",
+    "webpack-cli": "^3.3.10"
   }
 }

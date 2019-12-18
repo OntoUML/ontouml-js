@@ -29,6 +29,10 @@ class OntoUMLSyntax {
       }
     }
   }
+
+  async verify(): Promise<IOntoUMLError[]> {
+    return await this.verifyEndurantTypes();
+  }
 }
 
 export default OntoUMLSyntax;
