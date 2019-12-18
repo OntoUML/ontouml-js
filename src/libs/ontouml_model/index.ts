@@ -9,6 +9,9 @@ class OntoUMLModel {
   getClassChildren: (classId: string) => IStructuralElement[];
   isValid: () => boolean;
 
+  // OntoUMLSyntax
+  verify: () => Promise<IOntoUMLError[]>;
+
   constructor(model: IModel) {
     try {
       const parser = new OntoUMLParser(model);

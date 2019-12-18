@@ -26,7 +26,7 @@
       "@error/*": ["src/error/*"],
       "@libs/*": ["src/libs/*"],
       "@rules/*": ["src/rules/*"],
-      "@schemas/*": ["schemas/*"],
+      "@schemas/*": ["src/schemas/*"],
       "@utils/*": ["src/utils/*"]
     }
   },

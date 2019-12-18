@@ -1,4 +1,19 @@
 {
   "presets": ["@babel/preset-env", "@babel/preset-typescript"],
-  "plugins": ["@babel/plugin-transform-runtime"]
+  "plugins": [
+    "@babel/plugin-transform-runtime",
+    [
+      "module-resolver", {
+        "alias": {
+          "@test-models": "./test_models",
+          "@constants": "./src/constants",
+          "@error": "./src/error",
+          "@libs": "./src/libs",
+          "@rules": "./src/rules",
+          "@schemas": "./src/schemas",
+          "@utils": "./src/utils"
+        }
+      }
+    ]
+  ]
 }
