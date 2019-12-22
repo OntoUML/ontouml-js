@@ -12,7 +12,7 @@ class OntoUMLSyntaxEndurants {
   private _errors: IOntoUMLError[];
 
   constructor(parser: OntoUMLParser) {
-    this._rules = new OntoUMLRules('1.0');
+    this._rules = new OntoUMLRules(parser.getVersion());
     this._parser = parser;
     this._errors = [];
   }
@@ -21,14 +21,14 @@ class OntoUMLSyntaxEndurants {
     const classes = this._parser.getClasses();
 
     await Promise.all([
-      this.verifyStereotypes(classes),
+      this.verifyClassStereotypes(classes),
       this.verifyClasses(classes),
     ]);
 
     return this._errors;
   }
 
-  async verifyStereotypes(structuralElements: IStructuralElement[]) {
+  async verifyClassStereotypes(structuralElements: IStructuralElement[]) {
     const stereotypes = this._rules.getStereotypesURI();
 
     const invalidElements = structuralElements.filter(

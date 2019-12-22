@@ -3,6 +3,7 @@ import {
   modelInvalidExample4,
   modelInvalidExample5,
   modelInvalidExample6,
+  modelInvalidExample7,
 } from '@test-models/invalids';
 import OntoUMLParser from '@libs/ontouml_model/services/ontouml_parser';
 import OntoUMLSyntax from '@libs/ontouml_model/services/ontouml_syntax';
@@ -52,6 +53,18 @@ describe('OntoUML Syntax', () => {
       const errors = await syntax.verifyEndurantTypes();
 
       expect(errors[0].code).toBe('ontouml_specialization_error');
+      expect(errors.length).toBe(1);
+    });
+  });
+
+  describe('OntoUML Example Model 7', () => {
+    it('Should return an error of invalid relation', async () => {
+      const parser = new OntoUMLParser(modelInvalidExample7);
+      const syntax = new OntoUMLSyntax(parser);
+
+      const errors = await syntax.verifyRelationTypes();
+
+      expect(errors[0].code).toBe('ontouml_relation_error');
       expect(errors.length).toBe(1);
     });
   });
