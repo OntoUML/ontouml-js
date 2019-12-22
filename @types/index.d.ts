@@ -1,9 +1,19 @@
+interface IProperty {
+  '@type': string;
+  uri: string;
+  url?: string;
+  propertyType?: string;
+  lowerbound?: number | string;
+  upperbound?: number | string;
+}
+
 interface IStructuralElement {
   '@type': string;
   uri: string;
   name?: string;
   tuple?: string[];
   stereotypes?: string[];
+  properties?: IProperty[];
   structuralElements?: IStructuralElement[];
 }
 
@@ -16,9 +26,17 @@ interface IModel {
   structuralElements?: IStructuralElement[];
 }
 
-interface IRelationship {
+interface IRelation {
   name: string;
   uri: string;
+  source?: {
+    lowerbound: number | string;
+    upperbound: number | string;
+  };
+  target?: {
+    lowerbound: number | string;
+    upperbound: number | string;
+  };
 }
 
 interface IStereotype {

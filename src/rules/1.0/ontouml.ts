@@ -31,38 +31,102 @@ const MEMBER_OF: 'ontouml/1.0/memberOf' = 'ontouml/1.0/memberOf';
 const SUBCOLLECTION_OF: 'ontouml/1.0/subcollectionOf' =
   'ontouml/1.0/subcollectionOf';
 
-export const RELATIONSHIPS: IRelationship[] = [
+export const RELATIONS: IRelation[] = [
   {
     name: '«material»',
     uri: MATERIAL,
+    source: {
+      lowerbound: 1,
+      upperbound: '*',
+    },
+    target: {
+      lowerbound: 1,
+      upperbound: '*',
+    },
   },
   {
     name: '«mediation»',
     uri: MEDIATION,
+    source: {
+      lowerbound: 1,
+      upperbound: '*',
+    },
+    target: {
+      lowerbound: 1,
+      upperbound: '*',
+    },
   },
   {
     name: '«componentOf»',
     uri: COMPONENT_OF,
+    source: {
+      lowerbound: 0,
+      upperbound: '*',
+    },
+    target: {
+      lowerbound: 0,
+      upperbound: '*',
+    },
   },
   {
     name: '«subquantityOf»',
     uri: SUBQUANTITY_OF,
+    source: {
+      lowerbound: 0,
+      upperbound: '*',
+    },
+    target: {
+      lowerbound: 0,
+      upperbound: 1,
+    },
   },
   {
     name: '«characterization»',
     uri: CHARACTERIZATION,
+    source: {
+      lowerbound: 1,
+      upperbound: '*',
+    },
+    target: {
+      lowerbound: 1,
+      upperbound: 1,
+    },
   },
   {
     name: '«formal»',
     uri: FORMAL,
+    source: {
+      lowerbound: 0,
+      upperbound: '*',
+    },
+    target: {
+      lowerbound: 0,
+      upperbound: '*',
+    },
   },
   {
     name: '«memberOf»',
     uri: MEMBER_OF,
+    source: {
+      lowerbound: 0,
+      upperbound: '*',
+    },
+    target: {
+      lowerbound: 0,
+      upperbound: '*',
+    },
   },
   {
     name: '«subcollectionOf»',
     uri: SUBCOLLECTION_OF,
+    source: {
+      lowerbound: 0,
+      upperbound: '*',
+    },
+    target: {
+      lowerbound: 0,
+      upperbound: '*',
+    },
   },
 ];
 

@@ -10,7 +10,7 @@ interface IFilter {
 
 class OntoUMLRules {
   private _stereotypes: IStereotype[];
-  private _relationships: IRelationship[];
+  private _relations: IRelation[];
   private _version: string;
 
   constructor(version?: string) {
@@ -20,7 +20,7 @@ class OntoUMLRules {
     };
 
     this._stereotypes = ontoUMLRules[version || '1.0'].STEREOTYPES;
-    this._relationships = ontoUMLRules[version || '1.0'].RELATIONSHIPS;
+    this._relations = ontoUMLRules[version || '1.0'].RELATIONS;
     this._version = version || '1.0';
 
     this.getStereotypesURI = memoizee(this.getStereotypesURI);
@@ -31,6 +31,12 @@ class OntoUMLRules {
 
   getVersion(): string {
     return this._version;
+  }
+
+  getStereotype(stereotypeUri: string): IStereotype {
+    return this._stereotypes.filter(
+      (stereotype: IStereotype) => stereotype.uri === stereotypeUri,
+    )[0];
   }
 
   getStereotypeNameByURI(stereotypeUri: string): string {
@@ -97,10 +103,32 @@ class OntoUMLRules {
       : false;
   }
 
-  getRelationshipNameByURI(relationshipUri: string): string {
-    return this._relationships.filter(
-      (relationship: IRelationship) => relationship.uri === relationshipUri,
+  getRelationStereotype(relationStereotypeUri: string): IRelation {
+    return this._relations.filter(
+      (releation: IRelation) => relationStereotypeUri === releation.uri,
+    )[0];
+  }
+
+  getRelationStereotypesURI(): string[] {
+    return this._relations.map((releation: IRelation) => releation.uri);
+  }
+
+  getRelationNameByURI(relationUri: string): string {
+    return this._relations.filter(
+      (relation: IRelation) => relation.uri === relationUri,
     )[0].name;
+  }
+
+  isValidRelation(
+    sourceStereotypeUri: string,
+    targetStereotypeUri: string,
+    relationStereotypeUri: string,
+  ): boolean {
+    const sourceStereotype = this.getStereotype(sourceStereotypeUri);
+
+    return sourceStereotype.relations[targetStereotypeUri].includes(
+      relationStereotypeUri,
+    );
   }
 }
 
