@@ -1,6 +1,6 @@
+import { CLASS_TYPE } from '@constants/model_types';
 import OntoUMLParserMethod from './ontouml_parser_method';
 import OntoUMLParserGeneralizationLink from './ontouml_parser_generalization_link';
-import { CLASS_TYPE } from '@constants/model_types';
 
 class OntoUMLParserClass extends OntoUMLParserMethod {
   private _generalizationLinkParser: OntoUMLParserGeneralizationLink;
@@ -18,15 +18,15 @@ class OntoUMLParserClass extends OntoUMLParserMethod {
     );
   }
 
-  getClass(classId: string): IStructuralElement {
+  getClass(classUri: string): IStructuralElement {
     return this.getClasses().filter(
-      (classEl: IStructuralElement) => classEl.uri === classId,
+      (classEl: IStructuralElement) => classEl.uri === classUri,
     )[0];
   }
 
-  getClassParents(classId: string): IStructuralElement[] {
+  getClassParents(classUri: string): IStructuralElement[] {
     const generalizationLinks = this._generalizationLinkParser.getGeneralizationLinksFromSpecificClass(
-      classId,
+      classUri,
     );
     const generalClassIds = generalizationLinks.map(
       (generalizationLink: IStructuralElement) => generalizationLink.tuple[0],
@@ -37,9 +37,9 @@ class OntoUMLParserClass extends OntoUMLParserMethod {
     );
   }
 
-  getClassChildren(classId: string): IStructuralElement[] {
+  getClassChildren(classUri: string): IStructuralElement[] {
     const generalizationLinks = this._generalizationLinkParser.getGeneralizationLinksFromGeneralClass(
-      classId,
+      classUri,
     );
     const generalClassIds = generalizationLinks.map(
       (generalizationLink: IStructuralElement) => generalizationLink.tuple[1],

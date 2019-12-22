@@ -1,4 +1,7 @@
-import { modelInvalidExample1 } from '@test-models/invalids';
+import {
+  modelInvalidExample1,
+  modelInvalidExample7,
+} from '@test-models/invalids';
 import OntoUMLParser from '@libs/ontouml_model/services/ontouml_parser';
 import { CLASS_TYPE } from '@constants/model_types';
 
@@ -56,6 +59,42 @@ describe('OntoUML Parser', () => {
         parser.getGeneralizationLinksFromSpecificClass('ontouml:model.p1.c1')
           .length,
       ).toBe(0);
+    });
+
+    it('Should get 1 parent from the class "ontouml:model.c2"', async () => {
+      expect(parser.getClassParents('ontouml:model.c2').length).toBe(1);
+    });
+  });
+
+  describe('OntoUML Example Model 7', () => {
+    const parser = new OntoUMLParser(modelInvalidExample7);
+
+    it('Should get 1 relation from model', async () => {
+      const relations = parser.getRelations();
+
+      expect(relations.length).toBe(1);
+    });
+
+    it('Should get a mediation relation from uri "model:#/relation/PersonMachine"', async () => {
+      const relation = parser.getRelation('model:#/relation/PersonMachine');
+
+      expect(relation.stereotypes[0]).toBe('ontouml/1.0/mediation');
+    });
+
+    it('Should get "model:#/property/Person" as source of relation "model:#/relation/PersonMachine"', async () => {
+      const sourceUri = parser.getRelationSourceClassURI(
+        'model:#/relation/PersonMachine',
+      );
+
+      expect(sourceUri).toBe('model:#/class/Person');
+    });
+
+    it('Should get "model:#/property/Machine" as target of relation "model:#/relation/PersonMachine"', async () => {
+      const sourceUri = parser.getRelationTargetClassURI(
+        'model:#/relation/PersonMachine',
+      );
+
+      expect(sourceUri).toBe('model:#/class/Machine');
     });
   });
 });

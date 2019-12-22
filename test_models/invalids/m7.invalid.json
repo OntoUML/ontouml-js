@@ -1,0 +1,46 @@
+{
+  "@type": "Model",
+  "uri": "https://ontouml.org/archive/sales2018towards",
+  "name": "Towards an Ontology of Competition",
+  "structuralElements": [
+      {
+          "@type": "Class",
+          "name": "Person",
+          "uri": "model:#/class/Person",
+          "stereotypes": [
+              "ontouml/1.0/kind"
+          ]
+      },
+      {
+          "@type": "Class",
+          "name": "Machine",
+          "uri": "model:#/class/Machine",
+          "stereotypes": [
+              "ontouml/1.0/kind"
+          ]
+      },
+      {
+          "@type": "Relation",
+          "uri": "model:#/relation/PersonMachine",
+          "stereotypes": [
+            "ontouml/1.0/mediation"
+          ],
+          "properties": [
+              {
+                  "@type": "Property",
+                  "uri":"model:#/property/Person",
+                  "propertyType": "model:#/class/Person",
+                  "lowerbound": 2,
+                  "upperbound": "*"
+              },
+              {
+                  "@type": "Property",
+                  "uri":"model:#/property/Machine",
+                  "propertyType": "model:#/class/Machine",
+                  "lowerbound": 0,
+                  "upperbound": "*"
+              }
+          ]
+      }
+  ]
+}
