@@ -119,6 +119,18 @@ class OntoUMLRules {
     )[0].name;
   }
 
+  getRelationMultiplicityValue(value: string | number): number {
+    if (value === '*') {
+      return 99999;
+    }
+
+    if (typeof value === 'string') {
+      return Number(value);
+    }
+
+    return value;
+  }
+
   isValidRelation(
     sourceStereotypeUri: string,
     targetStereotypeUri: string,
