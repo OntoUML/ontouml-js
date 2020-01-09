@@ -4,6 +4,7 @@ import {
 } from '@error/ontouml_syntax';
 import OntoUMLRules from '@rules/ontouml_rules';
 import OntoUMLParser from '../ontouml_parser';
+import { CLASS_TYPE } from '@constants/model_types';
 
 class OntoUMLSyntaxRelations {
   private _rules: OntoUMLRules;
@@ -48,16 +49,64 @@ class OntoUMLSyntaxRelations {
   }
 
   async verifyRelations(relations: IStructuralElement[]) {
+    const promises = [];
+
+    for (let i = 0; i < relations.length; i += 1) {
+      const relation = relations[i];
+
+      promises.push(this.verifyRelationConnections(relation));
+    }
+
+    await Promise.all(promises);
+
+    return true;
+  }
+
+  async verifyRelationConnections(relation: IStructuralElement) {
     try {
-      const promises = [];
+      const sourceUri = this._parser.getRelationSourceClassURI(relation.uri);
+      const source =
+        this._parser.getClass(sourceUri) || this._parser.getRelation(sourceUri);
+      const sourceStereotypeUri = source.stereotypes[0];
+      const targetUri = this._parser.getRelationTargetClassURI(relation.uri);
+      const target =
+        this._parser.getClass(targetUri) || this._parser.getRelation(targetUri);
+      const targetStereotypeUri = target.stereotypes[0];
 
-      for (let i = 0; i < relations.length; i += 1) {
-        const relation = relations[i];
+      const isValidRelation = this._rules.isValidRelation(
+        sourceStereotypeUri,
+        targetStereotypeUri,
+        relation.stereotypes[0],
+      );
 
-        promises.push(this.verifyRelationConnections(relation));
+      if (isValidRelation) {
+        await this.verifyRelationCardinalities(relation);
+      } else {
+        const relationName = this._rules.getRelationNameByURI(
+          relation.stereotypes[0],
+        );
+        const sourceName = source.name || source.uri;
+        const sourceStereotypeName = this._rules.getStereotypeNameByURI(
+          sourceStereotypeUri,
+        );
+        const targetName = target.name || target.uri;
+        const targetStereotypeName =
+          target['@type'] === CLASS_TYPE
+            ? this._rules.getStereotypeNameByURI(targetStereotypeUri)
+            : this._rules.getRelationNameByURI(targetStereotypeUri);
+
+        let errorDetail = `${target['@type']} ${source['@type']} "${sourceName}" of stereotype ${sourceStereotypeName} cannot have a ${relationName} relation with ${target['@type']} "${targetName}" of stereotype ${targetStereotypeName}`;
+
+        if (this._rules.isDerivationRelation(relation.stereotypes[0])) {
+          errorDetail = `"${targetName}" must be the source of ${relationName} relation between ${source['@type']} "${sourceName}" and ${target['@type']} "${targetName}"`;
+        }
+
+        await this._errors.push(
+          new OntoUMLRelationError(errorDetail, {
+            relation,
+          }),
+        );
       }
-
-      await Promise.all(promises);
     } catch (error) {
       // ignore
       console.log(error);
@@ -66,80 +115,43 @@ class OntoUMLSyntaxRelations {
     return true;
   }
 
-  async verifyRelationConnections(relation: IStructuralElement) {
-    const sourceClassUri = this._parser.getRelationSourceClassURI(relation.uri);
-    const sourceClass = this._parser.getClass(sourceClassUri);
-    const sourceStereotypeUri = sourceClass.stereotypes[0];
-    const targetClassUri = this._parser.getRelationTargetClassURI(relation.uri);
-    const targetClass = this._parser.getClass(targetClassUri);
-    const targetStereotypeUri = targetClass.stereotypes[0];
-
-    const isValidRelation = this._rules.isValidRelation(
-      sourceStereotypeUri,
-      targetStereotypeUri,
-      relation.stereotypes[0],
-    );
-
-    if (isValidRelation) {
-      await this.verifyRelationMultiplicities(relation);
-    } else {
-      const relationName = this._rules.getRelationNameByURI(
-        relation.stereotypes[0],
-      );
-      const sourceClassName = sourceClass.name || sourceClass.uri;
-      const sourceStereotypeName = this._rules.getStereotypeNameByURI(
-        sourceStereotypeUri,
-      );
-      const targetClassName = targetClass.name || targetClass.uri;
-      const targetStereotypeName = this._rules.getStereotypeNameByURI(
-        targetStereotypeUri,
-      );
-
-      const errorDetail = `${sourceClass['@type']} "${sourceClassName}" of stereotype ${sourceStereotypeName} cannot have a ${relationName} relation with ${targetClass['@type']} "${targetClassName}" of stereotype ${targetStereotypeName}`;
-
-      await this._errors.push(
-        new OntoUMLRelationError(errorDetail, {
-          relation,
-        }),
-      );
-    }
-
-    return true;
-  }
-
-  async verifyRelationMultiplicities(relation: IStructuralElement) {
+  async verifyRelationCardinalities(relation: IStructuralElement) {
     const sourceProperty = this._parser.getRelationSourceProperty(relation.uri);
-    const sourceClass = this._parser.getClass(sourceProperty.propertyType);
-    const sourceName = sourceClass.name || sourceClass.uri;
+    const source =
+      this._parser.getClass(sourceProperty.propertyType) ||
+      this._parser.getRelation(sourceProperty.propertyType);
+    const sourceName = source.name || source.uri;
     const targetProperty = this._parser.getRelationTargetProperty(relation.uri);
-    const targetClass = this._parser.getClass(targetProperty.propertyType);
-    const targetName = targetClass.name || targetClass.uri;
+    const target =
+      this._parser.getClass(targetProperty.propertyType) ||
+      this._parser.getRelation(targetProperty.propertyType);
+    const targetName = target.name || target.uri;
     const relationStereotype = this._rules.getRelationStereotype(
       relation.stereotypes[0],
     );
 
-    const sourcePropertyLowerbound = this._rules.getRelationMultiplicityValue(
+    const sourcePropertyLowerbound = this._rules.getRelationCardinalityValue(
       sourceProperty.lowerbound,
     );
-    const sourcePropertyUpperbound = this._rules.getRelationMultiplicityValue(
+    const sourcePropertyUpperbound = this._rules.getRelationCardinalityValue(
       sourceProperty.upperbound,
     );
-    const relationSourceLowerbound = this._rules.getRelationMultiplicityValue(
+    const relationSourceLowerbound = this._rules.getRelationCardinalityValue(
       relationStereotype.source.lowerbound,
     );
-    const relationSourceUpperbound = this._rules.getRelationMultiplicityValue(
+    const relationSourceUpperbound = this._rules.getRelationCardinalityValue(
       relationStereotype.source.upperbound,
     );
-    const targetPropertyLowerbound = this._rules.getRelationMultiplicityValue(
+    const targetPropertyLowerbound = this._rules.getRelationCardinalityValue(
       targetProperty.lowerbound,
     );
-    const targetPropertyUpperbound = this._rules.getRelationMultiplicityValue(
+    const targetPropertyUpperbound = this._rules.getRelationCardinalityValue(
       targetProperty.upperbound,
     );
-    const relationTargetLowerbound = this._rules.getRelationMultiplicityValue(
+    const relationTargetLowerbound = this._rules.getRelationCardinalityValue(
       relationStereotype.target.lowerbound,
     );
-    const relationTargetUpperbound = this._rules.getRelationMultiplicityValue(
+    const relationTargetUpperbound = this._rules.getRelationCardinalityValue(
       relationStereotype.target.upperbound,
     );
 

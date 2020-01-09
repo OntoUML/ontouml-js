@@ -30,6 +30,7 @@ const FORMAL: 'ontouml/1.0/formal' = 'ontouml/1.0/formal';
 const MEMBER_OF: 'ontouml/1.0/memberOf' = 'ontouml/1.0/memberOf';
 const SUBCOLLECTION_OF: 'ontouml/1.0/subcollectionOf' =
   'ontouml/1.0/subcollectionOf';
+const DERIVATION: 'ontouml/1.0/derivation' = 'ontouml/1.0/derivation';
 
 export const RELATIONS: IRelation[] = [
   {
@@ -128,6 +129,18 @@ export const RELATIONS: IRelation[] = [
       upperbound: '*',
     },
   },
+  {
+    name: '«derivation»',
+    uri: DERIVATION,
+    source: {
+      lowerbound: 0,
+      upperbound: '*',
+    },
+    target: {
+      lowerbound: 0,
+      upperbound: '*',
+    },
+  },
 ];
 
 export const STEREOTYPES: IStereotype[] = [
@@ -200,6 +213,8 @@ export const STEREOTYPES: IStereotype[] = [
       ],
       [MODE]: [MEDIATION, FORMAL, CHARACTERIZATION, MATERIAL],
       [QUALITY]: [MEDIATION, FORMAL, CHARACTERIZATION, MATERIAL],
+      // derivations
+      [MATERIAL]: [],
     },
     rigidity: RIGID,
     sortality: SORTAL,

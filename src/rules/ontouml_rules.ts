@@ -119,7 +119,7 @@ class OntoUMLRules {
     )[0].name;
   }
 
-  getRelationMultiplicityValue(value: string | number): number {
+  getRelationCardinalityValue(value: string | number): number {
     if (value === '*') {
       return 99999;
     }
@@ -129,6 +129,14 @@ class OntoUMLRules {
     }
 
     return value;
+  }
+
+  isDerivationRelation(relationUri: string): boolean {
+    const derivationUri = this._relations.filter(
+      ({ name }: IRelation) => name === '«derivation»',
+    )[0].uri;
+
+    return derivationUri === relationUri;
   }
 
   isValidRelation(

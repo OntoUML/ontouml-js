@@ -1,7 +1,8 @@
 {
   "@type": "Model",
-  "uri": "https://ontouml.org/archive/sales2018towards",
-  "name": "Towards an Ontology of Competition",
+  "uri": "https://example.com/model/m7",
+  "url": "https://example.com/model/m7",
+  "name": "Invalid relation between kind's",
   "structuralElements": [
       {
           "@type": "Class",
