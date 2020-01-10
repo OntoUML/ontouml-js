@@ -61,6 +61,16 @@ class OntoUMLParser {
     }
   }
 
+  getVersion(): string {
+    const classes = this.getClasses();
+    const stereotype =
+      classes && classes[0] && classes[0].stereotypes
+        ? classes[0].stereotypes[0]
+        : '';
+
+    return stereotype && stereotype.includes('1.0') ? '1.0' : '2.0';
+  }
+
   isValid(): boolean {
     return this._valid;
   }

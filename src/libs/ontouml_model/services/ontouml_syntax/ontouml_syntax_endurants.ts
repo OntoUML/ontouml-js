@@ -12,7 +12,7 @@ class OntoUMLSyntaxEndurants {
   private _errors: IOntoUMLError[];
 
   constructor(parser: OntoUMLParser) {
-    this._rules = new OntoUMLRules('1.0');
+    this._rules = new OntoUMLRules(parser.getVersion());
     this._parser = parser;
     this._errors = [];
   }

@@ -91,10 +91,7 @@
           "$ref": "#/definitions/elements"
         }
       },
-      "required": [
-        "@type",
-        "uri"
-      ],
+      "required": ["@type", "uri"],
       "additionalProperties": false
     },
     "Class": {
@@ -128,10 +125,7 @@
           }
         }
       },
-      "required": [
-        "@type",
-        "uri"
-      ],
+      "required": ["@type", "uri"],
       "additionalProperties": false
     },
     "Relation": {
@@ -165,11 +159,7 @@
           }
         }
       },
-      "required": [
-        "@type",
-        "uri",
-        "properties"
-      ],
+      "required": ["@type", "uri", "properties"],
       "additionalProperties": false
     },
     "GeneralizationLink": {
@@ -197,11 +187,7 @@
           "maxItems": 2
         }
       },
-      "required": [
-        "@type",
-        "uri",
-        "tuple"
-      ],
+      "required": ["@type", "uri", "tuple"],
       "additionalProperties": false
     },
     "GeneralizationSet": {
@@ -238,11 +224,7 @@
           ]
         }
       },
-      "required": [
-        "@type",
-        "uri",
-        "tuple"
-      ],
+      "required": ["@type", "uri", "tuple"],
       "additionalProperties": false
     },
     "Property": {
@@ -289,10 +271,7 @@
           }
         }
       },
-      "required": [
-        "@type",
-        "uri"
-      ],
+      "required": ["@type", "uri"],
       "additionalProperties": false
     },
     "Stereotype": {
@@ -318,10 +297,7 @@
               "$ref": "#/definitions/url"
             }
           },
-          "required": [
-            "@type",
-            "uri"
-          ],
+          "required": ["@type", "uri"],
           "additionalProperties": false
         }
       ]
@@ -350,9 +326,6 @@
       "$ref": "#/definitions/elements"
     }
   },
-  "required": [
-    "@type",
-    "uri"
-  ],
+  "required": ["@type", "uri"],
   "additionalProperties": false
 }
