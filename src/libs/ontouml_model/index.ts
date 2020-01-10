@@ -3,10 +3,10 @@ import OntoUMLSyntax from './services/ontouml_syntax';
 
 class OntoUMLModel {
   // OntoUMLParser
-  getClasses: () => IStructuralElement[];
-  getClass: (classId: string) => IStructuralElement[];
-  getClassParents: (classId: string) => IStructuralElement[];
-  getClassChildren: (classId: string) => IStructuralElement[];
+  getClasses: () => IElement[];
+  getClass: (classId: string) => IElement[];
+  getClassParents: (classId: string) => IElement[];
+  getClassChildren: (classId: string) => IElement[];
   isValid: () => boolean;
 
   // OntoUMLSyntax
@@ -21,7 +21,7 @@ class OntoUMLModel {
         {
           service: parser,
           serviceClass: OntoUMLParser,
-          ignoreMethods: ['getStructuralElements'],
+          ignoreMethods: ['getElements'],
         },
         {
           service: syntax,

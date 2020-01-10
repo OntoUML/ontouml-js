@@ -14,7 +14,7 @@
   "scripts": {
     "start": "npm-run-all -p format:watch start:watch",
     "start:watch": "TS_NODE_FILES=true nodemon index.ts",
-    "format:watch": "onchange '**/*.ts' -- prettier --write {{changed}}",
+    "format:watch": "onchange '**/*.ts' '**/*.json' -- prettier --write {{changed}}",
     "clean": "rimraf coverage dist tmp",
     "build": "rm -rf ./dist && npm run build:js && npm run build:schemas",
     "build:schemas": "cp -R src/schemas dist/schemas",

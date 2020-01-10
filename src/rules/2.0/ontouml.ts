@@ -25,7 +25,7 @@ const QUALITY_KIND: 'ontouml/2.0/qualityKind' = 'ontouml/2.0/qualityKind';
 export const STEREOTYPES: IStereotype[] = [
   {
     name: '«kind»',
-    uri: KIND,
+    id: KIND,
     specializes: [CATEGORY, MIXIN],
     rigidity: RIGID,
     sortality: SORTAL,
@@ -33,7 +33,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«quantityKind»',
-    uri: QUANTITY_KIND,
+    id: QUANTITY_KIND,
     specializes: [CATEGORY, MIXIN],
     rigidity: RIGID,
     sortality: SORTAL,
@@ -41,7 +41,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«collectiveKind»',
-    uri: COLLECTIVE_KIND,
+    id: COLLECTIVE_KIND,
     specializes: [CATEGORY, MIXIN],
     rigidity: RIGID,
     sortality: SORTAL,
@@ -49,7 +49,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«subkind»',
-    uri: SUBKIND,
+    id: SUBKIND,
     specializes: [
       KIND,
       QUANTITY_KIND,
@@ -67,7 +67,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«role»',
-    uri: ROLE,
+    id: ROLE,
     specializes: [
       KIND,
       QUANTITY_KIND,
@@ -88,7 +88,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«phase»',
-    uri: PHASE,
+    id: PHASE,
     specializes: [
       KIND,
       QUANTITY_KIND,
@@ -107,7 +107,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«category»',
-    uri: CATEGORY,
+    id: CATEGORY,
     specializes: [CATEGORY, MIXIN],
     rigidity: RIGID,
     sortality: NON_SORTAL,
@@ -115,7 +115,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«mixin»',
-    uri: MIXIN,
+    id: MIXIN,
     specializes: [CATEGORY, MIXIN],
     rigidity: SEMI_RIGID,
     sortality: NON_SORTAL,
@@ -123,7 +123,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«roleMixin»',
-    uri: ROLE_MIXIN,
+    id: ROLE_MIXIN,
     specializes: [CATEGORY, MIXIN, ROLE_MIXIN, PHASE_MIXIN],
     rigidity: ANTI_RIGID,
     sortality: NON_SORTAL,
@@ -131,7 +131,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«phaseMixin»',
-    uri: PHASE_MIXIN,
+    id: PHASE_MIXIN,
     specializes: [CATEGORY, MIXIN, PHASE_MIXIN],
     rigidity: ANTI_RIGID,
     sortality: NON_SORTAL,
@@ -139,7 +139,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«relatorKind»',
-    uri: RELATOR_KIND,
+    id: RELATOR_KIND,
     specializes: [CATEGORY, MIXIN],
     rigidity: RIGID,
     sortality: SORTAL,
@@ -147,7 +147,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«modeKind»',
-    uri: MODE_KIND,
+    id: MODE_KIND,
     specializes: [CATEGORY, MIXIN],
     rigidity: RIGID,
     sortality: SORTAL,
@@ -155,7 +155,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«qualityKind»',
-    uri: QUALITY_KIND,
+    id: QUALITY_KIND,
     specializes: [CATEGORY, MIXIN],
     rigidity: RIGID,
     sortality: SORTAL,

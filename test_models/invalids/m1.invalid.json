@@ -1,53 +1,93 @@
 {
-  "@type": "Model",
-  "uri": "https://example.com/model/",
-  "url": "https://example.com/model/",
-  "name": "Something Else",
-  "authors": [
-    "Bob",
-    "Dan"
-  ],
-  "structuralElements": [
+  "type": "Model",
+  "id": "https://example.com/model/1",
+  "url": "https://example.com/model/1",
+  "name": "Invalid model 1",
+  "authors": null,
+  "elements": [
     {
-      "@type": "GeneralizationLink",
-      "uri": "ontouml:model.g1",
-      "tuple": [
-        "ontouml:model.p1.c1",
-        "ontouml:model.c2"
-      ]
+      "type": "Generalization",
+      "id": "ontouml:model.g1",
+      "name": null,
+      "propertyAssignments": null,
+      "general": {
+        "type": "Class",
+        "id": "ontouml:model.p1.c1"
+      },
+      "specific": {
+        "type": "Class",
+        "id": "ontouml:model.c2"
+      }
     },
     {
-      "@type": "GeneralizationLink",
-      "uri": "ontouml:model.g2",
-      "tuple": [
-        "ontouml:model.p1.c1",
-        "ontouml:model.c3"
-      ]
+      "type": "Generalization",
+      "id": "ontouml:model.g2",
+      "name": null,
+      "propertyAssignments": null,
+      "general": {
+        "type": "Class",
+        "id": "ontouml:model.p1.c1"
+      },
+      "specific": {
+        "type": "Class",
+        "id": "ontouml:model.c3"
+      }
     },
     {
-      "@type": "Package",
-      "uri": "ontouml:model.p1",
-      "structuralElements": [
+      "type": "Package",
+      "name": "p1",
+      "id": "ontouml:model.p1",
+      "propertyAssignments": null,
+      "elements": [
         {
-          "@type": "Class",
-          "uri": "ontouml:model.p1.c1"
+          "type": "Class",
+          "name": "c1",
+          "id": "ontouml:model.p1.c1",
+          "stereotypes": null,
+          "properties": null,
+          "propertyAssignments": null,
+          "isAbstract": false,
+          "isDerived": false
         }
       ]
     },
     {
-      "@type": "Class",
-      "uri": "ontouml:model.c2"
+      "type": "Class",
+      "name": "c2",
+      "id": "ontouml:model.c2",
+      "stereotypes": null,
+      "properties": null,
+      "propertyAssignments": null,
+      "isAbstract": false,
+      "isDerived": false
     },
     {
-      "@type": "Class",
-      "uri": "ontouml:model.c3"
+      "type": "Class",
+      "name": "c3",
+      "id": "ontouml:model.c3",
+      "stereotypes": null,
+      "properties": null,
+      "propertyAssignments": null,
+      "isAbstract": false,
+      "isDerived": false
     },
     {
-      "@type": "GeneralizationSet",
-      "uri": "ontouml:gs1",
-      "tuple": [
-        "ontouml:model.g1",
-        "ontouml:model.g2"
+      "type": "GeneralizationSet",
+      "id": "ontouml:gs1",
+      "name": null,
+      "isDisjoint": null,
+      "isComplete": null,
+      "categorizer": null,
+      "propertyAssignments": null,
+      "generalizations": [
+        {
+          "type": "Relation",
+          "id": "ontouml:model.g1"
+        },
+        {
+          "type": "Relation",
+          "id": "ontouml:model.g2"
+        }
       ]
     }
   ]

@@ -8,18 +8,14 @@ class OntoUMLParser {
   private _valid: boolean;
 
   // OntoUMLParserClass
-  getClasses: () => IStructuralElement[];
-  getClass: (classId: string) => IStructuralElement[];
-  getClassParents: (classId: string) => IStructuralElement[];
-  getClassChildren: (classId: string) => IStructuralElement[];
+  getClasses: () => IElement[];
+  getClass: (classId: string) => IElement[];
+  getClassParents: (classId: string) => IElement[];
+  getClassChildren: (classId: string) => IElement[];
 
   // OntoUMLParserGeneralizationLink
-  getGeneralizationLinksFromGeneralClass: (
-    classId: string,
-  ) => IStructuralElement[];
-  getGeneralizationLinksFromSpecificClass: (
-    classId: string,
-  ) => IStructuralElement[];
+  getGeneralizationLinksFromGeneralClass: (classId: string) => IElement[];
+  getGeneralizationLinksFromSpecificClass: (classId: string) => IElement[];
 
   constructor(model: IModel) {
     const ajv = new Ajv();

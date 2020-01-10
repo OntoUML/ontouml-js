@@ -1,24 +1,31 @@
-interface IStructuralElement {
-  '@type': string;
-  uri: string;
+interface IElement {
+  type: string;
+  id: string;
   name?: string;
-  tuple?: string[];
+  general?: {
+    type: string;
+    id: string;
+  };
+  specific?: {
+    type: string;
+    id: string;
+  };
   stereotypes?: string[];
-  structuralElements?: IStructuralElement[];
+  elements?: IElement[];
 }
 
 interface IModel {
-  '@type': string;
-  uri: string;
+  type: string;
+  id: string;
   url?: string;
   name?: string;
   authors?: string[];
-  structuralElements?: IStructuralElement[];
+  elements?: IElement[];
 }
 
 interface IStereotype {
   name: string;
-  uri: string;
+  id: string;
   specializes: string[];
   rigidity: string;
   sortality: string;

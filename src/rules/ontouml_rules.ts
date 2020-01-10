@@ -21,7 +21,7 @@ class OntoUMLRules {
     this._stereotypes = ontoUMLRules[version || '1.0'].STEREOTYPES;
     this._version = version || '1.0';
 
-    this.getStereotypesURI = memoizee(this.getStereotypesURI);
+    this.getStereotypesID = memoizee(this.getStereotypesID);
     this.getSpecializationsConstraints = memoizee(
       this.getSpecializationsConstraints,
     );
@@ -31,13 +31,13 @@ class OntoUMLRules {
     return this._version;
   }
 
-  getStereotypeNameByURI(stereotypeUri: string): string {
+  getStereotypeNameByID(stereotypeId: string): string {
     return this._stereotypes.filter(
-      (stereotype: IStereotype) => stereotype.uri === stereotypeUri,
+      (stereotype: IStereotype) => stereotype.id === stereotypeId,
     )[0].name;
   }
 
-  getStereotypesURI(filters?: IFilter): string[] {
+  getStereotypesID(filters?: IFilter): string[] {
     return this._stereotypes
       .filter((stereotype: IStereotype) => {
         let contains = true;
@@ -50,7 +50,7 @@ class OntoUMLRules {
 
         return contains;
       })
-      .map((stereotype: IStereotype) => stereotype.uri);
+      .map((stereotype: IStereotype) => stereotype.id);
   }
 
   getStereotypesName(filters?: IFilter): string[] {
@@ -76,22 +76,22 @@ class OntoUMLRules {
     for (let i = 0; i < stereotypes.length; i += 1) {
       const stereotype = stereotypes[1];
 
-      specializationsConstraints[stereotype.uri] = stereotype.specializes;
+      specializationsConstraints[stereotype.id] = stereotype.specializes;
     }
 
     return specializationsConstraints;
   }
 
   isValidSpecialization(
-    stereotypeUri: string,
-    parentStereotypeUri: string,
+    stereotypeId: string,
+    parentStereotypeId: string,
   ): boolean {
     const stereotype = this._stereotypes.filter(
-      (stereotype: IStereotype) => stereotype.uri === stereotypeUri,
+      (stereotype: IStereotype) => stereotype.id === stereotypeId,
     )[0];
 
     return stereotype
-      ? stereotype.specializes.includes(parentStereotypeUri)
+      ? stereotype.specializes.includes(parentStereotypeId)
       : false;
   }
 }
