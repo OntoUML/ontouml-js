@@ -6,39 +6,38 @@ class OntoUMLParserRelation extends OntoUMLParserMethod {
     super(model);
   }
 
-  getRelations(): IStructuralElement[] {
-    return this.getStructuralElements().filter(
-      (structuralElement: IStructuralElement) =>
-        structuralElement['@type'] === RELATION_TYPE,
+  getRelations(): IElement[] {
+    return this.getElements().filter(
+      (element: IElement) => element.type === RELATION_TYPE,
     );
   }
 
-  getRelation(relationUri: string): IStructuralElement {
+  getRelation(relationId: string): IElement {
     return this.getRelations().filter(
-      (relationEl: IStructuralElement) => relationEl.uri === relationUri,
+      (relationEl: IElement) => relationEl.id === relationId,
     )[0];
   }
 
-  getRelationSourceClassURI(relationUri: string): string {
-    const relation = this.getRelation(relationUri);
+  getRelationSourceClassID(relationId: string): string {
+    const relation = this.getRelation(relationId);
 
     return relation.properties[0].propertyType;
   }
 
-  getRelationTargetClassURI(relationUri: string): string {
-    const relation = this.getRelation(relationUri);
+  getRelationTargetClassID(relationId: string): string {
+    const relation = this.getRelation(relationId);
 
     return relation.properties[1].propertyType;
   }
 
-  getRelationSourceProperty(relationUri: string): IProperty {
-    const relation = this.getRelation(relationUri);
+  getRelationSourceProperty(relationId: string): IProperty {
+    const relation = this.getRelation(relationId);
 
     return relation.properties[0];
   }
 
-  getRelationTargetProperty(relationUri: string): IProperty {
-    const relation = this.getRelation(relationUri);
+  getRelationTargetProperty(relationId: string): IProperty {
+    const relation = this.getRelation(relationId);
 
     return relation.properties[1];
   }

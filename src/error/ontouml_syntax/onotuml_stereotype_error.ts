@@ -1,17 +1,17 @@
 import OntoUMLError from '@error/ontouml_error';
 
 class OntoUMLStereotypeError extends OntoUMLError {
-  constructor(structuralElement: IStructuralElement) {
-    const { stereotypes, name, uri } = structuralElement;
-    const elementName = name || uri;
+  constructor(element: IElement) {
+    const { stereotypes, name, id } = element;
+    const elementName = name || id;
     let detail = '';
 
     if (!stereotypes || stereotypes.length === 0) {
-      detail = `${structuralElement['@type']} "${elementName}" must contain 1 stereotype.`;
+      detail = `${element.type} "${elementName}" must contain 1 stereotype.`;
     } else if (stereotypes.length === 1) {
-      detail = `The stereotype ${stereotypes[0]} of ${structuralElement['@type']} "${elementName}" is not a valid OntoUML stereotype.`;
+      detail = `The stereotype ${stereotypes[0]} of ${element.type} "${elementName}" is not a valid OntoUML stereotype.`;
     } else {
-      detail = `${structuralElement['@type']} "${elementName}" must contain only 1 stereotype.`;
+      detail = `${element.type} "${elementName}" must contain only 1 stereotype.`;
     }
 
     super({
@@ -22,7 +22,7 @@ class OntoUMLStereotypeError extends OntoUMLError {
         self:
           'https://github.com/OntoUML/ontouml-js/wiki/OntoUML-Syntax-Constraints',
       },
-      meta: { structuralElement },
+      meta: { element },
     });
   }
 }

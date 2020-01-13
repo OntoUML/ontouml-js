@@ -3,20 +3,16 @@ import OntoUMLSyntax from './services/ontouml_syntax';
 
 class OntoUMLModel {
   // OntoUMLParser
-  getClasses: () => IStructuralElement[];
-  getClass: (classId: string) => IStructuralElement[];
-  getClassParents: (classId: string) => IStructuralElement[];
-  getClassChildren: (classId: string) => IStructuralElement[];
-  getGeneralizationLinksFromGeneralClass: (
-    classId: string,
-  ) => IStructuralElement[];
-  getGeneralizationLinksFromSpecificClass: (
-    classId: string,
-  ) => IStructuralElement[];
-  getRelations: () => IStructuralElement[];
-  getRelation: (relationUri: string) => IStructuralElement;
-  getRelationSourceClassURI: (relationUri: string) => string;
-  getRelationTargetClassURI: (relationUri: string) => string;
+  getClasses: () => IElement[];
+  getClass: (classId: string) => IElement[];
+  getClassParents: (classId: string) => IElement[];
+  getClassChildren: (classId: string) => IElement[];
+  getGeneralizationLinksFromGeneralClass: (classId: string) => IElement[];
+  getGeneralizationLinksFromSpecificClass: (classId: string) => IElement[];
+  getRelations: () => IElement[];
+  getRelation: (relationUri: string) => IElement;
+  getRelationSourceClassID: (relationUri: string) => string;
+  getRelationTargetClassID: (relationUri: string) => string;
   getRelationSourceProperty: (relationUri: string) => IProperty;
   getRelationTargetProperty: (relationUri: string) => IProperty;
   getVersion: () => string;
@@ -34,7 +30,7 @@ class OntoUMLModel {
         {
           service: parser,
           serviceClass: OntoUMLParser,
-          ignoreMethods: ['getStructuralElements'],
+          ignoreMethods: ['getElements'],
         },
         {
           service: syntax,

@@ -28,14 +28,14 @@ class OntoUMLSyntaxRelations {
     return this._errors;
   }
 
-  async verifyRelationStereotypes(structuralElements: IStructuralElement[]) {
-    const stereotypes = this._rules.getRelationStereotypesURI();
+  async verifyRelationStereotypes(elements: IElement[]) {
+    const stereotypes = this._rules.getRelationStereotypesID();
 
-    const invalidElements = structuralElements.filter(
-      (structuralElement: IStructuralElement) =>
-        !structuralElement.stereotypes ||
-        !stereotypes.includes(structuralElement.stereotypes[0]) ||
-        structuralElement.stereotypes.length !== 1,
+    const invalidElements = elements.filter(
+      (element: IElement) =>
+        !element.stereotypes ||
+        !stereotypes.includes(element.stereotypes[0]) ||
+        element.stereotypes.length !== 1,
     );
     const hasInvalidElements = invalidElements.length > 0;
 
@@ -48,7 +48,7 @@ class OntoUMLSyntaxRelations {
     return true;
   }
 
-  async verifyRelations(relations: IStructuralElement[]) {
+  async verifyRelations(relations: IElement[]) {
     const promises = [];
 
     for (let i = 0; i < relations.length; i += 1) {
@@ -62,38 +62,38 @@ class OntoUMLSyntaxRelations {
     return true;
   }
 
-  async verifyRelationConnections(relation: IStructuralElement) {
+  async verifyRelationConnections(relation: IElement) {
     try {
-      const sourceUri = this._parser.getRelationSourceClassURI(relation.uri);
+      const sourceId = this._parser.getRelationSourceClassID(relation.id);
       const source =
-        this._parser.getClass(sourceUri) || this._parser.getRelation(sourceUri);
-      const sourceStereotypeUri = source.stereotypes[0];
-      const targetUri = this._parser.getRelationTargetClassURI(relation.uri);
+        this._parser.getClass(sourceId) || this._parser.getRelation(sourceId);
+      const sourceStereotypeId = source.stereotypes[0];
+      const targetId = this._parser.getRelationTargetClassID(relation.id);
       const target =
-        this._parser.getClass(targetUri) || this._parser.getRelation(targetUri);
-      const targetStereotypeUri = target.stereotypes[0];
+        this._parser.getClass(targetId) || this._parser.getRelation(targetId);
+      const targetStereotypeId = target.stereotypes[0];
 
       const isValidRelation = this._rules.isValidRelation(
-        sourceStereotypeUri,
-        targetStereotypeUri,
+        sourceStereotypeId,
+        targetStereotypeId,
         relation.stereotypes[0],
       );
 
       if (isValidRelation) {
         await this.verifyRelationCardinalities(relation);
       } else {
-        const relationName = this._rules.getRelationNameByURI(
+        const relationName = this._rules.getRelationNameByID(
           relation.stereotypes[0],
         );
-        const sourceName = source.name || source.uri;
-        const sourceStereotypeName = this._rules.getStereotypeNameByURI(
-          sourceStereotypeUri,
+        const sourceName = source.name || source.id;
+        const sourceStereotypeName = this._rules.getStereotypeNameByID(
+          sourceStereotypeId,
         );
-        const targetName = target.name || target.uri;
+        const targetName = target.name || target.id;
         const targetStereotypeName =
           target['@type'] === CLASS_TYPE
-            ? this._rules.getStereotypeNameByURI(targetStereotypeUri)
-            : this._rules.getRelationNameByURI(targetStereotypeUri);
+            ? this._rules.getStereotypeNameByID(targetStereotypeId)
+            : this._rules.getRelationNameByID(targetStereotypeId);
 
         let errorDetail = `${target['@type']} ${source['@type']} "${sourceName}" of stereotype ${sourceStereotypeName} cannot have a ${relationName} relation with ${target['@type']} "${targetName}" of stereotype ${targetStereotypeName}`;
 
@@ -115,17 +115,17 @@ class OntoUMLSyntaxRelations {
     return true;
   }
 
-  async verifyRelationCardinalities(relation: IStructuralElement) {
-    const sourceProperty = this._parser.getRelationSourceProperty(relation.uri);
+  async verifyRelationCardinalities(relation: IElement) {
+    const sourceProperty = this._parser.getRelationSourceProperty(relation.id);
     const source =
       this._parser.getClass(sourceProperty.propertyType) ||
       this._parser.getRelation(sourceProperty.propertyType);
-    const sourceName = source.name || source.uri;
-    const targetProperty = this._parser.getRelationTargetProperty(relation.uri);
+    const sourceName = source.name || source.id;
+    const targetProperty = this._parser.getRelationTargetProperty(relation.id);
     const target =
       this._parser.getClass(targetProperty.propertyType) ||
       this._parser.getRelation(targetProperty.propertyType);
-    const targetName = target.name || target.uri;
+    const targetName = target.name || target.id;
     const relationStereotype = this._rules.getRelationStereotype(
       relation.stereotypes[0],
     );

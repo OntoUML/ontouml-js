@@ -10,11 +10,14 @@ describe('OntoUML Parser', () => {
     it('Should return an invalid model', async () => {
       try {
         new OntoUMLParser({
-          '@type': 'Model',
-          uri: 'invalid.model',
+          type: 'Model',
+          id: 'invalid.model',
+          name: null,
+          authors: null,
+          elements: null,
         });
       } catch (error) {
-        expect(error.detail).toBe('data.uri should match format "uri"');
+        expect(error.detail).toBe('data.id should match format "uri"');
       }
     });
   });
@@ -37,9 +40,7 @@ describe('OntoUML Parser', () => {
     it('Should get 2 childs from the class "ontouml:model.p1.c1" with type "Class"', async () => {
       const classes = parser
         .getClassChildren('ontouml:model.p1.c1')
-        .filter(
-          (classEl: IStructuralElement) => classEl['@type'] === CLASS_TYPE,
-        );
+        .filter((classEl: IElement) => classEl.type === CLASS_TYPE);
       expect(classes.length).toBe(2);
     });
 
@@ -82,7 +83,7 @@ describe('OntoUML Parser', () => {
     });
 
     it('Should get "model:#/property/Person" as source of relation "model:#/relation/PersonMachine"', async () => {
-      const sourceUri = parser.getRelationSourceClassURI(
+      const sourceUri = parser.getRelationSourceClassID(
         'model:#/relation/PersonMachine',
       );
 
@@ -90,7 +91,7 @@ describe('OntoUML Parser', () => {
     });
 
     it('Should get "model:#/property/Machine" as target of relation "model:#/relation/PersonMachine"', async () => {
-      const sourceUri = parser.getRelationTargetClassURI(
+      const sourceUri = parser.getRelationTargetClassID(
         'model:#/relation/PersonMachine',
       );
 

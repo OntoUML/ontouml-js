@@ -35,7 +35,7 @@ const DERIVATION: 'ontouml/1.0/derivation' = 'ontouml/1.0/derivation';
 export const RELATIONS: IRelation[] = [
   {
     name: '«material»',
-    uri: MATERIAL,
+    id: MATERIAL,
     source: {
       lowerbound: 1,
       upperbound: '*',
@@ -47,7 +47,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«mediation»',
-    uri: MEDIATION,
+    id: MEDIATION,
     source: {
       lowerbound: 1,
       upperbound: '*',
@@ -59,7 +59,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«componentOf»',
-    uri: COMPONENT_OF,
+    id: COMPONENT_OF,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -71,7 +71,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«subquantityOf»',
-    uri: SUBQUANTITY_OF,
+    id: SUBQUANTITY_OF,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -83,7 +83,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«characterization»',
-    uri: CHARACTERIZATION,
+    id: CHARACTERIZATION,
     source: {
       lowerbound: 1,
       upperbound: '*',
@@ -95,7 +95,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«formal»',
-    uri: FORMAL,
+    id: FORMAL,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -107,7 +107,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«memberOf»',
-    uri: MEMBER_OF,
+    id: MEMBER_OF,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -119,7 +119,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«subcollectionOf»',
-    uri: SUBCOLLECTION_OF,
+    id: SUBCOLLECTION_OF,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -131,7 +131,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«derivation»',
-    uri: DERIVATION,
+    id: DERIVATION,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -146,7 +146,7 @@ export const RELATIONS: IRelation[] = [
 export const STEREOTYPES: IStereotype[] = [
   {
     name: '«kind»',
-    uri: KIND,
+    id: KIND,
     specializes: [CATEGORY, MIXIN],
     relations: {
       [KIND]: [COMPONENT_OF, FORMAL, MATERIAL],
@@ -168,7 +168,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«subkind»',
-    uri: SUBKIND,
+    id: SUBKIND,
     specializes: [KIND, QUANTITY, COLLECTIVE, SUBKIND, CATEGORY, MIXIN],
     relations: {
       [KIND]: [COMPONENT_OF, FORMAL, MATERIAL],
@@ -190,7 +190,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«relator»',
-    uri: RELATOR,
+    id: RELATOR,
     specializes: [RELATOR],
     relations: {
       [KIND]: [MEDIATION, FORMAL, MATERIAL],
@@ -222,7 +222,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«mode»',
-    uri: MODE,
+    id: MODE,
     specializes: [MODE],
     relations: {
       [KIND]: [FORMAL, CHARACTERIZATION, MATERIAL],
@@ -244,7 +244,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«quality»',
-    uri: QUALITY,
+    id: QUALITY,
     specializes: [QUALITY],
     relations: {
       [KIND]: [FORMAL, CHARACTERIZATION, MATERIAL],
@@ -266,7 +266,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«quantity»',
-    uri: QUANTITY,
+    id: QUANTITY,
     specializes: [QUANTITY],
     relations: {
       [KIND]: [FORMAL, MATERIAL],
@@ -288,7 +288,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«collective»',
-    uri: COLLECTIVE,
+    id: COLLECTIVE,
     specializes: [CATEGORY, MIXIN],
     relations: {
       [KIND]: [MEMBER_OF, FORMAL, MATERIAL],
@@ -310,7 +310,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«category»',
-    uri: CATEGORY,
+    id: CATEGORY,
     specializes: [CATEGORY, MIXIN],
     relations: {
       [KIND]: [COMPONENT_OF, FORMAL, MATERIAL],
@@ -332,7 +332,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«mixin»',
-    uri: MIXIN,
+    id: MIXIN,
     specializes: [CATEGORY, MIXIN],
     relations: {
       [KIND]: [COMPONENT_OF, FORMAL, MATERIAL],
@@ -354,7 +354,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«roleMixin»',
-    uri: ROLE_MIXIN,
+    id: ROLE_MIXIN,
     specializes: [CATEGORY, MIXIN, ROLE_MIXIN],
     relations: {
       [KIND]: [COMPONENT_OF, FORMAL, MATERIAL],
@@ -376,7 +376,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«role»',
-    uri: ROLE,
+    id: ROLE,
     specializes: [
       KIND,
       QUANTITY,
@@ -408,7 +408,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«phase»',
-    uri: PHASE,
+    id: PHASE,
     specializes: [
       KIND,
       QUANTITY,

@@ -23,7 +23,7 @@ class OntoUMLRules {
     this._relations = ontoUMLRules[version || '1.0'].RELATIONS;
     this._version = version || '1.0';
 
-    this.getStereotypesURI = memoizee(this.getStereotypesURI);
+    this.getStereotypesID = memoizee(this.getStereotypesID);
     this.getSpecializationsConstraints = memoizee(
       this.getSpecializationsConstraints,
     );
@@ -33,19 +33,19 @@ class OntoUMLRules {
     return this._version;
   }
 
-  getStereotype(stereotypeUri: string): IStereotype {
+  getStereotype(stereotypeId: string): IStereotype {
     return this._stereotypes.filter(
-      (stereotype: IStereotype) => stereotype.uri === stereotypeUri,
+      (stereotype: IStereotype) => stereotype.id === stereotypeId,
     )[0];
   }
 
-  getStereotypeNameByURI(stereotypeUri: string): string {
+  getStereotypeNameByID(stereotypeId: string): string {
     return this._stereotypes.filter(
-      (stereotype: IStereotype) => stereotype.uri === stereotypeUri,
+      (stereotype: IStereotype) => stereotype.id === stereotypeId,
     )[0].name;
   }
 
-  getStereotypesURI(filters?: IFilter): string[] {
+  getStereotypesID(filters?: IFilter): string[] {
     return this._stereotypes
       .filter((stereotype: IStereotype) => {
         let contains = true;
@@ -58,7 +58,7 @@ class OntoUMLRules {
 
         return contains;
       })
-      .map((stereotype: IStereotype) => stereotype.uri);
+      .map((stereotype: IStereotype) => stereotype.id);
   }
 
   getStereotypesName(filters?: IFilter): string[] {
@@ -84,38 +84,38 @@ class OntoUMLRules {
     for (let i = 0; i < stereotypes.length; i += 1) {
       const stereotype = stereotypes[1];
 
-      specializationsConstraints[stereotype.uri] = stereotype.specializes;
+      specializationsConstraints[stereotype.id] = stereotype.specializes;
     }
 
     return specializationsConstraints;
   }
 
   isValidSpecialization(
-    stereotypeUri: string,
-    parentStereotypeUri: string,
+    stereotypeId: string,
+    parentStereotypeId: string,
   ): boolean {
     const stereotype = this._stereotypes.filter(
-      (stereotype: IStereotype) => stereotype.uri === stereotypeUri,
+      (stereotype: IStereotype) => stereotype.id === stereotypeId,
     )[0];
 
     return stereotype
-      ? stereotype.specializes.includes(parentStereotypeUri)
+      ? stereotype.specializes.includes(parentStereotypeId)
       : false;
   }
 
-  getRelationStereotype(relationStereotypeUri: string): IRelation {
+  getRelationStereotype(relationStereotypeId: string): IRelation {
     return this._relations.filter(
-      (releation: IRelation) => relationStereotypeUri === releation.uri,
+      (releation: IRelation) => relationStereotypeId === releation.id,
     )[0];
   }
 
-  getRelationStereotypesURI(): string[] {
-    return this._relations.map((releation: IRelation) => releation.uri);
+  getRelationStereotypesID(): string[] {
+    return this._relations.map((releation: IRelation) => releation.id);
   }
 
-  getRelationNameByURI(relationUri: string): string {
+  getRelationNameByID(relationId: string): string {
     return this._relations.filter(
-      (relation: IRelation) => relation.uri === relationUri,
+      (relation: IRelation) => relation.id === relationId,
     )[0].name;
   }
 
@@ -131,23 +131,23 @@ class OntoUMLRules {
     return value;
   }
 
-  isDerivationRelation(relationUri: string): boolean {
-    const derivationUri = this._relations.filter(
+  isDerivationRelation(relationId: string): boolean {
+    const derivationId = this._relations.filter(
       ({ name }: IRelation) => name === '«derivation»',
-    )[0].uri;
+    )[0].id;
 
-    return derivationUri === relationUri;
+    return derivationId === relationId;
   }
 
   isValidRelation(
-    sourceStereotypeUri: string,
-    targetStereotypeUri: string,
-    relationStereotypeUri: string,
+    sourceStereotypeId: string,
+    targetStereotypeId: string,
+    relationStereotypeId: string,
   ): boolean {
-    const sourceStereotype = this.getStereotype(sourceStereotypeUri);
+    const sourceStereotype = this.getStereotype(sourceStereotypeId);
 
-    return sourceStereotype.relations[targetStereotypeUri].includes(
-      relationStereotypeUri,
+    return sourceStereotype.relations[targetStereotypeId].includes(
+      relationStereotypeId,
     );
   }
 }

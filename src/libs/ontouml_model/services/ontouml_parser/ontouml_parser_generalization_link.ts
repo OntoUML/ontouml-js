@@ -1,5 +1,5 @@
 import OntoUMLParserMethod from './ontouml_parser_method';
-import { GENERALIZATION_LINK_TYPE } from '@constants/model_types';
+import { GENERALIZATION_TYPE } from '@constants/model_types';
 
 class OntoUMLParserGeneralizationLink extends OntoUMLParserMethod {
   constructor(model: IModel) {
@@ -8,30 +8,22 @@ class OntoUMLParserGeneralizationLink extends OntoUMLParserMethod {
 
   private getClassGeneralizationLinks(
     classId: string,
-    index: number,
-  ): IStructuralElement[] {
-    return this.getStructuralElements()
+    key: 'general' | 'specific',
+  ): IElement[] {
+    return this.getElements()
+      .filter((element: IElement) => element.type === GENERALIZATION_TYPE)
       .filter(
-        (structuralElement: IStructuralElement) =>
-          structuralElement['@type'] === GENERALIZATION_LINK_TYPE,
-      )
-      .filter(
-        (generalizationLinks: IStructuralElement) =>
-          generalizationLinks.tuple &&
-          generalizationLinks.tuple[index] === classId,
+        (generalizationLinks: IElement) =>
+          generalizationLinks[key] && generalizationLinks[key].id === classId,
       );
   }
 
-  getGeneralizationLinksFromGeneralClass(
-    classId: string,
-  ): IStructuralElement[] {
-    return this.getClassGeneralizationLinks(classId, 0);
+  getGeneralizationLinksFromGeneralClass(classId: string): IElement[] {
+    return this.getClassGeneralizationLinks(classId, 'general');
   }
 
-  getGeneralizationLinksFromSpecificClass(
-    classId: string,
-  ): IStructuralElement[] {
-    return this.getClassGeneralizationLinks(classId, 1);
+  getGeneralizationLinksFromSpecificClass(classId: string): IElement[] {
+    return this.getClassGeneralizationLinks(classId, 'specific');
   }
 }
 

@@ -56,7 +56,7 @@ const ALL_RELATIONS = [
 export const RELATIONS: IRelation[] = [
   {
     name: '«material»',
-    uri: MATERIAL,
+    id: MATERIAL,
     source: {
       lowerbound: 1,
       upperbound: '*',
@@ -68,7 +68,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«mediation»',
-    uri: MEDIATION,
+    id: MEDIATION,
     source: {
       lowerbound: 1,
       upperbound: '*',
@@ -80,7 +80,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«characterization»',
-    uri: CHARACTERIZATION,
+    id: CHARACTERIZATION,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -92,7 +92,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«comparative»',
-    uri: COMPARATIVE,
+    id: COMPARATIVE,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -104,7 +104,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«historical»',
-    uri: HISTORICAL,
+    id: HISTORICAL,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -116,7 +116,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«externalDependence»',
-    uri: EXTERNAL_DEPENDENCE,
+    id: EXTERNAL_DEPENDENCE,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -128,7 +128,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«derivation»',
-    uri: DERIVATION,
+    id: DERIVATION,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -140,7 +140,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«sum»',
-    uri: SUM,
+    id: SUM,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -152,7 +152,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«componentOf»',
-    uri: COMPONENT_OF,
+    id: COMPONENT_OF,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -164,7 +164,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«subquantityOf»',
-    uri: SUBQUANTITY_OF,
+    id: SUBQUANTITY_OF,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -176,7 +176,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«memberOf»',
-    uri: MEMBER_OF,
+    id: MEMBER_OF,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -188,7 +188,7 @@ export const RELATIONS: IRelation[] = [
   },
   {
     name: '«subcollectionOf»',
-    uri: SUBCOLLECTION_OF,
+    id: SUBCOLLECTION_OF,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -203,7 +203,7 @@ export const RELATIONS: IRelation[] = [
 export const STEREOTYPES: IStereotype[] = [
   {
     name: '«kind»',
-    uri: KIND,
+    id: KIND,
     specializes: [CATEGORY, MIXIN],
     relations: {
       [KIND]: [COMPONENT_OF],
@@ -226,7 +226,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«quantityKind»',
-    uri: QUANTITY_KIND,
+    id: QUANTITY_KIND,
     specializes: [CATEGORY, MIXIN],
     relations: {
       [KIND]: [MATERIAL, COMPARATIVE, HISTORICAL],
@@ -249,7 +249,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«collectiveKind»',
-    uri: COLLECTIVE_KIND,
+    id: COLLECTIVE_KIND,
     specializes: [CATEGORY, MIXIN],
     relations: {
       [KIND]: [MATERIAL, COMPARATIVE, HISTORICAL],
@@ -272,7 +272,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«subkind»',
-    uri: SUBKIND,
+    id: SUBKIND,
     specializes: [
       KIND,
       QUANTITY_KIND,
@@ -305,7 +305,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«role»',
-    uri: ROLE,
+    id: ROLE,
     specializes: [
       KIND,
       QUANTITY_KIND,
@@ -341,7 +341,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«phase»',
-    uri: PHASE,
+    id: PHASE,
     specializes: [
       KIND,
       QUANTITY_KIND,
@@ -375,7 +375,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«category»',
-    uri: CATEGORY,
+    id: CATEGORY,
     specializes: [CATEGORY, MIXIN],
     relations: {
       [KIND]: ALL_RELATIONS,
@@ -398,7 +398,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«mixin»',
-    uri: MIXIN,
+    id: MIXIN,
     specializes: [CATEGORY, MIXIN],
     relations: {
       [KIND]: ALL_RELATIONS,
@@ -421,7 +421,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«roleMixin»',
-    uri: ROLE_MIXIN,
+    id: ROLE_MIXIN,
     specializes: [CATEGORY, MIXIN, ROLE_MIXIN, PHASE_MIXIN],
     relations: {
       [KIND]: ALL_RELATIONS,
@@ -444,7 +444,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«phaseMixin»',
-    uri: PHASE_MIXIN,
+    id: PHASE_MIXIN,
     specializes: [CATEGORY, MIXIN, PHASE_MIXIN],
     relations: {
       [KIND]: ALL_RELATIONS,
@@ -467,7 +467,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«relatorKind»',
-    uri: RELATOR_KIND,
+    id: RELATOR_KIND,
     specializes: [CATEGORY, MIXIN],
     relations: {
       [KIND]: [MEDIATION],
@@ -490,7 +490,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«modeKind»',
-    uri: MODE_KIND,
+    id: MODE_KIND,
     specializes: [CATEGORY, MIXIN],
     relations: {
       [KIND]: [CHARACTERIZATION, EXTERNAL_DEPENDENCE],
@@ -513,7 +513,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«qualityKind»',
-    uri: QUALITY_KIND,
+    id: QUALITY_KIND,
     specializes: [CATEGORY, MIXIN],
     relations: {
       [KIND]: [CHARACTERIZATION],

@@ -9,26 +9,22 @@ class OntoUMLParser {
   private _valid: boolean;
 
   // OntoUMLParserClass
-  getClasses: () => IStructuralElement[];
-  getClass: (classId: string) => IStructuralElement;
-  getClassParents: (classId: string) => IStructuralElement[];
-  getClassChildren: (classId: string) => IStructuralElement[];
+  getClasses: () => IElement[];
+  getClass: (classId: string) => IElement;
+  getClassParents: (classId: string) => IElement[];
+  getClassChildren: (classId: string) => IElement[];
 
   // OntoUMLParserGeneralizationLink
-  getGeneralizationLinksFromGeneralClass: (
-    classId: string,
-  ) => IStructuralElement[];
-  getGeneralizationLinksFromSpecificClass: (
-    classId: string,
-  ) => IStructuralElement[];
+  getGeneralizationLinksFromGeneralClass: (classId: string) => IElement[];
+  getGeneralizationLinksFromSpecificClass: (classId: string) => IElement[];
 
   // OntoUMLParserRelation
-  getRelations: () => IStructuralElement[];
-  getRelation: (relationUri: string) => IStructuralElement;
-  getRelationSourceClassURI: (relationUri: string) => string;
-  getRelationTargetClassURI: (relationUri: string) => string;
-  getRelationSourceProperty: (relationUri: string) => IProperty;
-  getRelationTargetProperty: (relationUri: string) => IProperty;
+  getRelations: () => IElement[];
+  getRelation: (relationId: string) => IElement;
+  getRelationSourceClassID: (relationId: string) => string;
+  getRelationTargetClassID: (relationId: string) => string;
+  getRelationSourceProperty: (relationId: string) => IProperty;
+  getRelationTargetProperty: (relationId: string) => IProperty;
 
   constructor(model: IModel) {
     const ajv = new Ajv();
@@ -86,9 +82,8 @@ class OntoUMLParser {
       classes && classes[0] && classes[0].stereotypes
         ? classes[0].stereotypes[0]
         : '';
-    const version = stereotype && stereotype.includes('1.0') ? '1.0' : '2.0';
 
-    return version;
+    return stereotype && stereotype.includes('1.0') ? '1.0' : '2.0';
   }
 
   isValid(): boolean {
