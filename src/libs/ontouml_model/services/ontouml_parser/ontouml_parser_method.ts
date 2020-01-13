@@ -7,19 +7,16 @@ class OntoUMLParserMethod {
   constructor(model: IModel) {
     this._model = model;
 
-    this.getStructuralElements = memoizee(this.getStructuralElements);
+    this.getElements = memoizee(this.getElements);
   }
 
-  getStructuralElements(packageElement?: IStructuralElement) {
+  getElements(packageElement?: IElement) {
     const current = packageElement || this._model;
-    let elements: IStructuralElement[] = current.structuralElements || [];
+    let elements: IElement[] = current.elements || [];
 
-    elements.forEach((structuralElement: IStructuralElement) => {
-      if (structuralElement['@type'] === PACKAGE_TYPE) {
-        elements = [
-          ...elements,
-          ...this.getStructuralElements(structuralElement),
-        ];
+    elements.forEach((element: IElement) => {
+      if (element.type === PACKAGE_TYPE) {
+        elements = [...elements, ...this.getElements(element)];
       }
     });
 

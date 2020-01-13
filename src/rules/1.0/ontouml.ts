@@ -23,7 +23,7 @@ const ROLE_MIXIN: 'ontouml/1.0/roleMixin' = 'ontouml/1.0/roleMixin';
 export const STEREOTYPES: IStereotype[] = [
   {
     name: '«kind»',
-    uri: KIND,
+    id: KIND,
     specializes: [CATEGORY, MIXIN],
     rigidity: RIGID,
     sortality: SORTAL,
@@ -31,7 +31,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«subkind»',
-    uri: SUBKIND,
+    id: SUBKIND,
     specializes: [KIND, QUANTITY, COLLECTIVE, SUBKIND, CATEGORY, MIXIN],
     rigidity: RIGID,
     sortality: SORTAL,
@@ -39,7 +39,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«relator»',
-    uri: RELATOR,
+    id: RELATOR,
     specializes: [RELATOR],
     rigidity: RIGID,
     sortality: SORTAL,
@@ -47,7 +47,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«mode»',
-    uri: MODE,
+    id: MODE,
     specializes: [MODE],
     rigidity: RIGID,
     sortality: NON_SORTAL,
@@ -55,7 +55,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«quality»',
-    uri: QUALITY,
+    id: QUALITY,
     specializes: [QUALITY],
     rigidity: RIGID,
     sortality: NON_SORTAL,
@@ -63,7 +63,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«quantity»',
-    uri: QUANTITY,
+    id: QUANTITY,
     specializes: [QUANTITY],
     rigidity: RIGID,
     sortality: SORTAL,
@@ -71,7 +71,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«collective»',
-    uri: COLLECTIVE,
+    id: COLLECTIVE,
     specializes: [CATEGORY, MIXIN],
     rigidity: RIGID,
     sortality: SORTAL,
@@ -79,7 +79,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«category»',
-    uri: CATEGORY,
+    id: CATEGORY,
     specializes: [CATEGORY, MIXIN],
     rigidity: RIGID,
     sortality: NON_SORTAL,
@@ -87,7 +87,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«mixin»',
-    uri: MIXIN,
+    id: MIXIN,
     specializes: [CATEGORY, MIXIN],
     rigidity: SEMI_RIGID,
     sortality: NON_SORTAL,
@@ -95,7 +95,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«roleMixin»',
-    uri: ROLE_MIXIN,
+    id: ROLE_MIXIN,
     specializes: [CATEGORY, MIXIN, ROLE_MIXIN],
     rigidity: ANTI_RIGID,
     sortality: NON_SORTAL,
@@ -103,7 +103,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«role»',
-    uri: ROLE,
+    id: ROLE,
     specializes: [
       KIND,
       QUANTITY,
@@ -121,7 +121,7 @@ export const STEREOTYPES: IStereotype[] = [
   },
   {
     name: '«phase»',
-    uri: PHASE,
+    id: PHASE,
     specializes: [
       KIND,
       QUANTITY,

@@ -11,42 +11,41 @@ class OntoUMLParserClass extends OntoUMLParserMethod {
     this._generalizationLinkParser = new OntoUMLParserGeneralizationLink(model);
   }
 
-  getClasses(): IStructuralElement[] {
-    return this.getStructuralElements().filter(
-      (structuralElement: IStructuralElement) =>
-        structuralElement['@type'] === CLASS_TYPE,
+  getClasses(): IElement[] {
+    return this.getElements().filter(
+      (element: IElement) => element.type === CLASS_TYPE,
     );
   }
 
-  getClass(classId: string): IStructuralElement {
+  getClass(classId: string): IElement {
     return this.getClasses().filter(
-      (classEl: IStructuralElement) => classEl.uri === classId,
+      (classEl: IElement) => classEl.id === classId,
     )[0];
   }
 
-  getClassParents(classId: string): IStructuralElement[] {
+  getClassParents(classId: string): IElement[] {
     const generalizationLinks = this._generalizationLinkParser.getGeneralizationLinksFromSpecificClass(
       classId,
     );
     const generalClassIds = generalizationLinks.map(
-      (generalizationLink: IStructuralElement) => generalizationLink.tuple[0],
+      (generalizationLink: IElement) => generalizationLink.general.id,
     );
 
-    return this.getClasses().filter((classEl: IStructuralElement) =>
-      generalClassIds.includes(classEl.uri),
+    return this.getClasses().filter((classEl: IElement) =>
+      generalClassIds.includes(classEl.id),
     );
   }
 
-  getClassChildren(classId: string): IStructuralElement[] {
+  getClassChildren(classId: string): IElement[] {
     const generalizationLinks = this._generalizationLinkParser.getGeneralizationLinksFromGeneralClass(
       classId,
     );
     const generalClassIds = generalizationLinks.map(
-      (generalizationLink: IStructuralElement) => generalizationLink.tuple[1],
+      (generalizationLink: IElement) => generalizationLink.specific.id,
     );
 
-    return this.getClasses().filter((classEl: IStructuralElement) =>
-      generalClassIds.includes(classEl.uri),
+    return this.getClasses().filter((classEl: IElement) =>
+      generalClassIds.includes(classEl.id),
     );
   }
 }

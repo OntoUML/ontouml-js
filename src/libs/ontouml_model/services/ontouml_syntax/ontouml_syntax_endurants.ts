@@ -12,7 +12,7 @@ class OntoUMLSyntaxEndurants {
   private _errors: IOntoUMLError[];
 
   constructor(parser: OntoUMLParser) {
-    this._rules = new OntoUMLRules('1.0');
+    this._rules = new OntoUMLRules(parser.getVersion());
     this._parser = parser;
     this._errors = [];
   }
@@ -28,14 +28,14 @@ class OntoUMLSyntaxEndurants {
     return this._errors;
   }
 
-  async verifyStereotypes(structuralElements: IStructuralElement[]) {
-    const stereotypes = this._rules.getStereotypesURI();
+  async verifyStereotypes(elements: IElement[]) {
+    const stereotypes = this._rules.getStereotypesID();
 
-    const invalidElements = structuralElements.filter(
-      (structuralElement: IStructuralElement) =>
-        !structuralElement.stereotypes ||
-        !stereotypes.includes(structuralElement.stereotypes[0]) ||
-        structuralElement.stereotypes.length !== 1,
+    const invalidElements = elements.filter(
+      (element: IElement) =>
+        !element.stereotypes ||
+        !stereotypes.includes(element.stereotypes[0]) ||
+        element.stereotypes.length !== 1,
     );
     const hasInvalidElements = invalidElements.length > 0;
 
@@ -48,13 +48,13 @@ class OntoUMLSyntaxEndurants {
     return true;
   }
 
-  async verifyClasses(classes: IStructuralElement[]) {
-    const sortalStereotypesURI = this._rules.getStereotypesURI({
+  async verifyClasses(classes: IElement[]) {
+    const sortalStereotypesID = this._rules.getStereotypesID({
       sortality: SORTAL,
       ultimateSortal: false,
     });
 
-    const nonSortalStereotypesURI = this._rules.getStereotypesURI({
+    const nonSortalStereotypesID = this._rules.getStereotypesID({
       sortality: NON_SORTAL,
     });
 
@@ -65,11 +65,11 @@ class OntoUMLSyntaxEndurants {
 
         await this.verifySpecializations(classElement);
 
-        if (nonSortalStereotypesURI.includes(stereotype)) {
+        if (nonSortalStereotypesID.includes(stereotype)) {
           await this.verifyNonSortalSpecializations(classElement);
         }
 
-        if (sortalStereotypesURI.includes(stereotype)) {
+        if (sortalStereotypesID.includes(stereotype)) {
           await this.verifySortalitySpecializations(classElement);
         }
       }
@@ -80,9 +80,9 @@ class OntoUMLSyntaxEndurants {
     return true;
   }
 
-  async verifySpecializations(classElement: IStructuralElement) {
-    const { stereotypes, uri } = classElement;
-    const parents = this._parser.getClassParents(uri);
+  async verifySpecializations(classElement: IElement) {
+    const { stereotypes, id } = classElement;
+    const parents = this._parser.getClassParents(id);
     const stereotype = stereotypes[0];
 
     for (let i = 0; i < parents.length; i += 1) {
@@ -94,12 +94,12 @@ class OntoUMLSyntaxEndurants {
       );
 
       if (!hasValidSpecialization) {
-        const elementName = classElement.name || classElement.uri;
-        const parentName = parentElement.name || parentElement.uri;
-        const elementStereotypeName = this._rules.getStereotypeNameByURI(
+        const elementName = classElement.name || classElement.id;
+        const parentName = parentElement.name || parentElement.id;
+        const elementStereotypeName = this._rules.getStereotypeNameByID(
           classElement.stereotypes[0],
         );
-        const parentStereotypeName = this._rules.getStereotypeNameByURI(
+        const parentStereotypeName = this._rules.getStereotypeNameByID(
           parentElement.stereotypes[0],
         );
 
@@ -107,7 +107,7 @@ class OntoUMLSyntaxEndurants {
 
         this._errors.push(
           new OntoUMLSpecializationError(errorDetail, {
-            structuralElement: classElement,
+            element: classElement,
             parentElement,
           }),
         );
@@ -118,11 +118,11 @@ class OntoUMLSyntaxEndurants {
   }
 
   // Given a non-sortal N, there must be a sortal S that specializes N, or specializes a non-sortal supertype common to both N and S.
-  async verifyNonSortalSpecializations(classElement: IStructuralElement) {
+  async verifyNonSortalSpecializations(classElement: IElement) {
     const sortalElements = this.getSortalElements(classElement, []);
     const hasNoSortal = sortalElements.length === 0;
-    const elementName = classElement.name || classElement.uri;
-    const elementStereotypeName = this._rules.getStereotypeNameByURI(
+    const elementName = classElement.name || classElement.id;
+    const elementStereotypeName = this._rules.getStereotypeNameByID(
       classElement.stereotypes[0],
     );
 
@@ -132,7 +132,7 @@ class OntoUMLSyntaxEndurants {
 
       this._errors.push(
         new OntoUMLSpecializationError(errorDetail, {
-          structuralElement: classElement,
+          element: classElement,
         }),
       );
     }
@@ -141,19 +141,19 @@ class OntoUMLSyntaxEndurants {
   }
 
   getSortalElements(
-    classElement: IStructuralElement,
-    sortalElements: IStructuralElement[],
-  ): IStructuralElement[] {
-    const sortalStereotypesURI = this._rules.getStereotypesURI({
+    classElement: IElement,
+    sortalElements: IElement[],
+  ): IElement[] {
+    const sortalStereotypesID = this._rules.getStereotypesID({
       sortality: SORTAL,
     });
-    const children = this._parser.getClassChildren(classElement.uri);
+    const children = this._parser.getClassChildren(classElement.id);
 
     for (let i = 0; i < children.length; i += 1) {
       const childElement = children[i];
       const childStereotype = childElement.stereotypes[0];
 
-      if (sortalStereotypesURI.includes(childStereotype)) {
+      if (sortalStereotypesID.includes(childStereotype)) {
         sortalElements.push(childElement);
       } else {
         return [
@@ -167,14 +167,14 @@ class OntoUMLSyntaxEndurants {
   }
 
   // A Sortal element must specialize only 1 Ultimate Sortal element
-  async verifySortalitySpecializations(classElement: IStructuralElement) {
+  async verifySortalitySpecializations(classElement: IElement) {
     const ultimateElements = this.getUltimateSortalElements(classElement, []);
     const ultimateSortalStereotypesName = this._rules.getStereotypesName({
       sortality: SORTAL,
       ultimateSortal: true,
     });
-    const elementName = classElement.name || classElement.uri;
-    const elementStereotypeName = this._rules.getStereotypeNameByURI(
+    const elementName = classElement.name || classElement.id;
+    const elementStereotypeName = this._rules.getStereotypeNameByID(
       classElement.stereotypes[0],
     );
 
@@ -185,13 +185,13 @@ class OntoUMLSyntaxEndurants {
 
       this._errors.push(
         new OntoUMLSpecializationError(errorDetail, {
-          structuralElement: classElement,
+          element: classElement,
         }),
       );
     } else if (ultimateElements.length > 1) {
       const ultimateElementsName = ultimateElements.map(
-        (ultimateElement: IStructuralElement) =>
-          ultimateElement.name || ultimateElement.uri,
+        (ultimateElement: IElement) =>
+          ultimateElement.name || ultimateElement.id,
       );
       const errorDetail = `Class "${elementName}" of stereotype ${elementStereotypeName} must specialialize only 1 ultimate sortal (${ultimateElementsName.join(
         ' or ',
@@ -199,7 +199,7 @@ class OntoUMLSyntaxEndurants {
 
       this._errors.push(
         new OntoUMLSpecializationError(errorDetail, {
-          structuralElement: classElement,
+          element: classElement,
           ultimateElements,
         }),
       );
@@ -209,20 +209,20 @@ class OntoUMLSyntaxEndurants {
   }
 
   getUltimateSortalElements(
-    classElement: IStructuralElement,
-    ultimateElements: IStructuralElement[],
-  ): IStructuralElement[] {
-    const ultimateSortalStereotypesURI = this._rules.getStereotypesURI({
+    classElement: IElement,
+    ultimateElements: IElement[],
+  ): IElement[] {
+    const ultimateSortalStereotypesID = this._rules.getStereotypesID({
       sortality: SORTAL,
       ultimateSortal: true,
     });
-    const parents = this._parser.getClassParents(classElement.uri);
+    const parents = this._parser.getClassParents(classElement.id);
 
     for (let i = 0; i < parents.length; i += 1) {
       const parentElement = parents[i];
       const parentStereotype = parentElement.stereotypes[0];
 
-      if (ultimateSortalStereotypesURI.includes(parentStereotype)) {
+      if (ultimateSortalStereotypesID.includes(parentStereotype)) {
         ultimateElements.push(parentElement);
       } else {
         return [
