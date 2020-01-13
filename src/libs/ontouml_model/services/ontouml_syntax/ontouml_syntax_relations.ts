@@ -91,14 +91,14 @@ class OntoUMLSyntaxRelations {
         );
         const targetName = target.name || target.id;
         const targetStereotypeName =
-          target['@type'] === CLASS_TYPE
+          target.type === CLASS_TYPE
             ? this._rules.getStereotypeNameByID(targetStereotypeId)
             : this._rules.getRelationNameByID(targetStereotypeId);
 
-        let errorDetail = `${target['@type']} ${source['@type']} "${sourceName}" of stereotype ${sourceStereotypeName} cannot have a ${relationName} relation with ${target['@type']} "${targetName}" of stereotype ${targetStereotypeName}`;
+        let errorDetail = `${target.type} ${source.type} "${sourceName}" of stereotype ${sourceStereotypeName} cannot have a ${relationName} relation with ${target.type} "${targetName}" of stereotype ${targetStereotypeName}`;
 
         if (this._rules.isDerivationRelation(relation.stereotypes[0])) {
-          errorDetail = `"${targetName}" must be the source of ${relationName} relation between ${source['@type']} "${sourceName}" and ${target['@type']} "${targetName}"`;
+          errorDetail = `"${targetName}" must be the source of ${relationName} relation between ${source.type} "${sourceName}" and ${target.type} "${targetName}"`;
         }
 
         await this._errors.push(
@@ -130,11 +130,11 @@ class OntoUMLSyntaxRelations {
       relation.stereotypes[0],
     );
 
-    const sourcePropertyLowerbound = this._rules.getRelationCardinalityValue(
-      sourceProperty.lowerbound,
+    const sourcePropertyLowerbound = this._parser.getRelationSourceLowerboundCardinality(
+      relation.id,
     );
-    const sourcePropertyUpperbound = this._rules.getRelationCardinalityValue(
-      sourceProperty.upperbound,
+    const sourcePropertyUpperbound = this._parser.getRelationSourceUpperboundCardinality(
+      relation.id,
     );
     const relationSourceLowerbound = this._rules.getRelationCardinalityValue(
       relationStereotype.source.lowerbound,
@@ -142,11 +142,11 @@ class OntoUMLSyntaxRelations {
     const relationSourceUpperbound = this._rules.getRelationCardinalityValue(
       relationStereotype.source.upperbound,
     );
-    const targetPropertyLowerbound = this._rules.getRelationCardinalityValue(
-      targetProperty.lowerbound,
+    const targetPropertyLowerbound = this._parser.getRelationTargetLowerboundCardinality(
+      relation.id,
     );
-    const targetPropertyUpperbound = this._rules.getRelationCardinalityValue(
-      targetProperty.upperbound,
+    const targetPropertyUpperbound = this._parser.getRelationTargetUpperboundCardinality(
+      relation.id,
     );
     const relationTargetLowerbound = this._rules.getRelationCardinalityValue(
       relationStereotype.target.lowerbound,
@@ -156,7 +156,7 @@ class OntoUMLSyntaxRelations {
     );
 
     if (sourcePropertyLowerbound < relationSourceLowerbound) {
-      const errorDetail = `${relation['@type']} "${relationStereotype.name}" between "${sourceName}" and "${targetName}" must have the source lowebound bigger than ${relationStereotype.source.lowerbound}.`;
+      const errorDetail = `${relation.type} "${relationStereotype.name}" between "${sourceName}" and "${targetName}" must have the source lowebound bigger than ${relationStereotype.source.lowerbound}.`;
 
       await this._errors.push(
         new OntoUMLRelationError(errorDetail, {
@@ -166,7 +166,7 @@ class OntoUMLSyntaxRelations {
     }
 
     if (sourcePropertyUpperbound > relationSourceUpperbound) {
-      const errorDetail = `${relation['@type']} "${relationStereotype.name}" between "${sourceName}" and "${targetName}" must have the source upperbound less than ${relationStereotype.source.upperbound}.`;
+      const errorDetail = `${relation.type} "${relationStereotype.name}" between "${sourceName}" and "${targetName}" must have the source upperbound less than ${relationStereotype.source.upperbound}.`;
 
       await this._errors.push(
         new OntoUMLRelationError(errorDetail, {
@@ -176,7 +176,7 @@ class OntoUMLSyntaxRelations {
     }
 
     if (targetPropertyLowerbound < relationTargetLowerbound) {
-      const errorDetail = `${relation['@type']} "${relationStereotype.name}" between "${sourceName}" and "${targetName}" must have the target lowebound bigger than ${relationStereotype.target.lowerbound}.`;
+      const errorDetail = `${relation.type} "${relationStereotype.name}" between "${sourceName}" and "${targetName}" must have the target lowebound bigger than ${relationStereotype.target.lowerbound}.`;
 
       await this._errors.push(
         new OntoUMLRelationError(errorDetail, {
@@ -186,7 +186,7 @@ class OntoUMLSyntaxRelations {
     }
 
     if (targetPropertyUpperbound > relationTargetUpperbound) {
-      const errorDetail = `${relation['@type']} "${relationStereotype.name}" between "${sourceName}" and "${targetName}" must have the target upperbound less than ${relationStereotype.target.upperbound}.`;
+      const errorDetail = `${relation.type} "${relationStereotype.name}" between "${sourceName}" and "${targetName}" must have the target upperbound less than ${relationStereotype.target.upperbound}.`;
 
       await this._errors.push(
         new OntoUMLRelationError(errorDetail, {

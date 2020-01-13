@@ -3,8 +3,7 @@ interface IProperty {
   id: string;
   url?: string;
   propertyType?: string;
-  lowerbound?: number | string;
-  upperbound?: number | string;
+  cardinality?: string;
 }
 
 interface IElement {

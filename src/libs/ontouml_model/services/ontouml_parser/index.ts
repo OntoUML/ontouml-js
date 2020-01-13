@@ -24,7 +24,11 @@ class OntoUMLParser {
   getRelationSourceClassID: (relationId: string) => string;
   getRelationTargetClassID: (relationId: string) => string;
   getRelationSourceProperty: (relationId: string) => IProperty;
+  getRelationSourceLowerboundCardinality: (relationId: string) => number;
+  getRelationSourceUpperboundCardinality: (relationId: string) => number;
   getRelationTargetProperty: (relationId: string) => IProperty;
+  getRelationTargetLowerboundCardinality: (relationId: string) => number;
+  getRelationTargetUpperboundCardinality: (relationId: string) => number;
 
   constructor(model: IModel) {
     const ajv = new Ajv();

@@ -3,122 +3,237 @@
   "id": "https://example.com/model/m9",
   "url": "https://example.com/model/m9",
   "name": "Invalid derivation",
-  "structuralElements": [
+  "authors": null,
+  "elements": [
     {
       "type": "Class",
       "name": "Person",
       "id": "model:#/class/Person",
-      "stereotypes": ["ontouml/1.0/kind"]
+      "stereotypes": ["ontouml/1.0/kind"],
+      "properties": null,
+      "propertyAssignments": null,
+      "isAbstract": false,
+      "isDerived": false
     },
     {
       "type": "Class",
       "name": "Wife",
       "id": "model:#/class/Wife",
-      "stereotypes": ["ontouml/1.0/role"]
+      "stereotypes": ["ontouml/1.0/role"],
+      "properties": null,
+      "propertyAssignments": null,
+      "isAbstract": false,
+      "isDerived": false
     },
     {
       "type": "Class",
       "name": "Husband",
       "id": "model:#/class/Husband",
-      "stereotypes": ["ontouml/1.0/role"]
+      "stereotypes": ["ontouml/1.0/role"],
+      "properties": null,
+      "propertyAssignments": null,
+      "isAbstract": false,
+      "isDerived": false
     },
     {
       "type": "Class",
       "name": "Marriage",
       "id": "model:#/class/Marriage",
-      "stereotypes": ["ontouml/1.0/relator"]
+      "stereotypes": ["ontouml/1.0/relator"],
+      "properties": null,
+      "propertyAssignments": null,
+      "isAbstract": false,
+      "isDerived": false
     },
     {
-      "type": "GeneralizationLink",
+      "type": "Generalization",
+      "name": null,
       "id": "model:#/generalization/PersonWife",
-      "tuple": ["model:#/class/Person", "model:#/class/Wife"]
+      "propertyAssignments": null,
+      "general": {
+        "type": "Class",
+        "id": "model:#/class/Person"
+      },
+      "specific": {
+        "type": "Class",
+        "id": "model:#/class/Wife"
+      }
     },
     {
-      "type": "GeneralizationLink",
+      "type": "Generalization",
+      "name": null,
       "id": "model:#/generalization/PersonHusband",
-      "tuple": ["model:#/class/Person", "model:#/class/Husband"]
+      "propertyAssignments": null,
+      "general": {
+        "type": "Class",
+        "id": "model:#/class/Person"
+      },
+      "specific": {
+        "type": "Class",
+        "id": "model:#/class/Husband"
+      }
     },
     {
       "type": "Relation",
+      "name": null,
       "id": "model:#/relation/WifeMarriage",
       "stereotypes": ["ontouml/1.0/mediation"],
+      "propertyAssignments": null,
+      "isAbstract": false,
+      "isDerived": false,
       "properties": [
         {
           "type": "Property",
           "id": "model:#/property/Wife",
           "propertyType": "model:#/class/Wife",
-          "lowerbound": 1,
-          "upperbound": 1
+          "cardinality": "1",
+          "name": null,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": null,
+          "isDerived": null,
+          "isOrdered": null,
+          "isReadOnly": null
         },
         {
           "type": "Property",
           "id": "model:#/property/Marriage",
           "propertyType": "model:#/class/Marriage",
-          "lowerbound": 1,
-          "upperbound": 1
+          "cardinality": "1",
+          "name": null,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": null,
+          "isDerived": null,
+          "isOrdered": null,
+          "isReadOnly": null
         }
       ]
     },
     {
       "type": "Relation",
+      "name": null,
       "id": "model:#/relation/HusbandMarriage",
       "stereotypes": ["ontouml/1.0/mediation"],
+      "propertyAssignments": null,
+      "isAbstract": false,
+      "isDerived": false,
       "properties": [
         {
           "type": "Property",
           "id": "model:#/property/Husband",
           "propertyType": "model:#/class/Husband",
-          "lowerbound": 1,
-          "upperbound": 1
+          "cardinality": "1",
+          "name": null,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": null,
+          "isDerived": null,
+          "isOrdered": null,
+          "isReadOnly": null
         },
         {
           "type": "Property",
           "id": "model:#/property/Marriage",
           "propertyType": "model:#/class/Marriage",
-          "lowerbound": 1,
-          "upperbound": 1
+          "cardinality": "1",
+          "name": null,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": null,
+          "isDerived": null,
+          "isOrdered": null,
+          "isReadOnly": null
         }
       ]
     },
     {
       "type": "Relation",
+      "name": null,
       "id": "model:#/relation/WifeHusband",
       "stereotypes": ["ontouml/1.0/material"],
+      "propertyAssignments": null,
+      "isAbstract": false,
+      "isDerived": false,
       "properties": [
         {
           "type": "Property",
           "id": "model:#/property/Wife",
           "propertyType": "model:#/class/Wife",
-          "lowerbound": 1,
-          "upperbound": 1
+          "cardinality": "1",
+          "name": null,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": null,
+          "isDerived": null,
+          "isOrdered": null,
+          "isReadOnly": null
         },
         {
           "type": "Property",
           "id": "model:#/property/Husband",
           "propertyType": "model:#/class/Husband",
-          "lowerbound": 1,
-          "upperbound": 1
+          "cardinality": "1",
+          "name": null,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": null,
+          "isDerived": null,
+          "isOrdered": null,
+          "isReadOnly": null
         }
       ]
     },
     {
       "type": "Relation",
+      "name": null,
       "id": "model:#/relation/MarriageWifeHusband",
       "stereotypes": ["ontouml/1.0/derivation"],
+      "propertyAssignments": null,
+      "isAbstract": false,
+      "isDerived": false,
       "properties": [
         {
           "type": "Property",
           "id": "model:#/property/Marriage",
           "propertyType": "model:#/class/Marriage",
-          "lowerbound": 1,
-          "upperbound": 1
+          "cardinality": "1",
+          "name": null,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": null,
+          "isDerived": null,
+          "isOrdered": null,
+          "isReadOnly": null
         },
         {
           "type": "Property",
           "id": "model:#/property/WifeHusband",
           "propertyType": "model:#/relation/WifeHusband",
-          "lowerbound": 1,
-          "upperbound": 1
+          "cardinality": "1",
+          "name": null,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": null,
+          "isDerived": null,
+          "isOrdered": null,
+          "isReadOnly": null
         }
       ]
     }
