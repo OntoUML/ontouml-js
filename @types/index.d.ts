@@ -35,6 +35,9 @@ interface IModel {
 interface IRelation {
   name: string;
   id: string;
+  relations: {
+    [key: string]: string[];
+  };
   source?: {
     lowerbound: number | string;
     upperbound: number | string;

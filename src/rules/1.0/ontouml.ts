@@ -32,10 +32,26 @@ const SUBCOLLECTION_OF: 'ontouml/1.0/subcollectionOf' =
   'ontouml/1.0/subcollectionOf';
 const DERIVATION: 'ontouml/1.0/derivation' = 'ontouml/1.0/derivation';
 
+const DERIVATION_RELATIONS = {
+  [KIND]: [DERIVATION],
+  [QUANTITY]: [DERIVATION],
+  [COLLECTIVE]: [DERIVATION],
+  [SUBKIND]: [DERIVATION],
+  [ROLE]: [DERIVATION],
+  [PHASE]: [DERIVATION],
+  [CATEGORY]: [DERIVATION],
+  [MIXIN]: [DERIVATION],
+  [ROLE_MIXIN]: [DERIVATION],
+  [RELATOR]: [DERIVATION],
+  [MODE]: [DERIVATION],
+  [QUALITY]: [DERIVATION],
+};
+
 export const RELATIONS: IRelation[] = [
   {
     name: '«material»',
     id: MATERIAL,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 1,
       upperbound: '*',
@@ -48,6 +64,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«mediation»',
     id: MEDIATION,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 1,
       upperbound: '*',
@@ -60,6 +77,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«componentOf»',
     id: COMPONENT_OF,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -72,6 +90,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«subquantityOf»',
     id: SUBQUANTITY_OF,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -84,6 +103,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«characterization»',
     id: CHARACTERIZATION,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 1,
       upperbound: '*',
@@ -96,6 +116,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«formal»',
     id: FORMAL,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -108,6 +129,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«memberOf»',
     id: MEMBER_OF,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -120,6 +142,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«subcollectionOf»',
     id: SUBCOLLECTION_OF,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -132,6 +155,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«derivation»',
     id: DERIVATION,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -213,8 +237,6 @@ export const STEREOTYPES: IStereotype[] = [
       ],
       [MODE]: [MEDIATION, FORMAL, CHARACTERIZATION, MATERIAL],
       [QUALITY]: [MEDIATION, FORMAL, CHARACTERIZATION, MATERIAL],
-      // derivations
-      [MATERIAL]: [],
     },
     rigidity: RIGID,
     sortality: SORTAL,

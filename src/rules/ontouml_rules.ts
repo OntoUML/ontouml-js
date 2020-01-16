@@ -40,9 +40,11 @@ class OntoUMLRules {
   }
 
   getStereotypeNameByID(stereotypeId: string): string {
-    return this._stereotypes.filter(
+    const stereotype = this._stereotypes.filter(
       (stereotype: IStereotype) => stereotype.id === stereotypeId,
-    )[0].name;
+    )[0];
+
+    return stereotype ? stereotype.name : '';
   }
 
   getStereotypesID(filters?: IFilter): string[] {
@@ -144,11 +146,12 @@ class OntoUMLRules {
     targetStereotypeId: string,
     relationStereotypeId: string,
   ): boolean {
-    const sourceStereotype = this.getStereotype(sourceStereotypeId);
+    const sourceStereotype =
+      this.getStereotype(sourceStereotypeId) ||
+      this.getRelationStereotype(sourceStereotypeId);
+    const relation = sourceStereotype.relations[targetStereotypeId];
 
-    return sourceStereotype.relations[targetStereotypeId].includes(
-      relationStereotypeId,
-    );
+    return relation && relation.includes(relationStereotypeId);
   }
 }
 

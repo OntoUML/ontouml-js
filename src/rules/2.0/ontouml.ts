@@ -53,10 +53,27 @@ const ALL_RELATIONS = [
   EXTERNAL_DEPENDENCE,
 ];
 
+const DERIVATION_RELATIONS = {
+  [KIND]: [DERIVATION],
+  [QUANTITY_KIND]: [DERIVATION],
+  [COLLECTIVE_KIND]: [DERIVATION],
+  [RELATOR_KIND]: [DERIVATION],
+  [MODE_KIND]: [DERIVATION],
+  [QUALITY_KIND]: [DERIVATION],
+  [SUBKIND]: [DERIVATION],
+  [ROLE]: [DERIVATION],
+  [PHASE]: [DERIVATION],
+  [CATEGORY]: [DERIVATION],
+  [MIXIN]: [DERIVATION],
+  [ROLE_MIXIN]: [DERIVATION],
+  [PHASE_MIXIN]: [DERIVATION],
+};
+
 export const RELATIONS: IRelation[] = [
   {
     name: '«material»',
     id: MATERIAL,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 1,
       upperbound: '*',
@@ -69,6 +86,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«mediation»',
     id: MEDIATION,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 1,
       upperbound: '*',
@@ -81,6 +99,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«characterization»',
     id: CHARACTERIZATION,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -93,6 +112,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«comparative»',
     id: COMPARATIVE,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -105,6 +125,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«historical»',
     id: HISTORICAL,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -117,6 +138,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«externalDependence»',
     id: EXTERNAL_DEPENDENCE,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -129,6 +151,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«derivation»',
     id: DERIVATION,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -141,6 +164,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«sum»',
     id: SUM,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -153,6 +177,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«componentOf»',
     id: COMPONENT_OF,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -165,6 +190,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«subquantityOf»',
     id: SUBQUANTITY_OF,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -177,6 +203,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«memberOf»',
     id: MEMBER_OF,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 0,
       upperbound: '*',
@@ -189,6 +216,7 @@ export const RELATIONS: IRelation[] = [
   {
     name: '«subcollectionOf»',
     id: SUBCOLLECTION_OF,
+    relations: DERIVATION_RELATIONS,
     source: {
       lowerbound: 0,
       upperbound: '*',
