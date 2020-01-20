@@ -2,7 +2,7 @@ import {
   OntoUMLStereotypeError,
   OntoUMLRelationError,
 } from '@error/ontouml_syntax';
-import OntoUMLRules from '@rules/ontouml_rules';
+import OntoUMLRules from './rules/ontouml_rules';
 import OntoUMLParser from '../ontouml_parser';
 import { CLASS_TYPE } from '@constants/model_types';
 

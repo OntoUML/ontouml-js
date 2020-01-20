@@ -23,13 +23,13 @@ const ROLE_MIXIN: 'ontouml/1.0/roleMixin' = 'ontouml/1.0/roleMixin';
 const MATERIAL: 'ontouml/1.0/material' = 'ontouml/1.0/material';
 const MEDIATION: 'ontouml/1.0/mediation' = 'ontouml/1.0/mediation';
 const COMPONENT_OF: 'ontouml/1.0/componentOf' = 'ontouml/1.0/componentOf';
-const SUBQUANTITY_OF: 'ontouml/1.0/subquantityOf' = 'ontouml/1.0/subquantityOf';
+const SUBQUANTITY_OF: 'ontouml/1.0/subQuantityOf' = 'ontouml/1.0/subQuantityOf';
 const CHARACTERIZATION: 'ontouml/1.0/characterization' =
   'ontouml/1.0/characterization';
 const FORMAL: 'ontouml/1.0/formal' = 'ontouml/1.0/formal';
 const MEMBER_OF: 'ontouml/1.0/memberOf' = 'ontouml/1.0/memberOf';
-const SUBCOLLECTION_OF: 'ontouml/1.0/subcollectionOf' =
-  'ontouml/1.0/subcollectionOf';
+const SUBCOLLECTION_OF: 'ontouml/1.0/subCollectionOf' =
+  'ontouml/1.0/subCollectionOf';
 const DERIVATION: 'ontouml/1.0/derivation' = 'ontouml/1.0/derivation';
 
 const DERIVATION_RELATIONS = {
@@ -88,7 +88,7 @@ export const RELATIONS: IRelation[] = [
     },
   },
   {
-    name: '«subquantityOf»',
+    name: '«subQuantityOf»',
     id: SUBQUANTITY_OF,
     relations: DERIVATION_RELATIONS,
     source: {
@@ -140,7 +140,7 @@ export const RELATIONS: IRelation[] = [
     },
   },
   {
-    name: '«subcollectionOf»',
+    name: '«subCollectionOf»',
     id: SUBCOLLECTION_OF,
     relations: DERIVATION_RELATIONS,
     source: {

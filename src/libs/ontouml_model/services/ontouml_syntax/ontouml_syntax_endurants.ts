@@ -3,7 +3,7 @@ import {
   OntoUMLSpecializationError,
 } from '@error/ontouml_syntax';
 import { SORTAL, NON_SORTAL } from '@constants/stereotypes_constraints';
-import OntoUMLRules from '@rules/ontouml_rules';
+import OntoUMLRules from './rules/ontouml_rules';
 import OntoUMLParser from '../ontouml_parser';
 
 class OntoUMLSyntaxEndurants {

@@ -31,12 +31,20 @@ const EXTERNAL_DEPENDENCE: 'ontouml/2.0/externalDependence' =
 const CHARACTERIZATION: 'ontouml/2.0/characterization' =
   'ontouml/2.0/characterization';
 const DERIVATION: 'ontouml/2.0/derivation' = 'ontouml/2.0/derivation';
-const SUM: 'ontouml/2.0/sum' = 'ontouml/2.0/sum';
 const COMPONENT_OF: 'ontouml/2.0/componentOf' = 'ontouml/2.0/componentOf';
-const SUBQUANTITY_OF: 'ontouml/2.0/subquantityOf' = 'ontouml/2.0/subquantityOf';
+const SUBQUANTITY_OF: 'ontouml/2.0/subQuantityOf' = 'ontouml/2.0/subQuantityOf';
 const MEMBER_OF: 'ontouml/2.0/memberOf' = 'ontouml/2.0/memberOf';
-const SUBCOLLECTION_OF: 'ontouml/2.0/subcollectionOf' =
-  'ontouml/2.0/subcollectionOf';
+const SUBCOLLECTION_OF: 'ontouml/2.0/subCollectionOf' =
+  'ontouml/2.0/subCollectionOf';
+
+const CREATION: 'ontouml/2.0/creation' = 'ontouml/2.0/creation';
+const HISTORICAL_DEPENDENCE: 'ontouml/2.0/historicalDependence' =
+  'ontouml/2.0/historicalDependence';
+const PARTICIPATION: 'ontouml/2.0/participation' = 'ontouml/2.0/participation';
+const PARTICIPATIONAL: 'ontouml/2.0/participational' =
+  'ontouml/2.0/participational';
+const TERMINATION: 'ontouml/2.0/termination' = 'ontouml/2.0/termination';
+const INSTANTIATION: 'ontouml/2.0/instantiation' = 'ontouml/2.0/instantiation';
 
 const ALL_RELATIONS = [
   MEMBER_OF,
@@ -48,9 +56,15 @@ const ALL_RELATIONS = [
   COMPARATIVE,
   SUBCOLLECTION_OF,
   HISTORICAL,
-  SUM,
   DERIVATION,
   EXTERNAL_DEPENDENCE,
+
+  CREATION,
+  HISTORICAL_DEPENDENCE,
+  PARTICIPATION,
+  PARTICIPATIONAL,
+  TERMINATION,
+  INSTANTIATION,
 ];
 
 const DERIVATION_RELATIONS = {
@@ -75,11 +89,11 @@ export const RELATIONS: IRelation[] = [
     id: MATERIAL,
     relations: DERIVATION_RELATIONS,
     source: {
-      lowerbound: 1,
+      lowerbound: 0,
       upperbound: '*',
     },
     target: {
-      lowerbound: 1,
+      lowerbound: 0,
       upperbound: '*',
     },
   },
@@ -88,11 +102,11 @@ export const RELATIONS: IRelation[] = [
     id: MEDIATION,
     relations: DERIVATION_RELATIONS,
     source: {
-      lowerbound: 1,
+      lowerbound: 0,
       upperbound: '*',
     },
     target: {
-      lowerbound: 1,
+      lowerbound: 0,
       upperbound: '*',
     },
   },
@@ -105,8 +119,8 @@ export const RELATIONS: IRelation[] = [
       upperbound: '*',
     },
     target: {
-      lowerbound: 0,
-      upperbound: '*',
+      lowerbound: 1,
+      upperbound: 1,
     },
   },
   {
@@ -157,20 +171,7 @@ export const RELATIONS: IRelation[] = [
       upperbound: '*',
     },
     target: {
-      lowerbound: 0,
-      upperbound: '*',
-    },
-  },
-  {
-    name: '«sum»',
-    id: SUM,
-    relations: DERIVATION_RELATIONS,
-    source: {
-      lowerbound: 0,
-      upperbound: '*',
-    },
-    target: {
-      lowerbound: 0,
+      lowerbound: 1,
       upperbound: '*',
     },
   },
@@ -188,7 +189,7 @@ export const RELATIONS: IRelation[] = [
     },
   },
   {
-    name: '«subquantityOf»',
+    name: '«subQuantityOf»',
     id: SUBQUANTITY_OF,
     relations: DERIVATION_RELATIONS,
     source: {
@@ -214,7 +215,7 @@ export const RELATIONS: IRelation[] = [
     },
   },
   {
-    name: '«subcollectionOf»',
+    name: '«subCollectionOf»',
     id: SUBCOLLECTION_OF,
     relations: DERIVATION_RELATIONS,
     source: {
@@ -223,7 +224,7 @@ export const RELATIONS: IRelation[] = [
     },
     target: {
       lowerbound: 0,
-      upperbound: '*',
+      upperbound: 1,
     },
   },
 ];
@@ -501,7 +502,7 @@ export const STEREOTYPES: IStereotype[] = [
       [KIND]: [MEDIATION],
       [QUANTITY_KIND]: [MEDIATION],
       [COLLECTIVE_KIND]: [MEDIATION],
-      [RELATOR_KIND]: [MEDIATION, SUM],
+      [RELATOR_KIND]: [MEDIATION],
       [MODE_KIND]: [MEDIATION],
       [QUALITY_KIND]: [MEDIATION],
       [SUBKIND]: ALL_RELATIONS,
@@ -524,7 +525,7 @@ export const STEREOTYPES: IStereotype[] = [
       [KIND]: [CHARACTERIZATION, EXTERNAL_DEPENDENCE],
       [QUANTITY_KIND]: [CHARACTERIZATION, EXTERNAL_DEPENDENCE],
       [COLLECTIVE_KIND]: [CHARACTERIZATION, EXTERNAL_DEPENDENCE],
-      [RELATOR_KIND]: [CHARACTERIZATION, SUM, EXTERNAL_DEPENDENCE],
+      [RELATOR_KIND]: [CHARACTERIZATION, EXTERNAL_DEPENDENCE],
       [MODE_KIND]: [CHARACTERIZATION, EXTERNAL_DEPENDENCE],
       [QUALITY_KIND]: [CHARACTERIZATION, EXTERNAL_DEPENDENCE],
       [SUBKIND]: ALL_RELATIONS,
@@ -547,7 +548,7 @@ export const STEREOTYPES: IStereotype[] = [
       [KIND]: [CHARACTERIZATION],
       [QUANTITY_KIND]: [CHARACTERIZATION],
       [COLLECTIVE_KIND]: [CHARACTERIZATION],
-      [RELATOR_KIND]: [CHARACTERIZATION, SUM],
+      [RELATOR_KIND]: [CHARACTERIZATION],
       [MODE_KIND]: [CHARACTERIZATION],
       [QUALITY_KIND]: [CHARACTERIZATION],
       [SUBKIND]: ALL_RELATIONS,
