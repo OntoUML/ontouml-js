@@ -7,29 +7,29 @@ import OntoUMLRules from './rules/ontouml_rules';
 import OntoUMLParser from '../ontouml_parser';
 
 class OntoUMLSyntaxEndurants {
-  private _rules: OntoUMLRules;
-  private _parser: OntoUMLParser;
-  private _errors: IOntoUMLError[];
+  private rules: OntoUMLRules;
+  private parser: OntoUMLParser;
+  private errors: IOntoUMLError[];
 
   constructor(parser: OntoUMLParser) {
-    this._rules = new OntoUMLRules(parser.getVersion());
-    this._parser = parser;
-    this._errors = [];
+    this.rules = new OntoUMLRules(parser.getVersion());
+    this.parser = parser;
+    this.errors = [];
   }
 
   async verifyEndurantTypes(): Promise<IOntoUMLError[]> {
-    const classes = this._parser.getClasses();
+    const classes = this.parser.getClasses();
 
     await Promise.all([
       this.verifyClassStereotypes(classes),
       this.verifyClasses(classes),
     ]);
 
-    return this._errors;
+    return this.errors;
   }
 
   async verifyClassStereotypes(elements: IElement[]) {
-    const stereotypes = this._rules.getStereotypesID();
+    const stereotypes = this.rules.getStereotypesID();
 
     const invalidElements = elements.filter(
       (element: IElement) =>
@@ -41,7 +41,7 @@ class OntoUMLSyntaxEndurants {
 
     if (hasInvalidElements) {
       for (let i = 0; i < invalidElements.length; i += 1) {
-        this._errors.push(new OntoUMLStereotypeError(invalidElements[i]));
+        this.errors.push(new OntoUMLStereotypeError(invalidElements[i]));
       }
     }
 
@@ -49,12 +49,12 @@ class OntoUMLSyntaxEndurants {
   }
 
   async verifyClasses(classes: IElement[]) {
-    const sortalStereotypesID = this._rules.getStereotypesID({
+    const sortalStereotypesID = this.rules.getStereotypesID({
       sortality: SORTAL,
       ultimateSortal: false,
     });
 
-    const nonSortalStereotypesID = this._rules.getStereotypesID({
+    const nonSortalStereotypesID = this.rules.getStereotypesID({
       sortality: NON_SORTAL,
     });
 
@@ -82,13 +82,13 @@ class OntoUMLSyntaxEndurants {
 
   async verifySpecializations(classElement: IElement) {
     const { stereotypes, id } = classElement;
-    const parents = this._parser.getClassParents(id);
+    const parents = this.parser.getClassParents(id);
     const stereotype = stereotypes[0];
 
     for (let i = 0; i < parents.length; i += 1) {
       const parentElement = parents[i];
       const parentStereotype = parentElement.stereotypes[0];
-      const hasValidSpecialization = this._rules.isValidSpecialization(
+      const hasValidSpecialization = this.rules.isValidSpecialization(
         stereotype,
         parentStereotype,
       );
@@ -96,16 +96,16 @@ class OntoUMLSyntaxEndurants {
       if (!hasValidSpecialization) {
         const elementName = classElement.name || classElement.id;
         const parentName = parentElement.name || parentElement.id;
-        const elementStereotypeName = this._rules.getStereotypeNameByID(
+        const elementStereotypeName = this.rules.getStereotypeNameByID(
           classElement.stereotypes[0],
         );
-        const parentStereotypeName = this._rules.getStereotypeNameByID(
+        const parentStereotypeName = this.rules.getStereotypeNameByID(
           parentElement.stereotypes[0],
         );
 
         const errorDetail = `Class "${elementName}" of stereotype ${elementStereotypeName} can not specialize "${parentName}" of stereotype ${parentStereotypeName}.`;
 
-        this._errors.push(
+        this.errors.push(
           new OntoUMLSpecializationError(errorDetail, {
             element: classElement,
             parentElement,
@@ -122,7 +122,7 @@ class OntoUMLSyntaxEndurants {
     const sortalElements = this.getSortalElements(classElement, []);
     const hasNoSortal = sortalElements.length === 0;
     const elementName = classElement.name || classElement.id;
-    const elementStereotypeName = this._rules.getStereotypeNameByID(
+    const elementStereotypeName = this.rules.getStereotypeNameByID(
       classElement.stereotypes[0],
     );
 
@@ -130,7 +130,7 @@ class OntoUMLSyntaxEndurants {
       const errorDetail = `Must be a sortal S that specializes "${elementName}" of stereotype ${elementStereotypeName}, or specializes a non-sortal supertype common to both "${elementName}" and S.
       )}`;
 
-      this._errors.push(
+      this.errors.push(
         new OntoUMLSpecializationError(errorDetail, {
           element: classElement,
         }),
@@ -144,10 +144,10 @@ class OntoUMLSyntaxEndurants {
     classElement: IElement,
     sortalElements: IElement[],
   ): IElement[] {
-    const sortalStereotypesID = this._rules.getStereotypesID({
+    const sortalStereotypesID = this.rules.getStereotypesID({
       sortality: SORTAL,
     });
-    const children = this._parser.getClassChildren(classElement.id);
+    const children = this.parser.getClassChildren(classElement.id);
 
     for (let i = 0; i < children.length; i += 1) {
       const childElement = children[i];
@@ -169,12 +169,12 @@ class OntoUMLSyntaxEndurants {
   // A Sortal element must specialize only 1 Ultimate Sortal element
   async verifySortalitySpecializations(classElement: IElement) {
     const ultimateElements = this.getUltimateSortalElements(classElement, []);
-    const ultimateSortalStereotypesName = this._rules.getStereotypesName({
+    const ultimateSortalStereotypesName = this.rules.getStereotypesName({
       sortality: SORTAL,
       ultimateSortal: true,
     });
     const elementName = classElement.name || classElement.id;
-    const elementStereotypeName = this._rules.getStereotypeNameByID(
+    const elementStereotypeName = this.rules.getStereotypeNameByID(
       classElement.stereotypes[0],
     );
 
@@ -183,7 +183,7 @@ class OntoUMLSyntaxEndurants {
         ' or ',
       )}.`;
 
-      this._errors.push(
+      this.errors.push(
         new OntoUMLSpecializationError(errorDetail, {
           element: classElement,
         }),
@@ -197,7 +197,7 @@ class OntoUMLSyntaxEndurants {
         ' or ',
       )}).`;
 
-      this._errors.push(
+      this.errors.push(
         new OntoUMLSpecializationError(errorDetail, {
           element: classElement,
           ultimateElements,
@@ -212,11 +212,11 @@ class OntoUMLSyntaxEndurants {
     classElement: IElement,
     ultimateElements: IElement[],
   ): IElement[] {
-    const ultimateSortalStereotypesID = this._rules.getStereotypesID({
+    const ultimateSortalStereotypesID = this.rules.getStereotypesID({
       sortality: SORTAL,
       ultimateSortal: true,
     });
-    const parents = this._parser.getClassParents(classElement.id);
+    const parents = this.parser.getClassParents(classElement.id);
 
     for (let i = 0; i < parents.length; i += 1) {
       const parentElement = parents[i];

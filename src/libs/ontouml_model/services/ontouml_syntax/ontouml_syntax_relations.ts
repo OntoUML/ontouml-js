@@ -7,29 +7,29 @@ import OntoUMLParser from '../ontouml_parser';
 import { CLASS_TYPE } from '@constants/model_types';
 
 class OntoUMLSyntaxRelations {
-  private _rules: OntoUMLRules;
-  private _parser: OntoUMLParser;
-  private _errors: IOntoUMLError[];
+  private rules: OntoUMLRules;
+  private parser: OntoUMLParser;
+  private errors: IOntoUMLError[];
 
   constructor(parser: OntoUMLParser) {
-    this._rules = new OntoUMLRules(parser.getVersion());
-    this._parser = parser;
-    this._errors = [];
+    this.rules = new OntoUMLRules(parser.getVersion());
+    this.parser = parser;
+    this.errors = [];
   }
 
   async verifyRelationTypes(): Promise<IOntoUMLError[]> {
-    const relations = this._parser.getRelations();
+    const relations = this.parser.getRelations();
 
     await Promise.all([
       this.verifyRelationStereotypes(relations),
       this.verifyRelations(relations),
     ]);
 
-    return this._errors;
+    return this.errors;
   }
 
   async verifyRelationStereotypes(elements: IElement[]) {
-    const stereotypes = this._rules.getRelationStereotypesID();
+    const stereotypes = this.rules.getRelationStereotypesID();
 
     const invalidElements = elements.filter(
       (element: IElement) =>
@@ -41,7 +41,7 @@ class OntoUMLSyntaxRelations {
 
     if (hasInvalidElements) {
       for (let i = 0; i < invalidElements.length; i += 1) {
-        this._errors.push(new OntoUMLStereotypeError(invalidElements[i]));
+        this.errors.push(new OntoUMLStereotypeError(invalidElements[i]));
       }
     }
 
@@ -64,16 +64,16 @@ class OntoUMLSyntaxRelations {
 
   async verifyRelationConnections(relation: IElement) {
     try {
-      const sourceId = this._parser.getRelationSourceClassID(relation.id);
+      const sourceId = this.parser.getRelationSourceClassID(relation.id);
       const source =
-        this._parser.getClass(sourceId) || this._parser.getRelation(sourceId);
+        this.parser.getClass(sourceId) || this.parser.getRelation(sourceId);
       const sourceStereotypeId = source.stereotypes[0];
-      const targetId = this._parser.getRelationTargetClassID(relation.id);
+      const targetId = this.parser.getRelationTargetClassID(relation.id);
       const target =
-        this._parser.getClass(targetId) || this._parser.getRelation(targetId);
+        this.parser.getClass(targetId) || this.parser.getRelation(targetId);
       const targetStereotypeId = target.stereotypes[0];
 
-      const isValidRelation = this._rules.isValidRelation(
+      const isValidRelation = this.rules.isValidRelation(
         sourceStereotypeId,
         targetStereotypeId,
         relation.stereotypes[0],
@@ -82,26 +82,26 @@ class OntoUMLSyntaxRelations {
       if (isValidRelation) {
         await this.verifyRelationCardinalities(relation);
       } else {
-        const relationName = this._rules.getRelationNameByID(
+        const relationName = this.rules.getRelationNameByID(
           relation.stereotypes[0],
         );
         const sourceName = source.name || source.id;
-        const sourceStereotypeName = this._rules.getStereotypeNameByID(
+        const sourceStereotypeName = this.rules.getStereotypeNameByID(
           sourceStereotypeId,
         );
         const targetName = target.name || target.id;
         const targetStereotypeName =
           target.type === CLASS_TYPE
-            ? this._rules.getStereotypeNameByID(targetStereotypeId)
-            : this._rules.getRelationNameByID(targetStereotypeId);
+            ? this.rules.getStereotypeNameByID(targetStereotypeId)
+            : this.rules.getRelationNameByID(targetStereotypeId);
 
         let errorDetail = `${target.type} ${source.type} "${sourceName}" of stereotype ${sourceStereotypeName} cannot have a ${relationName} relation with ${target.type} "${targetName}" of stereotype ${targetStereotypeName}`;
 
-        if (this._rules.isDerivationRelation(relation.stereotypes[0])) {
+        if (this.rules.isDerivationRelation(relation.stereotypes[0])) {
           errorDetail = `"${targetName}" must be the source of ${relationName} relation between ${source.type} "${sourceName}" and ${target.type} "${targetName}"`;
         }
 
-        await this._errors.push(
+        await this.errors.push(
           new OntoUMLRelationError(errorDetail, {
             relation,
           }),
@@ -116,49 +116,49 @@ class OntoUMLSyntaxRelations {
   }
 
   async verifyRelationCardinalities(relation: IElement) {
-    const sourceProperty = this._parser.getRelationSourceProperty(relation.id);
+    const sourceProperty = this.parser.getRelationSourceProperty(relation.id);
     const source =
-      this._parser.getClass(sourceProperty.propertyType) ||
-      this._parser.getRelation(sourceProperty.propertyType);
+      this.parser.getClass(sourceProperty.propertyType) ||
+      this.parser.getRelation(sourceProperty.propertyType);
     const sourceName = source.name || source.id;
-    const targetProperty = this._parser.getRelationTargetProperty(relation.id);
+    const targetProperty = this.parser.getRelationTargetProperty(relation.id);
     const target =
-      this._parser.getClass(targetProperty.propertyType) ||
-      this._parser.getRelation(targetProperty.propertyType);
+      this.parser.getClass(targetProperty.propertyType) ||
+      this.parser.getRelation(targetProperty.propertyType);
     const targetName = target.name || target.id;
-    const relationStereotype = this._rules.getRelationStereotype(
+    const relationStereotype = this.rules.getRelationStereotype(
       relation.stereotypes[0],
     );
 
-    const sourcePropertyLowerbound = this._parser.getRelationSourceLowerboundCardinality(
+    const sourcePropertyLowerbound = this.parser.getRelationSourceLowerboundCardinality(
       relation.id,
     );
-    const sourcePropertyUpperbound = this._parser.getRelationSourceUpperboundCardinality(
+    const sourcePropertyUpperbound = this.parser.getRelationSourceUpperboundCardinality(
       relation.id,
     );
-    const relationSourceLowerbound = this._rules.getRelationCardinalityValue(
+    const relationSourceLowerbound = this.rules.getRelationCardinalityValue(
       relationStereotype.source.lowerbound,
     );
-    const relationSourceUpperbound = this._rules.getRelationCardinalityValue(
+    const relationSourceUpperbound = this.rules.getRelationCardinalityValue(
       relationStereotype.source.upperbound,
     );
-    const targetPropertyLowerbound = this._parser.getRelationTargetLowerboundCardinality(
+    const targetPropertyLowerbound = this.parser.getRelationTargetLowerboundCardinality(
       relation.id,
     );
-    const targetPropertyUpperbound = this._parser.getRelationTargetUpperboundCardinality(
+    const targetPropertyUpperbound = this.parser.getRelationTargetUpperboundCardinality(
       relation.id,
     );
-    const relationTargetLowerbound = this._rules.getRelationCardinalityValue(
+    const relationTargetLowerbound = this.rules.getRelationCardinalityValue(
       relationStereotype.target.lowerbound,
     );
-    const relationTargetUpperbound = this._rules.getRelationCardinalityValue(
+    const relationTargetUpperbound = this.rules.getRelationCardinalityValue(
       relationStereotype.target.upperbound,
     );
 
     if (sourcePropertyLowerbound < relationSourceLowerbound) {
       const errorDetail = `${relation.type} "${relationStereotype.name}" between "${sourceName}" and "${targetName}" must have the source lowebound bigger than ${relationStereotype.source.lowerbound}.`;
 
-      await this._errors.push(
+      await this.errors.push(
         new OntoUMLRelationError(errorDetail, {
           relation,
         }),
@@ -168,7 +168,7 @@ class OntoUMLSyntaxRelations {
     if (sourcePropertyUpperbound > relationSourceUpperbound) {
       const errorDetail = `${relation.type} "${relationStereotype.name}" between "${sourceName}" and "${targetName}" must have the source upperbound less than ${relationStereotype.source.upperbound}.`;
 
-      await this._errors.push(
+      await this.errors.push(
         new OntoUMLRelationError(errorDetail, {
           relation,
         }),
@@ -178,7 +178,7 @@ class OntoUMLSyntaxRelations {
     if (targetPropertyLowerbound < relationTargetLowerbound) {
       const errorDetail = `${relation.type} "${relationStereotype.name}" between "${sourceName}" and "${targetName}" must have the target lowebound bigger than ${relationStereotype.target.lowerbound}.`;
 
-      await this._errors.push(
+      await this.errors.push(
         new OntoUMLRelationError(errorDetail, {
           relation,
         }),
@@ -188,7 +188,7 @@ class OntoUMLSyntaxRelations {
     if (targetPropertyUpperbound > relationTargetUpperbound) {
       const errorDetail = `${relation.type} "${relationStereotype.name}" between "${sourceName}" and "${targetName}" must have the target upperbound less than ${relationStereotype.target.upperbound}.`;
 
-      await this._errors.push(
+      await this.errors.push(
         new OntoUMLRelationError(errorDetail, {
           relation,
         }),
