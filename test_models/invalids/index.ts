@@ -7,6 +7,7 @@ const modelInvalidExample6 = require('./m6.invalid.json');
 const modelInvalidExample7 = require('./m7.invalid.json');
 const modelInvalidExample8 = require('./m8.invalid.json');
 const modelInvalidExample9 = require('./m9.invalid.json');
+const modelInvalidExample10 = require('./m10.invalid.json');
 
 export {
   modelInvalidExample1,
@@ -18,4 +19,5 @@ export {
   modelInvalidExample7,
   modelInvalidExample8,
   modelInvalidExample9,
+  modelInvalidExample10,
 };

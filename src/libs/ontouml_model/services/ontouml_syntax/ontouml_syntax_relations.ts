@@ -2,18 +2,16 @@ import {
   OntoUMLStereotypeError,
   OntoUMLRelationError,
 } from '@error/ontouml_syntax';
-import OntoUMLRules from './rules/ontouml_rules';
 import OntoUMLParser from '../ontouml_parser';
+import OntoUMLSyntaxMethod from './ontouml_syntax_method';
 import { CLASS_TYPE } from '@constants/model_types';
 
-class OntoUMLSyntaxRelations {
-  private rules: OntoUMLRules;
-  private parser: OntoUMLParser;
+class OntoUMLSyntaxRelations extends OntoUMLSyntaxMethod {
   private errors: IOntoUMLError[];
 
   constructor(parser: OntoUMLParser) {
-    this.rules = new OntoUMLRules(parser.getVersion());
-    this.parser = parser;
+    super(parser);
+
     this.errors = [];
   }
 
@@ -64,13 +62,9 @@ class OntoUMLSyntaxRelations {
 
   async verifyRelationConnections(relation: IElement) {
     try {
-      const sourceId = this.parser.getRelationSourceClassID(relation.id);
-      const source =
-        this.parser.getClass(sourceId) || this.parser.getRelation(sourceId);
+      const source = this.getRelationSource(relation.id);
       const sourceStereotypeId = source.stereotypes[0];
-      const targetId = this.parser.getRelationTargetClassID(relation.id);
-      const target =
-        this.parser.getClass(targetId) || this.parser.getRelation(targetId);
+      const target = this.getRelationTarget(relation.id);
       const targetStereotypeId = target.stereotypes[0];
 
       const isValidRelation = this.rules.isValidRelation(
@@ -80,7 +74,10 @@ class OntoUMLSyntaxRelations {
       );
 
       if (isValidRelation) {
-        await this.verifyRelationCardinalities(relation);
+        await Promise.all([
+          this.verifyRelationNatureConnections(relation),
+          this.verifyRelationCardinalities(relation),
+        ]);
       } else {
         const relationName = this.rules.getRelationNameByID(
           relation.stereotypes[0],
@@ -95,7 +92,7 @@ class OntoUMLSyntaxRelations {
             ? this.rules.getStereotypeNameByID(targetStereotypeId)
             : this.rules.getRelationNameByID(targetStereotypeId);
 
-        let errorDetail = `${target.type} ${source.type} "${sourceName}" of stereotype ${sourceStereotypeName} cannot have a ${relationName} relation with ${target.type} "${targetName}" of stereotype ${targetStereotypeName}`;
+        let errorDetail = `${source.type} "${sourceName}" of stereotype ${sourceStereotypeName} cannot have a ${relationName} relation with ${target.type} "${targetName}" of stereotype ${targetStereotypeName}`;
 
         if (this.rules.isDerivationRelation(relation.stereotypes[0])) {
           errorDetail = `"${targetName}" must be the source of ${relationName} relation between ${source.type} "${sourceName}" and ${target.type} "${targetName}"`;
@@ -115,16 +112,55 @@ class OntoUMLSyntaxRelations {
     return true;
   }
 
+  async verifyRelationNatureConnections(relation: IElement) {
+    const source = this.getRelationSource(relation.id);
+    const target = this.getRelationTarget(relation.id);
+
+    if (source.type === CLASS_TYPE && target.type === CLASS_TYPE) {
+      const sourceOntologyNature = this.getOntologyNatureClass(source.id);
+      const targetOntologyNature = this.getOntologyNatureClass(target.id);
+
+      if (sourceOntologyNature && targetOntologyNature) {
+        const sourceONStereotypeId = sourceOntologyNature.stereotypes[0];
+        const targetONStereotypeId = targetOntologyNature.stereotypes[0];
+
+        const isValidRelation = this.rules.isValidRelation(
+          sourceONStereotypeId,
+          targetONStereotypeId,
+          relation.stereotypes[0],
+        );
+
+        if (!isValidRelation) {
+          const relationName = this.rules.getRelationNameByID(
+            relation.stereotypes[0],
+          );
+          const sourceName = source.name || source.id;
+          const sourceONStereotypeName = this.rules.getStereotypeNameByID(
+            sourceONStereotypeId,
+          );
+          const targetName = target.name || target.id;
+          const targetONStereotypeName = this.rules.getStereotypeNameByID(
+            targetONStereotypeId,
+          );
+
+          const errorDetail = `${source.type} "${sourceName}" of ontolgy nature ${sourceONStereotypeName} cannot have a ${relationName} relation with ${target.type} "${targetName}" of ontology nature ${targetONStereotypeName}`;
+
+          await this.errors.push(
+            new OntoUMLRelationError(errorDetail, {
+              relation,
+            }),
+          );
+        }
+      }
+    }
+
+    return true;
+  }
+
   async verifyRelationCardinalities(relation: IElement) {
-    const sourceProperty = this.parser.getRelationSourceProperty(relation.id);
-    const source =
-      this.parser.getClass(sourceProperty.propertyType) ||
-      this.parser.getRelation(sourceProperty.propertyType);
+    const source = this.getRelationSource(relation.id);
     const sourceName = source.name || source.id;
-    const targetProperty = this.parser.getRelationTargetProperty(relation.id);
-    const target =
-      this.parser.getClass(targetProperty.propertyType) ||
-      this.parser.getRelation(targetProperty.propertyType);
+    const target = this.getRelationTarget(relation.id);
     const targetName = target.name || target.id;
     const relationStereotype = this.rules.getRelationStereotype(
       relation.stereotypes[0],

@@ -3,17 +3,15 @@ import {
   OntoUMLSpecializationError,
 } from '@error/ontouml_syntax';
 import { SORTAL, NON_SORTAL } from '@constants/stereotypes_constraints';
-import OntoUMLRules from './rules/ontouml_rules';
 import OntoUMLParser from '../ontouml_parser';
+import OntoUMLSyntaxMethod from './ontouml_syntax_method';
 
-class OntoUMLSyntaxEndurants {
-  private rules: OntoUMLRules;
-  private parser: OntoUMLParser;
+class OntoUMLSyntaxEndurants extends OntoUMLSyntaxMethod {
   private errors: IOntoUMLError[];
 
   constructor(parser: OntoUMLParser) {
-    this.rules = new OntoUMLRules(parser.getVersion());
-    this.parser = parser;
+    super(parser);
+
     this.errors = [];
   }
 
@@ -206,33 +204,6 @@ class OntoUMLSyntaxEndurants {
     }
 
     return true;
-  }
-
-  getUltimateSortalElements(
-    classElement: IElement,
-    ultimateElements: IElement[],
-  ): IElement[] {
-    const ultimateSortalStereotypesID = this.rules.getStereotypesID({
-      sortality: SORTAL,
-      ultimateSortal: true,
-    });
-    const parents = this.parser.getClassParents(classElement.id);
-
-    for (let i = 0; i < parents.length; i += 1) {
-      const parentElement = parents[i];
-      const parentStereotype = parentElement.stereotypes[0];
-
-      if (ultimateSortalStereotypesID.includes(parentStereotype)) {
-        ultimateElements.push(parentElement);
-      } else {
-        return [
-          ...ultimateElements,
-          ...this.getUltimateSortalElements(parentElement, ultimateElements),
-        ];
-      }
-    }
-
-    return ultimateElements;
   }
 }
 
