@@ -27,4 +27,5 @@ If you are interested to know more, feel free to open an issue to provide feedba
  * [Claudenir M. Fonseca](https://github.com/claudenirmf)
  * [Tiago Prince Sales](https://github.com/tgoprince)
  * [Lucas Bassetti](https://github.com/LucasBassetti)
+ * [Victor Viola](https://github.com/victorviola)
 
