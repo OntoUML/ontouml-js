@@ -3,19 +3,32 @@ import schema from '@schemas/ontouml.schema.json';
 import { OntoUMLParserError } from '@error/ontouml_parser';
 import OntoUMLParserClass from './ontouml_parser_class';
 import OntoUMLParserGeneralizationLink from './ontouml_parser_generalization_link';
+import OntoUMLParserRelation from './ontouml_parser_relation';
 
 class OntoUMLParser {
   private _valid: boolean;
 
   // OntoUMLParserClass
   getClasses: () => IElement[];
-  getClass: (classId: string) => IElement[];
+  getClass: (classId: string) => IElement;
   getClassParents: (classId: string) => IElement[];
   getClassChildren: (classId: string) => IElement[];
 
   // OntoUMLParserGeneralizationLink
   getGeneralizationLinksFromGeneralClass: (classId: string) => IElement[];
   getGeneralizationLinksFromSpecificClass: (classId: string) => IElement[];
+
+  // OntoUMLParserRelation
+  getRelations: () => IElement[];
+  getRelation: (relationId: string) => IElement;
+  getRelationSourceClassID: (relationId: string) => string;
+  getRelationTargetClassID: (relationId: string) => string;
+  getRelationSourceProperty: (relationId: string) => IProperty;
+  getRelationSourceLowerboundCardinality: (relationId: string) => number;
+  getRelationSourceUpperboundCardinality: (relationId: string) => number;
+  getRelationTargetProperty: (relationId: string) => IProperty;
+  getRelationTargetLowerboundCardinality: (relationId: string) => number;
+  getRelationTargetUpperboundCardinality: (relationId: string) => number;
 
   constructor(model: IModel) {
     const ajv = new Ajv();
@@ -32,6 +45,7 @@ class OntoUMLParser {
 
     const classParser = new OntoUMLParserClass(model);
     const generalizationLinkParser = new OntoUMLParserGeneralizationLink(model);
+    const relationParser = new OntoUMLParserRelation(model);
 
     const serviceMethods = [
       {
@@ -42,6 +56,11 @@ class OntoUMLParser {
       {
         service: generalizationLinkParser,
         serviceClass: OntoUMLParserGeneralizationLink,
+        ignoreMethods: [],
+      },
+      {
+        service: relationParser,
+        serviceClass: OntoUMLParserRelation,
         ignoreMethods: [],
       },
     ];

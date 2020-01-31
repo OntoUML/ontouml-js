@@ -9,8 +9,9 @@ interface IFilter {
 }
 
 class OntoUMLRules {
-  private _stereotypes: IStereotype[];
-  private _version: string;
+  private stereotypes: IStereotype[];
+  private relations: IRelation[];
+  private version: string;
 
   constructor(version?: string) {
     const ontoUMLRules = {
@@ -18,8 +19,9 @@ class OntoUMLRules {
       '2.0': OntoUMLv2,
     };
 
-    this._stereotypes = ontoUMLRules[version || '1.0'].STEREOTYPES;
-    this._version = version || '1.0';
+    this.stereotypes = ontoUMLRules[version || '1.0'].STEREOTYPES;
+    this.relations = ontoUMLRules[version || '1.0'].RELATIONS;
+    this.version = version || '1.0';
 
     this.getStereotypesID = memoizee(this.getStereotypesID);
     this.getSpecializationsConstraints = memoizee(
@@ -28,17 +30,25 @@ class OntoUMLRules {
   }
 
   getVersion(): string {
-    return this._version;
+    return this.version;
+  }
+
+  getStereotype(stereotypeId: string): IStereotype {
+    return this.stereotypes.filter(
+      (stereotype: IStereotype) => stereotype.id === stereotypeId,
+    )[0];
   }
 
   getStereotypeNameByID(stereotypeId: string): string {
-    return this._stereotypes.filter(
+    const stereotype = this.stereotypes.filter(
       (stereotype: IStereotype) => stereotype.id === stereotypeId,
-    )[0].name;
+    )[0];
+
+    return stereotype ? stereotype.name : '';
   }
 
   getStereotypesID(filters?: IFilter): string[] {
-    return this._stereotypes
+    return this.stereotypes
       .filter((stereotype: IStereotype) => {
         let contains = true;
 
@@ -54,7 +64,7 @@ class OntoUMLRules {
   }
 
   getStereotypesName(filters?: IFilter): string[] {
-    return this._stereotypes
+    return this.stereotypes
       .filter((stereotype: IStereotype) => {
         let contains = true;
 
@@ -71,7 +81,7 @@ class OntoUMLRules {
 
   getSpecializationsConstraints(): object {
     const specializationsConstraints = {};
-    const stereotypes = this._stereotypes;
+    const stereotypes = this.stereotypes;
 
     for (let i = 0; i < stereotypes.length; i += 1) {
       const stereotype = stereotypes[1];
@@ -86,13 +96,62 @@ class OntoUMLRules {
     stereotypeId: string,
     parentStereotypeId: string,
   ): boolean {
-    const stereotype = this._stereotypes.filter(
+    const stereotype = this.stereotypes.filter(
       (stereotype: IStereotype) => stereotype.id === stereotypeId,
     )[0];
 
     return stereotype
       ? stereotype.specializes.includes(parentStereotypeId)
       : false;
+  }
+
+  getRelationStereotype(relationStereotypeId: string): IRelation {
+    return this.relations.filter(
+      (releation: IRelation) => relationStereotypeId === releation.id,
+    )[0];
+  }
+
+  getRelationStereotypesID(): string[] {
+    return this.relations.map((releation: IRelation) => releation.id);
+  }
+
+  getRelationNameByID(relationId: string): string {
+    return this.relations.filter(
+      (relation: IRelation) => relation.id === relationId,
+    )[0].name;
+  }
+
+  getRelationCardinalityValue(value: string | number): number {
+    if (value === '*') {
+      return 99999;
+    }
+
+    if (typeof value === 'string') {
+      return Number(value);
+    }
+
+    return value;
+  }
+
+  isDerivationRelation(relationId: string): boolean {
+    const derivationId = this.relations.filter(
+      ({ name }: IRelation) => name === '«derivation»',
+    )[0].id;
+
+    return derivationId === relationId;
+  }
+
+  isValidRelation(
+    sourceStereotypeId: string,
+    targetStereotypeId: string,
+    relationStereotypeId: string,
+  ): boolean {
+    const sourceStereotype =
+      this.getStereotype(sourceStereotypeId) ||
+      this.getRelationStereotype(sourceStereotypeId);
+    const relation = sourceStereotype.relations[targetStereotypeId];
+
+    return relation && relation.includes(relationStereotypeId);
   }
 }
 

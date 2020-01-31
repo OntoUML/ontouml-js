@@ -1,14 +1,14 @@
+import { CLASS_TYPE } from '@constants/model_types';
 import OntoUMLParserMethod from './ontouml_parser_method';
 import OntoUMLParserGeneralizationLink from './ontouml_parser_generalization_link';
-import { CLASS_TYPE } from '@constants/model_types';
 
 class OntoUMLParserClass extends OntoUMLParserMethod {
-  private _generalizationLinkParser: OntoUMLParserGeneralizationLink;
+  private generalizationLinkParser: OntoUMLParserGeneralizationLink;
 
   constructor(model: IModel) {
     super(model);
 
-    this._generalizationLinkParser = new OntoUMLParserGeneralizationLink(model);
+    this.generalizationLinkParser = new OntoUMLParserGeneralizationLink(model);
   }
 
   getClasses(): IElement[] {
@@ -24,7 +24,7 @@ class OntoUMLParserClass extends OntoUMLParserMethod {
   }
 
   getClassParents(classId: string): IElement[] {
-    const generalizationLinks = this._generalizationLinkParser.getGeneralizationLinksFromSpecificClass(
+    const generalizationLinks = this.generalizationLinkParser.getGeneralizationLinksFromSpecificClass(
       classId,
     );
     const generalClassIds = generalizationLinks.map(
@@ -37,7 +37,7 @@ class OntoUMLParserClass extends OntoUMLParserMethod {
   }
 
   getClassChildren(classId: string): IElement[] {
-    const generalizationLinks = this._generalizationLinkParser.getGeneralizationLinksFromGeneralClass(
+    const generalizationLinks = this.generalizationLinkParser.getGeneralizationLinksFromGeneralClass(
       classId,
     );
     const generalClassIds = generalizationLinks.map(

@@ -1,3 +1,11 @@
+interface IProperty {
+  type: string;
+  id: string;
+  url?: string;
+  propertyType?: string;
+  cardinality?: string;
+}
+
 interface IElement {
   type: string;
   id: string;
@@ -11,6 +19,7 @@ interface IElement {
     id: string;
   };
   stereotypes?: string[];
+  properties?: IProperty[];
   elements?: IElement[];
 }
 
@@ -23,10 +32,29 @@ interface IModel {
   elements?: IElement[];
 }
 
+interface IRelation {
+  name: string;
+  id: string;
+  relations: {
+    [key: string]: string[];
+  };
+  source?: {
+    lowerbound: number | string;
+    upperbound: number | string;
+  };
+  target?: {
+    lowerbound: number | string;
+    upperbound: number | string;
+  };
+}
+
 interface IStereotype {
   name: string;
   id: string;
   specializes: string[];
+  relations: {
+    [key: string]: string[];
+  };
   rigidity: string;
   sortality: string;
   ultimateSortal: boolean;

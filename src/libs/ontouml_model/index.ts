@@ -7,6 +7,19 @@ class OntoUMLModel {
   getClass: (classId: string) => IElement[];
   getClassParents: (classId: string) => IElement[];
   getClassChildren: (classId: string) => IElement[];
+  getGeneralizationLinksFromGeneralClass: (classId: string) => IElement[];
+  getGeneralizationLinksFromSpecificClass: (classId: string) => IElement[];
+  getRelations: () => IElement[];
+  getRelation: (relationId: string) => IElement;
+  getRelationSourceClassID: (relationId: string) => string;
+  getRelationTargetClassID: (relationId: string) => string;
+  getRelationSourceProperty: (relationId: string) => IProperty;
+  getRelationSourceLowerboundCardinality: (relationId: string) => number;
+  getRelationSourceUpperboundCardinality: (relationId: string) => number;
+  getRelationTargetProperty: (relationId: string) => IProperty;
+  getRelationTargetLowerboundCardinality: (relationId: string) => number;
+  getRelationTargetUpperboundCardinality: (relationId: string) => number;
+  getVersion: () => string;
   isValid: () => boolean;
 
   // OntoUMLSyntax

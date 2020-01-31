@@ -18,21 +18,16 @@
     "noImplicitThis": false,
     "resolveJsonModule": true,
     "strictNullChecks": false,
-    "typeRoots" : ["./@types", "./node_modules/@types"],
+    "typeRoots": ["./@types", "./node_modules/@types"],
     "baseUrl": ".",
     "paths": {
       "@test-models/*": ["test_models/*"],
       "@constants/*": ["src/constants/*"],
       "@error/*": ["src/error/*"],
       "@libs/*": ["src/libs/*"],
-      "@rules/*": ["src/rules/*"],
       "@schemas/*": ["src/schemas/*"],
       "@utils/*": ["src/utils/*"]
     }
   },
-  "include": [
-    "src/**/*",
-    "@types/**/*",
-    "__tests__/**/*"
-  ]
+  "include": ["src/**/*", "@types/**/*", "__tests__/**/*"]
 }

@@ -2,9 +2,13 @@ import { modelInvalidExample1 } from '@test-models/invalids';
 import OntoUMLModel from '@libs/ontouml_model';
 
 describe('OntoUML Model', () => {
-  it('Should validate the model', async () => {
-    const model = new OntoUMLModel(modelInvalidExample1);
+  const model = new OntoUMLModel(modelInvalidExample1);
 
+  it('Should return a valid model', async () => {
     expect(model.isValid()).toBe(true);
+  });
+
+  it('Should return ontouml version 2.0', async () => {
+    expect(model.getVersion()).toBe('2.0');
   });
 });
