@@ -14,9 +14,6 @@ import {
  *
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
- *
- * @todo Define `getAncestorsIds(elementId) : string[]` function
- * @todo Define `getDescentsIds(elementId) : string[]` function
  */
 class OntoUML2Model {
   model: IModel;
@@ -39,6 +36,18 @@ class OntoUML2Model {
     this.getRelations = memoizee(this.getRelations);
     this.getGeneralizations = memoizee(this.getGeneralizations);
     this.getGeneralizationSets = memoizee(this.getGeneralizationSets);
+    this.getProperties = memoizee(this.getProperties);
+    this.getElementById = memoizee(this.getElementById);
+    this.getPackageById = memoizee(this.getPackageById);
+    this.getClassById = memoizee(this.getClassById);
+    this.getRelationById = memoizee(this.getRelationById);
+    this.getGeneralizationById = memoizee(this.getGeneralizationById);
+    this.getGeneralizationSetById = memoizee(this.getGeneralizationSetById);
+    this.getPropertyById = memoizee(this.getPropertyById);
+    this.getParentsIds = memoizee(this.getParentsIds);
+    this.getChildrenIds = memoizee(this.getChildrenIds);
+    this.getAncestorsIds = memoizee(this.getAncestorsIds);
+    this.getChildrenIds = memoizee(this.getChildrenIds);
   }
 
   /**
@@ -232,6 +241,15 @@ class OntoUML2Model {
   }
 
   /**
+   * Returns an IProperty according to its id.
+   *
+   * @param propertyId - Desired element's id.
+   */
+  getPropertyById(propertyId: string): IProperty {
+    return this.getProperties().find(property => property.id === propertyId);
+  }
+
+  /**
    * Returns an array of string ids of the parents of an element.
    *
    * @param specificElementId - Desired element's id.
@@ -255,8 +273,13 @@ class OntoUML2Model {
       .map(generalization => generalization.id);
   }
 
+  /**
+   * Returns an array of string ids of the ancestors of an element.
+   *
+   * @param elementId - Desired element's id.
+   * @param knownAncestorsIds - MUST NOT USE in regular code. Optional attribute that allows recursive execution of the function.
+   */
   getAncestorsIds(elementId: string, knownAncestorsIds?: string[]): string[] {
-    // let ancestorsIds = [ ...knownAncestorsIds ];
     let ancestorsIds = [] || [...knownAncestorsIds];
     this.getParentsIds(elementId).forEach(parentId => {
       if (!ancestorsIds.includes(parentId)) {
@@ -271,11 +294,16 @@ class OntoUML2Model {
     return ancestorsIds;
   }
 
+  /**
+   * Returns an array of string ids of the descendents of an element.
+   *
+   * @param elementId - Desired element's id.
+   * @param knownAncestorsIds - MUST NOT USE in regular code. Optional attribute that allows recursive execution of the function.
+   */
   getDescendentsIds(
     elementId: string,
     knownDescendentsIds?: string[],
   ): string[] {
-    // let ancestorsIds = [ ...knownAncestorsIds ];
     let descendentsIds = [] || [...knownDescendentsIds];
     this.getChildrenIds(elementId).forEach(childId => {
       if (!descendentsIds.includes(childId)) {
@@ -290,3 +318,5 @@ class OntoUML2Model {
     return descendentsIds;
   }
 }
+
+export default OntoUML2Model;
