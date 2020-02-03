@@ -1,10 +1,9 @@
-
 /**
  * Interface that captures common properties of objects in `ontouml-schema`. Whenever necessary, stereotypes are captured as regular string arrays.
- * 
+ *
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
- * 
+ *
  * @todo Update propertyAssignments
  * @todo Update stereotypes
  * @todo Replace strings (such as 'type') for constants
@@ -18,7 +17,7 @@ interface IElement {
 
 /**
  * Interface that represents a Model according to `ontouml-schema`.
- * 
+ *
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
@@ -31,7 +30,7 @@ interface IModel extends IElement {
 
 /**
  * Interface that represents a Package according to `ontouml-schema`.
- * 
+ *
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
@@ -42,12 +41,12 @@ interface IPackage extends IElement {
 
 /**
  * Interface that represents a Class according to `ontouml-schema`.
- * 
+ *
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
 interface IClass extends IElement {
-  type: 'Class',
+  type: 'Class';
   stereotypes: string[] | null;
   properties: IProperty[] | null;
   isAbstract: boolean | null;
@@ -56,7 +55,7 @@ interface IClass extends IElement {
 
 /**
  * Interface that represents a Relation according to `ontouml-schema`.
- * 
+ *
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
@@ -81,7 +80,7 @@ interface IRelation extends IElement {
 
 /**
  * Interface that represents a Generalization according to `ontouml-schema`.
- * 
+ *
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
@@ -93,7 +92,7 @@ interface IGeneralization extends IElement {
 
 /**
  * Interface that represents a Generalization Set according to `ontouml-schema`.
- * 
+ *
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
@@ -107,7 +106,7 @@ interface IGeneralizationSet extends IElement {
 
 /**
  * Interface that represents a Property according to `ontouml-schema`.
- * 
+ *
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
@@ -126,12 +125,18 @@ interface IProperty extends IElement {
 
 /**
  * Utilitary interface that represents a `reference` according to `ontouml-schema`.
- * 
+ *
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
 interface IReference {
-  type: 'Package' | 'Class' | 'Relation' | 'Generalization' | 'GeneralizationSet' | 'Property';
+  type:
+    | 'Package'
+    | 'Class'
+    | 'Relation'
+    | 'Generalization'
+    | 'GeneralizationSet'
+    | 'Property';
   id: string;
 }
 

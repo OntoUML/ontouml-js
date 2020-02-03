@@ -83,8 +83,8 @@ class OntoUML2Model {
       : this.getElements();
 
     return elements
-      .filter(element => element.type === PACKAGE_TYPE)
-      .map(element => <IPackage>element);
+      .filter((element: IElement) => element.type === PACKAGE_TYPE)
+      .map((element: IPackage) => element);
   }
 
   /**
@@ -100,8 +100,8 @@ class OntoUML2Model {
       : this.getElements();
 
     return elements
-      .filter(element => element.type === CLASS_TYPE)
-      .map(element => <IClass>element);
+      .filter((element: IElement) => element.type === CLASS_TYPE)
+      .map((element: IClass) => element);
   }
 
   /**
@@ -117,8 +117,8 @@ class OntoUML2Model {
       : this.getElements();
 
     return elements
-      .filter(element => element.type === RELATION_TYPE)
-      .map(element => <IRelation>element);
+      .filter((element: IElement) => element.type === RELATION_TYPE)
+      .map((element: IRelation) => element);
   }
 
   /**
@@ -134,8 +134,8 @@ class OntoUML2Model {
       : this.getElements();
 
     return elements
-      .filter(element => element.type === GENERALIZATION_TYPE)
-      .map(element => <IGeneralization>element);
+      .filter((element: IElement) => element.type === GENERALIZATION_TYPE)
+      .map((element: IGeneralization) => element);
   }
 
   /**
@@ -151,8 +151,8 @@ class OntoUML2Model {
       : this.getElements();
 
     return elements
-      .filter(element => element.type === GENERALIZATION_SET_TYPE)
-      .map(element => <IGeneralizationSet>element);
+      .filter((element: IElement) => element.type === GENERALIZATION_SET_TYPE)
+      .map((element: IGeneralizationSet) => element);
   }
 
   /**
@@ -169,7 +169,7 @@ class OntoUML2Model {
 
     let properties: IProperty[] = [];
 
-    elements.forEach(element => {
+    elements.forEach((element: IElement) => {
       if (element.type === CLASS_TYPE) {
         properties = [...properties, ...(<IClass>element).properties];
       } else if (element.type === RELATION_TYPE) {
@@ -186,7 +186,7 @@ class OntoUML2Model {
    * @param elementId - Desired element's id.
    */
   getElementById(elementId: string): IElement {
-    return this.getElements().find(element => element.id === elementId);
+    return this.getElements().find((element: IElement) => element.id === elementId);
   }
 
   /**
@@ -196,7 +196,7 @@ class OntoUML2Model {
    */
   getPackageById(packageId: string): IPackage {
     return this.getPackages().find(
-      packageElement => packageElement.id === packageId,
+      (packageElement: IPackage) => packageElement.id === packageId,
     );
   }
 
@@ -206,7 +206,7 @@ class OntoUML2Model {
    * @param classId - Desired element's id.
    */
   getClassById(classId: string): IClass {
-    return this.getClasses().find(classElement => classElement.id === classId);
+    return this.getClasses().find((classElement: IClass) => classElement.id === classId);
   }
 
   /**
@@ -215,7 +215,7 @@ class OntoUML2Model {
    * @param relationId - Desired element's id.
    */
   getRelationById(relationId: string): IRelation {
-    return this.getRelations().find(relation => relation.id === relationId);
+    return this.getRelations().find((relation: IRelation) => relation.id === relationId);
   }
 
   /**
@@ -225,7 +225,7 @@ class OntoUML2Model {
    */
   getGeneralizationById(generalizationId: string): IGeneralization {
     return this.getGeneralizations().find(
-      generalization => generalization.id === generalizationId,
+      (generalization: IGeneralization) => generalization.id === generalizationId,
     );
   }
 
@@ -236,7 +236,7 @@ class OntoUML2Model {
    */
   getGeneralizationSetById(generalizationSetId: string): IGeneralizationSet {
     return this.getGeneralizationSets().find(
-      generalizationSet => generalizationSet.id === generalizationSetId,
+      (generalizationSet: IGeneralizationSet) => generalizationSet.id === generalizationSetId,
     );
   }
 
@@ -246,7 +246,7 @@ class OntoUML2Model {
    * @param propertyId - Desired element's id.
    */
   getPropertyById(propertyId: string): IProperty {
-    return this.getProperties().find(property => property.id === propertyId);
+    return this.getProperties().find((property: IProperty) => property.id === propertyId);
   }
 
   /**
@@ -257,9 +257,9 @@ class OntoUML2Model {
   getParentsIds(specificElementId: string): string[] {
     return this.getGeneralizations()
       .filter(
-        generalization => generalization.specific.id === specificElementId,
+        (generalization: IGeneralization) => generalization.specific.id === specificElementId,
       )
-      .map(generalization => generalization.id);
+      .map((generalization: IGeneralization) => generalization.id);
   }
 
   /**
@@ -269,8 +269,8 @@ class OntoUML2Model {
    */
   getChildrenIds(generalElementId: string): string[] {
     return this.getGeneralizations()
-      .filter(generalization => generalization.general.id === generalElementId)
-      .map(generalization => generalization.id);
+      .filter((generalization: IGeneralization) => generalization.general.id === generalElementId)
+      .map((generalization: IGeneralization) => generalization.id);
   }
 
   /**
@@ -281,7 +281,7 @@ class OntoUML2Model {
    */
   getAncestorsIds(elementId: string, knownAncestorsIds?: string[]): string[] {
     let ancestorsIds = [] || [...knownAncestorsIds];
-    this.getParentsIds(elementId).forEach(parentId => {
+    this.getParentsIds(elementId).forEach((parentId: string) => {
       if (!ancestorsIds.includes(parentId)) {
         ancestorsIds.push(parentId);
         ancestorsIds = [
@@ -305,7 +305,7 @@ class OntoUML2Model {
     knownDescendentsIds?: string[],
   ): string[] {
     let descendentsIds = [] || [...knownDescendentsIds];
-    this.getChildrenIds(elementId).forEach(childId => {
+    this.getChildrenIds(elementId).forEach((childId: string) => {
       if (!descendentsIds.includes(childId)) {
         descendentsIds.push(childId);
         descendentsIds = [
