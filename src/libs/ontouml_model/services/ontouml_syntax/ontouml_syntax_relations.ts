@@ -4,7 +4,7 @@ import {
 } from '@error/ontouml_syntax';
 import OntoUMLParser from '../ontouml_parser';
 import OntoUMLSyntaxMethod from './ontouml_syntax_method';
-import { CLASS_TYPE } from '@constants/model_types';
+import { CLASS_TYPE } from '@constants/';
 
 class OntoUMLSyntaxRelations extends OntoUMLSyntaxMethod {
   private errors: IOntoUMLError[];

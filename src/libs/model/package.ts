@@ -1,16 +1,5 @@
 import memoizee from 'memoizee';
-import {
-  PACKAGE_TYPE,
-  CLASS_TYPE,
-  RELATION_TYPE,
-  GENERALIZATION_TYPE,
-  GENERALIZATION_SET_TYPE,
-  PROPERTY_TYPE,
-  ENUMARATION_TYPE,
-  AGGREGATIONKIND_NONE,
-  AGGREGATIONKIND_SHARED,
-  AGGREGATIONKIND_COMPOSITE,
-} from '@constants/model_types';
+import { PACKAGE_TYPE } from '@constants/';
 import { Element, Classifier } from '.';
 
 /**
@@ -40,6 +29,7 @@ export class Package extends Element {
     if (enableHash) {
       this.getAllContents = memoizee(this.getAllContents);
       this.getAllContentsByType = memoizee(this.getAllContentsByType);
+      this.getContentById = memoizee(this.getContentById);
     }
   }
 
@@ -73,6 +63,17 @@ export class Package extends Element {
   getAllContentsByType(selectedTypes: string[]): Element[] {
     return this.getAllContents().filter(element =>
       selectedTypes.includes(element.type),
+    );
+  }
+
+  /**
+   * Returns an Element according of matching id.
+   *
+   * @param elementId - Desired element's id.
+   */
+  getContentById(elementId: string): Element {
+    return this.getAllContents().find(
+      (element: Element) => element.id === elementId,
     );
   }
 }

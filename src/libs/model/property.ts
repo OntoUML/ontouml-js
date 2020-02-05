@@ -1,6 +1,6 @@
-import { Stereotyped, Classifier } from '.';
+import { Decoratable, Classifier } from '.';
 import { Enumaration } from './literals';
-import { PROPERTY_TYPE } from '@constants/model_types';
+import { PROPERTY_TYPE } from '@constants/';
 
 /**
  * Class that represents an OntoUML property. These properties are analogous to both UML attributes and association ends, depending or their containers for proper comparisson.
@@ -8,7 +8,7 @@ import { PROPERTY_TYPE } from '@constants/model_types';
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
-export class Property extends Stereotyped {
+export class Property extends Decoratable {
   container: Classifier;
   cardinality: string | null;
   propertyType: Classifier | Enumaration | null;

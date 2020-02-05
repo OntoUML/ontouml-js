@@ -1,4 +1,4 @@
-import { CLASS_TYPE } from '@constants/model_types';
+import { CLASS_TYPE } from '@constants/';
 import OntoUMLParserMethod from './ontouml_parser_method';
 import OntoUMLParserGeneralizationLink from './ontouml_parser_generalization_link';
 

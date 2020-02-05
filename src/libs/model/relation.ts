@@ -1,4 +1,4 @@
-import { RELATION_TYPE } from '@constants/model_types';
+import { RELATION_TYPE } from '@constants/';
 import { Property } from './property';
 import { Package } from './package';
 import { Classifier } from '.';

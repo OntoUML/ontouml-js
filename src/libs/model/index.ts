@@ -7,9 +7,10 @@ import {
   RELATION_TYPE,
   GENERALIZATION_TYPE,
   GENERALIZATION_SET_TYPE,
-} from '@constants/model_types';
+} from '@constants/';
 import { Property } from './property';
 import { Package } from './package';
+import { Generalization } from './generalization';
 
 /**
  * Utility class for the manipulation of models in OntoUML2 in conformance to the `ontouml-schema` definition.
@@ -352,8 +353,8 @@ export abstract class Element {
     type: string,
     id: string,
     enableMemoization = false,
-    description?: string,
     name?: string,
+    description?: string,
     container?: Element,
   ) {
     this.type = type;
@@ -395,7 +396,7 @@ export abstract class Element {
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
-export abstract class Stereotyped extends Element {
+export abstract class Decoratable extends Element {
   stereotypes: string[] | null;
 
   constructor(
@@ -420,7 +421,7 @@ export abstract class Stereotyped extends Element {
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
-export abstract class Classifier extends Stereotyped {
+export abstract class Classifier extends Decoratable {
   properties: Property[] | null;
   isAbstract: boolean | null;
   isDerived: boolean | null;
@@ -442,6 +443,72 @@ export abstract class Classifier extends Stereotyped {
     this.isAbstract = isAbstract;
     this.isDerived = isDerived;
 
-    // if (enableHash) {}
+    if (enableHash) {
+      this.getParentClassifiers = memoizee(this.getParentClassifiers);
+      this.getChildClassifiers = memoizee(this.getChildClassifiers);
+      this.getAncestorClassifiers = memoizee(this.getAncestorClassifiers);
+      this.getDescendentClassifiers = memoizee(this.getDescendentClassifiers);
+    }
+  }
+
+  /**
+   * Returns an array of Classifier objects connected to this classifier through generalizations as its parents.
+   */
+  getParentClassifiers(): Classifier[] {
+    return this.getRootPackage()
+      .getAllContentsByType([GENERALIZATION_TYPE])
+      .filter(
+        (generalization: Generalization) => generalization.specific === this,
+      )
+      .map((generalization: Generalization) => generalization.general);
+  }
+
+  /**
+   * Returns an array of Classifier objects connected to this classifier through generalizations as its children.
+   */
+  getChildClassifiers(): Classifier[] {
+    return this.getRootPackage()
+      .getAllContentsByType([GENERALIZATION_TYPE])
+      .filter(
+        (generalization: Generalization) => generalization.general === this,
+      )
+      .map((generalization: Generalization) => generalization.specific);
+  }
+
+  /**
+   * Returns an array of Classifier objects recursivelly connected to this classifier through generalizations as its parents or ancestors.
+   *
+   * @param knownAncestors - MUST NOT USE in regular code. Optional attribute that allows recursive execution of the function.
+   */
+  getAncestorClassifiers(knownAncestors?: Classifier[]): Classifier[] {
+    let ancestors = [...knownAncestors];
+    this.getParentClassifiers().forEach((parent: Classifier) => {
+      if (!ancestors.includes(parent)) {
+        ancestors.push(parent);
+        ancestors = [...ancestors, ...this.getAncestorClassifiers(ancestors)];
+      }
+    });
+
+    return ancestors;
+  }
+
+  /**
+   * Returns an array of Classifier objects recursivelly connected to this classifier through generalizations as its children or descendents.
+   *
+   * @param knownDescendents - MUST NOT USE in regular code. Optional attribute that allows recursive execution of the function.
+   */
+  getDescendentClassifiers(knownDescendents?: Classifier[]): Classifier[] {
+    let descendents = [] || [...knownDescendents];
+    this.getChildClassifiers().forEach((child: Classifier) => {
+      if (!descendents.includes(child)) {
+        descendents.push(child);
+        descendents = [
+          ...descendents,
+          ...this.getDescendentClassifiers(descendents),
+        ];
+      }
+    });
+
+    return descendents;
   }
 }

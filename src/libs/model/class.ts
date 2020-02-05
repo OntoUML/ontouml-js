@@ -1,7 +1,7 @@
 import { Classifier } from '.';
 import { Package } from './package';
 import { Property } from './property';
-import { CLASS_TYPE } from '@constants/model_types';
+import { CLASS_TYPE } from '@constants/';
 
 /**
  * Class that represents an OntoUML class.
