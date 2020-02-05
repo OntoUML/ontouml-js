@@ -18,7 +18,7 @@ import {
 class OntoUML2Model {
   model: IModel;
 
-  constructor(model: IModel) {
+  constructor(model?: IModel) {
     let validator = new Ajv().compile(schemas.getSchema(schemas.ONTOUML_2));
     let isValid = validator(model);
 
@@ -186,7 +186,9 @@ class OntoUML2Model {
    * @param elementId - Desired element's id.
    */
   getElementById(elementId: string): IElement {
-    return this.getElements().find((element: IElement) => element.id === elementId);
+    return this.getElements().find(
+      (element: IElement) => element.id === elementId,
+    );
   }
 
   /**
@@ -206,7 +208,9 @@ class OntoUML2Model {
    * @param classId - Desired element's id.
    */
   getClassById(classId: string): IClass {
-    return this.getClasses().find((classElement: IClass) => classElement.id === classId);
+    return this.getClasses().find(
+      (classElement: IClass) => classElement.id === classId,
+    );
   }
 
   /**
@@ -215,7 +219,9 @@ class OntoUML2Model {
    * @param relationId - Desired element's id.
    */
   getRelationById(relationId: string): IRelation {
-    return this.getRelations().find((relation: IRelation) => relation.id === relationId);
+    return this.getRelations().find(
+      (relation: IRelation) => relation.id === relationId,
+    );
   }
 
   /**
@@ -225,7 +231,8 @@ class OntoUML2Model {
    */
   getGeneralizationById(generalizationId: string): IGeneralization {
     return this.getGeneralizations().find(
-      (generalization: IGeneralization) => generalization.id === generalizationId,
+      (generalization: IGeneralization) =>
+        generalization.id === generalizationId,
     );
   }
 
@@ -236,7 +243,8 @@ class OntoUML2Model {
    */
   getGeneralizationSetById(generalizationSetId: string): IGeneralizationSet {
     return this.getGeneralizationSets().find(
-      (generalizationSet: IGeneralizationSet) => generalizationSet.id === generalizationSetId,
+      (generalizationSet: IGeneralizationSet) =>
+        generalizationSet.id === generalizationSetId,
     );
   }
 
@@ -246,7 +254,9 @@ class OntoUML2Model {
    * @param propertyId - Desired element's id.
    */
   getPropertyById(propertyId: string): IProperty {
-    return this.getProperties().find((property: IProperty) => property.id === propertyId);
+    return this.getProperties().find(
+      (property: IProperty) => property.id === propertyId,
+    );
   }
 
   /**
@@ -257,7 +267,8 @@ class OntoUML2Model {
   getParentsIds(specificElementId: string): string[] {
     return this.getGeneralizations()
       .filter(
-        (generalization: IGeneralization) => generalization.specific.id === specificElementId,
+        (generalization: IGeneralization) =>
+          generalization.specific.id === specificElementId,
       )
       .map((generalization: IGeneralization) => generalization.id);
   }
@@ -269,7 +280,10 @@ class OntoUML2Model {
    */
   getChildrenIds(generalElementId: string): string[] {
     return this.getGeneralizations()
-      .filter((generalization: IGeneralization) => generalization.general.id === generalElementId)
+      .filter(
+        (generalization: IGeneralization) =>
+          generalization.general.id === generalElementId,
+      )
       .map((generalization: IGeneralization) => generalization.id);
   }
 
