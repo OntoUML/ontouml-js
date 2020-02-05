@@ -5,106 +5,24 @@ import {
   RELATION_TYPE,
   GENERALIZATION_TYPE,
   GENERALIZATION_SET_TYPE,
+  PROPERTY_TYPE,
+  ENUMARATION_TYPE,
+  AGGREGATIONKIND_NONE,
+  AGGREGATIONKIND_SHARED,
+  AGGREGATIONKIND_COMPOSITE,
 } from '@constants/model_types';
+import { Element, Classifier } from '.';
 
 /**
- * Class that represent a OntoUML element.
- */
-export abstract class Element<T extends Element<any>> {
-  type: string;
-  id: string;
-  name: string | null;
-  description: string | null;
-  container: T | null;
-
-  constructor(
-    type: string,
-    id: string,
-    enableMemoization = false,
-    description?: string,
-    name?: string,
-    container?: T,
-  ) {
-    this.type = type;
-    this.id = id;
-    this.name = name;
-    this.description = description;
-    this.container = container;
-
-    if (enableMemoization) {
-      this.getRootPackage = memoizee(this.getRootPackage);
-    }
-  }
-
-  /**
-   * Returns the outtermost container of an element.
-   */
-  getRootPackage(): Package {
-    if (this.container) {
-      let root: Package;
-      root = this.container.getRootPackage();
-      if (this instanceof Package && root === this) {
-        throw 'Circular containment references';
-      } else if (root) {
-        return root;
-      } else if (this.container instanceof Package) {
-        return this.container;
-      } else {
-        return null;
-      }
-    } else {
-      return null;
-    }
-  }
-}
-
-export abstract class Stereotyped<T extends Element<any>> extends Element<any> {
-  stereotypes: Stereotype[] | null;
-
-  constructor(
-    id: string,
-    enableHash = false,
-    name?: string,
-    description?: string,
-    stereotypes?: Stereotype[],
-    container?: Package,
-  ) {
-    super(id, enableHash, name, description, container);
-    this.stereotypes = stereotypes;
-
-    if (enableHash) {
-    }
-  }
-}
-
-export abstract class Classifier extends Stereotyped<any> {
-  properties: Property[] | null;
-
-  constructor(
-    id: string,
-    enableHash = false,
-    name?: string,
-    description?: string,
-    properties?: Property[],
-    stereotypes?: Stereotype[],
-    container?: Package,
-  ) {
-    super(id, enableHash, name, description, stereotypes, container);
-    this.properties = properties;
-
-    if (enableHash) {
-    }
-  }
-}
-
-/**
- * Class that represents an OntoUML Package.
+ * Class that represents an OntoUML package or model.
  *
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
-export class Package extends Element<Package> {
+export class Package extends Element {
   authors: string[] | null;
+  contents: Element[] | null;
+  container: Package | null;
 
   constructor(
     id: string,
@@ -112,21 +30,24 @@ export class Package extends Element<Package> {
     name?: string,
     description?: string,
     authors?: string[],
-    contents?: Element<any>[],
+    contents?: Element[],
     container?: Package,
   ) {
-    super(id, enableHash, name, description, container);
-    this.type = PACKAGE_TYPE;
+    super(PACKAGE_TYPE, id, enableHash, name, description, container);
     this.authors = authors;
     this.contents = contents;
 
     if (enableHash) {
       this.getAllContents = memoizee(this.getAllContents);
+      this.getAllContentsByType = memoizee(this.getAllContentsByType);
     }
   }
 
+  /**
+   * Returns an array of all Element objects that may be reached from a package, including classifier's properties.
+   */
   getAllContents(): Element[] {
-    var allElements = [...this.contents];
+    let allElements = [...this.contents];
 
     this.contents.forEach(content => {
       allElements.push(content);
@@ -143,16 +64,15 @@ export class Package extends Element<Package> {
 
     return allElements;
   }
+
+  /**
+   * Returns an array of all Element objects that may be reached from a package filtered by those which the type field matches the selected ones.
+   *
+   * @param selectedTypes - an array of strings representing the desired types (i.e., PACKAGE_TYPE, CLASS_TYPE, RELATION_TYPE, GENERALIZATION_TYPE, GENERALIZATION_SET_TYPE, or PROPERTY_TYPE).
+   */
+  getAllContentsByType(selectedTypes: string[]): Element[] {
+    return this.getAllContents().filter(element =>
+      selectedTypes.includes(element.type),
+    );
+  }
 }
-
-export class Class extends Classifier {}
-
-export class Relation extends Classifier {}
-
-export class Property extends Stereotyped<Classifier> {}
-
-export class Generalization extends Element<Package> {}
-
-export class GeneralizationSet extends Element<Package> {}
-
-export class Stereotype extends Element<Stereotyped<any>> {}

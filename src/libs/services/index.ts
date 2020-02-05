@@ -1,4 +1,4 @@
-import OntoUML2Model from '@libs/model/model_manager';
+import OntoUML2Model from '@libs/model';
 import OntoUML2Verification from '@libs/services/verification/verification';
 
 /**

@@ -8,6 +8,8 @@ import {
   GENERALIZATION_TYPE,
   GENERALIZATION_SET_TYPE,
 } from '@constants/model_types';
+import { Property } from './property';
+import { Package } from './package';
 
 /**
  * Utility class for the manipulation of models in OntoUML2 in conformance to the `ontouml-schema` definition.
@@ -15,7 +17,7 @@ import {
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
-class OntoUML2Model {
+export class OntoUML2Model {
   model: IModel;
 
   constructor(model?: IModel) {
@@ -333,4 +335,113 @@ class OntoUML2Model {
   }
 }
 
-export default OntoUML2Model;
+/**
+ * Abstract class that captures OntoUML elements.
+ *
+ * @author Claudenir Fonseca
+ * @author Lucas Bassetti
+ */
+export abstract class Element {
+  type: string;
+  id: string;
+  name: string | null;
+  description: string | null;
+  container: Element | null;
+
+  constructor(
+    type: string,
+    id: string,
+    enableMemoization = false,
+    description?: string,
+    name?: string,
+    container?: Element,
+  ) {
+    this.type = type;
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.container = container;
+
+    if (enableMemoization) {
+      this.getRootPackage = memoizee(this.getRootPackage);
+    }
+  }
+
+  /**
+   * Returns the outtermost container of an element.
+   */
+  getRootPackage(): Package {
+    if (this.container) {
+      let root: Package;
+      root = this.container.getRootPackage();
+      if (this instanceof Package && root === this) {
+        throw 'Circular containment references';
+      } else if (root) {
+        return root;
+      } else if (this.container instanceof Package) {
+        return this.container;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+}
+
+/**
+ * Abstract class that captures OntoUML elements that can be decorated with stereotypes.
+ *
+ * @author Claudenir Fonseca
+ * @author Lucas Bassetti
+ */
+export abstract class Stereotyped extends Element {
+  stereotypes: string[] | null;
+
+  constructor(
+    type: string,
+    id: string,
+    enableHash = false,
+    name?: string,
+    description?: string,
+    stereotypes?: string[],
+    container?: Element,
+  ) {
+    super(type, id, enableHash, name, description, container);
+    this.stereotypes = stereotypes;
+
+    // if (enableHash) {}
+  }
+}
+
+/**
+ * Abstract class that captures OntoUML elements that represent types and bear properties.
+ *
+ * @author Claudenir Fonseca
+ * @author Lucas Bassetti
+ */
+export abstract class Classifier extends Stereotyped {
+  properties: Property[] | null;
+  isAbstract: boolean | null;
+  isDerived: boolean | null;
+
+  constructor(
+    type: string,
+    id: string,
+    enableHash = false,
+    name?: string,
+    description?: string,
+    stereotypes?: string[],
+    properties?: Property[],
+    isAbstract?: boolean,
+    isDerived?: boolean,
+    container?: Package,
+  ) {
+    super(type, id, enableHash, name, description, stereotypes, container);
+    this.properties = properties;
+    this.isAbstract = isAbstract;
+    this.isDerived = isDerived;
+
+    // if (enableHash) {}
+  }
+}
