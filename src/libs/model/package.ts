@@ -1,5 +1,5 @@
 import memoizee from 'memoizee';
-import { PACKAGE_TYPE } from '@constants/';
+import { PACKAGE_TYPE } from '@constants/.';
 import { Element, Classifier } from '.';
 
 /**
@@ -37,7 +37,7 @@ export class Package extends Element {
    * Returns an array of all Element objects that may be reached from a package, including classifier's properties.
    */
   getAllContents(): Element[] {
-    let allElements = [...this.contents];
+    let allElements = this.contents ? [...this.contents] : [];
 
     this.contents.forEach(content => {
       allElements.push(content);

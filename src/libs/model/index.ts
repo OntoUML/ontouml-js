@@ -7,7 +7,7 @@ import {
   RELATION_TYPE,
   GENERALIZATION_TYPE,
   GENERALIZATION_SET_TYPE,
-} from '@constants/';
+} from '@constants/.';
 import { Property } from './property';
 import { Package } from './package';
 import { Generalization } from './generalization';
@@ -18,12 +18,14 @@ import { Generalization } from './generalization';
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
-export class OntoUML2Model {
+export class ModelManager {
   model: IModel;
 
   constructor(model?: IModel) {
     let validator = new Ajv().compile(schemas.getSchema(schemas.ONTOUML_2));
     let isValid = validator(model);
+
+    console.log('Checking validity');
 
     if (!isValid) {
       throw {
@@ -31,6 +33,8 @@ export class OntoUML2Model {
         errors: validator.errors,
       };
     }
+
+    console.log('Enabling memoization.');
 
     this.model = model;
     this.getElements = memoizee(this.getElements);
@@ -51,6 +55,87 @@ export class OntoUML2Model {
     this.getChildrenIds = memoizee(this.getChildrenIds);
     this.getAncestorsIds = memoizee(this.getAncestorsIds);
     this.getChildrenIds = memoizee(this.getChildrenIds);
+
+    console.log('Checking references');
+
+    // Checks references on generalizations
+    this.getGeneralizations().forEach(generalization => {
+      let element = this.getElementById(generalization.general.id);
+      if (!element || element.type !== generalization.general.type) {
+        throw {
+          message: 'Broken reference',
+          error: generalization.general,
+        };
+      }
+
+      element = this.getElementById(generalization.specific.id);
+      if (!element || element.type !== generalization.specific.type) {
+        throw {
+          message: 'Broken reference',
+          error: generalization.specific,
+        };
+      }
+    });
+
+    // Checks references on generalization sets
+    this.getGeneralizationSets().forEach(generalizationSet => {
+      let element = this.getElementById(generalizationSet.categorizer.id);
+      if (!element || element.type !== generalizationSet.categorizer.type) {
+        throw {
+          message: 'Broken reference',
+          error: generalizationSet.categorizer,
+        };
+      }
+
+      generalizationSet.generalizations.forEach(reference => {
+        element = this.getElementById(reference.id);
+        if (!element || element.type !== reference.type) {
+          throw {
+            message: 'Broken reference',
+            error: reference,
+          };
+        }
+      });
+    });
+
+    // Check references on properties
+    this.getProperties().forEach(property => {
+      let element = this.getElementById(property.propertyType.id);
+      if (!element || element.type !== property.propertyType.type) {
+        throw {
+          message: 'Broken reference',
+          error: property.propertyType,
+        };
+      }
+
+      property.subsettedProperties.forEach(reference => {
+        element = this.getElementById(reference.id);
+        if (!element || element.type !== reference.type) {
+          throw {
+            message: 'Broken reference',
+            error: reference,
+          };
+        }
+      });
+
+      property.redefinedProperties.forEach(reference => {
+        element = this.getElementById(reference.id);
+        if (!element || element.type !== reference.type) {
+          throw {
+            message: 'Broken reference',
+            error: reference,
+          };
+        }
+      });
+    });
+
+    console.log('Generating elements');
+
+    // Creates Package elements
+    const allElements = this.getElements();
+    allElements.forEach(element => {
+      console.log(element);
+    });
   }
 
   /**
@@ -342,7 +427,7 @@ export class OntoUML2Model {
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
-export abstract class Element {
+export class Element {
   type: string;
   id: string;
   name: string | null;
@@ -396,7 +481,7 @@ export abstract class Element {
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
-export abstract class Decoratable extends Element {
+export class Decoratable extends Element {
   stereotypes: string[] | null;
 
   constructor(
@@ -421,7 +506,7 @@ export abstract class Decoratable extends Element {
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
-export abstract class Classifier extends Decoratable {
+export class Classifier extends Decoratable {
   properties: Property[] | null;
   isAbstract: boolean | null;
   isDerived: boolean | null;

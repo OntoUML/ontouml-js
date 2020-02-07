@@ -1,6 +1,6 @@
 import { Package } from './package';
 import { Classifier, Element } from '.';
-import { GENERALIZATION_TYPE } from '@constants/';
+import { GENERALIZATION_TYPE } from '@constants/.';
 
 /**
  * Class that represents an OntoUML generalization.

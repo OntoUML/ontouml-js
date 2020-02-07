@@ -2,7 +2,7 @@ import { Element } from '.';
 import { Package } from './package';
 import { Class } from './class';
 import { Generalization } from './generalization';
-import { GENERALIZATION_SET_TYPE } from '@constants/';
+import { GENERALIZATION_SET_TYPE } from '@constants/.';
 
 /**
  * Class that represents an OntoUML generalization set.

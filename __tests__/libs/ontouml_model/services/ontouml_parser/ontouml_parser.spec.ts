@@ -3,7 +3,7 @@ import {
   modelInvalidExample7,
 } from '@test-models/invalids';
 import OntoUMLParser from '@libs/ontouml_model/services/ontouml_parser';
-import { CLASS_TYPE } from '@constants/';
+import { CLASS_TYPE } from '@constants/.';
 
 describe('OntoUML Parser', () => {
   describe('OntoUML Example Invalid Model', () => {

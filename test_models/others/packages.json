@@ -1,0 +1,211 @@
+{
+  "type": "Model",
+  "id": "qJdeWA6AUB0UtAWl",
+  "name": "untitled",
+  "authors": ["claudenirmf"],
+  "elements": [
+    {
+      "type": "Class",
+      "id": "qJdeWA6AUB0UtAWm",
+      "name": "boolean",
+      "description": null,
+      "properties": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "Q5deWA6AUB0UtAWn",
+      "name": "byte",
+      "description": null,
+      "properties": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "Q5deWA6AUB0UtAWo",
+      "name": "char",
+      "description": null,
+      "properties": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "w5deWA6AUB0UtAWp",
+      "name": "double",
+      "description": null,
+      "properties": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "w5deWA6AUB0UtAWq",
+      "name": "float",
+      "description": null,
+      "properties": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "I5deWA6AUB0UtAWr",
+      "name": "int",
+      "description": null,
+      "properties": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "I5deWA6AUB0UtAWs",
+      "name": "long",
+      "description": null,
+      "properties": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "o5deWA6AUB0UtAWt",
+      "name": "short",
+      "description": null,
+      "properties": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "o5deWA6AUB0UtAWu",
+      "name": "void",
+      "description": null,
+      "properties": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "Y5deWA6AUB0UtAWv",
+      "name": "string",
+      "description": null,
+      "properties": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Package",
+      "id": "Yx3eWA6AUB0UtAk5",
+      "name": "1.",
+      "description": null,
+      "propertyAssignments": null,
+      "elements": [
+        {
+          "type": "Package",
+          "id": "Wkc.WA6AUB0UtAlq",
+          "name": "1.1",
+          "description": null,
+          "propertyAssignments": null,
+          "elements": [
+            {
+              "type": "Package",
+              "id": "uYi.WA6AUB0UtAl8",
+              "name": "1.1.1",
+              "description": null,
+              "propertyAssignments": null,
+              "elements": null
+            }
+          ]
+        },
+        {
+          "type": "Package",
+          "id": "iz8.WA6AUB0UtAlz",
+          "name": "1.2",
+          "description": null,
+          "propertyAssignments": null,
+          "elements": null
+        }
+      ]
+    },
+    {
+      "type": "Package",
+      "id": "5Og.WA6AUB0UtAlC",
+      "name": "2.",
+      "description": null,
+      "propertyAssignments": null,
+      "elements": null
+    },
+    {
+      "type": "Package",
+      "id": "7Fw.WA6AUB0UtAlL",
+      "name": "3.",
+      "description": null,
+      "propertyAssignments": null,
+      "elements": [
+        {
+          "type": "Package",
+          "id": "gNW.WA6AUB0UtAmV",
+          "name": "3.1",
+          "description": null,
+          "propertyAssignments": null,
+          "elements": null
+        },
+        {
+          "type": "Package",
+          "id": "xC..WA6AUB0UtAmn",
+          "name": "3.3",
+          "description": null,
+          "propertyAssignments": null,
+          "elements": null
+        },
+        {
+          "type": "Package",
+          "id": "cDO.WA6AUB0UtAme",
+          "name": "3.2",
+          "description": null,
+          "propertyAssignments": null,
+          "elements": [
+            {
+              "type": "Package",
+              "id": "2sT.WA6AUB0UtAnV",
+              "name": "3.2.1",
+              "description": null,
+              "propertyAssignments": null,
+              "elements": [
+                {
+                  "type": "Package",
+                  "id": "7kH.WA6AUB0UtAne",
+                  "name": "3.2.1.1",
+                  "description": null,
+                  "propertyAssignments": null,
+                  "elements": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

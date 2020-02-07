@@ -1,5 +1,5 @@
 import OntoUMLParserMethod from './ontouml_parser_method';
-import { GENERALIZATION_TYPE } from '@constants/';
+import { GENERALIZATION_TYPE } from '@constants/.';
 
 class OntoUMLParserGeneralizationLink extends OntoUMLParserMethod {
   constructor(model: IModel) {

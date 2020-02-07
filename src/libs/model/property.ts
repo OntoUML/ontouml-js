@@ -1,6 +1,6 @@
 import { Decoratable, Classifier } from '.';
 import { Enumaration } from './literals';
-import { PROPERTY_TYPE } from '@constants/';
+import { PROPERTY_TYPE } from '@constants/.';
 
 /**
  * Class that represents an OntoUML property. These properties are analogous to both UML attributes and association ends, depending or their containers for proper comparisson.
