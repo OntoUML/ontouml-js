@@ -10,21 +10,29 @@ import memoizee from 'memoizee';
 
 export default {
   IElement_functions: {
-    getRootPackage: memoizee(getRootPackage),
+    getRootPackage: getRootPackage,
+    // getRootPackage: memoizee(getRootPackage),
     hasIContainerType,
     hasIDecoratableType,
     hasIClassifierType,
   },
   IContainer_functions: {
-    getAllContents: memoizee(getAllContents),
-    getAllContentsByType: memoizee(getAllContentsByType),
-    getContentById: memoizee(getContentById),
+    getAllContents: getAllContents,
+    // getAllContents: memoizee(getAllContents),
+    getAllContentsByType: getAllContentsByType,
+    // getAllContentsByType: memoizee(getAllContentsByType),
+    getContentById: getContentById,
+    // getContentById: memoizee(getContentById),
   },
   IClassifier_functions: {
-    getParents: memoizee(getParents),
-    getChildren: memoizee(getChildren),
-    getAncestors: memoizee(getAncestors),
-    getDescendents: memoizee(getDescendents),
+    getParents: getParents,
+    // getParents: memoizee(getParents),
+    getChildren: getChildren,
+    // getChildren: memoizee(getChildren),
+    getAncestors: getAncestors,
+    // getAncestors: memoizee(getAncestors),
+    getDescendents: getDescendents,
+    // getDescendents: memoizee(getDescendents),
   },
 };
 
@@ -33,19 +41,20 @@ function getRootPackage(): IPackage {
 
   if (self.container) {
     let root: IPackage;
+
     root = (self.container as IContainer).getRootPackage();
 
-    if (this instanceof Package && root === this) {
+    if (self.type === OntoUMLType.PACKAGE_TYPE && root === self) {
       throw 'Circular containment references';
     } else if (root) {
       return root;
-    } else if (this.container instanceof Package) {
-      return this.container;
+    } else if (self.container.type === OntoUMLType.PACKAGE_TYPE) {
+      return self.container as IPackage;
     } else {
       return null;
     }
   } else {
-    return null;
+    return self as IPackage;
   }
 }
 
@@ -74,21 +83,32 @@ function hasIClassifierType(): boolean {
 function getAllContents(): IElement[] {
   if (this.type === OntoUMLType.PACKAGE_TYPE) {
     let self = this as IPackage;
-    let allElements = self.contents ? [...self.contents] : [];
+    if (!self.contents) {
+      return [];
+    }
+
+    let allElements = [...self.contents];
 
     self.contents.forEach(content => {
-      allElements.push(content);
       if (content.type === OntoUMLType.PACKAGE_TYPE) {
         const innerContents = (content as IPackage).getAllContents();
         if (innerContents.includes(self)) {
-          throw 'Circular containment references';
+          throw {
+            title: 'Circular containment references',
+            error: content,
+          };
         }
         allElements = [...allElements, ...innerContents];
       } else if (
         content.type === OntoUMLType.CLASS_TYPE ||
         content.type === OntoUMLType.RELATION_TYPE
       ) {
-        allElements = [...allElements, ...(content as IClassifier).properties];
+        allElements = [
+          ...allElements,
+          ...((content as IClassifier).properties
+            ? (content as IClassifier).properties
+            : []),
+        ];
       }
     });
 
@@ -121,13 +141,12 @@ function getParents(): IClassifier[] {
   return self
     .getRootPackage()
     .getAllContentsByType([OntoUMLType.GENERALIZATION_TYPE])
-    .filter(
-      (generalization: IGeneralization) => generalization.specific === this,
-    )
-    .map(
-      (generalization: IGeneralization) =>
-        generalization.general as IClassifier,
-    );
+    .filter((generalization: IGeneralization) => {
+      return generalization.specific === self;
+    })
+    .map((generalization: IGeneralization) => {
+      return generalization.general as IClassifier;
+    });
 }
 
 function getChildren(): IClassifier[] {
@@ -141,12 +160,12 @@ function getChildren(): IClassifier[] {
 
 function getAncestors(knownAncestors?: IClassifier[]): IClassifier[] {
   const self = this as IClassifier;
-  let ancestors = [...knownAncestors];
+  let ancestors = [...(knownAncestors ? knownAncestors : [])];
 
-  this.getParentClassifiers().forEach((parent: IClassifier) => {
+  self.getParents().forEach((parent: IClassifier) => {
     if (!ancestors.includes(parent)) {
+      ancestors = [...ancestors, ...parent.getAncestors(ancestors)];
       ancestors.push(parent);
-      ancestors = [...ancestors, ...self.getAncestors(ancestors)];
     }
   });
 
@@ -155,12 +174,12 @@ function getAncestors(knownAncestors?: IClassifier[]): IClassifier[] {
 
 function getDescendents(knownDescendents?: IClassifier[]): IClassifier[] {
   const self = this as IClassifier;
-  let descendents = [] || [...knownDescendents];
+  let descendents = [] || [...(knownDescendents ? knownDescendents : [])];
 
-  this.getChildClassifiers().forEach((child: IClassifier) => {
+  self.getChildren().forEach((child: IClassifier) => {
     if (!descendents.includes(child)) {
+      descendents = [...descendents, ...child.getDescendents(descendents)];
       descendents.push(child);
-      descendents = [...descendents, ...self.getDescendents(descendents)];
     }
   });
 

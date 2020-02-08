@@ -163,14 +163,14 @@
               "properties": [
                 {
                   "type": "Property",
-                  "id": "PUlNhA6GAqACnAgx",
-                  "name": "year",
+                  "id": "kmJNhA6GAqACnAgi",
+                  "name": "day",
                   "description": null,
                   "propertyType": {
                     "type": "Class",
                     "id": "I5deWA6AUB0UtAWr"
                   },
-                  "cardinality": "0..1",
+                  "cardinality": null,
                   "isDerived": false,
                   "isOrdered": false,
                   "isReadOnly": false,
@@ -182,14 +182,14 @@
                 },
                 {
                   "type": "Property",
-                  "id": "kmJNhA6GAqACnAgi",
-                  "name": "day",
+                  "id": "PUlNhA6GAqACnAgx",
+                  "name": "year",
                   "description": null,
                   "propertyType": {
                     "type": "Class",
                     "id": "I5deWA6AUB0UtAWr"
                   },
-                  "cardinality": null,
+                  "cardinality": "0..1",
                   "isDerived": false,
                   "isOrdered": false,
                   "isReadOnly": false,
@@ -255,7 +255,9 @@
           "description": null,
           "properties": null,
           "literals": null,
-          "propertyAssignments": null,
+          "propertyAssignments": {
+            "definition": "https://en.wikipedia.org/wiki/Agency_(philosophy)"
+          },
           "stereotypes": ["category"],
           "isAbstract": true,
           "isDerived": false
@@ -387,6 +389,18 @@
           "stereotypes": ["subkind"],
           "isAbstract": false,
           "isDerived": false
+        },
+        {
+          "type": "Class",
+          "id": "zxmNJA6GAqACnA7H",
+          "name": "Agent Type",
+          "description": null,
+          "properties": null,
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["powertype"],
+          "isAbstract": false,
+          "isDerived": false
         }
       ]
     },
@@ -403,20 +417,7 @@
           "name": "3.1",
           "description": null,
           "propertyAssignments": null,
-          "contents": [
-            {
-              "type": "Class",
-              "id": "H5HMhA6AUB0UtAy6",
-              "name": "Class",
-              "description": null,
-              "properties": null,
-              "literals": null,
-              "propertyAssignments": null,
-              "stereotypes": null,
-              "isAbstract": false,
-              "isDerived": false
-            }
-          ]
+          "contents": null
         },
         {
           "type": "Package",
@@ -558,6 +559,29 @@
         "type": "Class",
         "id": "cea9hA6GAqACnA2B"
       }
+    },
+    {
+      "type": "GeneralizationSet",
+      "id": "m8yNJA6GAqACnA6p",
+      "name": "agent_kinds",
+      "description": null,
+      "propertyAssignments": null,
+      "categorizer": {
+        "type": "Class",
+        "id": "zxmNJA6GAqACnA7H"
+      },
+      "generalizations": [
+        {
+          "type": "Generalization",
+          "id": "MFphBA6AUB0UtAtx"
+        },
+        {
+          "type": "Generalization",
+          "id": "5exhBA6AUB0UtAtY"
+        }
+      ],
+      "isDisjoint": true,
+      "isComplete": true
     },
     {
       "type": "Relation",
@@ -916,6 +940,56 @@
       ],
       "propertyAssignments": null,
       "stereotypes": ["material"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Relation",
+      "id": "XE.NJA6GAqACnA7T",
+      "name": null,
+      "description": null,
+      "properties": [
+        {
+          "type": "Property",
+          "id": "XE.NJA6GAqACnA7U",
+          "name": null,
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "rw.hBA6AUB0UtArB"
+          },
+          "cardinality": null,
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        },
+        {
+          "type": "Property",
+          "id": "3E.NJA6GAqACnA7W",
+          "name": null,
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "zxmNJA6GAqACnA7H"
+          },
+          "cardinality": null,
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": ["a", "b", "c"],
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        }
+      ],
+      "propertyAssignments": null,
+      "stereotypes": ["instantiation"],
       "isAbstract": false,
       "isDerived": false
     }
