@@ -6,19 +6,25 @@ import {
   IContainer,
 } from '@types';
 import { OntoUMLType } from '@constants/.';
+import memoizee from 'memoizee';
 
 export default {
-  IElement_functions: { getRootPackage },
+  IElement_functions: {
+    getRootPackage: memoizee(getRootPackage),
+    hasIContainerType,
+    hasIDecoratableType,
+    hasIClassifierType,
+  },
   IContainer_functions: {
-    getAllContents,
-    getAllContentsByType,
-    getContentById,
+    getAllContents: memoizee(getAllContents),
+    getAllContentsByType: memoizee(getAllContentsByType),
+    getContentById: memoizee(getContentById),
   },
   IClassifier_functions: {
-    getParents,
-    getChildren,
-    getAncestors,
-    getDescendents,
+    getParents: memoizee(getParents),
+    getChildren: memoizee(getChildren),
+    getAncestors: memoizee(getAncestors),
+    getDescendents: memoizee(getDescendents),
   },
 };
 
@@ -27,7 +33,7 @@ function getRootPackage(): IPackage {
 
   if (self.container) {
     let root: IPackage;
-    root = self.container.getRootPackage();
+    root = (self.container as IContainer).getRootPackage();
 
     if (this instanceof Package && root === this) {
       throw 'Circular containment references';
@@ -43,12 +49,34 @@ function getRootPackage(): IPackage {
   }
 }
 
+function hasIContainerType(): boolean {
+  return [
+    OntoUMLType.PACKAGE_TYPE,
+    OntoUMLType.CLASS_TYPE,
+    OntoUMLType.RELATION_TYPE,
+  ].includes((this as IElement).type);
+}
+
+function hasIDecoratableType(): boolean {
+  return [
+    OntoUMLType.PROPERTY_TYPE,
+    OntoUMLType.CLASS_TYPE,
+    OntoUMLType.RELATION_TYPE,
+  ].includes((this as IElement).type);
+}
+
+function hasIClassifierType(): boolean {
+  return [OntoUMLType.CLASS_TYPE, OntoUMLType.RELATION_TYPE].includes(
+    (this as IElement).type,
+  );
+}
+
 function getAllContents(): IElement[] {
   if (this.type === OntoUMLType.PACKAGE_TYPE) {
     let self = this as IPackage;
-    let allElements = self.elements ? [...self.elements] : [];
+    let allElements = self.contents ? [...self.contents] : [];
 
-    self.elements.forEach(content => {
+    self.contents.forEach(content => {
       allElements.push(content);
       if (content.type === OntoUMLType.PACKAGE_TYPE) {
         const innerContents = (content as IPackage).getAllContents();
@@ -89,17 +117,20 @@ function getContentById(id: string): IElement {
 
 function getParents(): IClassifier[] {
   const self = this as IClassifier;
+
   return self
     .getRootPackage()
     .getAllContentsByType([OntoUMLType.GENERALIZATION_TYPE])
     .filter(
       (generalization: IGeneralization) => generalization.specific === this,
     )
-    .map((generalization: IGeneralization) => generalization.general);
+    .map(
+      (generalization: IGeneralization) =>
+        generalization.general as IClassifier,
+    );
 }
 
 function getChildren(): IClassifier[] {
-  const self = this as IClassifier;
   return this.getRootPackage()
     .getAllContentsByType([OntoUMLType.GENERALIZATION_TYPE])
     .filter(

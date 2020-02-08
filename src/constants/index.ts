@@ -5,6 +5,7 @@ export enum OntoUMLType {
   GENERALIZATION_TYPE = 'Generalization',
   GENERALIZATION_SET_TYPE = 'GeneralizationSet',
   PROPERTY_TYPE = 'Property',
+  LITERAL_TYPE = 'Literal',
 }
 
 export enum AggregationKind {
@@ -20,7 +21,7 @@ export const RELATION_TYPE = 'Relation';
 export const GENERALIZATION_TYPE = 'Generalization';
 export const GENERALIZATION_SET_TYPE = 'GeneralizationSet';
 export const PROPERTY_TYPE = 'Property';
-export const ENUMARATION_TYPE = 'Enumaration';
+export const ENUMERATION_TYPE = 'Enumeration';
 
 // Aggregation kind
 export const AGGREGATIONKIND_NONE = 'NONE';
