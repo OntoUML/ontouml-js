@@ -458,7 +458,7 @@
     {
       "type": "Generalization",
       "id": "5exhBA6AUB0UtAtY",
-      "name": "a",
+      "name": null,
       "description": null,
       "propertyAssignments": null,
       "general": {
@@ -473,7 +473,7 @@
     {
       "type": "Generalization",
       "id": "MFphBA6AUB0UtAtx",
-      "name": "a",
+      "name": null,
       "description": null,
       "propertyAssignments": null,
       "general": {
@@ -488,7 +488,7 @@
     {
       "type": "Generalization",
       "id": "GJThBA6AUB0UtAvl",
-      "name": "a",
+      "name": null,
       "description": null,
       "propertyAssignments": null,
       "general": {
@@ -503,7 +503,7 @@
     {
       "type": "Generalization",
       "id": "LDbhBA6AUB0UtAv6",
-      "name": "a",
+      "name": null,
       "description": null,
       "propertyAssignments": null,
       "general": {
@@ -981,7 +981,7 @@
           "isDerived": false,
           "isOrdered": false,
           "isReadOnly": false,
-          "stereotypes": ["a", "b", "c"],
+          "stereotypes": null,
           "propertyAssignments": null,
           "subsettedProperties": null,
           "redefinedProperties": null,
@@ -990,6 +990,56 @@
       ],
       "propertyAssignments": null,
       "stereotypes": ["instantiation"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Relation",
+      "id": "jNSVZA6GAqACnA.t",
+      "name": null,
+      "description": null,
+      "properties": [
+        {
+          "type": "Property",
+          "id": "jNSVZA6GAqACnA.tiDpDhA6GAqACnA41",
+          "name": null,
+          "description": null,
+          "propertyType": {
+            "type": "Relation",
+            "id": "iDpDhA6GAqACnA41"
+          },
+          "cardinality": "0..*",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": null
+        },
+        {
+          "type": "Property",
+          "id": "jNSVZA6GAqACnA.tJLnhBA6AUB0UtAwO",
+          "name": null,
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "JLnhBA6AUB0UtAwO"
+          },
+          "cardinality": "0..*",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": null
+        }
+      ],
+      "propertyAssignments": null,
+      "stereotypes": ["derivation"],
       "isAbstract": false,
       "isDerived": false
     }

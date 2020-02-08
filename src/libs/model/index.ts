@@ -22,7 +22,7 @@ export class ModelManager {
     let validator = new Ajv().compile(schema);
     let isValid = validator(model);
 
-    console.log('Checking validity');
+    // console.log('Checking validity');
 
     if (!isValid) {
       throw {
@@ -32,21 +32,21 @@ export class ModelManager {
     }
 
     // Enabling memoization
-    console.log('Enabling general memoization.');
+    // console.log('Enabling general memoization.');
     this.rootPackage = model;
     this.allElements = {};
     this.getElements = memoizee(this.getElements);
     this.getElementById = memoizee(this.getElementById);
 
     // Creating elements
-    console.log('Creating elements.');
+    // console.log('Creating elements.');
     this.getElements().forEach((element: IElement) => {
       this.allElements[element.id] = element;
       this.injectFunctions(element);
     });
 
     // Resolving references
-    console.log('Resolving references.');
+    // console.log('Resolving references.');
     this.getElements().forEach((element: IElement) => {
       this.replaceReferences(element);
     });
@@ -148,7 +148,7 @@ export class ModelManager {
       },
     );
 
-    if (this.checkInstanceOfIContainer(element)) {
+    if (element.hasIContainerType()) {
       Object.keys(functions.IContainer_functions).forEach(
         (functionName: string) => {
           element[functionName] = enableMemoization
@@ -158,7 +158,7 @@ export class ModelManager {
       );
     }
 
-    if (this.checkInstanceOfIClassifier(element)) {
+    if (element.hasIClassifierType()) {
       Object.keys(functions.IClassifier_functions).forEach(
         (functionName: string) => {
           element[functionName] = enableMemoization
@@ -170,27 +170,11 @@ export class ModelManager {
   }
 
   ejectFunctions(element: IElement): void {
-    Object.keys(functions.IElement_functions).forEach(
-      (functionName: string) => {
-        element[functionName] = undefined;
-      },
-    );
-
-    if (this.checkInstanceOfIContainer(element)) {
-      Object.keys(functions.IContainer_functions).forEach(
-        (functionName: string) => {
-          element[functionName] = undefined;
-        },
-      );
-    }
-
-    if (this.checkInstanceOfIClassifier(element)) {
-      Object.keys(functions.IClassifier_functions).forEach(
-        (functionName: string) => {
-          element[functionName] = undefined;
-        },
-      );
-    }
+    Object.keys(element).forEach((elementKey: string) => {
+      if (element[elementKey] instanceof Function) {
+        element[elementKey] = undefined;
+      }
+    });
   }
 
   replaceReferences(element: IElement): void {

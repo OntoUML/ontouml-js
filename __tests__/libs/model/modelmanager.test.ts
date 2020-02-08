@@ -1,15 +1,21 @@
 import { ModelManager } from '@libs/model';
-import { OntoUMLType } from '@constants/';
-import { IElement, IClassifier } from '@types';
+import { OntoUMLType } from '@constants/.';
+import { IElement, IClassifier, IClass } from '@types';
 
 describe('Model deserializing', () => {
-  const packages_model = require('@test-models/others/serialization.json');
-  const mm = new ModelManager(packages_model);
+  const inputModel = JSON.parse(
+    JSON.stringify(require('@test-models/others/example.json')),
+  );
+  let modelManager: ModelManager;
+
+  it('Check input model against OntoUML Schema', () => {
+    modelManager = new ModelManager(inputModel);
+  });
 
   it('Check getRootPackage()', () => {
-    Object.values(mm.allElements).forEach((element: IElement) => {
+    Object.values(modelManager.allElements).forEach((element: IElement) => {
       const rootPackage = element.getRootPackage();
-      expect(rootPackage).toBe(mm.rootPackage);
+      expect(rootPackage).toBe(modelManager.rootPackage);
 
       if (element.type === OntoUMLType.PROPERTY_TYPE) {
         expect((element.container as IElement).hasIClassifierType).toBeTruthy();
@@ -18,17 +24,17 @@ describe('Model deserializing', () => {
   });
 
   it('Check getAllContents()', () => {
-    const allContents1 = mm.rootPackage.getAllContents();
-    const allContents2 = Object.values(mm.allElements);
+    const allContents1 = modelManager.rootPackage.getAllContents();
+    const allContents2 = Object.values(modelManager.allElements);
 
-    allContents1.push(mm.rootPackage);
+    allContents1.push(modelManager.rootPackage);
     allContents1.forEach(item => expect(allContents2).toContain(item));
     allContents2.forEach(item => expect(allContents1).toContain(item));
     expect(allContents1.length === allContents2.length).toBeTruthy();
   });
 
   it('Check getAllContentsByType()', () => {
-    const selectedContents = mm.rootPackage.getAllContentsByType([
+    const selectedContents = modelManager.rootPackage.getAllContentsByType([
       OntoUMLType.CLASS_TYPE,
       OntoUMLType.RELATION_TYPE,
     ]);
@@ -39,21 +45,22 @@ describe('Model deserializing', () => {
   });
 
   it('Check getAllContentsById()', () => {
-    mm.rootPackage
+    modelManager.rootPackage
       .getAllContents()
       .forEach(element =>
         expect(
-          mm.allElements[element.id] === mm.getElementById(element.id),
+          modelManager.allElements[element.id] ===
+            modelManager.getElementById(element.id),
         ).toBeTruthy(),
       );
   });
 
   it('Check getParents()', () => {
-    const sophomore = mm.rootPackage.getContentById(
+    const sophomore = modelManager.rootPackage.getContentById(
       'h_Y9hA6GAqACnA1t',
     ) as IClassifier;
     const parents = sophomore.getParents();
-    const student = mm.rootPackage.getContentById(
+    const student = modelManager.rootPackage.getContentById(
       'GDbhBA6AUB0UtAv1',
     ) as IClassifier;
 
@@ -61,13 +68,13 @@ describe('Model deserializing', () => {
   });
 
   it('Check getChildren()', () => {
-    const student = mm.rootPackage.getContentById(
+    const student = modelManager.rootPackage.getContentById(
       'GDbhBA6AUB0UtAv1',
     ) as IClassifier;
-    const sophomore = mm.rootPackage.getContentById(
+    const sophomore = modelManager.rootPackage.getContentById(
       'h_Y9hA6GAqACnA1t',
     ) as IClassifier;
-    const privately = mm.rootPackage.getContentById(
+    const privately = modelManager.rootPackage.getContentById(
       'cea9hA6GAqACnA2B',
     ) as IClassifier;
 
@@ -81,17 +88,17 @@ describe('Model deserializing', () => {
   });
 
   it('Check getAncestors()', () => {
-    const sophomore = mm.rootPackage.getContentById(
+    const sophomore = modelManager.rootPackage.getContentById(
       'h_Y9hA6GAqACnA1t',
     ) as IClassifier;
     const ancestors = sophomore.getAncestors();
-    const student = mm.rootPackage.getContentById(
+    const student = modelManager.rootPackage.getContentById(
       'GDbhBA6AUB0UtAv1',
     ) as IClassifier;
-    const person = mm.rootPackage.getContentById(
+    const person = modelManager.rootPackage.getContentById(
       '2uxhBA6AUB0UtArb',
     ) as IClassifier;
-    const agent = mm.rootPackage.getContentById(
+    const agent = modelManager.rootPackage.getContentById(
       'rw.hBA6AUB0UtArB',
     ) as IClassifier;
 
@@ -104,16 +111,16 @@ describe('Model deserializing', () => {
   });
 
   it('Check getDescendents()', () => {
-    const sophomore = mm.rootPackage.getContentById(
+    const sophomore = modelManager.rootPackage.getContentById(
       'h_Y9hA6GAqACnA1t',
     ) as IClassifier;
-    const privately = mm.rootPackage.getContentById(
+    const privately = modelManager.rootPackage.getContentById(
       'cea9hA6GAqACnA2B',
     ) as IClassifier;
-    const student = mm.rootPackage.getContentById(
+    const student = modelManager.rootPackage.getContentById(
       'GDbhBA6AUB0UtAv1',
     ) as IClassifier;
-    const person = mm.rootPackage.getContentById(
+    const person = modelManager.rootPackage.getContentById(
       '2uxhBA6AUB0UtArb',
     ) as IClassifier;
 
@@ -126,4 +133,35 @@ describe('Model deserializing', () => {
         descendents.includes(privately),
     ).toBeTruthy();
   });
+});
+
+it('Check README How To code', () => {
+  const ontoULMSchemaModel = JSON.parse(
+    JSON.stringify(require('@test-models/others/example.json')),
+  );
+
+  const modelManager = new ModelManager(ontoULMSchemaModel);
+
+  const rootPackage = modelManager.rootPackage; // ontoULMSchemaModel root package
+  rootPackage.getAllContents(); // returns elements recursively contained within the executing package
+  rootPackage.getAllContentsByType([
+    OntoUMLType.GENERALIZATION_TYPE,
+    OntoUMLType.PROPERTY_TYPE,
+  ]); // returns elements contained within in the package selected by type
+  rootPackage.getContentById('elementId'); // returns the element bearering the given id
+
+  const student = rootPackage
+    .getAllContents()
+    .find(element => element.name === 'Student') as IClass; // Student role class
+  student.stereotypes; // [ 'role' ]
+  student.getParents(); // [ Person kind class ]
+  student.getAncestors(); // [ Person kind class, Agent category class ]
+  student.getChildren(); // [ Privately Enrolled role class, Privately Enrolled role class ]
+  student.getDescendents(); // [ Privately Enrolled role class, Privately Enrolled role class ]
+
+  const enrollmentDate = rootPackage
+    .getAllContents()
+    .find(element => element.name === 'Enrollment Date') as IClass; // Enrollment Date mode class
+  enrollmentDate.properties[0]; // date property representing the class's attibute
+  enrollmentDate.getRootPackage; // returns rootPackage
 });
