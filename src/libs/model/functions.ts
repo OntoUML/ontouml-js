@@ -6,33 +6,24 @@ import {
   IContainer,
 } from '@types';
 import { OntoUMLType } from '@constants/.';
-import memoizee from 'memoizee';
 
 export default {
   IElement_functions: {
-    getRootPackage: getRootPackage,
-    // getRootPackage: memoizee(getRootPackage),
+    getRootPackage,
     hasIContainerType,
     hasIDecoratableType,
     hasIClassifierType,
   },
   IContainer_functions: {
-    getAllContents: getAllContents,
-    // getAllContents: memoizee(getAllContents),
-    getAllContentsByType: getAllContentsByType,
-    // getAllContentsByType: memoizee(getAllContentsByType),
-    getContentById: getContentById,
-    // getContentById: memoizee(getContentById),
+    getAllContents,
+    getAllContentsByType,
+    getContentById,
   },
   IClassifier_functions: {
-    getParents: getParents,
-    // getParents: memoizee(getParents),
-    getChildren: getChildren,
-    // getChildren: memoizee(getChildren),
-    getAncestors: getAncestors,
-    // getAncestors: memoizee(getAncestors),
-    getDescendents: getDescendents,
-    // getDescendents: memoizee(getDescendents),
+    getParents,
+    getChildren,
+    getAncestors,
+    getDescendents,
   },
 };
 
@@ -40,9 +31,7 @@ function getRootPackage(): IPackage {
   const self = this as IElement;
 
   if (self.container) {
-    let root: IPackage;
-
-    root = (self.container as IContainer).getRootPackage();
+    const root: IPackage = (self.container as IContainer).getRootPackage();
 
     if (self.type === OntoUMLType.PACKAGE_TYPE && root === self) {
       throw 'Circular containment references';
@@ -89,7 +78,7 @@ function getAllContents(): IElement[] {
 
     let allElements = [...self.contents];
 
-    self.contents.forEach(content => {
+    self.contents.forEach((content: IElement) => {
       if (content.type === OntoUMLType.PACKAGE_TYPE) {
         const innerContents = (content as IPackage).getAllContents();
         if (innerContents.includes(self)) {
@@ -126,7 +115,9 @@ function getAllContents(): IElement[] {
 function getAllContentsByType(types: OntoUMLType[]): IElement[] {
   const self = this as IContainer;
 
-  return self.getAllContents().filter(element => types.includes(element.type));
+  return self
+    .getAllContents()
+    .filter((element: IElement) => types.includes(element.type));
 }
 
 function getContentById(id: string): IElement {
@@ -150,12 +141,17 @@ function getParents(): IClassifier[] {
 }
 
 function getChildren(): IClassifier[] {
-  return this.getRootPackage()
+  const self = this as IClassifier;
+
+  return self
+    .getRootPackage()
     .getAllContentsByType([OntoUMLType.GENERALIZATION_TYPE])
     .filter(
-      (generalization: IGeneralization) => generalization.general === this,
+      (generalization: IGeneralization) => generalization.general === self,
     )
-    .map((generalization: IGeneralization) => generalization.specific);
+    .map((generalization: IGeneralization) => {
+      return generalization.specific as IClassifier;
+    });
 }
 
 function getAncestors(knownAncestors?: IClassifier[]): IClassifier[] {
@@ -164,7 +160,7 @@ function getAncestors(knownAncestors?: IClassifier[]): IClassifier[] {
 
   self.getParents().forEach((parent: IClassifier) => {
     if (!ancestors.includes(parent)) {
-      ancestors = [...ancestors, ...parent.getAncestors(ancestors)];
+      ancestors = [...parent.getAncestors(ancestors)];
       ancestors.push(parent);
     }
   });
@@ -174,11 +170,11 @@ function getAncestors(knownAncestors?: IClassifier[]): IClassifier[] {
 
 function getDescendents(knownDescendents?: IClassifier[]): IClassifier[] {
   const self = this as IClassifier;
-  let descendents = [] || [...(knownDescendents ? knownDescendents : [])];
+  let descendents = [...(knownDescendents ? knownDescendents : [])];
 
   self.getChildren().forEach((child: IClassifier) => {
     if (!descendents.includes(child)) {
-      descendents = [...descendents, ...child.getDescendents(descendents)];
+      descendents = [...child.getDescendents(descendents)];
       descendents.push(child);
     }
   });
