@@ -16,8 +16,7 @@
     "start:watch": "TS_NODE_FILES=true nodemon index.ts",
     "format:watch": "onchange '**/*.ts' '**/*.json' -- prettier --write {{changed}}",
     "clean": "rimraf coverage dist tmp",
-    "build": "rm -rf ./dist && npm run build:js && npm run build:schemas",
-    "build:schemas": "cp -R src/schemas dist/schemas",
+    "build": "rm -rf ./dist && npm run build:js",
     "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",
     "build:watch": "TS_NODE_FILES=true tsc -w -p tsconfig.release.json",
     "bundle": "webpack",
@@ -33,7 +32,6 @@
     "@constants": "src/constants",
     "@error": "src/error",
     "@libs": "src/libs",
-    "@schemas": "src/schemas",
     "@utils": "src/utils"
   },
   "dependencies": {

@@ -1,5 +1,5 @@
 import Ajv from 'ajv';
-import schema from '@schemas/ontouml.schema.json';
+// import schema from '@schemas/ontouml.schema.json';
 import { OntoUMLParserError } from '@error/ontouml_parser';
 import OntoUMLParserClass from './ontouml_parser_class';
 import OntoUMLParserGeneralizationLink from './ontouml_parser_generalization_link';
