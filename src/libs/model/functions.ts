@@ -71,7 +71,7 @@ function hasIClassifierType(): boolean {
 
 function getAllContents(): IElement[] {
   if (this.type === OntoUMLType.PACKAGE_TYPE) {
-    let self = this as IPackage;
+    const self = this as IPackage;
     if (!self.contents) {
       return [];
     }

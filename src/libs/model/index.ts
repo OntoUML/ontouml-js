@@ -11,6 +11,7 @@ import {
   ILiteral,
 } from '@types';
 import functions from '@libs/model/functions';
+import schemas from "ontouml-schema";
 
 /**
  * Utility class for the manipulation of models in OntoUML2 in conformance to the `ontouml-schema` definition.
@@ -25,9 +26,7 @@ export class ModelManager {
   allElements: { [key: string]: IElement };
 
   constructor(model: IPackage) {
-    // const validator = new Ajv().compile(schemas.getSchema(schemas.ONTOUML_2));
-    const schema = require('@schemas/versions/ontouml-v1.0.schema');
-    const validator = new Ajv().compile(schema);
+    const validator = new Ajv().compile(schemas.getSchema(schemas.ONTOUML_2));
     const isValid = validator(model);
 
     // console.log('Checking validity');
@@ -153,7 +152,7 @@ export class ModelManager {
     );
   }
 
-  checkAndInjectFunctions(element: IElement, enableMemoization = true): void {
+  checkAndInjectFunctions(element: IElement, enableMemoization: boolean = true): void {
     this.injectFunctions(
       element,
       functions.IElement_functions,
@@ -180,7 +179,7 @@ export class ModelManager {
   injectFunctions(
     element: IElement,
     functionImplementations: any,
-    enableMemoization = true,
+    enableMemoization: boolean = true,
   ): void {
     Object.keys(functionImplementations).forEach((functionName: string) => {
       element[functionName] = enableMemoization
