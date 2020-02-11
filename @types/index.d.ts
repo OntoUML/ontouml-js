@@ -1,63 +1,187 @@
-interface IProperty {
-  type: string;
-  id: string;
-  url?: string;
-  propertyType?: string;
-  cardinality?: string;
-}
+import { OntoUMLType } from '@constants/.';
+import { AggregationKind } from '@constants/.';
 
+/**
+ * Interface that captures common properties of objects in `ontouml-schema`. Whenever necessary, stereotypes are captured as regular string arrays.
+ *
+ * @author Claudenir Fonseca
+ * @author Lucas Bassetti
+ *
+ * @todo Update propertyAssignments
+ * @todo Update stereotypes
+ * @todo Replace strings (such as 'type') for constants
+ */
 interface IElement {
-  type: string;
+  type: OntoUMLType;
   id: string;
-  name?: string;
-  general?: {
-    type: string;
-    id: string;
-  };
-  specific?: {
-    type: string;
-    id: string;
-  };
-  stereotypes?: string[];
-  properties?: IProperty[];
-  elements?: IElement[];
+  name: string | null;
+  description: string | null;
+  propertyAssignments: any;
+  container?: IContainer | IReference;
+
+  /**
+   * Returns the outtermost container of an element.
+   */
+  getRootPackage?: () => IPackage;
+
+  hasIContainerType?: () => boolean;
+
+  hasIDecoratableType?: () => boolean;
+
+  hasIClassifierType?: () => boolean;
 }
 
-interface IModel {
-  type: string;
-  id: string;
-  url?: string;
-  name?: string;
-  authors?: string[];
-  elements?: IElement[];
+interface IContainer extends IElement {
+  /**
+   * Function that returns an array of contained IElement objects.
+   */
+  getAllContents?: () => IElement[];
+
+  /**
+   * Returns an array of all Element objects that may be reached from a package filtered by those which the type field matches the selected ones.
+   *
+   * @param selectedTypes - an array of strings representing the desired types (i.e., PACKAGE_TYPE, CLASS_TYPE, RELATION_TYPE, GENERALIZATION_TYPE, GENERALIZATION_SET_TYPE, or PROPERTY_TYPE).
+   */
+  getAllContentsByType?: (types: OntoUMLType[]) => IElement[];
+
+  /**
+   * Returns an Element according of matching id.
+   *
+   * @param elementId - Desired element's id.
+   */
+  getContentById?: (id: string) => IElement;
 }
 
-interface IRelation {
-  name: string;
-  id: string;
-  relations: {
-    [key: string]: string[];
-  };
-  source?: {
-    lowerbound: number | string;
-    upperbound: number | string;
-  };
-  target?: {
-    lowerbound: number | string;
-    upperbound: number | string;
-  };
+interface IDecoratable extends IElement {
+  stereotypes: string[] | null;
 }
 
-interface IStereotype {
-  name: string;
+interface IClassifier extends IElement {
+  properties: IProperty[] | null;
+  isAbstract: boolean | null;
+  isDerived: boolean | null;
+
+  /**
+   * Returns an array of Classifier objects connected to this classifier through generalizations as its parents.
+   */
+  getParents?: () => IClassifier[];
+
+  /**
+   * Returns an array of Classifier objects connected to this classifier through generalizations as its children.
+   */
+  getChildren?: () => IClassifier[];
+
+  /**
+   * Returns an array of Classifier objects recursivelly connected to this classifier through generalizations as its parents or ancestors.
+   *
+   * @param knownAncestors - MUST NOT USE in regular code. Optional attribute that allows recursive execution of the function.
+   */
+  getAncestors?: (knownAncestors?: IClassifier[]) => IClassifier[];
+
+  /**
+   * Returns an array of Classifier objects recursivelly connected to this classifier through generalizations as its children or descendents.
+   *
+   * @param knownDescendents - MUST NOT USE in regular code. Optional attribute that allows recursive execution of the function.
+   */
+  getDescendents?: (knownDescendents?: IClassifier[]) => IClassifier[];
+}
+
+/**
+ * Interface that represents a Package according to `ontouml-schema`.
+ *
+ * @author Claudenir Fonseca
+ * @author Lucas Bassetti
+ */
+interface IPackage extends IElement, IContainer {
+  type: OntoUMLType.PACKAGE_TYPE;
+  contents: IElement[] | null;
+}
+
+/**
+ * Interface that represents a Class according to `ontouml-schema`.
+ *
+ * @author Claudenir Fonseca
+ * @author Lucas Bassetti
+ */
+interface IClass extends IElement, IContainer, IDecoratable, IClassifier {
+  type: OntoUMLType.CLASS_TYPE;
+  literals: ILiteral[] | null;
+}
+
+/**
+ * Interface that represents a Relation according to `ontouml-schema`.
+ *
+ * @author Claudenir Fonseca
+ * @author Lucas Bassetti
+ */
+interface IRelation extends IElement, IContainer, IDecoratable, IClassifier {
+  type: OntoUMLType.RELATION_TYPE;
+}
+
+/**
+ * Interface that represents a Generalization according to `ontouml-schema`.
+ *
+ * @author Claudenir Fonseca
+ * @author Lucas Bassetti
+ */
+interface IGeneralization extends IElement {
+  type: OntoUMLType.GENERALIZATION_TYPE;
+  general: IClassifier | IReference;
+  specific: IClassifier | IReference;
+}
+
+/**
+ * Interface that represents a Generalization Set according to `ontouml-schema`.
+ *
+ * @author Claudenir Fonseca
+ * @author Lucas Bassetti
+ */
+interface IGeneralizationSet extends IElement {
+  type: OntoUMLType.GENERALIZATION_SET_TYPE;
+  isDisjoint: boolean | null;
+  isComplete: boolean | null;
+  categorizer: IClass | IReference;
+  generalizations: IGeneralization[] | IReference[];
+}
+
+/**
+ * Interface that represents a Property according to `ontouml-schema`.
+ *
+ * @author Claudenir Fonseca
+ * @author Lucas Bassetti
+ */
+interface IProperty extends IElement, IDecoratable {
+  type: OntoUMLType.PROPERTY_TYPE;
+  cardinality: string | null;
+  propertyType: IClassifier | null | IReference;
+  subsettedProperties: IProperty[] | null | IReference[];
+  redefinedProperties: IProperty[] | null | IReference[];
+  aggregationKind: AggregationKind | null;
+  isDerived: boolean | null;
+  isOrdered: boolean | null;
+  isReadOnly: boolean | null;
+}
+
+/**
+ * Interface that describes a Literal according to `ontouml-schema`.
+ *
+ * @author Claudenir Fonseca
+ * @author Lucas Bassetti
+ */
+interface ILiteral extends IElement {
+  type: OntoUMLType.LITERAL_TYPE;
+  container?: IClass;
+}
+
+/**
+ * Interface that represents a `ontouml-schema` reference to a OntoUML element.
+ *
+ * @author Claudenir Fonseca
+ * @author Lucas Bassetti
+ */
+interface IReference {
+  type: OntoUMLType;
   id: string;
-  specializes: string[];
-  relations: {
-    [key: string]: string[];
-  };
-  rigidity: string;
-  sortality: string;
-  ultimateSortal: boolean;
 }
 
 interface ISelfLink {

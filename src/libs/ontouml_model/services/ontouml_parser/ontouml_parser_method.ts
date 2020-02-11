@@ -1,5 +1,5 @@
 import memoizee from 'memoizee';
-import { PACKAGE_TYPE } from '@constants/model_types';
+import { PACKAGE_TYPE } from '@constants/.';
 
 class OntoUMLParserMethod {
   private model: IModel;

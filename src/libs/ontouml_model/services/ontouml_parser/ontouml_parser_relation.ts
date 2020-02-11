@@ -1,4 +1,4 @@
-import { RELATION_TYPE } from '@constants/model_types';
+import { RELATION_TYPE } from '@constants/.';
 import OntoUMLParserMethod from './ontouml_parser_method';
 
 class OntoUMLParserRelation extends OntoUMLParserMethod {

@@ -15,10 +15,30 @@ yarn add ontouml-js
 
 ## Usage
 
-```javascript
-import { OntoUMLModel } from 'ontouml-js';
+![](/resources/howto.png)
 
-const model = new OntoUMLModel(jsonModel);
+This package is designed to support manipulating OntoUML models, such as the one above, serialized in [`ontouml-schema`](https://github.com/OntoUML/ontouml-schema) JSON format.
+
+```javascript
+import { ModelManager } from 'ontouml-js';
+
+const modelManager = new ModelManager(ontoULMSchemaModel);
+
+const rootPackage = modelManager.rootPackage; // ontoULMSchemaModel root package
+rootPackage.getAllContents() // returns elements recursively contained within the executing package
+rootPackage.getAllContentsByType([ OntoUMLType.GENERALIZATION_TYPE, OntoUMLType.PROPERTY_TYPE ]) // returns elements contained within in the package selected by type
+rootPackage.getContentById('elementId') // returns the element bearering the given id
+
+const student = rootPackage.getAllContents().find(element => element.name === 'Student'); // Student role class
+student.stereotypes; // [ 'role' ]
+student.getParents(); // [ Person kind class ]
+student.getAncestors(); // [ Person kind class, Agent category class ]
+student.getChildren(); // [ Privately Enrolled role class, Privately Enrolled role class ]
+student.getDescendents(); // [ Privately Enrolled role class, Privately Enrolled role class ]
+
+const enrollmentDate = rootPackage.getAllContents().find(element => element.name === 'Enrollment Date'); // Enrollment Date mode class
+enrollmentDate.properties[0]; // date property representing the class's attibute
+enrollmentDate.getRootPackage; // returns rootPackage
 ```
 
 ## About

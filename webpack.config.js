@@ -15,7 +15,6 @@ module.exports = {
       "@error": `${__dirname}/src/error`,
       "@libs": `${__dirname}/src/libs`,
       "@rules": `${__dirname}/src/rules`,
-      "@schemas": `${__dirname}/schemas`,
       "@utils": `${__dirname}/src/utils`
     }
   },
