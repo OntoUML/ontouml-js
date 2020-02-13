@@ -5,7 +5,7 @@ import {
   SEMI_RIGID,
   SORTAL,
   NON_SORTAL,
-} from '@constants/stereotypes_constraints';
+} from '@constants/.';
 
 const KIND: 'ontouml/2.0/kind' = 'ontouml/2.0/kind';
 const QUANTITY_KIND: 'ontouml/2.0/quantityKind' = 'ontouml/2.0/quantityKind';

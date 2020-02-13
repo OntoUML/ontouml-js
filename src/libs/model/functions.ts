@@ -4,6 +4,7 @@ import {
   IClassifier,
   IGeneralization,
   IContainer,
+  IRelation,
 } from '@types';
 import { OntoUMLType } from '@constants/.';
 
@@ -24,6 +25,7 @@ export default {
     getChildren,
     getAncestors,
     getDescendents,
+    getRelations,
   },
 };
 
@@ -180,4 +182,16 @@ function getDescendents(knownDescendents?: IClassifier[]): IClassifier[] {
   });
 
   return descendents;
+}
+
+function getRelations(): IRelation[] {
+  const self = this as IClassifier;
+
+  return self
+    .getRootPackage()
+    .getAllContentsByType([OntoUMLType.RELATION_TYPE])
+    .filter(
+      (relation: IRelation) => relation.propertyType.id === self.id,
+    )
+    .map((relation: IRelation) => relation);
 }

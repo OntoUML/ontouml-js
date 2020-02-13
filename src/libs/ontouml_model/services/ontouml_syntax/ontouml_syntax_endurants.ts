@@ -2,7 +2,7 @@ import {
   OntoUMLStereotypeError,
   OntoUMLSpecializationError,
 } from '@error/ontouml_syntax';
-import { SORTAL, NON_SORTAL } from '@constants/stereotypes_constraints';
+import { SORTAL, NON_SORTAL } from '@constants/.';
 import OntoUMLParser from '../ontouml_parser';
 import OntoUMLSyntaxMethod from './ontouml_syntax_method';
 
