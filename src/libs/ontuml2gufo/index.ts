@@ -1,7 +1,7 @@
 import { N3Writer } from 'n3';
 import { ModelManager } from '@libs/model';
 import { IClass } from '@types';
-import { OntoUMLType } from '@constants/.';
+import { OntoUMLType, ClassStereotype } from '@constants/.';
 import {
   transformKind,
   transformQuantityKind,
@@ -93,12 +93,12 @@ export class OntoUML2GUFO {
     classes: IClass[],
   ): Promise<boolean> {
     const disjointStereotypes = [
-      'kind',
-      'quantityKind',
-      'collectiveKind',
-      'relatorKind',
-      'modeKind',
-      'qualityKind',
+      ClassStereotype.KIND,
+      ClassStereotype.QUANTITY_KIND,
+      ClassStereotype.COLLECTIVE_KIND,
+      ClassStereotype.RELATOR_KIND,
+      ClassStereotype.MODE_KIND,
+      ClassStereotype.QUALITY_KIND,
     ];
 
     for (let i = 0; i < disjointStereotypes.length; i += 1) {
@@ -132,19 +132,19 @@ export class OntoUML2GUFO {
     classes: IClass[],
   ): Promise<boolean> {
     const transformStereotypeFunction = {
-      kind: transformKind,
-      quantityKind: transformQuantityKind,
-      collectiveKind: transformCollectiveKind,
-      subkind: transformSubkind,
-      role: transformRole,
-      phase: transformPhase,
-      category: transformCategory,
-      mixin: transformMixin,
-      roleMixin: transformRoleMixin,
-      phaseMixin: transformPhaseMixin,
-      relatorKind: transformRelatorKind,
-      modeKind: transformModeKind,
-      qualityKind: transformQualityKind,
+      [ClassStereotype.KIND]: transformKind,
+      [ClassStereotype.QUANTITY_KIND]: transformQuantityKind,
+      [ClassStereotype.COLLECTIVE_KIND]: transformCollectiveKind,
+      [ClassStereotype.SUBKIND]: transformSubkind,
+      [ClassStereotype.ROLE]: transformRole,
+      [ClassStereotype.PHASE]: transformPhase,
+      [ClassStereotype.CATEGORY]: transformCategory,
+      [ClassStereotype.MIXIN]: transformMixin,
+      [ClassStereotype.ROLE_MIXIN]: transformRoleMixin,
+      [ClassStereotype.PHASE_MIXIN]: transformPhaseMixin,
+      [ClassStereotype.RELATOR_KIND]: transformRelatorKind,
+      [ClassStereotype.MODE_KIND]: transformModeKind,
+      [ClassStereotype.QUALITY_KIND]: transformQualityKind,
     };
 
     for (let i = 0; i < classes.length; i += 1) {

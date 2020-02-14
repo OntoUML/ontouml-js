@@ -1,4 +1,5 @@
-const modelValidExample1 = require('./m1.valid.json');
 const example = require('./example.json');
+const modePattern1 = require('./mode_pattern_1.json');
+const modePattern2 = require('./mode_pattern_2.json');
 
-export { modelValidExample1, example };
+export { example, modePattern1, modePattern2 };

@@ -1,9 +1,9 @@
-import {
-  modelInvalidExample1,
-  modelInvalidExample7,
-} from '@test-models/invalids';
-import OntoUMLParser from '@libs/ontouml_model/services/ontouml_parser';
-import { CLASS_TYPE } from '@constants/.';
+// import {
+//   modelInvalidExample1,
+//   modelInvalidExample7,
+// } from '@test-models/invalids';
+// import OntoUMLParser from '@libs/ontouml_model/services/ontouml_parser';
+// import { CLASS_TYPE } from '@constants/.';
 
 it('Missing tests', () => {});
 

@@ -1,5 +1,6 @@
 import { Quad } from 'n3';
-import { IClass } from '@types';
+import { IClass, IRelation } from '@types';
+import { RelationStereotype } from '@constants/.';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -167,17 +168,36 @@ export function transformRelatorKind(classElement: IClass): Quad[] {
 export function transformModeKind(classElement: IClass): Quad[] {
   const { id } = classElement;
   const relations = classElement.getRelations();
+  const relationStereotypes = relations.map(
+    (relation: IRelation) => relation.stereotypes[0],
+  );
+  const quads = [];
 
-  console.log(relations);
+  if (relationStereotypes.includes(RelationStereotype.CHARACTERIZATION)) {
+    if (relationStereotypes.includes(RelationStereotype.EXTERNAL_DEPENDENCE)) {
+      quads.push(
+        quad(
+          namedNode(`:${id}`),
+          namedNode('rdfs:subClassOf'),
+          namedNode('gufo:ExtrinsicMode'),
+        ),
+      );
+    } else {
+      quads.push(
+        quad(
+          namedNode(`:${id}`),
+          namedNode('rdfs:subClassOf'),
+          namedNode('gufo:IntrinsicMode'),
+        ),
+      );
+    }
+  }
 
-  return [
-    quad(
-      namedNode(`:${id}`),
-      namedNode('rdfs:subClassOf'),
-      namedNode('gufo:IntrinsicMode'), // gufo:ExtrinsicMode
-    ),
+  quads.push(
     quad(namedNode(`:${id}`), namedNode('rdf:type'), namedNode('gufo:Kind')),
-  ];
+  );
+
+  return quads;
 }
 
 export function transformQualityKind(classElement: IClass): Quad[] {

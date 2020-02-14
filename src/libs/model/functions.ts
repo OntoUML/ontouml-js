@@ -191,7 +191,9 @@ function getRelations(): IRelation[] {
     .getRootPackage()
     .getAllContentsByType([OntoUMLType.RELATION_TYPE])
     .filter(
-      (relation: IRelation) => relation.propertyType.id === self.id,
+      (relation: IRelation) =>
+        relation.properties[0].propertyType.id === self.id ||
+        relation.properties[1].propertyType.id === self.id,
     )
     .map((relation: IRelation) => relation);
 }
