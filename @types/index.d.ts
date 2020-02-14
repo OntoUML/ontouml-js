@@ -60,6 +60,10 @@ interface IClassifier extends IElement {
   properties: IProperty[] | null;
   isAbstract: boolean | null;
   isDerived: boolean | null;
+  /** An array of IGeneralization object where the object if the `specific` IClassifier */
+  generalizations?: IGeneralization[] | null;
+  /** An array of IGeneralization object where the object if the `general` IClassifier */
+  specializations?: IGeneralization[] | null;
 
   /**
    * Returns an array of Classifier objects connected to this classifier through generalizations as its parents.
@@ -81,9 +85,9 @@ interface IClassifier extends IElement {
   /**
    * Returns an array of Classifier objects recursivelly connected to this classifier through generalizations as its children or descendents.
    *
-   * @param knownDescendents - MUST NOT USE in regular code. Optional attribute that allows recursive execution of the function.
+   * @param knownDescendants - MUST NOT USE in regular code. Optional attribute that allows recursive execution of the function.
    */
-  getDescendents?: (knownDescendents?: IClassifier[]) => IClassifier[];
+  getDescendants?: (knownDescendants?: IClassifier[]) => IClassifier[];
 }
 
 /**

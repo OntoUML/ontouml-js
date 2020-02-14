@@ -23,7 +23,7 @@ export default {
     getParents,
     getChildren,
     getAncestors,
-    getDescendents,
+    getDescendants,
   },
 };
 
@@ -129,29 +129,23 @@ function getContentById(id: string): IElement {
 function getParents(): IClassifier[] {
   const self = this as IClassifier;
 
-  return self
-    .getRootPackage()
-    .getAllContentsByType([OntoUMLType.GENERALIZATION_TYPE])
-    .filter((generalization: IGeneralization) => {
-      return generalization.specific === self;
-    })
-    .map((generalization: IGeneralization) => {
-      return generalization.general as IClassifier;
-    });
+  return self.generalizations
+    ? self.generalizations.map(
+        (generalization: IGeneralization) =>
+          generalization.general as IClassifier,
+      )
+    : [];
 }
 
 function getChildren(): IClassifier[] {
   const self = this as IClassifier;
 
-  return self
-    .getRootPackage()
-    .getAllContentsByType([OntoUMLType.GENERALIZATION_TYPE])
-    .filter(
-      (generalization: IGeneralization) => generalization.general === self,
-    )
-    .map((generalization: IGeneralization) => {
-      return generalization.specific as IClassifier;
-    });
+  return self.specializations
+    ? self.specializations.map(
+        (specialization: IGeneralization) =>
+          specialization.specific as IClassifier,
+      )
+    : [];
 }
 
 function getAncestors(knownAncestors?: IClassifier[]): IClassifier[] {
@@ -168,16 +162,16 @@ function getAncestors(knownAncestors?: IClassifier[]): IClassifier[] {
   return ancestors;
 }
 
-function getDescendents(knownDescendents?: IClassifier[]): IClassifier[] {
+function getDescendants(knownDescendants?: IClassifier[]): IClassifier[] {
   const self = this as IClassifier;
-  let descendents = [...(knownDescendents ? knownDescendents : [])];
+  let descendants = [...(knownDescendants ? knownDescendants : [])];
 
   self.getChildren().forEach((child: IClassifier) => {
-    if (!descendents.includes(child)) {
-      descendents = [...child.getDescendents(descendents)];
-      descendents.push(child);
+    if (!descendants.includes(child)) {
+      descendants = [...child.getDescendants(descendants)];
+      descendants.push(child);
     }
   });
 
-  return descendents;
+  return descendants;
 }

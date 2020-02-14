@@ -9,9 +9,11 @@ import {
   IReference,
   IProperty,
   ILiteral,
+  IGeneralization,
+  IClassifier,
 } from '@types';
 import functions from '@libs/model/functions';
-import schemas from "ontouml-schema";
+import schemas from 'ontouml-schema';
 
 /**
  * Utility class for the manipulation of models in OntoUML2 in conformance to the `ontouml-schema` definition.
@@ -152,7 +154,10 @@ export class ModelManager {
     );
   }
 
-  checkAndInjectFunctions(element: IElement, enableMemoization: boolean = true): void {
+  checkAndInjectFunctions(
+    element: IElement,
+    enableMemoization: boolean = true,
+  ): void {
     this.injectFunctions(
       element,
       functions.IElement_functions,
@@ -200,6 +205,24 @@ export class ModelManager {
     Object.keys(element).forEach((elementKey: string) => {
       element[elementKey] = this.resolveReference(element[elementKey]);
     });
+
+    // Updates IClassifier objects with references to IGeneralization object referring to them for improved efficiency
+    if (element.type === OntoUMLType.GENERALIZATION_TYPE) {
+      const generalization = element as IGeneralization;
+      const general = this.allElements[
+        generalization.general.id
+      ] as IClassifier;
+      const specific = this.allElements[
+        generalization.specific.id
+      ] as IClassifier;
+
+      general.specializations = general.specializations
+        ? [...general.specializations, generalization]
+        : [generalization];
+      specific.generalizations = specific.generalizations
+        ? [...specific.generalizations, generalization]
+        : [generalization];
+    }
   }
 
   resolveReference(reference: IReference | IReference[]): any {
