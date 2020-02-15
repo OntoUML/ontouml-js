@@ -1,4 +1,4 @@
-import { SORTAL, NON_SORTAL } from '@constants/stereotypes_constraints';
+import { SORTAL, NON_SORTAL } from '@constants/.';
 import OntoUMLRules from './rules/ontouml_rules';
 import OntoUMLParser from '../ontouml_parser';
 

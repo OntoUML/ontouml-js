@@ -1,5 +1,5 @@
-import { modelInvalidExample1 } from '@test-models/invalids';
-import OntoUMLModel from '@libs/ontouml_model';
+// import { modelInvalidExample1 } from '@test-models/invalids';
+// import OntoUMLModel from '@libs/ontouml_model';
 
 it('Missing tests', () => {});
 

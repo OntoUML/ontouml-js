@@ -1,15 +1,15 @@
-import {
-  modelInvalidExample1,
-  modelInvalidExample4,
-  modelInvalidExample5,
-  modelInvalidExample6,
-  modelInvalidExample7,
-  modelInvalidExample8,
-  modelInvalidExample9,
-  modelInvalidExample10,
-} from '@test-models/invalids';
-import OntoUMLParser from '@libs/ontouml_model/services/ontouml_parser';
-import OntoUMLSyntax from '@libs/ontouml_model/services/ontouml_syntax';
+// import {
+//   modelInvalidExample1,
+//   modelInvalidExample4,
+//   modelInvalidExample5,
+//   modelInvalidExample6,
+//   modelInvalidExample7,
+//   modelInvalidExample8,
+//   modelInvalidExample9,
+//   modelInvalidExample10,
+// } from '@test-models/invalids';
+// import OntoUMLParser from '@libs/ontouml_model/services/ontouml_parser';
+// import OntoUMLSyntax from '@libs/ontouml_model/services/ontouml_syntax';
 
 it('Missing tests', () => {});
 

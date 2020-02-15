@@ -88,6 +88,11 @@ interface IClassifier extends IElement {
    * @param knownDescendants - MUST NOT USE in regular code. Optional attribute that allows recursive execution of the function.
    */
   getDescendants?: (knownDescendants?: IClassifier[]) => IClassifier[];
+
+  /**
+   * Returns an array of Relations objects connected to this classifier
+   */
+  getRelations?: () => IRelation[];
 }
 
 /**
