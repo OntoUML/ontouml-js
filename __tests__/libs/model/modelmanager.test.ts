@@ -128,13 +128,13 @@ describe('Model deserializing', () => {
     const person = modelManager.rootPackage.getContentById(
       '2uxhBA6AUB0UtArb',
     ) as IClassifier;
-    const descendents = person.getDescendents();
+    const descendants = person.getDescendants();
 
     expect(
-      descendents.length === 3 &&
-        descendents.includes(student) &&
-        descendents.includes(sophomore) &&
-        descendents.includes(privately),
+      descendants.length === 3 &&
+        descendants.includes(student) &&
+        descendants.includes(sophomore) &&
+        descendants.includes(privately),
     ).toBeTruthy();
   });
 });

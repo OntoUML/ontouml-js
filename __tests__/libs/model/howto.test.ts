@@ -23,7 +23,7 @@ it('Check README How To code', () => {
   student.getParents(); // [ Person kind class ]
   student.getAncestors(); // [ Person kind class, Agent category class ]
   student.getChildren(); // [ Privately Enrolled role class, Privately Enrolled role class ]
-  student.getDescendents(); // [ Privately Enrolled role class, Privately Enrolled role class ]
+  student.getDescendants(); // [ Privately Enrolled role class, Privately Enrolled role class ]
 
   const enrollmentDate = rootPackage
     .getAllContents()
