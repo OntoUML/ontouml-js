@@ -121,7 +121,7 @@ interface IClass extends IElement, IContainer, IDecoratable, IClassifier {
  */
 interface IRelation extends IElement, IContainer, IDecoratable, IClassifier {
   type: OntoUMLType.RELATION_TYPE;
-  propertyType: IReference
+  propertyType: IReference;
 }
 
 /**
