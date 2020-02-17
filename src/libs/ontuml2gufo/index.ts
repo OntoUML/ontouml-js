@@ -1,6 +1,6 @@
 import { N3Writer } from 'n3';
 import { ModelManager } from '@libs/model';
-import { IClass } from '@types';
+import { IClass, IPackage } from '@types';
 import { OntoUMLType, ClassStereotype } from '@constants/.';
 import {
   transformKind,
@@ -29,10 +29,10 @@ const { namedNode, literal, quad } = DataFactory;
  * @author Lucas Bassetti
  */
 export class OntoUML2GUFO {
-  private model: ModelManager;
+  model: IPackage;
 
   constructor(model: ModelManager) {
-    this.model = model;
+    this.model = model.rootPackage;
   }
 
   async transformOntoUML2GUFO(baseIRI: string): Promise<string> {
@@ -73,7 +73,7 @@ export class OntoUML2GUFO {
    * Main method to transform OntoUML classes in gUFO. The method will be responsable to run different class transformations.
    */
   async transformOntoUMLClasses2GUFO(writer: N3Writer) {
-    const classes = this.model.rootPackage.getAllContentsByType([
+    const classes = this.model.getAllContentsByType([
       OntoUMLType.CLASS_TYPE,
     ]) as IClass[];
 
