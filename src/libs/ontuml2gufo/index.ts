@@ -94,11 +94,11 @@ export class OntoUML2GUFO {
   ): Promise<boolean> {
     const disjointStereotypes = [
       ClassStereotype.KIND,
-      ClassStereotype.QUANTITY_KIND,
-      ClassStereotype.COLLECTIVE_KIND,
-      ClassStereotype.RELATOR_KIND,
-      ClassStereotype.MODE_KIND,
-      ClassStereotype.QUALITY_KIND,
+      ClassStereotype.QUANTITY,
+      ClassStereotype.COLLECTIVE,
+      ClassStereotype.RELATOR,
+      ClassStereotype.MODE,
+      ClassStereotype.QUALITY,
     ];
 
     for (let i = 0; i < disjointStereotypes.length; i += 1) {
@@ -133,8 +133,8 @@ export class OntoUML2GUFO {
   ): Promise<boolean> {
     const transformStereotypeFunction = {
       [ClassStereotype.KIND]: transformKind,
-      [ClassStereotype.QUANTITY_KIND]: transformQuantityKind,
-      [ClassStereotype.COLLECTIVE_KIND]: transformCollectiveKind,
+      [ClassStereotype.QUANTITY]: transformQuantityKind,
+      [ClassStereotype.COLLECTIVE]: transformCollectiveKind,
       [ClassStereotype.SUBKIND]: transformSubkind,
       [ClassStereotype.ROLE]: transformRole,
       [ClassStereotype.PHASE]: transformPhase,
@@ -142,9 +142,9 @@ export class OntoUML2GUFO {
       [ClassStereotype.MIXIN]: transformMixin,
       [ClassStereotype.ROLE_MIXIN]: transformRoleMixin,
       [ClassStereotype.PHASE_MIXIN]: transformPhaseMixin,
-      [ClassStereotype.RELATOR_KIND]: transformRelatorKind,
-      [ClassStereotype.MODE_KIND]: transformModeKind,
-      [ClassStereotype.QUALITY_KIND]: transformQualityKind,
+      [ClassStereotype.RELATOR]: transformRelatorKind,
+      [ClassStereotype.MODE]: transformModeKind,
+      [ClassStereotype.QUALITY]: transformQualityKind,
     };
 
     for (let i = 0; i < classes.length; i += 1) {

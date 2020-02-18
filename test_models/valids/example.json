@@ -318,7 +318,7 @@
           "properties": null,
           "literals": null,
           "propertyAssignments": null,
-          "stereotypes": ["relatorKind"],
+          "stereotypes": ["relator"],
           "isAbstract": false,
           "isDerived": false
         },
@@ -350,7 +350,7 @@
           ],
           "literals": null,
           "propertyAssignments": null,
-          "stereotypes": ["qualityKind"],
+          "stereotypes": ["quality"],
           "isAbstract": false,
           "isDerived": false
         },

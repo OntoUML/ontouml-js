@@ -5,7 +5,7 @@ export const RELATION_TYPE = 'Relation';
 export const GENERALIZATION_TYPE = 'Generalization';
 export const GENERALIZATION_SET_TYPE = 'GeneralizationSet';
 export const PROPERTY_TYPE = 'Property';
-export const ENUMERATION_TYPE = 'Enumeration';
+export const LITERAL_TYPE = 'Literal';
 
 // Aggregation kind
 export const AGGREGATIONKIND_NONE = 'NONE';
@@ -23,8 +23,8 @@ export const NON_SORTAL: 'NON_SORTAL' = 'NON_SORTAL';
 
 // Class Stereotypes
 export const KIND: 'kind' = 'kind';
-export const QUANTITY_KIND: 'quantityKind' = 'quantityKind';
-export const COLLECTIVE_KIND: 'collectiveKind' = 'collectiveKind';
+export const QUANTITY: 'quantity' = 'quantity';
+export const COLLECTIVE: 'collective' = 'collective';
 export const SUBKIND: 'subkind' = 'subkind';
 export const ROLE: 'role' = 'role';
 export const PHASE: 'phase' = 'phase';
@@ -32,9 +32,10 @@ export const CATEGORY: 'category' = 'category';
 export const MIXIN: 'mixin' = 'mixin';
 export const ROLE_MIXIN: 'roleMixin' = 'roleMixin';
 export const PHASE_MIXIN: 'phaseMixin' = 'phaseMixin';
-export const RELATOR_KIND: 'relatorKind' = 'relatorKind';
-export const MODE_KIND: 'modeKind' = 'modeKind';
-export const QUALITY_KIND: 'qualityKind' = 'qualityKind';
+export const RELATOR: 'relator' = 'relator';
+export const MODE: 'mode' = 'mode';
+export const QUALITY: 'quality' = 'quality';
+export const EVENT: 'event' = 'event';
 
 // Relation Stereotypes
 export const MATERIAL: 'material' = 'material';
@@ -56,54 +57,55 @@ export const PARTICIPATIONAL: 'participational' = 'participational';
 export const TERMINATION: 'termination' = 'termination';
 export const INSTANTIATION: 'instantiation' = 'instantiation';
 
-export enum OntoUMLType {
-  PACKAGE_TYPE = 'Package',
-  CLASS_TYPE = 'Class',
-  RELATION_TYPE = 'Relation',
-  GENERALIZATION_TYPE = 'Generalization',
-  GENERALIZATION_SET_TYPE = 'GeneralizationSet',
-  PROPERTY_TYPE = 'Property',
-  LITERAL_TYPE = 'Literal',
-}
+export const OntoUMLType = {
+  PACKAGE_TYPE,
+  CLASS_TYPE,
+  RELATION_TYPE,
+  GENERALIZATION_TYPE,
+  GENERALIZATION_SET_TYPE,
+  PROPERTY_TYPE,
+  LITERAL_TYPE,
+};
 
-export enum AggregationKind {
-  AGGREGATIONKIND_NONE = 'NONE',
-  AGGREGATIONKIND_SHARED = 'SHARED',
-  AGGREGATIONKIND_COMPOSITE = 'COMPOSITE',
-}
+export const AggregationKind = {
+  AGGREGATIONKIND_NONE,
+  AGGREGATIONKIND_SHARED,
+  AGGREGATIONKIND_COMPOSITE,
+};
 
-export enum ClassStereotype {
-  KIND = 'kind',
-  QUANTITY_KIND = 'quantityKind',
-  COLLECTIVE_KIND = 'collectiveKind',
-  SUBKIND = 'subkind',
-  ROLE = 'role',
-  PHASE = 'phase',
-  CATEGORY = 'category',
-  MIXIN = 'mixin',
-  ROLE_MIXIN = 'roleMixin',
-  PHASE_MIXIN = 'phaseMixin',
-  RELATOR_KIND = 'relatorKind',
-  MODE_KIND = 'modeKind',
-  QUALITY_KIND = 'qualityKind',
-}
+export const ClassStereotype = {
+  KIND,
+  QUANTITY,
+  COLLECTIVE,
+  SUBKIND,
+  ROLE,
+  PHASE,
+  CATEGORY,
+  MIXIN,
+  ROLE_MIXIN,
+  PHASE_MIXIN,
+  RELATOR,
+  MODE,
+  QUALITY,
+  EVENT,
+};
 
-export enum RelationStereotype {
-  MATERIAL = 'material',
-  MEDIATION = 'mediation',
-  COMPARATIVE = 'comparative',
-  HISTORICAL = 'historical',
-  EXTERNAL_DEPENDENCE = 'externalDependence',
-  CHARACTERIZATION = 'characterization',
-  DERIVATION = 'derivation',
-  COMPONENT_OF = 'componentOf',
-  SUBQUANTITY_OF = 'subQuantityOf',
-  MEMBER_OF = 'memberOf',
-  SUBCOLLECTION_OF = 'subCollectionOf',
-  CREATION = 'creation',
-  HISTORICAL_DEPENDENCE = 'historicalDependence',
-  PARTICIPATION = 'participation',
-  PARTICIPATIONAL = 'participational',
-  TERMINATION = 'termination',
-  INSTANTIATION = 'instantiation',
-}
+export const RelationStereotype = {
+  MATERIAL,
+  MEDIATION,
+  COMPARATIVE,
+  HISTORICAL,
+  EXTERNAL_DEPENDENCE,
+  CHARACTERIZATION,
+  DERIVATION,
+  COMPONENT_OF,
+  SUBQUANTITY_OF,
+  MEMBER_OF,
+  SUBCOLLECTION_OF,
+  CREATION,
+  HISTORICAL_DEPENDENCE,
+  PARTICIPATION,
+  PARTICIPATIONAL,
+  TERMINATION,
+  INSTANTIATION,
+};

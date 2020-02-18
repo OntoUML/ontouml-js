@@ -13,7 +13,7 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["modeKind"],
+      "stereotypes": ["mode"],
       "isAbstract": false,
       "isDerived": false
     },
