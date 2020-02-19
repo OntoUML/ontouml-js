@@ -1,5 +1,19 @@
-const example = require('./example.json');
-const modePattern1 = require('./mode_pattern_1.json');
-const modePattern2 = require('./mode_pattern_2.json');
+const genericExample1 = require('./generic1.json');
+const mixinExample1 = require('./mixin1.json');
+const modeExample1 = require('./mode1.json');
+const modeExample2 = require('./mode2.json');
+const relatorExample1 = require('./relator1.json');
+const roleExample1 = require('./role1.json');
+const roleMixinExample1 = require('./roleMixin1.json');
+const subkindExample1 = require('./subkind1.json');
 
-export { example, modePattern1, modePattern2 };
+export {
+  genericExample1,
+  mixinExample1,
+  modeExample1,
+  modeExample2,
+  relatorExample1,
+  roleExample1,
+  roleMixinExample1,
+  subkindExample1,
+};

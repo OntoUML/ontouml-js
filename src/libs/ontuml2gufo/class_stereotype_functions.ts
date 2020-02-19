@@ -21,71 +21,26 @@ export function transformKind(classElement: IClass): Quad[] {
 
 export function transformSubkind(classElement: IClass): Quad[] {
   const { id } = classElement;
-  const parents = classElement.getParents();
-  const parent = parents[0];
-  const quads = [];
 
-  if (parent) {
-    quads.push(
-      quad(
-        namedNode(`:${id}`),
-        namedNode('rdfs:subClassOf'),
-        namedNode(`:${parent.id}`),
-      ),
-    );
-  }
-
-  quads.push(
+  return [
     quad(namedNode(`:${id}`), namedNode('rdf:type'), namedNode('gufo:SubKind')),
-  );
-
-  return quads;
+  ];
 }
 
 export function transformRole(classElement: IClass): Quad[] {
   const { id } = classElement;
-  const parents = classElement.getParents();
-  const parent = parents[0];
-  const quads = [];
 
-  if (parent) {
-    quads.push(
-      quad(
-        namedNode(`:${id}`),
-        namedNode('rdfs:subClassOf'),
-        namedNode(`:${parent.id}`),
-      ),
-    );
-  }
-
-  quads.push(
+  return [
     quad(namedNode(`:${id}`), namedNode('rdf:type'), namedNode('gufo:Role')),
-  );
-
-  return quads;
+  ];
 }
 
 export function transformPhase(classElement: IClass): Quad[] {
   const { id } = classElement;
-  const parents = classElement.getParents();
-  const parent = parents[0];
-  const quads = [];
 
-  if (parent) {
-    quads.push(
-      quad(
-        namedNode(`:${id}`),
-        namedNode('rdfs:subClassOf'),
-        namedNode(`:${parent.id}`),
-      ),
-    );
-  }
-
-  quads.push(
+  return [
     quad(namedNode(`:${id}`), namedNode('rdf:type'), namedNode('gufo:Phase')),
-  );
-
-  return quads;
+  ];
 }
 
 export function transformCategory(classElement: IClass): Quad[] {
@@ -152,7 +107,7 @@ export function transformPhaseMixin(classElement: IClass): Quad[] {
   ];
 }
 
-export function transformRelatorKind(classElement: IClass): Quad[] {
+export function transformRelator(classElement: IClass): Quad[] {
   const { id } = classElement;
 
   return [
@@ -165,7 +120,7 @@ export function transformRelatorKind(classElement: IClass): Quad[] {
   ];
 }
 
-export function transformModeKind(classElement: IClass): Quad[] {
+export function transformMode(classElement: IClass): Quad[] {
   const { id } = classElement;
   const relations = classElement.getRelations();
   const relationStereotypes = relations.map(
@@ -200,7 +155,7 @@ export function transformModeKind(classElement: IClass): Quad[] {
   return quads;
 }
 
-export function transformQualityKind(classElement: IClass): Quad[] {
+export function transformQuality(classElement: IClass): Quad[] {
   const { id } = classElement;
 
   return [
@@ -213,7 +168,7 @@ export function transformQualityKind(classElement: IClass): Quad[] {
   ];
 }
 
-export function transformQuantityKind(classElement: IClass): Quad[] {
+export function transformQuantity(classElement: IClass): Quad[] {
   const { id } = classElement;
 
   return [
@@ -226,7 +181,7 @@ export function transformQuantityKind(classElement: IClass): Quad[] {
   ];
 }
 
-export function transformCollectiveKind(classElement: IClass): Quad[] {
+export function transformCollective(classElement: IClass): Quad[] {
   const { id } = classElement;
 
   return [
@@ -236,5 +191,17 @@ export function transformCollectiveKind(classElement: IClass): Quad[] {
       namedNode('gufo:Collection'),
     ),
     quad(namedNode(`:${id}`), namedNode('rdf:type'), namedNode('gufo:Kind')),
+  ];
+}
+
+export function transformEvent(classElement: IClass): Quad[] {
+  const { id } = classElement;
+
+  return [
+    quad(
+      namedNode(`:${id}`),
+      namedNode('rdfs:subClassOf'),
+      namedNode('gufo:Event'),
+    ),
   ];
 }

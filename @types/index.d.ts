@@ -1,5 +1,4 @@
-import { OntoUMLType } from '@constants/.';
-import { AggregationKind } from '@constants/.';
+import { OntoUMLType, AggregationKind } from '@constants/.';
 
 /**
  * Interface that captures common properties of objects in `ontouml-schema`. Whenever necessary, stereotypes are captured as regular string arrays.

@@ -1,27 +1,59 @@
 import { ModelManager } from '@libs/model';
 import { OntoUML2GUFO } from '@libs/ontuml2gufo';
-import { example, modePattern1, modePattern2 } from '@test-models/valids';
+import {
+  genericExample1,
+  modeExample1,
+  modeExample2,
+} from '@test-models/valids';
+import { IPackage } from '@types';
 
-it('Transform OntoUML model to gUFO', async () => {
-  const modelManager = new ModelManager(example);
+async function transformOntoUML2GUFO(
+  model: IPackage,
+  format?: string,
+): Promise<string> {
+  const modelManager = new ModelManager(model);
   const service = new OntoUML2GUFO(modelManager);
-  const result = await service.transformOntoUML2GUFO('https://example.com');
 
-  expect(result.includes('owl:imports')).toBe(true);
+  return await service.transformOntoUML2GUFO({
+    baseIRI: 'https://example.com',
+    format: format || 'N-Triple',
+  });
+}
+
+it('should transform OntoUML generic model to gUFO', async () => {
+  const result = await transformOntoUML2GUFO(genericExample1, 'Turtle');
+
+  expect(result).toMatchSnapshot();
 });
 
-it('Check OntoUML mode pattern 1 - IntrinsicMode', async () => {
-  const modelManager = new ModelManager(modePattern1);
-  const service = new OntoUML2GUFO(modelManager);
-  const result = await service.transformOntoUML2GUFO('https://example.com');
+it('should transform OntoUML <<mode>> class as IntrinsicMode', async () => {
+  const result = await transformOntoUML2GUFO(modeExample1);
 
-  expect(result.includes('gufo:IntrinsicMode')).toBe(true);
+  expect(result).toMatchSnapshot();
+
+  expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:Class>');
+  expect(result).toContain(
+    '<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:NamedIndividual>',
+  );
+  expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdfs:label> "Headache" .');
+  expect(result).toContain(
+    '<:qJdeWA6AUB0UtAWm> <rdfs:subClassOf> <gufo:IntrinsicMode>',
+  );
+  expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <gufo:Kind>');
 });
 
-it('Check OntoUML mode pattern 2 - ExtrinsicMode', async () => {
-  const modelManager = new ModelManager(modePattern2);
-  const service = new OntoUML2GUFO(modelManager);
-  const result = await service.transformOntoUML2GUFO('https://example.com');
+it('should transform OntoUML <<mode>> class as ExtrinsicMode', async () => {
+  const result = await transformOntoUML2GUFO(modeExample2);
 
-  expect(result.includes('gufo:ExtrinsicMode')).toBe(true);
+  expect(result).toMatchSnapshot();
+
+  expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:Class>');
+  expect(result).toContain(
+    '<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:NamedIndividual>',
+  );
+  expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdfs:label> "Love" .');
+  expect(result).toContain(
+    '<:qJdeWA6AUB0UtAWm> <rdfs:subClassOf> <gufo:ExtrinsicMode>',
+  );
+  expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <gufo:Kind>');
 });

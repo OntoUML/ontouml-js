@@ -1,0 +1,278 @@
+{
+  "type": "Package",
+  "id": "HK05mg6D.AAAAQbt",
+  "name": "Role1",
+  "description": null,
+  "contents": [
+    {
+      "type": "Class",
+      "id": "HK05mg6D.AAAAQbu",
+      "name": "boolean",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "nK05mg6D.AAAAQbv",
+      "name": "byte",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "nK05mg6D.AAAAQbw",
+      "name": "char",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "nK05mg6D.AAAAQbx",
+      "name": "double",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "nK05mg6D.AAAAQby",
+      "name": "float",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "nK05mg6D.AAAAQbz",
+      "name": "int",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "nK05mg6D.AAAAQb0",
+      "name": "long",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "XK05mg6D.AAAAQb1",
+      "name": "short",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "XK05mg6D.AAAAQb2",
+      "name": "void",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "XK05mg6D.AAAAQb3",
+      "name": "string",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Package",
+      "id": "VOy5mg6D.AAAAQp1",
+      "name": "Diagram1",
+      "description": null,
+      "propertyAssignments": null,
+      "contents": [
+        {
+          "type": "Class",
+          "id": "IsW5mg6D.AAAAQqE",
+          "name": "Person",
+          "description": null,
+          "properties": null,
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["kind"],
+          "isAbstract": false,
+          "isDerived": false
+        },
+        {
+          "type": "Class",
+          "id": "ech5mg6D.AAAAQqj",
+          "name": "Man",
+          "description": null,
+          "properties": null,
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["subkind"],
+          "isAbstract": false,
+          "isDerived": false
+        },
+        {
+          "type": "Class",
+          "id": "jiZ5mg6D.AAAAQrK",
+          "name": "Woman",
+          "description": null,
+          "properties": null,
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["subkind"],
+          "isAbstract": false,
+          "isDerived": false
+        },
+        {
+          "type": "Class",
+          "id": "z.T5mg6D.AAAAQsY",
+          "name": "Husband",
+          "description": null,
+          "properties": null,
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["role"],
+          "isAbstract": false,
+          "isDerived": false
+        },
+        {
+          "type": "Class",
+          "id": "yPX5mg6D.AAAAQtn",
+          "name": "Wife",
+          "description": null,
+          "properties": null,
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["role"],
+          "isAbstract": false,
+          "isDerived": false
+        }
+      ]
+    },
+    {
+      "type": "Generalization",
+      "id": "Tch5mg6D.AAAAQqo",
+      "name": null,
+      "description": null,
+      "propertyAssignments": null,
+      "general": {
+        "type": "Class",
+        "id": "IsW5mg6D.AAAAQqE"
+      },
+      "specific": {
+        "type": "Class",
+        "id": "ech5mg6D.AAAAQqj"
+      }
+    },
+    {
+      "type": "Generalization",
+      "id": "wSZ5mg6D.AAAAQrP",
+      "name": null,
+      "description": null,
+      "propertyAssignments": null,
+      "general": {
+        "type": "Class",
+        "id": "IsW5mg6D.AAAAQqE"
+      },
+      "specific": {
+        "type": "Class",
+        "id": "jiZ5mg6D.AAAAQrK"
+      }
+    },
+    {
+      "type": "Generalization",
+      "id": "EBT5mg6D.AAAAQsd",
+      "name": null,
+      "description": null,
+      "propertyAssignments": null,
+      "general": {
+        "type": "Class",
+        "id": "ech5mg6D.AAAAQqj"
+      },
+      "specific": {
+        "type": "Class",
+        "id": "z.T5mg6D.AAAAQsY"
+      }
+    },
+    {
+      "type": "Generalization",
+      "id": "pPX5mg6D.AAAAQts",
+      "name": null,
+      "description": null,
+      "propertyAssignments": null,
+      "general": {
+        "type": "Class",
+        "id": "jiZ5mg6D.AAAAQrK"
+      },
+      "specific": {
+        "type": "Class",
+        "id": "yPX5mg6D.AAAAQtn"
+      }
+    },
+    {
+      "type": "GeneralizationSet",
+      "id": "Br95mg6D.AAAAQsA",
+      "name": "Person",
+      "description": null,
+      "propertyAssignments": null,
+      "categorizer": null,
+      "generalizations": [
+        {
+          "type": "Generalization",
+          "id": "Tch5mg6D.AAAAQqo"
+        },
+        {
+          "type": "Generalization",
+          "id": "wSZ5mg6D.AAAAQrP"
+        }
+      ],
+      "isDisjoint": true,
+      "isComplete": true
+    }
+  ],
+  "propertyAssignments": null
+}
