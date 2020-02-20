@@ -5,6 +5,8 @@ import {
   IGeneralization,
   IContainer,
   IRelation,
+  IGeneralizationSet,
+  IProperty,
 } from '@types';
 import { OntoUMLType } from '@constants/.';
 import memoizee from 'memoizee';
@@ -134,9 +136,15 @@ const functionsMap = {
   IDecoratable_functions: {},
   IPackage_functions: {},
   IClass_functions: {},
-  IRelation_functions: {},
+  IRelation_functions: {
+    isBinary,
+    isTernary,
+    isDerivation,
+  },
   IGeneralization_functions: {},
-  IGeneralizationSet_functions: {},
+  IGeneralizationSet_functions: {
+    getGeneral,
+  },
   IProperty_functions: {},
   ILiteral_functions: {},
 };
@@ -302,4 +310,45 @@ function getRelations(): IRelation[] {
         relation.properties[1].propertyType.id === self.id,
     )
     .map((relation: IRelation) => relation);
+}
+
+function isBinary(): boolean {
+  const self = this as IRelation;
+  if (!self.properties || self.properties.length !== 2) return false;
+
+  const source = self.properties[0].propertyType as IClassifier;
+  const target = self.properties[1].propertyType as IClassifier;
+
+  return (
+    source &&
+    target &&
+    source.type === OntoUMLType.CLASS_TYPE &&
+    target.type === OntoUMLType.CLASS_TYPE
+  );
+}
+function isTernary(): boolean {
+  const self = this as IRelation;
+  if (!self.properties || self.properties.length < 2) return false;
+
+  return self.properties.every((end: IProperty) => {
+    return end.propertyType && end.propertyType.type === OntoUMLType.CLASS_TYPE;
+  });
+}
+function isDerivation(): boolean {
+  const self = this as IRelation;
+  if (!self.properties || self.properties.length !== 2) return false;
+
+  const source = self.properties[0].propertyType as IClassifier;
+  const target = self.properties[1].propertyType as IClassifier;
+
+  return (
+    source &&
+    target &&
+    source.type === OntoUMLType.RELATION_TYPE &&
+    target.type === OntoUMLType.CLASS_TYPE
+  );
+}
+function getGeneral(): IClassifier {
+  const self = this as IGeneralizationSet;
+  return (self.generalizations[0] as IGeneralization).general as IClassifier;
 }

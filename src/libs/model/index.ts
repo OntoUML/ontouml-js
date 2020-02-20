@@ -205,7 +205,13 @@ export class ModelManager {
   }
 
   updateReadOnlyReferencesToIProperty(property: IProperty): void {
-    // switch(property._container.type)
+    switch (property._container.type) {
+      case OntoUMLType.CLASS_TYPE:
+        break;
+      case OntoUMLType.RELATION_TYPE:
+        break;
+    }
+
     // _typeOfAttributes
     // _sourceOfRelations
     // _targetOfRelations

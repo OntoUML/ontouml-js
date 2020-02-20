@@ -176,6 +176,21 @@ interface IClass extends IElement, IContainer, IDecoratable, IClassifier {
  */
 interface IRelation extends IElement, IContainer, IDecoratable, IClassifier {
   type: OntoUMLType.RELATION_TYPE;
+
+  /**
+   * Returns `true` if the relation is binary and relates two IClass objects
+   */
+  isBinary?: () => boolean;
+
+  /**
+   * Returns `true` if the relation is ternary and relates multiple IClass objects
+   */
+  isTernary?: () => boolean;
+
+  /**
+   * Returns `true` if the relation is binary and relates an IRelation object to an IClass object
+   */
+  isDerivation?: () => boolean;
 }
 
 /**
@@ -209,6 +224,11 @@ interface IGeneralizationSet extends IElement {
   isComplete: boolean | null;
   categorizer: IClass | IReference;
   generalizations: IGeneralization[] | IReference[];
+
+  /**
+   * Returns `true` if the relation is binary and relates two IClass objects
+   */
+  getGeneral?: () => IClass;
 }
 
 /**
