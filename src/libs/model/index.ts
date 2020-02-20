@@ -11,8 +11,9 @@ import {
   ILiteral,
   IGeneralization,
   IClassifier,
+  IGeneralizationSet,
 } from '@types';
-import functions from '@libs/model/functions';
+import { inject, eject } from '@libs/model/functions';
 import schemas from 'ontouml-schema';
 
 /**
@@ -31,8 +32,7 @@ export class ModelManager {
     const validator = new Ajv().compile(schemas.getSchema(schemas.ONTOUML_2));
     const isValid = validator(model);
 
-    // console.log('Checking validity');
-
+    // Check input validity
     if (!isValid) {
       throw {
         message: 'Invalid model input.',
@@ -41,21 +41,18 @@ export class ModelManager {
     }
 
     // Enabling memoization
-    // console.log('Enabling general memoization.');
     this.rootPackage = model;
     this.allElements = {};
     this.getElements = memoizee(this.getElements);
     this.getElementById = memoizee(this.getElementById);
 
     // Creating elements
-    // console.log('Creating elements.');
     this.getElements().forEach((element: IElement) => {
       this.allElements[element.id] = element;
-      this.checkAndInjectFunctions(element);
+      inject(element, true);
     });
 
     // Resolving references
-    // console.log('Resolving references.');
     this.getElements().forEach((element: IElement) => {
       this.replaceReferences(element);
     });
@@ -132,98 +129,92 @@ export class ModelManager {
     );
   }
 
-  checkInstanceOfIContainer(element: IElement): boolean {
-    return [
-      OntoUMLType.PACKAGE_TYPE,
-      OntoUMLType.CLASS_TYPE,
-      OntoUMLType.RELATION_TYPE,
-    ].includes(element.type);
-  }
-
-  checkInstanceOfIDecoratable(element: IElement): boolean {
-    return [
-      OntoUMLType.PROPERTY_TYPE,
-      OntoUMLType.CLASS_TYPE,
-      OntoUMLType.RELATION_TYPE,
-    ].includes(element.type);
-  }
-
-  checkInstanceOfIClassifier(element: IElement): boolean {
-    return [OntoUMLType.CLASS_TYPE, OntoUMLType.RELATION_TYPE].includes(
-      element.type,
-    );
-  }
-
-  checkAndInjectFunctions(
-    element: IElement,
-    enableMemoization: boolean = true,
-  ): void {
-    this.injectFunctions(
-      element,
-      functions.IElement_functions,
-      enableMemoization,
-    );
-
-    if (element.hasIContainerType()) {
-      this.injectFunctions(
-        element,
-        functions.IContainer_functions,
-        enableMemoization,
-      );
-    }
-
-    if (element.hasIClassifierType()) {
-      this.injectFunctions(
-        element,
-        functions.IClassifier_functions,
-        enableMemoization,
-      );
-    }
-  }
-
-  injectFunctions(
-    element: IElement,
-    functionImplementations: any,
-    enableMemoization: boolean = true,
-  ): void {
-    Object.keys(functionImplementations).forEach((functionName: string) => {
-      element[functionName] = enableMemoization
-        ? memoizee(functionImplementations[functionName])
-        : functionImplementations[functionName];
-    });
-  }
-
-  ejectFunctions(element: IElement): void {
-    Object.keys(element).forEach((elementKey: string) => {
-      if (element[elementKey] instanceof Function) {
-        delete element[elementKey];
-      }
-    });
-  }
-
   replaceReferences(element: IElement): void {
     Object.keys(element).forEach((elementKey: string) => {
       element[elementKey] = this.resolveReference(element[elementKey]);
     });
 
-    // Updates IClassifier objects with references to IGeneralization object referring to them for improved efficiency
-    if (element.type === OntoUMLType.GENERALIZATION_TYPE) {
-      const generalization = element as IGeneralization;
-      const general = this.allElements[
-        generalization.general.id
-      ] as IClassifier;
-      const specific = this.allElements[
-        generalization.specific.id
-      ] as IClassifier;
-
-      general._specificOfGeneralizations = general._specificOfGeneralizations
-        ? [...general._specificOfGeneralizations, generalization]
-        : [generalization];
-      specific._generalOfGeneralizations = specific._generalOfGeneralizations
-        ? [...specific._generalOfGeneralizations, generalization]
-        : [generalization];
+    switch (element.type) {
+      case OntoUMLType.PACKAGE_TYPE:
+        this.updateReadOnlyReferencesToIPackage(element as IPackage);
+        break;
+      case OntoUMLType.CLASS_TYPE:
+        this.updateReadOnlyReferencesToIClass(element as IClass);
+        break;
+      case OntoUMLType.RELATION_TYPE:
+        this.updateReadOnlyReferencesToIRelation(element as IRelation);
+        break;
+      case OntoUMLType.GENERALIZATION_TYPE:
+        this.updateReadOnlyReferencesToIGeneralization(
+          element as IGeneralization,
+        );
+        break;
+      case OntoUMLType.GENERALIZATION_SET_TYPE:
+        this.updateReadOnlyReferencesToIGeneralizationSet(
+          element as IGeneralizationSet,
+        );
+        break;
+      case OntoUMLType.PROPERTY_TYPE:
+        this.updateReadOnlyReferencesToIProperty(element as IProperty);
+        break;
+      case OntoUMLType.LITERAL_TYPE:
+        this.updateReadOnlyReferencesToILiteral(element as ILiteral);
+        break;
     }
   }
+
+  updateReadOnlyReferencesToIPackage(_package: IPackage): void {}
+
+  updateReadOnlyReferencesToIClass(_class: IClass): void {}
+
+  updateReadOnlyReferencesToIRelation(relation: IRelation): void {}
+
+  updateReadOnlyReferencesToIGeneralization(
+    generalization: IGeneralization,
+  ): void {
+    const general = this.allElements[generalization.general.id] as IClassifier;
+    const specific = this.allElements[
+      generalization.specific.id
+    ] as IClassifier;
+
+    general._specificOfGeneralizations = general._specificOfGeneralizations
+      ? [...general._specificOfGeneralizations, generalization]
+      : [generalization];
+    specific._generalOfGeneralizations = specific._generalOfGeneralizations
+      ? [...specific._generalOfGeneralizations, generalization]
+      : [generalization];
+  }
+
+  updateReadOnlyReferencesToIGeneralizationSet(
+    generalizationSet: IGeneralizationSet,
+  ): void {
+    generalizationSet.generalizations.forEach(
+      (generalization: IGeneralization) => {
+        generalization._memberOfGeneralizationSets = !generalization._memberOfGeneralizationSets
+          ? []
+          : [...generalization._memberOfGeneralizationSets, generalizationSet];
+      },
+    );
+
+    if (generalizationSet.categorizer) {
+      const categorizer = generalizationSet.categorizer as IClass;
+      categorizer._categorizerOfGeneralizationSets = !categorizer._categorizerOfGeneralizationSets
+        ? []
+        : [...categorizer._categorizerOfGeneralizationSets, generalizationSet];
+    }
+  }
+
+  updateReadOnlyReferencesToIProperty(property: IProperty): void {
+    // switch(property._container.type)
+    // _typeOfAttributes
+    // _sourceOfRelations
+    // _targetOfRelations
+    // _memberOfRelations
+    // _subsettedPropertyOfProperties
+    // _redefinedPropertyOfProperties
+  }
+
+  updateReadOnlyReferencesToILiteral(literal: ILiteral): void {}
 
   resolveReference(reference: IReference | IReference[]): any {
     if (Array.isArray(reference)) {

@@ -188,6 +188,13 @@ interface IGeneralization extends IElement {
   type: OntoUMLType.GENERALIZATION_TYPE;
   general: IClassifier | IReference;
   specific: IClassifier | IReference;
+
+  /**
+   * An array of IGeneralizationSet objects where the object is in the `generalizations` array.
+   *
+   * **Read Only**. Do not manually update.
+   */
+  _memberOfGeneralizationSets?: IGeneralizationSet[] | null;
 }
 
 /**

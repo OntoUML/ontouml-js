@@ -7,8 +7,112 @@ import {
   IRelation,
 } from '@types';
 import { OntoUMLType } from '@constants/.';
+import memoizee from 'memoizee';
 
-export default {
+export function inject(
+  element: IElement,
+  enableMemoization: boolean = true,
+): void {
+  injectFunctions(element, functionsMap.IElement_functions, enableMemoization);
+
+  if (element.hasIContainerType()) {
+    injectFunctions(
+      element,
+      functionsMap.IContainer_functions,
+      enableMemoization,
+    );
+  }
+
+  if (element.hasIClassifierType()) {
+    injectFunctions(
+      element,
+      functionsMap.IClassifier_functions,
+      enableMemoization,
+    );
+  }
+
+  if (element.hasIDecoratableType()) {
+    injectFunctions(
+      element,
+      functionsMap.IDecoratable_functions,
+      enableMemoization,
+    );
+  }
+
+  switch (element.type) {
+    case OntoUMLType.PACKAGE_TYPE:
+      injectFunctions(
+        element,
+        functionsMap.IPackage_functions,
+        enableMemoization,
+      );
+      break;
+    case OntoUMLType.CLASS_TYPE:
+      injectFunctions(
+        element,
+        functionsMap.IClass_functions,
+        enableMemoization,
+      );
+      break;
+    case OntoUMLType.RELATION_TYPE:
+      injectFunctions(
+        element,
+        functionsMap.IRelation_functions,
+        enableMemoization,
+      );
+      break;
+    case OntoUMLType.GENERALIZATION_TYPE:
+      injectFunctions(
+        element,
+        functionsMap.IGeneralization_functions,
+        enableMemoization,
+      );
+      break;
+    case OntoUMLType.GENERALIZATION_SET_TYPE:
+      injectFunctions(
+        element,
+        functionsMap.IGeneralizationSet_functions,
+        enableMemoization,
+      );
+      break;
+    case OntoUMLType.PROPERTY_TYPE:
+      injectFunctions(
+        element,
+        functionsMap.IProperty_functions,
+        enableMemoization,
+      );
+      break;
+    case OntoUMLType.LITERAL_TYPE:
+      injectFunctions(
+        element,
+        functionsMap.ILiteral_functions,
+        enableMemoization,
+      );
+      break;
+  }
+}
+
+export function eject(element: IElement): void {
+  Object.keys(element).forEach((elementKey: string) => {
+    if (element[elementKey] instanceof Function) {
+      delete element[elementKey];
+    }
+  });
+}
+
+function injectFunctions(
+  element: IElement,
+  functionImplementations: any,
+  enableMemoization: boolean = true,
+): void {
+  Object.keys(functionImplementations).forEach((functionName: string) => {
+    element[functionName] = enableMemoization
+      ? memoizee(functionImplementations[functionName])
+      : functionImplementations[functionName];
+  });
+}
+
+const functionsMap = {
   IElement_functions: {
     getRootPackage,
     hasIContainerType,
@@ -27,6 +131,14 @@ export default {
     getDescendants,
     getRelations,
   },
+  IDecoratable_functions: {},
+  IPackage_functions: {},
+  IClass_functions: {},
+  IRelation_functions: {},
+  IGeneralization_functions: {},
+  IGeneralizationSet_functions: {},
+  IProperty_functions: {},
+  ILiteral_functions: {},
 };
 
 function getRootPackage(): IPackage {
