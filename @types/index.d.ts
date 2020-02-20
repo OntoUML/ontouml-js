@@ -17,7 +17,13 @@ interface IElement {
   name: string | null;
   description: string | null;
   propertyAssignments: any;
-  container?: IContainer | IReference;
+
+  /**
+   * The IContainer object that contains this object (having as reference `ontouml-schema`).
+   *
+   * **Read Only**. Do not manually update.
+   */
+  _container?: IContainer | IReference;
 
   /**
    * Returns the outtermost container of an element.
@@ -60,10 +66,48 @@ interface IClassifier extends IElement {
   properties: IProperty[] | null;
   isAbstract: boolean | null;
   isDerived: boolean | null;
-  /** An array of IGeneralization object where the object if the `specific` IClassifier */
-  generalizations?: IGeneralization[] | null;
-  /** An array of IGeneralization object where the object if the `general` IClassifier */
-  specializations?: IGeneralization[] | null;
+
+  /**
+   * An array of IGeneralization objects where the object is the `specific` IClassifier.
+   *
+   * **Read Only**. Do not manually update.
+   */
+  _generalOfGeneralizations?: IGeneralization[] | null;
+
+  /**
+   * An array of IGeneralization objects where the object is the `general` IClassifier.
+   *
+   * **Read Only**. Do not manually update.
+   */
+  _specificOfGeneralizations?: IGeneralization[] | null;
+
+  /**
+   * An array of IProperty objects contained by an IClass object where the object is the `propertyType` IClassifier.
+   *
+   * **Read Only**. Do not manually update.
+   */
+  _typeOfAttributes?: IProperty[] | null;
+
+  /**
+   * An array of IProperty objects contained by an IRelation object where the object is the `propertyType` IClassifier and the property captures the source of the relation.
+   *
+   * **Read Only**. Do not manually update.
+   */
+  _sourceOfRelations?: IProperty[] | null;
+
+  /**
+   * An array of IProperty objects contained by an IRelation object where the object is the `propertyType` IClassifier and the property captures the target of the relation.
+   *
+   * **Read Only**. Do not manually update.
+   */
+  _targetOfRelations?: IProperty[] | null;
+
+  /**
+   * An array of IProperty objects contained by an IRelation object where the object is the `propertyType` IClassifier and the property captures a member of a ternary relation.
+   *
+   * **Read Only**. Do not manually update.
+   */
+  _memberOfRelations?: IProperty[] | null;
 
   /**
    * Returns an array of Classifier objects connected to this classifier through generalizations as its parents.
@@ -115,6 +159,13 @@ interface IPackage extends IElement, IContainer {
 interface IClass extends IElement, IContainer, IDecoratable, IClassifier {
   type: OntoUMLType.CLASS_TYPE;
   literals: ILiteral[] | null;
+
+  /**
+   * An array of IGeneralizationSet objects where the object is the `categorizer` IClassifier.
+   *
+   * **Read Only**. Do not manually update.
+   */
+  _categorizerOfGeneralizationSets?: IGeneralizationSet[] | null;
 }
 
 /**
@@ -169,6 +220,20 @@ interface IProperty extends IElement, IDecoratable {
   isDerived: boolean | null;
   isOrdered: boolean | null;
   isReadOnly: boolean | null;
+
+  /**
+   * An array of IProperty objects where the object is in the `subsettedProperties` IProperty array.
+   *
+   * **Read Only**. Do not manually update.
+   */
+  _subsettedPropertyOfProperties?: IProperty[] | null;
+
+  /**
+   * An array of IProperty objects where the object is in the `redefinedProperties` IProperty array.
+   *
+   * **Read Only**. Do not manually update.
+   */
+  _redefinedPropertyOfProperties?: IProperty[] | null;
 }
 
 /**
@@ -179,7 +244,7 @@ interface IProperty extends IElement, IDecoratable {
  */
 interface ILiteral extends IElement {
   type: OntoUMLType.LITERAL_TYPE;
-  container?: IClass;
+  _container?: IClass;
 }
 
 /**

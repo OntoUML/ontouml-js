@@ -74,7 +74,7 @@ export class ModelManager {
       contents = [...(current.contents ? current.contents : [])];
     }
 
-    current.container = null;
+    current._container = null;
 
     if (!current.contents) {
       return [];
@@ -88,7 +88,7 @@ export class ModelManager {
 
         if (relation.properties) {
           relation.properties.forEach(
-            (property: IProperty) => (property.container = relation),
+            (property: IProperty) => (property._container = relation),
           );
         }
         contents = [
@@ -100,12 +100,12 @@ export class ModelManager {
 
         if (_class.properties) {
           _class.properties.forEach(
-            (property: IProperty) => (property.container = _class),
+            (property: IProperty) => (property._container = _class),
           );
         }
         if (_class.literals) {
           _class.literals.forEach(
-            (literal: ILiteral) => (literal.container = _class),
+            (literal: ILiteral) => (literal._container = _class),
           );
         }
         contents = [
@@ -115,7 +115,7 @@ export class ModelManager {
         ];
       }
 
-      element.container = { type: current.type, id: current.id };
+      element._container = { type: current.type, id: current.id };
     });
 
     return contents;
@@ -216,11 +216,11 @@ export class ModelManager {
         generalization.specific.id
       ] as IClassifier;
 
-      general.specializations = general.specializations
-        ? [...general.specializations, generalization]
+      general._specificOfGeneralizations = general._specificOfGeneralizations
+        ? [...general._specificOfGeneralizations, generalization]
         : [generalization];
-      specific.generalizations = specific.generalizations
-        ? [...specific.generalizations, generalization]
+      specific._generalOfGeneralizations = specific._generalOfGeneralizations
+        ? [...specific._generalOfGeneralizations, generalization]
         : [generalization];
     }
   }

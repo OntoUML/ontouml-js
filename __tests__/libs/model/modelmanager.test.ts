@@ -17,7 +17,9 @@ describe('Model deserializing', () => {
       expect(rootPackage).toBe(modelManager.rootPackage);
 
       if (element.type === OntoUMLType.PROPERTY_TYPE) {
-        expect((element.container as IElement).hasIClassifierType).toBeTruthy();
+        expect(
+          (element._container as IElement).hasIClassifierType,
+        ).toBeTruthy();
       }
     });
   });

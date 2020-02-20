@@ -4,7 +4,7 @@ import {
   IClassifier,
   IGeneralization,
   IContainer,
-  IRelation
+  IRelation,
 } from '@types';
 import { OntoUMLType } from '@constants/.';
 
@@ -25,22 +25,22 @@ export default {
     getChildren,
     getAncestors,
     getDescendants,
-    getRelations
+    getRelations,
   },
 };
 
 function getRootPackage(): IPackage {
   const self = this as IElement;
 
-  if (self.container) {
-    const root: IPackage = (self.container as IContainer).getRootPackage();
+  if (self._container) {
+    const root: IPackage = (self._container as IContainer).getRootPackage();
 
     if (self.type === OntoUMLType.PACKAGE_TYPE && root === self) {
       throw 'Circular containment references';
     } else if (root) {
       return root;
-    } else if (self.container.type === OntoUMLType.PACKAGE_TYPE) {
-      return self.container as IPackage;
+    } else if (self._container.type === OntoUMLType.PACKAGE_TYPE) {
+      return self._container as IPackage;
     } else {
       return null;
     }
@@ -131,8 +131,8 @@ function getContentById(id: string): IElement {
 function getParents(): IClassifier[] {
   const self = this as IClassifier;
 
-  return self.generalizations
-    ? self.generalizations.map(
+  return self._generalOfGeneralizations
+    ? self._generalOfGeneralizations.map(
         (generalization: IGeneralization) =>
           generalization.general as IClassifier,
       )
@@ -140,10 +140,10 @@ function getParents(): IClassifier[] {
 }
 
 function getChildren(): IClassifier[] {
-  const self = this as IClassifier
+  const self = this as IClassifier;
 
-  return self.specializations
-    ? self.specializations.map(
+  return self._specificOfGeneralizations
+    ? self._specificOfGeneralizations.map(
         (specialization: IGeneralization) =>
           specialization.specific as IClassifier,
       )
