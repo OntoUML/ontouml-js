@@ -1,5 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`should transform OntoUML <<mixin>> class 1`] = `
+"<https://example.com> <rdf:type> <owl:Ontology> .
+<https://example.com> <owl:imports> <gufo:> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:addoWg6D.AAAARS0> <:SgLoWg6D.AAAARTw>) .
+<:yhVoWg6D.AAAARSb> <rdf:type> <owl:Class> .
+<:yhVoWg6D.AAAARSb> <rdf:type> <owl:NamedIndividual> .
+<:yhVoWg6D.AAAARSb> <rdfs:label> \\"Seatable\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:addoWg6D.AAAARS0> <:OtjoWg6D.AAAARTV>) .
+<:yhVoWg6D.AAAARSb> <rdfs:subClassOf> <gufo:Endurant> .
+<:yhVoWg6D.AAAARSb> <rdf:type> <gufo:Mixin> .
+<:yhVoWg6D.AAAARSb> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:addoWg6D.AAAARS0> <:OtjoWg6D.AAAARTV>)
+] .
+<:addoWg6D.AAAARS0> <rdf:type> <owl:Class> .
+<:addoWg6D.AAAARS0> <rdf:type> <owl:NamedIndividual> .
+<:addoWg6D.AAAARS0> <rdfs:label> \\"Chair\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:s5HoWg6D.AAAARUX> <:OtjoWg6D.AAAARTV>) .
+<:addoWg6D.AAAARS0> <rdfs:subClassOf> <:yhVoWg6D.AAAARSb> .
+<:SgLoWg6D.AAAARTw> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:s5HoWg6D.AAAARUX> <:OtjoWg6D.AAAARTV>)
+] .
+<:addoWg6D.AAAARS0> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:addoWg6D.AAAARS0> <rdf:type> <gufo:Kind> .
+<:OtjoWg6D.AAAARTV> <rdf:type> <owl:Class> .
+<:OtjoWg6D.AAAARTV> <rdf:type> <owl:NamedIndividual> .
+<:OtjoWg6D.AAAARTV> <rdfs:label> \\"Solid Crate\\" .
+<:OtjoWg6D.AAAARTV> <rdfs:subClassOf> <:yhVoWg6D.AAAARSb> .
+<:OtjoWg6D.AAAARTV> <rdfs:subClassOf> <:SgLoWg6D.AAAARTw> .
+<:OtjoWg6D.AAAARTV> <rdf:type> <gufo:Phase> .
+<:SgLoWg6D.AAAARTw> <rdf:type> <owl:Class> .
+<:SgLoWg6D.AAAARTw> <rdf:type> <owl:NamedIndividual> .
+<:SgLoWg6D.AAAARTw> <rdfs:label> \\"Crate\\" .
+<:SgLoWg6D.AAAARTw> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:SgLoWg6D.AAAARTw> <rdf:type> <gufo:Kind> .
+<:s5HoWg6D.AAAARUX> <rdf:type> <owl:Class> .
+<:s5HoWg6D.AAAARUX> <rdf:type> <owl:NamedIndividual> .
+<:s5HoWg6D.AAAARUX> <rdfs:label> \\"Broken Crate\\" .
+<:s5HoWg6D.AAAARUX> <rdfs:subClassOf> <:SgLoWg6D.AAAARTw> .
+<:s5HoWg6D.AAAARUX> <rdf:type> <gufo:Phase> .
+"
+`;
+
 exports[`should transform OntoUML <<mode>> class as ExtrinsicMode 1`] = `
 "<https://example.com> <rdf:type> <owl:Ontology> .
 <https://example.com> <owl:imports> <gufo:> .
@@ -38,6 +82,86 @@ exports[`should transform OntoUML <<mode>> class as IntrinsicMode 1`] = `
 <:Q5deWA6AUB0UtAWn> <rdfs:subClassOf> <gufo:FunctionalComplex> .
 <:Q5deWA6AUB0UtAWn> <rdf:type> <gufo:Kind> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:qJdeWA6AUB0UtAWm>) .
+"
+`;
+
+exports[`should transform OntoUML <<relator>> class 1`] = `
+"<https://example.com> <rdf:type> <owl:Ontology> .
+<https://example.com> <owl:imports> <gufo:> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:IsW5mg6D.AAAAQqE>) .
+<:IsW5mg6D.AAAAQqE> <rdf:type> <owl:Class> .
+<:IsW5mg6D.AAAAQqE> <rdf:type> <owl:NamedIndividual> .
+<:IsW5mg6D.AAAAQqE> <rdfs:label> \\"Person\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:ech5mg6D.AAAAQqj> <:jiZ5mg6D.AAAAQrK>) .
+<:IsW5mg6D.AAAAQqE> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:IsW5mg6D.AAAAQqE> <rdf:type> <gufo:Kind> .
+<:IsW5mg6D.AAAAQqE> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:ech5mg6D.AAAAQqj> <:jiZ5mg6D.AAAAQrK>)
+] .
+<:ech5mg6D.AAAAQqj> <rdf:type> <owl:Class> .
+<:ech5mg6D.AAAAQqj> <rdf:type> <owl:NamedIndividual> .
+<:ech5mg6D.AAAAQqj> <rdfs:label> \\"Man\\" .
+<:ech5mg6D.AAAAQqj> <rdfs:subClassOf> <:IsW5mg6D.AAAAQqE> .
+<:ech5mg6D.AAAAQqj> <rdf:type> <gufo:SubKind> .
+<:jiZ5mg6D.AAAAQrK> <rdf:type> <owl:Class> .
+<:jiZ5mg6D.AAAAQrK> <rdf:type> <owl:NamedIndividual> .
+<:jiZ5mg6D.AAAAQrK> <rdfs:label> \\"Woman\\" .
+<:jiZ5mg6D.AAAAQrK> <rdfs:subClassOf> <:IsW5mg6D.AAAAQqE> .
+<:jiZ5mg6D.AAAAQrK> <rdf:type> <gufo:SubKind> .
+<:z.T5mg6D.AAAAQsY> <rdf:type> <owl:Class> .
+<:z.T5mg6D.AAAAQsY> <rdf:type> <owl:NamedIndividual> .
+<:z.T5mg6D.AAAAQsY> <rdfs:label> \\"Husband\\" .
+<:z.T5mg6D.AAAAQsY> <rdfs:subClassOf> <:ech5mg6D.AAAAQqj> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:SzOFmg6D.AAAAQuF>) .
+<:z.T5mg6D.AAAAQsY> <rdf:type> <gufo:Role> .
+<:yPX5mg6D.AAAAQtn> <rdf:type> <owl:Class> .
+<:yPX5mg6D.AAAAQtn> <rdf:type> <owl:NamedIndividual> .
+<:yPX5mg6D.AAAAQtn> <rdfs:label> \\"Wife\\" .
+<:yPX5mg6D.AAAAQtn> <rdfs:subClassOf> <:jiZ5mg6D.AAAAQrK> .
+<:yPX5mg6D.AAAAQtn> <rdf:type> <gufo:Role> .
+<:SzOFmg6D.AAAAQuF> <rdf:type> <owl:Class> .
+<:SzOFmg6D.AAAAQuF> <rdf:type> <owl:NamedIndividual> .
+<:SzOFmg6D.AAAAQuF> <rdfs:label> \\"Marriage\\" .
+<:SzOFmg6D.AAAAQuF> <rdfs:subClassOf> <gufo:Relator> .
+<:SzOFmg6D.AAAAQuF> <rdf:type> <gufo:Kind> .
+"
+`;
+
+exports[`should transform OntoUML <<role>> class 1`] = `
+"<https://example.com> <rdf:type> <owl:Ontology> .
+<https://example.com> <owl:imports> <gufo:> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:IsW5mg6D.AAAAQqE>) .
+<:IsW5mg6D.AAAAQqE> <rdf:type> <owl:Class> .
+<:IsW5mg6D.AAAAQqE> <rdf:type> <owl:NamedIndividual> .
+<:IsW5mg6D.AAAAQqE> <rdfs:label> \\"Person\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:ech5mg6D.AAAAQqj> <:jiZ5mg6D.AAAAQrK>) .
+<:IsW5mg6D.AAAAQqE> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:IsW5mg6D.AAAAQqE> <rdf:type> <gufo:Kind> .
+<:IsW5mg6D.AAAAQqE> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:ech5mg6D.AAAAQqj> <:jiZ5mg6D.AAAAQrK>)
+] .
+<:ech5mg6D.AAAAQqj> <rdf:type> <owl:Class> .
+<:ech5mg6D.AAAAQqj> <rdf:type> <owl:NamedIndividual> .
+<:ech5mg6D.AAAAQqj> <rdfs:label> \\"Man\\" .
+<:ech5mg6D.AAAAQqj> <rdfs:subClassOf> <:IsW5mg6D.AAAAQqE> .
+<:ech5mg6D.AAAAQqj> <rdf:type> <gufo:SubKind> .
+<:jiZ5mg6D.AAAAQrK> <rdf:type> <owl:Class> .
+<:jiZ5mg6D.AAAAQrK> <rdf:type> <owl:NamedIndividual> .
+<:jiZ5mg6D.AAAAQrK> <rdfs:label> \\"Woman\\" .
+<:jiZ5mg6D.AAAAQrK> <rdfs:subClassOf> <:IsW5mg6D.AAAAQqE> .
+<:jiZ5mg6D.AAAAQrK> <rdf:type> <gufo:SubKind> .
+<:z.T5mg6D.AAAAQsY> <rdf:type> <owl:Class> .
+<:z.T5mg6D.AAAAQsY> <rdf:type> <owl:NamedIndividual> .
+<:z.T5mg6D.AAAAQsY> <rdfs:label> \\"Husband\\" .
+<:z.T5mg6D.AAAAQsY> <rdfs:subClassOf> <:ech5mg6D.AAAAQqj> .
+<:z.T5mg6D.AAAAQsY> <rdf:type> <gufo:Role> .
+<:yPX5mg6D.AAAAQtn> <rdf:type> <owl:Class> .
+<:yPX5mg6D.AAAAQtn> <rdf:type> <owl:NamedIndividual> .
+<:yPX5mg6D.AAAAQtn> <rdfs:label> \\"Wife\\" .
+<:yPX5mg6D.AAAAQtn> <rdfs:subClassOf> <:jiZ5mg6D.AAAAQrK> .
+<:yPX5mg6D.AAAAQtn> <rdf:type> <gufo:Role> .
 "
 `;
 
