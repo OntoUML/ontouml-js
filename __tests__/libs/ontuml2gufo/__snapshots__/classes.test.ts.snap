@@ -63,14 +63,12 @@ exports[`should transform OntoUML <<mode>> class as ExtrinsicMode 1`] = `
 <:Q5deWA6AUB0UtAWo> <rdfs:label> \\"Car\\" .
 <:Q5deWA6AUB0UtAWo> <rdfs:subClassOf> <gufo:FunctionalComplex> .
 <:Q5deWA6AUB0UtAWo> <rdf:type> <gufo:Kind> .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:qJdeWA6AUB0UtAWm>) .
 "
 `;
 
 exports[`should transform OntoUML <<mode>> class as IntrinsicMode 1`] = `
 "<https://example.com> <rdf:type> <owl:Ontology> .
 <https://example.com> <owl:imports> <gufo:> .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Q5deWA6AUB0UtAWn>) .
 <:qJdeWA6AUB0UtAWm> <rdf:type> <owl:Class> .
 <:qJdeWA6AUB0UtAWm> <rdf:type> <owl:NamedIndividual> .
 <:qJdeWA6AUB0UtAWm> <rdfs:label> \\"Headache\\" .
@@ -81,14 +79,12 @@ exports[`should transform OntoUML <<mode>> class as IntrinsicMode 1`] = `
 <:Q5deWA6AUB0UtAWn> <rdfs:label> \\"Person\\" .
 <:Q5deWA6AUB0UtAWn> <rdfs:subClassOf> <gufo:FunctionalComplex> .
 <:Q5deWA6AUB0UtAWn> <rdf:type> <gufo:Kind> .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:qJdeWA6AUB0UtAWm>) .
 "
 `;
 
 exports[`should transform OntoUML <<relator>> class 1`] = `
 "<https://example.com> <rdf:type> <owl:Ontology> .
 <https://example.com> <owl:imports> <gufo:> .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:IsW5mg6D.AAAAQqE>) .
 <:IsW5mg6D.AAAAQqE> <rdf:type> <owl:Class> .
 <:IsW5mg6D.AAAAQqE> <rdf:type> <owl:NamedIndividual> .
 <:IsW5mg6D.AAAAQqE> <rdfs:label> \\"Person\\" .
@@ -113,7 +109,6 @@ exports[`should transform OntoUML <<relator>> class 1`] = `
 <:z.T5mg6D.AAAAQsY> <rdf:type> <owl:NamedIndividual> .
 <:z.T5mg6D.AAAAQsY> <rdfs:label> \\"Husband\\" .
 <:z.T5mg6D.AAAAQsY> <rdfs:subClassOf> <:ech5mg6D.AAAAQqj> .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:SzOFmg6D.AAAAQuF>) .
 <:z.T5mg6D.AAAAQsY> <rdf:type> <gufo:Role> .
 <:yPX5mg6D.AAAAQtn> <rdf:type> <owl:Class> .
 <:yPX5mg6D.AAAAQtn> <rdf:type> <owl:NamedIndividual> .
@@ -131,7 +126,6 @@ exports[`should transform OntoUML <<relator>> class 1`] = `
 exports[`should transform OntoUML <<role>> class 1`] = `
 "<https://example.com> <rdf:type> <owl:Ontology> .
 <https://example.com> <owl:imports> <gufo:> .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:IsW5mg6D.AAAAQqE>) .
 <:IsW5mg6D.AAAAQqE> <rdf:type> <owl:Class> .
 <:IsW5mg6D.AAAAQqE> <rdf:type> <owl:NamedIndividual> .
 <:IsW5mg6D.AAAAQqE> <rdfs:label> \\"Person\\" .
@@ -194,9 +188,8 @@ exports[`should transform OntoUML generic model to gUFO 1`] = `
     rdf:type gufo:Kind.
 :_xThBA6AUB0UtAvg rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"School\\";
-    rdfs:subClassOf :j5phBA6AUB0UtAts.
-[ rdf:type owl:AllDisjointClasses ] owl:members (:JLnhBA6AUB0UtAwO).
-:_xThBA6AUB0UtAvg rdf:type gufo:SubKind.
+    rdfs:subClassOf :j5phBA6AUB0UtAts;
+    rdf:type gufo:SubKind.
 :GDbhBA6AUB0UtAv1 rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Student\\";
     rdfs:subClassOf :2uxhBA6AUB0UtArb;
@@ -206,9 +199,8 @@ exports[`should transform OntoUML generic model to gUFO 1`] = `
     rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
 :wukRBA6AUB0UtAxW rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Enrollment Date\\".
-[ rdf:type owl:AllDisjointClasses ] owl:members (:wukRBA6AUB0UtAxW).
-:wukRBA6AUB0UtAxW rdfs:subClassOf gufo:Quality;
+    rdfs:label \\"Enrollment Date\\";
+    rdfs:subClassOf gufo:Quality;
     rdf:type gufo:Kind.
 :h_Y9hA6GAqACnA1t rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Sophomore\\";

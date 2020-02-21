@@ -108,34 +108,37 @@ export class OntoUML2GUFO {
         namedNode(`:${classElement.id}`),
       );
 
-      // add disjoint
-      if (generalizationSet.isDisjoint) {
-        await writer.addQuad(
-          writer.blank(
-            namedNode('rdf:type'),
-            namedNode('owl:AllDisjointClasses'),
-          ),
-          namedNode('owl:members'),
-          writer.list(classNodes),
-        );
-      }
+      // check if has at least 2 classes to avoid insconsistence
+      if (classNodes.length > 1) {
+        // add disjoint
+        if (generalizationSet.isDisjoint) {
+          await writer.addQuad(
+            writer.blank(
+              namedNode('rdf:type'),
+              namedNode('owl:AllDisjointClasses'),
+            ),
+            namedNode('owl:members'),
+            writer.list(classNodes),
+          );
+        }
 
-      // add complete
-      if (generalizationSet.isComplete) {
-        await writer.addQuad(
-          namedNode(`:${parent.id}`),
-          namedNode('owl:equivalentClass'),
-          writer.blank([
-            {
-              predicate: namedNode('rdf:type'),
-              object: namedNode('owl:Class'),
-            },
-            {
-              predicate: namedNode('owl:unionOf'),
-              object: writer.list(classNodes),
-            },
-          ]),
-        );
+        // add complete
+        if (generalizationSet.isComplete) {
+          await writer.addQuad(
+            namedNode(`:${parent.id}`),
+            namedNode('owl:equivalentClass'),
+            writer.blank([
+              {
+                predicate: namedNode('rdf:type'),
+                object: namedNode('owl:Class'),
+              },
+              {
+                predicate: namedNode('owl:unionOf'),
+                object: writer.list(classNodes),
+              },
+            ]),
+          );
+        }
       }
     }
 

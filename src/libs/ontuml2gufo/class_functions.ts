@@ -44,7 +44,8 @@ export async function transformDisjointClasses(
       .filter(({ stereotypes }: IClass) => stereotypes[0] === stereotype)
       .map(({ id }: IClass) => namedNode(`:${id}`));
 
-    if (stereotypeClasses.length > 0) {
+    // check if has at least 2 classes to avoid insconsistence
+    if (stereotypeClasses.length > 1) {
       await writer.addQuad(
         writer.blank(
           namedNode('rdf:type'),
