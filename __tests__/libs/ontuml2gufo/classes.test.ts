@@ -7,6 +7,8 @@ import {
   modeExample2,
   relatorExample1,
   roleExample1,
+  alpinebits,
+  istandard
 } from '@test-models/valids';
 import { IPackage } from '@types';
 
@@ -23,6 +25,18 @@ async function transformOntoUML2GUFO(
     format: format || 'N-Triple',
   });
 }
+
+it('should transform AlpineBits model to gUFO', async () => {
+  const result = await transformOntoUML2GUFO(alpinebits, 'Turtle');
+
+  expect(result).toMatchSnapshot();
+});
+
+it('should transform iStandard model to gUFO', async () => {
+  const result = await transformOntoUML2GUFO(istandard, 'Turtle');
+
+  expect(result).toMatchSnapshot();
+});
 
 it('should transform OntoUML generic model to gUFO', async () => {
   const result = await transformOntoUML2GUFO(genericExample1, 'Turtle');

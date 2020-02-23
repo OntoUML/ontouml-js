@@ -6,6 +6,8 @@ const relatorExample1 = require('./relator1.json');
 const roleExample1 = require('./role1.json');
 const roleMixinExample1 = require('./roleMixin1.json');
 const subkindExample1 = require('./subkind1.json');
+const alpinebits = require('./alpinebits.json');
+const istandard = require('./istandard.json');
 
 export {
   genericExample1,
@@ -16,4 +18,6 @@ export {
   roleExample1,
   roleMixinExample1,
   subkindExample1,
+  alpinebits,
+  istandard
 };
