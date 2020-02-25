@@ -5,6 +5,9 @@ import pluralize from 'pluralize';
 export enum VerificationAlternativeCode {
   REPLACE_ONTOUML_CLASS_STEREOTYPE = 'REPLACE_ONTOUML_CLASS_STEREOTYPE',
   ONTOUML_CLASS_NAME_TO_PLURAL = 'ONTOUML_CLASS_NAME_TO_PLURAL',
+  REMOVE_LITERALS = 'REMOVE_LITERALS',
+  REPLACE_ONTOUML_CLASS_STEREOTYPE_TO_ENUMERATION = 'REPLACE_ONTOUML_CLASS_STEREOTYPE_TO_ENUMERATION',
+  REMOVE_PROPERTIES = 'REMOVE_PROPERTIES',
 }
 
 export class VerificationAlternative {
@@ -30,6 +33,21 @@ export class VerificationAlternative {
         this.description = `Change name from ${
           source.name
         } to ${pluralize.singular(source.name)}.`;
+        this.elements = null;
+        break;
+      case VerificationAlternativeCode.REMOVE_LITERALS:
+        this.title = 'Remove literals.';
+        this.description = `Remove class literals.`;
+        this.elements = null;
+        break;
+      case VerificationAlternativeCode.REMOVE_PROPERTIES:
+        this.title = 'Remove properties.';
+        this.description = `Remove class properties.`;
+        this.elements = null;
+        break;
+      case VerificationAlternativeCode.REPLACE_ONTOUML_CLASS_STEREOTYPE_TO_ENUMERATION:
+        this.title = 'Change stereotype to «enumeration».';
+        this.description = `Change stereotype to «enumeration».`;
         this.elements = null;
         break;
       default:

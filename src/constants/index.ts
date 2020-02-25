@@ -23,8 +23,8 @@ export const NON_SORTAL: 'NON_SORTAL' = 'NON_SORTAL';
 
 // Class Stereotypes
 export const KIND: 'kind' = 'kind';
-export const QUANTITY_KIND: 'quantityKind' = 'quantityKind';
-export const COLLECTIVE_KIND: 'collectiveKind' = 'collectiveKind';
+export const QUANTITY: 'quantity' = 'quantity';
+export const COLLECTIVE: 'collective' = 'collective';
 export const SUBKIND: 'subkind' = 'subkind';
 export const ROLE: 'role' = 'role';
 export const PHASE: 'phase' = 'phase';
@@ -32,9 +32,9 @@ export const CATEGORY: 'category' = 'category';
 export const MIXIN: 'mixin' = 'mixin';
 export const ROLE_MIXIN: 'roleMixin' = 'roleMixin';
 export const PHASE_MIXIN: 'phaseMixin' = 'phaseMixin';
-export const RELATOR_KIND: 'relatorKind' = 'relatorKind';
-export const MODE_KIND: 'modeKind' = 'modeKind';
-export const QUALITY_KIND: 'qualityKind' = 'qualityKind';
+export const RELATOR: 'relator' = 'relator';
+export const MODE: 'mode' = 'mode';
+export const QUALITY: 'quality' = 'quality';
 
 // Relation Stereotypes
 export const MATERIAL: 'material' = 'material';
@@ -74,8 +74,8 @@ export enum AggregationKind {
 
 export enum ClassStereotype {
   KIND = 'kind',
-  QUANTITY_KIND = 'quantityKind',
-  COLLECTIVE_KIND = 'collectiveKind',
+  QUANTITY = 'quantity',
+  COLLECTIVE = 'collective',
   SUBKIND = 'subkind',
   ROLE = 'role',
   PHASE = 'phase',
@@ -83,16 +83,20 @@ export enum ClassStereotype {
   MIXIN = 'mixin',
   ROLE_MIXIN = 'roleMixin',
   PHASE_MIXIN = 'phaseMixin',
-  RELATOR_KIND = 'relatorKind',
-  MODE_KIND = 'modeKind',
-  QUALITY_KIND = 'qualityKind',
+  RELATOR = 'relator',
+  MODE = 'mode',
+  QUALITY = 'quality',
+  TYPE = 'type',
+  EVENT = 'event',
+  HISTORICAL_ROLE = 'historicalRole',
+  DATATYPE = 'datatype',
+  ENUMERATION = 'enumeration',
 }
 
 export enum RelationStereotype {
   MATERIAL = 'material',
   MEDIATION = 'mediation',
   COMPARATIVE = 'comparative',
-  HISTORICAL = 'historical',
   EXTERNAL_DEPENDENCE = 'externalDependence',
   CHARACTERIZATION = 'characterization',
   DERIVATION = 'derivation',
