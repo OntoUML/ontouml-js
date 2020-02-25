@@ -15,81 +15,45 @@ export function inject(
   element: IElement,
   enableMemoization: boolean = true,
 ): void {
-  injectFunctions(element, functionsMap.IElement_functions, enableMemoization);
+  injectFunctions(element, functions._IElement, enableMemoization);
 
   if (element.hasIContainerType()) {
-    injectFunctions(
-      element,
-      functionsMap.IContainer_functions,
-      enableMemoization,
-    );
+    injectFunctions(element, functions._IContainer, enableMemoization);
   }
 
   if (element.hasIClassifierType()) {
-    injectFunctions(
-      element,
-      functionsMap.IClassifier_functions,
-      enableMemoization,
-    );
+    injectFunctions(element, functions._IClassifier, enableMemoization);
   }
 
   if (element.hasIDecoratableType()) {
-    injectFunctions(
-      element,
-      functionsMap.IDecoratable_functions,
-      enableMemoization,
-    );
+    injectFunctions(element, functions._IDecoratable, enableMemoization);
   }
 
   switch (element.type) {
     case OntoUMLType.PACKAGE_TYPE:
-      injectFunctions(
-        element,
-        functionsMap.IPackage_functions,
-        enableMemoization,
-      );
+      injectFunctions(element, functions._IPackage, enableMemoization);
       break;
     case OntoUMLType.CLASS_TYPE:
-      injectFunctions(
-        element,
-        functionsMap.IClass_functions,
-        enableMemoization,
-      );
+      injectFunctions(element, functions._IClass, enableMemoization);
       break;
     case OntoUMLType.RELATION_TYPE:
-      injectFunctions(
-        element,
-        functionsMap.IRelation_functions,
-        enableMemoization,
-      );
+      injectFunctions(element, functions._IRelation, enableMemoization);
       break;
     case OntoUMLType.GENERALIZATION_TYPE:
-      injectFunctions(
-        element,
-        functionsMap.IGeneralization_functions,
-        enableMemoization,
-      );
+      injectFunctions(element, functions._IGeneralization, enableMemoization);
       break;
     case OntoUMLType.GENERALIZATION_SET_TYPE:
       injectFunctions(
         element,
-        functionsMap.IGeneralizationSet_functions,
+        functions._IGeneralizationSet,
         enableMemoization,
       );
       break;
     case OntoUMLType.PROPERTY_TYPE:
-      injectFunctions(
-        element,
-        functionsMap.IProperty_functions,
-        enableMemoization,
-      );
+      injectFunctions(element, functions._IProperty, enableMemoization);
       break;
     case OntoUMLType.LITERAL_TYPE:
-      injectFunctions(
-        element,
-        functionsMap.ILiteral_functions,
-        enableMemoization,
-      );
+      injectFunctions(element, functions._ILiteral, enableMemoization);
       break;
   }
 }
@@ -114,39 +78,39 @@ function injectFunctions(
   });
 }
 
-const functionsMap = {
-  IElement_functions: {
+const functions = {
+  _IElement: {
     getRootPackage,
     hasIContainerType,
     hasIDecoratableType,
     hasIClassifierType,
   },
-  IContainer_functions: {
+  _IContainer: {
     getAllContents,
     getAllContentsByType,
     getContentById,
   },
-  IClassifier_functions: {
+  _IClassifier: {
     getParents,
     getChildren,
     getAncestors,
     getDescendants,
     getRelations,
   },
-  IDecoratable_functions: {},
-  IPackage_functions: {},
-  IClass_functions: {},
-  IRelation_functions: {
+  _IDecoratable: {},
+  _IPackage: {},
+  _IClass: {},
+  _IRelation: {
     isBinary,
     isTernary,
     isDerivation,
   },
-  IGeneralization_functions: {},
-  IGeneralizationSet_functions: {
+  _IGeneralization: {},
+  _IGeneralizationSet: {
     getGeneral,
   },
-  IProperty_functions: {},
-  ILiteral_functions: {},
+  _IProperty: {},
+  _ILiteral: {},
 };
 
 function getRootPackage(): IPackage {
@@ -326,6 +290,7 @@ function isBinary(): boolean {
     target.type === OntoUMLType.CLASS_TYPE
   );
 }
+
 function isTernary(): boolean {
   const self = this as IRelation;
   if (!self.properties || self.properties.length < 2) return false;
@@ -334,6 +299,7 @@ function isTernary(): boolean {
     return end.propertyType && end.propertyType.type === OntoUMLType.CLASS_TYPE;
   });
 }
+
 function isDerivation(): boolean {
   const self = this as IRelation;
   if (!self.properties || self.properties.length !== 2) return false;
@@ -348,6 +314,7 @@ function isDerivation(): boolean {
     target.type === OntoUMLType.CLASS_TYPE
   );
 }
+
 function getGeneral(): IClassifier {
   const self = this as IGeneralizationSet;
   return (self.generalizations[0] as IGeneralization).general as IClassifier;
