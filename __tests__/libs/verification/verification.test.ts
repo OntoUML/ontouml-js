@@ -5,6 +5,7 @@ import {
   VerificationIssue,
   VerificationIssueCode,
 } from '@libs/verification/issues';
+import { IElement } from '@types';
 
 describe('Model deserializing', () => {
   const inputModel = minimalConsistency;

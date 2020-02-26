@@ -38,6 +38,7 @@ export class OntoUML2Verification {
           const consistencyIssues: VerificationIssue[] = ClassVerification.checkMinimalConsistency(
             _class,
           );
+          issues = [...issues, ...consistencyIssues];
 
           if (
             consistencyIssues &&
@@ -46,7 +47,7 @@ export class OntoUML2Verification {
                 issue.severity === IssueSeverity.ERROR,
             )
           ) {
-            issues = [...issues, ...consistencyIssues];
+            break ;
           } else {
             // calls other verifications
           }

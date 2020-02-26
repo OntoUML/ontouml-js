@@ -77,7 +77,7 @@ export class VerificationIssue {
             VerificationAlternativeCode.ONTOUML_CLASS_NAME_TO_PLURAL,
             source,
           ),
-        ];
+        ];        
         break;
       case VerificationIssueCode.CLASS_NON_ENUMERATION_WITH_LITERALS:
         this.title = 'Only enumerations may have literals.';
@@ -100,7 +100,7 @@ export class VerificationIssue {
         this.severity = IssueSeverity.ERROR;
         this.alternatives = [
           new VerificationAlternative(
-            VerificationAlternativeCode.REPLACE_ONTOUML_CLASS_STEREOTYPE_TO_ENUMERATION,
+            VerificationAlternativeCode.REPLACE_ONTOUML_CLASS_STEREOTYPE,
             source,
           ),
           new VerificationAlternative(

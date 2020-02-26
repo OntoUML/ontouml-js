@@ -57,12 +57,14 @@ This document is intended as source for documentation and comprehension of const
 This document is not intended as a primary learning material, but rather as support material.
 
 ## Package Issues
+------
 
 This section lists all issues and alternatives related to package constraints in OntoUML 2 models.
 
 There are no package constraints implemented at the moment.
 
 ## Class Issues
+------
 
 This section lists all issues related to classes in OntoUML 2 models.
 
@@ -72,7 +74,7 @@ This section lists all issues related to classes in OntoUML 2 models.
 
 Every class element must not raise any issue of severity `ERROR` in order to trigger any other constraint verification. The list of constraints checked for minimal consistency includes the following codes: CLASS_NOT_UNIQUE_STEREOTYPE, CLASS_INVALID_ONTOUML_STEREOTYPE, CLASS_NON_ENUMERATION_WITH_LITERALS, CLASS_ENUMERATION_WITH_PROPERTIES.
 
-1. Issue Code - `CLASS_NOT_UNIQUE_STEREOTYPE` - `ERROR`
+### 1. Issue Code - `CLASS_NOT_UNIQUE_STEREOTYPE` - `ERROR`
 
 ![diagrams/CLASS_NOT_UNIQUE_STEREOTYPE.png](diagrams/CLASS_NOT_UNIQUE_STEREOTYPE.png)
 
@@ -82,7 +84,7 @@ Suggested alternatives for this issue are:
 
  - Replace the current set of stereotypes for one from the set [«kind», «collective», «quantity», «relator», «mode», «quality», «subkind», «role», «phase», «category», «roleMixin», «phaseMixin», «mixin», «event», «historicalRole», «type», «datatype», «enumeration»] that properly indicates the semantics of the class. Alternative code: `REPLACE_ONTOUML_CLASS_STEREOTYPE`.
 
-2. Issue Code - `CLASS_INVALID_ONTOUML_STEREOTYPE` - `ERROR`
+### 2. Issue Code - `CLASS_INVALID_ONTOUML_STEREOTYPE` - `ERROR`
 
 ![diagrams/CLASS_INVALID_ONTOUML_STEREOTYPE.png](diagrams/CLASS_INVALID_ONTOUML_STEREOTYPE.png)
 
@@ -92,45 +94,59 @@ Suggested alternatives for this issue are:
 
 - Replace the current set of stereotype for one from the set [«kind», «collective», «quantity», «relator», «mode», «quality», «subkind», «role», «phase», «category», «roleMixin», «phaseMixin», «mixin», «event», «historicalRole», «type», «datatype», «enumeration»] that properly indicates the semantics of the class. Alternative code: `REPLACE_ONTOUML_CLASS_STEREOTYPE`.
 
-3. Issue Code: CLASS_PLURAL_NAME
+### 3. Issue Code - `CLASS_PLURAL_NAME` - `WARNING`
 
 ![diagrams/CLASS_PLURAL_NAME.png](diagrams/CLASS_PLURAL_NAME.png)
 
-- Alternative Code: ONTOUML_CLASS_NAME_TO_PLURAL
+Warning that indicates that the class' name is in the plural form. In conceptual modeling, classes are named according to nouns (or collective nouns) in the singular form. Naming classes in the plural form not decreases their readabilities (e.g., "an instance of `People`" as opposed to "an instance of `Person`") but also allows for the mistakenly comparison of classes to sets.
 
-4. Issue Code: CLASS_NON_ENUMERATION_WITH_LITERALS
+Suggested alternatives for this issue are:
+
+- Replace the name of the class for its singular form. Alternative Code: `ONTOUML_CLASS_NAME_TO_PLURAL`.
+
+### 4. Issue Code - `CLASS_NON_ENUMERATION_WITH_LITERALS` - `ERROR`
 
 ![diagrams/CLASS_NON_ENUMERATION_WITH_LITERALS.png](diagrams/CLASS_NON_ENUMERATION_WITH_LITERALS.png)
 
-- Alternative Code: REMOVE_LITERALS
-- Alternative Code: REPLACE_ONTOUML_CLASS_STEREOTYPE_TO_ENUMERATION
+Error that indicates the declaration of literals in a class that does not represent an enumeration. Only classes decorated as `«enumeration»` may have literal values.
 
-5. Issue Code: CLASS_ENUMERATION_WITH_PROPERTIES
+- In case the class properly represents an entity that is not an enumeration, the declaration of literal values should be removed. Alternative Code: `REMOVE_LITERALS`.
+- In case the class does capture an enumeration, replace the class stereotype to `«enumeration»`. Alternative Code: `REPLACE_ONTOUML_CLASS_STEREOTYPE_TO_ENUMERATION`.
+
+### 5. Issue Code - `CLASS_ENUMERATION_WITH_PROPERTIES` - `ERROR`
+
+Error that indicates the declaration of properties in a class that represents an enumeration. Classes decorated as `«enumeration»` may not have properties as their instances are simple values in a finite discrete conceptual space.
+
+Suggested alternatives for this issue are:
 
 ![diagrams/CLASS_ENUMERATION_WITH_PROPERTIES.png](diagrams/CLASS_ENUMERATION_WITH_PROPERTIES.png)
 
-- Alternative Code: REMOVE_PROPERTIES
-- Alternative Code: REPLACE_ONTOUML_CLASS_STEREOTYPE_TO_ENUMERATION
+- In case the class properly represents an entity that is an enumeration, the declaration of properties should be removed. Alternative Code: `REMOVE_PROPERTIES`.
+- In case the class does not capture an enumeration, replace the class stereotype to an stereotype from the set [«kind», «collective», «quantity», «relator», «mode», «quality», «subkind», «role», «phase», «category», «roleMixin», «phaseMixin», «mixin», «event», «historicalRole», «type», «datatype»]. Alternative Code: `REPLACE_ONTOUML_CLASS_STEREOTYPE`.
 
 ## Relation Issues
+------
 
 This section lists all issues and alternatives related to relation constraints in OntoUML 2 models.
 
 There are no relation constraints implemented at the moment.
 
 ## Property Issues
+------
 
 This section lists all issues and alternatives related to property constraints in OntoUML 2 models.
 
 There are no property constraints implemented at the moment.
 
 ## Literal Issues
+------
 
 This section lists all issues and alternatives related to literal constraints in OntoUML 2 models.
 
 There are no literal constraints implemented at the moment.
 
 ## Generalization Issues
+------
 
 This section lists all issues and alternatives related to generalization constraints in OntoUML 2 models.
 
@@ -138,6 +154,7 @@ There are no generalization constraints implemented at the moment.
 
 
 ## Generalization Set Issues
+------
 
 This section lists all issues and alternatives related to generalization set constraints in OntoUML 2 models.
 
