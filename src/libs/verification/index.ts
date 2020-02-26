@@ -10,7 +10,7 @@ import {
 } from '@types';
 import { OntoUMLType } from '@constants/.';
 import { ClassVerification } from './class.verification';
-import { VerificationIssue } from './issue';
+import { VerificationIssue, IssueSeverity } from './issues';
 import { ModelManager } from '@libs/model';
 
 /**
@@ -39,7 +39,13 @@ export class OntoUML2Verification {
             _class,
           );
 
-          if (consistencyIssues) {
+          if (
+            consistencyIssues &&
+            consistencyIssues.find(
+              (issue: VerificationIssue) =>
+                issue.severity === IssueSeverity.ERROR,
+            )
+          ) {
             issues = [...issues, ...consistencyIssues];
           } else {
             // calls other verifications

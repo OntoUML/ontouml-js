@@ -34,8 +34,12 @@ export class VerificationIssue {
     context?: IElement[],
   ) {
     this.code = code;
+    this.title = null;
+    this.description = null;
     this.source = source;
     this.context = context ? context : null;
+    this.severity = null;
+    this.alternatives = null;
 
     switch (code) {
       case VerificationIssueCode.CLASS_NOT_UNIQUE_STEREOTYPE:

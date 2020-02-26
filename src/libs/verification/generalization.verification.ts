@@ -1,5 +1,5 @@
 import { IGeneralization } from '@types';
-import { VerificationIssue } from './issue';
+import { VerificationIssue } from './issues';
 
 export const GeneralizationVerification = {
   checkMinimalConsistency(generalization: IGeneralization): VerificationIssue {

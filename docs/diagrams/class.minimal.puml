@@ -1,7 +1,0 @@
-@startuml
-
-package foo {
-    class Agent <<category>>
-}
-
-@enduml

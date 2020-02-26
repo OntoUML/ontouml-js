@@ -4,7 +4,7 @@ import { OntoUML2Verification } from '@libs/verification';
 import {
   VerificationIssue,
   VerificationIssueCode,
-} from '@libs/verification/issue';
+} from '@libs/verification/issues';
 
 describe('Model deserializing', () => {
   const inputModel = minimalConsistency;

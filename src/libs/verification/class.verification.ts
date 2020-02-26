@@ -1,5 +1,5 @@
 import { IClass } from '@types';
-import { VerificationIssue, VerificationIssueCode } from './issue';
+import { VerificationIssue, VerificationIssueCode } from './issues';
 import pluralize from 'pluralize';
 import { ClassStereotype } from '@constants/.';
 

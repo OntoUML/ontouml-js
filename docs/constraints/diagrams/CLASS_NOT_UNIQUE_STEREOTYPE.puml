@@ -1,0 +1,7 @@
+@startuml
+
+class Person
+
+class Student <<role>> <<phase>>
+
+@enduml

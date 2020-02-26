@@ -18,6 +18,9 @@ export class VerificationAlternative {
 
   constructor(code: string, source: IElement, context?: IElement[]) {
     this.code = code;
+    this.title = null;
+    this.description = null;
+    this.elements = null;
 
     switch (code) {
       case VerificationAlternativeCode.REPLACE_ONTOUML_CLASS_STEREOTYPE:

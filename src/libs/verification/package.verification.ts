@@ -1,5 +1,5 @@
 import { IPackage } from '@types';
-import { VerificationIssue } from './issue';
+import { VerificationIssue } from './issues';
 
 export const PackageVerification = {
   checkMinimalConsistency(_package: IPackage): VerificationIssue {
