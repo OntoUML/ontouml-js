@@ -41,7 +41,10 @@ export async function transformDisjointClasses(
   for (let i = 0; i < disjointStereotypes.length; i += 1) {
     const stereotype = disjointStereotypes[i];
     const stereotypeClasses = classes
-      .filter(({ stereotypes }: IClass) => stereotypes!==null && stereotypes[0]===stereotype)
+      .filter(
+        ({ stereotypes }: IClass) =>
+          stereotypes && stereotypes[0] === stereotype,
+      )
       .map(({ id }: IClass) => namedNode(`:${id}`));
 
     // check if has at least 2 classes to avoid insconsistence
@@ -88,9 +91,8 @@ export async function transformClassesByStereotype(
     const classElement = classes[i];
     const { id, name, stereotypes } = classElement;
 
-    if(!stereotypes || stereotypes.length!==1)
-      continue;
-    
+    if (!stereotypes || stereotypes.length !== 1) continue;
+
     const stereotype = stereotypes[0];
     const parents = classElement.getParents();
 

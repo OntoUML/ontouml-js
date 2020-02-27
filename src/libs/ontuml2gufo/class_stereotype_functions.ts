@@ -124,8 +124,8 @@ export function transformMode(classElement: IClass): Quad[] {
   const { id } = classElement;
   const relations = classElement.getRelations();
   const relationStereotypes = relations
-    .filter( (relation: IRelation) => relation.stereotypes!==null )
-    .map( (relation: IRelation) => relation.stereotypes[0] );
+    .filter((relation: IRelation) => relation.stereotypes !== null)
+    .map((relation: IRelation) => relation.stereotypes[0]);
   const quads = [];
 
   if (relationStereotypes.includes(RelationStereotype.CHARACTERIZATION)) {

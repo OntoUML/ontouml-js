@@ -8,7 +8,7 @@ import {
   relatorExample1,
   roleExample1,
   alpinebits,
-  istandard
+  istandard,
 } from '@test-models/valids';
 import { IPackage } from '@types';
 
@@ -34,6 +34,12 @@ it('should transform AlpineBits model to gUFO', async () => {
 
 it('should transform iStandard model to gUFO', async () => {
   const result = await transformOntoUML2GUFO(istandard, 'Turtle');
+
+  expect(result).toMatchSnapshot();
+});
+
+it('should transform iStandard model to gUFO 2', async () => {
+  const result = await transformOntoUML2GUFO(istandard);
 
   expect(result).toMatchSnapshot();
 });
