@@ -1,0 +1,298 @@
+{
+  "type": "Package",
+  "id": "NPJoWg6D.AAAAREM",
+  "name": "Mixin1",
+  "description": null,
+  "contents": [
+    {
+      "type": "Class",
+      "id": "NPJoWg6D.AAAAREN",
+      "name": "boolean",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "tPJoWg6D.AAAAREO",
+      "name": "byte",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "tPJoWg6D.AAAAREP",
+      "name": "char",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "tPJoWg6D.AAAAREQ",
+      "name": "double",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "tPJoWg6D.AAAARER",
+      "name": "float",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "tPJoWg6D.AAAARES",
+      "name": "int",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "dPJoWg6D.AAAARET",
+      "name": "long",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "dPJoWg6D.AAAAREU",
+      "name": "short",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "dPJoWg6D.AAAAREV",
+      "name": "void",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "dPJoWg6D.AAAAREW",
+      "name": "string",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Package",
+      "id": "9DFoWg6D.AAAARST",
+      "name": "Diagram1",
+      "description": null,
+      "propertyAssignments": null,
+      "contents": [
+        {
+          "type": "Class",
+          "id": "yhVoWg6D.AAAARSb",
+          "name": "Seatable",
+          "description": null,
+          "properties": null,
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["mixin"],
+          "isAbstract": true,
+          "isDerived": false
+        },
+        {
+          "type": "Class",
+          "id": "addoWg6D.AAAARS0",
+          "name": "Chair",
+          "description": null,
+          "properties": null,
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["kind"],
+          "isAbstract": false,
+          "isDerived": false
+        },
+        {
+          "type": "Class",
+          "id": "OtjoWg6D.AAAARTV",
+          "name": "Solid Crate",
+          "description": null,
+          "properties": null,
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["phase"],
+          "isAbstract": false,
+          "isDerived": false
+        },
+        {
+          "type": "Class",
+          "id": "SgLoWg6D.AAAARTw",
+          "name": "Crate",
+          "description": null,
+          "properties": null,
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["kind"],
+          "isAbstract": false,
+          "isDerived": false
+        },
+        {
+          "type": "Class",
+          "id": "s5HoWg6D.AAAARUX",
+          "name": "Broken Crate",
+          "description": null,
+          "properties": null,
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["phase"],
+          "isAbstract": false,
+          "isDerived": false
+        }
+      ]
+    },
+    {
+      "type": "Generalization",
+      "id": "pddoWg6D.AAAARS5",
+      "name": null,
+      "description": null,
+      "propertyAssignments": null,
+      "general": {
+        "type": "Class",
+        "id": "yhVoWg6D.AAAARSb"
+      },
+      "specific": {
+        "type": "Class",
+        "id": "addoWg6D.AAAARS0"
+      }
+    },
+    {
+      "type": "Generalization",
+      "id": "1tjoWg6D.AAAARTa",
+      "name": null,
+      "description": null,
+      "propertyAssignments": null,
+      "general": {
+        "type": "Class",
+        "id": "yhVoWg6D.AAAARSb"
+      },
+      "specific": {
+        "type": "Class",
+        "id": "OtjoWg6D.AAAARTV"
+      }
+    },
+    {
+      "type": "Generalization",
+      "id": "p5boWg6D.AAAARUD",
+      "name": null,
+      "description": null,
+      "propertyAssignments": null,
+      "general": {
+        "type": "Class",
+        "id": "SgLoWg6D.AAAARTw"
+      },
+      "specific": {
+        "type": "Class",
+        "id": "OtjoWg6D.AAAARTV"
+      }
+    },
+    {
+      "type": "Generalization",
+      "id": "O5HoWg6D.AAAARUc",
+      "name": null,
+      "description": null,
+      "propertyAssignments": null,
+      "general": {
+        "type": "Class",
+        "id": "SgLoWg6D.AAAARTw"
+      },
+      "specific": {
+        "type": "Class",
+        "id": "s5HoWg6D.AAAARUX"
+      }
+    },
+    {
+      "type": "GeneralizationSet",
+      "id": "AMMYWg6D.AAAARVt",
+      "name": "Seatable",
+      "description": null,
+      "propertyAssignments": null,
+      "categorizer": null,
+      "generalizations": [
+        {
+          "type": "Generalization",
+          "id": "pddoWg6D.AAAARS5"
+        },
+        {
+          "type": "Generalization",
+          "id": "1tjoWg6D.AAAARTa"
+        }
+      ],
+      "isDisjoint": true,
+      "isComplete": true
+    },
+    {
+      "type": "GeneralizationSet",
+      "id": "UgiYWg6D.AAAARV5",
+      "name": "Crate",
+      "description": null,
+      "propertyAssignments": null,
+      "categorizer": null,
+      "generalizations": [
+        {
+          "type": "Generalization",
+          "id": "O5HoWg6D.AAAARUc"
+        },
+        {
+          "type": "Generalization",
+          "id": "p5boWg6D.AAAARUD"
+        }
+      ],
+      "isDisjoint": true,
+      "isComplete": true
+    }
+  ],
+  "propertyAssignments": null
+}

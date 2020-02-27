@@ -11,7 +11,7 @@ import {
   ILiteral,
 } from '@types';
 import functions from '@libs/model/functions';
-import schemas from "ontouml-schema";
+import schemas from 'ontouml-schema';
 
 /**
  * Utility class for the manipulation of models in OntoUML2 in conformance to the `ontouml-schema` definition.
@@ -152,7 +152,10 @@ export class ModelManager {
     );
   }
 
-  checkAndInjectFunctions(element: IElement, enableMemoization: boolean = true): void {
+  checkAndInjectFunctions(
+    element: IElement,
+    enableMemoization: boolean = true,
+  ): void {
     this.injectFunctions(
       element,
       functions.IElement_functions,

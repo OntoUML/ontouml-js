@@ -1,5 +1,4 @@
-import { OntoUMLType } from '@constants/.';
-import { AggregationKind } from '@constants/.';
+import { OntoUMLType, AggregationKind } from '@constants/.';
 
 /**
  * Interface that captures common properties of objects in `ontouml-schema`. Whenever necessary, stereotypes are captured as regular string arrays.
@@ -84,6 +83,11 @@ interface IClassifier extends IElement {
    * @param knownDescendents - MUST NOT USE in regular code. Optional attribute that allows recursive execution of the function.
    */
   getDescendents?: (knownDescendents?: IClassifier[]) => IClassifier[];
+
+  /**
+   * Returns an array of Relations objects connected to this classifier
+   */
+  getRelations?: () => IRelation[];
 }
 
 /**
@@ -116,6 +120,7 @@ interface IClass extends IElement, IContainer, IDecoratable, IClassifier {
  */
 interface IRelation extends IElement, IContainer, IDecoratable, IClassifier {
   type: OntoUMLType.RELATION_TYPE;
+  propertyType: IReference;
 }
 
 /**

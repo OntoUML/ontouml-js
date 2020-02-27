@@ -1,3 +1,16 @@
+// Model element type (according to `ontouml-schema`)
+
+export enum Rigidity {
+  RIGID = 'RIGID',
+  ANTI_RIGID = 'ANTI_RIGID',
+  SEMI_RIGID = 'SEMI_RIGID',
+}
+
+export enum Sortality {
+  SORTAL = 'SORTAL',
+  NON_SORTAL = 'NON_SORTAL',
+}
+
 export enum OntoUMLType {
   PACKAGE_TYPE = 'Package',
   CLASS_TYPE = 'Class',
@@ -14,25 +27,39 @@ export enum AggregationKind {
   AGGREGATIONKIND_COMPOSITE = 'COMPOSITE',
 }
 
-// Model element type (according to `ontouml-schema`)
-export const PACKAGE_TYPE = 'Package';
-export const CLASS_TYPE = 'Class';
-export const RELATION_TYPE = 'Relation';
-export const GENERALIZATION_TYPE = 'Generalization';
-export const GENERALIZATION_SET_TYPE = 'GeneralizationSet';
-export const PROPERTY_TYPE = 'Property';
-export const ENUMERATION_TYPE = 'Enumeration';
+export enum ClassStereotype {
+  KIND = 'kind',
+  QUANTITY = 'quantity',
+  COLLECTIVE = 'collective',
+  SUBKIND = 'subkind',
+  ROLE = 'role',
+  PHASE = 'phase',
+  CATEGORY = 'category',
+  MIXIN = 'mixin',
+  ROLE_MIXIN = 'roleMixin',
+  PHASE_MIXIN = 'phaseMixin',
+  RELATOR = 'relator',
+  MODE = 'mode',
+  QUALITY = 'quality',
+  EVENT = 'event',
+}
 
-// Aggregation kind
-export const AGGREGATIONKIND_NONE = 'NONE';
-export const AGGREGATIONKIND_SHARED = 'SHARED';
-export const AGGREGATIONKIND_COMPOSITE = 'COMPOSITE';
-
-// Rigidity
-export const RIGID: 'RIGID' = 'RIGID';
-export const ANTI_RIGID: 'ANTI_RIGID' = 'ANTI_RIGID';
-export const SEMI_RIGID: 'SEMI_RIGID' = 'SEMI_RIGID';
-
-// Sortality
-export const SORTAL: 'SORTAL' = 'SORTAL';
-export const NON_SORTAL: 'NON_SORTAL' = 'NON_SORTAL';
+export enum RelationStereotype {
+  MATERIAL = 'material',
+  MEDIATION = 'mediation',
+  COMPARATIVE = 'comparative',
+  HISTORICAL = 'historical',
+  EXTERNAL_DEPENDENCE = 'externalDependence',
+  CHARACTERIZATION = 'characterization',
+  DERIVATION = 'derivation',
+  COMPONENT_OF = 'componentOf',
+  SUBQUANTITY_OF = 'subQuantityOf',
+  MEMBER_OF = 'memberOf',
+  SUBCOLLECTION_OF = 'subCollectionOf',
+  CREATION = 'creation',
+  HISTORICAL_DEPENDENCE = 'historicalDependence',
+  PARTICIPATION = 'participation',
+  PARTICIPATIONAL = 'participational',
+  TERMINATION = 'termination',
+  INSTANTIATION = 'instantiation',
+}
