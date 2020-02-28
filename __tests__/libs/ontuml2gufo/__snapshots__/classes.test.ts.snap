@@ -6,6 +6,7 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 
 <https://example.com> rdf:type owl:Ontology;
     owl:imports gufo:.
@@ -15,187 +16,161 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 :ta4OZeaGAqACBxXY rdf:type owl:ObjectProperty;
     rdfs:domain :u0X6ZeaGAqACBxFU;
     rdfs:range :kJXWZeaGAqACBxRJ;
-    rdfs:label \\"organized by\\".
-:rI7OZeaGAqACBxaN rdf:type owl:ObjectProperty;
-    rdfs:domain :u0X6ZeaGAqACBxFU;
-    rdfs:range :Hqt2ZeaGAqACBxVQ;
-    rdfs:label \\"sponsored by\\".
-:VuRuZeaGAqACBxdN rdf:type owl:ObjectProperty;
-    rdfs:domain :8pguZeaGAqACBxbW;
-    rdfs:range :u0X6ZeaGAqACBxFU;
-    rdfs:label \\"has sub event\\".
-:eecx5eaGAqACBx2N rdf:type owl:ObjectProperty;
-    rdfs:domain :u0X6ZeaGAqACBxFU;
-    rdfs:range :VhSB5eaGAqACBxwL;
-    rdfs:label \\"contributes in\\".
-:gLFx5eaGAqACBx3m rdf:type owl:ObjectProperty;
-    rdfs:domain :u0X6ZeaGAqACBxFU;
-    rdfs:range :_RRB5eaGAqACBxxv;
-    rdfs:label \\"published by\\".
-:tXIEFeaGAqACByF6 rdf:type owl:ObjectProperty;
-    rdfs:domain :xh2EFeaGAqACByIW;
-    rdfs:range :u0X6ZeaGAqACBxFU;
-    rdfs:label \\"illustrates\\".
-:p9oEFeaGAqACByGN rdf:type owl:ObjectProperty;
-    rdfs:domain :u0X6ZeaGAqACBxFU;
-    rdfs:range :cqgEFeaGAqACByFl;
-    rdfs:label \\"has video\\".
-:MJLUFeaGAqACByTE rdf:type owl:ObjectProperty;
-    rdfs:domain :u0X6ZeaGAqACBxFU;
-    rdfs:range :aVPkFeaGAqACByPM.
-:zVD0FeaGAqACByXj rdf:type owl:ObjectProperty;
-    rdfs:domain :u0X6ZeaGAqACBxFU;
-    rdfs:range :3H70FeaGAqACByYE;
-    rdfs:label \\"happens at\\".
-:qFia0.aGAqAovRLK rdf:type owl:ObjectProperty;
-    rdfs:domain :u0X6ZeaGAqACBxFU;
-    rdfs:range :gjQq0.aGAqAovRJq;
-    rdfs:label \\"edition of\\".
-:yFk60.aGAqAovRNe rdf:type owl:ObjectProperty;
-    rdfs:domain :ZI5mZeaGAqACBxLj;
-    rdfs:range :vM_a0.aGAqAovRNA;
-    rdfs:label \\"reachable by\\".
-:TwVW0.aGAqAovRWF rdf:type owl:ObjectProperty;
-    rdfs:domain :xN.W0.aGAqAovRVX;
-    rdfs:range :u0X6ZeaGAqACBxFU;
-    rdfs:label \\"in context of\\".
-:0W9W0.aGAqAovRW. rdf:type owl:ObjectProperty;
-    rdfs:domain :xN.W0.aGAqAovRVX;
-    rdfs:range :3H70FeaGAqACByYE;
-    rdfs:label \\"refers to\\".
-:rtJ3KRaGAqACCBHq rdf:type owl:ObjectProperty;
-    rdfs:domain :Ryx7KRaGAqACCBFU;
-    rdfs:range :v9I7KRaGAqACCBFG.
-:.LAPKRaGAqACCBJs rdf:type owl:ObjectProperty;
-    rdfs:domain :BUPTKRaGAqACCA1S;
-    rdfs:range :avP3KRaGAqACCBJV.
-:3x40WRaGAqCsIB4W rdf:type owl:ObjectProperty;
-    rdfs:domain :ND1aexaGAqCsIB1b;
-    rdfs:range :avP3KRaGAqACCBJV.
-:Sjm8WRaGAqCsICXT rdf:type owl:ObjectProperty;
-    rdfs:domain :BUPTKRaGAqACCA1S;
-    rdfs:range :ZehMWRaGAqCsIB9D.
-:Bgl8WRaGAqCsICZc rdf:type owl:ObjectProperty;
-    rdfs:domain :u7vTKRaGAqACCA1k;
-    rdfs:range :97lcWRaGAqCsICSi.
-:aOb8WRaGAqCsICap rdf:type owl:ObjectProperty;
-    rdfs:domain :Ryx7KRaGAqACCBFU;
-    rdfs:range :Omi8WRaGAqCsICVp.
-:5ALZWRaGAqCsIDCJ rdf:type owl:ObjectProperty;
-    rdfs:domain :VaUC0.aGAqAovQ3q;
-    rdfs:range :5LxsNeaGAqACBzHc.
-:fEChFRaGAqCsIAyp rdf:type owl:ObjectProperty;
-    rdfs:domain :49fBFRaGAqCsIAol;
-    rdfs:range :ZI5mZeaGAqACBxLj;
-    rdfs:label \\"measured by\\".
-:eTVhFRaGAqCsIA1o rdf:type owl:ObjectProperty;
-    rdfs:domain :49fBFRaGAqCsIAol;
-    rdfs:range :5LxsNeaGAqACBzHc;
-    rdfs:label \\"measured in\\".
-:4XBRFRaGAqCsIA4_ rdf:type owl:ObjectProperty;
-    rdfs:domain :49fBFRaGAqCsIAol;
-    rdfs:range :iT8RFRaGAqCsIA3T;
-    rdfs:label \\"identifies secondary surface\\".
-:oVhRFRaGAqCsIA5S rdf:type owl:ObjectProperty;
-    rdfs:domain :49fBFRaGAqCsIAol;
-    rdfs:range :iT8RFRaGAqCsIA3T;
-    rdfs:label \\"identifies primary surface\\".
-:pz.5FRaGAqCsIBNB rdf:type owl:ObjectProperty;
-    rdfs:domain :2bX5lRaGAqCsICdP;
-    rdfs:range :avP3KRaGAqACCBJV.
-:ZDhTFRaGAqCsIB2s rdf:type owl:ObjectProperty;
-    rdfs:domain :5LxsNeaGAqACBzHc;
-    rdfs:range :5LxsNeaGAqACBzHc;
-    rdfs:label \\"gives access to\\".
-:CiSilRaGAqCsICVW rdf:type owl:ObjectProperty;
-    rdfs:domain :vQNfFRaGAqCsICRd;
-    rdfs:range :avP3KRaGAqACCBJV;
-    rdfs:label \\"manages\\".
-:kvMxgFaAUB20XxOx rdf:type owl:ObjectProperty;
-    rdfs:domain :bgem.g6AUB20tyWQ;
-    rdfs:range :iM5RgFaAUB20XxOU;
-    rdfs:label \\"available under\\".
-:bO0pgFaAUB20Xxb8 rdf:type owl:ObjectProperty;
-    rdfs:domain :bgem.g6AUB20tyWQ;
-    rdfs:range :9fKxgFaAUB20XxPv;
-    rdfs:label \\"owned by\\".
-:LnY2MFaAUB22dhkc rdf:type owl:ObjectProperty;
-    rdfs:domain :xh2EFeaGAqACByIW;
-    rdfs:range :yOg2MFaAUB22dhkH.
-:O9KW.g6AUB20tyYO rdf:type owl:ObjectProperty;
-    rdfs:domain :xh2EFeaGAqACByIW;
-    rdfs:range :bgem.g6AUB20tyWQ;
-    rdfs:label \\"refers to\\".
-:guit.g6AUB20t0D_ rdf:type owl:ObjectProperty;
-    rdfs:domain :V1RMFeaGAqACBycH;
-    rdfs:range :hlJ55eaGAqACByA8.
-:1cCj.g6AUB20t0ed rdf:type owl:ObjectProperty;
-    rdfs:domain :v9I7KRaGAqACCBFG;
-    rdfs:range :avP3KRaGAqACCBJV.
-:uyoO0.aGAqAovReC rdf:type owl:ObjectProperty;
-    rdfs:domain :zVD0FeaGAqACByXj;
-    rdfs:range :xN.W0.aGAqAovRVX.
+    rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:a8q2ZeaGAqACBxTF :JoK2ZeaGAqACBxS5).
 :vQNfFRaGAqCsICRd rdfs:subClassOf :ZI5mZeaGAqACBxLj.
+:ta4OZeaGAqACBxXY rdfs:label \\"organized by\\".
 :ZI5mZeaGAqACBxLj owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:a8q2ZeaGAqACBxTF :JoK2ZeaGAqACBxS5)
 ].
 :vQNfFRaGAqCsICRd rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:RoleMixin.
+:rI7OZeaGAqACBxaN rdf:type owl:ObjectProperty;
+    rdfs:domain :u0X6ZeaGAqACBxFU;
+    rdfs:range :Hqt2ZeaGAqACBxVQ;
+    rdf:type gufo:MaterialRelationshipType.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:2cXhgFaAUB20XxMA :YqX4FeaGAqACByFI :cqgEFeaGAqACByFl).
 :9fKxgFaAUB20XxPv rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Copyright Owner\\".
+:rI7OZeaGAqACBxaN rdfs:label \\"sponsored by\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:w9VGZeaGAqACBxIC :YaFGZeaGAqACBxHu :LdVGZeaGAqACBxH9 :c25qFBaGAqACCBkO :yroGZeaGAqACBxGM).
 :9fKxgFaAUB20XxPv rdfs:subClassOf :ZI5mZeaGAqACBxLj.
+:eecx5eaGAqACBx2N rdf:type owl:ObjectProperty;
+    rdfs:domain :u0X6ZeaGAqACBxFU;
+    rdfs:range :VhSB5eaGAqACBxwL;
+    rdf:type gufo:MaterialRelationshipType.
 :u0X6ZeaGAqACBxFU owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:w9VGZeaGAqACBxIC :YaFGZeaGAqACBxHu :LdVGZeaGAqACBxH9 :c25qFBaGAqACCBkO :yroGZeaGAqACBxGM)
 ].
 :9fKxgFaAUB20XxPv rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:RoleMixin.
+:eecx5eaGAqACBx2N rdfs:label \\"contributes in\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:8pguZeaGAqACBxbW :rokuZeaGAqACBxbm).
 :VhSB5eaGAqACBxwL rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Contributor\\".
+:gLFx5eaGAqACBx3m rdf:type owl:ObjectProperty;
+    rdfs:domain :u0X6ZeaGAqACBxFU;
+    rdfs:range :_RRB5eaGAqACBxxv;
+    rdf:type gufo:MaterialRelationshipType.
 :u0X6ZeaGAqACBxFU owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:8pguZeaGAqACBxbW :rokuZeaGAqACBxbm)
 ].
 :VhSB5eaGAqACBxwL rdfs:subClassOf :ZI5mZeaGAqACBxLj.
+:gLFx5eaGAqACBx3m rdfs:label \\"published by\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:34xpFRaGAqCsIBFB :CkhpFRaGAqCsIBEz :nLJpFRaGAqCsIBFP).
 :VhSB5eaGAqACBxwL rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:RoleMixin.
+:MJLUFeaGAqACByTE rdf:type owl:ObjectProperty;
+    rdfs:domain :u0X6ZeaGAqACBxFU;
+    rdfs:range :aVPkFeaGAqACByPM.
+:u0X6ZeaGAqACBxFU rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :MJLUFeaGAqACByTE;
+  owl:onClass :aVPkFeaGAqACByPM
+].
+:aVPkFeaGAqACByPM rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :MJLUFeaGAqACByTE ];
+  owl:onClass :u0X6ZeaGAqACBxFU
+].
+:MJLUFeaGAqACByTE rdfs:subPropertyOf gufo:categorizes.
 :5LxsNeaGAqACBzHc owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:34xpFRaGAqCsIBFB :CkhpFRaGAqCsIBEz :nLJpFRaGAqCsIBFP)
 ].
 :_RRB5eaGAqACBxxv rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Publisher\\".
+:zVD0FeaGAqACByXj rdf:type owl:ObjectProperty;
+    rdfs:domain :u0X6ZeaGAqACBxFU;
+    rdfs:range :3H70FeaGAqACByYE.
+:u0X6ZeaGAqACBxFU rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :zVD0FeaGAqACByXj;
+  owl:onClass :3H70FeaGAqACByYE
+].
+:3H70FeaGAqACByYE rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :zVD0FeaGAqACByXj ];
+  owl:onClass :u0X6ZeaGAqACBxFU
+].
+:zVD0FeaGAqACByXj rdf:type gufo:MaterialRelationshipType.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:FLZMFeaGAqACByck :eFHl.g6AUB20tznI :RQrl.g6AUB20tzm0 :Edfl.g6AUB20tznk :8r9MFeaGAqACByc6 :inpMFeaGAqACBycY).
 [ rdf:type owl:AllDisjointClasses ] owl:members (:u0X6ZeaGAqACBxFU :49fBFRaGAqCsIAol :xN.W0.aGAqAovRVX :bgem.g6AUB20tyWQ).
 :_RRB5eaGAqACBxxv rdfs:subClassOf :ZI5mZeaGAqACBxLj.
+:zVD0FeaGAqACByXj rdfs:label \\"happens at\\".
 :V1RMFeaGAqACBycH owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:FLZMFeaGAqACByck :eFHl.g6AUB20tznI :RQrl.g6AUB20tzm0 :Edfl.g6AUB20tznk :8r9MFeaGAqACByc6 :inpMFeaGAqACBycY)
 ].
 :_RRB5eaGAqACBxxv rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:RoleMixin.
+:qFia0.aGAqAovRLK rdf:type owl:ObjectProperty;
+    rdfs:domain :u0X6ZeaGAqACBxFU;
+    rdfs:range :gjQq0.aGAqAovRJq.
+:u0X6ZeaGAqACBxFU rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :qFia0.aGAqAovRLK;
+  owl:onClass :gjQq0.aGAqAovRJq
+].
+:gjQq0.aGAqAovRJq rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :qFia0.aGAqAovRLK ];
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :u0X6ZeaGAqACBxFU
+].
+:qFia0.aGAqAovRLK rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:ND1aexaGAqCsIB1b :v9I7KRaGAqACCBFG).
 :Hqt2ZeaGAqACBxVQ rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Sponsor\\".
+:qFia0.aGAqAovRLK rdfs:label \\"edition of\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:BUPTKRaGAqACCA1S :avP3KRaGAqACCBJV :u7vTKRaGAqACCA1k).
 :Hqt2ZeaGAqACBxVQ rdfs:subClassOf :ZI5mZeaGAqACBxLj.
+:yFk60.aGAqAovRNe rdf:type owl:ObjectProperty;
+    rdfs:domain :ZI5mZeaGAqACBxLj;
+    rdfs:range :vM_a0.aGAqAovRNA.
+:ZI5mZeaGAqACBxLj rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :yFk60.aGAqAovRNe;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :vM_a0.aGAqAovRNA
+].
+:vM_a0.aGAqAovRNA rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :yFk60.aGAqAovRNe ];
+  owl:onClass :ZI5mZeaGAqACBxLj
+].
+:yFk60.aGAqAovRNe rdfs:subPropertyOf gufo:inheresIn.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:2bX5lRaGAqCsICdP :h.P5lRaGAqCsICdh).
 :Hqt2ZeaGAqACBxVQ rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:RoleMixin.
+:yFk60.aGAqAovRNe rdfs:label \\"reachable by\\".
 :avP3KRaGAqACCBJV owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:2bX5lRaGAqCsICdP :h.P5lRaGAqCsICdh)
 ].
 :kJXWZeaGAqACBxRJ rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Organizer\\".
+:TwVW0.aGAqAovRWF rdf:type owl:ObjectProperty;
+    rdfs:domain :xN.W0.aGAqAovRVX;
+    rdfs:range :u0X6ZeaGAqACBxFU.
+:xN.W0.aGAqAovRVX rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :TwVW0.aGAqAovRWF;
+  owl:onClass :u0X6ZeaGAqACBxFU
+].
+:u0X6ZeaGAqACBxFU rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :TwVW0.aGAqAovRWF ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :xN.W0.aGAqAovRVX
+].
+:TwVW0.aGAqAovRWF rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:a8q2ZeaGAqACBxTF :JoK2ZeaGAqACBxS5).
 :kJXWZeaGAqACBxRJ rdfs:subClassOf :ZI5mZeaGAqACBxLj.
+:TwVW0.aGAqAovRWF rdfs:label \\"in context of\\".
 :ZI5mZeaGAqACBxLj owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:a8q2ZeaGAqACBxTF :JoK2ZeaGAqACBxS5)
@@ -203,75 +178,377 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 [ rdf:type owl:AllDisjointClasses ] owl:members (:vM_a0.aGAqAovRNA :V1RMFeaGAqACBycH).
 :kJXWZeaGAqACBxRJ rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:RoleMixin.
+:0W9W0.aGAqAovRW. rdf:type owl:ObjectProperty;
+    rdfs:domain :xN.W0.aGAqAovRVX;
+    rdfs:range :3H70FeaGAqACByYE.
+:xN.W0.aGAqAovRVX rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :0W9W0.aGAqAovRW.;
+  owl:onClass :3H70FeaGAqACByYE
+].
+:3H70FeaGAqACByYE rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :0W9W0.aGAqAovRW. ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :xN.W0.aGAqAovRVX
+].
+:0W9W0.aGAqAovRW. rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:2cXhgFaAUB20XxMA :YqX4FeaGAqACByFI :cqgEFeaGAqACByFl).
 :a8q2ZeaGAqACBxTF rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Organization\\".
+:0W9W0.aGAqAovRW. rdfs:label \\"refers to\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:w9VGZeaGAqACBxIC :YaFGZeaGAqACBxHu :LdVGZeaGAqACBxH9 :c25qFBaGAqACCBkO :yroGZeaGAqACBxGM).
 :a8q2ZeaGAqACBxTF rdfs:subClassOf :ZI5mZeaGAqACBxLj.
+:rtJ3KRaGAqACCBHq rdf:type owl:ObjectProperty;
+    rdfs:domain :Ryx7KRaGAqACCBFU;
+    rdfs:range :v9I7KRaGAqACCBFG.
+:Ryx7KRaGAqACCBFU rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :rtJ3KRaGAqACCBHq;
+  owl:onClass :v9I7KRaGAqACCBFG
+].
+:v9I7KRaGAqACCBFG rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :rtJ3KRaGAqACCBHq ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Ryx7KRaGAqACCBFU
+].
+:rtJ3KRaGAqACCBHq rdfs:subPropertyOf gufo:isComponentOf.
 :u0X6ZeaGAqACBxFU owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:w9VGZeaGAqACBxIC :YaFGZeaGAqACBxHu :LdVGZeaGAqACBxH9 :c25qFBaGAqACCBkO :yroGZeaGAqACBxGM)
 ].
 :a8q2ZeaGAqACBxTF rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
+:.LAPKRaGAqACCBJs rdf:type owl:ObjectProperty;
+    rdfs:domain :BUPTKRaGAqACCA1S;
+    rdfs:range :avP3KRaGAqACCBJV.
+:BUPTKRaGAqACCA1S rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :.LAPKRaGAqACCBJs;
+  owl:onClass :avP3KRaGAqACCBJV
+].
+:avP3KRaGAqACCBJV rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :.LAPKRaGAqACCBJs ];
+  owl:onClass :BUPTKRaGAqACCA1S
+].
+:.LAPKRaGAqACCBJs rdfs:subPropertyOf gufo:isComponentOf.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:8pguZeaGAqACBxbW :rokuZeaGAqACBxbm).
 :JoK2ZeaGAqACBxS5 rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Person\\".
+:3x40WRaGAqCsIB4W rdf:type owl:ObjectProperty;
+    rdfs:domain :ND1aexaGAqCsIB1b;
+    rdfs:range :avP3KRaGAqACCBJV.
+:ND1aexaGAqCsIB1b rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :3x40WRaGAqCsIB4W;
+  owl:onClass :avP3KRaGAqACCBJV
+].
+:avP3KRaGAqACCBJV rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :3x40WRaGAqCsIB4W ];
+  owl:onClass :ND1aexaGAqCsIB1b
+].
+:3x40WRaGAqCsIB4W rdfs:subPropertyOf gufo:isComponentOf.
 :u0X6ZeaGAqACBxFU owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:8pguZeaGAqACBxbW :rokuZeaGAqACBxbm)
 ].
 :JoK2ZeaGAqACBxS5 rdfs:subClassOf :ZI5mZeaGAqACBxLj.
+:Sjm8WRaGAqCsICXT rdf:type owl:ObjectProperty;
+    rdfs:domain :BUPTKRaGAqACCA1S;
+    rdfs:range :ZehMWRaGAqCsIB9D.
+:BUPTKRaGAqACCA1S rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :Sjm8WRaGAqCsICXT;
+  owl:onClass :ZehMWRaGAqCsIB9D
+].
+:ZehMWRaGAqCsIB9D rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :Sjm8WRaGAqCsICXT ];
+  owl:onClass :BUPTKRaGAqACCA1S
+].
+:Sjm8WRaGAqCsICXT rdfs:subPropertyOf gufo:categorizes.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:34xpFRaGAqCsIBFB :CkhpFRaGAqCsIBEz :nLJpFRaGAqCsIBFP).
 :JoK2ZeaGAqACBxS5 rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
+:Bgl8WRaGAqCsICZc rdf:type owl:ObjectProperty;
+    rdfs:domain :u7vTKRaGAqACCA1k;
+    rdfs:range :97lcWRaGAqCsICSi.
+:u7vTKRaGAqACCA1k rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :Bgl8WRaGAqCsICZc;
+  owl:onClass :97lcWRaGAqCsICSi
+].
+:97lcWRaGAqCsICSi rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :Bgl8WRaGAqCsICZc ];
+  owl:onClass :u7vTKRaGAqACCA1k
+].
+:Bgl8WRaGAqCsICZc rdfs:subPropertyOf gufo:categorizes.
 :5LxsNeaGAqACBzHc owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:34xpFRaGAqCsIBFB :CkhpFRaGAqCsIBEz :nLJpFRaGAqCsIBFP)
 ].
 :ZI5mZeaGAqACBxLj rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Agent\\".
+:aOb8WRaGAqCsICap rdf:type owl:ObjectProperty;
+    rdfs:domain :Ryx7KRaGAqACCBFU;
+    rdfs:range :Omi8WRaGAqCsICVp.
+:Ryx7KRaGAqACCBFU rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :aOb8WRaGAqCsICap;
+  owl:onClass :Omi8WRaGAqCsICVp
+].
+:Omi8WRaGAqCsICVp rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :aOb8WRaGAqCsICap ];
+  owl:onClass :Ryx7KRaGAqACCBFU
+].
+:aOb8WRaGAqCsICap rdfs:subPropertyOf gufo:categorizes.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:FLZMFeaGAqACByck :eFHl.g6AUB20tznI :RQrl.g6AUB20tzm0 :Edfl.g6AUB20tznk :8r9MFeaGAqACByc6 :inpMFeaGAqACBycY).
 :ZI5mZeaGAqACBxLj rdfs:subClassOf :pd7zKRaGAqACCA7s.
+:fEChFRaGAqCsIAyp rdf:type owl:ObjectProperty;
+    rdfs:domain :49fBFRaGAqCsIAol;
+    rdfs:range :ZI5mZeaGAqACBxLj.
+:49fBFRaGAqCsIAol rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :fEChFRaGAqCsIAyp;
+  owl:onClass :ZI5mZeaGAqACBxLj
+].
+:ZI5mZeaGAqACBxLj rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :fEChFRaGAqCsIAyp ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :49fBFRaGAqCsIAol
+].
+:fEChFRaGAqCsIAyp rdfs:subPropertyOf gufo:mediates.
 :V1RMFeaGAqACBycH owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:FLZMFeaGAqACByck :eFHl.g6AUB20tznI :RQrl.g6AUB20tzm0 :Edfl.g6AUB20tznk :8r9MFeaGAqACByc6 :inpMFeaGAqACBycY)
 ].
 :ZI5mZeaGAqACBxLj rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:Category.
+:fEChFRaGAqCsIAyp rdfs:label \\"measured by\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:ND1aexaGAqCsIB1b :v9I7KRaGAqACCBFG).
 :5LxsNeaGAqACBzHc rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Place\\".
+:eTVhFRaGAqCsIA1o rdf:type owl:ObjectProperty;
+    rdfs:domain :49fBFRaGAqCsIAol;
+    rdfs:range :5LxsNeaGAqACBzHc.
+:49fBFRaGAqCsIAol rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :eTVhFRaGAqCsIA1o;
+  owl:onClass :5LxsNeaGAqACBzHc
+].
+:5LxsNeaGAqACBzHc rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :eTVhFRaGAqCsIA1o ];
+  owl:onClass :49fBFRaGAqCsIAol
+].
+:eTVhFRaGAqCsIA1o rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:BUPTKRaGAqACCA1S :avP3KRaGAqACCBJV :u7vTKRaGAqACCA1k).
 :5LxsNeaGAqACBzHc rdfs:subClassOf :hlJ55eaGAqACByA8.
+:eTVhFRaGAqCsIA1o rdfs:label \\"measured in\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:2bX5lRaGAqCsICdP :h.P5lRaGAqCsICdh).
 :5LxsNeaGAqACBzHc rdfs:subClassOf :pd7zKRaGAqACCA7s.
+:4XBRFRaGAqCsIA4_ rdf:type owl:ObjectProperty;
+    rdfs:domain :49fBFRaGAqCsIAol;
+    rdfs:range :iT8RFRaGAqCsIA3T.
+:49fBFRaGAqCsIAol rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :4XBRFRaGAqCsIA4_;
+  owl:onClass :iT8RFRaGAqCsIA3T
+].
+:iT8RFRaGAqCsIA3T rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :4XBRFRaGAqCsIA4_ ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :49fBFRaGAqCsIAol
+].
+:4XBRFRaGAqCsIA4_ rdfs:subPropertyOf gufo:mediates.
 :avP3KRaGAqACCBJV owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:2bX5lRaGAqCsICdP :h.P5lRaGAqCsICdh)
 ].
 :5LxsNeaGAqACBzHc rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:Category.
+:4XBRFRaGAqCsIA4_ rdfs:label \\"identifies secondary surface\\".
 :c25qFBaGAqACCBkO rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Rescheduled\\";
-    rdfs:subClassOf :u0X6ZeaGAqACBxFU;
-    rdf:type gufo:Phase.
+    rdfs:label \\"Rescheduled\\".
+:oVhRFRaGAqCsIA5S rdf:type owl:ObjectProperty;
+    rdfs:domain :49fBFRaGAqCsIAol;
+    rdfs:range :iT8RFRaGAqCsIA3T.
+:49fBFRaGAqCsIAol rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :oVhRFRaGAqCsIA5S;
+  owl:onClass :iT8RFRaGAqCsIA3T
+].
+:iT8RFRaGAqCsIA3T rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :oVhRFRaGAqCsIA5S ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :49fBFRaGAqCsIAol
+].
+:oVhRFRaGAqCsIA5S rdfs:subPropertyOf gufo:mediates.
+:c25qFBaGAqACCBkO rdfs:subClassOf :u0X6ZeaGAqACBxFU.
+:oVhRFRaGAqCsIA5S rdfs:label \\"identifies primary surface\\".
+:c25qFBaGAqACCBkO rdf:type gufo:Phase.
+:pz.5FRaGAqCsIBNB rdf:type owl:ObjectProperty;
+    rdfs:domain :2bX5lRaGAqCsICdP;
+    rdfs:range :avP3KRaGAqACCBJV.
+:2bX5lRaGAqCsICdP rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :pz.5FRaGAqCsIBNB;
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :avP3KRaGAqACCBJV
+].
+:avP3KRaGAqACCBJV rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :pz.5FRaGAqCsIBNB ];
+  owl:minQualifiedCardinality \\"2\\"^^xsd:nonNegativeInteger;
+  owl:onClass :2bX5lRaGAqCsICdP
+].
+:pz.5FRaGAqCsIBNB rdfs:subPropertyOf gufo:isComponentOf.
 :8pguZeaGAqACBxbW rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Composite Event\\";
-    rdfs:subClassOf :u0X6ZeaGAqACBxFU;
-    rdf:type gufo:SubKind.
+    rdfs:label \\"Composite Event\\".
+:CiSilRaGAqCsICVW rdf:type owl:ObjectProperty;
+    rdfs:domain :vQNfFRaGAqCsICRd;
+    rdfs:range :avP3KRaGAqACCBJV.
+:vQNfFRaGAqCsICRd rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :CiSilRaGAqCsICVW;
+  owl:onClass :avP3KRaGAqACCBJV
+].
+:avP3KRaGAqACCBJV rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :CiSilRaGAqCsICVW ];
+  owl:onClass :vQNfFRaGAqCsICRd
+].
+:CiSilRaGAqCsICVW rdf:type gufo:MaterialRelationshipType.
+:8pguZeaGAqACBxbW rdfs:subClassOf :u0X6ZeaGAqACBxFU.
+:CiSilRaGAqCsICVW rdfs:label \\"manages\\".
+:8pguZeaGAqACBxbW rdf:type gufo:SubKind.
+:kvMxgFaAUB20XxOx rdf:type owl:ObjectProperty;
+    rdfs:domain :bgem.g6AUB20tyWQ;
+    rdfs:range :iM5RgFaAUB20XxOU.
+:bgem.g6AUB20tyWQ rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :kvMxgFaAUB20XxOx;
+  owl:onClass :iM5RgFaAUB20XxOU
+].
+:iM5RgFaAUB20XxOU rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :kvMxgFaAUB20XxOx ];
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :bgem.g6AUB20tyWQ
+].
+:kvMxgFaAUB20XxOx rdfs:subPropertyOf gufo:mediates.
 :rokuZeaGAqACBxbm rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Simple Event\\";
-    rdfs:subClassOf :u0X6ZeaGAqACBxFU;
-    rdf:type gufo:SubKind.
+    rdfs:label \\"Simple Event\\".
+:kvMxgFaAUB20XxOx rdfs:label \\"available under\\".
+:rokuZeaGAqACBxbm rdfs:subClassOf :u0X6ZeaGAqACBxFU.
+:bO0pgFaAUB20Xxb8 rdf:type owl:ObjectProperty;
+    rdfs:domain :bgem.g6AUB20tyWQ;
+    rdfs:range :9fKxgFaAUB20XxPv.
+:bgem.g6AUB20tyWQ rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :bO0pgFaAUB20Xxb8;
+  owl:onClass :9fKxgFaAUB20XxPv
+].
+:9fKxgFaAUB20XxPv rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :bO0pgFaAUB20Xxb8 ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :bgem.g6AUB20tyWQ
+].
+:bO0pgFaAUB20Xxb8 rdfs:subPropertyOf gufo:mediates.
+:rokuZeaGAqACBxbm rdf:type gufo:SubKind.
+:bO0pgFaAUB20Xxb8 rdfs:label \\"owned by\\".
 :w9VGZeaGAqACBxIC rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Cancelled\\";
-    rdfs:subClassOf :u0X6ZeaGAqACBxFU;
-    rdf:type gufo:Phase.
+    rdfs:label \\"Cancelled\\".
+:LnY2MFaAUB22dhkc rdf:type owl:ObjectProperty;
+    rdfs:domain :xh2EFeaGAqACByIW;
+    rdfs:range :yOg2MFaAUB22dhkH.
+:xh2EFeaGAqACByIW rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :LnY2MFaAUB22dhkc;
+  owl:onClass :yOg2MFaAUB22dhkH
+].
+:yOg2MFaAUB22dhkH rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :LnY2MFaAUB22dhkc ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :xh2EFeaGAqACByIW
+].
+:LnY2MFaAUB22dhkc rdfs:subPropertyOf gufo:categorizes.
+:w9VGZeaGAqACBxIC rdfs:subClassOf :u0X6ZeaGAqACBxFU.
+:O9KW.g6AUB20tyYO rdf:type owl:ObjectProperty;
+    rdfs:domain :xh2EFeaGAqACByIW;
+    rdfs:range :bgem.g6AUB20tyWQ.
+:xh2EFeaGAqACByIW rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :O9KW.g6AUB20tyYO;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :bgem.g6AUB20tyWQ
+].
+:bgem.g6AUB20tyWQ rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :O9KW.g6AUB20tyYO ];
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :xh2EFeaGAqACByIW
+].
+:O9KW.g6AUB20tyYO rdfs:subPropertyOf gufo:mediates.
+:w9VGZeaGAqACBxIC rdf:type gufo:Phase.
+:O9KW.g6AUB20tyYO rdfs:label \\"refers to\\".
 :LdVGZeaGAqACBxH9 rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Realized\\";
-    rdfs:subClassOf :u0X6ZeaGAqACBxFU;
-    rdf:type gufo:Phase.
+    rdfs:label \\"Realized\\".
+:guit.g6AUB20t0D_ rdf:type owl:ObjectProperty;
+    rdfs:domain :V1RMFeaGAqACBycH;
+    rdfs:range :hlJ55eaGAqACByA8.
+:V1RMFeaGAqACBycH rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :guit.g6AUB20t0D_;
+  owl:onClass :hlJ55eaGAqACByA8
+].
+:hlJ55eaGAqACByA8 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :guit.g6AUB20t0D_ ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :V1RMFeaGAqACBycH
+].
+:guit.g6AUB20t0D_ rdfs:subPropertyOf gufo:inheresIn.
+:LdVGZeaGAqACBxH9 rdfs:subClassOf :u0X6ZeaGAqACBxFU.
+:1cCj.g6AUB20t0ed rdf:type owl:ObjectProperty;
+    rdfs:domain :v9I7KRaGAqACCBFG;
+    rdfs:range :avP3KRaGAqACCBJV.
+:v9I7KRaGAqACCBFG rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :1cCj.g6AUB20t0ed;
+  owl:onClass :avP3KRaGAqACCBJV
+].
+:avP3KRaGAqACCBJV rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :1cCj.g6AUB20t0ed ];
+  owl:onClass :v9I7KRaGAqACCBFG
+].
+:1cCj.g6AUB20t0ed rdfs:subPropertyOf gufo:isComponentOf.
+:LdVGZeaGAqACBxH9 rdf:type gufo:Phase.
+:uyoO0.aGAqAovReC rdf:type owl:ObjectProperty;
+    rdfs:domain :zVD0FeaGAqACByXj;
+    rdfs:range :xN.W0.aGAqAovRVX.
+:zVD0FeaGAqACByXj rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :uyoO0.aGAqAovReC;
+  owl:onClass :xN.W0.aGAqAovRVX
+].
+:xN.W0.aGAqAovRVX rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :uyoO0.aGAqAovReC ];
+  owl:onClass :zVD0FeaGAqACByXj
+].
+:zVD0FeaGAqACByXj gufo:isDerivedFrom :xN.W0.aGAqAovRVX.
 :YaFGZeaGAqACBxHu rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Ongoing\\";
     rdfs:subClassOf :u0X6ZeaGAqACBxFU;
@@ -461,18 +738,42 @@ exports[`should transform OntoUML <<mode>> class as ExtrinsicMode 1`] = `
 <:lYARBA6AUB0UtAwk> <rdf:type> <owl:ObjectProperty> .
 <:lYARBA6AUB0UtAwk> <rdfs:domain> <:qJdeWA6AUB0UtAWm> .
 <:lYARBA6AUB0UtAwk> <rdfs:range> <:Q5deWA6AUB0UtAWn> .
-<:lYARBA6AUB0UtAwk> <rdfs:label> \\"LovePerson\\" .
-<:lYARBA6AUB0UtAwk> <rdf:type> <owl:ObjectProperty> .
-<:lYARBA6AUB0UtAwk> <rdfs:domain> <:qJdeWA6AUB0UtAWm> .
-<:lYARBA6AUB0UtAwk> <rdfs:range> <:Q5deWA6AUB0UtAWo> .
-<:lYARBA6AUB0UtAwk> <rdfs:label> \\"LoveCar\\" .
+<:qJdeWA6AUB0UtAWm> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> <:lYARBA6AUB0UtAwk>;
+  <owl:onClass> <:Q5deWA6AUB0UtAWn>
+] .
+<:Q5deWA6AUB0UtAWn> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> [ <owl:inverseOf> <:lYARBA6AUB0UtAwk> ];
+  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:qJdeWA6AUB0UtAWm>
+] .
+<:lYARBA6AUB0UtAwk> <rdfs:subPropertyOf> <gufo:inheresIn> .
 <:qJdeWA6AUB0UtAWm> <rdfs:subClassOf> <gufo:ExtrinsicMode> .
 <:qJdeWA6AUB0UtAWm> <rdf:type> <gufo:Kind> .
+<:lYARBA6AUB0UtAwk> <rdfs:label> \\"LovePerson\\" .
 <:Q5deWA6AUB0UtAWn> <rdf:type> <owl:Class> .
 <:Q5deWA6AUB0UtAWn> <rdf:type> <owl:NamedIndividual> .
 <:Q5deWA6AUB0UtAWn> <rdfs:label> \\"Person\\" .
+<:lYARBA6AUB0UtAwk> <rdf:type> <owl:ObjectProperty> .
+<:lYARBA6AUB0UtAwk> <rdfs:domain> <:qJdeWA6AUB0UtAWm> .
+<:lYARBA6AUB0UtAwk> <rdfs:range> <:Q5deWA6AUB0UtAWo> .
+<:qJdeWA6AUB0UtAWm> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> <:lYARBA6AUB0UtAwk>;
+  <owl:onClass> <:Q5deWA6AUB0UtAWo>
+] .
+<:Q5deWA6AUB0UtAWo> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> [ <owl:inverseOf> <:lYARBA6AUB0UtAwk> ];
+  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:qJdeWA6AUB0UtAWm>
+] .
+<:lYARBA6AUB0UtAwk> <rdfs:subPropertyOf> <gufo:externallyDependsOn> .
 <:Q5deWA6AUB0UtAWn> <rdfs:subClassOf> <gufo:FunctionalComplex> .
 <:Q5deWA6AUB0UtAWn> <rdf:type> <gufo:Kind> .
+<:lYARBA6AUB0UtAwk> <rdfs:label> \\"LoveCar\\" .
 <:Q5deWA6AUB0UtAWo> <rdf:type> <owl:Class> .
 <:Q5deWA6AUB0UtAWo> <rdf:type> <owl:NamedIndividual> .
 <:Q5deWA6AUB0UtAWo> <rdfs:label> \\"Car\\" .
@@ -490,9 +791,21 @@ exports[`should transform OntoUML <<mode>> class as IntrinsicMode 1`] = `
 <:lYARBA6AUB0UtAwk> <rdf:type> <owl:ObjectProperty> .
 <:lYARBA6AUB0UtAwk> <rdfs:domain> <:qJdeWA6AUB0UtAWm> .
 <:lYARBA6AUB0UtAwk> <rdfs:range> <:Q5deWA6AUB0UtAWn> .
-<:lYARBA6AUB0UtAwk> <rdfs:label> \\"HeadachePerson\\" .
+<:qJdeWA6AUB0UtAWm> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> <:lYARBA6AUB0UtAwk>;
+  <owl:onClass> <:Q5deWA6AUB0UtAWn>
+] .
+<:Q5deWA6AUB0UtAWn> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> [ <owl:inverseOf> <:lYARBA6AUB0UtAwk> ];
+  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:qJdeWA6AUB0UtAWm>
+] .
+<:lYARBA6AUB0UtAwk> <rdfs:subPropertyOf> <gufo:inheresIn> .
 <:qJdeWA6AUB0UtAWm> <rdfs:subClassOf> <gufo:IntrinsicMode> .
 <:qJdeWA6AUB0UtAWm> <rdf:type> <gufo:Kind> .
+<:lYARBA6AUB0UtAwk> <rdfs:label> \\"HeadachePerson\\" .
 <:Q5deWA6AUB0UtAWn> <rdf:type> <owl:Class> .
 <:Q5deWA6AUB0UtAWn> <rdf:type> <owl:NamedIndividual> .
 <:Q5deWA6AUB0UtAWn> <rdfs:label> \\"Person\\" .
@@ -510,19 +823,38 @@ exports[`should transform OntoUML <<relator>> class 1`] = `
 <:di3Fmg6D.AAAAQud> <rdf:type> <owl:ObjectProperty> .
 <:di3Fmg6D.AAAAQud> <rdfs:domain> <:z.T5mg6D.AAAAQsY> .
 <:di3Fmg6D.AAAAQud> <rdfs:range> <:SzOFmg6D.AAAAQuF> .
-<:gWAlmg6D.AAAAQu9> <rdf:type> <owl:ObjectProperty> .
-<:gWAlmg6D.AAAAQu9> <rdfs:domain> <:SzOFmg6D.AAAAQuF> .
-<:gWAlmg6D.AAAAQu9> <rdfs:range> <:yPX5mg6D.AAAAQtn> .
-<:7k4lmg6D.AAAAQvd> <rdf:type> <owl:ObjectProperty> .
-<:7k4lmg6D.AAAAQvd> <rdfs:domain> <:z.T5mg6D.AAAAQsY> .
-<:7k4lmg6D.AAAAQvd> <rdfs:range> <:yPX5mg6D.AAAAQtn> .
-<:7k4lmg6D.AAAAQvd> <rdfs:label> \\"HusbandWife\\" .
-<:gk0lmg6D.AAAAQv1> <rdf:type> <owl:ObjectProperty> .
-<:gk0lmg6D.AAAAQv1> <rdfs:domain> <:7k4lmg6D.AAAAQvd> .
-<:gk0lmg6D.AAAAQv1> <rdfs:range> <:SzOFmg6D.AAAAQuF> .
+<:z.T5mg6D.AAAAQsY> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> <:di3Fmg6D.AAAAQud>;
+  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:SzOFmg6D.AAAAQuF>
+] .
+<:SzOFmg6D.AAAAQuF> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> [ <owl:inverseOf> <:di3Fmg6D.AAAAQud> ];
+  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:z.T5mg6D.AAAAQsY>
+] .
+<:di3Fmg6D.AAAAQud> <rdfs:subPropertyOf> <gufo:mediates> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:ech5mg6D.AAAAQqj> <:jiZ5mg6D.AAAAQrK>) .
 <:IsW5mg6D.AAAAQqE> <rdfs:subClassOf> <gufo:FunctionalComplex> .
 <:IsW5mg6D.AAAAQqE> <rdf:type> <gufo:Kind> .
+<:gWAlmg6D.AAAAQu9> <rdf:type> <owl:ObjectProperty> .
+<:gWAlmg6D.AAAAQu9> <rdfs:domain> <:SzOFmg6D.AAAAQuF> .
+<:gWAlmg6D.AAAAQu9> <rdfs:range> <:yPX5mg6D.AAAAQtn> .
+<:SzOFmg6D.AAAAQuF> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> <:gWAlmg6D.AAAAQu9>;
+  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:yPX5mg6D.AAAAQtn>
+] .
+<:yPX5mg6D.AAAAQtn> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> [ <owl:inverseOf> <:gWAlmg6D.AAAAQu9> ];
+  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:SzOFmg6D.AAAAQuF>
+] .
+<:gWAlmg6D.AAAAQu9> <rdfs:subPropertyOf> <gufo:mediates> .
 <:IsW5mg6D.AAAAQqE> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:ech5mg6D.AAAAQqj> <:jiZ5mg6D.AAAAQrK>)
@@ -530,8 +862,39 @@ exports[`should transform OntoUML <<relator>> class 1`] = `
 <:ech5mg6D.AAAAQqj> <rdf:type> <owl:Class> .
 <:ech5mg6D.AAAAQqj> <rdf:type> <owl:NamedIndividual> .
 <:ech5mg6D.AAAAQqj> <rdfs:label> \\"Man\\" .
+<:7k4lmg6D.AAAAQvd> <rdf:type> <owl:ObjectProperty> .
+<:7k4lmg6D.AAAAQvd> <rdfs:domain> <:z.T5mg6D.AAAAQsY> .
+<:7k4lmg6D.AAAAQvd> <rdfs:range> <:yPX5mg6D.AAAAQtn> .
+<:z.T5mg6D.AAAAQsY> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> <:7k4lmg6D.AAAAQvd>;
+  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:yPX5mg6D.AAAAQtn>
+] .
+<:yPX5mg6D.AAAAQtn> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> [ <owl:inverseOf> <:7k4lmg6D.AAAAQvd> ];
+  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:z.T5mg6D.AAAAQsY>
+] .
+<:7k4lmg6D.AAAAQvd> <rdf:type> <gufo:MaterialRelationshipType> .
 <:ech5mg6D.AAAAQqj> <rdfs:subClassOf> <:IsW5mg6D.AAAAQqE> .
+<:7k4lmg6D.AAAAQvd> <rdfs:label> \\"HusbandWife\\" .
 <:ech5mg6D.AAAAQqj> <rdf:type> <gufo:SubKind> .
+<:gk0lmg6D.AAAAQv1> <rdf:type> <owl:ObjectProperty> .
+<:gk0lmg6D.AAAAQv1> <rdfs:domain> <:7k4lmg6D.AAAAQvd> .
+<:gk0lmg6D.AAAAQv1> <rdfs:range> <:SzOFmg6D.AAAAQuF> .
+<:7k4lmg6D.AAAAQvd> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> <:gk0lmg6D.AAAAQv1>;
+  <owl:onClass> <:SzOFmg6D.AAAAQuF>
+] .
+<:SzOFmg6D.AAAAQuF> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> [ <owl:inverseOf> <:gk0lmg6D.AAAAQv1> ];
+  <owl:onClass> <:7k4lmg6D.AAAAQvd>
+] .
+<:7k4lmg6D.AAAAQvd> <gufo:isDerivedFrom> <:SzOFmg6D.AAAAQuF> .
 <:jiZ5mg6D.AAAAQrK> <rdf:type> <owl:Class> .
 <:jiZ5mg6D.AAAAQrK> <rdf:type> <owl:NamedIndividual> .
 <:jiZ5mg6D.AAAAQrK> <rdfs:label> \\"Woman\\" .
@@ -597,6 +960,7 @@ exports[`should transform OntoUML generic model to gUFO 1`] = `
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 
 <https://example.com> rdf:type owl:Ontology;
     owl:imports gufo:.
@@ -605,51 +969,72 @@ exports[`should transform OntoUML generic model to gUFO 1`] = `
     rdfs:label \\"Agent\\".
 :lYARBA6AUB0UtAwk rdf:type owl:ObjectProperty;
     rdfs:domain :JLnhBA6AUB0UtAwO;
-    rdfs:range :_xThBA6AUB0UtAvg.
-:a0IRBA6AUB0UtAw6 rdf:type owl:ObjectProperty;
-    rdfs:domain :JLnhBA6AUB0UtAwO;
-    rdfs:range :GDbhBA6AUB0UtAv1.
-:tGcRBA6AUB0UtAxi rdf:type owl:ObjectProperty;
-    rdfs:domain :wukRBA6AUB0UtAxW;
-    rdfs:range :JLnhBA6AUB0UtAwO.
-:UoDdhA6GAqACnA03 rdf:type owl:ObjectProperty;
-    rdfs:domain :6XxdhA6GAqACnA0J;
-    rdfs:range :_xThBA6AUB0UtAvg.
-:6iJ9hA6GAqACnA2s rdf:type owl:ObjectProperty;
-    rdfs:domain :h_Y9hA6GAqACnA1t;
-    rdfs:range :JLnhBA6AUB0UtAwO.
-:dnp9hA6GAqACnA27 rdf:type owl:ObjectProperty;
-    rdfs:domain :cea9hA6GAqACnA2B;
-    rdfs:range :JLnhBA6AUB0UtAwO.
-:iDpDhA6GAqACnA41 rdf:type owl:ObjectProperty;
-    rdfs:domain :GDbhBA6AUB0UtAv1;
     rdfs:range :_xThBA6AUB0UtAvg;
-    rdfs:label \\"studies-at\\".
-:XE.NJA6GAqACnA7T rdf:type owl:ObjectProperty;
-    rdfs:domain :rw.hBA6AUB0UtArB;
-    rdfs:range :zxmNJA6GAqACnA7H.
-:jNSVZA6GAqACnA.t rdf:type owl:ObjectProperty;
-    rdfs:domain :iDpDhA6GAqACnA41;
-    rdfs:range :JLnhBA6AUB0UtAwO.
+    rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:j5phBA6AUB0UtAts :2uxhBA6AUB0UtArb).
 :rw.hBA6AUB0UtArB rdfs:subClassOf gufo:Endurant;
-    rdf:type gufo:Category;
-    owl:equivalentClass [
+    rdf:type gufo:Category.
+:a0IRBA6AUB0UtAw6 rdf:type owl:ObjectProperty;
+    rdfs:domain :JLnhBA6AUB0UtAwO;
+    rdfs:range :GDbhBA6AUB0UtAv1;
+    rdfs:subPropertyOf gufo:mediates.
+:rw.hBA6AUB0UtArB owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:j5phBA6AUB0UtAts :2uxhBA6AUB0UtArb)
 ].
 :2uxhBA6AUB0UtArb rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Person\\";
-    rdfs:subClassOf :rw.hBA6AUB0UtArB, gufo:FunctionalComplex;
+    rdfs:label \\"Person\\".
+:tGcRBA6AUB0UtAxi rdf:type owl:ObjectProperty;
+    rdfs:domain :wukRBA6AUB0UtAxW;
+    rdfs:range :JLnhBA6AUB0UtAwO;
+    rdfs:subPropertyOf gufo:inheresIn.
+:2uxhBA6AUB0UtArb rdfs:subClassOf :rw.hBA6AUB0UtArB.
+:UoDdhA6GAqACnA03 rdf:type owl:ObjectProperty;
+    rdfs:domain :6XxdhA6GAqACnA0J;
+    rdfs:range :_xThBA6AUB0UtAvg;
+    rdfs:subPropertyOf gufo:isComponentOf.
+:2uxhBA6AUB0UtArb rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
+:6iJ9hA6GAqACnA2s rdf:type owl:ObjectProperty;
+    rdfs:domain :h_Y9hA6GAqACnA1t;
+    rdfs:range :JLnhBA6AUB0UtAwO;
+    rdfs:subPropertyOf gufo:mediates.
 :j5phBA6AUB0UtAts rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Organization\\";
-    rdfs:subClassOf :rw.hBA6AUB0UtArB, gufo:FunctionalComplex;
+    rdfs:label \\"Organization\\".
+:dnp9hA6GAqACnA27 rdf:type owl:ObjectProperty;
+    rdfs:domain :cea9hA6GAqACnA2B;
+    rdfs:range :JLnhBA6AUB0UtAwO;
+    rdfs:subPropertyOf gufo:mediates.
+:j5phBA6AUB0UtAts rdfs:subClassOf :rw.hBA6AUB0UtArB.
+:iDpDhA6GAqACnA41 rdf:type owl:ObjectProperty;
+    rdfs:domain :GDbhBA6AUB0UtAv1;
+    rdfs:range :_xThBA6AUB0UtAvg;
+    rdf:type gufo:MaterialRelationshipType.
+:j5phBA6AUB0UtAts rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
+:iDpDhA6GAqACnA41 rdfs:label \\"studies-at\\".
 :_xThBA6AUB0UtAvg rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"School\\";
-    rdfs:subClassOf :j5phBA6AUB0UtAts;
-    rdf:type gufo:SubKind.
+    rdfs:label \\"School\\".
+:XE.NJA6GAqACnA7T rdf:type owl:ObjectProperty;
+    rdfs:domain :rw.hBA6AUB0UtArB;
+    rdfs:range :zxmNJA6GAqACnA7H;
+    rdfs:subPropertyOf gufo:categorizes.
+:_xThBA6AUB0UtAvg rdfs:subClassOf :j5phBA6AUB0UtAts.
+:jNSVZA6GAqACnA.t rdf:type owl:ObjectProperty;
+    rdfs:domain :iDpDhA6GAqACnA41;
+    rdfs:range :JLnhBA6AUB0UtAwO.
+:iDpDhA6GAqACnA41 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :jNSVZA6GAqACnA.t;
+  owl:onClass :JLnhBA6AUB0UtAwO
+].
+:JLnhBA6AUB0UtAwO rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :jNSVZA6GAqACnA.t ];
+  owl:onClass :iDpDhA6GAqACnA41
+].
+:iDpDhA6GAqACnA41 gufo:isDerivedFrom :JLnhBA6AUB0UtAwO.
+:_xThBA6AUB0UtAvg rdf:type gufo:SubKind.
 :GDbhBA6AUB0UtAv1 rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Student\\";
     rdfs:subClassOf :2uxhBA6AUB0UtArb;
@@ -683,6 +1068,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 
 <https://example.com> rdf:type owl:Ontology;
     owl:imports gufo:.
@@ -691,740 +1077,1740 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdfs:label \\"Agent\\".
 :INrRFHaGAqAe8BNu rdf:type owl:ObjectProperty;
     rdfs:domain :D51aFHaGAqAe8BBd;
-    rdfs:range :SM4RFHaGAqAe8BJD;
-    rdfs:label \\"made by\\".
-:wWbRFHaGAqAe8BOB rdf:type owl:ObjectProperty;
-    rdfs:domain :D51aFHaGAqAe8BBd;
-    rdfs:range :tURRFHaGAqAe8BLb;
-    rdfs:label \\"benefits\\".
-:wO0TFHaGAqAe8BdX rdf:type owl:ObjectProperty;
-    rdfs:domain :1so2FHaGAqAe8BBx;
-    rdfs:range :KqqJFHaGAqAe8BR_;
-    rdfs:label \\"held by\\".
-:1i3P1HaGAqAe8BvC rdf:type owl:ObjectProperty;
-    rdfs:domain :haqP1HaGAqAe8Bt7;
-    rdfs:range :vcU_1HaGAqAe8Bzz.
-:WbFUNHaGAqAe8B_7 rdf:type owl:ObjectProperty;
-    rdfs:domain :tp7kNHaGAqAe8B_i;
-    rdfs:range :VvxaFHaGAqAe8BAf.
-:4x_kzHaGAqAe8Clg rdf:type owl:ObjectProperty;
-    rdfs:domain :QKFAZnaGAqAe8DZp;
-    rdfs:range :1so2FHaGAqAe8BBx;
-    rdfs:label \\"creates\\".
-:01eUzHaGAqAe8CpV rdf:type owl:ObjectProperty;
-    rdfs:domain :OAOUzHaGAqAe8Co8;
-    rdfs:range :VvxaFHaGAqAe8BAf.
-:BLt0zHaGAqAe8CvG rdf:type owl:ObjectProperty;
-    rdfs:domain :GyZ0zHaGAqAe8CuO;
-    rdfs:range :1Le_1HaGAqAe8B1c.
-:LHqMzHaGAqAe8CzD rdf:type owl:ObjectProperty;
-    rdfs:domain :GyZ0zHaGAqAe8CuO;
-    rdfs:range :C5QMzHaGAqAe8Cwk.
-:01v8zHaGAqAe8C75 rdf:type owl:ObjectProperty;
-    rdfs:domain :1so2FHaGAqAe8BBx;
-    rdfs:range :qI68zHaGAqAe8C7i;
-    rdfs:label \\"has primary basis\\".
-:LK_8zHaGAqAe8C8S rdf:type owl:ObjectProperty;
-    rdfs:domain :1so2FHaGAqAe8BBx;
-    rdfs:range :qI68zHaGAqAe8C7i;
-    rdfs:label \\"has secondary basis\\".
-:yTA7pnaGAqAe8DFb rdf:type owl:ObjectProperty;
-    rdfs:domain :pZHbpnaGAqAe8DEo;
-    rdfs:range :D51aFHaGAqAe8BBd;
-    rdfs:label \\"regards\\".
-:HAwPpnaGAqAe8DMJ rdf:type owl:ObjectProperty;
-    rdfs:domain :pZHbpnaGAqAe8DEo;
-    rdfs:range :qk33pnaGAqAe8DLl;
-    rdfs:label \\"made by\\".
-:a_XkZnaGAqAeDhA8 rdf:type owl:ObjectProperty;
-    rdfs:domain :8xNw43aAUBAysYls;
-    rdfs:range :2g1kZnaGAqAeDg_y.
-:QnSCZnaGAqAeDhCc rdf:type owl:ObjectProperty;
-    rdfs:domain :31ekZnaGAqAeDg.4;
-    rdfs:range :QFOaFHaGAqAe8A_X.
-:bOHWZnaGAqAeDhPD rdf:type owl:ObjectProperty;
-    rdfs:domain :26zWZnaGAqAeDhOs;
-    rdfs:range :tp7kNHaGAqAe8B_i.
-:Cwg.ZnaGAqAeDhWM rdf:type owl:ObjectProperty;
-    rdfs:domain :OAOUzHaGAqAe8Co8;
-    rdfs:range :QL5uZnaGAqAeDhUD.
-:8F13lnaGAqAeDh9D rdf:type owl:ObjectProperty;
-    rdfs:domain :ZzJ3lnaGAqAeDh8k;
-    rdfs:range :h6rr1HaGAqAe8Bkn.
-:nvfvlnaGAqAeDiFM rdf:type owl:ObjectProperty;
-    rdfs:domain :QFOaFHaGAqAe8A_X;
-    rdfs:range :90pflnaGAqAeDiHe;
-    rdfs:label \\"has legal parent\\".
-:lu9_lnaGAqAeDiMT rdf:type owl:ObjectProperty;
-    rdfs:domain :h6rr1HaGAqAe8Bkn;
-    rdfs:range :h6rr1HaGAqAe8Bkn;
-    rdfs:label \\"marriedTo\\".
-:ddQAVnaGAqAeDiNM rdf:type owl:ObjectProperty;
-    rdfs:domain :aeMb1HaGAqAe8Bl0;
-    rdfs:range :aeMb1HaGAqAe8Bl0;
-    rdfs:label \\"partnerOf\\".
-:rXdgVnaGAqAeDiSQ rdf:type owl:ObjectProperty;
-    rdfs:domain :1Le_1HaGAqAe8B1c;
-    rdfs:range :C5QMzHaGAqAe8Cwk;
-    rdfs:label \\"lives in\\".
-:QPfkVnaGAqAeDipd rdf:type owl:ObjectProperty;
-    rdfs:domain :jlAkVnaGAqAeDikV;
-    rdfs:range :QFOaFHaGAqAe8A_X.
-:ehQUVnaGAqAeDip5 rdf:type owl:ObjectProperty;
-    rdfs:domain :jlAkVnaGAqAeDikV;
-    rdfs:range :1l.ANHaGAqAe8B4A.
-:t4kUVnaGAqAeDiq5 rdf:type owl:ObjectProperty;
-    rdfs:domain :1l.ANHaGAqAe8B4A;
-    rdfs:range :QFOaFHaGAqAe8A_X;
-    rdfs:label \\"providesBasicCareFor\\".
-:m6pOVnaGAqAeDi8s rdf:type owl:ObjectProperty;
-    rdfs:domain :dheOVnaGAqAeDi7x;
-    rdfs:range :QFOaFHaGAqAe8A_X.
-:n09OVnaGAqAeDi.C rdf:type owl:ObjectProperty;
-    rdfs:domain :dheOVnaGAqAeDi7x;
-    rdfs:range :rNNOVnaGAqAeDi9t.
-:PpknVnaGAqAeDjVN rdf:type owl:ObjectProperty;
-    rdfs:domain :QFOaFHaGAqAe8A_X;
-    rdfs:range :aHpZVnaGAqAeDjOM.
-:rD5w1naGAqAeDjpo rdf:type owl:ObjectProperty;
-    rdfs:domain :qY0g1naGAqAeDjao;
-    rdfs:range :4pGxyXaFYFAUAgx_.
-:1Rlw1naGAqAeDjqF rdf:type owl:ObjectProperty;
-    rdfs:domain :qY0g1naGAqAeDjao;
-    rdfs:range :QFOaFHaGAqAe8A_X.
-:vHfE1naGAqAeDj37 rdf:type owl:ObjectProperty;
-    rdfs:domain :kxtsDnaGAqAeDkQY;
-    rdfs:range :qI68zHaGAqAe8C7i.
-:N61s1naGAqAeDj_H rdf:type owl:ObjectProperty;
-    rdfs:domain :qY0g1naGAqAeDjao;
-    rdfs:range :kxtsDnaGAqAeDkQY.
-:nEZO1naGAqAeDkFM rdf:type owl:ObjectProperty;
-    rdfs:domain :Oaq21naGAqAeDkC0;
-    rdfs:range :J3_W1naGAqAeDkBF.
-:SelO1naGAqAeDkF0 rdf:type owl:ObjectProperty;
-    rdfs:domain :kxtsDnaGAqAeDkQY;
-    rdfs:range :Oaq21naGAqAeDkC0.
-:5T18DnaGAqAeDkSs rdf:type owl:ObjectProperty;
-    rdfs:domain :vcOsDnaGAqAeDkPr;
-    rdfs:range :zZksDnaGAqAeDkOI.
-:j1T8DnaGAqAeDkTM rdf:type owl:ObjectProperty;
-    rdfs:domain :qY0g1naGAqAeDjao;
-    rdfs:range :vcOsDnaGAqAeDkPr.
-:rGPSDnaGAqAeDkWj rdf:type owl:ObjectProperty;
-    rdfs:domain :kxtsDnaGAqAeDkQY;
-    rdfs:range :0WXM1naGAqAeDj8s.
-:Trt6DnaGAqAeDkZ3 rdf:type owl:ObjectProperty;
-    rdfs:domain :vcOsDnaGAqAeDkPr;
-    rdfs:range :.s56DnaGAqAeDkZi.
-:a6sGDnaGAqAeDka7 rdf:type owl:ObjectProperty;
-    rdfs:domain :.s56DnaGAqAeDkZi;
-    rdfs:range :ZlkGDnaGAqAeDkas.
-:yjfJiXaD.AAAAQ6q rdf:type owl:ObjectProperty;
-    rdfs:domain :gbaJFHaGAqAe8BSL;
-    rdfs:range :2sHJiXaD.AAAAQ6I.
-:A4PpiXaD.AAAAQ.Q rdf:type owl:ObjectProperty;
-    rdfs:domain :6c.piXaD.AAAAQ8z;
-    rdfs:range :gbaJFHaGAqAe8BSL.
-:ZvvpiXaD.AAAAQ.n rdf:type owl:ObjectProperty;
-    rdfs:domain :6c.piXaD.AAAAQ8z;
-    rdfs:range :gOSY03aFYFAUAlkF.
-:g23ViXaD.AAAARQx rdf:type owl:ObjectProperty;
-    rdfs:domain :D51aFHaGAqAe8BBd;
-    rdfs:range :PfrZFHaGAqAe8BU.;
-    rdfs:label \\"made to\\".
-:66e1iXaD.AAAART5 rdf:type owl:ObjectProperty;
-    rdfs:domain :1so2FHaGAqAe8BBx;
-    rdfs:range :qY0g1naGAqAeDjao;
-    rdfs:label \\"motivated by\\".
-:X7MNiXaD.AAAARV2 rdf:type owl:ObjectProperty;
-    rdfs:domain :1so2FHaGAqAe8BBx;
-    rdfs:range :gbaJFHaGAqAe8BSL;
-    rdfs:label \\"in the responsibility of\\".
-:OEmtiXaD.AAAARar rdf:type owl:ObjectProperty;
-    rdfs:domain :5qfNiXaD.AAAARX9;
-    rdfs:range :gOSY03aFYFAUAlkF;
-    rdfs:label \\"made to\\".
-:cl.tiXaD.AAAARb2 rdf:type owl:ObjectProperty;
-    rdfs:domain :5qfNiXaD.AAAARX9;
-    rdfs:range :1so2FHaGAqAe8BBx;
-    rdfs:label \\"conforms to\\".
-:FvtTiXaD.AAAARl. rdf:type owl:ObjectProperty;
-    rdfs:domain :KjzjiXaD.AAAARkQ;
-    rdfs:range :5qfNiXaD.AAAARX9;
-    rdfs:label \\"conforms to\\".
-:0Knw43aAUBAysYmN rdf:type owl:ObjectProperty;
-    rdfs:domain :8xNw43aAUBAysYls;
-    rdfs:range :IS3MyXaD.AAAAR10.
-:W.Uo43aAUBAysYrd rdf:type owl:ObjectProperty;
-    rdfs:domain :8xNw43aAUBAysYls;
-    rdfs:range :qihkZnaGAqAeDg_M.
-:glLY43aAUBAysY7X rdf:type owl:ObjectProperty;
-    rdfs:domain :o0TY43aAUBAysY7G;
-    rdfs:range :XAMY43aAUBAysY5T.
-:mYV443aAUBAysY9q rdf:type owl:ObjectProperty;
-    rdfs:domain :o0TY43aAUBAysY7G;
-    rdfs:range :QFOaFHaGAqAe8A_X.
-:mjJU43aAUBAysZCw rdf:type owl:ObjectProperty;
-    rdfs:domain :o0TY43aAUBAysY7G;
-    rdfs:range :e5.U43aAUBAysZCY.
-:3BIs43aAUBAysZdq rdf:type owl:ObjectProperty;
-    rdfs:domain :31ekZnaGAqAeDg.4;
-    rdfs:range :o0TY43aAUBAysY7G.
-:M.Ps43aAUBAysZhe rdf:type owl:ObjectProperty;
-    rdfs:domain :d2.s43aAUBAysZgF;
-    rdfs:range :31ekZnaGAqAeDg.4.
-:mIsi43aAUBAyscB_ rdf:type owl:ObjectProperty;
-    rdfs:domain :hcki43aAUBAyscBo;
-    rdfs:range :tSM0yXaD.AAAARwK;
-    rdfs:label \\"refers to\\".
-:nrTi43aAUBAyscVL rdf:type owl:ObjectProperty;
-    rdfs:domain :hcki43aAUBAyscBo;
-    rdfs:range :4VC5iXaD.AAAARBd;
-    rdfs:label \\"created by\\".
-:oG0S43aAUBAyscXe rdf:type owl:ObjectProperty;
-    rdfs:domain :tSM0yXaD.AAAARwK;
-    rdfs:range :4VC5iXaD.AAAARBd;
-    rdfs:label \\"declared eligible by\\".
-:94fk03aFYFAUAnTG rdf:type owl:ObjectProperty;
-    rdfs:domain :5qfNiXaD.AAAARX9;
-    rdfs:range :gbaJFHaGAqAe8BSL;
-    rdfs:label \\"made by\\".
-:H4js03aFYFAUAnW0 rdf:type owl:ObjectProperty;
-    rdfs:domain :aKJs03aFYFAUAnVm;
-    rdfs:range :7qZs03aFYFAUAnV0.
-:H2zs03aFYFAUAnXJ rdf:type owl:ObjectProperty;
-    rdfs:domain :5qfNiXaD.AAAARX9;
-    rdfs:range :tWtq4_aFYEGQWxkJ;
-    rdfs:label \\"allocates\\".
-:iopS03aFYFAUAqvX rdf:type owl:ObjectProperty;
-    rdfs:domain :5qfNiXaD.AAAARX9;
-    rdfs:range :6URS03aFYFAUAqvB;
-    rdfs:label \\"benefits\\".
-:XgLS03aFYFAUArJ9 rdf:type owl:ObjectProperty;
-    rdfs:domain :4KRG.faAUB1IcWbq;
-    rdfs:range :qI68zHaGAqAe8C7i.
-:8li603aFYFAUAtV1 rdf:type owl:ObjectProperty;
-    rdfs:domain :rdna03aFYFAUAtTV;
-    rdfs:range :prHa03aFYFAUAtTD;
-    rdfs:label \\"temporary replaces\\".
-:0Xy603aFYFAUAtWO rdf:type owl:ObjectProperty;
-    rdfs:domain :ztXa03aFYFAUAtTn;
-    rdfs:range :prHa03aFYFAUAtTD.
-:gvb4APaAUAACnkCU rdf:type owl:ObjectProperty;
-    rdfs:domain :KjzjiXaD.AAAARkQ;
-    rdfs:range :KqqJFHaGAqAe8BR_;
-    rdfs:label \\"benefits\\".
-:679EAPaAUAACnkFU rdf:type owl:ObjectProperty;
-    rdfs:domain :gOSY03aFYFAUAlkF;
-    rdfs:range :KjzjiXaD.AAAARkQ;
-    rdfs:label \\"delivered by\\".
-:BH_E8PaAUAACnkK_ rdf:type owl:ObjectProperty;
-    rdfs:domain :W06a4_aFYEGQWxre;
-    rdfs:range :KjzjiXaD.AAAARkQ;
-    rdfs:label \\"delivered ZZP\\".
-:0rSPuPaAUAACnkg_ rdf:type owl:ObjectProperty;
-    rdfs:domain :NK8LuPaAUAACnkbx;
-    rdfs:range :UxjZsPaAUAACnkHy.
-:RXGPuPaAUAACnkhU rdf:type owl:ObjectProperty;
-    rdfs:domain :bseLQ_aFYEGUXyzA;
-    rdfs:range :NK8LuPaAUAACnkbx.
-:bhayi3aFYEGUEy4D rdf:type owl:ObjectProperty;
-    rdfs:domain :1so2FHaGAqAe8BBx;
-    rdfs:range :rtZAq3aFYEGUExSq.
-:u6G6i3aFYEGUEy.z rdf:type owl:ObjectProperty;
-    rdfs:domain :VzzAq3aFYEGUExTN;
-    rdfs:range :5qfNiXaD.AAAARX9.
-:e1lQq3aFYEGUExaV rdf:type owl:ObjectProperty;
-    rdfs:domain :rtZAq3aFYEGUExSq;
-    rdfs:range :VzzAq3aFYEGUExTN;
-    rdfs:label \\"Part of\\".
-:RxpMq3aFYEGUExoo rdf:type owl:ObjectProperty;
-    rdfs:domain :d3hQ03aFYFAUAkBR;
-    rdfs:range :_Wd0q3aFYEGUExnz.
-:QOxaq3aFYEGUEx7j rdf:type owl:ObjectProperty;
-    rdfs:domain :EqKaq3aFYEGUEx64;
-    rdfs:range :5qfNiXaD.AAAARX9.
-:5yp5q3aFYEGUEyCK rdf:type owl:ObjectProperty;
-    rdfs:domain :5qfNiXaD.AAAARX9;
-    rdfs:range :gOSY03aFYFAUAlkF;
-    rdfs:label \\"abc\\".
-:mLQMr3aFYEGUExxs rdf:type owl:ObjectProperty;
-    rdfs:domain :3kN0r3aFYEGUExxc;
-    rdfs:range :KqqJFHaGAqAe8BR_.
-:EZoMr3aFYEGUExx6 rdf:type owl:ObjectProperty;
-    rdfs:domain :3kN0r3aFYEGUExxc;
-    rdfs:range :gbaJFHaGAqAe8BSL.
-:PBzKr3aFYEGUEx0V rdf:type owl:ObjectProperty;
-    rdfs:domain :VvxaFHaGAqAe8BAf;
-    rdfs:range :8XCKr3aFYEGUExzu;
-    rdfs:label \\"creates\\".
-:U7rar3aFYEGUEx8T rdf:type owl:ObjectProperty;
-    rdfs:domain :QFOaFHaGAqAe8A_X;
-    rdfs:range :8XCKr3aFYEGUExzu;
-    rdfs:label \\"is subject of\\".
-:oBfeePaAUAACnmAV rdf:type owl:ObjectProperty;
-    rdfs:domain :oBjeePaAUAACnl_h;
-    rdfs:range :KqqJFHaGAqAe8BR_.
-:ZIg.ePaAUAACnmAu rdf:type owl:ObjectProperty;
-    rdfs:domain :oBjeePaAUAACnl_h;
-    rdfs:range :C5QMzHaGAqAe8Cwk.
-:tVnc_vaFYFAUAh6J rdf:type owl:ObjectProperty;
-    rdfs:domain :F9Kc_vaFYFAUAh5I;
-    rdfs:range :FgM8_vaFYFAUAh64;
-    rdfs:label \\"represents\\".
-:Bb3c_vaFYFAUAh6c rdf:type owl:ObjectProperty;
-    rdfs:domain :F9Kc_vaFYFAUAh5I;
-    rdfs:range :zrCs_vaFYFAUAhzW;
-    rdfs:label \\"assignes\\".
-:TxBi_vaFYFAUAiiV rdf:type owl:ObjectProperty;
-    rdfs:domain :1so2FHaGAqAe8BBx;
-    rdfs:range :ppMS_vaFYFAUAikI;
-    rdfs:label \\"contains\\".
-:yJiS_vaFYFAUAikn rdf:type owl:ObjectProperty;
-    rdfs:domain :ppMS_vaFYFAUAikI;
-    rdfs:range :jVSQzHaGAqAe8CBF;
-    rdfs:label \\"assignes\\".
-:ufOa_vaFYFAUAi.r rdf:type owl:ObjectProperty;
-    rdfs:domain :1so2FHaGAqAe8BBx;
-    rdfs:range :UFMa_vaFYFAUAi9H;
-    rdfs:label \\"replaces\\".
-:FE52UfaFYEGUHCsd rdf:type owl:ObjectProperty;
-    rdfs:domain :gbaJFHaGAqAe8BSL;
-    rdfs:range :7AQ2UfaFYEGUHCrU.
-:oIk5UfaFYEGUHFiY rdf:type owl:ObjectProperty;
-    rdfs:domain :2sHJiXaD.AAAAQ6I;
-    rdfs:range :ru_pUfaFYEGUHFbJ.
-:4XRlUfaFYEGUHFmg rdf:type owl:ObjectProperty;
-    rdfs:domain :CJxFUfaFYEGUHFkc;
-    rdfs:range :ru_pUfaFYEGUHFbJ;
-    rdfs:label \\"lives in\\".
-:Er6dUfaFYEGUHGpT rdf:type owl:ObjectProperty;
-    rdfs:domain :CJxFUfaFYEGUHFkc;
-    rdfs:range :CzCdUfaFYEGUHGn9.
-:nOBdUfaFYEGUHGqy rdf:type owl:ObjectProperty;
-    rdfs:domain :KqqJFHaGAqAe8BR_;
-    rdfs:range :CzCdUfaFYEGUHGn9.
-:XAETUfaFYEGUHH9e rdf:type owl:ObjectProperty;
-    rdfs:domain :CzCdUfaFYEGUHGn9;
-    rdfs:range :gbaJFHaGAqAe8BSL.
-:WwxQ2faFYEGQT6kl rdf:type owl:ObjectProperty;
-    rdfs:domain :tSM0yXaD.AAAARwK;
-    rdfs:range :uO0Q2faFYEGQT6aq;
-    rdfs:label \\"prefers\\".
-:Wo_Q2faFYEGQT6nC rdf:type owl:ObjectProperty;
-    rdfs:domain :uO0Q2faFYEGQT6aq;
-    rdfs:range :Harg2faFYEGQT6aD.
-:h_HI2faFYEGQT6sD rdf:type owl:ObjectProperty;
-    rdfs:domain :uO0Q2faFYEGQT6aq;
-    rdfs:range :1O7w2faFYEGQT6oD.
-:SjvI2faFYEGQT6se rdf:type owl:ObjectProperty;
-    rdfs:domain :uO0Q2faFYEGQT6aq;
-    rdfs:range :5dZI2faFYEGQT6ry.
-:7mR.2faFYEGQT7im rdf:type owl:ObjectProperty;
-    rdfs:domain :KqqJFHaGAqAe8BR_;
-    rdfs:range :f4Sg1naGAqAeDja_.
-:YJV.2faFYEGQT7kF rdf:type owl:ObjectProperty;
-    rdfs:domain :2sHJiXaD.AAAAQ6I;
-    rdfs:range :f4Sg1naGAqAeDja_.
-:cQ52.faAUB1IcW94 rdf:type owl:ObjectProperty;
-    rdfs:domain :qY0g1naGAqAeDjao;
-    rdfs:range :4KRG.faAUB1IcWbq;
-    rdfs:label \\"classifies patient in\\".
-:Dlz2.faAUB1IcW_1 rdf:type owl:ObjectProperty;
-    rdfs:domain :.6OZw_aFYEGUX0au;
-    rdfs:range :4KRG.faAUB1IcWbq.
-:ePYO.faAUB1IcXDj rdf:type owl:ObjectProperty;
-    rdfs:domain :D51aFHaGAqAe8BBd;
-    rdfs:range :7qZs03aFYFAUAnV0;
-    rdfs:label \\"requests\\".
-:H2qO.faAUB1IcXRc rdf:type owl:ObjectProperty;
-    rdfs:domain :uO0Q2faFYEGQT6aq;
-    rdfs:range :KjzjiXaD.AAAARkQ.
-:ocve.faAUB1IcX2p rdf:type owl:ObjectProperty;
-    rdfs:domain :XXne.faAUB1IcX10;
-    rdfs:range :AgZE2faFYEGQT610.
-:vgCl.faAUB1IcaCK rdf:type owl:ObjectProperty;
-    rdfs:domain :1so2FHaGAqAe8BBx;
-    rdfs:range :aKJs03aFYFAUAnVm;
-    rdfs:label \\"consists of\\".
-:ZRpZw_aFYEGUX0bF rdf:type owl:ObjectProperty;
-    rdfs:domain :rj95w_aFYEGUX0iF;
-    rdfs:range :.6OZw_aFYEGUX0au.
-:RUTV4_aFYEGQWx4F rdf:type owl:ObjectProperty;
-    rdfs:domain :4KRG.faAUB1IcWbq;
-    rdfs:range :tSM0yXaD.AAAARwK.
-:cSbF5_aGAqACCHSO rdf:type owl:ObjectProperty;
-    rdfs:domain :1so2FHaGAqAe8BBx;
-    rdfs:range :PfrZFHaGAqAe8BU.;
-    rdfs:label \\"granted by\\".
-:5l3Eb_aFYFAUBgbf rdf:type owl:ObjectProperty;
-    rdfs:domain :ppMS_vaFYFAUAikI;
-    rdfs:range :tSM0yXaD.AAAARwK;
-    rdfs:label \\"represents\\".
-:cezG9A6AUB1UpDJE rdf:type owl:ObjectProperty;
-    rdfs:domain :s2DG9A6AUB1UpDEU;
-    rdfs:range :QFOaFHaGAqAe8A_X.
-:tN0W9A6AUB1UpDO1 rdf:type owl:ObjectProperty;
-    rdfs:domain :s2DG9A6AUB1UpDEU;
-    rdfs:range :6nHG9A6AUB1UpDKB;
-    rdfs:label \\"full format\\".
-:BHi29A6AUB1UpDl0 rdf:type owl:ObjectProperty;
-    rdfs:domain :s2DG9A6AUB1UpDEU;
-    rdfs:range :MWE29A6AUB1UpDlL;
-    rdfs:label \\"short format\\".
-:nergVnaGAqAeDiSp rdf:type owl:ObjectProperty;
-    rdfs:domain :rXdgVnaGAqAeDiSQ;
-    rdfs:range :GyZ0zHaGAqAe8CuO.
-:GgdUVnaGAqAeDitX rdf:type owl:ObjectProperty;
-    rdfs:domain :jlAkVnaGAqAeDikV;
-    rdfs:range :t4kUVnaGAqAeDiq5.
-:EwiS43aAUBAyscYZ rdf:type owl:ObjectProperty;
-    rdfs:domain :hcki43aAUBAyscBo;
-    rdfs:range :oG0S43aAUBAyscXe.
+    rdfs:range :SM4RFHaGAqAe8BJD.
+:D51aFHaGAqAe8BBd rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :INrRFHaGAqAe8BNu;
+  owl:onClass :SM4RFHaGAqAe8BJD
+].
+:SM4RFHaGAqAe8BJD rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :INrRFHaGAqAe8BNu ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :D51aFHaGAqAe8BBd
+].
+:INrRFHaGAqAe8BNu rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Qcjr1HaGAqAe8Bj4 :OL2n1HaGAqAe8BqQ :J9Eb1HaGAqAe8Blh :h6rr1HaGAqAe8Bkn :aeMb1HaGAqAe8Bl0 :PzJH1HaGAqAe8Bo6 :QZ.71HaGAqAe8BnP :XtIb1HaGAqAe8BlP).
 :VvxaFHaGAqAe8BAf rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:Category.
+:INrRFHaGAqAe8BNu rdfs:label \\"made by\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:RxdD1HaGAqAe8Be6 :IJML1HaGAqAe8Bhq :Edij1HaGAqAe8Bfp).
 :haqP1HaGAqAe8Bt7 rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Household\\".
+:wWbRFHaGAqAe8BOB rdf:type owl:ObjectProperty;
+    rdfs:domain :D51aFHaGAqAe8BBd;
+    rdfs:range :tURRFHaGAqAe8BLb.
+:D51aFHaGAqAe8BBd rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :wWbRFHaGAqAe8BOB;
+  owl:onClass :tURRFHaGAqAe8BLb
+].
+:tURRFHaGAqAe8BLb rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :wWbRFHaGAqAe8BOB ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :D51aFHaGAqAe8BBd
+].
+:wWbRFHaGAqAe8BOB rdfs:subPropertyOf gufo:mediates.
 :QFOaFHaGAqAe8A_X owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:RxdD1HaGAqAe8Be6 :IJML1HaGAqAe8Bhq :Edij1HaGAqAe8Bfp)
 ].
 :haqP1HaGAqAe8Bt7 rdfs:subClassOf gufo:Collection;
     rdf:type gufo:Kind.
+:wWbRFHaGAqAe8BOB rdfs:label \\"benefits\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:ztXa03aFYFAUAtTn :prHa03aFYFAUAtTD :rdna03aFYFAUAtTV).
 :vcU_1HaGAqAe8Bzz rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Household Member\\".
+:wO0TFHaGAqAe8BdX rdf:type owl:ObjectProperty;
+    rdfs:domain :1so2FHaGAqAe8BBx;
+    rdfs:range :KqqJFHaGAqAe8BR_.
+:1so2FHaGAqAe8BBx rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :wO0TFHaGAqAe8BdX;
+  owl:onClass :KqqJFHaGAqAe8BR_
+].
+:KqqJFHaGAqAe8BR_ rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :wO0TFHaGAqAe8BdX ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :1so2FHaGAqAe8BBx
+].
+:wO0TFHaGAqAe8BdX rdfs:subPropertyOf gufo:mediates.
 :5qfNiXaD.AAAARX9 owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:ztXa03aFYFAUAtTn :prHa03aFYFAUAtTD :rdna03aFYFAUAtTV)
 ].
 :vcU_1HaGAqAe8Bzz rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:wO0TFHaGAqAe8BdX rdfs:label \\"held by\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:KgBQ03aFYFAUAkBD :jzZQ03aFYFAUAkB9 :2fOQ03aFYFAUAkAr :d3hQ03aFYFAUAkBR).
 :vcU_1HaGAqAe8Bzz rdf:type gufo:Role.
+:1i3P1HaGAqAe8BvC rdf:type owl:ObjectProperty;
+    rdfs:domain :haqP1HaGAqAe8Bt7;
+    rdfs:range :vcU_1HaGAqAe8Bzz.
+:haqP1HaGAqAe8Bt7 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :1i3P1HaGAqAe8BvC;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :vcU_1HaGAqAe8Bzz
+].
+:vcU_1HaGAqAe8Bzz rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :1i3P1HaGAqAe8BvC ];
+  owl:onClass :haqP1HaGAqAe8Bt7
+].
+:1i3P1HaGAqAe8BvC rdfs:subPropertyOf gufo:isCollectionMemberOf.
 :5qfNiXaD.AAAARX9 owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:KgBQ03aFYFAUAkBD :jzZQ03aFYFAUAkB9 :2fOQ03aFYFAUAkAr :d3hQ03aFYFAUAkBR)
 ].
 :QFOaFHaGAqAe8A_X rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Person\\".
+:WbFUNHaGAqAe8B_7 rdf:type owl:ObjectProperty;
+    rdfs:domain :tp7kNHaGAqAe8B_i;
+    rdfs:range :VvxaFHaGAqAe8BAf.
+:tp7kNHaGAqAe8B_i rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :WbFUNHaGAqAe8B_7;
+  owl:onClass :VvxaFHaGAqAe8BAf
+].
+:VvxaFHaGAqAe8BAf rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :WbFUNHaGAqAe8B_7 ];
+  owl:minQualifiedCardinality \\"2\\"^^xsd:nonNegativeInteger;
+  owl:onClass :tp7kNHaGAqAe8B_i
+].
+:WbFUNHaGAqAe8B_7 rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:BRMyq3aFYEGUExwV :g_eSq3aFYEGUExvJ :mU.yq3aFYEGUExxO).
-:QFOaFHaGAqAe8A_X rdfs:subClassOf :VvxaFHaGAqAe8BAf;
-    owl:equivalentClass [
+:QFOaFHaGAqAe8A_X rdfs:subClassOf :VvxaFHaGAqAe8BAf.
+:4x_kzHaGAqAe8Clg rdf:type owl:ObjectProperty;
+    rdfs:domain :QKFAZnaGAqAe8DZp;
+    rdfs:range :1so2FHaGAqAe8BBx.
+:QKFAZnaGAqAe8DZp rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :4x_kzHaGAqAe8Clg;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :1so2FHaGAqAe8BBx
+].
+:1so2FHaGAqAe8BBx rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :4x_kzHaGAqAe8Clg ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :QKFAZnaGAqAe8DZp
+].
+:4x_kzHaGAqAe8Clg rdfs:subPropertyOf gufo:mediates.
+:QFOaFHaGAqAe8A_X owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:BRMyq3aFYEGUExwV :g_eSq3aFYEGUExvJ :mU.yq3aFYEGUExxO)
 ];
     rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
+:4x_kzHaGAqAe8Clg rdfs:label \\"creates\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:mkDcq3aFYEGUExq. :3sNy_vaFYFAUAi2Q).
 [ rdf:type owl:AllDisjointClasses ] owl:members (:GyZ0zHaGAqAe8CuO :31ekZnaGAqAeDg.4 :tp7kNHaGAqAe8B_i :ZzJ3lnaGAqAeDh8k :jlAkVnaGAqAeDikV :qY0g1naGAqAeDjao :Oaq21naGAqAeDkC0 :vcOsDnaGAqAeDkPr :kxtsDnaGAqAeDkQY :.s56DnaGAqAeDkZi :6c.piXaD.AAAAQ8z :8xNw43aAUBAysYls :o0TY43aAUBAysY7G :F9Kc_vaFYFAUAh5I :CzCdUfaFYEGUHGn9 :pZHbpnaGAqAe8DEo :D51aFHaGAqAe8BBd :1so2FHaGAqAe8BBx :8XCKr3aFYEGUExzu :hcki43aAUBAyscBo :tWtq4_aFYEGQWxkJ :W06a4_aFYEGQWxre :uO0Q2faFYEGQT6aq :5qfNiXaD.AAAARX9 :KjzjiXaD.AAAARkQ :aKJs03aFYFAUAnVm).
 :Edij1HaGAqAe8Bfp rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Woman\\".
+:01eUzHaGAqAe8CpV rdf:type owl:ObjectProperty;
+    rdfs:domain :OAOUzHaGAqAe8Co8;
+    rdfs:range :VvxaFHaGAqAe8BAf.
+:OAOUzHaGAqAe8Co8 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :01eUzHaGAqAe8CpV;
+  owl:onClass :VvxaFHaGAqAe8BAf
+].
+:VvxaFHaGAqAe8BAf rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :01eUzHaGAqAe8CpV ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :OAOUzHaGAqAe8Co8
+].
+:01eUzHaGAqAe8CpV rdfs:subPropertyOf gufo:inheresIn.
 :1so2FHaGAqAe8BBx owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:mkDcq3aFYEGUExq. :3sNy_vaFYFAUAi2Q)
 ].
 :Edij1HaGAqAe8Bfp rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:BLt0zHaGAqAe8CvG rdf:type owl:ObjectProperty;
+    rdfs:domain :GyZ0zHaGAqAe8CuO;
+    rdfs:range :1Le_1HaGAqAe8B1c.
+:GyZ0zHaGAqAe8CuO rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :BLt0zHaGAqAe8CvG;
+  owl:onClass :1Le_1HaGAqAe8B1c
+].
+:1Le_1HaGAqAe8B1c rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :BLt0zHaGAqAe8CvG ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :GyZ0zHaGAqAe8CuO
+].
+:BLt0zHaGAqAe8CvG rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Kvsa_vaFYFAUAi9l :jGsa_vaFYFAUAi9Z :UFMa_vaFYFAUAi9H :nopp_vaFYFAUAjaU).
 :Edij1HaGAqAe8Bfp rdf:type gufo:Role.
+:LHqMzHaGAqAe8CzD rdf:type owl:ObjectProperty;
+    rdfs:domain :GyZ0zHaGAqAe8CuO;
+    rdfs:range :C5QMzHaGAqAe8Cwk.
+:GyZ0zHaGAqAe8CuO rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :LHqMzHaGAqAe8CzD;
+  owl:onClass :C5QMzHaGAqAe8Cwk
+].
+:C5QMzHaGAqAe8Cwk rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :LHqMzHaGAqAe8CzD ];
+  owl:onClass :GyZ0zHaGAqAe8CuO
+].
+:LHqMzHaGAqAe8CzD rdfs:subPropertyOf gufo:mediates.
 :mkDcq3aFYEGUExq. owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Kvsa_vaFYFAUAi9l :jGsa_vaFYFAUAi9Z :UFMa_vaFYFAUAi9H :nopp_vaFYFAUAjaU)
 ].
 :XtIb1HaGAqAe8BlP rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Widow/Widower\\".
+:01v8zHaGAqAe8C75 rdf:type owl:ObjectProperty;
+    rdfs:domain :1so2FHaGAqAe8BBx;
+    rdfs:range :qI68zHaGAqAe8C7i.
+:1so2FHaGAqAe8BBx rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :01v8zHaGAqAe8C75;
+  owl:onClass :qI68zHaGAqAe8C7i
+].
+:qI68zHaGAqAe8C7i rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :01v8zHaGAqAe8C75 ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :1so2FHaGAqAe8BBx
+].
+:01v8zHaGAqAe8C75 rdfs:subPropertyOf gufo:mediates.
 :AgZE2faFYEGQT610 owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:F7LE2faFYEGQT62h :cwjE2faFYEGQT62S)
 ].
 [ rdf:type owl:AllDisjointClasses ] owl:members (:dheOVnaGAqAeDi7x :WAFZVnaGAqAeDjOi :qy0XVnaGAqAeDjWY :amlZVnaGAqAeDjOu :0WXM1naGAqAeDj8s :.icsDnaGAqAeDkOv :ru_pUfaFYEGUHFbJ).
 :XtIb1HaGAqAe8BlP rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:01v8zHaGAqAe8C75 rdfs:label \\"has primary basis\\".
 :vdNE2faFYEGQT61_ owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:I6FU2faFYEGQT64Z :zJJU2faFYEGQT64I)
 ].
 :XtIb1HaGAqAe8BlP rdf:type gufo:Role.
+:LK_8zHaGAqAe8C8S rdf:type owl:ObjectProperty;
+    rdfs:domain :1so2FHaGAqAe8BBx;
+    rdfs:range :qI68zHaGAqAe8C7i.
+:1so2FHaGAqAe8BBx rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :LK_8zHaGAqAe8C8S;
+  owl:onClass :qI68zHaGAqAe8C7i
+].
+:qI68zHaGAqAe8C7i rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :LK_8zHaGAqAe8C8S ];
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :1so2FHaGAqAe8BBx
+].
+:LK_8zHaGAqAe8C8S rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Y3Ja2faFYEGQT7Ns :hMMq2faFYEGQT7LJ).
 :IJML1HaGAqAe8Bhq rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Unknown\\".
+:LK_8zHaGAqAe8C8S rdfs:label \\"has secondary basis\\".
 :cwjE2faFYEGQT62S owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Y3Ja2faFYEGQT7Ns :hMMq2faFYEGQT7LJ)
 ].
 :IJML1HaGAqAe8Bhq rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:yTA7pnaGAqAe8DFb rdf:type owl:ObjectProperty;
+    rdfs:domain :pZHbpnaGAqAe8DEo;
+    rdfs:range :D51aFHaGAqAe8BBd.
+:pZHbpnaGAqAe8DEo rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :yTA7pnaGAqAe8DFb;
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :D51aFHaGAqAe8BBd
+].
+:D51aFHaGAqAe8BBd rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :yTA7pnaGAqAe8DFb ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :pZHbpnaGAqAe8DEo
+].
+:yTA7pnaGAqAe8DFb rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:xBiLuPaAUAACnkcA :jvnXuPaAUAACnkcz).
 [ rdf:type owl:AllDisjointClasses ] owl:members (:OAOUzHaGAqAe8Co8 :s2DG9A6AUB1UpDEU :rtZAq3aFYEGUExSq :VzzAq3aFYEGUExTN).
 :IJML1HaGAqAe8Bhq rdf:type gufo:Role.
+:yTA7pnaGAqAe8DFb rdfs:label \\"regards\\".
 :KjzjiXaD.AAAARkQ owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:xBiLuPaAUAACnkcA :jvnXuPaAUAACnkcz)
 ].
 :LWsf1HaGAqAe8Bw2 rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Single Person Household\\".
+:HAwPpnaGAqAe8DMJ rdf:type owl:ObjectProperty;
+    rdfs:domain :pZHbpnaGAqAe8DEo;
+    rdfs:range :qk33pnaGAqAe8DLl.
+:pZHbpnaGAqAe8DEo rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :HAwPpnaGAqAe8DMJ;
+  owl:onClass :qk33pnaGAqAe8DLl
+].
+:qk33pnaGAqAe8DLl rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :HAwPpnaGAqAe8DMJ ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :pZHbpnaGAqAe8DEo
+].
+:HAwPpnaGAqAe8DMJ rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:bPlAZnaGAqAe8DZ1 :QKFAZnaGAqAe8DZp).
 :LWsf1HaGAqAe8Bw2 rdfs:subClassOf :haqP1HaGAqAe8Bt7.
+:HAwPpnaGAqAe8DMJ rdfs:label \\"made by\\".
 :pZHbpnaGAqAe8DEo owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:bPlAZnaGAqAe8DZ1 :QKFAZnaGAqAe8DZp)
 ].
 :LWsf1HaGAqAe8Bw2 rdf:type gufo:Phase.
+:a_XkZnaGAqAeDhA8 rdf:type owl:ObjectProperty;
+    rdfs:domain :8xNw43aAUBAysYls;
+    rdfs:range :2g1kZnaGAqAeDg_y.
+:8xNw43aAUBAysYls rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :a_XkZnaGAqAeDhA8;
+  owl:onClass :2g1kZnaGAqAeDg_y
+].
+:2g1kZnaGAqAeDg_y rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :a_XkZnaGAqAeDhA8 ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :8xNw43aAUBAysYls
+].
+:a_XkZnaGAqAeDhA8 rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:oJvG03aFYFAUAtbr :HcpG03aFYFAUAtau).
 :PzJH1HaGAqAe8Bo6 rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Separated from RP\\".
+:QnSCZnaGAqAeDhCc rdf:type owl:ObjectProperty;
+    rdfs:domain :31ekZnaGAqAeDg.4;
+    rdfs:range :QFOaFHaGAqAe8A_X.
+:31ekZnaGAqAeDg.4 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :QnSCZnaGAqAeDhCc;
+  owl:onClass :QFOaFHaGAqAe8A_X
+].
+:QFOaFHaGAqAe8A_X rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :QnSCZnaGAqAeDhCc ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :31ekZnaGAqAeDg.4
+].
+:QnSCZnaGAqAeDhCc rdfs:subPropertyOf gufo:mediates.
 :KgBQ03aFYFAUAkBD owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:oJvG03aFYFAUAtbr :HcpG03aFYFAUAtau)
 ].
 :PzJH1HaGAqAe8Bo6 rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:bOHWZnaGAqAeDhPD rdf:type owl:ObjectProperty;
+    rdfs:domain :26zWZnaGAqAeDhOs;
+    rdfs:range :tp7kNHaGAqAe8B_i.
+:26zWZnaGAqAeDhOs rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :bOHWZnaGAqAeDhPD;
+  owl:onClass :tp7kNHaGAqAe8B_i
+].
+:tp7kNHaGAqAe8B_i rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :bOHWZnaGAqAeDhPD ];
+  owl:onClass :26zWZnaGAqAeDhOs
+].
+:bOHWZnaGAqAeDhPD rdfs:subPropertyOf gufo:categorizes.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:jBza_vaFYFAUAjBx :xYba_vaFYFAUAjB9).
 :PzJH1HaGAqAe8Bo6 rdf:type gufo:Role.
+:8F13lnaGAqAeDh9D rdf:type owl:ObjectProperty;
+    rdfs:domain :ZzJ3lnaGAqAeDh8k;
+    rdfs:range :h6rr1HaGAqAe8Bkn.
+:ZzJ3lnaGAqAeDh8k rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :8F13lnaGAqAeDh9D;
+  owl:onClass :h6rr1HaGAqAe8Bkn
+].
+:h6rr1HaGAqAe8Bkn rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :8F13lnaGAqAeDh9D ];
+  owl:qualifiedCardinality \\"2\\"^^xsd:nonNegativeInteger;
+  owl:onClass :ZzJ3lnaGAqAeDh8k
+].
+:8F13lnaGAqAeDh9D rdfs:subPropertyOf gufo:mediates.
 :jzZQ03aFYFAUAkB9 owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:jBza_vaFYFAUAjBx :xYba_vaFYFAUAjB9)
 ].
 :QZ.71HaGAqAe8BnP rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Separated\\".
+:nvfvlnaGAqAeDiFM rdf:type owl:ObjectProperty;
+    rdfs:domain :QFOaFHaGAqAe8A_X;
+    rdfs:range :90pflnaGAqAeDiHe.
+:QFOaFHaGAqAe8A_X rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :nvfvlnaGAqAeDiFM;
+  owl:onClass :90pflnaGAqAeDiHe
+].
+:90pflnaGAqAeDiHe rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :nvfvlnaGAqAeDiFM ];
+  owl:onClass :QFOaFHaGAqAe8A_X
+].
+:nvfvlnaGAqAeDiFM rdf:type gufo:MaterialRelationshipType.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:6YQN9A6AUB1UpEmi :hWgN9A6AUB1UpEmU).
 :QZ.71HaGAqAe8BnP rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:nvfvlnaGAqAeDiFM rdfs:label \\"has legal parent\\".
 :QFOaFHaGAqAe8A_X owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:6YQN9A6AUB1UpEmi :hWgN9A6AUB1UpEmU)
 ].
 :QZ.71HaGAqAe8BnP rdf:type gufo:Role.
+:lu9_lnaGAqAeDiMT rdf:type owl:ObjectProperty;
+    rdfs:domain :h6rr1HaGAqAe8Bkn;
+    rdfs:range :h6rr1HaGAqAe8Bkn.
+:h6rr1HaGAqAe8Bkn rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :lu9_lnaGAqAeDiMT;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :h6rr1HaGAqAe8Bkn
+], [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :lu9_lnaGAqAeDiMT ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :h6rr1HaGAqAe8Bkn
+].
+:lu9_lnaGAqAeDiMT rdf:type gufo:MaterialRelationshipType.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Qcjr1HaGAqAe8Bj4 :OL2n1HaGAqAe8BqQ :J9Eb1HaGAqAe8Blh :h6rr1HaGAqAe8Bkn :aeMb1HaGAqAe8Bl0 :PzJH1HaGAqAe8Bo6 :QZ.71HaGAqAe8BnP :XtIb1HaGAqAe8BlP).
 :aeMb1HaGAqAe8Bl0 rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Registered Partner\\".
+:lu9_lnaGAqAeDiMT rdfs:label \\"marriedTo\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:RxdD1HaGAqAe8Be6 :IJML1HaGAqAe8Bhq :Edij1HaGAqAe8Bfp).
 :aeMb1HaGAqAe8Bl0 rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:ddQAVnaGAqAeDiNM rdf:type owl:ObjectProperty;
+    rdfs:domain :aeMb1HaGAqAe8Bl0;
+    rdfs:range :aeMb1HaGAqAe8Bl0.
+:aeMb1HaGAqAe8Bl0 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :ddQAVnaGAqAeDiNM;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :aeMb1HaGAqAe8Bl0
+], [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :ddQAVnaGAqAeDiNM ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :aeMb1HaGAqAe8Bl0
+].
+:ddQAVnaGAqAeDiNM rdf:type gufo:MaterialRelationshipType.
 :QFOaFHaGAqAe8A_X owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:RxdD1HaGAqAe8Be6 :IJML1HaGAqAe8Bhq :Edij1HaGAqAe8Bfp)
 ].
 :aeMb1HaGAqAe8Bl0 rdf:type gufo:Role.
+:ddQAVnaGAqAeDiNM rdfs:label \\"partnerOf\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:BRMyq3aFYEGUExwV :g_eSq3aFYEGUExvJ :mU.yq3aFYEGUExxO).
 :Pg.JFHaGAqAe8BSn rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Organization\\".
+:rXdgVnaGAqAeDiSQ rdf:type owl:ObjectProperty;
+    rdfs:domain :1Le_1HaGAqAe8B1c;
+    rdfs:range :C5QMzHaGAqAe8Cwk.
+:1Le_1HaGAqAe8B1c rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :rXdgVnaGAqAeDiSQ;
+  owl:onClass :C5QMzHaGAqAe8Cwk
+].
+:C5QMzHaGAqAe8Cwk rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :rXdgVnaGAqAeDiSQ ];
+  owl:onClass :1Le_1HaGAqAe8B1c
+].
+:rXdgVnaGAqAeDiSQ rdf:type gufo:MaterialRelationshipType.
 :QFOaFHaGAqAe8A_X owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:BRMyq3aFYEGUExwV :g_eSq3aFYEGUExvJ :mU.yq3aFYEGUExxO)
 ].
 :Pg.JFHaGAqAe8BSn rdfs:subClassOf :VvxaFHaGAqAe8BAf.
+:rXdgVnaGAqAeDiSQ rdfs:label \\"lives in\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:6YQN9A6AUB1UpEmi :hWgN9A6AUB1UpEmU).
 :Pg.JFHaGAqAe8BSn rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
+:QPfkVnaGAqAeDipd rdf:type owl:ObjectProperty;
+    rdfs:domain :jlAkVnaGAqAeDikV;
+    rdfs:range :QFOaFHaGAqAe8A_X.
+:jlAkVnaGAqAeDikV rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :QPfkVnaGAqAeDipd;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :QFOaFHaGAqAe8A_X
+].
+:QFOaFHaGAqAe8A_X rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :QPfkVnaGAqAeDipd ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :jlAkVnaGAqAeDikV
+].
+:QPfkVnaGAqAeDipd rdfs:subPropertyOf gufo:mediates.
 :QFOaFHaGAqAe8A_X owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:6YQN9A6AUB1UpEmi :hWgN9A6AUB1UpEmU)
 ].
 :E9Rf1HaGAqAe8ByE rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Multi-person Household\\".
+:ehQUVnaGAqAeDip5 rdf:type owl:ObjectProperty;
+    rdfs:domain :jlAkVnaGAqAeDikV;
+    rdfs:range :1l.ANHaGAqAe8B4A.
+:jlAkVnaGAqAeDikV rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :ehQUVnaGAqAeDip5;
+  owl:onClass :1l.ANHaGAqAe8B4A
+].
+:1l.ANHaGAqAe8B4A rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :ehQUVnaGAqAeDip5 ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :jlAkVnaGAqAeDikV
+].
+:ehQUVnaGAqAeDip5 rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:bPlAZnaGAqAe8DZ1 :QKFAZnaGAqAe8DZp).
 :E9Rf1HaGAqAe8ByE rdfs:subClassOf :haqP1HaGAqAe8Bt7.
+:t4kUVnaGAqAeDiq5 rdf:type owl:ObjectProperty;
+    rdfs:domain :1l.ANHaGAqAe8B4A;
+    rdfs:range :QFOaFHaGAqAe8A_X.
+:1l.ANHaGAqAe8B4A rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :t4kUVnaGAqAeDiq5;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :QFOaFHaGAqAe8A_X
+].
+:QFOaFHaGAqAe8A_X rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :t4kUVnaGAqAeDiq5 ];
+  owl:onClass :1l.ANHaGAqAe8B4A
+].
+:t4kUVnaGAqAeDiq5 rdf:type gufo:MaterialRelationshipType.
 :pZHbpnaGAqAe8DEo owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:bPlAZnaGAqAe8DZ1 :QKFAZnaGAqAe8DZp)
 ].
 :E9Rf1HaGAqAe8ByE rdf:type gufo:Phase.
+:t4kUVnaGAqAeDiq5 rdfs:label \\"providesBasicCareFor\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:mkDcq3aFYEGUExq. :3sNy_vaFYFAUAi2Q).
 :h6rr1HaGAqAe8Bkn rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Spouse\\".
+:m6pOVnaGAqAeDi8s rdf:type owl:ObjectProperty;
+    rdfs:domain :dheOVnaGAqAeDi7x;
+    rdfs:range :QFOaFHaGAqAe8A_X;
+    rdfs:subPropertyOf gufo:inheresIn.
 :1so2FHaGAqAe8BBx owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:mkDcq3aFYEGUExq. :3sNy_vaFYFAUAi2Q)
 ].
 :h6rr1HaGAqAe8Bkn rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:n09OVnaGAqAeDi.C rdf:type owl:ObjectProperty;
+    rdfs:domain :dheOVnaGAqAeDi7x;
+    rdfs:range :rNNOVnaGAqAeDi9t.
+:dheOVnaGAqAeDi7x rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :n09OVnaGAqAeDi.C;
+  owl:onClass :rNNOVnaGAqAeDi9t
+].
+:rNNOVnaGAqAeDi9t rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :n09OVnaGAqAeDi.C ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :dheOVnaGAqAeDi7x
+].
+:n09OVnaGAqAeDi.C rdfs:subPropertyOf gufo:externallyDependsOn.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Kvsa_vaFYFAUAi9l :jGsa_vaFYFAUAi9Z :UFMa_vaFYFAUAi9H :nopp_vaFYFAUAjaU).
 :h6rr1HaGAqAe8Bkn rdf:type gufo:Role.
+:PpknVnaGAqAeDjVN rdf:type owl:ObjectProperty;
+    rdfs:domain :QFOaFHaGAqAe8A_X;
+    rdfs:range :aHpZVnaGAqAeDjOM.
+:QFOaFHaGAqAe8A_X rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :PpknVnaGAqAeDjVN;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :aHpZVnaGAqAeDjOM
+].
+:aHpZVnaGAqAeDjOM rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :PpknVnaGAqAeDjVN ];
+  owl:onClass :QFOaFHaGAqAe8A_X
+].
+:PpknVnaGAqAeDjVN rdfs:subPropertyOf gufo:inheresIn.
 :mkDcq3aFYEGUExq. owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Kvsa_vaFYFAUAi9l :jGsa_vaFYFAUAi9Z :UFMa_vaFYFAUAi9H :nopp_vaFYFAUAjaU)
 ].
 :RxdD1HaGAqAe8Be6 rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Man\\".
+:rD5w1naGAqAeDjpo rdf:type owl:ObjectProperty;
+    rdfs:domain :qY0g1naGAqAeDjao;
+    rdfs:range :4pGxyXaFYFAUAgx_.
+:qY0g1naGAqAeDjao rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :rD5w1naGAqAeDjpo;
+  owl:onClass :4pGxyXaFYFAUAgx_
+].
+:4pGxyXaFYFAUAgx_ rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :rD5w1naGAqAeDjpo ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :qY0g1naGAqAeDjao
+].
+:rD5w1naGAqAeDjpo rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:ztXa03aFYFAUAtTn :prHa03aFYFAUAtTD :rdna03aFYFAUAtTV).
 :RxdD1HaGAqAe8Be6 rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:1Rlw1naGAqAeDjqF rdf:type owl:ObjectProperty;
+    rdfs:domain :qY0g1naGAqAeDjao;
+    rdfs:range :QFOaFHaGAqAe8A_X.
+:qY0g1naGAqAeDjao rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :1Rlw1naGAqAeDjqF;
+  owl:onClass :QFOaFHaGAqAe8A_X
+].
+:QFOaFHaGAqAe8A_X rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :1Rlw1naGAqAeDjqF ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :qY0g1naGAqAeDjao
+].
+:1Rlw1naGAqAeDjqF rdfs:subPropertyOf gufo:mediates.
 :5qfNiXaD.AAAARX9 owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:ztXa03aFYFAUAtTn :prHa03aFYFAUAtTD :rdna03aFYFAUAtTV)
 ].
 :RxdD1HaGAqAe8Be6 rdf:type gufo:Role.
+:vHfE1naGAqAeDj37 rdf:type owl:ObjectProperty;
+    rdfs:domain :kxtsDnaGAqAeDkQY;
+    rdfs:range :qI68zHaGAqAe8C7i.
+:kxtsDnaGAqAeDkQY rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :vHfE1naGAqAeDj37;
+  owl:onClass :qI68zHaGAqAe8C7i
+].
+:qI68zHaGAqAe8C7i rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :vHfE1naGAqAeDj37 ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :kxtsDnaGAqAeDkQY
+].
+:vHfE1naGAqAeDj37 rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:KgBQ03aFYFAUAkBD :jzZQ03aFYFAUAkB9 :2fOQ03aFYFAUAkAr :d3hQ03aFYFAUAkBR).
 :OL2n1HaGAqAe8BqQ rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Divorced from RP\\".
+:nEZO1naGAqAeDkFM rdf:type owl:ObjectProperty;
+    rdfs:domain :Oaq21naGAqAeDkC0;
+    rdfs:range :J3_W1naGAqAeDkBF.
+:Oaq21naGAqAeDkC0 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :nEZO1naGAqAeDkFM;
+  owl:onClass :J3_W1naGAqAeDkBF
+].
+:J3_W1naGAqAeDkBF rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :nEZO1naGAqAeDkFM ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Oaq21naGAqAeDkC0
+].
+:nEZO1naGAqAeDkFM rdfs:subPropertyOf gufo:mediates.
 :5qfNiXaD.AAAARX9 owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:KgBQ03aFYFAUAkBD :jzZQ03aFYFAUAkB9 :2fOQ03aFYFAUAkAr :d3hQ03aFYFAUAkBR)
 ].
 :OL2n1HaGAqAe8BqQ rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:5T18DnaGAqAeDkSs rdf:type owl:ObjectProperty;
+    rdfs:domain :vcOsDnaGAqAeDkPr;
+    rdfs:range :zZksDnaGAqAeDkOI.
+:vcOsDnaGAqAeDkPr rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :5T18DnaGAqAeDkSs;
+  owl:onClass :zZksDnaGAqAeDkOI
+].
+:zZksDnaGAqAeDkOI rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :5T18DnaGAqAeDkSs ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :vcOsDnaGAqAeDkPr
+].
+:5T18DnaGAqAeDkSs rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:oJvG03aFYFAUAtbr :HcpG03aFYFAUAtau).
 :OL2n1HaGAqAe8BqQ rdf:type gufo:Role.
+:a6sGDnaGAqAeDka7 rdf:type owl:ObjectProperty;
+    rdfs:domain :.s56DnaGAqAeDkZi;
+    rdfs:range :ZlkGDnaGAqAeDkas.
+:.s56DnaGAqAeDkZi rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :a6sGDnaGAqAeDka7;
+  owl:onClass :ZlkGDnaGAqAeDkas
+].
+:ZlkGDnaGAqAeDkas rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :a6sGDnaGAqAeDka7 ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :.s56DnaGAqAeDkZi
+].
+:a6sGDnaGAqAeDka7 rdfs:subPropertyOf gufo:mediates.
 :KgBQ03aFYFAUAkBD owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:oJvG03aFYFAUAtbr :HcpG03aFYFAUAtau)
 ].
 :J9Eb1HaGAqAe8Blh rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Divorced\\".
+:yjfJiXaD.AAAAQ6q rdf:type owl:ObjectProperty;
+    rdfs:domain :gbaJFHaGAqAe8BSL;
+    rdfs:range :2sHJiXaD.AAAAQ6I.
+:gbaJFHaGAqAe8BSL rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :yjfJiXaD.AAAAQ6q;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :2sHJiXaD.AAAAQ6I
+].
+:2sHJiXaD.AAAAQ6I rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :yjfJiXaD.AAAAQ6q ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :gbaJFHaGAqAe8BSL
+].
+:yjfJiXaD.AAAAQ6q rdf:type gufo:MaterialRelationshipType.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:jBza_vaFYFAUAjBx :xYba_vaFYFAUAjB9).
 :J9Eb1HaGAqAe8Blh rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:A4PpiXaD.AAAAQ.Q rdf:type owl:ObjectProperty;
+    rdfs:domain :6c.piXaD.AAAAQ8z;
+    rdfs:range :gbaJFHaGAqAe8BSL.
+:6c.piXaD.AAAAQ8z rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :A4PpiXaD.AAAAQ.Q;
+  owl:onClass :gbaJFHaGAqAe8BSL
+].
+:gbaJFHaGAqAe8BSL rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :A4PpiXaD.AAAAQ.Q ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :6c.piXaD.AAAAQ8z
+].
+:A4PpiXaD.AAAAQ.Q rdfs:subPropertyOf gufo:mediates.
 :jzZQ03aFYFAUAkB9 owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:jBza_vaFYFAUAjBx :xYba_vaFYFAUAjB9)
 ].
 :J9Eb1HaGAqAe8Blh rdf:type gufo:Role.
+:ZvvpiXaD.AAAAQ.n rdf:type owl:ObjectProperty;
+    rdfs:domain :6c.piXaD.AAAAQ8z;
+    rdfs:range :gOSY03aFYFAUAlkF.
+:6c.piXaD.AAAAQ8z rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :ZvvpiXaD.AAAAQ.n;
+  owl:onClass :gOSY03aFYFAUAlkF
+].
+:gOSY03aFYFAUAlkF rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :ZvvpiXaD.AAAAQ.n ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :6c.piXaD.AAAAQ8z
+].
+:ZvvpiXaD.AAAAQ.n rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:xBiLuPaAUAACnkcA :jvnXuPaAUAACnkcz).
 :OAOUzHaGAqAe8Co8 rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Contact Info\\".
+:g23ViXaD.AAAARQx rdf:type owl:ObjectProperty;
+    rdfs:domain :D51aFHaGAqAe8BBd;
+    rdfs:range :PfrZFHaGAqAe8BU..
+:D51aFHaGAqAe8BBd rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :g23ViXaD.AAAARQx;
+  owl:onClass :PfrZFHaGAqAe8BU.
+].
+:PfrZFHaGAqAe8BU. rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :g23ViXaD.AAAARQx ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :D51aFHaGAqAe8BBd
+].
+:g23ViXaD.AAAARQx rdfs:subPropertyOf gufo:mediates.
 :KjzjiXaD.AAAARkQ owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:xBiLuPaAUAACnkcA :jvnXuPaAUAACnkcz)
 ].
 :OAOUzHaGAqAe8Co8 rdfs:subClassOf gufo:Quality;
     rdf:type gufo:Kind.
+:g23ViXaD.AAAARQx rdfs:label \\"made to\\".
 :AgZE2faFYEGQT610 owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:F7LE2faFYEGQT62h :cwjE2faFYEGQT62S)
 ].
 :GyZ0zHaGAqAe8CuO rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Stay\\".
+:66e1iXaD.AAAART5 rdf:type owl:ObjectProperty;
+    rdfs:domain :1so2FHaGAqAe8BBx;
+    rdfs:range :qY0g1naGAqAeDjao.
+:1so2FHaGAqAe8BBx rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :66e1iXaD.AAAART5;
+  owl:onClass :qY0g1naGAqAeDjao
+].
+:qY0g1naGAqAeDjao rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :66e1iXaD.AAAART5 ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :1so2FHaGAqAe8BBx
+].
+:66e1iXaD.AAAART5 rdfs:subPropertyOf gufo:mediates.
 :vdNE2faFYEGQT61_ owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:I6FU2faFYEGQT64Z :zJJU2faFYEGQT64I)
 ].
 :GyZ0zHaGAqAe8CuO rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
+:66e1iXaD.AAAART5 rdfs:label \\"motivated by\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Y3Ja2faFYEGQT7Ns :hMMq2faFYEGQT7LJ).
 :1Le_1HaGAqAe8B1c rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Resident in Healthcare Institution\\".
+:X7MNiXaD.AAAARV2 rdf:type owl:ObjectProperty;
+    rdfs:domain :1so2FHaGAqAe8BBx;
+    rdfs:range :gbaJFHaGAqAe8BSL.
+:1so2FHaGAqAe8BBx rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :X7MNiXaD.AAAARV2;
+  owl:onClass :gbaJFHaGAqAe8BSL
+].
+:gbaJFHaGAqAe8BSL rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :X7MNiXaD.AAAARV2 ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :1so2FHaGAqAe8BBx
+].
+:X7MNiXaD.AAAARV2 rdfs:subPropertyOf gufo:mediates.
 :cwjE2faFYEGQT62S owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Y3Ja2faFYEGQT7Ns :hMMq2faFYEGQT7LJ)
 ].
-:1Le_1HaGAqAe8B1c rdfs:subClassOf :KqqJFHaGAqAe8BR_;
-    rdf:type gufo:Role.
+:1Le_1HaGAqAe8B1c rdfs:subClassOf :KqqJFHaGAqAe8BR_.
+:X7MNiXaD.AAAARV2 rdfs:label \\"in the responsibility of\\".
+:1Le_1HaGAqAe8B1c rdf:type gufo:Role.
+:OEmtiXaD.AAAARar rdf:type owl:ObjectProperty;
+    rdfs:domain :5qfNiXaD.AAAARX9;
+    rdfs:range :gOSY03aFYFAUAlkF.
+:5qfNiXaD.AAAARX9 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :OEmtiXaD.AAAARar;
+  owl:onClass :gOSY03aFYFAUAlkF
+].
+:gOSY03aFYFAUAlkF rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :OEmtiXaD.AAAARar ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :5qfNiXaD.AAAARX9
+].
+:OEmtiXaD.AAAARar rdfs:subPropertyOf gufo:mediates.
 :31ekZnaGAqAeDg.4 rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Court Decision\\";
-    rdfs:subClassOf gufo:Relator;
+    rdfs:label \\"Court Decision\\".
+:OEmtiXaD.AAAARar rdfs:label \\"made to\\".
+:31ekZnaGAqAeDg.4 rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
+:cl.tiXaD.AAAARb2 rdf:type owl:ObjectProperty;
+    rdfs:domain :5qfNiXaD.AAAARX9;
+    rdfs:range :1so2FHaGAqAe8BBx.
+:5qfNiXaD.AAAARX9 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :cl.tiXaD.AAAARb2;
+  owl:onClass :1so2FHaGAqAe8BBx
+].
+:1so2FHaGAqAe8BBx rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :cl.tiXaD.AAAARb2 ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :5qfNiXaD.AAAARX9
+].
+:cl.tiXaD.AAAARb2 rdfs:subPropertyOf gufo:mediates.
 :tp7kNHaGAqAe8B_i rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Social Relationship\\";
-    rdfs:subClassOf gufo:Relator;
+    rdfs:label \\"Social Relationship\\".
+:cl.tiXaD.AAAARb2 rdfs:label \\"conforms to\\".
+:tp7kNHaGAqAe8B_i rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
+:FvtTiXaD.AAAARl. rdf:type owl:ObjectProperty;
+    rdfs:domain :KjzjiXaD.AAAARkQ;
+    rdfs:range :5qfNiXaD.AAAARX9.
+:KjzjiXaD.AAAARkQ rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :FvtTiXaD.AAAARl.;
+  owl:onClass :5qfNiXaD.AAAARX9
+].
+:5qfNiXaD.AAAARX9 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :FvtTiXaD.AAAARl. ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :KjzjiXaD.AAAARkQ
+].
+:FvtTiXaD.AAAARl. rdfs:subPropertyOf gufo:mediates.
 :ZzJ3lnaGAqAeDh8k rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Marriage\\";
-    rdfs:subClassOf gufo:Relator;
+    rdfs:label \\"Marriage\\".
+:FvtTiXaD.AAAARl. rdfs:label \\"conforms to\\".
+:ZzJ3lnaGAqAeDh8k rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
+:0Knw43aAUBAysYmN rdf:type owl:ObjectProperty;
+    rdfs:domain :8xNw43aAUBAysYls;
+    rdfs:range :IS3MyXaD.AAAAR10.
+:8xNw43aAUBAysYls rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :0Knw43aAUBAysYmN;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :IS3MyXaD.AAAAR10
+].
+:IS3MyXaD.AAAAR10 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :0Knw43aAUBAysYmN ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :8xNw43aAUBAysYls
+].
+:0Knw43aAUBAysYmN rdfs:subPropertyOf gufo:mediates.
 :90pflnaGAqAeDiHe rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Legal Parent\\";
-    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
-    rdf:type gufo:Role.
+    rdfs:label \\"Legal Parent\\".
+:W.Uo43aAUBAysYrd rdf:type owl:ObjectProperty;
+    rdfs:domain :8xNw43aAUBAysYls;
+    rdfs:range :qihkZnaGAqAeDg_M.
+:8xNw43aAUBAysYls rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :W.Uo43aAUBAysYrd;
+  owl:onClass :qihkZnaGAqAeDg_M
+].
+:qihkZnaGAqAeDg_M rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :W.Uo43aAUBAysYrd ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :8xNw43aAUBAysYls
+].
+:W.Uo43aAUBAysYrd rdfs:subPropertyOf gufo:mediates.
+:90pflnaGAqAeDiHe rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:glLY43aAUBAysY7X rdf:type owl:ObjectProperty;
+    rdfs:domain :o0TY43aAUBAysY7G;
+    rdfs:range :XAMY43aAUBAysY5T.
+:o0TY43aAUBAysY7G rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :glLY43aAUBAysY7X;
+  owl:onClass :XAMY43aAUBAysY5T
+].
+:XAMY43aAUBAysY5T rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :glLY43aAUBAysY7X ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :o0TY43aAUBAysY7G
+].
+:glLY43aAUBAysY7X rdfs:subPropertyOf gufo:mediates.
+:90pflnaGAqAeDiHe rdf:type gufo:Role.
+:mYV443aAUBAysY9q rdf:type owl:ObjectProperty;
+    rdfs:domain :o0TY43aAUBAysY7G;
+    rdfs:range :QFOaFHaGAqAe8A_X.
+:o0TY43aAUBAysY7G rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :mYV443aAUBAysY9q;
+  owl:onClass :QFOaFHaGAqAe8A_X
+].
+:QFOaFHaGAqAe8A_X rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :mYV443aAUBAysY9q ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :o0TY43aAUBAysY7G
+].
+:mYV443aAUBAysY9q rdfs:subPropertyOf gufo:mediates.
 :Qcjr1HaGAqAe8Bj4 rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Single\\";
-    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
-    rdf:type gufo:Role.
+    rdfs:label \\"Single\\".
+:mjJU43aAUBAysZCw rdf:type owl:ObjectProperty;
+    rdfs:domain :o0TY43aAUBAysY7G;
+    rdfs:range :e5.U43aAUBAysZCY.
+:o0TY43aAUBAysY7G rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :mjJU43aAUBAysZCw;
+  owl:onClass :e5.U43aAUBAysZCY
+].
+:e5.U43aAUBAysZCY rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :mjJU43aAUBAysZCw ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :o0TY43aAUBAysY7G
+].
+:mjJU43aAUBAysZCw rdfs:subPropertyOf gufo:categorizes.
+:Qcjr1HaGAqAe8Bj4 rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:3BIs43aAUBAysZdq rdf:type owl:ObjectProperty;
+    rdfs:domain :31ekZnaGAqAeDg.4;
+    rdfs:range :o0TY43aAUBAysY7G.
+:31ekZnaGAqAeDg.4 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :3BIs43aAUBAysZdq;
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :o0TY43aAUBAysY7G
+].
+:o0TY43aAUBAysY7G rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :3BIs43aAUBAysZdq ];
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :31ekZnaGAqAeDg.4
+].
+:3BIs43aAUBAysZdq rdfs:subPropertyOf gufo:mediates.
+:Qcjr1HaGAqAe8Bj4 rdf:type gufo:Role.
+:M.Ps43aAUBAysZhe rdf:type owl:ObjectProperty;
+    rdfs:domain :d2.s43aAUBAysZgF;
+    rdfs:range :31ekZnaGAqAeDg.4.
+:d2.s43aAUBAysZgF rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :M.Ps43aAUBAysZhe;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :31ekZnaGAqAeDg.4
+].
+:31ekZnaGAqAeDg.4 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :M.Ps43aAUBAysZhe ];
+  owl:onClass :d2.s43aAUBAysZgF
+].
+:M.Ps43aAUBAysZhe rdfs:subPropertyOf gufo:categorizes.
 :1l.ANHaGAqAe8B4A rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"General Practitioner\\";
-    rdfs:subClassOf :ZstQ1naGAqAeDjlZ;
-    rdf:type gufo:Role.
+    rdfs:label \\"General Practitioner\\".
+:mIsi43aAUBAyscB_ rdf:type owl:ObjectProperty;
+    rdfs:domain :hcki43aAUBAyscBo;
+    rdfs:range :tSM0yXaD.AAAARwK.
+:hcki43aAUBAyscBo rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :mIsi43aAUBAyscB_;
+  owl:onClass :tSM0yXaD.AAAARwK
+].
+:tSM0yXaD.AAAARwK rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :mIsi43aAUBAyscB_ ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :hcki43aAUBAyscBo
+].
+:mIsi43aAUBAyscB_ rdfs:subPropertyOf gufo:mediates.
+:1l.ANHaGAqAe8B4A rdfs:subClassOf :ZstQ1naGAqAeDjlZ.
+:mIsi43aAUBAyscB_ rdfs:label \\"refers to\\".
+:1l.ANHaGAqAe8B4A rdf:type gufo:Role.
+:nrTi43aAUBAyscVL rdf:type owl:ObjectProperty;
+    rdfs:domain :hcki43aAUBAyscBo;
+    rdfs:range :4VC5iXaD.AAAARBd.
+:hcki43aAUBAyscBo rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :nrTi43aAUBAyscVL;
+  owl:onClass :4VC5iXaD.AAAARBd
+].
+:4VC5iXaD.AAAARBd rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :nrTi43aAUBAyscVL ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :hcki43aAUBAyscBo
+].
+:nrTi43aAUBAyscVL rdfs:subPropertyOf gufo:mediates.
 :jlAkVnaGAqAeDikV rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"GP Registration\\";
-    rdfs:subClassOf gufo:Relator;
+    rdfs:label \\"GP Registration\\".
+:nrTi43aAUBAyscVL rdfs:label \\"created by\\".
+:jlAkVnaGAqAeDikV rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
+:oG0S43aAUBAyscXe rdf:type owl:ObjectProperty;
+    rdfs:domain :tSM0yXaD.AAAARwK;
+    rdfs:range :4VC5iXaD.AAAARBd.
+:tSM0yXaD.AAAARwK rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :oG0S43aAUBAyscXe;
+  owl:onClass :4VC5iXaD.AAAARBd
+].
+:4VC5iXaD.AAAARBd rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :oG0S43aAUBAyscXe ];
+  owl:onClass :tSM0yXaD.AAAARwK
+].
+:oG0S43aAUBAyscXe rdf:type gufo:MaterialRelationshipType.
 :dheOVnaGAqAeDi7x rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Language Capability\\";
-    rdfs:subClassOf gufo:ExtrinsicMode;
+    rdfs:label \\"Language Capability\\".
+:oG0S43aAUBAyscXe rdfs:label \\"declared eligible by\\".
+:dheOVnaGAqAeDi7x rdfs:subClassOf gufo:ExtrinsicMode;
     rdf:type gufo:Kind.
+:94fk03aFYFAUAnTG rdf:type owl:ObjectProperty;
+    rdfs:domain :5qfNiXaD.AAAARX9;
+    rdfs:range :gbaJFHaGAqAe8BSL.
+:5qfNiXaD.AAAARX9 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :94fk03aFYFAUAnTG;
+  owl:onClass :gbaJFHaGAqAe8BSL
+].
+:gbaJFHaGAqAe8BSL rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :94fk03aFYFAUAnTG ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :5qfNiXaD.AAAARX9
+].
+:94fk03aFYFAUAnTG rdfs:subPropertyOf gufo:mediates.
 :rNNOVnaGAqAeDi9t rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Language\\";
-    rdfs:subClassOf gufo:FunctionalComplex;
+    rdfs:label \\"Language\\".
+:94fk03aFYFAUAnTG rdfs:label \\"made by\\".
+:rNNOVnaGAqAeDi9t rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
+:H4js03aFYFAUAnW0 rdf:type owl:ObjectProperty;
+    rdfs:domain :aKJs03aFYFAUAnVm;
+    rdfs:range :7qZs03aFYFAUAnV0.
+:aKJs03aFYFAUAnVm rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :H4js03aFYFAUAnW0;
+  owl:onClass :7qZs03aFYFAUAnV0
+].
+:7qZs03aFYFAUAnV0 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :H4js03aFYFAUAnW0 ];
+  owl:onClass :aKJs03aFYFAUAnVm
+].
+:H4js03aFYFAUAnW0 rdfs:subPropertyOf gufo:mediates.
 :Q5BQ1naGAqAeDjka rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Healthcare Professional\\";
-    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
-    rdf:type gufo:Role.
+    rdfs:label \\"Healthcare Professional\\".
+:iopS03aFYFAUAqvX rdf:type owl:ObjectProperty;
+    rdfs:domain :5qfNiXaD.AAAARX9;
+    rdfs:range :6URS03aFYFAUAqvB.
+:5qfNiXaD.AAAARX9 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :iopS03aFYFAUAqvX;
+  owl:onClass :6URS03aFYFAUAqvB
+].
+:6URS03aFYFAUAqvB rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :iopS03aFYFAUAqvX ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :5qfNiXaD.AAAARX9
+].
+:iopS03aFYFAUAqvX rdfs:subPropertyOf gufo:mediates.
+:Q5BQ1naGAqAeDjka rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:iopS03aFYFAUAqvX rdfs:label \\"benefits\\".
+:Q5BQ1naGAqAeDjka rdf:type gufo:Role.
+:XgLS03aFYFAUArJ9 rdf:type owl:ObjectProperty;
+    rdfs:domain :4KRG.faAUB1IcWbq;
+    rdfs:range :qI68zHaGAqAe8C7i.
+:4KRG.faAUB1IcWbq rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :XgLS03aFYFAUArJ9;
+  owl:onClass :qI68zHaGAqAe8C7i
+].
+:qI68zHaGAqAe8C7i rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :XgLS03aFYFAUArJ9 ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :4KRG.faAUB1IcWbq
+].
+:XgLS03aFYFAUArJ9 rdfs:subPropertyOf gufo:mediates.
 :PfrZFHaGAqAe8BU. rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"CIZ\\";
-    rdfs:subClassOf :Pg.JFHaGAqAe8BSn;
-    rdf:type gufo:SubKind.
+    rdfs:label \\"CIZ\\".
+:8li603aFYFAUAtV1 rdf:type owl:ObjectProperty;
+    rdfs:domain :rdna03aFYFAUAtTV;
+    rdfs:range :prHa03aFYFAUAtTD.
+:rdna03aFYFAUAtTV rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :8li603aFYFAUAtV1;
+  owl:onClass :prHa03aFYFAUAtTD
+].
+:prHa03aFYFAUAtTD rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :8li603aFYFAUAtV1 ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :rdna03aFYFAUAtTV
+].
+:8li603aFYFAUAtV1 rdfs:subPropertyOf gufo:mediates.
+:PfrZFHaGAqAe8BU. rdfs:subClassOf :Pg.JFHaGAqAe8BSn.
+:8li603aFYFAUAtV1 rdfs:label \\"temporary replaces\\".
+:PfrZFHaGAqAe8BU. rdf:type gufo:SubKind.
+:0Xy603aFYFAUAtWO rdf:type owl:ObjectProperty;
+    rdfs:domain :ztXa03aFYFAUAtTn;
+    rdfs:range :prHa03aFYFAUAtTD.
+:ztXa03aFYFAUAtTn rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :0Xy603aFYFAUAtWO;
+  owl:onClass :prHa03aFYFAUAtTD
+].
+:prHa03aFYFAUAtTD rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :0Xy603aFYFAUAtWO ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :ztXa03aFYFAUAtTn
+].
+:0Xy603aFYFAUAtWO rdfs:subPropertyOf gufo:mediates.
 :gbaJFHaGAqAe8BSL rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Healthcare Office\\";
-    rdfs:subClassOf :Pg.JFHaGAqAe8BSn;
-    rdf:type gufo:SubKind.
+    rdfs:label \\"Healthcare Office\\".
+:gvb4APaAUAACnkCU rdf:type owl:ObjectProperty;
+    rdfs:domain :KjzjiXaD.AAAARkQ;
+    rdfs:range :KqqJFHaGAqAe8BR_.
+:KjzjiXaD.AAAARkQ rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :gvb4APaAUAACnkCU;
+  owl:onClass :KqqJFHaGAqAe8BR_
+].
+:KqqJFHaGAqAe8BR_ rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :gvb4APaAUAACnkCU ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :KjzjiXaD.AAAARkQ
+].
+:gvb4APaAUAACnkCU rdfs:subPropertyOf gufo:mediates.
+:gbaJFHaGAqAe8BSL rdfs:subClassOf :Pg.JFHaGAqAe8BSn.
+:gvb4APaAUAACnkCU rdfs:label \\"benefits\\".
+:gbaJFHaGAqAe8BSL rdf:type gufo:SubKind.
+:679EAPaAUAACnkFU rdf:type owl:ObjectProperty;
+    rdfs:domain :gOSY03aFYFAUAlkF;
+    rdfs:range :KjzjiXaD.AAAARkQ.
+:gOSY03aFYFAUAlkF rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :679EAPaAUAACnkFU;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :KjzjiXaD.AAAARkQ
+].
+:KjzjiXaD.AAAARkQ rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :679EAPaAUAACnkFU ];
+  owl:onClass :gOSY03aFYFAUAlkF
+].
+:679EAPaAUAACnkFU rdfs:subPropertyOf gufo:mediates.
 :ZstQ1naGAqAeDjlZ rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Medical Doctor\\";
-    rdfs:subClassOf :C1w98faGAqACDiyu, :4pGxyXaFYFAUAgx_;
-    rdf:type gufo:Role.
+    rdfs:label \\"Medical Doctor\\".
+:679EAPaAUAACnkFU rdfs:label \\"delivered by\\".
+:ZstQ1naGAqAeDjlZ rdfs:subClassOf :C1w98faGAqACDiyu.
+:RXGPuPaAUAACnkhU rdf:type owl:ObjectProperty;
+    rdfs:domain :bseLQ_aFYEGUXyzA;
+    rdfs:range :NK8LuPaAUAACnkbx.
+:bseLQ_aFYEGUXyzA rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :RXGPuPaAUAACnkhU;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :NK8LuPaAUAACnkbx
+].
+:NK8LuPaAUAACnkbx rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :RXGPuPaAUAACnkhU ];
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :bseLQ_aFYEGUXyzA
+].
+:RXGPuPaAUAACnkhU rdfs:subPropertyOf gufo:participatedIn.
+:ZstQ1naGAqAeDjlZ rdfs:subClassOf :4pGxyXaFYFAUAgx_.
+:bhayi3aFYEGUEy4D rdf:type owl:ObjectProperty;
+    rdfs:domain :1so2FHaGAqAe8BBx;
+    rdfs:range :rtZAq3aFYEGUExSq.
+:1so2FHaGAqAe8BBx rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :bhayi3aFYEGUEy4D;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :rtZAq3aFYEGUExSq
+].
+:rtZAq3aFYEGUExSq rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :bhayi3aFYEGUEy4D ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :1so2FHaGAqAe8BBx
+].
+:bhayi3aFYEGUEy4D rdfs:subPropertyOf gufo:inheresIn.
+:ZstQ1naGAqAeDjlZ rdf:type gufo:Role.
+:u6G6i3aFYEGUEy.z rdf:type owl:ObjectProperty;
+    rdfs:domain :VzzAq3aFYEGUExTN;
+    rdfs:range :5qfNiXaD.AAAARX9.
+:VzzAq3aFYEGUExTN rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :u6G6i3aFYEGUEy.z;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :5qfNiXaD.AAAARX9
+].
+:5qfNiXaD.AAAARX9 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :u6G6i3aFYEGUEy.z ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :VzzAq3aFYEGUExTN
+].
+:u6G6i3aFYEGUEy.z rdfs:subPropertyOf gufo:inheresIn.
 :qY0g1naGAqAeDjao rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Diagnosis\\";
-    rdfs:subClassOf gufo:Relator;
+    rdfs:label \\"Diagnosis\\".
+:e1lQq3aFYEGUExaV rdf:type owl:ObjectProperty;
+    rdfs:domain :rtZAq3aFYEGUExSq;
+    rdfs:range :VzzAq3aFYEGUExTN.
+:rtZAq3aFYEGUExSq rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :e1lQq3aFYEGUExaV;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :VzzAq3aFYEGUExTN
+].
+:VzzAq3aFYEGUExTN rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :e1lQq3aFYEGUExaV ];
+  owl:onClass :rtZAq3aFYEGUExSq
+].
+:e1lQq3aFYEGUExaV rdf:type gufo:MaterialRelationshipType.
+:qY0g1naGAqAeDjao rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
+:e1lQq3aFYEGUExaV rdfs:label \\"Part of\\".
 :WAFZVnaGAqAeDjOi rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Disease\\";
-    rdfs:subClassOf :aHpZVnaGAqAeDjOM;
-    rdf:type gufo:Kind.
+    rdfs:label \\"Disease\\".
+:QOxaq3aFYEGUEx7j rdf:type owl:ObjectProperty;
+    rdfs:domain :EqKaq3aFYEGUEx64;
+    rdfs:range :5qfNiXaD.AAAARX9.
+:EqKaq3aFYEGUEx64 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :QOxaq3aFYEGUEx7j;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :5qfNiXaD.AAAARX9
+].
+:5qfNiXaD.AAAARX9 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :QOxaq3aFYEGUEx7j ];
+  owl:onClass :EqKaq3aFYEGUEx64
+].
+:QOxaq3aFYEGUEx7j rdfs:subPropertyOf gufo:mediates.
+:WAFZVnaGAqAeDjOi rdfs:subClassOf :aHpZVnaGAqAeDjOM.
+:5yp5q3aFYEGUEyCK rdf:type owl:ObjectProperty;
+    rdfs:domain :5qfNiXaD.AAAARX9;
+    rdfs:range :gOSY03aFYFAUAlkF;
+    rdfs:subPropertyOf gufo:mediates.
+:WAFZVnaGAqAeDjOi rdf:type gufo:Kind.
+:5yp5q3aFYEGUEyCK rdfs:label \\"abc\\".
 :qy0XVnaGAqAeDjWY rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Disability\\";
-    rdfs:subClassOf :aHpZVnaGAqAeDjOM;
-    rdf:type gufo:Kind.
+    rdfs:label \\"Disability\\".
+:mLQMr3aFYEGUExxs rdf:type owl:ObjectProperty;
+    rdfs:domain :3kN0r3aFYEGUExxc;
+    rdfs:range :KqqJFHaGAqAe8BR_.
+:3kN0r3aFYEGUExxc rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :mLQMr3aFYEGUExxs;
+  owl:onClass :KqqJFHaGAqAe8BR_
+].
+:KqqJFHaGAqAe8BR_ rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :mLQMr3aFYEGUExxs ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :3kN0r3aFYEGUExxc
+].
+:mLQMr3aFYEGUExxs rdfs:subPropertyOf gufo:mediates.
+:qy0XVnaGAqAeDjWY rdfs:subClassOf :aHpZVnaGAqAeDjOM.
+:EZoMr3aFYEGUExx6 rdf:type owl:ObjectProperty;
+    rdfs:domain :3kN0r3aFYEGUExxc;
+    rdfs:range :gbaJFHaGAqAe8BSL.
+:3kN0r3aFYEGUExxc rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :EZoMr3aFYEGUExx6;
+  owl:onClass :gbaJFHaGAqAe8BSL
+].
+:gbaJFHaGAqAe8BSL rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :EZoMr3aFYEGUExx6 ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :3kN0r3aFYEGUExxc
+].
+:EZoMr3aFYEGUExx6 rdfs:subPropertyOf gufo:mediates.
+:qy0XVnaGAqAeDjWY rdf:type gufo:Kind.
+:PBzKr3aFYEGUEx0V rdf:type owl:ObjectProperty;
+    rdfs:domain :VvxaFHaGAqAe8BAf;
+    rdfs:range :8XCKr3aFYEGUExzu.
+:VvxaFHaGAqAe8BAf rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :PBzKr3aFYEGUEx0V;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :8XCKr3aFYEGUExzu
+].
+:8XCKr3aFYEGUExzu rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :PBzKr3aFYEGUEx0V ];
+  owl:onClass :VvxaFHaGAqAe8BAf
+].
+:PBzKr3aFYEGUEx0V rdfs:subPropertyOf gufo:mediates.
 :amlZVnaGAqAeDjOu rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Disorder\\";
-    rdfs:subClassOf :aHpZVnaGAqAeDjOM;
-    rdf:type gufo:Kind.
+    rdfs:label \\"Disorder\\".
+:PBzKr3aFYEGUEx0V rdfs:label \\"creates\\".
+:amlZVnaGAqAeDjOu rdfs:subClassOf :aHpZVnaGAqAeDjOM.
+:U7rar3aFYEGUEx8T rdf:type owl:ObjectProperty;
+    rdfs:domain :QFOaFHaGAqAe8A_X;
+    rdfs:range :8XCKr3aFYEGUExzu.
+:8XCKr3aFYEGUExzu rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :U7rar3aFYEGUEx8T ];
+  owl:onClass :QFOaFHaGAqAe8A_X
+].
+:U7rar3aFYEGUEx8T rdfs:subPropertyOf gufo:mediates.
+:amlZVnaGAqAeDjOu rdf:type gufo:Kind.
+:U7rar3aFYEGUEx8T rdfs:label \\"is subject of\\".
 :aHpZVnaGAqAeDjOM rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Medical Condition\\";
-    rdfs:subClassOf gufo:Endurant;
+    rdfs:label \\"Medical Condition\\".
+:oBfeePaAUAACnmAV rdf:type owl:ObjectProperty;
+    rdfs:domain :oBjeePaAUAACnl_h;
+    rdfs:range :KqqJFHaGAqAe8BR_.
+:oBjeePaAUAACnl_h rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :oBfeePaAUAACnmAV;
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :KqqJFHaGAqAe8BR_
+].
+:KqqJFHaGAqAe8BR_ rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :oBfeePaAUAACnmAV ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :oBjeePaAUAACnl_h
+].
+:oBfeePaAUAACnmAV rdfs:subPropertyOf gufo:mediates.
+:aHpZVnaGAqAeDjOM rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:Category.
+:ZIg.ePaAUAACnmAu rdf:type owl:ObjectProperty;
+    rdfs:domain :oBjeePaAUAACnl_h;
+    rdfs:range :C5QMzHaGAqAe8Cwk.
+:oBjeePaAUAACnl_h rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :ZIg.ePaAUAACnmAu;
+  owl:onClass :C5QMzHaGAqAe8Cwk
+].
+:C5QMzHaGAqAe8Cwk rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :ZIg.ePaAUAACnmAu ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :oBjeePaAUAACnl_h
+].
+:ZIg.ePaAUAACnmAu rdfs:subPropertyOf gufo:mediates.
 :0WXM1naGAqAeDj8s rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Prognosis\\";
-    rdf:type gufo:Kind.
+    rdfs:label \\"Prognosis\\".
+:tVnc_vaFYFAUAh6J rdf:type owl:ObjectProperty;
+    rdfs:domain :F9Kc_vaFYFAUAh5I;
+    rdfs:range :FgM8_vaFYFAUAh64.
+:F9Kc_vaFYFAUAh5I rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :tVnc_vaFYFAUAh6J;
+  owl:onClass :FgM8_vaFYFAUAh64
+].
+:FgM8_vaFYFAUAh64 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :tVnc_vaFYFAUAh6J ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :F9Kc_vaFYFAUAh5I
+].
+:tVnc_vaFYFAUAh6J rdfs:subPropertyOf gufo:mediates.
+:0WXM1naGAqAeDj8s rdf:type gufo:Kind.
+:tVnc_vaFYFAUAh6J rdfs:label \\"represents\\".
 :J3_W1naGAqAeDkBF rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Disorder Question\\";
-    rdfs:subClassOf gufo:FunctionalComplex;
+    rdfs:label \\"Disorder Question\\".
+:Bb3c_vaFYFAUAh6c rdf:type owl:ObjectProperty;
+    rdfs:domain :F9Kc_vaFYFAUAh5I;
+    rdfs:range :zrCs_vaFYFAUAhzW.
+:F9Kc_vaFYFAUAh5I rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :Bb3c_vaFYFAUAh6c;
+  owl:onClass :zrCs_vaFYFAUAhzW
+].
+:zrCs_vaFYFAUAhzW rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :Bb3c_vaFYFAUAh6c ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :F9Kc_vaFYFAUAh5I
+].
+:Bb3c_vaFYFAUAh6c rdfs:subPropertyOf gufo:mediates.
+:J3_W1naGAqAeDkBF rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
+:Bb3c_vaFYFAUAh6c rdfs:label \\"assignes\\".
 :Oaq21naGAqAeDkC0 rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Disorder Question Assessment\\";
-    rdfs:subClassOf gufo:Relator;
+    rdfs:label \\"Disorder Question Assessment\\".
+:yJiS_vaFYFAUAikn rdf:type owl:ObjectProperty;
+    rdfs:domain :ppMS_vaFYFAUAikI;
+    rdfs:range :jVSQzHaGAqAe8CBF.
+:ppMS_vaFYFAUAikI rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :yJiS_vaFYFAUAikn;
+  owl:onClass :jVSQzHaGAqAe8CBF
+].
+:jVSQzHaGAqAe8CBF rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :yJiS_vaFYFAUAikn ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :ppMS_vaFYFAUAikI
+].
+:yJiS_vaFYFAUAikn rdfs:subPropertyOf gufo:mediates.
+:Oaq21naGAqAeDkC0 rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
+:yJiS_vaFYFAUAikn rdfs:label \\"assignes\\".
 :.icsDnaGAqAeDkOv rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Restriction\\";
-    rdfs:subClassOf :aHpZVnaGAqAeDjOM;
-    rdf:type gufo:Kind.
+    rdfs:label \\"Restriction\\".
+:ufOa_vaFYFAUAi.r rdf:type owl:ObjectProperty;
+    rdfs:domain :1so2FHaGAqAe8BBx;
+    rdfs:range :UFMa_vaFYFAUAi9H.
+:1so2FHaGAqAe8BBx rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :ufOa_vaFYFAUAi.r;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :UFMa_vaFYFAUAi9H
+].
+:UFMa_vaFYFAUAi9H rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :ufOa_vaFYFAUAi.r ];
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :1so2FHaGAqAe8BBx
+].
+:ufOa_vaFYFAUAi.r rdfs:subPropertyOf gufo:mediates.
+:.icsDnaGAqAeDkOv rdfs:subClassOf :aHpZVnaGAqAeDjOM.
+:ufOa_vaFYFAUAi.r rdfs:label \\"replaces\\".
+:.icsDnaGAqAeDkOv rdf:type gufo:Kind.
+:FE52UfaFYEGUHCsd rdf:type owl:ObjectProperty;
+    rdfs:domain :gbaJFHaGAqAe8BSL;
+    rdfs:range :7AQ2UfaFYEGUHCrU;
+    rdfs:subPropertyOf gufo:categorizes.
 :vcOsDnaGAqAeDkPr rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Restriction Assessment\\";
-    rdfs:subClassOf gufo:Relator;
+    rdfs:label \\"Restriction Assessment\\".
+:WwxQ2faFYEGQT6kl rdf:type owl:ObjectProperty;
+    rdfs:domain :tSM0yXaD.AAAARwK;
+    rdfs:range :uO0Q2faFYEGQT6aq.
+:tSM0yXaD.AAAARwK rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :WwxQ2faFYEGQT6kl;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :uO0Q2faFYEGQT6aq
+].
+:uO0Q2faFYEGQT6aq rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :WwxQ2faFYEGQT6kl ];
+  owl:onClass :tSM0yXaD.AAAARwK
+].
+:WwxQ2faFYEGQT6kl rdfs:subPropertyOf gufo:mediates.
+:vcOsDnaGAqAeDkPr rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
+:WwxQ2faFYEGQT6kl rdfs:label \\"prefers\\".
 :kxtsDnaGAqAeDkQY rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Disorder Assessment\\";
-    rdfs:subClassOf gufo:Relator;
+    rdfs:label \\"Disorder Assessment\\".
+:Wo_Q2faFYEGQT6nC rdf:type owl:ObjectProperty;
+    rdfs:domain :uO0Q2faFYEGQT6aq;
+    rdfs:range :Harg2faFYEGQT6aD.
+:uO0Q2faFYEGQT6aq rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :Wo_Q2faFYEGQT6nC;
+  owl:onClass :Harg2faFYEGQT6aD
+].
+:Harg2faFYEGQT6aD rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :Wo_Q2faFYEGQT6nC ];
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :uO0Q2faFYEGQT6aq
+].
+:Wo_Q2faFYEGQT6nC rdfs:subPropertyOf gufo:mediates.
+:kxtsDnaGAqAeDkQY rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
+:h_HI2faFYEGQT6sD rdf:type owl:ObjectProperty;
+    rdfs:domain :uO0Q2faFYEGQT6aq;
+    rdfs:range :1O7w2faFYEGQT6oD;
+    rdfs:subPropertyOf gufo:mediates.
 :.s56DnaGAqAeDkZi rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Restriction Question Assessment\\";
-    rdfs:subClassOf gufo:Relator;
+    rdfs:label \\"Restriction Question Assessment\\".
+:SjvI2faFYEGQT6se rdf:type owl:ObjectProperty;
+    rdfs:domain :uO0Q2faFYEGQT6aq;
+    rdfs:range :5dZI2faFYEGQT6ry.
+:uO0Q2faFYEGQT6aq rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :SjvI2faFYEGQT6se;
+  owl:onClass :5dZI2faFYEGQT6ry
+].
+:5dZI2faFYEGQT6ry rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :SjvI2faFYEGQT6se ];
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :uO0Q2faFYEGQT6aq
+].
+:SjvI2faFYEGQT6se rdfs:subPropertyOf gufo:mediates.
+:.s56DnaGAqAeDkZi rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
+:cQ52.faAUB1IcW94 rdf:type owl:ObjectProperty;
+    rdfs:domain :qY0g1naGAqAeDjao;
+    rdfs:range :4KRG.faAUB1IcWbq.
+:qY0g1naGAqAeDjao rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :cQ52.faAUB1IcW94;
+  owl:onClass :4KRG.faAUB1IcWbq
+].
+:4KRG.faAUB1IcWbq rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :cQ52.faAUB1IcW94 ];
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :qY0g1naGAqAeDjao
+].
+:cQ52.faAUB1IcW94 rdfs:subPropertyOf gufo:mediates.
 :ZlkGDnaGAqAeDkas rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Restriction Question\\";
-    rdfs:subClassOf gufo:FunctionalComplex;
+    rdfs:label \\"Restriction Question\\".
+:cQ52.faAUB1IcW94 rdfs:label \\"classifies patient in\\".
+:ZlkGDnaGAqAeDkas rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
+:Dlz2.faAUB1IcW_1 rdf:type owl:ObjectProperty;
+    rdfs:domain :.6OZw_aFYEGUX0au;
+    rdfs:range :4KRG.faAUB1IcWbq.
+:.6OZw_aFYEGUX0au rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :Dlz2.faAUB1IcW_1;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :4KRG.faAUB1IcWbq
+].
+:4KRG.faAUB1IcWbq rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :Dlz2.faAUB1IcW_1 ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :.6OZw_aFYEGUX0au
+].
+:Dlz2.faAUB1IcW_1 rdfs:subPropertyOf gufo:mediates.
 :ioSOiXaD.AAAAQrr rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Healthcare Institute (Zorginstituut Nederland)\\";
-    rdfs:subClassOf :Pg.JFHaGAqAe8BSn;
-    rdf:type gufo:SubKind.
+    rdfs:label \\"Healthcare Institute (Zorginstituut Nederland)\\".
+:ePYO.faAUB1IcXDj rdf:type owl:ObjectProperty;
+    rdfs:domain :D51aFHaGAqAe8BBd;
+    rdfs:range :7qZs03aFYFAUAnV0.
+:D51aFHaGAqAe8BBd rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :ePYO.faAUB1IcXDj;
+  owl:onClass :7qZs03aFYFAUAnV0
+].
+:7qZs03aFYFAUAnV0 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :ePYO.faAUB1IcXDj ];
+  owl:onClass :D51aFHaGAqAe8BBd
+].
+:ePYO.faAUB1IcXDj rdfs:subPropertyOf gufo:mediates.
+:ioSOiXaD.AAAAQrr rdfs:subClassOf :Pg.JFHaGAqAe8BSn.
+:ePYO.faAUB1IcXDj rdfs:label \\"requests\\".
+:ioSOiXaD.AAAAQrr rdf:type gufo:SubKind.
+:H2qO.faAUB1IcXRc rdf:type owl:ObjectProperty;
+    rdfs:domain :uO0Q2faFYEGQT6aq;
+    rdfs:range :KjzjiXaD.AAAARkQ.
+:uO0Q2faFYEGQT6aq rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :H2qO.faAUB1IcXRc;
+  owl:onClass :KjzjiXaD.AAAARkQ
+].
+:KjzjiXaD.AAAARkQ rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :H2qO.faAUB1IcXRc ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :uO0Q2faFYEGQT6aq
+].
+:H2qO.faAUB1IcXRc rdfs:subPropertyOf gufo:mediates.
 :ysg.iXaD.AAAAQ05 rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Municipality (Gemeente)\\";
-    rdfs:subClassOf :Pg.JFHaGAqAe8BSn;
-    rdf:type gufo:SubKind.
+    rdfs:label \\"Municipality (Gemeente)\\".
+:ocve.faAUB1IcX2p rdf:type owl:ObjectProperty;
+    rdfs:domain :XXne.faAUB1IcX10;
+    rdfs:range :AgZE2faFYEGQT610;
+    rdfs:subPropertyOf gufo:categorizes.
+:ysg.iXaD.AAAAQ05 rdfs:subClassOf :Pg.JFHaGAqAe8BSn.
+:ZRpZw_aFYEGUX0bF rdf:type owl:ObjectProperty;
+    rdfs:domain :rj95w_aFYEGUX0iF;
+    rdfs:range :.6OZw_aFYEGUX0au.
+:rj95w_aFYEGUX0iF rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :ZRpZw_aFYEGUX0bF;
+  owl:onClass :.6OZw_aFYEGUX0au
+].
+:.6OZw_aFYEGUX0au rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :ZRpZw_aFYEGUX0bF ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :rj95w_aFYEGUX0iF
+].
+:ZRpZw_aFYEGUX0bF rdfs:subPropertyOf gufo:categorizes.
+:ysg.iXaD.AAAAQ05 rdf:type gufo:SubKind.
+:RUTV4_aFYEGQWx4F rdf:type owl:ObjectProperty;
+    rdfs:domain :4KRG.faAUB1IcWbq;
+    rdfs:range :tSM0yXaD.AAAARwK.
+:4KRG.faAUB1IcWbq rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :RUTV4_aFYEGQWx4F;
+  owl:onClass :tSM0yXaD.AAAARwK
+].
+:tSM0yXaD.AAAARwK rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :RUTV4_aFYEGQWx4F ];
+  owl:onClass :4KRG.faAUB1IcWbq
+].
+:RUTV4_aFYEGQWx4F rdfs:subPropertyOf gufo:categorizes.
 :6c.piXaD.AAAAQ8z rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Healthcare Service Agreement\\";
-    rdfs:subClassOf gufo:Relator;
+    rdfs:label \\"Healthcare Service Agreement\\".
+:cSbF5_aGAqACCHSO rdf:type owl:ObjectProperty;
+    rdfs:domain :1so2FHaGAqAe8BBx;
+    rdfs:range :PfrZFHaGAqAe8BU..
+:1so2FHaGAqAe8BBx rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :cSbF5_aGAqACCHSO;
+  owl:onClass :PfrZFHaGAqAe8BU.
+].
+:PfrZFHaGAqAe8BU. rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :cSbF5_aGAqACCHSO ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :1so2FHaGAqAe8BBx
+].
+:cSbF5_aGAqACCHSO rdfs:subPropertyOf gufo:mediates.
+:6c.piXaD.AAAAQ8z rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
+:cSbF5_aGAqACCHSO rdfs:label \\"granted by\\".
 :4VC5iXaD.AAAARBd rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"SVB\\";
-    rdfs:subClassOf :Pg.JFHaGAqAe8BSn;
-    rdf:type gufo:SubKind.
+    rdfs:label \\"SVB\\".
+:5l3Eb_aFYFAUBgbf rdf:type owl:ObjectProperty;
+    rdfs:domain :ppMS_vaFYFAUAikI;
+    rdfs:range :tSM0yXaD.AAAARwK.
+:ppMS_vaFYFAUAikI rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :5l3Eb_aFYFAUBgbf;
+  owl:onClass :tSM0yXaD.AAAARwK
+].
+:tSM0yXaD.AAAARwK rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :5l3Eb_aFYFAUBgbf ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :ppMS_vaFYFAUAikI
+].
+:5l3Eb_aFYFAUBgbf rdfs:subPropertyOf gufo:mediates.
+:4VC5iXaD.AAAARBd rdfs:subClassOf :Pg.JFHaGAqAe8BSn.
+:5l3Eb_aFYFAUBgbf rdfs:label \\"represents\\".
+:4VC5iXaD.AAAARBd rdf:type gufo:SubKind.
+:cezG9A6AUB1UpDJE rdf:type owl:ObjectProperty;
+    rdfs:domain :s2DG9A6AUB1UpDEU;
+    rdfs:range :QFOaFHaGAqAe8A_X.
+:s2DG9A6AUB1UpDEU rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :cezG9A6AUB1UpDJE;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :QFOaFHaGAqAe8A_X
+].
+:QFOaFHaGAqAe8A_X rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :cezG9A6AUB1UpDJE ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :s2DG9A6AUB1UpDEU
+].
+:cezG9A6AUB1UpDJE rdfs:subPropertyOf gufo:inheresIn.
 :ZPy5iXaD.AAAARBt rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"CAK\\";
-    rdfs:subClassOf :Pg.JFHaGAqAe8BSn;
-    rdf:type gufo:SubKind.
+    rdfs:label \\"CAK\\".
+:nergVnaGAqAeDiSp rdf:type owl:ObjectProperty;
+    rdfs:domain :rXdgVnaGAqAeDiSQ;
+    rdfs:range :GyZ0zHaGAqAe8CuO.
+:rXdgVnaGAqAeDiSQ rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :nergVnaGAqAeDiSp;
+  owl:onClass :GyZ0zHaGAqAe8CuO
+].
+:GyZ0zHaGAqAe8CuO rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :nergVnaGAqAeDiSp ];
+  owl:onClass :rXdgVnaGAqAeDiSQ
+].
+:rXdgVnaGAqAeDiSQ gufo:isDerivedFrom :GyZ0zHaGAqAe8CuO.
+:ZPy5iXaD.AAAARBt rdfs:subClassOf :Pg.JFHaGAqAe8BSn.
+:GgdUVnaGAqAeDitX rdf:type owl:ObjectProperty;
+    rdfs:domain :jlAkVnaGAqAeDikV;
+    rdfs:range :t4kUVnaGAqAeDiq5.
+:jlAkVnaGAqAeDikV rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :GgdUVnaGAqAeDitX;
+  owl:onClass :t4kUVnaGAqAeDiq5
+].
+:t4kUVnaGAqAeDiq5 rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :GgdUVnaGAqAeDitX ];
+  owl:onClass :jlAkVnaGAqAeDikV
+].
+:jlAkVnaGAqAeDikV gufo:isDerivedFrom :t4kUVnaGAqAeDiq5.
+:ZPy5iXaD.AAAARBt rdf:type gufo:SubKind.
+:EwiS43aAUBAyscYZ rdf:type owl:ObjectProperty;
+    rdfs:domain :hcki43aAUBAyscBo;
+    rdfs:range :oG0S43aAUBAyscXe.
+:hcki43aAUBAyscBo rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :EwiS43aAUBAyscYZ;
+  owl:onClass :oG0S43aAUBAyscXe
+].
+:oG0S43aAUBAyscXe rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :EwiS43aAUBAyscYZ ];
+  owl:onClass :hcki43aAUBAyscBo
+].
+:hcki43aAUBAyscBo gufo:isDerivedFrom :oG0S43aAUBAyscXe.
 :VLaUyXaD.AAAARuF rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Resident of The Netherlands\\";
     rdfs:subClassOf :QFOaFHaGAqAe8A_X;
