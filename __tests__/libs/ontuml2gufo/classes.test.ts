@@ -38,12 +38,6 @@ it('should transform iStandard model to gUFO', async () => {
   expect(result).toMatchSnapshot();
 });
 
-it('should transform iStandard model to gUFO 2', async () => {
-  const result = await transformOntoUML2GUFO(istandard);
-
-  expect(result).toMatchSnapshot();
-});
-
 it('should transform OntoUML generic model to gUFO', async () => {
   const result = await transformOntoUML2GUFO(genericExample1, 'Turtle');
 

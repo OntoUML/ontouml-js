@@ -1,11 +1,18 @@
 import { N3Writer } from 'n3';
 import { ModelManager } from '@libs/model';
-import { IClass, IPackage, IGeneralizationSet, IGeneralization } from '@types';
+import {
+  IClass,
+  IPackage,
+  IGeneralizationSet,
+  IGeneralization,
+  IRelation,
+} from '@types';
 import { OntoUMLType } from '@constants/.';
 import {
   transformDisjointClasses,
   transformClassesByStereotype,
 } from './class_functions';
+import { transformRelationsByStereotype } from './relation_functions';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -75,10 +82,14 @@ export class OntoUML2GUFO {
     const classes = this.model.getAllContentsByType([
       OntoUMLType.CLASS_TYPE,
     ]) as IClass[];
+    const relations = this.model.getAllContentsByType([
+      OntoUMLType.RELATION_TYPE,
+    ]) as IRelation[];
 
     await Promise.all([
       transformDisjointClasses(writer, classes),
       transformClassesByStereotype(writer, classes),
+      transformRelationsByStereotype(writer, relations),
     ]);
 
     return true;
