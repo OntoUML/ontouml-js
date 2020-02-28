@@ -19,6 +19,12 @@ export enum VerificationIssueCode {
   CLASS_ENUMERATION_WITH_PROPERTIES = 'CLASS_ENUMERATION_WITH_PROPERTIES',
 }
 
+/**
+ * Utility class for verification issues
+ *
+ * @author Claudenir Fonseca
+ * @author Lucas Bassetti
+ */
 export class VerificationIssue {
   code: VerificationIssueCode;
   title: string;
@@ -77,7 +83,7 @@ export class VerificationIssue {
             VerificationAlternativeCode.ONTOUML_CLASS_NAME_TO_PLURAL,
             source,
           ),
-        ];        
+        ];
         break;
       case VerificationIssueCode.CLASS_NON_ENUMERATION_WITH_LITERALS:
         this.title = 'Only enumerations may have literals.';

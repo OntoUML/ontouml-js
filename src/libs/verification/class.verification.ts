@@ -3,6 +3,12 @@ import { VerificationIssue, VerificationIssueCode } from './issues';
 import pluralize from 'pluralize';
 import { ClassStereotype } from '@constants/.';
 
+/**
+ * Functions for syntactical verification of classes
+ *
+ * @author Claudenir Fonseca
+ * @author Lucas Bassetti
+ */
 export const ClassVerification = {
   checkMinimalConsistency(_class: IClass): VerificationIssue[] {
     const consistencyIssues: VerificationIssue[] = [];

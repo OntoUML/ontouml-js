@@ -14,8 +14,10 @@ import { VerificationIssue, IssueSeverity } from './issues';
 import { ModelManager } from '@libs/model';
 
 /**
+ * Utility class for perform syntactical model verification
  *
  * @author Claudenir Fonseca
+ * @author Lucas Bassetti
  */
 export class OntoUML2Verification {
   model: IPackage;
@@ -47,7 +49,7 @@ export class OntoUML2Verification {
                 issue.severity === IssueSeverity.ERROR,
             )
           ) {
-            break ;
+            break;
           } else {
             // calls other verifications
           }

@@ -10,6 +10,12 @@ export enum VerificationAlternativeCode {
   REMOVE_PROPERTIES = 'REMOVE_PROPERTIES',
 }
 
+/**
+ * Utility class for alternatives for the resolution of verification issues
+ *
+ * @author Claudenir Fonseca
+ * @author Lucas Bassetti
+ */
 export class VerificationAlternative {
   code: string;
   title: string;
