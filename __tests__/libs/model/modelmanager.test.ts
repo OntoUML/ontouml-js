@@ -1,10 +1,10 @@
 import { ModelManager } from '@libs/model';
 import { OntoUMLType } from '@constants/.';
-import { IElement, IClassifier, IClass } from '@types';
-import { example } from '@test-models/valids';
+import { IElement, IClassifier } from '@types';
+import { genericExample1 } from '@test-models/valids';
 
 describe('Model deserializing', () => {
-  const inputModel = example;
+  const inputModel = genericExample1;
   let modelManager: ModelManager;
 
   it('Check input model against OntoUML Schema', () => {
@@ -117,7 +117,7 @@ describe('Model deserializing', () => {
     ).toBeTruthy();
   });
 
-  it('Check getDescendents()', () => {
+  it('Check getDescendants()', () => {
     const sophomore = modelManager.rootPackage.getContentById(
       'h_Y9hA6GAqACnA1t',
     ) as IClassifier;

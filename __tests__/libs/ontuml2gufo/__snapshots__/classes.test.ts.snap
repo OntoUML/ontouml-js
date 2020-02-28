@@ -1,0 +1,2127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should transform AlpineBits model to gUFO 1`] = `
+"@prefix : <https://example.com#>.
+@prefix gufo: <http://purl.org/nemo/gufo#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+
+<https://example.com> rdf:type owl:Ontology;
+    owl:imports gufo:.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:a8q2ZeaGAqACBxTF :JoK2ZeaGAqACBxS5 :u7vTKRaGAqACCA1k :BUPTKRaGAqACCA1S :avP3KRaGAqACCBJV :2cXhgFaAUB20XxMA :cqgEFeaGAqACByFl :YqX4FeaGAqACByFI :Ryx7KRaGAqACCBFU :gjQq0.aGAqAovRJq).
+:vQNfFRaGAqCsICRd rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Area Owner\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:a8q2ZeaGAqACBxTF :JoK2ZeaGAqACBxS5).
+:vQNfFRaGAqCsICRd rdfs:subClassOf :ZI5mZeaGAqACBxLj.
+:ZI5mZeaGAqACBxLj owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:a8q2ZeaGAqACBxTF :JoK2ZeaGAqACBxS5)
+].
+:vQNfFRaGAqCsICRd rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:RoleMixin.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:2cXhgFaAUB20XxMA :YqX4FeaGAqACByFI :cqgEFeaGAqACByFl).
+:9fKxgFaAUB20XxPv rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Copyright Owner\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:w9VGZeaGAqACBxIC :YaFGZeaGAqACBxHu :LdVGZeaGAqACBxH9 :c25qFBaGAqACCBkO :yroGZeaGAqACBxGM).
+:9fKxgFaAUB20XxPv rdfs:subClassOf :ZI5mZeaGAqACBxLj.
+:u0X6ZeaGAqACBxFU owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:w9VGZeaGAqACBxIC :YaFGZeaGAqACBxHu :LdVGZeaGAqACBxH9 :c25qFBaGAqACCBkO :yroGZeaGAqACBxGM)
+].
+:9fKxgFaAUB20XxPv rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:RoleMixin.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:8pguZeaGAqACBxbW :rokuZeaGAqACBxbm).
+:VhSB5eaGAqACBxwL rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Contributor\\".
+:u0X6ZeaGAqACBxFU owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:8pguZeaGAqACBxbW :rokuZeaGAqACBxbm)
+].
+:VhSB5eaGAqACBxwL rdfs:subClassOf :ZI5mZeaGAqACBxLj.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:34xpFRaGAqCsIBFB :CkhpFRaGAqCsIBEz :nLJpFRaGAqCsIBFP).
+:VhSB5eaGAqACBxwL rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:RoleMixin.
+:5LxsNeaGAqACBzHc owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:34xpFRaGAqCsIBFB :CkhpFRaGAqCsIBEz :nLJpFRaGAqCsIBFP)
+].
+:_RRB5eaGAqACBxxv rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Publisher\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:FLZMFeaGAqACByck :eFHl.g6AUB20tznI :RQrl.g6AUB20tzm0 :Edfl.g6AUB20tznk :8r9MFeaGAqACByc6 :inpMFeaGAqACBycY).
+[ rdf:type owl:AllDisjointClasses ] owl:members (:u0X6ZeaGAqACBxFU :49fBFRaGAqCsIAol :xN.W0.aGAqAovRVX :bgem.g6AUB20tyWQ).
+:_RRB5eaGAqACBxxv rdfs:subClassOf :ZI5mZeaGAqACBxLj.
+:V1RMFeaGAqACBycH owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:FLZMFeaGAqACByck :eFHl.g6AUB20tznI :RQrl.g6AUB20tzm0 :Edfl.g6AUB20tznk :8r9MFeaGAqACByc6 :inpMFeaGAqACBycY)
+].
+:_RRB5eaGAqACBxxv rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:RoleMixin.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:ND1aexaGAqCsIB1b :v9I7KRaGAqACCBFG).
+:Hqt2ZeaGAqACBxVQ rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Sponsor\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:BUPTKRaGAqACCA1S :avP3KRaGAqACCBJV :u7vTKRaGAqACCA1k).
+:Hqt2ZeaGAqACBxVQ rdfs:subClassOf :ZI5mZeaGAqACBxLj.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:2bX5lRaGAqCsICdP :h.P5lRaGAqCsICdh).
+:Hqt2ZeaGAqACBxVQ rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:RoleMixin.
+:avP3KRaGAqACCBJV owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:2bX5lRaGAqCsICdP :h.P5lRaGAqCsICdh)
+].
+:kJXWZeaGAqACBxRJ rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Organizer\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:a8q2ZeaGAqACBxTF :JoK2ZeaGAqACBxS5).
+:kJXWZeaGAqACBxRJ rdfs:subClassOf :ZI5mZeaGAqACBxLj.
+:ZI5mZeaGAqACBxLj owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:a8q2ZeaGAqACBxTF :JoK2ZeaGAqACBxS5)
+].
+[ rdf:type owl:AllDisjointClasses ] owl:members (:vM_a0.aGAqAovRNA :V1RMFeaGAqACBycH).
+:kJXWZeaGAqACBxRJ rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:RoleMixin.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:2cXhgFaAUB20XxMA :YqX4FeaGAqACByFI :cqgEFeaGAqACByFl).
+:a8q2ZeaGAqACBxTF rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Organization\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:w9VGZeaGAqACBxIC :YaFGZeaGAqACBxHu :LdVGZeaGAqACBxH9 :c25qFBaGAqACCBkO :yroGZeaGAqACBxGM).
+:a8q2ZeaGAqACBxTF rdfs:subClassOf :ZI5mZeaGAqACBxLj.
+:u0X6ZeaGAqACBxFU owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:w9VGZeaGAqACBxIC :YaFGZeaGAqACBxHu :LdVGZeaGAqACBxH9 :c25qFBaGAqACCBkO :yroGZeaGAqACBxGM)
+].
+:a8q2ZeaGAqACBxTF rdfs:subClassOf gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:8pguZeaGAqACBxbW :rokuZeaGAqACBxbm).
+:JoK2ZeaGAqACBxS5 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Person\\".
+:u0X6ZeaGAqACBxFU owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:8pguZeaGAqACBxbW :rokuZeaGAqACBxbm)
+].
+:JoK2ZeaGAqACBxS5 rdfs:subClassOf :ZI5mZeaGAqACBxLj.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:34xpFRaGAqCsIBFB :CkhpFRaGAqCsIBEz :nLJpFRaGAqCsIBFP).
+:JoK2ZeaGAqACBxS5 rdfs:subClassOf gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:5LxsNeaGAqACBzHc owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:34xpFRaGAqCsIBFB :CkhpFRaGAqCsIBEz :nLJpFRaGAqCsIBFP)
+].
+:ZI5mZeaGAqACBxLj rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Agent\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:FLZMFeaGAqACByck :eFHl.g6AUB20tznI :RQrl.g6AUB20tzm0 :Edfl.g6AUB20tznk :8r9MFeaGAqACByc6 :inpMFeaGAqACBycY).
+:ZI5mZeaGAqACBxLj rdfs:subClassOf :pd7zKRaGAqACCA7s.
+:V1RMFeaGAqACBycH owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:FLZMFeaGAqACByck :eFHl.g6AUB20tznI :RQrl.g6AUB20tzm0 :Edfl.g6AUB20tznk :8r9MFeaGAqACByc6 :inpMFeaGAqACBycY)
+].
+:ZI5mZeaGAqACBxLj rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:Category.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:ND1aexaGAqCsIB1b :v9I7KRaGAqACCBFG).
+:5LxsNeaGAqACBzHc rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Place\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:BUPTKRaGAqACCA1S :avP3KRaGAqACCBJV :u7vTKRaGAqACCA1k).
+:5LxsNeaGAqACBzHc rdfs:subClassOf :hlJ55eaGAqACByA8.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:2bX5lRaGAqCsICdP :h.P5lRaGAqCsICdh).
+:5LxsNeaGAqACBzHc rdfs:subClassOf :pd7zKRaGAqACCA7s.
+:avP3KRaGAqACCBJV owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:2bX5lRaGAqCsICdP :h.P5lRaGAqCsICdh)
+].
+:5LxsNeaGAqACBzHc rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:Category.
+:c25qFBaGAqACCBkO rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Rescheduled\\";
+    rdfs:subClassOf :u0X6ZeaGAqACBxFU;
+    rdf:type gufo:Phase.
+:8pguZeaGAqACBxbW rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Composite Event\\";
+    rdfs:subClassOf :u0X6ZeaGAqACBxFU;
+    rdf:type gufo:SubKind.
+:rokuZeaGAqACBxbm rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Simple Event\\";
+    rdfs:subClassOf :u0X6ZeaGAqACBxFU;
+    rdf:type gufo:SubKind.
+:w9VGZeaGAqACBxIC rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Cancelled\\";
+    rdfs:subClassOf :u0X6ZeaGAqACBxFU;
+    rdf:type gufo:Phase.
+:LdVGZeaGAqACBxH9 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Realized\\";
+    rdfs:subClassOf :u0X6ZeaGAqACBxFU;
+    rdf:type gufo:Phase.
+:YaFGZeaGAqACBxHu rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Ongoing\\";
+    rdfs:subClassOf :u0X6ZeaGAqACBxFU;
+    rdf:type gufo:Phase.
+:yroGZeaGAqACBxGM rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Scheduled\\";
+    rdfs:subClassOf :u0X6ZeaGAqACBxFU;
+    rdf:type gufo:Phase.
+:u0X6ZeaGAqACBxFU rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Event\\";
+    rdfs:subClassOf :pd7zKRaGAqACCA7s, gufo:Relator;
+    rdf:type gufo:Kind.
+:vM_a0.aGAqAovRNA rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Contact Point\\";
+    rdfs:subClassOf gufo:Quality;
+    rdf:type gufo:Kind.
+:pd7zKRaGAqACCA7s rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Named Entity\\";
+    rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:Category.
+:h.P5lRaGAqCsICdh rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"SimpleArea\\";
+    rdfs:subClassOf :avP3KRaGAqACCBJV;
+    rdf:type gufo:SubKind.
+:2bX5lRaGAqCsICdP rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Composite Area\\";
+    rdfs:subClassOf :avP3KRaGAqACCBJV;
+    rdf:type gufo:SubKind.
+:v9I7KRaGAqACCBFG rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Snowpark\\";
+    rdfs:subClassOf :u7vTKRaGAqACCA1k;
+    rdf:type gufo:SubKind.
+:u7vTKRaGAqACCA1k rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Trail\\";
+    rdfs:subClassOf :5LxsNeaGAqACBzHc, gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:hlJ55eaGAqACByA8 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"GeoSpatialFeature\\";
+    rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:Category.
+:nLJpFRaGAqCsIBFP rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Permanently Closed\\";
+    rdfs:subClassOf :5LxsNeaGAqACBzHc, gufo:Endurant;
+    rdf:type gufo:PhaseMixin.
+:34xpFRaGAqCsIBFB rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Closed\\";
+    rdfs:subClassOf :5LxsNeaGAqACBzHc, gufo:Endurant;
+    rdf:type gufo:PhaseMixin.
+:CkhpFRaGAqCsIBEz rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Open\\";
+    rdfs:subClassOf :5LxsNeaGAqACBzHc, gufo:Endurant;
+    rdf:type gufo:PhaseMixin.
+:BUPTKRaGAqACCA1S rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Lift\\";
+    rdfs:subClassOf :5LxsNeaGAqACBzHc, gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:avP3KRaGAqACCBJV rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Mountain Area\\";
+    rdfs:subClassOf :5LxsNeaGAqACBzHc, gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:3H70FeaGAqACByYE rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Venue\\";
+    rdfs:subClassOf :5LxsNeaGAqACBzHc, gufo:Endurant;
+    rdf:type gufo:RoleMixin.
+:2cXhgFaAUB20XxMA rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Audio Object\\";
+    rdfs:subClassOf :xh2EFeaGAqACByIW, gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:cqgEFeaGAqACByFl rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Video Object\\";
+    rdfs:subClassOf :xh2EFeaGAqACByIW, gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:YqX4FeaGAqACByFI rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Image Object\\";
+    rdfs:subClassOf :xh2EFeaGAqACByIW, gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:xh2EFeaGAqACByIW rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Media Object\\";
+    rdfs:subClassOf :pd7zKRaGAqACCA7s, gufo:Endurant;
+    rdf:type gufo:Category.
+:ND1aexaGAqCsIB1b rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Ski Slope\\";
+    rdfs:subClassOf :u7vTKRaGAqACCA1k;
+    rdf:type gufo:SubKind.
+:49fBFRaGAqCsIAol rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Snow Measurement\\";
+    rdfs:subClassOf :hlJ55eaGAqACByA8, gufo:Relator;
+    rdf:type gufo:Kind.
+:Ryx7KRaGAqACCBFU rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Snowpark Feature\\";
+    rdfs:subClassOf :pd7zKRaGAqACCA7s, :hlJ55eaGAqACByA8, gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:FLZMFeaGAqACByck rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Line String\\";
+    rdfs:subClassOf :V1RMFeaGAqACBycH;
+    rdf:type gufo:SubKind.
+:inpMFeaGAqACBycY rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Polygon\\";
+    rdfs:subClassOf :V1RMFeaGAqACBycH;
+    rdf:type gufo:SubKind.
+:8r9MFeaGAqACByc6 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Point\\";
+    rdfs:subClassOf :V1RMFeaGAqACBycH;
+    rdf:type gufo:SubKind.
+:V1RMFeaGAqACBycH rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Geometry\\";
+    rdfs:subClassOf gufo:Quality;
+    rdf:type gufo:Kind.
+:gjQq0.aGAqAovRJq rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Event Series\\";
+    rdfs:subClassOf :pd7zKRaGAqACCA7s, gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:xN.W0.aGAqAovRVX rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Venue Allocation\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:bgem.g6AUB20tyWQ rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Copyright Ownership\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:RQrl.g6AUB20tzm0 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Multi-Point\\";
+    rdfs:subClassOf :V1RMFeaGAqACBycH;
+    rdf:type gufo:SubKind.
+:eFHl.g6AUB20tznI rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Multi Line String\\";
+    rdfs:subClassOf :V1RMFeaGAqACBycH;
+    rdf:type gufo:SubKind.
+:Edfl.g6AUB20tznk rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Multi-Polygon\\";
+    rdfs:subClassOf :V1RMFeaGAqACBycH;
+    rdf:type gufo:SubKind.
+"
+`;
+
+exports[`should transform OntoUML <<mixin>> class 1`] = `
+"<https://example.com> <rdf:type> <owl:Ontology> .
+<https://example.com> <owl:imports> <gufo:> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:addoWg6D.AAAARS0> <:SgLoWg6D.AAAARTw>) .
+<:yhVoWg6D.AAAARSb> <rdf:type> <owl:Class> .
+<:yhVoWg6D.AAAARSb> <rdf:type> <owl:NamedIndividual> .
+<:yhVoWg6D.AAAARSb> <rdfs:label> \\"Seatable\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:addoWg6D.AAAARS0> <:OtjoWg6D.AAAARTV>) .
+<:yhVoWg6D.AAAARSb> <rdfs:subClassOf> <gufo:Endurant> .
+<:yhVoWg6D.AAAARSb> <rdf:type> <gufo:Mixin> .
+<:yhVoWg6D.AAAARSb> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:addoWg6D.AAAARS0> <:OtjoWg6D.AAAARTV>)
+] .
+<:addoWg6D.AAAARS0> <rdf:type> <owl:Class> .
+<:addoWg6D.AAAARS0> <rdf:type> <owl:NamedIndividual> .
+<:addoWg6D.AAAARS0> <rdfs:label> \\"Chair\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:s5HoWg6D.AAAARUX> <:OtjoWg6D.AAAARTV>) .
+<:addoWg6D.AAAARS0> <rdfs:subClassOf> <:yhVoWg6D.AAAARSb> .
+<:SgLoWg6D.AAAARTw> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:s5HoWg6D.AAAARUX> <:OtjoWg6D.AAAARTV>)
+] .
+<:addoWg6D.AAAARS0> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:addoWg6D.AAAARS0> <rdf:type> <gufo:Kind> .
+<:OtjoWg6D.AAAARTV> <rdf:type> <owl:Class> .
+<:OtjoWg6D.AAAARTV> <rdf:type> <owl:NamedIndividual> .
+<:OtjoWg6D.AAAARTV> <rdfs:label> \\"Solid Crate\\" .
+<:OtjoWg6D.AAAARTV> <rdfs:subClassOf> <:yhVoWg6D.AAAARSb> .
+<:OtjoWg6D.AAAARTV> <rdfs:subClassOf> <:SgLoWg6D.AAAARTw> .
+<:OtjoWg6D.AAAARTV> <rdf:type> <gufo:Phase> .
+<:SgLoWg6D.AAAARTw> <rdf:type> <owl:Class> .
+<:SgLoWg6D.AAAARTw> <rdf:type> <owl:NamedIndividual> .
+<:SgLoWg6D.AAAARTw> <rdfs:label> \\"Crate\\" .
+<:SgLoWg6D.AAAARTw> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:SgLoWg6D.AAAARTw> <rdf:type> <gufo:Kind> .
+<:s5HoWg6D.AAAARUX> <rdf:type> <owl:Class> .
+<:s5HoWg6D.AAAARUX> <rdf:type> <owl:NamedIndividual> .
+<:s5HoWg6D.AAAARUX> <rdfs:label> \\"Broken Crate\\" .
+<:s5HoWg6D.AAAARUX> <rdfs:subClassOf> <:SgLoWg6D.AAAARTw> .
+<:s5HoWg6D.AAAARUX> <rdf:type> <gufo:Phase> .
+"
+`;
+
+exports[`should transform OntoUML <<mode>> class as ExtrinsicMode 1`] = `
+"<https://example.com> <rdf:type> <owl:Ontology> .
+<https://example.com> <owl:imports> <gufo:> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Q5deWA6AUB0UtAWn> <:Q5deWA6AUB0UtAWo>) .
+<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:Class> .
+<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:NamedIndividual> .
+<:qJdeWA6AUB0UtAWm> <rdfs:label> \\"Love\\" .
+<:qJdeWA6AUB0UtAWm> <rdfs:subClassOf> <gufo:ExtrinsicMode> .
+<:qJdeWA6AUB0UtAWm> <rdf:type> <gufo:Kind> .
+<:Q5deWA6AUB0UtAWn> <rdf:type> <owl:Class> .
+<:Q5deWA6AUB0UtAWn> <rdf:type> <owl:NamedIndividual> .
+<:Q5deWA6AUB0UtAWn> <rdfs:label> \\"Person\\" .
+<:Q5deWA6AUB0UtAWn> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:Q5deWA6AUB0UtAWn> <rdf:type> <gufo:Kind> .
+<:Q5deWA6AUB0UtAWo> <rdf:type> <owl:Class> .
+<:Q5deWA6AUB0UtAWo> <rdf:type> <owl:NamedIndividual> .
+<:Q5deWA6AUB0UtAWo> <rdfs:label> \\"Car\\" .
+<:Q5deWA6AUB0UtAWo> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:Q5deWA6AUB0UtAWo> <rdf:type> <gufo:Kind> .
+"
+`;
+
+exports[`should transform OntoUML <<mode>> class as IntrinsicMode 1`] = `
+"<https://example.com> <rdf:type> <owl:Ontology> .
+<https://example.com> <owl:imports> <gufo:> .
+<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:Class> .
+<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:NamedIndividual> .
+<:qJdeWA6AUB0UtAWm> <rdfs:label> \\"Headache\\" .
+<:qJdeWA6AUB0UtAWm> <rdfs:subClassOf> <gufo:IntrinsicMode> .
+<:qJdeWA6AUB0UtAWm> <rdf:type> <gufo:Kind> .
+<:Q5deWA6AUB0UtAWn> <rdf:type> <owl:Class> .
+<:Q5deWA6AUB0UtAWn> <rdf:type> <owl:NamedIndividual> .
+<:Q5deWA6AUB0UtAWn> <rdfs:label> \\"Person\\" .
+<:Q5deWA6AUB0UtAWn> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:Q5deWA6AUB0UtAWn> <rdf:type> <gufo:Kind> .
+"
+`;
+
+exports[`should transform OntoUML <<relator>> class 1`] = `
+"<https://example.com> <rdf:type> <owl:Ontology> .
+<https://example.com> <owl:imports> <gufo:> .
+<:IsW5mg6D.AAAAQqE> <rdf:type> <owl:Class> .
+<:IsW5mg6D.AAAAQqE> <rdf:type> <owl:NamedIndividual> .
+<:IsW5mg6D.AAAAQqE> <rdfs:label> \\"Person\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:ech5mg6D.AAAAQqj> <:jiZ5mg6D.AAAAQrK>) .
+<:IsW5mg6D.AAAAQqE> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:IsW5mg6D.AAAAQqE> <rdf:type> <gufo:Kind> .
+<:IsW5mg6D.AAAAQqE> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:ech5mg6D.AAAAQqj> <:jiZ5mg6D.AAAAQrK>)
+] .
+<:ech5mg6D.AAAAQqj> <rdf:type> <owl:Class> .
+<:ech5mg6D.AAAAQqj> <rdf:type> <owl:NamedIndividual> .
+<:ech5mg6D.AAAAQqj> <rdfs:label> \\"Man\\" .
+<:ech5mg6D.AAAAQqj> <rdfs:subClassOf> <:IsW5mg6D.AAAAQqE> .
+<:ech5mg6D.AAAAQqj> <rdf:type> <gufo:SubKind> .
+<:jiZ5mg6D.AAAAQrK> <rdf:type> <owl:Class> .
+<:jiZ5mg6D.AAAAQrK> <rdf:type> <owl:NamedIndividual> .
+<:jiZ5mg6D.AAAAQrK> <rdfs:label> \\"Woman\\" .
+<:jiZ5mg6D.AAAAQrK> <rdfs:subClassOf> <:IsW5mg6D.AAAAQqE> .
+<:jiZ5mg6D.AAAAQrK> <rdf:type> <gufo:SubKind> .
+<:z.T5mg6D.AAAAQsY> <rdf:type> <owl:Class> .
+<:z.T5mg6D.AAAAQsY> <rdf:type> <owl:NamedIndividual> .
+<:z.T5mg6D.AAAAQsY> <rdfs:label> \\"Husband\\" .
+<:z.T5mg6D.AAAAQsY> <rdfs:subClassOf> <:ech5mg6D.AAAAQqj> .
+<:z.T5mg6D.AAAAQsY> <rdf:type> <gufo:Role> .
+<:yPX5mg6D.AAAAQtn> <rdf:type> <owl:Class> .
+<:yPX5mg6D.AAAAQtn> <rdf:type> <owl:NamedIndividual> .
+<:yPX5mg6D.AAAAQtn> <rdfs:label> \\"Wife\\" .
+<:yPX5mg6D.AAAAQtn> <rdfs:subClassOf> <:jiZ5mg6D.AAAAQrK> .
+<:yPX5mg6D.AAAAQtn> <rdf:type> <gufo:Role> .
+<:SzOFmg6D.AAAAQuF> <rdf:type> <owl:Class> .
+<:SzOFmg6D.AAAAQuF> <rdf:type> <owl:NamedIndividual> .
+<:SzOFmg6D.AAAAQuF> <rdfs:label> \\"Marriage\\" .
+<:SzOFmg6D.AAAAQuF> <rdfs:subClassOf> <gufo:Relator> .
+<:SzOFmg6D.AAAAQuF> <rdf:type> <gufo:Kind> .
+"
+`;
+
+exports[`should transform OntoUML <<role>> class 1`] = `
+"<https://example.com> <rdf:type> <owl:Ontology> .
+<https://example.com> <owl:imports> <gufo:> .
+<:IsW5mg6D.AAAAQqE> <rdf:type> <owl:Class> .
+<:IsW5mg6D.AAAAQqE> <rdf:type> <owl:NamedIndividual> .
+<:IsW5mg6D.AAAAQqE> <rdfs:label> \\"Person\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:ech5mg6D.AAAAQqj> <:jiZ5mg6D.AAAAQrK>) .
+<:IsW5mg6D.AAAAQqE> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:IsW5mg6D.AAAAQqE> <rdf:type> <gufo:Kind> .
+<:IsW5mg6D.AAAAQqE> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:ech5mg6D.AAAAQqj> <:jiZ5mg6D.AAAAQrK>)
+] .
+<:ech5mg6D.AAAAQqj> <rdf:type> <owl:Class> .
+<:ech5mg6D.AAAAQqj> <rdf:type> <owl:NamedIndividual> .
+<:ech5mg6D.AAAAQqj> <rdfs:label> \\"Man\\" .
+<:ech5mg6D.AAAAQqj> <rdfs:subClassOf> <:IsW5mg6D.AAAAQqE> .
+<:ech5mg6D.AAAAQqj> <rdf:type> <gufo:SubKind> .
+<:jiZ5mg6D.AAAAQrK> <rdf:type> <owl:Class> .
+<:jiZ5mg6D.AAAAQrK> <rdf:type> <owl:NamedIndividual> .
+<:jiZ5mg6D.AAAAQrK> <rdfs:label> \\"Woman\\" .
+<:jiZ5mg6D.AAAAQrK> <rdfs:subClassOf> <:IsW5mg6D.AAAAQqE> .
+<:jiZ5mg6D.AAAAQrK> <rdf:type> <gufo:SubKind> .
+<:z.T5mg6D.AAAAQsY> <rdf:type> <owl:Class> .
+<:z.T5mg6D.AAAAQsY> <rdf:type> <owl:NamedIndividual> .
+<:z.T5mg6D.AAAAQsY> <rdfs:label> \\"Husband\\" .
+<:z.T5mg6D.AAAAQsY> <rdfs:subClassOf> <:ech5mg6D.AAAAQqj> .
+<:z.T5mg6D.AAAAQsY> <rdf:type> <gufo:Role> .
+<:yPX5mg6D.AAAAQtn> <rdf:type> <owl:Class> .
+<:yPX5mg6D.AAAAQtn> <rdf:type> <owl:NamedIndividual> .
+<:yPX5mg6D.AAAAQtn> <rdfs:label> \\"Wife\\" .
+<:yPX5mg6D.AAAAQtn> <rdfs:subClassOf> <:jiZ5mg6D.AAAAQrK> .
+<:yPX5mg6D.AAAAQtn> <rdf:type> <gufo:Role> .
+"
+`;
+
+exports[`should transform OntoUML generic model to gUFO 1`] = `
+"@prefix : <https://example.com#>.
+@prefix gufo: <http://purl.org/nemo/gufo#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+
+<https://example.com> rdf:type owl:Ontology;
+    owl:imports gufo:.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:2uxhBA6AUB0UtArb :j5phBA6AUB0UtAts).
+:rw.hBA6AUB0UtArB rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Agent\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:j5phBA6AUB0UtAts :2uxhBA6AUB0UtArb).
+:rw.hBA6AUB0UtArB rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:Category;
+    owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:j5phBA6AUB0UtAts :2uxhBA6AUB0UtArb)
+].
+:2uxhBA6AUB0UtArb rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Person\\";
+    rdfs:subClassOf :rw.hBA6AUB0UtArB, gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:j5phBA6AUB0UtAts rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Organization\\";
+    rdfs:subClassOf :rw.hBA6AUB0UtArB, gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:_xThBA6AUB0UtAvg rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"School\\";
+    rdfs:subClassOf :j5phBA6AUB0UtAts;
+    rdf:type gufo:SubKind.
+:GDbhBA6AUB0UtAv1 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Student\\";
+    rdfs:subClassOf :2uxhBA6AUB0UtArb;
+    rdf:type gufo:Role.
+:JLnhBA6AUB0UtAwO rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Enrollment\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:wukRBA6AUB0UtAxW rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Enrollment Date\\";
+    rdfs:subClassOf gufo:Quality;
+    rdf:type gufo:Kind.
+:h_Y9hA6GAqACnA1t rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Sophomore\\";
+    rdfs:subClassOf :GDbhBA6AUB0UtAv1;
+    rdf:type gufo:Role.
+:cea9hA6GAqACnA2B rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Privately Enrolled\\";
+    rdfs:subClassOf :GDbhBA6AUB0UtAv1;
+    rdf:type gufo:Role.
+:6XxdhA6GAqACnA0J rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Department\\";
+    rdfs:subClassOf :j5phBA6AUB0UtAts;
+    rdf:type gufo:SubKind.
+"
+`;
+
+exports[`should transform iStandard model to gUFO 1`] = `
+"@prefix : <https://example.com#>.
+@prefix gufo: <http://purl.org/nemo/gufo#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+
+<https://example.com> rdf:type owl:Ontology;
+    owl:imports gufo:.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:QFOaFHaGAqAe8A_X :Pg.JFHaGAqAe8BSn :rNNOVnaGAqAeDi9t :J3_W1naGAqAeDkBF :ZlkGDnaGAqAeDkas).
+:VvxaFHaGAqAe8BAf rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Agent\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Qcjr1HaGAqAe8Bj4 :OL2n1HaGAqAe8BqQ :J9Eb1HaGAqAe8Blh :h6rr1HaGAqAe8Bkn :aeMb1HaGAqAe8Bl0 :PzJH1HaGAqAe8Bo6 :QZ.71HaGAqAe8BnP :XtIb1HaGAqAe8BlP).
+:VvxaFHaGAqAe8BAf rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:Category.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:RxdD1HaGAqAe8Be6 :IJML1HaGAqAe8Bhq :Edij1HaGAqAe8Bfp).
+:haqP1HaGAqAe8Bt7 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Household\\".
+:QFOaFHaGAqAe8A_X owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:RxdD1HaGAqAe8Be6 :IJML1HaGAqAe8Bhq :Edij1HaGAqAe8Bfp)
+].
+:haqP1HaGAqAe8Bt7 rdfs:subClassOf gufo:Collection;
+    rdf:type gufo:Kind.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:ztXa03aFYFAUAtTn :prHa03aFYFAUAtTD :rdna03aFYFAUAtTV).
+:vcU_1HaGAqAe8Bzz rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Household Member\\".
+:5qfNiXaD.AAAARX9 owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:ztXa03aFYFAUAtTn :prHa03aFYFAUAtTD :rdna03aFYFAUAtTV)
+].
+:vcU_1HaGAqAe8Bzz rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:KgBQ03aFYFAUAkBD :jzZQ03aFYFAUAkB9 :2fOQ03aFYFAUAkAr :d3hQ03aFYFAUAkBR).
+:vcU_1HaGAqAe8Bzz rdf:type gufo:Role.
+:5qfNiXaD.AAAARX9 owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:KgBQ03aFYFAUAkBD :jzZQ03aFYFAUAkB9 :2fOQ03aFYFAUAkAr :d3hQ03aFYFAUAkBR)
+].
+:QFOaFHaGAqAe8A_X rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Person\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:BRMyq3aFYEGUExwV :g_eSq3aFYEGUExvJ :mU.yq3aFYEGUExxO).
+:QFOaFHaGAqAe8A_X rdfs:subClassOf :VvxaFHaGAqAe8BAf;
+    owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:BRMyq3aFYEGUExwV :g_eSq3aFYEGUExvJ :mU.yq3aFYEGUExxO)
+];
+    rdfs:subClassOf gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:mkDcq3aFYEGUExq. :3sNy_vaFYFAUAi2Q).
+[ rdf:type owl:AllDisjointClasses ] owl:members (:GyZ0zHaGAqAe8CuO :31ekZnaGAqAeDg.4 :tp7kNHaGAqAe8B_i :ZzJ3lnaGAqAeDh8k :jlAkVnaGAqAeDikV :qY0g1naGAqAeDjao :Oaq21naGAqAeDkC0 :vcOsDnaGAqAeDkPr :kxtsDnaGAqAeDkQY :.s56DnaGAqAeDkZi :6c.piXaD.AAAAQ8z :8xNw43aAUBAysYls :o0TY43aAUBAysY7G :F9Kc_vaFYFAUAh5I :CzCdUfaFYEGUHGn9 :pZHbpnaGAqAe8DEo :D51aFHaGAqAe8BBd :1so2FHaGAqAe8BBx :8XCKr3aFYEGUExzu :hcki43aAUBAyscBo :tWtq4_aFYEGQWxkJ :W06a4_aFYEGQWxre :uO0Q2faFYEGQT6aq :5qfNiXaD.AAAARX9 :KjzjiXaD.AAAARkQ :aKJs03aFYFAUAnVm).
+:Edij1HaGAqAe8Bfp rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Woman\\".
+:1so2FHaGAqAe8BBx owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:mkDcq3aFYEGUExq. :3sNy_vaFYFAUAi2Q)
+].
+:Edij1HaGAqAe8Bfp rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Kvsa_vaFYFAUAi9l :jGsa_vaFYFAUAi9Z :UFMa_vaFYFAUAi9H :nopp_vaFYFAUAjaU).
+:Edij1HaGAqAe8Bfp rdf:type gufo:Role.
+:mkDcq3aFYEGUExq. owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:Kvsa_vaFYFAUAi9l :jGsa_vaFYFAUAi9Z :UFMa_vaFYFAUAi9H :nopp_vaFYFAUAjaU)
+].
+:XtIb1HaGAqAe8BlP rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Widow/Widower\\".
+:AgZE2faFYEGQT610 owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:F7LE2faFYEGQT62h :cwjE2faFYEGQT62S)
+].
+[ rdf:type owl:AllDisjointClasses ] owl:members (:dheOVnaGAqAeDi7x :WAFZVnaGAqAeDjOi :qy0XVnaGAqAeDjWY :amlZVnaGAqAeDjOu :0WXM1naGAqAeDj8s :.icsDnaGAqAeDkOv :ru_pUfaFYEGUHFbJ).
+:XtIb1HaGAqAe8BlP rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:vdNE2faFYEGQT61_ owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:I6FU2faFYEGQT64Z :zJJU2faFYEGQT64I)
+].
+:XtIb1HaGAqAe8BlP rdf:type gufo:Role.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Y3Ja2faFYEGQT7Ns :hMMq2faFYEGQT7LJ).
+:IJML1HaGAqAe8Bhq rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Unknown\\".
+:cwjE2faFYEGQT62S owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:Y3Ja2faFYEGQT7Ns :hMMq2faFYEGQT7LJ)
+].
+:IJML1HaGAqAe8Bhq rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:xBiLuPaAUAACnkcA :jvnXuPaAUAACnkcz).
+[ rdf:type owl:AllDisjointClasses ] owl:members (:OAOUzHaGAqAe8Co8 :s2DG9A6AUB1UpDEU :rtZAq3aFYEGUExSq :VzzAq3aFYEGUExTN).
+:IJML1HaGAqAe8Bhq rdf:type gufo:Role.
+:KjzjiXaD.AAAARkQ owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:xBiLuPaAUAACnkcA :jvnXuPaAUAACnkcz)
+].
+:LWsf1HaGAqAe8Bw2 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Single Person Household\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:bPlAZnaGAqAe8DZ1 :QKFAZnaGAqAe8DZp).
+:LWsf1HaGAqAe8Bw2 rdfs:subClassOf :haqP1HaGAqAe8Bt7.
+:pZHbpnaGAqAe8DEo owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:bPlAZnaGAqAe8DZ1 :QKFAZnaGAqAe8DZp)
+].
+:LWsf1HaGAqAe8Bw2 rdf:type gufo:Phase.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:oJvG03aFYFAUAtbr :HcpG03aFYFAUAtau).
+:PzJH1HaGAqAe8Bo6 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Separated from RP\\".
+:KgBQ03aFYFAUAkBD owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:oJvG03aFYFAUAtbr :HcpG03aFYFAUAtau)
+].
+:PzJH1HaGAqAe8Bo6 rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:jBza_vaFYFAUAjBx :xYba_vaFYFAUAjB9).
+:PzJH1HaGAqAe8Bo6 rdf:type gufo:Role.
+:jzZQ03aFYFAUAkB9 owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:jBza_vaFYFAUAjBx :xYba_vaFYFAUAjB9)
+].
+:QZ.71HaGAqAe8BnP rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Separated\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:6YQN9A6AUB1UpEmi :hWgN9A6AUB1UpEmU).
+:QZ.71HaGAqAe8BnP rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:QFOaFHaGAqAe8A_X owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:6YQN9A6AUB1UpEmi :hWgN9A6AUB1UpEmU)
+].
+:QZ.71HaGAqAe8BnP rdf:type gufo:Role.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Qcjr1HaGAqAe8Bj4 :OL2n1HaGAqAe8BqQ :J9Eb1HaGAqAe8Blh :h6rr1HaGAqAe8Bkn :aeMb1HaGAqAe8Bl0 :PzJH1HaGAqAe8Bo6 :QZ.71HaGAqAe8BnP :XtIb1HaGAqAe8BlP).
+:aeMb1HaGAqAe8Bl0 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Registered Partner\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:RxdD1HaGAqAe8Be6 :IJML1HaGAqAe8Bhq :Edij1HaGAqAe8Bfp).
+:aeMb1HaGAqAe8Bl0 rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:QFOaFHaGAqAe8A_X owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:RxdD1HaGAqAe8Be6 :IJML1HaGAqAe8Bhq :Edij1HaGAqAe8Bfp)
+].
+:aeMb1HaGAqAe8Bl0 rdf:type gufo:Role.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:BRMyq3aFYEGUExwV :g_eSq3aFYEGUExvJ :mU.yq3aFYEGUExxO).
+:Pg.JFHaGAqAe8BSn rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Organization\\".
+:QFOaFHaGAqAe8A_X owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:BRMyq3aFYEGUExwV :g_eSq3aFYEGUExvJ :mU.yq3aFYEGUExxO)
+].
+:Pg.JFHaGAqAe8BSn rdfs:subClassOf :VvxaFHaGAqAe8BAf.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:6YQN9A6AUB1UpEmi :hWgN9A6AUB1UpEmU).
+:Pg.JFHaGAqAe8BSn rdfs:subClassOf gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:QFOaFHaGAqAe8A_X owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:6YQN9A6AUB1UpEmi :hWgN9A6AUB1UpEmU)
+].
+:E9Rf1HaGAqAe8ByE rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Multi-person Household\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:bPlAZnaGAqAe8DZ1 :QKFAZnaGAqAe8DZp).
+:E9Rf1HaGAqAe8ByE rdfs:subClassOf :haqP1HaGAqAe8Bt7.
+:pZHbpnaGAqAe8DEo owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:bPlAZnaGAqAe8DZ1 :QKFAZnaGAqAe8DZp)
+].
+:E9Rf1HaGAqAe8ByE rdf:type gufo:Phase.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:mkDcq3aFYEGUExq. :3sNy_vaFYFAUAi2Q).
+:h6rr1HaGAqAe8Bkn rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Spouse\\".
+:1so2FHaGAqAe8BBx owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:mkDcq3aFYEGUExq. :3sNy_vaFYFAUAi2Q)
+].
+:h6rr1HaGAqAe8Bkn rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Kvsa_vaFYFAUAi9l :jGsa_vaFYFAUAi9Z :UFMa_vaFYFAUAi9H :nopp_vaFYFAUAjaU).
+:h6rr1HaGAqAe8Bkn rdf:type gufo:Role.
+:mkDcq3aFYEGUExq. owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:Kvsa_vaFYFAUAi9l :jGsa_vaFYFAUAi9Z :UFMa_vaFYFAUAi9H :nopp_vaFYFAUAjaU)
+].
+:RxdD1HaGAqAe8Be6 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Man\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:ztXa03aFYFAUAtTn :prHa03aFYFAUAtTD :rdna03aFYFAUAtTV).
+:RxdD1HaGAqAe8Be6 rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:5qfNiXaD.AAAARX9 owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:ztXa03aFYFAUAtTn :prHa03aFYFAUAtTD :rdna03aFYFAUAtTV)
+].
+:RxdD1HaGAqAe8Be6 rdf:type gufo:Role.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:KgBQ03aFYFAUAkBD :jzZQ03aFYFAUAkB9 :2fOQ03aFYFAUAkAr :d3hQ03aFYFAUAkBR).
+:OL2n1HaGAqAe8BqQ rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Divorced from RP\\".
+:5qfNiXaD.AAAARX9 owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:KgBQ03aFYFAUAkBD :jzZQ03aFYFAUAkB9 :2fOQ03aFYFAUAkAr :d3hQ03aFYFAUAkBR)
+].
+:OL2n1HaGAqAe8BqQ rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:oJvG03aFYFAUAtbr :HcpG03aFYFAUAtau).
+:OL2n1HaGAqAe8BqQ rdf:type gufo:Role.
+:KgBQ03aFYFAUAkBD owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:oJvG03aFYFAUAtbr :HcpG03aFYFAUAtau)
+].
+:J9Eb1HaGAqAe8Blh rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Divorced\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:jBza_vaFYFAUAjBx :xYba_vaFYFAUAjB9).
+:J9Eb1HaGAqAe8Blh rdfs:subClassOf :QFOaFHaGAqAe8A_X.
+:jzZQ03aFYFAUAkB9 owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:jBza_vaFYFAUAjBx :xYba_vaFYFAUAjB9)
+].
+:J9Eb1HaGAqAe8Blh rdf:type gufo:Role.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:xBiLuPaAUAACnkcA :jvnXuPaAUAACnkcz).
+:OAOUzHaGAqAe8Co8 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Contact Info\\".
+:KjzjiXaD.AAAARkQ owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:xBiLuPaAUAACnkcA :jvnXuPaAUAACnkcz)
+].
+:OAOUzHaGAqAe8Co8 rdfs:subClassOf gufo:Quality;
+    rdf:type gufo:Kind.
+:AgZE2faFYEGQT610 owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:F7LE2faFYEGQT62h :cwjE2faFYEGQT62S)
+].
+:GyZ0zHaGAqAe8CuO rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Stay\\".
+:vdNE2faFYEGQT61_ owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:I6FU2faFYEGQT64Z :zJJU2faFYEGQT64I)
+].
+:GyZ0zHaGAqAe8CuO rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Y3Ja2faFYEGQT7Ns :hMMq2faFYEGQT7LJ).
+:1Le_1HaGAqAe8B1c rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Resident in Healthcare Institution\\".
+:cwjE2faFYEGQT62S owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:Y3Ja2faFYEGQT7Ns :hMMq2faFYEGQT7LJ)
+].
+:1Le_1HaGAqAe8B1c rdfs:subClassOf :KqqJFHaGAqAe8BR_;
+    rdf:type gufo:Role.
+:31ekZnaGAqAeDg.4 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Court Decision\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:tp7kNHaGAqAe8B_i rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Social Relationship\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:ZzJ3lnaGAqAeDh8k rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Marriage\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:90pflnaGAqAeDiHe rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Legal Parent\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Role.
+:Qcjr1HaGAqAe8Bj4 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Single\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Role.
+:1l.ANHaGAqAe8B4A rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"General Practitioner\\";
+    rdfs:subClassOf :ZstQ1naGAqAeDjlZ;
+    rdf:type gufo:Role.
+:jlAkVnaGAqAeDikV rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"GP Registration\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:dheOVnaGAqAeDi7x rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Language Capability\\";
+    rdfs:subClassOf gufo:ExtrinsicMode;
+    rdf:type gufo:Kind.
+:rNNOVnaGAqAeDi9t rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Language\\";
+    rdfs:subClassOf gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:Q5BQ1naGAqAeDjka rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Healthcare Professional\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Role.
+:PfrZFHaGAqAe8BU. rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"CIZ\\";
+    rdfs:subClassOf :Pg.JFHaGAqAe8BSn;
+    rdf:type gufo:SubKind.
+:gbaJFHaGAqAe8BSL rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Healthcare Office\\";
+    rdfs:subClassOf :Pg.JFHaGAqAe8BSn;
+    rdf:type gufo:SubKind.
+:ZstQ1naGAqAeDjlZ rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Medical Doctor\\";
+    rdfs:subClassOf :C1w98faGAqACDiyu, :4pGxyXaFYFAUAgx_;
+    rdf:type gufo:Role.
+:qY0g1naGAqAeDjao rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Diagnosis\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:WAFZVnaGAqAeDjOi rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Disease\\";
+    rdfs:subClassOf :aHpZVnaGAqAeDjOM;
+    rdf:type gufo:Kind.
+:qy0XVnaGAqAeDjWY rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Disability\\";
+    rdfs:subClassOf :aHpZVnaGAqAeDjOM;
+    rdf:type gufo:Kind.
+:amlZVnaGAqAeDjOu rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Disorder\\";
+    rdfs:subClassOf :aHpZVnaGAqAeDjOM;
+    rdf:type gufo:Kind.
+:aHpZVnaGAqAeDjOM rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Medical Condition\\";
+    rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:Category.
+:0WXM1naGAqAeDj8s rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Prognosis\\";
+    rdf:type gufo:Kind.
+:J3_W1naGAqAeDkBF rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Disorder Question\\";
+    rdfs:subClassOf gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:Oaq21naGAqAeDkC0 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Disorder Question Assessment\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:.icsDnaGAqAeDkOv rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Restriction\\";
+    rdfs:subClassOf :aHpZVnaGAqAeDjOM;
+    rdf:type gufo:Kind.
+:vcOsDnaGAqAeDkPr rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Restriction Assessment\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:kxtsDnaGAqAeDkQY rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Disorder Assessment\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:.s56DnaGAqAeDkZi rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Restriction Question Assessment\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:ZlkGDnaGAqAeDkas rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Restriction Question\\";
+    rdfs:subClassOf gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:ioSOiXaD.AAAAQrr rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Healthcare Institute (Zorginstituut Nederland)\\";
+    rdfs:subClassOf :Pg.JFHaGAqAe8BSn;
+    rdf:type gufo:SubKind.
+:ysg.iXaD.AAAAQ05 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Municipality (Gemeente)\\";
+    rdfs:subClassOf :Pg.JFHaGAqAe8BSn;
+    rdf:type gufo:SubKind.
+:6c.piXaD.AAAAQ8z rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Healthcare Service Agreement\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:4VC5iXaD.AAAARBd rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"SVB\\";
+    rdfs:subClassOf :Pg.JFHaGAqAe8BSn;
+    rdf:type gufo:SubKind.
+:ZPy5iXaD.AAAARBt rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"CAK\\";
+    rdfs:subClassOf :Pg.JFHaGAqAe8BSn;
+    rdf:type gufo:SubKind.
+:VLaUyXaD.AAAARuF rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Resident of The Netherlands\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Role.
+:Moq0yXaD.AAAARxJ rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Dutch Citizen\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Role.
+:HCl0yXaD.AAAARyY rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Non-Resident\\";
+    rdfs:subClassOf :Moq0yXaD.AAAARxJ;
+    rdf:type gufo:Role.
+:IS3MyXaD.AAAAR10 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"BSN Holder\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Role.
+:4pGxyXaFYFAUAgx_ rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Medical Professional\\";
+    rdf:type gufo:Role.
+:8xNw43aAUBAysYls rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Civil Registration\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:XAMY43aAUBAysY5T rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Legal Representative\\";
+    rdfs:subClassOf :VvxaFHaGAqAe8BAf, gufo:Endurant;
+    rdf:type gufo:RoleMixin.
+:o0TY43aAUBAysY7G rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Legal Representation\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:g_eSq3aFYEGUExvJ rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Living Person\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Phase.
+:BRMyq3aFYEGUExwV rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Deceased Person\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Phase.
+:mU.yq3aFYEGUExxO rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Unborn\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Phase.
+:YmaWr3aFYEGUEyAD rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Closed\\";
+    rdfs:subClassOf :8XCKr3aFYEGUExzu;
+    rdf:type gufo:Phase.
+:zrCs_vaFYFAUAhzW rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Healthcare Contact\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Role.
+:F9Kc_vaFYFAUAh5I rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Healthcare Contact Assigment\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:FgM8_vaFYFAUAh64 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Eligible Healthcare Client\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Role.
+:ru_pUfaFYEGUHFbJ rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Spatial Region\\";
+    rdf:type gufo:Kind.
+:CJxFUfaFYEGUHFkc rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Inhabitant\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Role.
+:CzCdUfaFYEGUHGn9 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Regional  Allocation Based on Inhabitantship\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:C1w98faGAqACDiyu rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"BIG Registred Healthcare Professional\\";
+    rdfs:subClassOf :Q5BQ1naGAqAeDjka;
+    rdf:type gufo:Role.
+:aAym_vaFYFAUAjKF rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Death\\";
+    rdfs:subClassOf gufo:Event.
+:s2DG9A6AUB1UpDEU rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Name\\";
+    rdfs:subClassOf gufo:Quality;
+    rdf:type gufo:Kind.
+:QuXR9A6AUB1UpETp rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\" Adult Living Alone\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Role.
+:zNDZ9A6AUB1UpEdJ rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\" Child Living with Parents\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Role.
+:YjJ59A6AUB1UpEek rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\" Adult Living with Partner\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Role.
+:o1gF9A6AUB1UpEgK rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\" Adult Living with Partner and Children\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Role.
+:MQkF9A6AUB1UpEgc rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\" Adult Living with Children\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Role.
+:zG6F9A6AUB1UpEh8 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\" Adult Living in Adult Household\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Role.
+:hWgN9A6AUB1UpEmU rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Child\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Phase.
+:6YQN9A6AUB1UpEmi rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Adult\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Phase.
+:gOSY03aFYFAUAlkF rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Long Term Healthcare Provider\\";
+    rdfs:subClassOf :C5QMzHaGAqAe8Cwk;
+    rdf:type gufo:Role.
+:bPlAZnaGAqAe8DZ1 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Negative Decision\\";
+    rdfs:subClassOf :pZHbpnaGAqAe8DEo;
+    rdf:type gufo:SubKind.
+:QKFAZnaGAqAe8DZp rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Positive Decision\\";
+    rdfs:subClassOf :pZHbpnaGAqAe8DEo;
+    rdf:type gufo:SubKind.
+:qk33pnaGAqAe8DLl rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Request Reviewer\\";
+    rdfs:subClassOf :PfrZFHaGAqAe8BU.;
+    rdf:type gufo:Role.
+:pZHbpnaGAqAe8DEo rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Request Decision\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:tURRFHaGAqAe8BLb rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Request Beneficiary\\";
+    rdfs:subClassOf :tSM0yXaD.AAAARwK;
+    rdf:type gufo:Role.
+:D51aFHaGAqAe8BBd rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"LTC Request\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:SM4RFHaGAqAe8BJD rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Request Author\\";
+    rdfs:subClassOf :QFOaFHaGAqAe8A_X;
+    rdf:type gufo:Role.
+:mkDcq3aFYEGUExq. rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Inactive LTC Indication\\";
+    rdfs:subClassOf :1so2FHaGAqAe8BBx;
+    rdf:type gufo:Phase.
+:UIUczHaGAqAe8C4E rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Experiment\\";
+    rdfs:subClassOf :1so2FHaGAqAe8BBx;
+    rdf:type gufo:SubKind.
+:cFQczHaGAqAe8C26 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"CIZ/BJZ Indication\\";
+    rdfs:subClassOf :1so2FHaGAqAe8BBx;
+    rdf:type gufo:SubKind.
+:Wm_szHaGAqAe8C2o rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"BJZ Indication\\";
+    rdfs:subClassOf :1so2FHaGAqAe8BBx;
+    rdf:type gufo:SubKind.
+:mBbszHaGAqAe8C2B rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"CIZ Indication\\";
+    rdfs:subClassOf :1so2FHaGAqAe8BBx;
+    rdf:type gufo:SubKind.
+:jVSQzHaGAqAe8CBF rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Indication Contact\\";
+    rdfs:subClassOf :zrCs_vaFYFAUAhzW;
+    rdf:type gufo:Role.
+:ppMS_vaFYFAUAikI rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"LTC Contact Assignment\\";
+    rdfs:subClassOf :F9Kc_vaFYFAUAh5I;
+    rdf:type gufo:SubKind.
+:3sNy_vaFYFAUAi2Q rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Active LTC Indication\\";
+    rdfs:subClassOf :1so2FHaGAqAe8BBx;
+    rdf:type gufo:Phase.
+:UFMa_vaFYFAUAi9H rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Inactive by Replacement\\";
+    rdfs:subClassOf :mkDcq3aFYEGUExq.;
+    rdf:type gufo:Phase.
+:jGsa_vaFYFAUAi9Z rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Inactive by Death\\";
+    rdfs:subClassOf :mkDcq3aFYEGUExq.;
+    rdf:type gufo:Phase.
+:Kvsa_vaFYFAUAi9l rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Inactive by Fulfillment\\";
+    rdfs:subClassOf :mkDcq3aFYEGUExq.;
+    rdf:type gufo:Phase.
+:nopp_vaFYFAUAjaU rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Pending Indication\\";
+    rdfs:subClassOf :mkDcq3aFYEGUExq.;
+    rdf:type gufo:Phase.
+:1so2FHaGAqAe8BBx rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"LTC Indication\\";
+    rdfs:subClassOf :f4Sg1naGAqAeDja_, gufo:Relator;
+    rdf:type gufo:Kind.
+:rtZAq3aFYEGUExSq rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"LTC Indication Budget\\";
+    rdfs:subClassOf :Pw6ii3aFYEGUEy29, gufo:Quality;
+    rdf:type gufo:Kind.
+:VzzAq3aFYEGUExTN rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"LTC Allocation Budget\\";
+    rdfs:subClassOf :Pw6ii3aFYEGUEy29, gufo:Quality;
+    rdf:type gufo:Kind.
+:Pw6ii3aFYEGUEy29 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"LTC Monetary Budget\\";
+    rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:Category.
+:oJvG03aFYFAUAtbr rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Direct Start Allocation\\";
+    rdfs:subClassOf :KgBQ03aFYFAUAkBD;
+    rdf:type gufo:Phase.
+:HcpG03aFYFAUAtau rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Pending Allocation\\";
+    rdfs:subClassOf :KgBQ03aFYFAUAkBD;
+    rdf:type gufo:Phase.
+:Yo6G03aFYFAUAtZo rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Preferred LTH Provider\\";
+    rdfs:subClassOf :gOSY03aFYFAUAlkF;
+    rdf:type gufo:Role.
+:ztXa03aFYFAUAtTn rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Administrative LTC Allocation\\";
+    rdfs:subClassOf :5qfNiXaD.AAAARX9;
+    rdf:type gufo:SubKind.
+:rdna03aFYFAUAtTV rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Transitional LTC Allocation\\";
+    rdfs:subClassOf :5qfNiXaD.AAAARX9;
+    rdf:type gufo:SubKind.
+:prHa03aFYFAUAtTD rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Regular LTC Allocation\\";
+    rdfs:subClassOf :5qfNiXaD.AAAARX9;
+    rdf:type gufo:SubKind.
+:6URS03aFYFAUAqvB rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Allocated LTH Client\\";
+    rdfs:subClassOf :KqqJFHaGAqAe8BR_;
+    rdf:type gufo:Role.
+:jzZQ03aFYFAUAkB9 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Declined Allocation\\";
+    rdfs:subClassOf :5qfNiXaD.AAAARX9;
+    rdf:type gufo:Phase.
+:d3hQ03aFYFAUAkBR rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Revoked Allocation\\";
+    rdfs:subClassOf :5qfNiXaD.AAAARX9;
+    rdf:type gufo:Phase.
+:KgBQ03aFYFAUAkBD rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Accepted Allocation\\";
+    rdfs:subClassOf :5qfNiXaD.AAAARX9;
+    rdf:type gufo:Phase.
+:2fOQ03aFYFAUAkAr rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Requested Allocation\\";
+    rdfs:subClassOf :5qfNiXaD.AAAARX9;
+    rdf:type gufo:Phase.
+:C5QMzHaGAqAe8Cwk rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Healthcare Provider\\";
+    rdfs:subClassOf :Pg.JFHaGAqAe8BSn;
+    rdf:type gufo:Role.
+:jBza_vaFYFAUAjBx rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Declined by Client\\";
+    rdfs:subClassOf :jzZQ03aFYFAUAkB9;
+    rdf:type gufo:Phase.
+:xYba_vaFYFAUAjB9 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Declined by Provider\\";
+    rdfs:subClassOf :jzZQ03aFYFAUAkB9;
+    rdf:type gufo:Phase.
+:jvnXuPaAUAACnkcz rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Care at Healthcare Organisation Agreement\\";
+    rdfs:subClassOf :KjzjiXaD.AAAARkQ;
+    rdf:type gufo:SubKind.
+:xBiLuPaAUAACnkcA rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Care at Home Agreement\\";
+    rdfs:subClassOf :KjzjiXaD.AAAARkQ;
+    rdf:type gufo:SubKind.
+:NK8LuPaAUAACnkbx rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Stay\\";
+    rdfs:subClassOf gufo:Event.
+:UxjZsPaAUAACnkHy rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"LTC Room key provided\\";
+    rdfs:subClassOf gufo:Event.
+:bseLQ_aFYEGUXyzA rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Stay Agreement\\";
+    rdfs:subClassOf :jvnXuPaAUAACnkcz;
+    rdf:type gufo:SubKind.
+:eicrQ_aFYEGUXy45 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Dagbesteding\\";
+    rdfs:subClassOf :jvnXuPaAUAACnkcz;
+    rdf:type gufo:SubKind.
+:3kN0r3aFYEGUExxc rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Healthcare Office Client Dossier\\";
+    rdfs:subClassOf :8XCKr3aFYEGUExzu;
+    rdf:type gufo:SubKind.
+:8XCKr3aFYEGUExzu rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Dossier\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:oBjeePaAUAACnl_h rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Healthcare Provider Client Dossier\\";
+    rdfs:subClassOf :8XCKr3aFYEGUExzu;
+    rdf:type gufo:SubKind.
+:f4Sg1naGAqAeDja_ rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Right\\";
+    rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:Category.
+:Harg2faFYEGQT6aD rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Preferred Healthcare Provider\\";
+    rdfs:subClassOf :C5QMzHaGAqAe8Cwk;
+    rdf:type gufo:Role.
+:5dZI2faFYEGQT6ry rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Preferred Care Location Type\\";
+    rdfs:subClassOf :AgZE2faFYEGQT610, gufo:Endurant;
+    rdf:type gufo:Category.
+:1O7w2faFYEGQT6oD rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Preferred Financing Type\\";
+    rdfs:subClassOf :vdNE2faFYEGQT61_, gufo:Endurant;
+    rdf:type gufo:Category.
+:cwjE2faFYEGQT62S rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Care at Home\\";
+    rdfs:subClassOf :AgZE2faFYEGQT610, :XXne.faAUB1IcX10, gufo:Endurant;
+    rdf:type gufo:RoleMixin.
+:Y3Ja2faFYEGQT7Ns rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Full Care (VPT)\\";
+    rdfs:subClassOf :cwjE2faFYEGQT62S, gufo:Endurant;
+    rdf:type gufo:RoleMixin.
+:hMMq2faFYEGQT7LJ rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Modular Care (MPT)\\";
+    rdfs:subClassOf :cwjE2faFYEGQT62S, gufo:Endurant;
+    rdf:type gufo:RoleMixin.
+:F7LE2faFYEGQT62h rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Stay at Healthcare Provider\\";
+    rdfs:subClassOf :AgZE2faFYEGQT610, :XXne.faAUB1IcX10, gufo:Endurant;
+    rdf:type gufo:RoleMixin.
+:XXne.faAUB1IcX10 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Care Location\\";
+    rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:RoleMixin.
+:tSM0yXaD.AAAARwK rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Eligible LTH Client\\";
+    rdfs:subClassOf :IS3MyXaD.AAAAR10, :FgM8_vaFYFAUAh64;
+    rdf:type gufo:Role.
+:hcki43aAUBAyscBo rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Eligibility Declaration\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:KqqJFHaGAqAe8BR_ rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"LTH Client\\";
+    rdfs:subClassOf :tSM0yXaD.AAAARwK;
+    rdf:type gufo:Role.
+:tWtq4_aFYEGQWxkJ rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Allocated Healthcare Service Package\\";
+    rdfs:subClassOf :rj95w_aFYEGUX0iF, gufo:Relator;
+    rdf:type gufo:Kind.
+:W06a4_aFYEGQWxre rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Delivered Healthcare Service Package\\";
+    rdfs:subClassOf :rj95w_aFYEGUX0iF, gufo:Relator;
+    rdf:type gufo:Kind.
+:uO0Q2faFYEGQT6aq rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Client Preference\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:5qfNiXaD.AAAARX9 rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"LTC Allocation\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:KjzjiXaD.AAAARkQ rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"LTC Service Agreement\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:aKJs03aFYFAUAnVm rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Indicated Healthcare Service Package\\";
+    rdfs:subClassOf :rj95w_aFYEGUX0iF, gufo:Relator;
+    rdf:type gufo:Kind.
+:rj95w_aFYEGUX0iF rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Healthcare Service Package\\";
+    rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:Category.
+"
+`;
+
+exports[`should transform iStandard model to gUFO 2 1`] = `
+"<https://example.com> <rdf:type> <owl:Ontology> .
+<https://example.com> <owl:imports> <gufo:> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:QFOaFHaGAqAe8A_X> <:Pg.JFHaGAqAe8BSn> <:rNNOVnaGAqAeDi9t> <:J3_W1naGAqAeDkBF> <:ZlkGDnaGAqAeDkas>) .
+<:VvxaFHaGAqAe8BAf> <rdf:type> <owl:Class> .
+<:VvxaFHaGAqAe8BAf> <rdf:type> <owl:NamedIndividual> .
+<:VvxaFHaGAqAe8BAf> <rdfs:label> \\"Agent\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Qcjr1HaGAqAe8Bj4> <:OL2n1HaGAqAe8BqQ> <:J9Eb1HaGAqAe8Blh> <:h6rr1HaGAqAe8Bkn> <:aeMb1HaGAqAe8Bl0> <:PzJH1HaGAqAe8Bo6> <:QZ.71HaGAqAe8BnP> <:XtIb1HaGAqAe8BlP>) .
+<:VvxaFHaGAqAe8BAf> <rdfs:subClassOf> <gufo:Endurant> .
+<:VvxaFHaGAqAe8BAf> <rdf:type> <gufo:Category> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:RxdD1HaGAqAe8Be6> <:IJML1HaGAqAe8Bhq> <:Edij1HaGAqAe8Bfp>) .
+<:haqP1HaGAqAe8Bt7> <rdf:type> <owl:Class> .
+<:haqP1HaGAqAe8Bt7> <rdf:type> <owl:NamedIndividual> .
+<:haqP1HaGAqAe8Bt7> <rdfs:label> \\"Household\\" .
+<:QFOaFHaGAqAe8A_X> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:RxdD1HaGAqAe8Be6> <:IJML1HaGAqAe8Bhq> <:Edij1HaGAqAe8Bfp>)
+] .
+<:haqP1HaGAqAe8Bt7> <rdfs:subClassOf> <gufo:Collection> .
+<:haqP1HaGAqAe8Bt7> <rdf:type> <gufo:Kind> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:ztXa03aFYFAUAtTn> <:prHa03aFYFAUAtTD> <:rdna03aFYFAUAtTV>) .
+<:vcU_1HaGAqAe8Bzz> <rdf:type> <owl:Class> .
+<:vcU_1HaGAqAe8Bzz> <rdf:type> <owl:NamedIndividual> .
+<:vcU_1HaGAqAe8Bzz> <rdfs:label> \\"Household Member\\" .
+<:5qfNiXaD.AAAARX9> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:ztXa03aFYFAUAtTn> <:prHa03aFYFAUAtTD> <:rdna03aFYFAUAtTV>)
+] .
+<:vcU_1HaGAqAe8Bzz> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:KgBQ03aFYFAUAkBD> <:jzZQ03aFYFAUAkB9> <:2fOQ03aFYFAUAkAr> <:d3hQ03aFYFAUAkBR>) .
+<:vcU_1HaGAqAe8Bzz> <rdf:type> <gufo:Role> .
+<:5qfNiXaD.AAAARX9> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:KgBQ03aFYFAUAkBD> <:jzZQ03aFYFAUAkB9> <:2fOQ03aFYFAUAkAr> <:d3hQ03aFYFAUAkBR>)
+] .
+<:QFOaFHaGAqAe8A_X> <rdf:type> <owl:Class> .
+<:QFOaFHaGAqAe8A_X> <rdf:type> <owl:NamedIndividual> .
+<:QFOaFHaGAqAe8A_X> <rdfs:label> \\"Person\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:BRMyq3aFYEGUExwV> <:g_eSq3aFYEGUExvJ> <:mU.yq3aFYEGUExxO>) .
+<:QFOaFHaGAqAe8A_X> <rdfs:subClassOf> <:VvxaFHaGAqAe8BAf> .
+<:QFOaFHaGAqAe8A_X> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:BRMyq3aFYEGUExwV> <:g_eSq3aFYEGUExvJ> <:mU.yq3aFYEGUExxO>)
+] .
+<:QFOaFHaGAqAe8A_X> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:QFOaFHaGAqAe8A_X> <rdf:type> <gufo:Kind> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:mkDcq3aFYEGUExq.> <:3sNy_vaFYFAUAi2Q>) .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:GyZ0zHaGAqAe8CuO> <:31ekZnaGAqAeDg.4> <:tp7kNHaGAqAe8B_i> <:ZzJ3lnaGAqAeDh8k> <:jlAkVnaGAqAeDikV> <:qY0g1naGAqAeDjao> <:Oaq21naGAqAeDkC0> <:vcOsDnaGAqAeDkPr> <:kxtsDnaGAqAeDkQY> <:.s56DnaGAqAeDkZi> <:6c.piXaD.AAAAQ8z> <:8xNw43aAUBAysYls> <:o0TY43aAUBAysY7G> <:F9Kc_vaFYFAUAh5I> <:CzCdUfaFYEGUHGn9> <:pZHbpnaGAqAe8DEo> <:D51aFHaGAqAe8BBd> <:1so2FHaGAqAe8BBx> <:8XCKr3aFYEGUExzu> <:hcki43aAUBAyscBo> <:tWtq4_aFYEGQWxkJ> <:W06a4_aFYEGQWxre> <:uO0Q2faFYEGQT6aq> <:5qfNiXaD.AAAARX9> <:KjzjiXaD.AAAARkQ> <:aKJs03aFYFAUAnVm>) .
+<:Edij1HaGAqAe8Bfp> <rdf:type> <owl:Class> .
+<:Edij1HaGAqAe8Bfp> <rdf:type> <owl:NamedIndividual> .
+<:Edij1HaGAqAe8Bfp> <rdfs:label> \\"Woman\\" .
+<:1so2FHaGAqAe8BBx> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:mkDcq3aFYEGUExq.> <:3sNy_vaFYFAUAi2Q>)
+] .
+<:Edij1HaGAqAe8Bfp> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Kvsa_vaFYFAUAi9l> <:jGsa_vaFYFAUAi9Z> <:UFMa_vaFYFAUAi9H> <:nopp_vaFYFAUAjaU>) .
+<:Edij1HaGAqAe8Bfp> <rdf:type> <gufo:Role> .
+<:mkDcq3aFYEGUExq.> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:Kvsa_vaFYFAUAi9l> <:jGsa_vaFYFAUAi9Z> <:UFMa_vaFYFAUAi9H> <:nopp_vaFYFAUAjaU>)
+] .
+<:XtIb1HaGAqAe8BlP> <rdf:type> <owl:Class> .
+<:XtIb1HaGAqAe8BlP> <rdf:type> <owl:NamedIndividual> .
+<:XtIb1HaGAqAe8BlP> <rdfs:label> \\"Widow/Widower\\" .
+<:AgZE2faFYEGQT610> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:F7LE2faFYEGQT62h> <:cwjE2faFYEGQT62S>)
+] .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:dheOVnaGAqAeDi7x> <:WAFZVnaGAqAeDjOi> <:qy0XVnaGAqAeDjWY> <:amlZVnaGAqAeDjOu> <:0WXM1naGAqAeDj8s> <:.icsDnaGAqAeDkOv> <:ru_pUfaFYEGUHFbJ>) .
+<:XtIb1HaGAqAe8BlP> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:vdNE2faFYEGQT61_> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:I6FU2faFYEGQT64Z> <:zJJU2faFYEGQT64I>)
+] .
+<:XtIb1HaGAqAe8BlP> <rdf:type> <gufo:Role> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Y3Ja2faFYEGQT7Ns> <:hMMq2faFYEGQT7LJ>) .
+<:IJML1HaGAqAe8Bhq> <rdf:type> <owl:Class> .
+<:IJML1HaGAqAe8Bhq> <rdf:type> <owl:NamedIndividual> .
+<:IJML1HaGAqAe8Bhq> <rdfs:label> \\"Unknown\\" .
+<:cwjE2faFYEGQT62S> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:Y3Ja2faFYEGQT7Ns> <:hMMq2faFYEGQT7LJ>)
+] .
+<:IJML1HaGAqAe8Bhq> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:xBiLuPaAUAACnkcA> <:jvnXuPaAUAACnkcz>) .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:OAOUzHaGAqAe8Co8> <:s2DG9A6AUB1UpDEU> <:rtZAq3aFYEGUExSq> <:VzzAq3aFYEGUExTN>) .
+<:IJML1HaGAqAe8Bhq> <rdf:type> <gufo:Role> .
+<:KjzjiXaD.AAAARkQ> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:xBiLuPaAUAACnkcA> <:jvnXuPaAUAACnkcz>)
+] .
+<:LWsf1HaGAqAe8Bw2> <rdf:type> <owl:Class> .
+<:LWsf1HaGAqAe8Bw2> <rdf:type> <owl:NamedIndividual> .
+<:LWsf1HaGAqAe8Bw2> <rdfs:label> \\"Single Person Household\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:bPlAZnaGAqAe8DZ1> <:QKFAZnaGAqAe8DZp>) .
+<:LWsf1HaGAqAe8Bw2> <rdfs:subClassOf> <:haqP1HaGAqAe8Bt7> .
+<:pZHbpnaGAqAe8DEo> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:bPlAZnaGAqAe8DZ1> <:QKFAZnaGAqAe8DZp>)
+] .
+<:LWsf1HaGAqAe8Bw2> <rdf:type> <gufo:Phase> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:oJvG03aFYFAUAtbr> <:HcpG03aFYFAUAtau>) .
+<:PzJH1HaGAqAe8Bo6> <rdf:type> <owl:Class> .
+<:PzJH1HaGAqAe8Bo6> <rdf:type> <owl:NamedIndividual> .
+<:PzJH1HaGAqAe8Bo6> <rdfs:label> \\"Separated from RP\\" .
+<:KgBQ03aFYFAUAkBD> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:oJvG03aFYFAUAtbr> <:HcpG03aFYFAUAtau>)
+] .
+<:PzJH1HaGAqAe8Bo6> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:jBza_vaFYFAUAjBx> <:xYba_vaFYFAUAjB9>) .
+<:PzJH1HaGAqAe8Bo6> <rdf:type> <gufo:Role> .
+<:jzZQ03aFYFAUAkB9> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:jBza_vaFYFAUAjBx> <:xYba_vaFYFAUAjB9>)
+] .
+<:QZ.71HaGAqAe8BnP> <rdf:type> <owl:Class> .
+<:QZ.71HaGAqAe8BnP> <rdf:type> <owl:NamedIndividual> .
+<:QZ.71HaGAqAe8BnP> <rdfs:label> \\"Separated\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:6YQN9A6AUB1UpEmi> <:hWgN9A6AUB1UpEmU>) .
+<:QZ.71HaGAqAe8BnP> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:QFOaFHaGAqAe8A_X> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:6YQN9A6AUB1UpEmi> <:hWgN9A6AUB1UpEmU>)
+] .
+<:QZ.71HaGAqAe8BnP> <rdf:type> <gufo:Role> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Qcjr1HaGAqAe8Bj4> <:OL2n1HaGAqAe8BqQ> <:J9Eb1HaGAqAe8Blh> <:h6rr1HaGAqAe8Bkn> <:aeMb1HaGAqAe8Bl0> <:PzJH1HaGAqAe8Bo6> <:QZ.71HaGAqAe8BnP> <:XtIb1HaGAqAe8BlP>) .
+<:aeMb1HaGAqAe8Bl0> <rdf:type> <owl:Class> .
+<:aeMb1HaGAqAe8Bl0> <rdf:type> <owl:NamedIndividual> .
+<:aeMb1HaGAqAe8Bl0> <rdfs:label> \\"Registered Partner\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:RxdD1HaGAqAe8Be6> <:IJML1HaGAqAe8Bhq> <:Edij1HaGAqAe8Bfp>) .
+<:aeMb1HaGAqAe8Bl0> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:QFOaFHaGAqAe8A_X> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:RxdD1HaGAqAe8Be6> <:IJML1HaGAqAe8Bhq> <:Edij1HaGAqAe8Bfp>)
+] .
+<:aeMb1HaGAqAe8Bl0> <rdf:type> <gufo:Role> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:BRMyq3aFYEGUExwV> <:g_eSq3aFYEGUExvJ> <:mU.yq3aFYEGUExxO>) .
+<:Pg.JFHaGAqAe8BSn> <rdf:type> <owl:Class> .
+<:Pg.JFHaGAqAe8BSn> <rdf:type> <owl:NamedIndividual> .
+<:Pg.JFHaGAqAe8BSn> <rdfs:label> \\"Organization\\" .
+<:QFOaFHaGAqAe8A_X> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:BRMyq3aFYEGUExwV> <:g_eSq3aFYEGUExvJ> <:mU.yq3aFYEGUExxO>)
+] .
+<:Pg.JFHaGAqAe8BSn> <rdfs:subClassOf> <:VvxaFHaGAqAe8BAf> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:6YQN9A6AUB1UpEmi> <:hWgN9A6AUB1UpEmU>) .
+<:Pg.JFHaGAqAe8BSn> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:Pg.JFHaGAqAe8BSn> <rdf:type> <gufo:Kind> .
+<:QFOaFHaGAqAe8A_X> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:6YQN9A6AUB1UpEmi> <:hWgN9A6AUB1UpEmU>)
+] .
+<:E9Rf1HaGAqAe8ByE> <rdf:type> <owl:Class> .
+<:E9Rf1HaGAqAe8ByE> <rdf:type> <owl:NamedIndividual> .
+<:E9Rf1HaGAqAe8ByE> <rdfs:label> \\"Multi-person Household\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:bPlAZnaGAqAe8DZ1> <:QKFAZnaGAqAe8DZp>) .
+<:E9Rf1HaGAqAe8ByE> <rdfs:subClassOf> <:haqP1HaGAqAe8Bt7> .
+<:pZHbpnaGAqAe8DEo> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:bPlAZnaGAqAe8DZ1> <:QKFAZnaGAqAe8DZp>)
+] .
+<:E9Rf1HaGAqAe8ByE> <rdf:type> <gufo:Phase> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:mkDcq3aFYEGUExq.> <:3sNy_vaFYFAUAi2Q>) .
+<:h6rr1HaGAqAe8Bkn> <rdf:type> <owl:Class> .
+<:h6rr1HaGAqAe8Bkn> <rdf:type> <owl:NamedIndividual> .
+<:h6rr1HaGAqAe8Bkn> <rdfs:label> \\"Spouse\\" .
+<:1so2FHaGAqAe8BBx> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:mkDcq3aFYEGUExq.> <:3sNy_vaFYFAUAi2Q>)
+] .
+<:h6rr1HaGAqAe8Bkn> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Kvsa_vaFYFAUAi9l> <:jGsa_vaFYFAUAi9Z> <:UFMa_vaFYFAUAi9H> <:nopp_vaFYFAUAjaU>) .
+<:h6rr1HaGAqAe8Bkn> <rdf:type> <gufo:Role> .
+<:mkDcq3aFYEGUExq.> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:Kvsa_vaFYFAUAi9l> <:jGsa_vaFYFAUAi9Z> <:UFMa_vaFYFAUAi9H> <:nopp_vaFYFAUAjaU>)
+] .
+<:RxdD1HaGAqAe8Be6> <rdf:type> <owl:Class> .
+<:RxdD1HaGAqAe8Be6> <rdf:type> <owl:NamedIndividual> .
+<:RxdD1HaGAqAe8Be6> <rdfs:label> \\"Man\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:ztXa03aFYFAUAtTn> <:prHa03aFYFAUAtTD> <:rdna03aFYFAUAtTV>) .
+<:RxdD1HaGAqAe8Be6> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:5qfNiXaD.AAAARX9> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:ztXa03aFYFAUAtTn> <:prHa03aFYFAUAtTD> <:rdna03aFYFAUAtTV>)
+] .
+<:RxdD1HaGAqAe8Be6> <rdf:type> <gufo:Role> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:KgBQ03aFYFAUAkBD> <:jzZQ03aFYFAUAkB9> <:2fOQ03aFYFAUAkAr> <:d3hQ03aFYFAUAkBR>) .
+<:OL2n1HaGAqAe8BqQ> <rdf:type> <owl:Class> .
+<:OL2n1HaGAqAe8BqQ> <rdf:type> <owl:NamedIndividual> .
+<:OL2n1HaGAqAe8BqQ> <rdfs:label> \\"Divorced from RP\\" .
+<:5qfNiXaD.AAAARX9> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:KgBQ03aFYFAUAkBD> <:jzZQ03aFYFAUAkB9> <:2fOQ03aFYFAUAkAr> <:d3hQ03aFYFAUAkBR>)
+] .
+<:OL2n1HaGAqAe8BqQ> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:oJvG03aFYFAUAtbr> <:HcpG03aFYFAUAtau>) .
+<:OL2n1HaGAqAe8BqQ> <rdf:type> <gufo:Role> .
+<:KgBQ03aFYFAUAkBD> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:oJvG03aFYFAUAtbr> <:HcpG03aFYFAUAtau>)
+] .
+<:J9Eb1HaGAqAe8Blh> <rdf:type> <owl:Class> .
+<:J9Eb1HaGAqAe8Blh> <rdf:type> <owl:NamedIndividual> .
+<:J9Eb1HaGAqAe8Blh> <rdfs:label> \\"Divorced\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:jBza_vaFYFAUAjBx> <:xYba_vaFYFAUAjB9>) .
+<:J9Eb1HaGAqAe8Blh> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:jzZQ03aFYFAUAkB9> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:jBza_vaFYFAUAjBx> <:xYba_vaFYFAUAjB9>)
+] .
+<:J9Eb1HaGAqAe8Blh> <rdf:type> <gufo:Role> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:xBiLuPaAUAACnkcA> <:jvnXuPaAUAACnkcz>) .
+<:OAOUzHaGAqAe8Co8> <rdf:type> <owl:Class> .
+<:OAOUzHaGAqAe8Co8> <rdf:type> <owl:NamedIndividual> .
+<:OAOUzHaGAqAe8Co8> <rdfs:label> \\"Contact Info\\" .
+<:KjzjiXaD.AAAARkQ> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:xBiLuPaAUAACnkcA> <:jvnXuPaAUAACnkcz>)
+] .
+<:OAOUzHaGAqAe8Co8> <rdfs:subClassOf> <gufo:Quality> .
+<:OAOUzHaGAqAe8Co8> <rdf:type> <gufo:Kind> .
+<:AgZE2faFYEGQT610> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:F7LE2faFYEGQT62h> <:cwjE2faFYEGQT62S>)
+] .
+<:GyZ0zHaGAqAe8CuO> <rdf:type> <owl:Class> .
+<:GyZ0zHaGAqAe8CuO> <rdf:type> <owl:NamedIndividual> .
+<:GyZ0zHaGAqAe8CuO> <rdfs:label> \\"Stay\\" .
+<:vdNE2faFYEGQT61_> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:I6FU2faFYEGQT64Z> <:zJJU2faFYEGQT64I>)
+] .
+<:GyZ0zHaGAqAe8CuO> <rdfs:subClassOf> <gufo:Relator> .
+<:GyZ0zHaGAqAe8CuO> <rdf:type> <gufo:Kind> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Y3Ja2faFYEGQT7Ns> <:hMMq2faFYEGQT7LJ>) .
+<:1Le_1HaGAqAe8B1c> <rdf:type> <owl:Class> .
+<:1Le_1HaGAqAe8B1c> <rdf:type> <owl:NamedIndividual> .
+<:1Le_1HaGAqAe8B1c> <rdfs:label> \\"Resident in Healthcare Institution\\" .
+<:cwjE2faFYEGQT62S> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:Y3Ja2faFYEGQT7Ns> <:hMMq2faFYEGQT7LJ>)
+] .
+<:1Le_1HaGAqAe8B1c> <rdfs:subClassOf> <:KqqJFHaGAqAe8BR_> .
+<:1Le_1HaGAqAe8B1c> <rdf:type> <gufo:Role> .
+<:31ekZnaGAqAeDg.4> <rdf:type> <owl:Class> .
+<:31ekZnaGAqAeDg.4> <rdf:type> <owl:NamedIndividual> .
+<:31ekZnaGAqAeDg.4> <rdfs:label> \\"Court Decision\\" .
+<:31ekZnaGAqAeDg.4> <rdfs:subClassOf> <gufo:Relator> .
+<:31ekZnaGAqAeDg.4> <rdf:type> <gufo:Kind> .
+<:tp7kNHaGAqAe8B_i> <rdf:type> <owl:Class> .
+<:tp7kNHaGAqAe8B_i> <rdf:type> <owl:NamedIndividual> .
+<:tp7kNHaGAqAe8B_i> <rdfs:label> \\"Social Relationship\\" .
+<:tp7kNHaGAqAe8B_i> <rdfs:subClassOf> <gufo:Relator> .
+<:tp7kNHaGAqAe8B_i> <rdf:type> <gufo:Kind> .
+<:ZzJ3lnaGAqAeDh8k> <rdf:type> <owl:Class> .
+<:ZzJ3lnaGAqAeDh8k> <rdf:type> <owl:NamedIndividual> .
+<:ZzJ3lnaGAqAeDh8k> <rdfs:label> \\"Marriage\\" .
+<:ZzJ3lnaGAqAeDh8k> <rdfs:subClassOf> <gufo:Relator> .
+<:ZzJ3lnaGAqAeDh8k> <rdf:type> <gufo:Kind> .
+<:90pflnaGAqAeDiHe> <rdf:type> <owl:Class> .
+<:90pflnaGAqAeDiHe> <rdf:type> <owl:NamedIndividual> .
+<:90pflnaGAqAeDiHe> <rdfs:label> \\"Legal Parent\\" .
+<:90pflnaGAqAeDiHe> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:90pflnaGAqAeDiHe> <rdf:type> <gufo:Role> .
+<:Qcjr1HaGAqAe8Bj4> <rdf:type> <owl:Class> .
+<:Qcjr1HaGAqAe8Bj4> <rdf:type> <owl:NamedIndividual> .
+<:Qcjr1HaGAqAe8Bj4> <rdfs:label> \\"Single\\" .
+<:Qcjr1HaGAqAe8Bj4> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:Qcjr1HaGAqAe8Bj4> <rdf:type> <gufo:Role> .
+<:1l.ANHaGAqAe8B4A> <rdf:type> <owl:Class> .
+<:1l.ANHaGAqAe8B4A> <rdf:type> <owl:NamedIndividual> .
+<:1l.ANHaGAqAe8B4A> <rdfs:label> \\"General Practitioner\\" .
+<:1l.ANHaGAqAe8B4A> <rdfs:subClassOf> <:ZstQ1naGAqAeDjlZ> .
+<:1l.ANHaGAqAe8B4A> <rdf:type> <gufo:Role> .
+<:jlAkVnaGAqAeDikV> <rdf:type> <owl:Class> .
+<:jlAkVnaGAqAeDikV> <rdf:type> <owl:NamedIndividual> .
+<:jlAkVnaGAqAeDikV> <rdfs:label> \\"GP Registration\\" .
+<:jlAkVnaGAqAeDikV> <rdfs:subClassOf> <gufo:Relator> .
+<:jlAkVnaGAqAeDikV> <rdf:type> <gufo:Kind> .
+<:dheOVnaGAqAeDi7x> <rdf:type> <owl:Class> .
+<:dheOVnaGAqAeDi7x> <rdf:type> <owl:NamedIndividual> .
+<:dheOVnaGAqAeDi7x> <rdfs:label> \\"Language Capability\\" .
+<:dheOVnaGAqAeDi7x> <rdfs:subClassOf> <gufo:ExtrinsicMode> .
+<:dheOVnaGAqAeDi7x> <rdf:type> <gufo:Kind> .
+<:rNNOVnaGAqAeDi9t> <rdf:type> <owl:Class> .
+<:rNNOVnaGAqAeDi9t> <rdf:type> <owl:NamedIndividual> .
+<:rNNOVnaGAqAeDi9t> <rdfs:label> \\"Language\\" .
+<:rNNOVnaGAqAeDi9t> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:rNNOVnaGAqAeDi9t> <rdf:type> <gufo:Kind> .
+<:Q5BQ1naGAqAeDjka> <rdf:type> <owl:Class> .
+<:Q5BQ1naGAqAeDjka> <rdf:type> <owl:NamedIndividual> .
+<:Q5BQ1naGAqAeDjka> <rdfs:label> \\"Healthcare Professional\\" .
+<:Q5BQ1naGAqAeDjka> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:Q5BQ1naGAqAeDjka> <rdf:type> <gufo:Role> .
+<:PfrZFHaGAqAe8BU.> <rdf:type> <owl:Class> .
+<:PfrZFHaGAqAe8BU.> <rdf:type> <owl:NamedIndividual> .
+<:PfrZFHaGAqAe8BU.> <rdfs:label> \\"CIZ\\" .
+<:PfrZFHaGAqAe8BU.> <rdfs:subClassOf> <:Pg.JFHaGAqAe8BSn> .
+<:PfrZFHaGAqAe8BU.> <rdf:type> <gufo:SubKind> .
+<:gbaJFHaGAqAe8BSL> <rdf:type> <owl:Class> .
+<:gbaJFHaGAqAe8BSL> <rdf:type> <owl:NamedIndividual> .
+<:gbaJFHaGAqAe8BSL> <rdfs:label> \\"Healthcare Office\\" .
+<:gbaJFHaGAqAe8BSL> <rdfs:subClassOf> <:Pg.JFHaGAqAe8BSn> .
+<:gbaJFHaGAqAe8BSL> <rdf:type> <gufo:SubKind> .
+<:ZstQ1naGAqAeDjlZ> <rdf:type> <owl:Class> .
+<:ZstQ1naGAqAeDjlZ> <rdf:type> <owl:NamedIndividual> .
+<:ZstQ1naGAqAeDjlZ> <rdfs:label> \\"Medical Doctor\\" .
+<:ZstQ1naGAqAeDjlZ> <rdfs:subClassOf> <:C1w98faGAqACDiyu> .
+<:ZstQ1naGAqAeDjlZ> <rdfs:subClassOf> <:4pGxyXaFYFAUAgx_> .
+<:ZstQ1naGAqAeDjlZ> <rdf:type> <gufo:Role> .
+<:qY0g1naGAqAeDjao> <rdf:type> <owl:Class> .
+<:qY0g1naGAqAeDjao> <rdf:type> <owl:NamedIndividual> .
+<:qY0g1naGAqAeDjao> <rdfs:label> \\"Diagnosis\\" .
+<:qY0g1naGAqAeDjao> <rdfs:subClassOf> <gufo:Relator> .
+<:qY0g1naGAqAeDjao> <rdf:type> <gufo:Kind> .
+<:WAFZVnaGAqAeDjOi> <rdf:type> <owl:Class> .
+<:WAFZVnaGAqAeDjOi> <rdf:type> <owl:NamedIndividual> .
+<:WAFZVnaGAqAeDjOi> <rdfs:label> \\"Disease\\" .
+<:WAFZVnaGAqAeDjOi> <rdfs:subClassOf> <:aHpZVnaGAqAeDjOM> .
+<:WAFZVnaGAqAeDjOi> <rdf:type> <gufo:Kind> .
+<:qy0XVnaGAqAeDjWY> <rdf:type> <owl:Class> .
+<:qy0XVnaGAqAeDjWY> <rdf:type> <owl:NamedIndividual> .
+<:qy0XVnaGAqAeDjWY> <rdfs:label> \\"Disability\\" .
+<:qy0XVnaGAqAeDjWY> <rdfs:subClassOf> <:aHpZVnaGAqAeDjOM> .
+<:qy0XVnaGAqAeDjWY> <rdf:type> <gufo:Kind> .
+<:amlZVnaGAqAeDjOu> <rdf:type> <owl:Class> .
+<:amlZVnaGAqAeDjOu> <rdf:type> <owl:NamedIndividual> .
+<:amlZVnaGAqAeDjOu> <rdfs:label> \\"Disorder\\" .
+<:amlZVnaGAqAeDjOu> <rdfs:subClassOf> <:aHpZVnaGAqAeDjOM> .
+<:amlZVnaGAqAeDjOu> <rdf:type> <gufo:Kind> .
+<:aHpZVnaGAqAeDjOM> <rdf:type> <owl:Class> .
+<:aHpZVnaGAqAeDjOM> <rdf:type> <owl:NamedIndividual> .
+<:aHpZVnaGAqAeDjOM> <rdfs:label> \\"Medical Condition\\" .
+<:aHpZVnaGAqAeDjOM> <rdfs:subClassOf> <gufo:Endurant> .
+<:aHpZVnaGAqAeDjOM> <rdf:type> <gufo:Category> .
+<:0WXM1naGAqAeDj8s> <rdf:type> <owl:Class> .
+<:0WXM1naGAqAeDj8s> <rdf:type> <owl:NamedIndividual> .
+<:0WXM1naGAqAeDj8s> <rdfs:label> \\"Prognosis\\" .
+<:0WXM1naGAqAeDj8s> <rdf:type> <gufo:Kind> .
+<:J3_W1naGAqAeDkBF> <rdf:type> <owl:Class> .
+<:J3_W1naGAqAeDkBF> <rdf:type> <owl:NamedIndividual> .
+<:J3_W1naGAqAeDkBF> <rdfs:label> \\"Disorder Question\\" .
+<:J3_W1naGAqAeDkBF> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:J3_W1naGAqAeDkBF> <rdf:type> <gufo:Kind> .
+<:Oaq21naGAqAeDkC0> <rdf:type> <owl:Class> .
+<:Oaq21naGAqAeDkC0> <rdf:type> <owl:NamedIndividual> .
+<:Oaq21naGAqAeDkC0> <rdfs:label> \\"Disorder Question Assessment\\" .
+<:Oaq21naGAqAeDkC0> <rdfs:subClassOf> <gufo:Relator> .
+<:Oaq21naGAqAeDkC0> <rdf:type> <gufo:Kind> .
+<:.icsDnaGAqAeDkOv> <rdf:type> <owl:Class> .
+<:.icsDnaGAqAeDkOv> <rdf:type> <owl:NamedIndividual> .
+<:.icsDnaGAqAeDkOv> <rdfs:label> \\"Restriction\\" .
+<:.icsDnaGAqAeDkOv> <rdfs:subClassOf> <:aHpZVnaGAqAeDjOM> .
+<:.icsDnaGAqAeDkOv> <rdf:type> <gufo:Kind> .
+<:vcOsDnaGAqAeDkPr> <rdf:type> <owl:Class> .
+<:vcOsDnaGAqAeDkPr> <rdf:type> <owl:NamedIndividual> .
+<:vcOsDnaGAqAeDkPr> <rdfs:label> \\"Restriction Assessment\\" .
+<:vcOsDnaGAqAeDkPr> <rdfs:subClassOf> <gufo:Relator> .
+<:vcOsDnaGAqAeDkPr> <rdf:type> <gufo:Kind> .
+<:kxtsDnaGAqAeDkQY> <rdf:type> <owl:Class> .
+<:kxtsDnaGAqAeDkQY> <rdf:type> <owl:NamedIndividual> .
+<:kxtsDnaGAqAeDkQY> <rdfs:label> \\"Disorder Assessment\\" .
+<:kxtsDnaGAqAeDkQY> <rdfs:subClassOf> <gufo:Relator> .
+<:kxtsDnaGAqAeDkQY> <rdf:type> <gufo:Kind> .
+<:.s56DnaGAqAeDkZi> <rdf:type> <owl:Class> .
+<:.s56DnaGAqAeDkZi> <rdf:type> <owl:NamedIndividual> .
+<:.s56DnaGAqAeDkZi> <rdfs:label> \\"Restriction Question Assessment\\" .
+<:.s56DnaGAqAeDkZi> <rdfs:subClassOf> <gufo:Relator> .
+<:.s56DnaGAqAeDkZi> <rdf:type> <gufo:Kind> .
+<:ZlkGDnaGAqAeDkas> <rdf:type> <owl:Class> .
+<:ZlkGDnaGAqAeDkas> <rdf:type> <owl:NamedIndividual> .
+<:ZlkGDnaGAqAeDkas> <rdfs:label> \\"Restriction Question\\" .
+<:ZlkGDnaGAqAeDkas> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:ZlkGDnaGAqAeDkas> <rdf:type> <gufo:Kind> .
+<:ioSOiXaD.AAAAQrr> <rdf:type> <owl:Class> .
+<:ioSOiXaD.AAAAQrr> <rdf:type> <owl:NamedIndividual> .
+<:ioSOiXaD.AAAAQrr> <rdfs:label> \\"Healthcare Institute (Zorginstituut Nederland)\\" .
+<:ioSOiXaD.AAAAQrr> <rdfs:subClassOf> <:Pg.JFHaGAqAe8BSn> .
+<:ioSOiXaD.AAAAQrr> <rdf:type> <gufo:SubKind> .
+<:ysg.iXaD.AAAAQ05> <rdf:type> <owl:Class> .
+<:ysg.iXaD.AAAAQ05> <rdf:type> <owl:NamedIndividual> .
+<:ysg.iXaD.AAAAQ05> <rdfs:label> \\"Municipality (Gemeente)\\" .
+<:ysg.iXaD.AAAAQ05> <rdfs:subClassOf> <:Pg.JFHaGAqAe8BSn> .
+<:ysg.iXaD.AAAAQ05> <rdf:type> <gufo:SubKind> .
+<:6c.piXaD.AAAAQ8z> <rdf:type> <owl:Class> .
+<:6c.piXaD.AAAAQ8z> <rdf:type> <owl:NamedIndividual> .
+<:6c.piXaD.AAAAQ8z> <rdfs:label> \\"Healthcare Service Agreement\\" .
+<:6c.piXaD.AAAAQ8z> <rdfs:subClassOf> <gufo:Relator> .
+<:6c.piXaD.AAAAQ8z> <rdf:type> <gufo:Kind> .
+<:4VC5iXaD.AAAARBd> <rdf:type> <owl:Class> .
+<:4VC5iXaD.AAAARBd> <rdf:type> <owl:NamedIndividual> .
+<:4VC5iXaD.AAAARBd> <rdfs:label> \\"SVB\\" .
+<:4VC5iXaD.AAAARBd> <rdfs:subClassOf> <:Pg.JFHaGAqAe8BSn> .
+<:4VC5iXaD.AAAARBd> <rdf:type> <gufo:SubKind> .
+<:ZPy5iXaD.AAAARBt> <rdf:type> <owl:Class> .
+<:ZPy5iXaD.AAAARBt> <rdf:type> <owl:NamedIndividual> .
+<:ZPy5iXaD.AAAARBt> <rdfs:label> \\"CAK\\" .
+<:ZPy5iXaD.AAAARBt> <rdfs:subClassOf> <:Pg.JFHaGAqAe8BSn> .
+<:ZPy5iXaD.AAAARBt> <rdf:type> <gufo:SubKind> .
+<:VLaUyXaD.AAAARuF> <rdf:type> <owl:Class> .
+<:VLaUyXaD.AAAARuF> <rdf:type> <owl:NamedIndividual> .
+<:VLaUyXaD.AAAARuF> <rdfs:label> \\"Resident of The Netherlands\\" .
+<:VLaUyXaD.AAAARuF> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:VLaUyXaD.AAAARuF> <rdf:type> <gufo:Role> .
+<:Moq0yXaD.AAAARxJ> <rdf:type> <owl:Class> .
+<:Moq0yXaD.AAAARxJ> <rdf:type> <owl:NamedIndividual> .
+<:Moq0yXaD.AAAARxJ> <rdfs:label> \\"Dutch Citizen\\" .
+<:Moq0yXaD.AAAARxJ> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:Moq0yXaD.AAAARxJ> <rdf:type> <gufo:Role> .
+<:HCl0yXaD.AAAARyY> <rdf:type> <owl:Class> .
+<:HCl0yXaD.AAAARyY> <rdf:type> <owl:NamedIndividual> .
+<:HCl0yXaD.AAAARyY> <rdfs:label> \\"Non-Resident\\" .
+<:HCl0yXaD.AAAARyY> <rdfs:subClassOf> <:Moq0yXaD.AAAARxJ> .
+<:HCl0yXaD.AAAARyY> <rdf:type> <gufo:Role> .
+<:IS3MyXaD.AAAAR10> <rdf:type> <owl:Class> .
+<:IS3MyXaD.AAAAR10> <rdf:type> <owl:NamedIndividual> .
+<:IS3MyXaD.AAAAR10> <rdfs:label> \\"BSN Holder\\" .
+<:IS3MyXaD.AAAAR10> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:IS3MyXaD.AAAAR10> <rdf:type> <gufo:Role> .
+<:4pGxyXaFYFAUAgx_> <rdf:type> <owl:Class> .
+<:4pGxyXaFYFAUAgx_> <rdf:type> <owl:NamedIndividual> .
+<:4pGxyXaFYFAUAgx_> <rdfs:label> \\"Medical Professional\\" .
+<:4pGxyXaFYFAUAgx_> <rdf:type> <gufo:Role> .
+<:8xNw43aAUBAysYls> <rdf:type> <owl:Class> .
+<:8xNw43aAUBAysYls> <rdf:type> <owl:NamedIndividual> .
+<:8xNw43aAUBAysYls> <rdfs:label> \\"Civil Registration\\" .
+<:8xNw43aAUBAysYls> <rdfs:subClassOf> <gufo:Relator> .
+<:8xNw43aAUBAysYls> <rdf:type> <gufo:Kind> .
+<:XAMY43aAUBAysY5T> <rdf:type> <owl:Class> .
+<:XAMY43aAUBAysY5T> <rdf:type> <owl:NamedIndividual> .
+<:XAMY43aAUBAysY5T> <rdfs:label> \\"Legal Representative\\" .
+<:XAMY43aAUBAysY5T> <rdfs:subClassOf> <:VvxaFHaGAqAe8BAf> .
+<:XAMY43aAUBAysY5T> <rdfs:subClassOf> <gufo:Endurant> .
+<:XAMY43aAUBAysY5T> <rdf:type> <gufo:RoleMixin> .
+<:o0TY43aAUBAysY7G> <rdf:type> <owl:Class> .
+<:o0TY43aAUBAysY7G> <rdf:type> <owl:NamedIndividual> .
+<:o0TY43aAUBAysY7G> <rdfs:label> \\"Legal Representation\\" .
+<:o0TY43aAUBAysY7G> <rdfs:subClassOf> <gufo:Relator> .
+<:o0TY43aAUBAysY7G> <rdf:type> <gufo:Kind> .
+<:g_eSq3aFYEGUExvJ> <rdf:type> <owl:Class> .
+<:g_eSq3aFYEGUExvJ> <rdf:type> <owl:NamedIndividual> .
+<:g_eSq3aFYEGUExvJ> <rdfs:label> \\"Living Person\\" .
+<:g_eSq3aFYEGUExvJ> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:g_eSq3aFYEGUExvJ> <rdf:type> <gufo:Phase> .
+<:BRMyq3aFYEGUExwV> <rdf:type> <owl:Class> .
+<:BRMyq3aFYEGUExwV> <rdf:type> <owl:NamedIndividual> .
+<:BRMyq3aFYEGUExwV> <rdfs:label> \\"Deceased Person\\" .
+<:BRMyq3aFYEGUExwV> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:BRMyq3aFYEGUExwV> <rdf:type> <gufo:Phase> .
+<:mU.yq3aFYEGUExxO> <rdf:type> <owl:Class> .
+<:mU.yq3aFYEGUExxO> <rdf:type> <owl:NamedIndividual> .
+<:mU.yq3aFYEGUExxO> <rdfs:label> \\"Unborn\\" .
+<:mU.yq3aFYEGUExxO> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:mU.yq3aFYEGUExxO> <rdf:type> <gufo:Phase> .
+<:YmaWr3aFYEGUEyAD> <rdf:type> <owl:Class> .
+<:YmaWr3aFYEGUEyAD> <rdf:type> <owl:NamedIndividual> .
+<:YmaWr3aFYEGUEyAD> <rdfs:label> \\"Closed\\" .
+<:YmaWr3aFYEGUEyAD> <rdfs:subClassOf> <:8XCKr3aFYEGUExzu> .
+<:YmaWr3aFYEGUEyAD> <rdf:type> <gufo:Phase> .
+<:zrCs_vaFYFAUAhzW> <rdf:type> <owl:Class> .
+<:zrCs_vaFYFAUAhzW> <rdf:type> <owl:NamedIndividual> .
+<:zrCs_vaFYFAUAhzW> <rdfs:label> \\"Healthcare Contact\\" .
+<:zrCs_vaFYFAUAhzW> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:zrCs_vaFYFAUAhzW> <rdf:type> <gufo:Role> .
+<:F9Kc_vaFYFAUAh5I> <rdf:type> <owl:Class> .
+<:F9Kc_vaFYFAUAh5I> <rdf:type> <owl:NamedIndividual> .
+<:F9Kc_vaFYFAUAh5I> <rdfs:label> \\"Healthcare Contact Assigment\\" .
+<:F9Kc_vaFYFAUAh5I> <rdfs:subClassOf> <gufo:Relator> .
+<:F9Kc_vaFYFAUAh5I> <rdf:type> <gufo:Kind> .
+<:FgM8_vaFYFAUAh64> <rdf:type> <owl:Class> .
+<:FgM8_vaFYFAUAh64> <rdf:type> <owl:NamedIndividual> .
+<:FgM8_vaFYFAUAh64> <rdfs:label> \\"Eligible Healthcare Client\\" .
+<:FgM8_vaFYFAUAh64> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:FgM8_vaFYFAUAh64> <rdf:type> <gufo:Role> .
+<:ru_pUfaFYEGUHFbJ> <rdf:type> <owl:Class> .
+<:ru_pUfaFYEGUHFbJ> <rdf:type> <owl:NamedIndividual> .
+<:ru_pUfaFYEGUHFbJ> <rdfs:label> \\"Spatial Region\\" .
+<:ru_pUfaFYEGUHFbJ> <rdf:type> <gufo:Kind> .
+<:CJxFUfaFYEGUHFkc> <rdf:type> <owl:Class> .
+<:CJxFUfaFYEGUHFkc> <rdf:type> <owl:NamedIndividual> .
+<:CJxFUfaFYEGUHFkc> <rdfs:label> \\"Inhabitant\\" .
+<:CJxFUfaFYEGUHFkc> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:CJxFUfaFYEGUHFkc> <rdf:type> <gufo:Role> .
+<:CzCdUfaFYEGUHGn9> <rdf:type> <owl:Class> .
+<:CzCdUfaFYEGUHGn9> <rdf:type> <owl:NamedIndividual> .
+<:CzCdUfaFYEGUHGn9> <rdfs:label> \\"Regional  Allocation Based on Inhabitantship\\" .
+<:CzCdUfaFYEGUHGn9> <rdfs:subClassOf> <gufo:Relator> .
+<:CzCdUfaFYEGUHGn9> <rdf:type> <gufo:Kind> .
+<:C1w98faGAqACDiyu> <rdf:type> <owl:Class> .
+<:C1w98faGAqACDiyu> <rdf:type> <owl:NamedIndividual> .
+<:C1w98faGAqACDiyu> <rdfs:label> \\"BIG Registred Healthcare Professional\\" .
+<:C1w98faGAqACDiyu> <rdfs:subClassOf> <:Q5BQ1naGAqAeDjka> .
+<:C1w98faGAqACDiyu> <rdf:type> <gufo:Role> .
+<:aAym_vaFYFAUAjKF> <rdf:type> <owl:Class> .
+<:aAym_vaFYFAUAjKF> <rdf:type> <owl:NamedIndividual> .
+<:aAym_vaFYFAUAjKF> <rdfs:label> \\"Death\\" .
+<:aAym_vaFYFAUAjKF> <rdfs:subClassOf> <gufo:Event> .
+<:s2DG9A6AUB1UpDEU> <rdf:type> <owl:Class> .
+<:s2DG9A6AUB1UpDEU> <rdf:type> <owl:NamedIndividual> .
+<:s2DG9A6AUB1UpDEU> <rdfs:label> \\"Name\\" .
+<:s2DG9A6AUB1UpDEU> <rdfs:subClassOf> <gufo:Quality> .
+<:s2DG9A6AUB1UpDEU> <rdf:type> <gufo:Kind> .
+<:QuXR9A6AUB1UpETp> <rdf:type> <owl:Class> .
+<:QuXR9A6AUB1UpETp> <rdf:type> <owl:NamedIndividual> .
+<:QuXR9A6AUB1UpETp> <rdfs:label> \\" Adult Living Alone\\" .
+<:QuXR9A6AUB1UpETp> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:QuXR9A6AUB1UpETp> <rdf:type> <gufo:Role> .
+<:zNDZ9A6AUB1UpEdJ> <rdf:type> <owl:Class> .
+<:zNDZ9A6AUB1UpEdJ> <rdf:type> <owl:NamedIndividual> .
+<:zNDZ9A6AUB1UpEdJ> <rdfs:label> \\" Child Living with Parents\\" .
+<:zNDZ9A6AUB1UpEdJ> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:zNDZ9A6AUB1UpEdJ> <rdf:type> <gufo:Role> .
+<:YjJ59A6AUB1UpEek> <rdf:type> <owl:Class> .
+<:YjJ59A6AUB1UpEek> <rdf:type> <owl:NamedIndividual> .
+<:YjJ59A6AUB1UpEek> <rdfs:label> \\" Adult Living with Partner\\" .
+<:YjJ59A6AUB1UpEek> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:YjJ59A6AUB1UpEek> <rdf:type> <gufo:Role> .
+<:o1gF9A6AUB1UpEgK> <rdf:type> <owl:Class> .
+<:o1gF9A6AUB1UpEgK> <rdf:type> <owl:NamedIndividual> .
+<:o1gF9A6AUB1UpEgK> <rdfs:label> \\" Adult Living with Partner and Children\\" .
+<:o1gF9A6AUB1UpEgK> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:o1gF9A6AUB1UpEgK> <rdf:type> <gufo:Role> .
+<:MQkF9A6AUB1UpEgc> <rdf:type> <owl:Class> .
+<:MQkF9A6AUB1UpEgc> <rdf:type> <owl:NamedIndividual> .
+<:MQkF9A6AUB1UpEgc> <rdfs:label> \\" Adult Living with Children\\" .
+<:MQkF9A6AUB1UpEgc> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:MQkF9A6AUB1UpEgc> <rdf:type> <gufo:Role> .
+<:zG6F9A6AUB1UpEh8> <rdf:type> <owl:Class> .
+<:zG6F9A6AUB1UpEh8> <rdf:type> <owl:NamedIndividual> .
+<:zG6F9A6AUB1UpEh8> <rdfs:label> \\" Adult Living in Adult Household\\" .
+<:zG6F9A6AUB1UpEh8> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:zG6F9A6AUB1UpEh8> <rdf:type> <gufo:Role> .
+<:hWgN9A6AUB1UpEmU> <rdf:type> <owl:Class> .
+<:hWgN9A6AUB1UpEmU> <rdf:type> <owl:NamedIndividual> .
+<:hWgN9A6AUB1UpEmU> <rdfs:label> \\"Child\\" .
+<:hWgN9A6AUB1UpEmU> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:hWgN9A6AUB1UpEmU> <rdf:type> <gufo:Phase> .
+<:6YQN9A6AUB1UpEmi> <rdf:type> <owl:Class> .
+<:6YQN9A6AUB1UpEmi> <rdf:type> <owl:NamedIndividual> .
+<:6YQN9A6AUB1UpEmi> <rdfs:label> \\"Adult\\" .
+<:6YQN9A6AUB1UpEmi> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:6YQN9A6AUB1UpEmi> <rdf:type> <gufo:Phase> .
+<:gOSY03aFYFAUAlkF> <rdf:type> <owl:Class> .
+<:gOSY03aFYFAUAlkF> <rdf:type> <owl:NamedIndividual> .
+<:gOSY03aFYFAUAlkF> <rdfs:label> \\"Long Term Healthcare Provider\\" .
+<:gOSY03aFYFAUAlkF> <rdfs:subClassOf> <:C5QMzHaGAqAe8Cwk> .
+<:gOSY03aFYFAUAlkF> <rdf:type> <gufo:Role> .
+<:bPlAZnaGAqAe8DZ1> <rdf:type> <owl:Class> .
+<:bPlAZnaGAqAe8DZ1> <rdf:type> <owl:NamedIndividual> .
+<:bPlAZnaGAqAe8DZ1> <rdfs:label> \\"Negative Decision\\" .
+<:bPlAZnaGAqAe8DZ1> <rdfs:subClassOf> <:pZHbpnaGAqAe8DEo> .
+<:bPlAZnaGAqAe8DZ1> <rdf:type> <gufo:SubKind> .
+<:QKFAZnaGAqAe8DZp> <rdf:type> <owl:Class> .
+<:QKFAZnaGAqAe8DZp> <rdf:type> <owl:NamedIndividual> .
+<:QKFAZnaGAqAe8DZp> <rdfs:label> \\"Positive Decision\\" .
+<:QKFAZnaGAqAe8DZp> <rdfs:subClassOf> <:pZHbpnaGAqAe8DEo> .
+<:QKFAZnaGAqAe8DZp> <rdf:type> <gufo:SubKind> .
+<:qk33pnaGAqAe8DLl> <rdf:type> <owl:Class> .
+<:qk33pnaGAqAe8DLl> <rdf:type> <owl:NamedIndividual> .
+<:qk33pnaGAqAe8DLl> <rdfs:label> \\"Request Reviewer\\" .
+<:qk33pnaGAqAe8DLl> <rdfs:subClassOf> <:PfrZFHaGAqAe8BU.> .
+<:qk33pnaGAqAe8DLl> <rdf:type> <gufo:Role> .
+<:pZHbpnaGAqAe8DEo> <rdf:type> <owl:Class> .
+<:pZHbpnaGAqAe8DEo> <rdf:type> <owl:NamedIndividual> .
+<:pZHbpnaGAqAe8DEo> <rdfs:label> \\"Request Decision\\" .
+<:pZHbpnaGAqAe8DEo> <rdfs:subClassOf> <gufo:Relator> .
+<:pZHbpnaGAqAe8DEo> <rdf:type> <gufo:Kind> .
+<:tURRFHaGAqAe8BLb> <rdf:type> <owl:Class> .
+<:tURRFHaGAqAe8BLb> <rdf:type> <owl:NamedIndividual> .
+<:tURRFHaGAqAe8BLb> <rdfs:label> \\"Request Beneficiary\\" .
+<:tURRFHaGAqAe8BLb> <rdfs:subClassOf> <:tSM0yXaD.AAAARwK> .
+<:tURRFHaGAqAe8BLb> <rdf:type> <gufo:Role> .
+<:D51aFHaGAqAe8BBd> <rdf:type> <owl:Class> .
+<:D51aFHaGAqAe8BBd> <rdf:type> <owl:NamedIndividual> .
+<:D51aFHaGAqAe8BBd> <rdfs:label> \\"LTC Request\\" .
+<:D51aFHaGAqAe8BBd> <rdfs:subClassOf> <gufo:Relator> .
+<:D51aFHaGAqAe8BBd> <rdf:type> <gufo:Kind> .
+<:SM4RFHaGAqAe8BJD> <rdf:type> <owl:Class> .
+<:SM4RFHaGAqAe8BJD> <rdf:type> <owl:NamedIndividual> .
+<:SM4RFHaGAqAe8BJD> <rdfs:label> \\"Request Author\\" .
+<:SM4RFHaGAqAe8BJD> <rdfs:subClassOf> <:QFOaFHaGAqAe8A_X> .
+<:SM4RFHaGAqAe8BJD> <rdf:type> <gufo:Role> .
+<:mkDcq3aFYEGUExq.> <rdf:type> <owl:Class> .
+<:mkDcq3aFYEGUExq.> <rdf:type> <owl:NamedIndividual> .
+<:mkDcq3aFYEGUExq.> <rdfs:label> \\"Inactive LTC Indication\\" .
+<:mkDcq3aFYEGUExq.> <rdfs:subClassOf> <:1so2FHaGAqAe8BBx> .
+<:mkDcq3aFYEGUExq.> <rdf:type> <gufo:Phase> .
+<:UIUczHaGAqAe8C4E> <rdf:type> <owl:Class> .
+<:UIUczHaGAqAe8C4E> <rdf:type> <owl:NamedIndividual> .
+<:UIUczHaGAqAe8C4E> <rdfs:label> \\"Experiment\\" .
+<:UIUczHaGAqAe8C4E> <rdfs:subClassOf> <:1so2FHaGAqAe8BBx> .
+<:UIUczHaGAqAe8C4E> <rdf:type> <gufo:SubKind> .
+<:cFQczHaGAqAe8C26> <rdf:type> <owl:Class> .
+<:cFQczHaGAqAe8C26> <rdf:type> <owl:NamedIndividual> .
+<:cFQczHaGAqAe8C26> <rdfs:label> \\"CIZ/BJZ Indication\\" .
+<:cFQczHaGAqAe8C26> <rdfs:subClassOf> <:1so2FHaGAqAe8BBx> .
+<:cFQczHaGAqAe8C26> <rdf:type> <gufo:SubKind> .
+<:Wm_szHaGAqAe8C2o> <rdf:type> <owl:Class> .
+<:Wm_szHaGAqAe8C2o> <rdf:type> <owl:NamedIndividual> .
+<:Wm_szHaGAqAe8C2o> <rdfs:label> \\"BJZ Indication\\" .
+<:Wm_szHaGAqAe8C2o> <rdfs:subClassOf> <:1so2FHaGAqAe8BBx> .
+<:Wm_szHaGAqAe8C2o> <rdf:type> <gufo:SubKind> .
+<:mBbszHaGAqAe8C2B> <rdf:type> <owl:Class> .
+<:mBbszHaGAqAe8C2B> <rdf:type> <owl:NamedIndividual> .
+<:mBbszHaGAqAe8C2B> <rdfs:label> \\"CIZ Indication\\" .
+<:mBbszHaGAqAe8C2B> <rdfs:subClassOf> <:1so2FHaGAqAe8BBx> .
+<:mBbszHaGAqAe8C2B> <rdf:type> <gufo:SubKind> .
+<:jVSQzHaGAqAe8CBF> <rdf:type> <owl:Class> .
+<:jVSQzHaGAqAe8CBF> <rdf:type> <owl:NamedIndividual> .
+<:jVSQzHaGAqAe8CBF> <rdfs:label> \\"Indication Contact\\" .
+<:jVSQzHaGAqAe8CBF> <rdfs:subClassOf> <:zrCs_vaFYFAUAhzW> .
+<:jVSQzHaGAqAe8CBF> <rdf:type> <gufo:Role> .
+<:ppMS_vaFYFAUAikI> <rdf:type> <owl:Class> .
+<:ppMS_vaFYFAUAikI> <rdf:type> <owl:NamedIndividual> .
+<:ppMS_vaFYFAUAikI> <rdfs:label> \\"LTC Contact Assignment\\" .
+<:ppMS_vaFYFAUAikI> <rdfs:subClassOf> <:F9Kc_vaFYFAUAh5I> .
+<:ppMS_vaFYFAUAikI> <rdf:type> <gufo:SubKind> .
+<:3sNy_vaFYFAUAi2Q> <rdf:type> <owl:Class> .
+<:3sNy_vaFYFAUAi2Q> <rdf:type> <owl:NamedIndividual> .
+<:3sNy_vaFYFAUAi2Q> <rdfs:label> \\"Active LTC Indication\\" .
+<:3sNy_vaFYFAUAi2Q> <rdfs:subClassOf> <:1so2FHaGAqAe8BBx> .
+<:3sNy_vaFYFAUAi2Q> <rdf:type> <gufo:Phase> .
+<:UFMa_vaFYFAUAi9H> <rdf:type> <owl:Class> .
+<:UFMa_vaFYFAUAi9H> <rdf:type> <owl:NamedIndividual> .
+<:UFMa_vaFYFAUAi9H> <rdfs:label> \\"Inactive by Replacement\\" .
+<:UFMa_vaFYFAUAi9H> <rdfs:subClassOf> <:mkDcq3aFYEGUExq.> .
+<:UFMa_vaFYFAUAi9H> <rdf:type> <gufo:Phase> .
+<:jGsa_vaFYFAUAi9Z> <rdf:type> <owl:Class> .
+<:jGsa_vaFYFAUAi9Z> <rdf:type> <owl:NamedIndividual> .
+<:jGsa_vaFYFAUAi9Z> <rdfs:label> \\"Inactive by Death\\" .
+<:jGsa_vaFYFAUAi9Z> <rdfs:subClassOf> <:mkDcq3aFYEGUExq.> .
+<:jGsa_vaFYFAUAi9Z> <rdf:type> <gufo:Phase> .
+<:Kvsa_vaFYFAUAi9l> <rdf:type> <owl:Class> .
+<:Kvsa_vaFYFAUAi9l> <rdf:type> <owl:NamedIndividual> .
+<:Kvsa_vaFYFAUAi9l> <rdfs:label> \\"Inactive by Fulfillment\\" .
+<:Kvsa_vaFYFAUAi9l> <rdfs:subClassOf> <:mkDcq3aFYEGUExq.> .
+<:Kvsa_vaFYFAUAi9l> <rdf:type> <gufo:Phase> .
+<:nopp_vaFYFAUAjaU> <rdf:type> <owl:Class> .
+<:nopp_vaFYFAUAjaU> <rdf:type> <owl:NamedIndividual> .
+<:nopp_vaFYFAUAjaU> <rdfs:label> \\"Pending Indication\\" .
+<:nopp_vaFYFAUAjaU> <rdfs:subClassOf> <:mkDcq3aFYEGUExq.> .
+<:nopp_vaFYFAUAjaU> <rdf:type> <gufo:Phase> .
+<:1so2FHaGAqAe8BBx> <rdf:type> <owl:Class> .
+<:1so2FHaGAqAe8BBx> <rdf:type> <owl:NamedIndividual> .
+<:1so2FHaGAqAe8BBx> <rdfs:label> \\"LTC Indication\\" .
+<:1so2FHaGAqAe8BBx> <rdfs:subClassOf> <:f4Sg1naGAqAeDja_> .
+<:1so2FHaGAqAe8BBx> <rdfs:subClassOf> <gufo:Relator> .
+<:1so2FHaGAqAe8BBx> <rdf:type> <gufo:Kind> .
+<:rtZAq3aFYEGUExSq> <rdf:type> <owl:Class> .
+<:rtZAq3aFYEGUExSq> <rdf:type> <owl:NamedIndividual> .
+<:rtZAq3aFYEGUExSq> <rdfs:label> \\"LTC Indication Budget\\" .
+<:rtZAq3aFYEGUExSq> <rdfs:subClassOf> <:Pw6ii3aFYEGUEy29> .
+<:rtZAq3aFYEGUExSq> <rdfs:subClassOf> <gufo:Quality> .
+<:rtZAq3aFYEGUExSq> <rdf:type> <gufo:Kind> .
+<:VzzAq3aFYEGUExTN> <rdf:type> <owl:Class> .
+<:VzzAq3aFYEGUExTN> <rdf:type> <owl:NamedIndividual> .
+<:VzzAq3aFYEGUExTN> <rdfs:label> \\"LTC Allocation Budget\\" .
+<:VzzAq3aFYEGUExTN> <rdfs:subClassOf> <:Pw6ii3aFYEGUEy29> .
+<:VzzAq3aFYEGUExTN> <rdfs:subClassOf> <gufo:Quality> .
+<:VzzAq3aFYEGUExTN> <rdf:type> <gufo:Kind> .
+<:Pw6ii3aFYEGUEy29> <rdf:type> <owl:Class> .
+<:Pw6ii3aFYEGUEy29> <rdf:type> <owl:NamedIndividual> .
+<:Pw6ii3aFYEGUEy29> <rdfs:label> \\"LTC Monetary Budget\\" .
+<:Pw6ii3aFYEGUEy29> <rdfs:subClassOf> <gufo:Endurant> .
+<:Pw6ii3aFYEGUEy29> <rdf:type> <gufo:Category> .
+<:oJvG03aFYFAUAtbr> <rdf:type> <owl:Class> .
+<:oJvG03aFYFAUAtbr> <rdf:type> <owl:NamedIndividual> .
+<:oJvG03aFYFAUAtbr> <rdfs:label> \\"Direct Start Allocation\\" .
+<:oJvG03aFYFAUAtbr> <rdfs:subClassOf> <:KgBQ03aFYFAUAkBD> .
+<:oJvG03aFYFAUAtbr> <rdf:type> <gufo:Phase> .
+<:HcpG03aFYFAUAtau> <rdf:type> <owl:Class> .
+<:HcpG03aFYFAUAtau> <rdf:type> <owl:NamedIndividual> .
+<:HcpG03aFYFAUAtau> <rdfs:label> \\"Pending Allocation\\" .
+<:HcpG03aFYFAUAtau> <rdfs:subClassOf> <:KgBQ03aFYFAUAkBD> .
+<:HcpG03aFYFAUAtau> <rdf:type> <gufo:Phase> .
+<:Yo6G03aFYFAUAtZo> <rdf:type> <owl:Class> .
+<:Yo6G03aFYFAUAtZo> <rdf:type> <owl:NamedIndividual> .
+<:Yo6G03aFYFAUAtZo> <rdfs:label> \\"Preferred LTH Provider\\" .
+<:Yo6G03aFYFAUAtZo> <rdfs:subClassOf> <:gOSY03aFYFAUAlkF> .
+<:Yo6G03aFYFAUAtZo> <rdf:type> <gufo:Role> .
+<:ztXa03aFYFAUAtTn> <rdf:type> <owl:Class> .
+<:ztXa03aFYFAUAtTn> <rdf:type> <owl:NamedIndividual> .
+<:ztXa03aFYFAUAtTn> <rdfs:label> \\"Administrative LTC Allocation\\" .
+<:ztXa03aFYFAUAtTn> <rdfs:subClassOf> <:5qfNiXaD.AAAARX9> .
+<:ztXa03aFYFAUAtTn> <rdf:type> <gufo:SubKind> .
+<:rdna03aFYFAUAtTV> <rdf:type> <owl:Class> .
+<:rdna03aFYFAUAtTV> <rdf:type> <owl:NamedIndividual> .
+<:rdna03aFYFAUAtTV> <rdfs:label> \\"Transitional LTC Allocation\\" .
+<:rdna03aFYFAUAtTV> <rdfs:subClassOf> <:5qfNiXaD.AAAARX9> .
+<:rdna03aFYFAUAtTV> <rdf:type> <gufo:SubKind> .
+<:prHa03aFYFAUAtTD> <rdf:type> <owl:Class> .
+<:prHa03aFYFAUAtTD> <rdf:type> <owl:NamedIndividual> .
+<:prHa03aFYFAUAtTD> <rdfs:label> \\"Regular LTC Allocation\\" .
+<:prHa03aFYFAUAtTD> <rdfs:subClassOf> <:5qfNiXaD.AAAARX9> .
+<:prHa03aFYFAUAtTD> <rdf:type> <gufo:SubKind> .
+<:6URS03aFYFAUAqvB> <rdf:type> <owl:Class> .
+<:6URS03aFYFAUAqvB> <rdf:type> <owl:NamedIndividual> .
+<:6URS03aFYFAUAqvB> <rdfs:label> \\"Allocated LTH Client\\" .
+<:6URS03aFYFAUAqvB> <rdfs:subClassOf> <:KqqJFHaGAqAe8BR_> .
+<:6URS03aFYFAUAqvB> <rdf:type> <gufo:Role> .
+<:jzZQ03aFYFAUAkB9> <rdf:type> <owl:Class> .
+<:jzZQ03aFYFAUAkB9> <rdf:type> <owl:NamedIndividual> .
+<:jzZQ03aFYFAUAkB9> <rdfs:label> \\"Declined Allocation\\" .
+<:jzZQ03aFYFAUAkB9> <rdfs:subClassOf> <:5qfNiXaD.AAAARX9> .
+<:jzZQ03aFYFAUAkB9> <rdf:type> <gufo:Phase> .
+<:d3hQ03aFYFAUAkBR> <rdf:type> <owl:Class> .
+<:d3hQ03aFYFAUAkBR> <rdf:type> <owl:NamedIndividual> .
+<:d3hQ03aFYFAUAkBR> <rdfs:label> \\"Revoked Allocation\\" .
+<:d3hQ03aFYFAUAkBR> <rdfs:subClassOf> <:5qfNiXaD.AAAARX9> .
+<:d3hQ03aFYFAUAkBR> <rdf:type> <gufo:Phase> .
+<:KgBQ03aFYFAUAkBD> <rdf:type> <owl:Class> .
+<:KgBQ03aFYFAUAkBD> <rdf:type> <owl:NamedIndividual> .
+<:KgBQ03aFYFAUAkBD> <rdfs:label> \\"Accepted Allocation\\" .
+<:KgBQ03aFYFAUAkBD> <rdfs:subClassOf> <:5qfNiXaD.AAAARX9> .
+<:KgBQ03aFYFAUAkBD> <rdf:type> <gufo:Phase> .
+<:2fOQ03aFYFAUAkAr> <rdf:type> <owl:Class> .
+<:2fOQ03aFYFAUAkAr> <rdf:type> <owl:NamedIndividual> .
+<:2fOQ03aFYFAUAkAr> <rdfs:label> \\"Requested Allocation\\" .
+<:2fOQ03aFYFAUAkAr> <rdfs:subClassOf> <:5qfNiXaD.AAAARX9> .
+<:2fOQ03aFYFAUAkAr> <rdf:type> <gufo:Phase> .
+<:C5QMzHaGAqAe8Cwk> <rdf:type> <owl:Class> .
+<:C5QMzHaGAqAe8Cwk> <rdf:type> <owl:NamedIndividual> .
+<:C5QMzHaGAqAe8Cwk> <rdfs:label> \\"Healthcare Provider\\" .
+<:C5QMzHaGAqAe8Cwk> <rdfs:subClassOf> <:Pg.JFHaGAqAe8BSn> .
+<:C5QMzHaGAqAe8Cwk> <rdf:type> <gufo:Role> .
+<:jBza_vaFYFAUAjBx> <rdf:type> <owl:Class> .
+<:jBza_vaFYFAUAjBx> <rdf:type> <owl:NamedIndividual> .
+<:jBza_vaFYFAUAjBx> <rdfs:label> \\"Declined by Client\\" .
+<:jBza_vaFYFAUAjBx> <rdfs:subClassOf> <:jzZQ03aFYFAUAkB9> .
+<:jBza_vaFYFAUAjBx> <rdf:type> <gufo:Phase> .
+<:xYba_vaFYFAUAjB9> <rdf:type> <owl:Class> .
+<:xYba_vaFYFAUAjB9> <rdf:type> <owl:NamedIndividual> .
+<:xYba_vaFYFAUAjB9> <rdfs:label> \\"Declined by Provider\\" .
+<:xYba_vaFYFAUAjB9> <rdfs:subClassOf> <:jzZQ03aFYFAUAkB9> .
+<:xYba_vaFYFAUAjB9> <rdf:type> <gufo:Phase> .
+<:jvnXuPaAUAACnkcz> <rdf:type> <owl:Class> .
+<:jvnXuPaAUAACnkcz> <rdf:type> <owl:NamedIndividual> .
+<:jvnXuPaAUAACnkcz> <rdfs:label> \\"Care at Healthcare Organisation Agreement\\" .
+<:jvnXuPaAUAACnkcz> <rdfs:subClassOf> <:KjzjiXaD.AAAARkQ> .
+<:jvnXuPaAUAACnkcz> <rdf:type> <gufo:SubKind> .
+<:xBiLuPaAUAACnkcA> <rdf:type> <owl:Class> .
+<:xBiLuPaAUAACnkcA> <rdf:type> <owl:NamedIndividual> .
+<:xBiLuPaAUAACnkcA> <rdfs:label> \\"Care at Home Agreement\\" .
+<:xBiLuPaAUAACnkcA> <rdfs:subClassOf> <:KjzjiXaD.AAAARkQ> .
+<:xBiLuPaAUAACnkcA> <rdf:type> <gufo:SubKind> .
+<:NK8LuPaAUAACnkbx> <rdf:type> <owl:Class> .
+<:NK8LuPaAUAACnkbx> <rdf:type> <owl:NamedIndividual> .
+<:NK8LuPaAUAACnkbx> <rdfs:label> \\"Stay\\" .
+<:NK8LuPaAUAACnkbx> <rdfs:subClassOf> <gufo:Event> .
+<:UxjZsPaAUAACnkHy> <rdf:type> <owl:Class> .
+<:UxjZsPaAUAACnkHy> <rdf:type> <owl:NamedIndividual> .
+<:UxjZsPaAUAACnkHy> <rdfs:label> \\"LTC Room key provided\\" .
+<:UxjZsPaAUAACnkHy> <rdfs:subClassOf> <gufo:Event> .
+<:bseLQ_aFYEGUXyzA> <rdf:type> <owl:Class> .
+<:bseLQ_aFYEGUXyzA> <rdf:type> <owl:NamedIndividual> .
+<:bseLQ_aFYEGUXyzA> <rdfs:label> \\"Stay Agreement\\" .
+<:bseLQ_aFYEGUXyzA> <rdfs:subClassOf> <:jvnXuPaAUAACnkcz> .
+<:bseLQ_aFYEGUXyzA> <rdf:type> <gufo:SubKind> .
+<:eicrQ_aFYEGUXy45> <rdf:type> <owl:Class> .
+<:eicrQ_aFYEGUXy45> <rdf:type> <owl:NamedIndividual> .
+<:eicrQ_aFYEGUXy45> <rdfs:label> \\"Dagbesteding\\" .
+<:eicrQ_aFYEGUXy45> <rdfs:subClassOf> <:jvnXuPaAUAACnkcz> .
+<:eicrQ_aFYEGUXy45> <rdf:type> <gufo:SubKind> .
+<:3kN0r3aFYEGUExxc> <rdf:type> <owl:Class> .
+<:3kN0r3aFYEGUExxc> <rdf:type> <owl:NamedIndividual> .
+<:3kN0r3aFYEGUExxc> <rdfs:label> \\"Healthcare Office Client Dossier\\" .
+<:3kN0r3aFYEGUExxc> <rdfs:subClassOf> <:8XCKr3aFYEGUExzu> .
+<:3kN0r3aFYEGUExxc> <rdf:type> <gufo:SubKind> .
+<:8XCKr3aFYEGUExzu> <rdf:type> <owl:Class> .
+<:8XCKr3aFYEGUExzu> <rdf:type> <owl:NamedIndividual> .
+<:8XCKr3aFYEGUExzu> <rdfs:label> \\"Dossier\\" .
+<:8XCKr3aFYEGUExzu> <rdfs:subClassOf> <gufo:Relator> .
+<:8XCKr3aFYEGUExzu> <rdf:type> <gufo:Kind> .
+<:oBjeePaAUAACnl_h> <rdf:type> <owl:Class> .
+<:oBjeePaAUAACnl_h> <rdf:type> <owl:NamedIndividual> .
+<:oBjeePaAUAACnl_h> <rdfs:label> \\"Healthcare Provider Client Dossier\\" .
+<:oBjeePaAUAACnl_h> <rdfs:subClassOf> <:8XCKr3aFYEGUExzu> .
+<:oBjeePaAUAACnl_h> <rdf:type> <gufo:SubKind> .
+<:f4Sg1naGAqAeDja_> <rdf:type> <owl:Class> .
+<:f4Sg1naGAqAeDja_> <rdf:type> <owl:NamedIndividual> .
+<:f4Sg1naGAqAeDja_> <rdfs:label> \\"Right\\" .
+<:f4Sg1naGAqAeDja_> <rdfs:subClassOf> <gufo:Endurant> .
+<:f4Sg1naGAqAeDja_> <rdf:type> <gufo:Category> .
+<:Harg2faFYEGQT6aD> <rdf:type> <owl:Class> .
+<:Harg2faFYEGQT6aD> <rdf:type> <owl:NamedIndividual> .
+<:Harg2faFYEGQT6aD> <rdfs:label> \\"Preferred Healthcare Provider\\" .
+<:Harg2faFYEGQT6aD> <rdfs:subClassOf> <:C5QMzHaGAqAe8Cwk> .
+<:Harg2faFYEGQT6aD> <rdf:type> <gufo:Role> .
+<:5dZI2faFYEGQT6ry> <rdf:type> <owl:Class> .
+<:5dZI2faFYEGQT6ry> <rdf:type> <owl:NamedIndividual> .
+<:5dZI2faFYEGQT6ry> <rdfs:label> \\"Preferred Care Location Type\\" .
+<:5dZI2faFYEGQT6ry> <rdfs:subClassOf> <:AgZE2faFYEGQT610> .
+<:5dZI2faFYEGQT6ry> <rdfs:subClassOf> <gufo:Endurant> .
+<:5dZI2faFYEGQT6ry> <rdf:type> <gufo:Category> .
+<:1O7w2faFYEGQT6oD> <rdf:type> <owl:Class> .
+<:1O7w2faFYEGQT6oD> <rdf:type> <owl:NamedIndividual> .
+<:1O7w2faFYEGQT6oD> <rdfs:label> \\"Preferred Financing Type\\" .
+<:1O7w2faFYEGQT6oD> <rdfs:subClassOf> <:vdNE2faFYEGQT61_> .
+<:1O7w2faFYEGQT6oD> <rdfs:subClassOf> <gufo:Endurant> .
+<:1O7w2faFYEGQT6oD> <rdf:type> <gufo:Category> .
+<:cwjE2faFYEGQT62S> <rdf:type> <owl:Class> .
+<:cwjE2faFYEGQT62S> <rdf:type> <owl:NamedIndividual> .
+<:cwjE2faFYEGQT62S> <rdfs:label> \\"Care at Home\\" .
+<:cwjE2faFYEGQT62S> <rdfs:subClassOf> <:AgZE2faFYEGQT610> .
+<:cwjE2faFYEGQT62S> <rdfs:subClassOf> <:XXne.faAUB1IcX10> .
+<:cwjE2faFYEGQT62S> <rdfs:subClassOf> <gufo:Endurant> .
+<:cwjE2faFYEGQT62S> <rdf:type> <gufo:RoleMixin> .
+<:Y3Ja2faFYEGQT7Ns> <rdf:type> <owl:Class> .
+<:Y3Ja2faFYEGQT7Ns> <rdf:type> <owl:NamedIndividual> .
+<:Y3Ja2faFYEGQT7Ns> <rdfs:label> \\"Full Care (VPT)\\" .
+<:Y3Ja2faFYEGQT7Ns> <rdfs:subClassOf> <:cwjE2faFYEGQT62S> .
+<:Y3Ja2faFYEGQT7Ns> <rdfs:subClassOf> <gufo:Endurant> .
+<:Y3Ja2faFYEGQT7Ns> <rdf:type> <gufo:RoleMixin> .
+<:hMMq2faFYEGQT7LJ> <rdf:type> <owl:Class> .
+<:hMMq2faFYEGQT7LJ> <rdf:type> <owl:NamedIndividual> .
+<:hMMq2faFYEGQT7LJ> <rdfs:label> \\"Modular Care (MPT)\\" .
+<:hMMq2faFYEGQT7LJ> <rdfs:subClassOf> <:cwjE2faFYEGQT62S> .
+<:hMMq2faFYEGQT7LJ> <rdfs:subClassOf> <gufo:Endurant> .
+<:hMMq2faFYEGQT7LJ> <rdf:type> <gufo:RoleMixin> .
+<:F7LE2faFYEGQT62h> <rdf:type> <owl:Class> .
+<:F7LE2faFYEGQT62h> <rdf:type> <owl:NamedIndividual> .
+<:F7LE2faFYEGQT62h> <rdfs:label> \\"Stay at Healthcare Provider\\" .
+<:F7LE2faFYEGQT62h> <rdfs:subClassOf> <:AgZE2faFYEGQT610> .
+<:F7LE2faFYEGQT62h> <rdfs:subClassOf> <:XXne.faAUB1IcX10> .
+<:F7LE2faFYEGQT62h> <rdfs:subClassOf> <gufo:Endurant> .
+<:F7LE2faFYEGQT62h> <rdf:type> <gufo:RoleMixin> .
+<:XXne.faAUB1IcX10> <rdf:type> <owl:Class> .
+<:XXne.faAUB1IcX10> <rdf:type> <owl:NamedIndividual> .
+<:XXne.faAUB1IcX10> <rdfs:label> \\"Care Location\\" .
+<:XXne.faAUB1IcX10> <rdfs:subClassOf> <gufo:Endurant> .
+<:XXne.faAUB1IcX10> <rdf:type> <gufo:RoleMixin> .
+<:tSM0yXaD.AAAARwK> <rdf:type> <owl:Class> .
+<:tSM0yXaD.AAAARwK> <rdf:type> <owl:NamedIndividual> .
+<:tSM0yXaD.AAAARwK> <rdfs:label> \\"Eligible LTH Client\\" .
+<:tSM0yXaD.AAAARwK> <rdfs:subClassOf> <:IS3MyXaD.AAAAR10> .
+<:tSM0yXaD.AAAARwK> <rdfs:subClassOf> <:FgM8_vaFYFAUAh64> .
+<:tSM0yXaD.AAAARwK> <rdf:type> <gufo:Role> .
+<:hcki43aAUBAyscBo> <rdf:type> <owl:Class> .
+<:hcki43aAUBAyscBo> <rdf:type> <owl:NamedIndividual> .
+<:hcki43aAUBAyscBo> <rdfs:label> \\"Eligibility Declaration\\" .
+<:hcki43aAUBAyscBo> <rdfs:subClassOf> <gufo:Relator> .
+<:hcki43aAUBAyscBo> <rdf:type> <gufo:Kind> .
+<:KqqJFHaGAqAe8BR_> <rdf:type> <owl:Class> .
+<:KqqJFHaGAqAe8BR_> <rdf:type> <owl:NamedIndividual> .
+<:KqqJFHaGAqAe8BR_> <rdfs:label> \\"LTH Client\\" .
+<:KqqJFHaGAqAe8BR_> <rdfs:subClassOf> <:tSM0yXaD.AAAARwK> .
+<:KqqJFHaGAqAe8BR_> <rdf:type> <gufo:Role> .
+<:tWtq4_aFYEGQWxkJ> <rdf:type> <owl:Class> .
+<:tWtq4_aFYEGQWxkJ> <rdf:type> <owl:NamedIndividual> .
+<:tWtq4_aFYEGQWxkJ> <rdfs:label> \\"Allocated Healthcare Service Package\\" .
+<:tWtq4_aFYEGQWxkJ> <rdfs:subClassOf> <:rj95w_aFYEGUX0iF> .
+<:tWtq4_aFYEGQWxkJ> <rdfs:subClassOf> <gufo:Relator> .
+<:tWtq4_aFYEGQWxkJ> <rdf:type> <gufo:Kind> .
+<:W06a4_aFYEGQWxre> <rdf:type> <owl:Class> .
+<:W06a4_aFYEGQWxre> <rdf:type> <owl:NamedIndividual> .
+<:W06a4_aFYEGQWxre> <rdfs:label> \\"Delivered Healthcare Service Package\\" .
+<:W06a4_aFYEGQWxre> <rdfs:subClassOf> <:rj95w_aFYEGUX0iF> .
+<:W06a4_aFYEGQWxre> <rdfs:subClassOf> <gufo:Relator> .
+<:W06a4_aFYEGQWxre> <rdf:type> <gufo:Kind> .
+<:uO0Q2faFYEGQT6aq> <rdf:type> <owl:Class> .
+<:uO0Q2faFYEGQT6aq> <rdf:type> <owl:NamedIndividual> .
+<:uO0Q2faFYEGQT6aq> <rdfs:label> \\"Client Preference\\" .
+<:uO0Q2faFYEGQT6aq> <rdfs:subClassOf> <gufo:Relator> .
+<:uO0Q2faFYEGQT6aq> <rdf:type> <gufo:Kind> .
+<:5qfNiXaD.AAAARX9> <rdf:type> <owl:Class> .
+<:5qfNiXaD.AAAARX9> <rdf:type> <owl:NamedIndividual> .
+<:5qfNiXaD.AAAARX9> <rdfs:label> \\"LTC Allocation\\" .
+<:5qfNiXaD.AAAARX9> <rdfs:subClassOf> <gufo:Relator> .
+<:5qfNiXaD.AAAARX9> <rdf:type> <gufo:Kind> .
+<:KjzjiXaD.AAAARkQ> <rdf:type> <owl:Class> .
+<:KjzjiXaD.AAAARkQ> <rdf:type> <owl:NamedIndividual> .
+<:KjzjiXaD.AAAARkQ> <rdfs:label> \\"LTC Service Agreement\\" .
+<:KjzjiXaD.AAAARkQ> <rdfs:subClassOf> <gufo:Relator> .
+<:KjzjiXaD.AAAARkQ> <rdf:type> <gufo:Kind> .
+<:aKJs03aFYFAUAnVm> <rdf:type> <owl:Class> .
+<:aKJs03aFYFAUAnVm> <rdf:type> <owl:NamedIndividual> .
+<:aKJs03aFYFAUAnVm> <rdfs:label> \\"Indicated Healthcare Service Package\\" .
+<:aKJs03aFYFAUAnVm> <rdfs:subClassOf> <:rj95w_aFYEGUX0iF> .
+<:aKJs03aFYFAUAnVm> <rdfs:subClassOf> <gufo:Relator> .
+<:aKJs03aFYFAUAnVm> <rdf:type> <gufo:Kind> .
+<:rj95w_aFYEGUX0iF> <rdf:type> <owl:Class> .
+<:rj95w_aFYEGUX0iF> <rdf:type> <owl:NamedIndividual> .
+<:rj95w_aFYEGUX0iF> <rdfs:label> \\"Healthcare Service Package\\" .
+<:rj95w_aFYEGUX0iF> <rdfs:subClassOf> <gufo:Endurant> .
+<:rj95w_aFYEGUX0iF> <rdf:type> <gufo:Category> .
+"
+`;

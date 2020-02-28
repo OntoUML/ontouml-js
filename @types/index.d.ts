@@ -1,5 +1,4 @@
-import { OntoUMLType } from '@constants/.';
-import { AggregationKind } from '@constants/.';
+import { OntoUMLType, AggregationKind } from '@constants/.';
 
 /**
  * Interface that captures common properties of objects in `ontouml-schema`. Whenever necessary, stereotypes are captured as regular string arrays.
@@ -176,6 +175,8 @@ interface IClass extends IElement, IContainer, IDecoratable, IClassifier {
  */
 interface IRelation extends IElement, IContainer, IDecoratable, IClassifier {
   type: OntoUMLType.RELATION_TYPE;
+  // TODO: why there is a `properType` here?
+  propertyType: IReference;
 
   /**
    * Returns `true` if the relation is binary and relates two IClass objects
