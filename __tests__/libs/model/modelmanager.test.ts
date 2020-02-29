@@ -17,7 +17,9 @@ describe('Model deserializing', () => {
       expect(rootPackage).toBe(modelManager.rootPackage);
 
       if (element.type === OntoUMLType.PROPERTY_TYPE) {
-        expect((element.container as IElement).hasIClassifierType).toBeTruthy();
+        expect(
+          (element._container as IElement).hasIClassifierType,
+        ).toBeTruthy();
       }
     });
   });
@@ -115,7 +117,7 @@ describe('Model deserializing', () => {
     ).toBeTruthy();
   });
 
-  it('Check getDescendents()', () => {
+  it('Check getDescendants()', () => {
     const sophomore = modelManager.rootPackage.getContentById(
       'h_Y9hA6GAqACnA1t',
     ) as IClassifier;
@@ -128,13 +130,13 @@ describe('Model deserializing', () => {
     const person = modelManager.rootPackage.getContentById(
       '2uxhBA6AUB0UtArb',
     ) as IClassifier;
-    const descendents = person.getDescendents();
+    const descendants = person.getDescendants();
 
     expect(
-      descendents.length === 3 &&
-        descendents.includes(student) &&
-        descendents.includes(sophomore) &&
-        descendents.includes(privately),
+      descendants.length === 3 &&
+        descendants.includes(student) &&
+        descendants.includes(sophomore) &&
+        descendants.includes(privately),
     ).toBeTruthy();
   });
 });

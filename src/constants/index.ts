@@ -1,4 +1,3 @@
-// Model element type (according to `ontouml-schema`)
 
 export enum Rigidity {
   RIGID = 'RIGID',
@@ -41,7 +40,11 @@ export enum ClassStereotype {
   RELATOR = 'relator',
   MODE = 'mode',
   QUALITY = 'quality',
+  TYPE = 'type',
   EVENT = 'event',
+  HISTORICAL_ROLE = 'historicalRole',
+  DATATYPE = 'datatype',
+  ENUMERATION = 'enumeration',
 }
 
 export enum RelationStereotype {

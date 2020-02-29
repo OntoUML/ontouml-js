@@ -1,0 +1,7 @@
+@startuml
+
+enum "Bedroom Availability Status" <<enumeration>> {
+    code : string
+}
+
+@enduml

@@ -1,0 +1,145 @@
+{
+  "type": "Package",
+  "id": "qJdeWA6AUB0UtAWl",
+  "name": "serialization",
+  "description": null,
+  "propertyAssignments": null,
+  "contents": [
+    {
+      "type": "Class",
+      "id": "qJdeWA6AUB0UtAWm",
+      "name": "Love",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["modeKind"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "Q5deWA6AUB0UtAWn",
+      "name": "Person",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["kind"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "Q5deWA6AUB0UtAWo",
+      "name": "Car",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["kind"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Relation",
+      "id": "lYARBA6AUB0UtAwk",
+      "name": "LovePerson",
+      "description": null,
+      "properties": [
+        {
+          "type": "Property",
+          "id": "zYARBA6AUB0UtAwm",
+          "name": null,
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "qJdeWA6AUB0UtAWm"
+          },
+          "cardinality": "*",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        },
+        {
+          "type": "Property",
+          "id": "bYARBA6AUB0UtAwp",
+          "name": null,
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "Q5deWA6AUB0UtAWn"
+          },
+          "cardinality": "1",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        }
+      ],
+      "propertyAssignments": null,
+      "stereotypes": ["characterization"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Relation",
+      "id": "lYARBA6AUB0UtAwk",
+      "name": "LoveCar",
+      "description": null,
+      "properties": [
+        {
+          "type": "Property",
+          "id": "zYARBA6AUB0UtAwm",
+          "name": null,
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "qJdeWA6AUB0UtAWm"
+          },
+          "cardinality": "*",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        },
+        {
+          "type": "Property",
+          "id": "bYARBA6AUB0UtAwp",
+          "name": null,
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "Q5deWA6AUB0UtAWo"
+          },
+          "cardinality": "1",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        }
+      ],
+      "propertyAssignments": null,
+      "stereotypes": ["externalDependence"],
+      "isAbstract": false,
+      "isDerived": false
+    }
+  ]
+}

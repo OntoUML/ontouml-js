@@ -5,42 +5,126 @@ import {
   IGeneralization,
   IContainer,
   IRelation,
+  IGeneralizationSet,
+  IProperty,
 } from '@types';
 import { OntoUMLType } from '@constants/.';
+import memoizee from 'memoizee';
 
-export default {
-  IElement_functions: {
+export function inject(
+  element: IElement,
+  enableMemoization: boolean = true,
+): void {
+  injectFunctions(element, functions._IElement, enableMemoization);
+
+  if (element.hasIContainerType()) {
+    injectFunctions(element, functions._IContainer, enableMemoization);
+  }
+
+  if (element.hasIClassifierType()) {
+    injectFunctions(element, functions._IClassifier, enableMemoization);
+  }
+
+  if (element.hasIDecoratableType()) {
+    injectFunctions(element, functions._IDecoratable, enableMemoization);
+  }
+
+  switch (element.type) {
+    case OntoUMLType.PACKAGE_TYPE:
+      injectFunctions(element, functions._IPackage, enableMemoization);
+      break;
+    case OntoUMLType.CLASS_TYPE:
+      injectFunctions(element, functions._IClass, enableMemoization);
+      break;
+    case OntoUMLType.RELATION_TYPE:
+      injectFunctions(element, functions._IRelation, enableMemoization);
+      break;
+    case OntoUMLType.GENERALIZATION_TYPE:
+      injectFunctions(element, functions._IGeneralization, enableMemoization);
+      break;
+    case OntoUMLType.GENERALIZATION_SET_TYPE:
+      injectFunctions(
+        element,
+        functions._IGeneralizationSet,
+        enableMemoization,
+      );
+      break;
+    case OntoUMLType.PROPERTY_TYPE:
+      injectFunctions(element, functions._IProperty, enableMemoization);
+      break;
+    case OntoUMLType.LITERAL_TYPE:
+      injectFunctions(element, functions._ILiteral, enableMemoization);
+      break;
+  }
+}
+
+export function eject(element: IElement): void {
+  Object.keys(element).forEach((elementKey: string) => {
+    if (element[elementKey] instanceof Function) {
+      delete element[elementKey];
+    }
+  });
+}
+
+function injectFunctions(
+  element: IElement,
+  functionImplementations: any,
+  enableMemoization: boolean = true,
+): void {
+  Object.keys(functionImplementations).forEach((functionName: string) => {
+    element[functionName] = enableMemoization
+      ? memoizee(functionImplementations[functionName])
+      : functionImplementations[functionName];
+  });
+}
+
+const functions = {
+  _IElement: {
     getRootPackage,
     hasIContainerType,
     hasIDecoratableType,
     hasIClassifierType,
   },
-  IContainer_functions: {
+  _IContainer: {
     getAllContents,
     getAllContentsByType,
     getContentById,
   },
-  IClassifier_functions: {
+  _IClassifier: {
     getParents,
     getChildren,
     getAncestors,
-    getDescendents,
+    getDescendants,
     getRelations,
   },
+  _IDecoratable: {},
+  _IPackage: {},
+  _IClass: {},
+  _IRelation: {
+    isBinary,
+    isTernary,
+    isDerivation,
+  },
+  _IGeneralization: {},
+  _IGeneralizationSet: {
+    getGeneral,
+  },
+  _IProperty: {},
+  _ILiteral: {},
 };
 
 function getRootPackage(): IPackage {
   const self = this as IElement;
 
-  if (self.container) {
-    const root: IPackage = (self.container as IContainer).getRootPackage();
+  if (self._container) {
+    const root: IPackage = (self._container as IContainer).getRootPackage();
 
     if (self.type === OntoUMLType.PACKAGE_TYPE && root === self) {
       throw 'Circular containment references';
     } else if (root) {
       return root;
-    } else if (self.container.type === OntoUMLType.PACKAGE_TYPE) {
-      return self.container as IPackage;
+    } else if (self._container.type === OntoUMLType.PACKAGE_TYPE) {
+      return self._container as IPackage;
     } else {
       return null;
     }
@@ -131,29 +215,23 @@ function getContentById(id: string): IElement {
 function getParents(): IClassifier[] {
   const self = this as IClassifier;
 
-  return self
-    .getRootPackage()
-    .getAllContentsByType([OntoUMLType.GENERALIZATION_TYPE])
-    .filter((generalization: IGeneralization) => {
-      return generalization.specific === self;
-    })
-    .map((generalization: IGeneralization) => {
-      return generalization.general as IClassifier;
-    });
+  return self._generalOfGeneralizations
+    ? self._generalOfGeneralizations.map(
+        (generalization: IGeneralization) =>
+          generalization.general as IClassifier,
+      )
+    : [];
 }
 
 function getChildren(): IClassifier[] {
   const self = this as IClassifier;
 
-  return self
-    .getRootPackage()
-    .getAllContentsByType([OntoUMLType.GENERALIZATION_TYPE])
-    .filter(
-      (generalization: IGeneralization) => generalization.general === self,
-    )
-    .map((generalization: IGeneralization) => {
-      return generalization.specific as IClassifier;
-    });
+  return self._specificOfGeneralizations
+    ? self._specificOfGeneralizations.map(
+        (specialization: IGeneralization) =>
+          specialization.specific as IClassifier,
+      )
+    : [];
 }
 
 function getAncestors(knownAncestors?: IClassifier[]): IClassifier[] {
@@ -170,18 +248,18 @@ function getAncestors(knownAncestors?: IClassifier[]): IClassifier[] {
   return ancestors;
 }
 
-function getDescendents(knownDescendents?: IClassifier[]): IClassifier[] {
+function getDescendants(knownDescendants?: IClassifier[]): IClassifier[] {
   const self = this as IClassifier;
-  let descendents = [...(knownDescendents ? knownDescendents : [])];
+  let descendants = [...(knownDescendants ? knownDescendants : [])];
 
   self.getChildren().forEach((child: IClassifier) => {
-    if (!descendents.includes(child)) {
-      descendents = [...child.getDescendents(descendents)];
-      descendents.push(child);
+    if (!descendants.includes(child)) {
+      descendants = [...child.getDescendants(descendants)];
+      descendants.push(child);
     }
   });
 
-  return descendents;
+  return descendants;
 }
 
 function getRelations(): IRelation[] {
@@ -196,4 +274,48 @@ function getRelations(): IRelation[] {
         relation.properties[1].propertyType.id === self.id,
     )
     .map((relation: IRelation) => relation);
+}
+
+function isBinary(): boolean {
+  const self = this as IRelation;
+  if (!self.properties || self.properties.length !== 2) return false;
+
+  const source = self.properties[0].propertyType as IClassifier;
+  const target = self.properties[1].propertyType as IClassifier;
+
+  return (
+    source &&
+    target &&
+    source.type === OntoUMLType.CLASS_TYPE &&
+    target.type === OntoUMLType.CLASS_TYPE
+  );
+}
+
+function isTernary(): boolean {
+  const self = this as IRelation;
+  if (!self.properties || self.properties.length < 2) return false;
+
+  return self.properties.every((end: IProperty) => {
+    return end.propertyType && end.propertyType.type === OntoUMLType.CLASS_TYPE;
+  });
+}
+
+function isDerivation(): boolean {
+  const self = this as IRelation;
+  if (!self.properties || self.properties.length !== 2) return false;
+
+  const source = self.properties[0].propertyType as IClassifier;
+  const target = self.properties[1].propertyType as IClassifier;
+
+  return (
+    source &&
+    target &&
+    source.type === OntoUMLType.RELATION_TYPE &&
+    target.type === OntoUMLType.CLASS_TYPE
+  );
+}
+
+function getGeneral(): IClassifier {
+  const self = this as IGeneralizationSet;
+  return (self.generalizations[0] as IGeneralization).general as IClassifier;
 }
