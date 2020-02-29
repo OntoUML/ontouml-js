@@ -10,11 +10,14 @@ import {
   alpinebits,
   istandard,
 } from '@test-models/valids';
-import { IPackage } from '@types';
+import { IPackage, IOntoUML2GUFOOptions } from '@types';
 
 async function transformOntoUML2GUFO(
   model: IPackage,
-  format?: string,
+  options?: {
+    format?: IOntoUML2GUFOOptions['format'];
+    uriFormatBy?: IOntoUML2GUFOOptions['uriFormatBy'];
+  },
 ): Promise<string> {
   const modelCopy = JSON.parse(JSON.stringify(model));
   const modelManager = new ModelManager(modelCopy);
@@ -22,12 +25,13 @@ async function transformOntoUML2GUFO(
 
   return await service.transformOntoUML2GUFO({
     baseIRI: 'https://example.com',
-    format: format || 'N-Triple',
+    format: 'N-Triple',
+    ...options,
   });
 }
 
 it('should transform AlpineBits model to gUFO', async () => {
-  const result = await transformOntoUML2GUFO(alpinebits, 'Turtle');
+  const result = await transformOntoUML2GUFO(alpinebits, { format: 'Turtle' });
 
   expect(result).toMatchSnapshot();
 });
@@ -39,44 +43,48 @@ it('should transform AlpineBits model to gUFO - N-Triple', async () => {
 });
 
 it('should transform iStandard model to gUFO', async () => {
-  const result = await transformOntoUML2GUFO(istandard, 'Turtle');
+  const result = await transformOntoUML2GUFO(istandard, { format: 'Turtle' });
 
   expect(result).toMatchSnapshot();
 });
 
 it('should transform OntoUML generic model to gUFO', async () => {
-  const result = await transformOntoUML2GUFO(genericExample1, 'Turtle');
+  const result = await transformOntoUML2GUFO(genericExample1, {
+    format: 'Turtle',
+  });
 
   expect(result).toMatchSnapshot();
 });
 
 it('should transform OntoUML <<mixin>> class', async () => {
-  const result = await transformOntoUML2GUFO(mixinExample1);
+  const result = await transformOntoUML2GUFO(mixinExample1, {
+    uriFormatBy: 'id',
+  });
 
   expect(result).toMatchSnapshot();
 
-  expect(result).toContain('<:yhVoWg6D.AAAARSb> <rdf:type> <owl:Class>');
+  expect(result).toContain('<:yhVoWg6DAAAARSb> <rdf:type> <owl:Class>');
   expect(result).toContain(
-    '<:yhVoWg6D.AAAARSb> <rdf:type> <owl:NamedIndividual>',
+    '<:yhVoWg6DAAAARSb> <rdf:type> <owl:NamedIndividual>',
   );
-  expect(result).toContain('<:yhVoWg6D.AAAARSb> <rdfs:label> "Seatable"');
+  expect(result).toContain('<:yhVoWg6DAAAARSb> <rdfs:label> "Seatable"');
   expect(result).toContain(
-    '<:yhVoWg6D.AAAARSb> <rdfs:subClassOf> <gufo:Endurant>',
+    '<:yhVoWg6DAAAARSb> <rdfs:subClassOf> <gufo:Endurant>',
   );
-  expect(result).toContain('<:yhVoWg6D.AAAARSb> <rdf:type> <gufo:Mixin>');
+  expect(result).toContain('<:yhVoWg6DAAAARSb> <rdf:type> <gufo:Mixin>');
 });
 
 it('should transform OntoUML generalization set', async () => {
   const result = await transformOntoUML2GUFO(mixinExample1);
 
-  expect(result).toContain('<:yhVoWg6D.AAAARSb> <owl:equivalentClass>');
-  expect(result).toContain(
-    '<owl:unionOf> (<:addoWg6D.AAAARS0> <:OtjoWg6D.AAAARTV>',
-  );
+  expect(result).toContain('<:Crate> <owl:equivalentClass>');
+  expect(result).toContain('<owl:unionOf> (<:BrokenCrate> <:SolidCrate>');
 });
 
 it('should transform OntoUML <<mode>> class as IntrinsicMode', async () => {
-  const result = await transformOntoUML2GUFO(modeExample1);
+  const result = await transformOntoUML2GUFO(modeExample1, {
+    uriFormatBy: 'id',
+  });
 
   expect(result).toMatchSnapshot();
 
@@ -92,7 +100,9 @@ it('should transform OntoUML <<mode>> class as IntrinsicMode', async () => {
 });
 
 it('should transform OntoUML <<mode>> class as ExtrinsicMode', async () => {
-  const result = await transformOntoUML2GUFO(modeExample2);
+  const result = await transformOntoUML2GUFO(modeExample2, {
+    uriFormatBy: 'id',
+  });
 
   expect(result).toMatchSnapshot();
 
@@ -108,48 +118,52 @@ it('should transform OntoUML <<mode>> class as ExtrinsicMode', async () => {
 });
 
 it('should transform OntoUML <<relator>> class', async () => {
-  const result = await transformOntoUML2GUFO(relatorExample1);
+  const result = await transformOntoUML2GUFO(relatorExample1, {
+    uriFormatBy: 'id',
+  });
 
   expect(result).toMatchSnapshot();
 
-  expect(result).toContain('<:SzOFmg6D.AAAAQuF> <rdf:type> <owl:Class>');
+  expect(result).toContain('<:SzOFmg6DAAAAQuF> <rdf:type> <owl:Class>');
   expect(result).toContain(
-    '<:SzOFmg6D.AAAAQuF> <rdf:type> <owl:NamedIndividual>',
+    '<:SzOFmg6DAAAAQuF> <rdf:type> <owl:NamedIndividual>',
   );
-  expect(result).toContain('<:SzOFmg6D.AAAAQuF> <rdfs:label> "Marriage"');
+  expect(result).toContain('<:SzOFmg6DAAAAQuF> <rdfs:label> "Marriage"');
   expect(result).toContain(
-    '<:SzOFmg6D.AAAAQuF> <rdfs:subClassOf> <gufo:Relator>',
+    '<:SzOFmg6DAAAAQuF> <rdfs:subClassOf> <gufo:Relator>',
   );
-  expect(result).toContain('<:SzOFmg6D.AAAAQuF> <rdf:type> <gufo:Kind>');
+  expect(result).toContain('<:SzOFmg6DAAAAQuF> <rdf:type> <gufo:Kind>');
 });
 
 it('should transform OntoUML <<role>> class', async () => {
-  const result = await transformOntoUML2GUFO(roleExample1);
+  const result = await transformOntoUML2GUFO(roleExample1, {
+    uriFormatBy: 'id',
+  });
 
   expect(result).toMatchSnapshot();
 
   // it's Husband a <<role>>
-  expect(result).toContain('<:z.T5mg6D.AAAAQsY> <rdf:type> <owl:Class>');
+  expect(result).toContain('<:zT5mg6DAAAAQsY> <rdf:type> <owl:Class>');
   expect(result).toContain(
-    '<:z.T5mg6D.AAAAQsY> <rdf:type> <owl:NamedIndividual>',
+    '<:zT5mg6DAAAAQsY> <rdf:type> <owl:NamedIndividual>',
   );
-  expect(result).toContain('<:z.T5mg6D.AAAAQsY> <rdfs:label> "Husband"');
-  expect(result).toContain('<:z.T5mg6D.AAAAQsY> <rdf:type> <gufo:Role>');
+  expect(result).toContain('<:zT5mg6DAAAAQsY> <rdfs:label> "Husband"');
+  expect(result).toContain('<:zT5mg6DAAAAQsY> <rdf:type> <gufo:Role>');
 
   // <<role>> Husband subclass of <<subkind>> Man
   expect(result).toContain(
-    '<:z.T5mg6D.AAAAQsY> <rdfs:subClassOf> <:ech5mg6D.AAAAQqj>',
+    '<:zT5mg6DAAAAQsY> <rdfs:subClassOf> <:ech5mg6DAAAAQqj>',
   );
-  expect(result).toContain('<:ech5mg6D.AAAAQqj> <rdf:type> <gufo:SubKind> ');
-  expect(result).toContain('<:ech5mg6D.AAAAQqj> <rdfs:label> "Man"');
+  expect(result).toContain('<:ech5mg6DAAAAQqj> <rdf:type> <gufo:SubKind> ');
+  expect(result).toContain('<:ech5mg6DAAAAQqj> <rdfs:label> "Man"');
 
   // <<subkind>> Man is subclass of <<kind>> Person
   expect(result).toContain(
-    '<:ech5mg6D.AAAAQqj> <rdfs:subClassOf> <:IsW5mg6D.AAAAQqE>',
+    '<:ech5mg6DAAAAQqj> <rdfs:subClassOf> <:IsW5mg6DAAAAQqE>',
   );
-  expect(result).toContain('<:IsW5mg6D.AAAAQqE> <rdf:type> <gufo:Kind>');
+  expect(result).toContain('<:IsW5mg6DAAAAQqE> <rdf:type> <gufo:Kind>');
   expect(result).toContain(
-    '<:IsW5mg6D.AAAAQqE> <rdfs:subClassOf> <gufo:FunctionalComplex>',
+    '<:IsW5mg6DAAAAQqE> <rdfs:subClassOf> <gufo:FunctionalComplex>',
   );
-  expect(result).toContain('<:IsW5mg6D.AAAAQqE> <rdfs:label> "Person"');
+  expect(result).toContain('<:IsW5mg6DAAAAQqE> <rdfs:label> "Person"');
 });

@@ -1,5 +1,5 @@
 import { N3Writer } from 'n3';
-import { IClass } from '@types';
+import { IClass, IOntoUML2GUFOOptions } from '@types';
 import { ClassStereotype } from '@constants/.';
 import { getURI } from './helper_functions';
 import {
@@ -29,6 +29,7 @@ const { namedNode, literal, quad } = DataFactory;
 export async function transformDisjointClasses(
   writer: N3Writer,
   classes: IClass[],
+  options: IOntoUML2GUFOOptions,
 ): Promise<boolean> {
   const disjointStereotypes = [
     ClassStereotype.KIND,
@@ -46,7 +47,11 @@ export async function transformDisjointClasses(
         ({ stereotypes }: IClass) =>
           stereotypes && stereotypes[0] === stereotype,
       )
-      .map(({ id }: IClass) => namedNode(`:${id}`));
+      .map(({ id, name }: IClass) => {
+        const uri = getURI(id, name, options.uriFormatBy);
+
+        return namedNode(`:${uri}`);
+      });
 
     // check if has at least 2 classes to avoid insconsistence
     if (stereotypeClasses.length > 1) {
@@ -70,6 +75,7 @@ export async function transformDisjointClasses(
 export async function transformClassesByStereotype(
   writer: N3Writer,
   classes: IClass[],
+  options: IOntoUML2GUFOOptions,
 ): Promise<boolean> {
   const transformStereotypeFunction = {
     [ClassStereotype.KIND]: transformKind,
@@ -91,7 +97,7 @@ export async function transformClassesByStereotype(
   for (let i = 0; i < classes.length; i += 1) {
     const classElement = classes[i];
     const { id, name, stereotypes } = classElement;
-    const uri = getURI(id, name);
+    const uri = getURI(id, name, options.uriFormatBy);
 
     if (!stereotypes || stereotypes.length !== 1) continue;
 
@@ -119,7 +125,11 @@ export async function transformClassesByStereotype(
       // Add subClassOf for all parents
       if (parents) {
         for (let i = 0; i < parents.length; i += 1) {
-          const parentUri = getURI(parents[i].id, parents[i].name);
+          const parentUri = getURI(
+            parents[i].id,
+            parents[i].name,
+            options.uriFormatBy,
+          );
 
           await writer.addQuad(
             namedNode(`:${uri}`),
@@ -130,7 +140,10 @@ export async function transformClassesByStereotype(
       }
 
       // Get quads from class stereotype function
-      const quads = transformStereotypeFunction[stereotype](classElement);
+      const quads = transformStereotypeFunction[stereotype](
+        classElement,
+        options,
+      );
 
       await writer.addQuads(quads);
     }

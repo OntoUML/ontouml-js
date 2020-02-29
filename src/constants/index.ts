@@ -1,4 +1,3 @@
-
 export enum Rigidity {
   RIGID = 'RIGID',
   ANTI_RIGID = 'ANTI_RIGID',

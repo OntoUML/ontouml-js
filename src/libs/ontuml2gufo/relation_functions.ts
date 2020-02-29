@@ -1,5 +1,5 @@
 import { N3Writer, Quad, BlankNode } from 'n3';
-import { IRelation } from '@types';
+import { IRelation, IOntoUML2GUFOOptions } from '@types';
 import { RelationStereotype } from '@constants/.';
 import { getURI } from './helper_functions';
 import {
@@ -33,6 +33,7 @@ const { namedNode, literal, quad } = DataFactory;
 export async function transformRelationsByStereotype(
   writer: N3Writer,
   relations: IRelation[],
+  options: IOntoUML2GUFOOptions,
 ): Promise<boolean> {
   const transformStereotypeFunction = {
     [RelationStereotype.CHARACTERIZATION]: transformCharacterization,
@@ -58,7 +59,7 @@ export async function transformRelationsByStereotype(
   for (let i = 0; i < relations.length; i += 1) {
     const relation = relations[i];
     const { name, id, stereotypes } = relation;
-    const uri = getURI(id, name);
+    const uri = getURI(id, name, options.uriFormatBy);
 
     if (!stereotypes || stereotypes.length !== 1) continue;
 
@@ -69,11 +70,21 @@ export async function transformRelationsByStereotype(
       Object.keys(transformStereotypeFunction).includes(stereotype)
     ) {
       // Get domain and range quads from relation
-      const domainRangeQuads = transformRelationDomainAndRange(relation);
+      const domainRangeQuads = transformRelationDomainAndRange(
+        relation,
+        options,
+      );
       // Get cardinalities quads from relation
-      const cardinalityQuads = transformRelationCardinalities(writer, relation);
+      const cardinalityQuads = transformRelationCardinalities(
+        writer,
+        relation,
+        options,
+      );
       // Get stereotype quads from relation
-      const stereotypeQuads = transformStereotypeFunction[stereotype](relation);
+      const stereotypeQuads = transformStereotypeFunction[stereotype](
+        relation,
+        options,
+      );
 
       await writer.addQuads([
         ...domainRangeQuads,
@@ -98,28 +109,52 @@ export async function transformRelationsByStereotype(
 /**
  * Transform relation domain and range classes to gUFO
  */
-export function transformRelationDomainAndRange(relation: IRelation): Quad[] {
-  const { id, name, properties } = relation;
-  const uri = getURI(id, name);
+export function transformRelationDomainAndRange(
+  relation: IRelation,
+  options: IOntoUML2GUFOOptions,
+): Quad[] {
+  const { id, name } = relation;
+  const uri = getURI(id, name, options.uriFormatBy);
 
-  const domainClassId = properties[0].propertyType.id;
-  const rangeClassId = properties[1].propertyType.id;
+  const sourceClass = relation.getSource();
+  const targetClass = relation.getTarget();
+
+  const domainClassUri = getURI(
+    sourceClass.id,
+    sourceClass.name,
+    options.uriFormatBy,
+  );
+  const rangeClassUri = getURI(
+    targetClass.id,
+    targetClass.name,
+    options.uriFormatBy,
+  );
+
+  if (domainClassUri && rangeClassUri) {
+    return [
+      quad(
+        namedNode(`:${uri}`),
+        namedNode('rdf:type'),
+        namedNode('owl:ObjectProperty'),
+      ),
+      quad(
+        namedNode(`:${uri}`),
+        namedNode('rdfs:domain'),
+        namedNode(`:${domainClassUri}`),
+      ),
+      quad(
+        namedNode(`:${uri}`),
+        namedNode('rdfs:range'),
+        namedNode(`:${rangeClassUri}`),
+      ),
+    ];
+  }
 
   return [
     quad(
       namedNode(`:${uri}`),
       namedNode('rdf:type'),
       namedNode('owl:ObjectProperty'),
-    ),
-    quad(
-      namedNode(`:${uri}`),
-      namedNode('rdfs:domain'),
-      namedNode(`:${domainClassId}`),
-    ),
-    quad(
-      namedNode(`:${uri}`),
-      namedNode('rdfs:range'),
-      namedNode(`:${rangeClassId}`),
     ),
   ];
 }
@@ -130,6 +165,7 @@ export function transformRelationDomainAndRange(relation: IRelation): Quad[] {
 export function transformRelationCardinalities(
   writer: N3Writer,
   relation: IRelation,
+  options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { properties } = relation;
 
@@ -146,12 +182,14 @@ export function transformRelationCardinalities(
         relation,
         cardinality: domainCardinality,
         isDomain: true,
+        options,
       }),
       ...transformRelationCardinality({
         writer,
         relation,
         cardinality: rangeCardinality,
         isDomain: false,
+        options,
       }),
     ];
   }
@@ -167,15 +205,21 @@ export function transformRelationCardinality({
   relation,
   cardinality,
   isDomain,
+  options,
 }: {
   writer: N3Writer;
   relation: IRelation;
   cardinality: string;
   isDomain: boolean;
+  options: IOntoUML2GUFOOptions;
 }): Quad[] {
-  const { properties } = relation;
-  const domain = properties[isDomain ? 0 : 1];
-  const domainClassId = domain.propertyType.id;
+  // get domain
+  const classElement = isDomain ? relation.getSource() : relation.getTarget();
+  const classUri = getURI(
+    classElement.id,
+    classElement.name,
+    options.uriFormatBy,
+  );
 
   const quads = [];
 
@@ -195,6 +239,7 @@ export function transformRelationCardinality({
         isDomain,
         cardinalityPredicate: 'owl:qualifiedCardinality',
         cardinality: lowerboundDomainCardinality,
+        options,
       }),
     );
   }
@@ -207,6 +252,7 @@ export function transformRelationCardinality({
         isDomain,
         cardinalityPredicate: 'owl:maxQualifiedCardinality',
         cardinality: upperboundDomainCardinality,
+        options,
       }),
     );
   }
@@ -219,6 +265,7 @@ export function transformRelationCardinality({
         isDomain,
         cardinalityPredicate: 'owl:minQualifiedCardinality',
         cardinality: lowerboundDomainCardinality,
+        options,
       }),
     );
   }
@@ -226,7 +273,7 @@ export function transformRelationCardinality({
   else if (lowerboundDomainCardinality > 1 && !hasInfiniteCardinality) {
     quads.push(
       quad(
-        namedNode(`:${domainClassId}`),
+        namedNode(`:${classUri}`),
         namedNode('rdfs:subClassOf'),
         writer.blank([
           {
@@ -242,6 +289,7 @@ export function transformRelationCardinality({
                 isDomain,
                 cardinalityPredicate: 'owl:minQualifiedCardinality',
                 cardinality: lowerboundDomainCardinality,
+                options,
               }),
               generateRelationBlankTriples({
                 writer,
@@ -249,6 +297,7 @@ export function transformRelationCardinality({
                 isDomain,
                 cardinalityPredicate: 'owl:maxQualifiedCardinality',
                 cardinality: upperboundDomainCardinality,
+                options,
               }),
             ]),
           },
@@ -269,19 +318,25 @@ export function generateRelationCardinalityQuad({
   isDomain,
   cardinalityPredicate,
   cardinality,
+  options,
 }: {
   writer: N3Writer;
   relation: IRelation;
   isDomain: boolean;
   cardinalityPredicate?: string;
   cardinality?: number;
+  options: IOntoUML2GUFOOptions;
 }): Quad {
-  const { properties } = relation;
-  const domain = properties[isDomain ? 0 : 1];
-  const domainClassId = domain.propertyType.id;
+  // get domain
+  const classElement = isDomain ? relation.getSource() : relation.getTarget();
+  const classUri = getURI(
+    classElement.id,
+    classElement.name,
+    options.uriFormatBy,
+  );
 
   return quad(
-    namedNode(`:${domainClassId}`),
+    namedNode(`:${classUri}`),
     namedNode('rdfs:subClassOf'),
     generateRelationBlankTriples({
       writer,
@@ -289,6 +344,7 @@ export function generateRelationCardinalityQuad({
       isDomain,
       cardinalityPredicate,
       cardinality,
+      options,
     }),
   );
 }
@@ -299,17 +355,24 @@ function generateRelationBlankTriples({
   isDomain,
   cardinalityPredicate,
   cardinality,
+  options,
 }: {
   writer: N3Writer;
   relation: IRelation;
   isDomain: boolean;
   cardinalityPredicate?: string;
   cardinality?: number;
+  options: IOntoUML2GUFOOptions;
 }): BlankNode {
-  const { id, name, properties } = relation;
-  const uri = getURI(id, name);
-  const range = properties[isDomain ? 1 : 0];
-  const rangeClassId = range.propertyType.id;
+  const { id, name } = relation;
+  const uri = getURI(id, name, options.uriFormatBy);
+  // get range
+  const classElement = isDomain ? relation.getTarget() : relation.getSource();
+  const classUri = getURI(
+    classElement.id,
+    classElement.name,
+    options.uriFormatBy,
+  );
 
   const blankTriples = [
     {
@@ -336,7 +399,7 @@ function generateRelationBlankTriples({
 
   blankTriples.push({
     predicate: namedNode('owl:onClass'),
-    object: namedNode(`:${rangeClassId}`),
+    object: namedNode(`:${classUri}`),
   });
 
   return writer.blank(blankTriples);

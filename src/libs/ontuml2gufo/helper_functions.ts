@@ -3,14 +3,14 @@ export function getURI(id: string, name: string, option?: string): string {
     ? name
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-zA-Z ]/g, '')
+        .replace(/[^a-zA-Z0-9 ]/g, '')
         .replace(/ /g, '')
     : null;
   const formattedId = id
     ? id
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-zA-Z ]/g, '')
+        .replace(/[^a-zA-Z0-9 ]/g, '')
         .replace(/ /g, '')
     : null;
 

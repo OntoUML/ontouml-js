@@ -324,14 +324,14 @@ function getSource(): IClass {
   const self = this as IRelation;
   return self.isBinary() && self.properties[0]
     ? (self.properties[0].propertyType as IClass)
-    : null;
+    : ({} as IClass);
 }
 
 function getTarget(): IClass {
   const self = this as IRelation;
   return self.isBinary() && self.properties[1]
     ? (self.properties[1].propertyType as IClass)
-    : null;
+    : ({} as IClass);
 }
 
 function getDerivingRelation(): IRelation {

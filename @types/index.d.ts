@@ -325,3 +325,9 @@ interface IOntoUMLError {
   links: ISelfLink | IRelatedLink;
   meta?: object;
 }
+
+interface IOntoUML2GUFOOptions {
+  baseIRI: string;
+  format?: string;
+  uriFormatBy?: 'name' | 'id';
+}
