@@ -5,7 +5,6 @@ import {
   VerificationIssue,
   VerificationIssueCode,
 } from '@libs/verification/issues';
-import { IElement } from '@types';
 
 describe('Model deserializing', () => {
   const inputModel = minimalConsistency;
@@ -76,10 +75,10 @@ describe('Model deserializing', () => {
       (issue: VerificationIssue) =>
         issue.source.name === 'Bedroom Availability Status',
     );
-    const officeASIssues = issues.filter(
-      (issue: VerificationIssue) =>
-        issue.source.name === 'Office Availability Status',
-    );
+    // const officeASIssues = issues.filter(
+    //   (issue: VerificationIssue) =>
+    //     issue.source.name === 'Office Availability Status',
+    // );
 
     expect(
       bedroomASIssues.length === 1 &&
