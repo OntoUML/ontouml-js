@@ -1,16 +1,18 @@
 import { Quad } from 'n3';
 import { IRelation } from '@types';
+import { getURI } from './helper_functions';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
 const { namedNode, quad } = DataFactory;
 
 export function transformCharacterization(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:inheresIn'),
     ),
@@ -18,11 +20,12 @@ export function transformCharacterization(relation: IRelation): Quad[] {
 }
 
 export function transformComparative(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdf:type'),
       namedNode('gufo:ComparativeRelationshipType'),
     ),
@@ -30,11 +33,12 @@ export function transformComparative(relation: IRelation): Quad[] {
 }
 
 export function transformComponentOf(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:isComponentOf'),
     ),
@@ -42,11 +46,12 @@ export function transformComponentOf(relation: IRelation): Quad[] {
 }
 
 export function transformCreation(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:wasCreatedIn'),
     ),
@@ -68,11 +73,12 @@ export function transformDerivation(relation: IRelation): Quad[] {
 }
 
 export function transformExternalDependence(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:externallyDependsOn'),
     ),
@@ -80,11 +86,12 @@ export function transformExternalDependence(relation: IRelation): Quad[] {
 }
 
 export function transformHistorical(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:historicallyDependsOn'),
     ),
@@ -92,11 +99,12 @@ export function transformHistorical(relation: IRelation): Quad[] {
 }
 
 export function transformHistoricalDependence(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:historicallyDependsOn'),
     ),
@@ -104,11 +112,12 @@ export function transformHistoricalDependence(relation: IRelation): Quad[] {
 }
 
 export function transformInstantiation(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:categorizes'),
     ),
@@ -116,11 +125,12 @@ export function transformInstantiation(relation: IRelation): Quad[] {
 }
 
 export function transformManifestation(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:manifestedIn'),
     ),
@@ -128,11 +138,12 @@ export function transformManifestation(relation: IRelation): Quad[] {
 }
 
 export function transformMaterial(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdf:type'),
       namedNode('gufo:MaterialRelationshipType'),
     ),
@@ -140,11 +151,12 @@ export function transformMaterial(relation: IRelation): Quad[] {
 }
 
 export function transformMediation(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:mediates'),
     ),
@@ -152,11 +164,12 @@ export function transformMediation(relation: IRelation): Quad[] {
 }
 
 export function transformMemberOf(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:isCollectionMemberOf'),
     ),
@@ -164,11 +177,12 @@ export function transformMemberOf(relation: IRelation): Quad[] {
 }
 
 export function transformParticipation(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:participatedIn'),
     ),
@@ -176,11 +190,12 @@ export function transformParticipation(relation: IRelation): Quad[] {
 }
 
 export function transformParticipational(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:isEventProperPartOf'),
     ),
@@ -188,11 +203,12 @@ export function transformParticipational(relation: IRelation): Quad[] {
 }
 
 export function transformSubCollectionOf(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:isSubCollectionOf'),
     ),
@@ -200,11 +216,12 @@ export function transformSubCollectionOf(relation: IRelation): Quad[] {
 }
 
 export function transformSubQuantityOf(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:isSubQuantityOf'),
     ),
@@ -212,11 +229,12 @@ export function transformSubQuantityOf(relation: IRelation): Quad[] {
 }
 
 export function transformTermination(relation: IRelation): Quad[] {
-  const { id } = relation;
+  const { id, name } = relation;
+  const uri = getURI(id, name);
 
   return [
     quad(
-      namedNode(`:${id}`),
+      namedNode(`:${uri}`),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:wasTerminatedIn'),
     ),

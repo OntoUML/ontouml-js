@@ -32,6 +32,12 @@ it('should transform AlpineBits model to gUFO', async () => {
   expect(result).toMatchSnapshot();
 });
 
+it('should transform AlpineBits model to gUFO - N-Triple', async () => {
+  const result = await transformOntoUML2GUFO(alpinebits);
+
+  expect(result).toMatchSnapshot();
+});
+
 it('should transform iStandard model to gUFO', async () => {
   const result = await transformOntoUML2GUFO(istandard, 'Turtle');
 

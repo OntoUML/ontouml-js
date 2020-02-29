@@ -168,7 +168,7 @@
         },
         {
           "type": "Class",
-          "id": "_RRB5eaGAqACBxxv",
+          "id": "RRB5eaGAqACBxxv",
           "name": "Publisher",
           "description": null,
           "properties": null,
@@ -246,12 +246,12 @@
           "properties": [
             {
               "type": "Property",
-              "id": "AUy1.g6AUB20tzxR",
+              "id": "AUy1g6AUB20tzxR",
               "name": "opening hours",
               "description": null,
               "propertyType": {
                 "type": "Class",
-                "id": "VaUC0.aGAqAovQ3q"
+                "id": "VaUC0aGAqAovQ3q"
               },
               "cardinality": null,
               "isDerived": false,
@@ -270,7 +270,7 @@
               "description": null,
               "propertyType": {
                 "type": "Class",
-                "id": "W_cOMFaAUB22dhob"
+                "id": "WcOMFaAUB22dhob"
               },
               "cardinality": null,
               "isDerived": false,
@@ -316,7 +316,7 @@
           "properties": [
             {
               "type": "Property",
-              "id": "6g.I6haGAqCsIBSJ",
+              "id": "6gI6haGAqCsIBSJ",
               "name": "original end date",
               "description": null,
               "propertyType": {
@@ -477,7 +477,7 @@
             },
             {
               "type": "Property",
-              "id": "4L.UFeaGAqACByRT",
+              "id": "4LUFeaGAqACByRT",
               "name": "end date",
               "description": null,
               "propertyType": {
@@ -503,13 +503,13 @@
         },
         {
           "type": "Class",
-          "id": "vM_a0.aGAqAovRNA",
+          "id": "vMa0aGAqAovRNA",
           "name": "Contact Point",
           "description": null,
           "properties": [
             {
               "type": "Property",
-              "id": "Hpa60.aGAqAovROa",
+              "id": "Hpa60aGAqAovROa",
               "name": "telephone",
               "description": null,
               "propertyType": {
@@ -528,7 +528,7 @@
             },
             {
               "type": "Property",
-              "id": "Pi660.aGAqAovROd",
+              "id": "Pi660aGAqAovROd",
               "name": "email",
               "description": null,
               "propertyType": {
@@ -547,12 +547,12 @@
             },
             {
               "type": "Property",
-              "id": "n8DO.g6AUB20tyfy",
+              "id": "n8DOg6AUB20tyfy",
               "name": "address",
               "description": null,
               "propertyType": {
                 "type": "Class",
-                "id": "W_cOMFaAUB22dhob"
+                "id": "WcOMFaAUB22dhob"
               },
               "cardinality": null,
               "isDerived": false,
@@ -693,7 +693,7 @@
         },
         {
           "type": "Class",
-          "id": "h.P5lRaGAqCsICdh",
+          "id": "hP5lRaGAqCsICdh",
           "name": "SimpleArea",
           "description": null,
           "properties": null,
@@ -728,7 +728,7 @@
               "description": null,
               "propertyType": {
                 "type": "Class",
-                "id": "_FGVFRaGAqCsIBQa"
+                "id": "FGVFRaGAqCsIBQa"
               },
               "cardinality": null,
               "isDerived": false,
@@ -955,13 +955,13 @@
         },
         {
           "type": "Class",
-          "id": "W_cOMFaAUB22dhob",
+          "id": "WcOMFaAUB22dhob",
           "name": "Address",
           "description": null,
           "properties": [
             {
               "type": "Property",
-              "id": ".i2h.g6AUB20ty7I",
+              "id": ".i2hg6AUB20ty7I",
               "name": "street",
               "description": null,
               "propertyType": {
@@ -980,7 +980,7 @@
             },
             {
               "type": "Property",
-              "id": "Urhh.g6AUB20ty7Y",
+              "id": "Urhhg6AUB20ty7Y",
               "name": "category",
               "description": null,
               "propertyType": {
@@ -999,7 +999,7 @@
             },
             {
               "type": "Property",
-              "id": "UI.h.g6AUB20ty7Q",
+              "id": "UIhg6AUB20ty7Q",
               "name": "region",
               "description": null,
               "propertyType": {
@@ -1018,7 +1018,7 @@
             },
             {
               "type": "Property",
-              "id": "3COh.g6AUB20ty7M",
+              "id": "3COhg6AUB20ty7M",
               "name": "city",
               "description": null,
               "propertyType": {
@@ -1037,7 +1037,7 @@
             },
             {
               "type": "Property",
-              "id": "l8Bh.g6AUB20ty7U",
+              "id": "l8Bhg6AUB20ty7U",
               "name": "country",
               "description": null,
               "propertyType": {
@@ -1056,7 +1056,7 @@
             },
             {
               "type": "Property",
-              "id": "tnxh.g6AUB20ty7c",
+              "id": "tnxhg6AUB20ty7c",
               "name": "zipcode",
               "description": null,
               "propertyType": {
@@ -1155,7 +1155,7 @@
             },
             {
               "type": "Property",
-              "id": "uJcm.g6AUB20tyVL",
+              "id": "uJcmg6AUB20tyVL",
               "name": "width",
               "description": null,
               "propertyType": {
@@ -1174,12 +1174,12 @@
             },
             {
               "type": "Property",
-              "id": "v78m.g6AUB20tyVP",
+              "id": "v78mg6AUB20tyVP",
               "name": "duration",
               "description": null,
               "propertyType": {
                 "type": "Class",
-                "id": "cFcG.g6AUB20tySh"
+                "id": "cFcGg6AUB20tySh"
               },
               "cardinality": null,
               "isDerived": false,
@@ -1269,7 +1269,7 @@
           "properties": [
             {
               "type": "Property",
-              "id": "I2x9.g6AUB20t0V.",
+              "id": "I2x9g6AUB20t0V.",
               "name": "european difficulty",
               "description": null,
               "propertyType": {
@@ -1288,7 +1288,7 @@
             },
             {
               "type": "Property",
-              "id": "zrl9.g6AUB20t0WC",
+              "id": "zrl9g6AUB20t0WC",
               "name": "american difficulty",
               "description": null,
               "propertyType": {
@@ -1371,7 +1371,7 @@
             },
             {
               "type": "Property",
-              "id": "1K0xFRaGAqCsIA8_",
+              "id": "1K0xFRaGAqCsIA8",
               "name": "base",
               "description": null,
               "propertyType": {
@@ -1452,7 +1452,7 @@
         },
         {
           "type": "Class",
-          "id": "_FGVFRaGAqCsIBQa",
+          "id": "FGVFRaGAqCsIBQa",
           "name": "Snowpark Difficulty",
           "description": null,
           "properties": null,
@@ -1528,7 +1528,7 @@
             },
             {
               "type": "Literal",
-              "id": "f.FmWRaGAqCsIC0N",
+              "id": "fFmWRaGAqCsIC0N",
               "name": "Advanced",
               "description": null,
               "propertyAssignments": null
@@ -1638,12 +1638,12 @@
           "properties": [
             {
               "type": "Property",
-              "id": "tMy80.aGAqAovQwt",
+              "id": "tMy80aGAqAovQwt",
               "name": "coordinates",
               "description": null,
               "propertyType": {
                 "type": "Class",
-                "id": "QkT.WRaGAqCsIC4z"
+                "id": "QkTWRaGAqCsIC4z"
               },
               "cardinality": null,
               "isDerived": false,
@@ -1664,13 +1664,13 @@
         },
         {
           "type": "Class",
-          "id": "VaUC0.aGAqAovQ3q",
+          "id": "VaUC0aGAqAovQ3q",
           "name": "Hours Specification",
           "description": null,
           "properties": [
             {
               "type": "Property",
-              "id": "U_jZWRaGAqCsIDB2",
+              "id": "UjZWRaGAqCsIDB2",
               "name": "valid to",
               "description": null,
               "propertyType": {
@@ -1689,7 +1689,7 @@
             },
             {
               "type": "Property",
-              "id": "t5wG0.aGAqAovRPU",
+              "id": "t5wG0aGAqAovRPU",
               "name": "opens",
               "description": null,
               "propertyType": null,
@@ -1705,7 +1705,7 @@
             },
             {
               "type": "Property",
-              "id": "P_wG0.aGAqAovRPX",
+              "id": "PwG0aGAqAovRPX",
               "name": "closes",
               "description": null,
               "propertyType": null,
@@ -1721,7 +1721,7 @@
             },
             {
               "type": "Property",
-              "id": "RGIG0.aGAqAovRPa",
+              "id": "RGIG0aGAqAovRPa",
               "name": "day of week",
               "description": null,
               "propertyType": {
@@ -1766,13 +1766,13 @@
         },
         {
           "type": "Class",
-          "id": "QkT.WRaGAqCsIC4z",
+          "id": "QkTWRaGAqCsIC4z",
           "name": "Coordinate",
           "description": null,
           "properties": [
             {
               "type": "Property",
-              "id": "kPz.WRaGAqCsIC44",
+              "id": "kPzWRaGAqCsIC44",
               "name": "longitude",
               "description": null,
               "propertyType": {
@@ -1791,7 +1791,7 @@
             },
             {
               "type": "Property",
-              "id": "Rdb.WRaGAqCsIC46",
+              "id": "RdbWRaGAqCsIC46",
               "name": "latitude",
               "description": null,
               "propertyType": {
@@ -1810,7 +1810,7 @@
             },
             {
               "type": "Property",
-              "id": "l97.WRaGAqCsIC48",
+              "id": "l97WRaGAqCsIC48",
               "name": "elevation",
               "description": null,
               "propertyType": {
@@ -1872,13 +1872,13 @@
         },
         {
           "type": "Class",
-          "id": "gjQq0.aGAqAovRJq",
+          "id": "gjQq0aGAqAovRJq",
           "name": "Event Series",
           "description": null,
           "properties": [
             {
               "type": "Property",
-              "id": "_MBJspaGAqAovRKE",
+              "id": "MBJspaGAqAovRKE",
               "name": "frequency",
               "description": null,
               "propertyType": null,
@@ -1913,18 +1913,18 @@
         },
         {
           "type": "Class",
-          "id": "xN.W0.aGAqAovRVX",
+          "id": "xNW0aGAqAovRVX",
           "name": "Venue Allocation",
           "description": null,
           "properties": [
             {
               "type": "Property",
-              "id": "FFW20.aGAqAovRai",
+              "id": "FFW20aGAqAovRai",
               "name": "hours",
               "description": null,
               "propertyType": {
                 "type": "Class",
-                "id": "VaUC0.aGAqAovQ3q"
+                "id": "VaUC0aGAqAovQ3q"
               },
               "cardinality": null,
               "isDerived": false,
@@ -1957,7 +1957,7 @@
         },
         {
           "type": "Class",
-          "id": "cFcG.g6AUB20tySh",
+          "id": "cFcGg6AUB20tySh",
           "name": "Time Interval",
           "description": null,
           "properties": null,
@@ -1969,7 +1969,7 @@
         },
         {
           "type": "Class",
-          "id": "bgem.g6AUB20tyWQ",
+          "id": "bgemg6AUB20tyWQ",
           "name": "Copyright Ownership",
           "description": null,
           "properties": null,
@@ -1981,7 +1981,7 @@
         },
         {
           "type": "GeneralizationSet",
-          "id": "rhfu.g6AUB20tyj_",
+          "id": "rhfug6AUB20tyj",
           "name": null,
           "description": null,
           "propertyAssignments": null,
@@ -2001,7 +2001,7 @@
         },
         {
           "type": "GeneralizationSet",
-          "id": "EOS..g6AUB20tyqo",
+          "id": "EOSg6AUB20tyqo",
           "name": null,
           "description": null,
           "propertyAssignments": null,
@@ -2013,11 +2013,11 @@
             },
             {
               "type": "Generalization",
-              "id": ".fDEFeaGAqACByIt"
+              "id": "fDEFeaGAqACByIt"
             },
             {
               "type": "Generalization",
-              "id": ".FjEFeaGAqACByI8"
+              "id": "FjEFeaGAqACByI8"
             }
           ],
           "isDisjoint": true,
@@ -2025,7 +2025,7 @@
         },
         {
           "type": "Class",
-          "id": "UTDh.g6AUB20ty7_",
+          "id": "UTDhg6AUB20ty7",
           "name": "Time",
           "description": null,
           "properties": null,
@@ -2037,7 +2037,7 @@
         },
         {
           "type": "Class",
-          "id": "WTpJ.g6AUB20tzLZ",
+          "id": "WTpJg6AUB20tzLZ",
           "name": "Frequency",
           "description": null,
           "properties": null,
@@ -2049,7 +2049,7 @@
         },
         {
           "type": "GeneralizationSet",
-          "id": "ZIeF.g6AUB20tze1",
+          "id": "ZIeFg6AUB20tze1",
           "name": null,
           "description": null,
           "propertyAssignments": null,
@@ -2065,7 +2065,7 @@
             },
             {
               "type": "Generalization",
-              "id": ".UImZeaGAqACBxJW"
+              "id": "UImZeaGAqACBxJW"
             },
             {
               "type": "Generalization",
@@ -2073,7 +2073,7 @@
             },
             {
               "type": "Generalization",
-              "id": ".bvGZeaGAqACBxIx"
+              "id": "bvGZeaGAqACBxIx"
             }
           ],
           "isDisjoint": true,
@@ -2081,7 +2081,7 @@
         },
         {
           "type": "GeneralizationSet",
-          "id": "zqZl.g6AUB20tzjy",
+          "id": "zqZlg6AUB20tzjy",
           "name": null,
           "description": null,
           "propertyAssignments": null,
@@ -2101,7 +2101,7 @@
         },
         {
           "type": "Class",
-          "id": "RQrl.g6AUB20tzm0",
+          "id": "RQrlg6AUB20tzm0",
           "name": "Multi-Point",
           "description": null,
           "properties": null,
@@ -2113,7 +2113,7 @@
         },
         {
           "type": "Class",
-          "id": "eFHl.g6AUB20tznI",
+          "id": "eFHlg6AUB20tznI",
           "name": "Multi Line String",
           "description": null,
           "properties": null,
@@ -2125,7 +2125,7 @@
         },
         {
           "type": "Class",
-          "id": "Edfl.g6AUB20tznk",
+          "id": "Edflg6AUB20tznk",
           "name": "Multi-Polygon",
           "description": null,
           "properties": null,
@@ -2137,7 +2137,7 @@
         },
         {
           "type": "GeneralizationSet",
-          "id": "mZN1.g6AUB20tzzX",
+          "id": "mZN1g6AUB20tzzX",
           "name": null,
           "description": null,
           "propertyAssignments": null,
@@ -2149,11 +2149,11 @@
             },
             {
               "type": "Generalization",
-              "id": "9_DpFRaGAqCsIBGd"
+              "id": "9DpFRaGAqCsIBGd"
             },
             {
               "type": "Generalization",
-              "id": "h9TpFRaGAqCsIBG_"
+              "id": "h9TpFRaGAqCsIBG"
             }
           ],
           "isDisjoint": true,
@@ -2161,7 +2161,7 @@
         },
         {
           "type": "GeneralizationSet",
-          "id": ".VUt.g6AUB20t0DI",
+          "id": "VUtg6AUB20t0DI",
           "name": null,
           "description": null,
           "propertyAssignments": null,
@@ -2169,27 +2169,27 @@
           "generalizations": [
             {
               "type": "Generalization",
-              "id": "WeAt.g6AUB20t0CJ"
+              "id": "WeAtg6AUB20t0CJ"
             },
             {
               "type": "Generalization",
-              "id": "x0gt.g6AUB20t0Ca"
+              "id": "x0gtg6AUB20t0Ca"
             },
             {
               "type": "Generalization",
-              "id": "7R_N.g6AUB20t0B4"
+              "id": "7RNg6AUB20t0B4"
             },
             {
               "type": "Generalization",
-              "id": "9PQt.g6AUB20t0C8"
+              "id": "9PQtg6AUB20t0C8"
             },
             {
               "type": "Generalization",
-              "id": "jrfN.g6AUB20t0Bn"
+              "id": "jrfNg6AUB20t0Bn"
             },
             {
               "type": "Generalization",
-              "id": "17gt.g6AUB20t0Cr"
+              "id": "17gtg6AUB20t0Cr"
             }
           ],
           "isDisjoint": true,
@@ -2197,7 +2197,7 @@
         },
         {
           "type": "GeneralizationSet",
-          "id": "8hTj.g6AUB20t0hR",
+          "id": "8hTjg6AUB20t0hR",
           "name": null,
           "description": null,
           "propertyAssignments": null,
@@ -2205,7 +2205,7 @@
           "generalizations": [
             {
               "type": "Generalization",
-              "id": ".1TaexaGAqCsIB2U"
+              "id": "1TaexaGAqCsIB2U"
             },
             {
               "type": "Generalization",
@@ -2217,7 +2217,7 @@
         },
         {
           "type": "GeneralizationSet",
-          "id": "wxDT.g6AUB20t0l3",
+          "id": "wxDTg6AUB20t0l3",
           "name": null,
           "description": null,
           "propertyAssignments": null,
@@ -2233,7 +2233,7 @@
             },
             {
               "type": "Generalization",
-              "id": "nljC.g6AUB20tx_U"
+              "id": "nljCg6AUB20txU"
             }
           ],
           "isDisjoint": true,
@@ -2241,7 +2241,7 @@
         },
         {
           "type": "GeneralizationSet",
-          "id": "Fn3r.g6AUB20t04v",
+          "id": "Fn3rg6AUB20t04v",
           "name": null,
           "description": null,
           "propertyAssignments": null,
@@ -2377,7 +2377,7 @@
     },
     {
       "type": "Generalization",
-      "id": ".bvGZeaGAqACBxIx",
+      "id": "bvGZeaGAqACBxIx",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -2407,7 +2407,7 @@
     },
     {
       "type": "Generalization",
-      "id": ".UImZeaGAqACBxJW",
+      "id": "UImZeaGAqACBxJW",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -2552,12 +2552,12 @@
       },
       "specific": {
         "type": "Class",
-        "id": "_RRB5eaGAqACBxxv"
+        "id": "RRB5eaGAqACBxxv"
       }
     },
     {
       "type": "Generalization",
-      "id": ".fDEFeaGAqACByIt",
+      "id": "fDEFeaGAqACByIt",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -2572,7 +2572,7 @@
     },
     {
       "type": "Generalization",
-      "id": ".FjEFeaGAqACByI8",
+      "id": "FjEFeaGAqACByI8",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -2707,7 +2707,7 @@
     },
     {
       "type": "Generalization",
-      "id": "9_DpFRaGAqCsIBGd",
+      "id": "9DpFRaGAqCsIBGd",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -2737,7 +2737,7 @@
     },
     {
       "type": "Generalization",
-      "id": "h9TpFRaGAqCsIBG_",
+      "id": "h9TpFRaGAqCsIBG",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -2767,7 +2767,7 @@
     },
     {
       "type": "Generalization",
-      "id": "bL3fFRaGAqCsICR.",
+      "id": "bL3fFRaGAqCsICR",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -2807,12 +2807,12 @@
       },
       "specific": {
         "type": "Class",
-        "id": "h.P5lRaGAqCsICdh"
+        "id": "hP5lRaGAqCsICdh"
       }
     },
     {
       "type": "Generalization",
-      "id": ".1TaexaGAqCsIB2U",
+      "id": "1TaexaGAqCsIB2U",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -2902,7 +2902,7 @@
     },
     {
       "type": "Generalization",
-      "id": "5_wseg6AUB20txFx",
+      "id": "5wseg6AUB20txFx",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -2917,7 +2917,7 @@
     },
     {
       "type": "Generalization",
-      "id": "nljC.g6AUB20tx_U",
+      "id": "nljCg6AUB20txU",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -2932,7 +2932,7 @@
     },
     {
       "type": "Generalization",
-      "id": "jrfN.g6AUB20t0Bn",
+      "id": "jrfNg6AUB20t0Bn",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -2947,7 +2947,7 @@
     },
     {
       "type": "Generalization",
-      "id": "7R_N.g6AUB20t0B4",
+      "id": "7RNg6AUB20t0B4",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -2957,12 +2957,12 @@
       },
       "specific": {
         "type": "Class",
-        "id": "RQrl.g6AUB20tzm0"
+        "id": "RQrlg6AUB20tzm0"
       }
     },
     {
       "type": "Generalization",
-      "id": "WeAt.g6AUB20t0CJ",
+      "id": "WeAtg6AUB20t0CJ",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -2977,7 +2977,7 @@
     },
     {
       "type": "Generalization",
-      "id": "x0gt.g6AUB20t0Ca",
+      "id": "x0gtg6AUB20t0Ca",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -2987,12 +2987,12 @@
       },
       "specific": {
         "type": "Class",
-        "id": "eFHl.g6AUB20tznI"
+        "id": "eFHlg6AUB20tznI"
       }
     },
     {
       "type": "Generalization",
-      "id": "17gt.g6AUB20t0Cr",
+      "id": "17gtg6AUB20t0Cr",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -3007,7 +3007,7 @@
     },
     {
       "type": "Generalization",
-      "id": "9PQt.g6AUB20t0C8",
+      "id": "9PQtg6AUB20t0C8",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -3017,7 +3017,7 @@
       },
       "specific": {
         "type": "Class",
-        "id": "Edfl.g6AUB20tznk"
+        "id": "Edflg6AUB20tznk"
       }
     },
     {
@@ -3032,12 +3032,12 @@
       },
       "specific": {
         "type": "Class",
-        "id": "gjQq0.aGAqAovRJq"
+        "id": "gjQq0aGAqAovRJq"
       }
     },
     {
       "type": "GeneralizationSet",
-      "id": "rhfu.g6AUB20tyj_",
+      "id": "rhfug6AUB20tyj",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -3057,7 +3057,7 @@
     },
     {
       "type": "GeneralizationSet",
-      "id": "EOS..g6AUB20tyqo",
+      "id": "EOSg6AUB20tyqo",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -3069,11 +3069,11 @@
         },
         {
           "type": "Generalization",
-          "id": ".fDEFeaGAqACByIt"
+          "id": "fDEFeaGAqACByIt"
         },
         {
           "type": "Generalization",
-          "id": ".FjEFeaGAqACByI8"
+          "id": "FjEFeaGAqACByI8"
         }
       ],
       "isDisjoint": true,
@@ -3081,7 +3081,7 @@
     },
     {
       "type": "GeneralizationSet",
-      "id": "ZIeF.g6AUB20tze1",
+      "id": "ZIeFg6AUB20tze1",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -3097,7 +3097,7 @@
         },
         {
           "type": "Generalization",
-          "id": ".UImZeaGAqACBxJW"
+          "id": "UImZeaGAqACBxJW"
         },
         {
           "type": "Generalization",
@@ -3105,7 +3105,7 @@
         },
         {
           "type": "Generalization",
-          "id": ".bvGZeaGAqACBxIx"
+          "id": "bvGZeaGAqACBxIx"
         }
       ],
       "isDisjoint": true,
@@ -3113,7 +3113,7 @@
     },
     {
       "type": "GeneralizationSet",
-      "id": "zqZl.g6AUB20tzjy",
+      "id": "zqZlg6AUB20tzjy",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -3133,7 +3133,7 @@
     },
     {
       "type": "GeneralizationSet",
-      "id": "mZN1.g6AUB20tzzX",
+      "id": "mZN1g6AUB20tzzX",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -3145,11 +3145,11 @@
         },
         {
           "type": "Generalization",
-          "id": "9_DpFRaGAqCsIBGd"
+          "id": "9DpFRaGAqCsIBGd"
         },
         {
           "type": "Generalization",
-          "id": "h9TpFRaGAqCsIBG_"
+          "id": "h9TpFRaGAqCsIBG"
         }
       ],
       "isDisjoint": true,
@@ -3157,7 +3157,7 @@
     },
     {
       "type": "GeneralizationSet",
-      "id": ".VUt.g6AUB20t0DI",
+      "id": "VUtg6AUB20t0DI",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -3165,27 +3165,27 @@
       "generalizations": [
         {
           "type": "Generalization",
-          "id": "WeAt.g6AUB20t0CJ"
+          "id": "WeAtg6AUB20t0CJ"
         },
         {
           "type": "Generalization",
-          "id": "x0gt.g6AUB20t0Ca"
+          "id": "x0gtg6AUB20t0Ca"
         },
         {
           "type": "Generalization",
-          "id": "7R_N.g6AUB20t0B4"
+          "id": "7RNg6AUB20t0B4"
         },
         {
           "type": "Generalization",
-          "id": "9PQt.g6AUB20t0C8"
+          "id": "9PQtg6AUB20t0C8"
         },
         {
           "type": "Generalization",
-          "id": "jrfN.g6AUB20t0Bn"
+          "id": "jrfNg6AUB20t0Bn"
         },
         {
           "type": "Generalization",
-          "id": "17gt.g6AUB20t0Cr"
+          "id": "17gtg6AUB20t0Cr"
         }
       ],
       "isDisjoint": true,
@@ -3193,7 +3193,7 @@
     },
     {
       "type": "GeneralizationSet",
-      "id": "8hTj.g6AUB20t0hR",
+      "id": "8hTjg6AUB20t0hR",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -3201,7 +3201,7 @@
       "generalizations": [
         {
           "type": "Generalization",
-          "id": ".1TaexaGAqCsIB2U"
+          "id": "1TaexaGAqCsIB2U"
         },
         {
           "type": "Generalization",
@@ -3213,7 +3213,7 @@
     },
     {
       "type": "GeneralizationSet",
-      "id": "wxDT.g6AUB20t0l3",
+      "id": "wxDTg6AUB20t0l3",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -3229,7 +3229,7 @@
         },
         {
           "type": "Generalization",
-          "id": "nljC.g6AUB20tx_U"
+          "id": "nljCg6AUB20txU"
         }
       ],
       "isDisjoint": true,
@@ -3237,7 +3237,7 @@
     },
     {
       "type": "GeneralizationSet",
-      "id": "Fn3r.g6AUB20t04v",
+      "id": "Fn3rg6AUB20t04v",
       "name": null,
       "description": null,
       "propertyAssignments": null,
@@ -3487,7 +3487,7 @@
           "description": null,
           "propertyType": {
             "type": "Class",
-            "id": "_RRB5eaGAqACBxxv"
+            "id": "RRB5eaGAqACBxxv"
           },
           "cardinality": null,
           "isDerived": false,
@@ -3707,13 +3707,13 @@
     },
     {
       "type": "Relation",
-      "id": "qFia0.aGAqAovRLK",
+      "id": "qFia0aGAqAovRLK",
       "name": "edition of",
       "description": null,
       "properties": [
         {
           "type": "Property",
-          "id": "qFia0.aGAqAovRLL",
+          "id": "qFia0aGAqAovRLL",
           "name": null,
           "description": null,
           "propertyType": {
@@ -3732,12 +3732,12 @@
         },
         {
           "type": "Property",
-          "id": "qFia0.aGAqAovRLN",
+          "id": "qFia0aGAqAovRLN",
           "name": null,
           "description": null,
           "propertyType": {
             "type": "Class",
-            "id": "gjQq0.aGAqAovRJq"
+            "id": "gjQq0aGAqAovRJq"
           },
           "cardinality": "0..1",
           "isDerived": false,
@@ -3757,13 +3757,13 @@
     },
     {
       "type": "Relation",
-      "id": "yFk60.aGAqAovRNe",
+      "id": "yFk60aGAqAovRNe",
       "name": "reachable by",
       "description": null,
       "properties": [
         {
           "type": "Property",
-          "id": "yFk60.aGAqAovRNf",
+          "id": "yFk60aGAqAovRNf",
           "name": null,
           "description": null,
           "propertyType": {
@@ -3782,12 +3782,12 @@
         },
         {
           "type": "Property",
-          "id": "yFk60.aGAqAovRNh",
+          "id": "yFk60aGAqAovRNh",
           "name": null,
           "description": null,
           "propertyType": {
             "type": "Class",
-            "id": "vM_a0.aGAqAovRNA"
+            "id": "vMa0aGAqAovRNA"
           },
           "cardinality": "*",
           "isDerived": false,
@@ -3807,18 +3807,18 @@
     },
     {
       "type": "Relation",
-      "id": "TwVW0.aGAqAovRWF",
+      "id": "TwVW0aGAqAovRWF",
       "name": "in context of",
       "description": null,
       "properties": [
         {
           "type": "Property",
-          "id": "TwVW0.aGAqAovRWG",
+          "id": "TwVW0aGAqAovRWG",
           "name": null,
           "description": null,
           "propertyType": {
             "type": "Class",
-            "id": "xN.W0.aGAqAovRVX"
+            "id": "xNW0aGAqAovRVX"
           },
           "cardinality": "1..*",
           "isDerived": false,
@@ -3832,7 +3832,7 @@
         },
         {
           "type": "Property",
-          "id": "TwVW0.aGAqAovRWI",
+          "id": "TwVW0aGAqAovRWI",
           "name": null,
           "description": null,
           "propertyType": {
@@ -3857,18 +3857,18 @@
     },
     {
       "type": "Relation",
-      "id": "0W9W0.aGAqAovRW.",
+      "id": "0W9W0aGAqAovRW",
       "name": "refers to",
       "description": null,
       "properties": [
         {
           "type": "Property",
-          "id": "0W9W0.aGAqAovRW_",
+          "id": "0W9W0aGAqAovRW",
           "name": null,
           "description": null,
           "propertyType": {
             "type": "Class",
-            "id": "xN.W0.aGAqAovRVX"
+            "id": "xNW0aGAqAovRVX"
           },
           "cardinality": "1..*",
           "isDerived": false,
@@ -3882,7 +3882,7 @@
         },
         {
           "type": "Property",
-          "id": "0W9W0.aGAqAovRXB",
+          "id": "0W9W0aGAqAovRXB",
           "name": null,
           "description": null,
           "propertyType": {
@@ -3957,13 +3957,13 @@
     },
     {
       "type": "Relation",
-      "id": ".LAPKRaGAqACCBJs",
+      "id": "LAPKRaGAqACCBJs",
       "name": null,
       "description": null,
       "properties": [
         {
           "type": "Property",
-          "id": ".LAPKRaGAqACCBJt",
+          "id": "LAPKRaGAqACCBJt",
           "name": null,
           "description": null,
           "propertyType": {
@@ -3982,7 +3982,7 @@
         },
         {
           "type": "Property",
-          "id": ".LAPKRaGAqACCBJv",
+          "id": "LAPKRaGAqACCBJv",
           "name": null,
           "description": null,
           "propertyType": {
@@ -4218,7 +4218,7 @@
           "description": null,
           "propertyType": {
             "type": "Class",
-            "id": "VaUC0.aGAqAovQ3q"
+            "id": "VaUC0aGAqAovQ3q"
           },
           "cardinality": "*",
           "isDerived": false,
@@ -4357,7 +4357,7 @@
     },
     {
       "type": "Relation",
-      "id": "4XBRFRaGAqCsIA4_",
+      "id": "4XBRFRaGAqCsIA4",
       "name": "identifies secondary surface",
       "description": null,
       "properties": [
@@ -4457,13 +4457,13 @@
     },
     {
       "type": "Relation",
-      "id": "pz.5FRaGAqCsIBNB",
+      "id": "pz5FRaGAqCsIBNB",
       "name": null,
       "description": null,
       "properties": [
         {
           "type": "Property",
-          "id": "pz.5FRaGAqCsIBNC",
+          "id": "pz5FRaGAqCsIBNC",
           "name": null,
           "description": null,
           "propertyType": {
@@ -4482,7 +4482,7 @@
         },
         {
           "type": "Property",
-          "id": "pz.5FRaGAqCsIBNE",
+          "id": "pz5FRaGAqCsIBNE",
           "name": null,
           "description": null,
           "propertyType": {
@@ -4618,7 +4618,7 @@
           "description": null,
           "propertyType": {
             "type": "Class",
-            "id": "bgem.g6AUB20tyWQ"
+            "id": "bgemg6AUB20tyWQ"
           },
           "cardinality": "*",
           "isDerived": false,
@@ -4668,7 +4668,7 @@
           "description": null,
           "propertyType": {
             "type": "Class",
-            "id": "bgem.g6AUB20tyWQ"
+            "id": "bgemg6AUB20tyWQ"
           },
           "cardinality": "1..*",
           "isDerived": false,
@@ -4682,7 +4682,7 @@
         },
         {
           "type": "Property",
-          "id": "bO0pgFaAUB20Xxb_",
+          "id": "bO0pgFaAUB20Xxb",
           "name": null,
           "description": null,
           "propertyType": {
@@ -4757,13 +4757,13 @@
     },
     {
       "type": "Relation",
-      "id": "O9KW.g6AUB20tyYO",
+      "id": "O9KWg6AUB20tyYO",
       "name": "refers to",
       "description": null,
       "properties": [
         {
           "type": "Property",
-          "id": "O9KW.g6AUB20tyYP",
+          "id": "O9KWg6AUB20tyYP",
           "name": null,
           "description": null,
           "propertyType": {
@@ -4782,12 +4782,12 @@
         },
         {
           "type": "Property",
-          "id": "O9KW.g6AUB20tyYR",
+          "id": "O9KWg6AUB20tyYR",
           "name": null,
           "description": null,
           "propertyType": {
             "type": "Class",
-            "id": "bgem.g6AUB20tyWQ"
+            "id": "bgemg6AUB20tyWQ"
           },
           "cardinality": "0..1",
           "isDerived": false,
@@ -4807,13 +4807,13 @@
     },
     {
       "type": "Relation",
-      "id": "guit.g6AUB20t0D_",
+      "id": "guitg6AUB20t0D",
       "name": null,
       "description": null,
       "properties": [
         {
           "type": "Property",
-          "id": "guit.g6AUB20t0EA",
+          "id": "guitg6AUB20t0EA",
           "name": "geometries",
           "description": null,
           "propertyType": {
@@ -4832,7 +4832,7 @@
         },
         {
           "type": "Property",
-          "id": "guit.g6AUB20t0EC",
+          "id": "guitg6AUB20t0EC",
           "name": null,
           "description": null,
           "propertyType": {
@@ -4857,13 +4857,13 @@
     },
     {
       "type": "Relation",
-      "id": "1cCj.g6AUB20t0ed",
+      "id": "1cCjg6AUB20t0ed",
       "name": null,
       "description": null,
       "properties": [
         {
           "type": "Property",
-          "id": "1cCj.g6AUB20t0ee",
+          "id": "1cCjg6AUB20t0ee",
           "name": null,
           "description": null,
           "propertyType": {
@@ -4882,7 +4882,7 @@
         },
         {
           "type": "Property",
-          "id": "1cCj.g6AUB20t0eg",
+          "id": "1cCjg6AUB20t0eg",
           "name": null,
           "description": null,
           "propertyType": {
@@ -4907,13 +4907,13 @@
     },
     {
       "type": "Relation",
-      "id": "uyoO0.aGAqAovReC",
+      "id": "uyoO0aGAqAovReC",
       "name": null,
       "description": null,
       "properties": [
         {
           "type": "Property",
-          "id": "uyoO0.aGAqAovReCzVD0FeaGAqACByXj",
+          "id": "uyoO0aGAqAovReCzVD0FeaGAqACByXj",
           "name": null,
           "description": null,
           "propertyType": {
@@ -4932,12 +4932,12 @@
         },
         {
           "type": "Property",
-          "id": "uyoO0.aGAqAovReCxN.W0.aGAqAovRVX",
+          "id": "uyoO0aGAqAovReCxNW0aGAqAovRVX",
           "name": null,
           "description": null,
           "propertyType": {
             "type": "Class",
-            "id": "xN.W0.aGAqAovRVX"
+            "id": "xNW0aGAqAovRVX"
           },
           "cardinality": "0..*",
           "isDerived": false,

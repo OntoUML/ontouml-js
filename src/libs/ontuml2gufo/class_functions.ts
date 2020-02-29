@@ -1,6 +1,7 @@
 import { N3Writer } from 'n3';
 import { IClass } from '@types';
 import { ClassStereotype } from '@constants/.';
+import { getURI } from './helper_functions';
 import {
   transformKind,
   transformQuantity,
@@ -90,6 +91,7 @@ export async function transformClassesByStereotype(
   for (let i = 0; i < classes.length; i += 1) {
     const classElement = classes[i];
     const { id, name, stereotypes } = classElement;
+    const uri = getURI(id, name);
 
     if (!stereotypes || stereotypes.length !== 1) continue;
 
@@ -102,25 +104,27 @@ export async function transformClassesByStereotype(
     ) {
       await writer.addQuads([
         quad(
-          namedNode(`:${id}`),
+          namedNode(`:${uri}`),
           namedNode('rdf:type'),
           namedNode('owl:Class'),
         ),
         quad(
-          namedNode(`:${id}`),
+          namedNode(`:${uri}`),
           namedNode('rdf:type'),
           namedNode('owl:NamedIndividual'),
         ),
-        quad(namedNode(`:${id}`), namedNode('rdfs:label'), literal(name)),
+        quad(namedNode(`:${uri}`), namedNode('rdfs:label'), literal(name)),
       ]);
 
       // Add subClassOf for all parents
       if (parents) {
         for (let i = 0; i < parents.length; i += 1) {
+          const parentUri = getURI(parents[i].id, parents[i].name);
+
           await writer.addQuad(
-            namedNode(`:${id}`),
+            namedNode(`:${uri}`),
             namedNode('rdfs:subClassOf'),
-            namedNode(`:${parents[i].id}`),
+            namedNode(`:${parentUri}`),
           );
         }
       }

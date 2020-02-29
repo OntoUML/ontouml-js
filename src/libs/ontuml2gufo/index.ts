@@ -63,6 +63,7 @@ export class OntoUML2GUFO {
     await Promise.all([
       this.transformOntoUMLClasses2GUFO(writer),
       this.transformGeneralizationSets(writer),
+      this.transformOntoUMLRelations2GUFO(writer),
     ]);
 
     return await new Promise<string>((resolve: (result: string) => null) => {
@@ -83,15 +84,24 @@ export class OntoUML2GUFO {
     const classes = this.model.getAllContentsByType([
       OntoUMLType.CLASS_TYPE,
     ]) as IClass[];
-    const relations = this.model.getAllContentsByType([
-      OntoUMLType.RELATION_TYPE,
-    ]) as IRelation[];
 
     await Promise.all([
       transformDisjointClasses(writer, classes),
       transformClassesByStereotype(writer, classes),
-      transformRelationsByStereotype(writer, relations),
     ]);
+
+    return true;
+  }
+
+  /**
+   * Main method to transform OntoUML relations in gUFO. The method will be responsable to run different relations transformations.
+   */
+  async transformOntoUMLRelations2GUFO(writer: N3Writer) {
+    const relations = this.model.getAllContentsByType([
+      OntoUMLType.RELATION_TYPE,
+    ]) as IRelation[];
+
+    await transformRelationsByStereotype(writer, relations);
 
     return true;
   }
