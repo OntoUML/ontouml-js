@@ -34,7 +34,7 @@ student.stereotypes; // [ 'role' ]
 student.getParents(); // [ Person kind class ]
 student.getAncestors(); // [ Person kind class, Agent category class ]
 student.getChildren(); // [ Privately Enrolled role class, Privately Enrolled role class ]
-student.getDescendents(); // [ Privately Enrolled role class, Privately Enrolled role class ]
+student.getDescendants(); // [ Privately Enrolled role class, Privately Enrolled role class ]
 
 const enrollmentDate = rootPackage.getAllContents().find(element => element.name === 'Enrollment Date'); // Enrollment Date mode class
 enrollmentDate.properties[0]; // date property representing the class's attibute

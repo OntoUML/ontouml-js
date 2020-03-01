@@ -19,5 +19,5 @@ export {
   roleMixinExample1,
   subkindExample1,
   alpinebits,
-  istandard
+  istandard,
 };
