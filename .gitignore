@@ -31,3 +31,7 @@ bundle/
 
 # Misc
 .DS_Store
+
+# Ontology output test files
+alpinebits.ttl
+istandards.ttl
