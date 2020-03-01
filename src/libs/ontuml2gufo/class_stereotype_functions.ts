@@ -266,3 +266,19 @@ export function transformEvent(
     ),
   ];
 }
+
+export function transformType(
+  classElement: IClass,
+  options: IOntoUML2GUFOOptions,
+): Quad[] {
+  const { id, name } = classElement;
+  const uri = getURI(id, name, options.uriFormatBy);
+
+  return [
+    quad(
+      namedNode(`:${uri}`),
+      namedNode('rdfs:subClassOf'),
+      namedNode('gufo:ConcreteIndividualType'),
+    )
+  ];
+}

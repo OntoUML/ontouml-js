@@ -17,6 +17,7 @@ import {
   transformMode,
   transformQuality,
   transformEvent,
+  transformType
 } from './class_stereotype_functions';
 
 const N3 = require('n3');
@@ -92,6 +93,7 @@ export async function transformClassesByStereotype(
     [ClassStereotype.MODE]: transformMode,
     [ClassStereotype.QUALITY]: transformQuality,
     [ClassStereotype.EVENT]: transformEvent,
+    [ClassStereotype.TYPE]: transformType
   };
 
   for (let i = 0; i < classes.length; i += 1) {
