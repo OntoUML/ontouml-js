@@ -176,7 +176,8 @@ interface IClass extends IElement, IContainer, IDecoratable, IClassifier {
 interface IRelation extends IElement, IContainer, IDecoratable, IClassifier {
   type: OntoUMLType.RELATION_TYPE;
   // TODO: why there is a `properType` here?
-  // propertyType: IReference;
+
+  propertyType: IReference;
 
   /**
    * Returns `true` if the relation is binary and relates two IClass objects

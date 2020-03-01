@@ -30,7 +30,7 @@ const { namedNode, literal, quad } = DataFactory;
 /**
  * Transform relations by its stereotypes
  */
-export async function transformRelationsByStereotype(
+export async function transformRelations(
   writer: N3Writer,
   relations: IRelation[],
   options: IOntoUML2GUFOOptions,
@@ -58,8 +58,7 @@ export async function transformRelationsByStereotype(
 
   for (let i = 0; i < relations.length; i += 1) {
     const relation = relations[i];
-    const { name, id, stereotypes } = relation;
-    const uri = getURI(id, name, options.uriFormatBy);
+    const { stereotypes } = relation;
 
     if (!stereotypes || stereotypes.length !== 1) continue;
 
@@ -69,11 +68,8 @@ export async function transformRelationsByStereotype(
       stereotype &&
       Object.keys(transformStereotypeFunction).includes(stereotype)
     ) {
-      // Get domain and range quads from relation
-      const domainRangeQuads = transformRelationDomainAndRange(
-        relation,
-        options,
-      );
+      // Get base quads (type, domain, range) from relation
+      const baseQuads = transformRelationBase(relation, options);
       // Get cardinalities quads from relation
       const cardinalityQuads = transformRelationCardinalities(
         writer,
@@ -87,19 +83,10 @@ export async function transformRelationsByStereotype(
       );
 
       await writer.addQuads([
-        ...domainRangeQuads,
+        ...baseQuads,
         ...cardinalityQuads,
         ...stereotypeQuads,
       ]);
-
-      // add label
-      if (name) {
-        await writer.addQuad(
-          namedNode(`:${uri}`),
-          namedNode('rdfs:label'),
-          literal(name),
-        );
-      }
     }
   }
 
@@ -109,7 +96,7 @@ export async function transformRelationsByStereotype(
 /**
  * Transform relation domain and range classes to gUFO
  */
-export function transformRelationDomainAndRange(
+function transformRelationBase(
   relation: IRelation,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
@@ -130,39 +117,46 @@ export function transformRelationDomainAndRange(
     options.uriFormatBy,
   );
 
-  if (domainClassUri && rangeClassUri) {
-    return [
-      quad(
-        namedNode(`:${uri}`),
-        namedNode('rdf:type'),
-        namedNode('owl:ObjectProperty'),
-      ),
-      quad(
-        namedNode(`:${uri}`),
-        namedNode('rdfs:domain'),
-        namedNode(`:${domainClassUri}`),
-      ),
-      quad(
-        namedNode(`:${uri}`),
-        namedNode('rdfs:range'),
-        namedNode(`:${rangeClassUri}`),
-      ),
-    ];
-  }
-
-  return [
+  const quads = [
     quad(
       namedNode(`:${uri}`),
       namedNode('rdf:type'),
       namedNode('owl:ObjectProperty'),
     ),
   ];
+
+  if (domainClassUri && rangeClassUri) {
+    quads.push(
+      quad(
+        namedNode(`:${uri}`),
+        namedNode('rdfs:domain'),
+        namedNode(`:${domainClassUri}`),
+      ),
+    );
+
+    quads.push(
+      quad(
+        namedNode(`:${uri}`),
+        namedNode('rdfs:range'),
+        namedNode(`:${rangeClassUri}`),
+      ),
+    );
+  }
+
+  // add label
+  if (name) {
+    quads.push(
+      quad(namedNode(`:${uri}`), namedNode('rdfs:label'), literal(name)),
+    );
+  }
+
+  return quads;
 }
 
 /**
  * Transform relation cardinalities to gUFO
  */
-export function transformRelationCardinalities(
+function transformRelationCardinalities(
   writer: N3Writer,
   relation: IRelation,
   options: IOntoUML2GUFOOptions,
@@ -200,7 +194,7 @@ export function transformRelationCardinalities(
 /**
  * Transform relation cardinalities to gUFO
  */
-export function transformRelationCardinality({
+function transformRelationCardinality({
   writer,
   relation,
   cardinality,
@@ -283,7 +277,7 @@ export function transformRelationCardinality({
           {
             predicate: namedNode('owl:intersectionOf'),
             object: writer.list([
-              generateRelationBlankTriples({
+              generateRelationBlankQuad({
                 writer,
                 relation,
                 isDomain,
@@ -291,7 +285,7 @@ export function transformRelationCardinality({
                 cardinality: lowerboundDomainCardinality,
                 options,
               }),
-              generateRelationBlankTriples({
+              generateRelationBlankQuad({
                 writer,
                 relation,
                 isDomain,
@@ -312,7 +306,7 @@ export function transformRelationCardinality({
 /**
  * Transform relation cardinalities to gUFO
  */
-export function generateRelationCardinalityQuad({
+function generateRelationCardinalityQuad({
   writer,
   relation,
   isDomain,
@@ -338,7 +332,7 @@ export function generateRelationCardinalityQuad({
   return quad(
     namedNode(`:${classUri}`),
     namedNode('rdfs:subClassOf'),
-    generateRelationBlankTriples({
+    generateRelationBlankQuad({
       writer,
       relation,
       isDomain,
@@ -349,7 +343,7 @@ export function generateRelationCardinalityQuad({
   );
 }
 
-function generateRelationBlankTriples({
+function generateRelationBlankQuad({
   writer,
   relation,
   isDomain,

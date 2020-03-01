@@ -13,7 +13,7 @@ import {
   transformDisjointClasses,
   transformClassesByStereotype,
 } from './class_functions';
-import { transformRelationsByStereotype } from './relation_functions';
+import { transformRelations } from './relation_functions';
 import { getURI } from './helper_functions';
 
 const N3 = require('n3');
@@ -104,7 +104,7 @@ export class OntoUML2GUFO {
       OntoUMLType.RELATION_TYPE,
     ]) as IRelation[];
 
-    await transformRelationsByStereotype(writer, relations, options);
+    await transformRelations(writer, relations, options);
 
     return true;
   }
