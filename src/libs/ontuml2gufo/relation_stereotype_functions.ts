@@ -15,7 +15,7 @@ export function transformCharacterization(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [
@@ -36,7 +36,7 @@ export function transformComparative(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [
@@ -57,7 +57,7 @@ export function transformComponentOf(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [
@@ -78,7 +78,7 @@ export function transformCreation(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [
@@ -116,7 +116,7 @@ export function transformExternalDependence(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [
@@ -137,7 +137,7 @@ export function transformHistorical(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [
@@ -158,7 +158,7 @@ export function transformHistoricalDependence(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [
@@ -179,7 +179,7 @@ export function transformInstantiation(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [
@@ -200,7 +200,7 @@ export function transformManifestation(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [
@@ -221,7 +221,7 @@ export function transformMaterial(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [
@@ -242,7 +242,7 @@ export function transformMediation(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [
@@ -263,7 +263,7 @@ export function transformMemberOf(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [
@@ -284,7 +284,7 @@ export function transformParticipation(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [
@@ -305,7 +305,7 @@ export function transformParticipational(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [
@@ -326,7 +326,7 @@ export function transformSubCollectionOf(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [
@@ -347,7 +347,7 @@ export function transformSubQuantityOf(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [
@@ -368,7 +368,7 @@ export function transformTermination(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   return [

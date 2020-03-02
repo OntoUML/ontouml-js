@@ -106,7 +106,7 @@ function transformRelationBase(
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
 
   const sourceClass = relation.getSource();
@@ -153,6 +153,14 @@ function transformRelationBase(
   if (name) {
     quads.push(
       quad(namedNode(`:${uri}`), namedNode('rdfs:label'), literal(name)),
+    );
+  } else {
+    quads.push(
+      quad(
+        namedNode(`:${uri}`),
+        namedNode('rdfs:comment'),
+        literal('Relation URI was automatically generated.'),
+      ),
     );
   }
 
@@ -373,7 +381,7 @@ function generateRelationBlankQuad({
     id,
     name,
     uriFormatBy: options.uriFormatBy,
-    isRelation: true,
+    relation,
   });
   // get range
   const classElement = isDomain ? relation.getTarget() : relation.getSource();
