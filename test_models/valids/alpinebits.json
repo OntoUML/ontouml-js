@@ -3229,17 +3229,6 @@
     },
     {
       "type": "GeneralizationSet",
-      "id": "QyobuxaGAqCsIBYI",
-      "name": null,
-      "description": null,
-      "propertyAssignments": null,
-      "categorizer": null,
-      "generalizations": null,
-      "isDisjoint": false,
-      "isComplete": false
-    },
-    {
-      "type": "GeneralizationSet",
       "id": "rhfu.g6AUB20tyj_",
       "name": "AgentType",
       "description": null,
