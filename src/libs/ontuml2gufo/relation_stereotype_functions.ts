@@ -138,27 +138,6 @@ export function transformExternalDependence(
   ];
 }
 
-export function transformHistorical(
-  relation: IRelation,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
-  const { id, name } = relation;
-  const uri = getURI({
-    id,
-    name,
-    uriFormatBy: options.uriFormatBy,
-    relation,
-  });
-
-  return [
-    quad(
-      namedNode(`:${uri}`),
-      namedNode('rdfs:subPropertyOf'),
-      namedNode('gufo:historicallyDependsOn'),
-    ),
-  ];
-}
-
 export function transformHistoricalDependence(
   relation: IRelation,
   options: IOntoUML2GUFOOptions,
