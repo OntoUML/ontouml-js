@@ -31,6 +31,7 @@ bundle/
 
 # Misc
 .DS_Store
+catalog-v001.xml
 
 # Ontology output test files
 alpinebits.ttl
