@@ -281,16 +281,16 @@
 :mediatesPerson rdfs:subPropertyOf gufo:mediates.
 :Widowwidower rdf:type gufo:Role.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:FullCarevpt :ModularCarempt).
-:categorizesSocialRelationship rdf:type owl:ObjectProperty;
-    rdfs:domain :SocialRelationshipType;
-    rdfs:range :SocialRelationship;
+:categorizesSocialRelationshipType rdf:type owl:ObjectProperty;
+    rdfs:range :SocialRelationshipType;
+    rdfs:domain :SocialRelationship;
     rdfs:comment "Relation URI was automatically generated.".
 :SocialRelationship rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :categorizesSocialRelationship ];
+  owl:onProperty [ owl:inverseOf :categorizesSocialRelationshipType ];
   owl:someValuesFrom :SocialRelationshipType
 ].
-:categorizesSocialRelationship rdfs:subPropertyOf gufo:categorizes.
+:categorizesSocialRelationshipType rdfs:subPropertyOf gufo:categorizes.
 :Unknown rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Unknown".
 :CareAtHome owl:equivalentClass [
@@ -791,17 +791,17 @@
 :Divorced rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Divorced".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DeclinedByClient :DeclinedByProvider).
-:categorizesLegalRepresentationType rdf:type owl:ObjectProperty;
-    rdfs:domain :LegalRepresentation;
-    rdfs:range :LegalRepresentationType;
+:categorizesLegalRepresentation rdf:type owl:ObjectProperty;
+    rdfs:range :LegalRepresentation;
+    rdfs:domain :LegalRepresentationType;
     rdfs:comment "Relation URI was automatically generated.".
 :LegalRepresentation rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :categorizesLegalRepresentationType;
+  owl:onProperty :categorizesLegalRepresentation;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :LegalRepresentationType
 ].
-:categorizesLegalRepresentationType rdfs:subPropertyOf gufo:categorizes.
+:categorizesLegalRepresentation rdfs:subPropertyOf gufo:categorizes.
 :Divorced rdfs:subClassOf :Person.
 :DeclinedAllocation owl:equivalentClass [
   rdf:type owl:Class;
@@ -826,17 +826,17 @@
 :mediatesLegalRepresentation rdfs:subPropertyOf gufo:mediates.
 :Divorced rdf:type gufo:Role.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:CareAtHomeAgreement :CareAtHealthcareOrganisationAgreement).
-:categorizesCourtDecision rdf:type owl:ObjectProperty;
-    rdfs:domain :CourtDecisionType;
-    rdfs:range :CourtDecision;
+:categorizesCourtDecisionType rdf:type owl:ObjectProperty;
+    rdfs:range :CourtDecisionType;
+    rdfs:domain :CourtDecision;
     rdfs:comment "Relation URI was automatically generated.".
 :CourtDecision rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :categorizesCourtDecision ];
+  owl:onProperty [ owl:inverseOf :categorizesCourtDecisionType ];
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :CourtDecisionType
 ].
-:categorizesCourtDecision rdfs:subPropertyOf gufo:categorizes.
+:categorizesCourtDecisionType rdfs:subPropertyOf gufo:categorizes.
 :ContactInfo rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Contact Info".
 :LtcServiceAgreement owl:equivalentClass [
@@ -1232,9 +1232,9 @@
 ].
 :replaces rdfs:subPropertyOf gufo:mediates.
 :GeneralPractitioner rdf:type gufo:Role.
-:categorizesHealthcareOfficeCode rdf:type owl:ObjectProperty;
-    rdfs:domain :HealthcareOffice;
-    rdfs:range :HealthcareOfficeCode;
+:categorizesHealthcareOffice rdf:type owl:ObjectProperty;
+    rdfs:range :HealthcareOffice;
+    rdfs:domain :HealthcareOfficeCode;
     rdfs:comment "Relation URI was automatically generated.";
     rdfs:subPropertyOf gufo:categorizes.
 :GpRegistration rdf:type owl:Class, owl:NamedIndividual;
@@ -1345,28 +1345,28 @@
 ].
 :mediatesLtcServiceAgreement rdfs:subPropertyOf gufo:mediates.
 :HealthcareProfessional rdf:type gufo:Role.
-:categorizesCareLocationType rdf:type owl:ObjectProperty;
-    rdfs:domain :CareLocation;
-    rdfs:range :CareLocationType;
+:categorizesCareLocation rdf:type owl:ObjectProperty;
+    rdfs:range :CareLocation;
+    rdfs:domain :CareLocationType;
     rdfs:comment "Relation URI was automatically generated.";
     rdfs:subPropertyOf gufo:categorizes.
 :Ciz rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "CIZ".
-:categorizesHealthcareServicePackageType rdf:type owl:ObjectProperty;
-    rdfs:domain :HealthcareServicePackage;
-    rdfs:range :HealthcareServicePackageType;
+:categorizesHealthcareServicePackage rdf:type owl:ObjectProperty;
+    rdfs:range :HealthcareServicePackage;
+    rdfs:domain :HealthcareServicePackageType;
     rdfs:comment "Relation URI was automatically generated.".
 :HealthcareServicePackage rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :categorizesHealthcareServicePackageType;
+  owl:onProperty :categorizesHealthcareServicePackage;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareServicePackageType
 ].
-:categorizesHealthcareServicePackageType rdfs:subPropertyOf gufo:categorizes.
+:categorizesHealthcareServicePackage rdfs:subPropertyOf gufo:categorizes.
 :Ciz rdfs:subClassOf :Organization.
-:categorizesEligibleLthClient rdf:type owl:ObjectProperty;
-    rdfs:domain :CareProfile;
-    rdfs:range :EligibleLthClient;
+:categorizesCareProfile rdf:type owl:ObjectProperty;
+    rdfs:range :CareProfile;
+    rdfs:domain :EligibleLthClient;
     rdfs:comment "Relation URI was automatically generated.";
     rdfs:subPropertyOf gufo:categorizes.
 :Ciz rdf:type gufo:SubKind.

@@ -1,7 +1,7 @@
 import { N3Writer, Quad, BlankNode } from 'n3';
 import memoizee from 'memoizee';
 import { IRelation, IOntoUML2GUFOOptions } from '@types';
-import { RelationStereotype } from '@constants/.';
+import { RelationStereotype, RelationsInvertedInGUFO } from '@constants/.';
 import { getURI } from './helper_functions';
 import {
   transformCharacterization,
@@ -99,13 +99,14 @@ function transformRelationBase(
   relation: IRelation,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name } = relation;
+  const { id, name, stereotypes } = relation;
   const uri = getURI({
     id,
     name,
     uriFormatBy: options.uriFormatBy,
     relation,
   });
+  const isInvertedRelation = RelationsInvertedInGUFO.includes(stereotypes[0]);
 
   const sourceClass = relation.getSource();
   const targetClass = relation.getTarget();
@@ -133,7 +134,7 @@ function transformRelationBase(
     quads.push(
       quad(
         namedNode(`:${uri}`),
-        namedNode('rdfs:domain'),
+        namedNode(isInvertedRelation ? 'rdfs:range' : 'rdfs:domain'),
         namedNode(`:${domainClassUri}`),
       ),
     );
@@ -141,7 +142,7 @@ function transformRelationBase(
     quads.push(
       quad(
         namedNode(`:${uri}`),
-        namedNode('rdfs:range'),
+        namedNode(isInvertedRelation ? 'rdfs:domain' : 'rdfs:range'),
         namedNode(`:${rangeClassUri}`),
       ),
     );
