@@ -235,6 +235,8 @@ function transformRelationCardinality({
   const upperboundDomainCardinality = getUpperboundCardinality(cardinality);
   const hasInfiniteCardinality = cardinality.includes('*');
 
+  const defaultParams = { writer, relation, isDomain, options };
+
   // min = max
   if (
     lowerboundDomainCardinality === upperboundDomainCardinality &&
@@ -242,12 +244,9 @@ function transformRelationCardinality({
   ) {
     quads.push(
       generateRelationCardinalityQuad({
-        writer,
-        relation,
-        isDomain,
+        ...defaultParams,
         cardinalityPredicate: 'owl:qualifiedCardinality',
         cardinality: lowerboundDomainCardinality,
-        options,
       }),
     );
   }
@@ -255,12 +254,9 @@ function transformRelationCardinality({
   else if (lowerboundDomainCardinality === 0 && !hasInfiniteCardinality) {
     quads.push(
       generateRelationCardinalityQuad({
-        writer,
-        relation,
-        isDomain,
+        ...defaultParams,
         cardinalityPredicate: 'owl:maxQualifiedCardinality',
         cardinality: upperboundDomainCardinality,
-        options,
       }),
     );
   }
@@ -272,17 +268,18 @@ function transformRelationCardinality({
   ) {
     quads.push(
       generateRelationCardinalityQuad({
-        writer,
-        relation,
-        isDomain,
+        ...defaultParams,
         cardinalityPredicate: 'owl:minQualifiedCardinality',
         cardinality: lowerboundDomainCardinality,
-        options,
       }),
     );
   }
-  // 2..4, 3..7 ...
-  else if (lowerboundDomainCardinality > 1 && !hasInfiniteCardinality) {
+  // 1..*
+  else if (lowerboundDomainCardinality === 1 && hasInfiniteCardinality) {
+    quads.push(generateRelationCardinalityQuad({ ...defaultParams }));
+  }
+  // 1..5, 2..4, 3..7 ...
+  else if (lowerboundDomainCardinality > 0 && !hasInfiniteCardinality) {
     quads.push(
       quad(
         namedNode(`:${classUri}`),
@@ -296,20 +293,14 @@ function transformRelationCardinality({
             predicate: namedNode('owl:intersectionOf'),
             object: writer.list([
               generateRelationBlankQuad({
-                writer,
-                relation,
-                isDomain,
+                ...defaultParams,
                 cardinalityPredicate: 'owl:minQualifiedCardinality',
                 cardinality: lowerboundDomainCardinality,
-                options,
               }),
               generateRelationBlankQuad({
-                writer,
-                relation,
-                isDomain,
+                ...defaultParams,
                 cardinalityPredicate: 'owl:maxQualifiedCardinality',
                 cardinality: upperboundDomainCardinality,
-                options,
               }),
             ]),
           },
@@ -412,12 +403,17 @@ function generateRelationBlankQuad({
         namedNode('xsd:nonNegativeInteger'),
       ),
     });
-  }
 
-  blankTriples.push({
-    predicate: namedNode('owl:onClass'),
-    object: namedNode(`:${classUri}`),
-  });
+    blankTriples.push({
+      predicate: namedNode('owl:onClass'),
+      object: namedNode(`:${classUri}`),
+    });
+  } else {
+    blankTriples.push({
+      predicate: namedNode('owl:someValuesFrom'),
+      object: namedNode(`:${classUri}`),
+    });
+  }
 
   return writer.blank(blankTriples);
 }
