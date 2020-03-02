@@ -94,15 +94,25 @@ export function transformDerivation(
   relation: IRelation,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { properties } = relation;
-  const domain = properties[0].propertyType.id;
-  const range = properties[1].propertyType.id;
+  const source = relation.getSource();
+  const target = relation.getTarget();
+
+  const domainUri = getURI({
+    id: source.id,
+    name: source.name,
+    uriFormatBy: options.uriFormatBy,
+  });
+  const rangeUri = getURI({
+    id: target.id,
+    name: target.name,
+    uriFormatBy: options.uriFormatBy,
+  });
 
   return [
     quad(
-      namedNode(`:${domain}`),
+      namedNode(`:${domainUri}`),
       namedNode('gufo:isDerivedFrom'),
-      namedNode(`:${range}`),
+      namedNode(`:${rangeUri}`),
     ),
   ];
 }

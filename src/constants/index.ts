@@ -66,3 +66,24 @@ export enum RelationStereotype {
   SUBQUANTITY_OF = 'subQuantityOf',
   TERMINATION = 'termination',
 }
+
+export const RelationStereotypeToGUFOMapping = {
+  characterization: 'inheresIn',
+  comparative: 'comparativeRelationshipType',
+  componentOf: 'isComponentOf',
+  creation: 'wasCreatedIn',
+  derivation: 'isDerivedFrom',
+  externalDependence: 'externallyDependsOn',
+  historical: 'historicallyDependsOn',
+  historicalDependence: 'historicallyDependsOn',
+  instantiation: 'categorizes',
+  manifestation: 'manifestedIn',
+  material: 'materialRelationshipType',
+  mediation: 'mediates',
+  memberOf: 'isCollectionMemberOf',
+  participation: 'participatedIn',
+  participational: 'isEventProperPartOf',
+  subCollectionOf: 'isSubCollectionOf',
+  subQuantityOf: 'isSubQuantityOf',
+  termination: 'wasTerminatedIn',
+};

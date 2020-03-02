@@ -8,56 +8,62 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:AreaOwner> <rdf:type> <owl:NamedIndividual> .
 <:AreaOwner> <rdfs:label> \\"Area Owner\\" .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Organization> <:Person>) .
-<:organizedBy> <rdf:type> <owl:ObjectProperty> .
-<:organizedBy> <rdfs:domain> <:Event> .
-<:organizedBy> <rdfs:range> <:Organizer> .
-<:organizedBy> <rdfs:label> \\"organized by\\" .
-<:organizedBy> <rdfs:subPropertyOf> <gufo:mediates> .
+<:mediatesOrganizer> <rdf:type> <owl:ObjectProperty> .
+<:mediatesOrganizer> <rdfs:domain> <:Event> .
+<:mediatesOrganizer> <rdfs:range> <:Organizer> .
+<:mediatesOrganizer> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:mediatesOrganizer> <rdfs:subPropertyOf> <gufo:mediates> .
 <:AreaOwner> <rdfs:subClassOf> <:Agent> .
 <:Agent> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:Organization> <:Person>)
 ] .
-<:sponsoredBy> <rdf:type> <owl:ObjectProperty> .
-<:sponsoredBy> <rdfs:domain> <:Event> .
-<:sponsoredBy> <rdfs:range> <:Sponsor> .
-<:sponsoredBy> <rdfs:label> \\"sponsored by\\" .
-<:sponsoredBy> <rdf:type> <gufo:MaterialRelationshipType> .
+<:materialRelationshipTypeSponsor> <rdf:type> <owl:ObjectProperty> .
+<:materialRelationshipTypeSponsor> <rdfs:domain> <:Event> .
+<:materialRelationshipTypeSponsor> <rdfs:range> <:Sponsor> .
+<:materialRelationshipTypeSponsor> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:materialRelationshipTypeSponsor> <rdf:type> <gufo:MaterialRelationshipType> .
 <:AreaOwner> <rdfs:subClassOf> <gufo:Endurant> .
 <:AreaOwner> <rdf:type> <gufo:RoleMixin> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:AudioObject> <:ImageObject> <:VideoObject>) .
-<:contributesIn> <rdf:type> <owl:ObjectProperty> .
-<:contributesIn> <rdfs:domain> <:Event> .
-<:contributesIn> <rdfs:range> <:Contributor> .
-<:contributesIn> <rdfs:label> \\"contributes in\\" .
-<:contributesIn> <rdf:type> <gufo:MaterialRelationshipType> .
+<:materialRelationshipTypeContributor> <rdf:type> <owl:ObjectProperty> .
+<:materialRelationshipTypeContributor> <rdfs:domain> <:Event> .
+<:materialRelationshipTypeContributor> <rdfs:range> <:Contributor> .
+<:materialRelationshipTypeContributor> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:materialRelationshipTypeContributor> <rdf:type> <gufo:MaterialRelationshipType> .
 <:CopyrightOwner> <rdf:type> <owl:Class> .
 <:CopyrightOwner> <rdf:type> <owl:NamedIndividual> .
 <:CopyrightOwner> <rdfs:label> \\"Copyright Owner\\" .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Cancelled> <:Ongoing> <:Realized> <:Rescheduled> <:Scheduled>) .
-<:publishedBy> <rdf:type> <owl:ObjectProperty> .
-<:publishedBy> <rdfs:domain> <:Event> .
-<:publishedBy> <rdfs:range> <:Publisher> .
-<:publishedBy> <rdfs:label> \\"published by\\" .
-<:publishedBy> <rdf:type> <gufo:MaterialRelationshipType> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Cancelled> <:Published>) .
+<:materialRelationshipTypePublisher> <rdf:type> <owl:ObjectProperty> .
+<:materialRelationshipTypePublisher> <rdfs:domain> <:Event> .
+<:materialRelationshipTypePublisher> <rdfs:range> <:Publisher> .
+<:materialRelationshipTypePublisher> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:Event> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> <:materialRelationshipTypePublisher>;
+  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:Publisher>
+] .
+<:materialRelationshipTypePublisher> <rdf:type> <gufo:MaterialRelationshipType> .
 <:CopyrightOwner> <rdfs:subClassOf> <:Agent> .
 <:Event> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
-  <owl:unionOf> (<:Cancelled> <:Ongoing> <:Realized> <:Rescheduled> <:Scheduled>)
+  <owl:unionOf> (<:Cancelled> <:Published>)
 ] .
-<:isInstantiationEventType> <rdf:type> <owl:ObjectProperty> .
-<:isInstantiationEventType> <rdfs:domain> <:Event> .
-<:isInstantiationEventType> <rdfs:range> <:EventType> .
-<:isInstantiationEventType> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
-<:isInstantiationEventType> <rdfs:subPropertyOf> <gufo:categorizes> .
+<:historicallyDependsOnNamedIndividual> <rdf:type> <owl:ObjectProperty> .
+<:historicallyDependsOnNamedIndividual> <rdfs:domain> <:MediaObject> .
+<:historicallyDependsOnNamedIndividual> <rdfs:range> <:NamedIndividual> .
+<:historicallyDependsOnNamedIndividual> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:historicallyDependsOnNamedIndividual> <rdfs:subPropertyOf> <gufo:historicallyDependsOn> .
 <:CopyrightOwner> <rdfs:subClassOf> <gufo:Endurant> .
 <:CopyrightOwner> <rdf:type> <gufo:RoleMixin> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:CompositeEvent> <:SimpleEvent>) .
-<:happensAt> <rdf:type> <owl:ObjectProperty> .
-<:happensAt> <rdfs:domain> <:Event> .
-<:happensAt> <rdfs:range> <:Venue> .
-<:happensAt> <rdfs:label> \\"happens at\\" .
-<:happensAt> <rdf:type> <gufo:MaterialRelationshipType> .
+<:categorizesEventType> <rdf:type> <owl:ObjectProperty> .
+<:categorizesEventType> <rdfs:domain> <:Event> .
+<:categorizesEventType> <rdfs:range> <:EventType> .
+<:categorizesEventType> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:categorizesEventType> <rdfs:subPropertyOf> <gufo:categorizes> .
 <:Contributor> <rdf:type> <owl:Class> .
 <:Contributor> <rdf:type> <owl:NamedIndividual> .
 <:Contributor> <rdfs:label> \\"Contributor\\" .
@@ -65,67 +71,29 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:CompositeEvent> <:SimpleEvent>)
 ] .
-<:editionOf> <rdf:type> <owl:ObjectProperty> .
-<:editionOf> <rdfs:domain> <:Event> .
-<:editionOf> <rdfs:range> <:EventSeries> .
-<:editionOf> <rdfs:label> \\"edition of\\" .
+<:materialRelationshipTypeVenue> <rdf:type> <owl:ObjectProperty> .
+<:materialRelationshipTypeVenue> <rdfs:domain> <:Event> .
+<:materialRelationshipTypeVenue> <rdfs:range> <:Venue> .
+<:materialRelationshipTypeVenue> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:materialRelationshipTypeVenue> <rdf:type> <gufo:MaterialRelationshipType> .
+<:Contributor> <rdfs:subClassOf> <:Agent> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Closed> <:Open> <:PermanentlyClosed>) .
+<:mediatesEventSeries> <rdf:type> <owl:ObjectProperty> .
+<:mediatesEventSeries> <rdfs:domain> <:Event> .
+<:mediatesEventSeries> <rdfs:range> <:EventSeries> .
+<:mediatesEventSeries> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
 <:Event> <rdfs:subClassOf> [
   <rdf:type> <owl:Restriction>;
-  <owl:onProperty> <:editionOf>;
+  <owl:onProperty> <:mediatesEventSeries>;
   <owl:maxQualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
   <owl:onClass> <:EventSeries>
 ] .
-<:editionOf> <rdfs:subPropertyOf> <gufo:mediates> .
-<:Contributor> <rdfs:subClassOf> <:Agent> .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Closed> <:Open> <:PermanentlyClosed>) .
-<:reachableBy> <rdf:type> <owl:ObjectProperty> .
-<:reachableBy> <rdfs:domain> <:Agent> .
-<:reachableBy> <rdfs:range> <:ContactPoint> .
-<:reachableBy> <rdfs:label> \\"reachable by\\" .
-<:ContactPoint> <rdfs:subClassOf> [
-  <rdf:type> <owl:Restriction>;
-  <owl:onProperty> [ <owl:inverseOf> <:reachableBy> ];
-  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
-  <owl:onClass> <:Agent>
-] .
-<:reachableBy> <rdfs:subPropertyOf> <gufo:inheresIn> .
+<:mediatesEventSeries> <rdfs:subPropertyOf> <gufo:mediates> .
 <:Contributor> <rdfs:subClassOf> <gufo:Endurant> .
 <:Contributor> <rdf:type> <gufo:RoleMixin> .
 <:Place> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:Closed> <:Open> <:PermanentlyClosed>)
-] .
-<:inContextOf> <rdf:type> <owl:ObjectProperty> .
-<:inContextOf> <rdfs:domain> <:VenueAllocation> .
-<:inContextOf> <rdfs:range> <:Event> .
-<:inContextOf> <rdfs:label> \\"in context of\\" .
-<:VenueAllocation> <rdfs:subClassOf> [
-  <rdf:type> <owl:Restriction>;
-  <owl:onProperty> <:inContextOf>;
-  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
-  <owl:onClass> <:Event>
-] .
-<:inContextOf> <rdfs:subPropertyOf> <gufo:mediates> .
-<:Publisher> <rdf:type> <owl:Class> .
-<:Publisher> <rdf:type> <owl:NamedIndividual> .
-<:Publisher> <rdfs:label> \\"Publisher\\" .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:LineString> <:MultiLineString> <:Multipoint> <:Multipolygon> <:Point> <:Polygon>) .
-<:refersTo> <rdf:type> <owl:ObjectProperty> .
-<:refersTo> <rdfs:domain> <:VenueAllocation> .
-<:refersTo> <rdfs:range> <:Venue> .
-<:refersTo> <rdfs:label> \\"refers to\\" .
-<:VenueAllocation> <rdfs:subClassOf> [
-  <rdf:type> <owl:Restriction>;
-  <owl:onProperty> <:refersTo>;
-  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
-  <owl:onClass> <:Venue>
-] .
-<:refersTo> <rdfs:subPropertyOf> <gufo:mediates> .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Event> <:SnowMeasurement> <:VenueAllocation> <:CopyrightOwnership>) .
-<:Publisher> <rdfs:subClassOf> <:Agent> .
-<:Geometry> <owl:equivalentClass> [
-  <rdf:type> <owl:Class>;
-  <owl:unionOf> (<:LineString> <:MultiLineString> <:Multipoint> <:Multipolygon> <:Point> <:Polygon>)
 ] .
 <:isComponentOfSnowpark> <rdf:type> <owl:ObjectProperty> .
 <:isComponentOfSnowpark> <rdfs:domain> <:SnowparkFeature> .
@@ -138,109 +106,114 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:onClass> <:Snowpark>
 ] .
 <:isComponentOfSnowpark> <rdfs:subPropertyOf> <gufo:isComponentOf> .
-<:Publisher> <rdfs:subClassOf> <gufo:Endurant> .
-<:Publisher> <rdf:type> <gufo:RoleMixin> .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:SkiSlope> <:Snowpark>) .
+<:Publisher> <rdf:type> <owl:Class> .
+<:Publisher> <rdf:type> <owl:NamedIndividual> .
+<:Publisher> <rdfs:label> \\"Publisher\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:LineString> <:MultiLineString> <:Multipoint> <:Multipolygon> <:Point> <:Polygon>) .
 <:isComponentOfMountainArea> <rdf:type> <owl:ObjectProperty> .
 <:isComponentOfMountainArea> <rdfs:domain> <:Lift> .
 <:isComponentOfMountainArea> <rdfs:range> <:MountainArea> .
 <:isComponentOfMountainArea> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
 <:isComponentOfMountainArea> <rdfs:subPropertyOf> <gufo:isComponentOf> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Event> <:SnowMeasurement>) .
+<:Publisher> <rdfs:subClassOf> <:Agent> .
+<:Geometry> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:LineString> <:MultiLineString> <:Multipoint> <:Multipolygon> <:Point> <:Polygon>)
+] .
+<:isComponentOfMountainArea> <rdf:type> <owl:ObjectProperty> .
+<:isComponentOfMountainArea> <rdfs:domain> <:Trail> .
+<:isComponentOfMountainArea> <rdfs:range> <:MountainArea> .
+<:isComponentOfMountainArea> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:isComponentOfMountainArea> <rdfs:subPropertyOf> <gufo:isComponentOf> .
+<:Publisher> <rdfs:subClassOf> <gufo:Endurant> .
+<:Publisher> <rdf:type> <gufo:RoleMixin> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:SkiSlope> <:Snowpark>) .
+<:categorizesLiftType> <rdf:type> <owl:ObjectProperty> .
+<:categorizesLiftType> <rdfs:domain> <:Lift> .
+<:categorizesLiftType> <rdfs:range> <:LiftType> .
+<:categorizesLiftType> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:categorizesLiftType> <rdfs:subPropertyOf> <gufo:categorizes> .
 <:Sponsor> <rdf:type> <owl:Class> .
 <:Sponsor> <rdf:type> <owl:NamedIndividual> .
 <:Sponsor> <rdfs:label> \\"Sponsor\\" .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Lift> <:MountainArea> <:Trail>) .
-<:isComponentOfMountainArea> <rdf:type> <owl:ObjectProperty> .
-<:isComponentOfMountainArea> <rdfs:domain> <:SkiSlope> .
-<:isComponentOfMountainArea> <rdfs:range> <:MountainArea> .
-<:isComponentOfMountainArea> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
-<:isComponentOfMountainArea> <rdfs:subPropertyOf> <gufo:isComponentOf> .
+<:categorizesTrailType> <rdf:type> <owl:ObjectProperty> .
+<:categorizesTrailType> <rdfs:domain> <:Trail> .
+<:categorizesTrailType> <rdfs:range> <:TrailType> .
+<:categorizesTrailType> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:categorizesTrailType> <rdfs:subPropertyOf> <gufo:categorizes> .
 <:Sponsor> <rdfs:subClassOf> <:Agent> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:CompositeArea> <:Simplearea>) .
-<:isInstantiationLiftType> <rdf:type> <owl:ObjectProperty> .
-<:isInstantiationLiftType> <rdfs:domain> <:Lift> .
-<:isInstantiationLiftType> <rdfs:range> <:LiftType> .
-<:isInstantiationLiftType> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
-<:isInstantiationLiftType> <rdfs:subPropertyOf> <gufo:categorizes> .
+<:categorizesSnowparkFeatureType> <rdf:type> <owl:ObjectProperty> .
+<:categorizesSnowparkFeatureType> <rdfs:domain> <:SnowparkFeature> .
+<:categorizesSnowparkFeatureType> <rdfs:range> <:SnowparkFeatureType> .
+<:categorizesSnowparkFeatureType> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:categorizesSnowparkFeatureType> <rdfs:subPropertyOf> <gufo:categorizes> .
 <:Sponsor> <rdfs:subClassOf> <gufo:Endurant> .
 <:Sponsor> <rdf:type> <gufo:RoleMixin> .
 <:MountainArea> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:CompositeArea> <:Simplearea>)
 ] .
-<:isInstantiationTrailType> <rdf:type> <owl:ObjectProperty> .
-<:isInstantiationTrailType> <rdfs:domain> <:Trail> .
-<:isInstantiationTrailType> <rdfs:range> <:TrailType> .
-<:isInstantiationTrailType> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
-<:isInstantiationTrailType> <rdfs:subPropertyOf> <gufo:categorizes> .
+<:mediatesAgent> <rdf:type> <owl:ObjectProperty> .
+<:mediatesAgent> <rdfs:domain> <:SnowMeasurement> .
+<:mediatesAgent> <rdfs:range> <:Agent> .
+<:mediatesAgent> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:SnowMeasurement> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> <:mediatesAgent>;
+  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:Agent>
+] .
+<:mediatesAgent> <rdfs:subPropertyOf> <gufo:mediates> .
 <:Organizer> <rdf:type> <owl:Class> .
 <:Organizer> <rdf:type> <owl:NamedIndividual> .
 <:Organizer> <rdfs:label> \\"Organizer\\" .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Organization> <:Person>) .
-<:isInstantiationSnowparkFeatureType> <rdf:type> <owl:ObjectProperty> .
-<:isInstantiationSnowparkFeatureType> <rdfs:domain> <:SnowparkFeature> .
-<:isInstantiationSnowparkFeatureType> <rdfs:range> <:SnowparkFeatureType> .
-<:isInstantiationSnowparkFeatureType> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
-<:isInstantiationSnowparkFeatureType> <rdfs:subPropertyOf> <gufo:categorizes> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Ongoing> <:Realized> <:Rescheduled> <:Scheduled>) .
+<:mediatesPlace> <rdf:type> <owl:ObjectProperty> .
+<:mediatesPlace> <rdfs:domain> <:SnowMeasurement> .
+<:mediatesPlace> <rdfs:range> <:Place> .
+<:mediatesPlace> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:mediatesPlace> <rdfs:subPropertyOf> <gufo:mediates> .
 <:Organizer> <rdfs:subClassOf> <:Agent> .
+<:Published> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:Ongoing> <:Realized> <:Rescheduled> <:Scheduled>)
+] .
+<:mediatesSnowType> <rdf:type> <owl:ObjectProperty> .
+<:mediatesSnowType> <rdfs:domain> <:SnowMeasurement> .
+<:mediatesSnowType> <rdfs:range> <:SnowType> .
+<:mediatesSnowType> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:SnowMeasurement> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> <:mediatesSnowType>;
+  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:SnowType>
+] .
+<:mediatesSnowType> <rdfs:subPropertyOf> <gufo:mediates> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Geometry> <:Difficulty>) .
+<:Organizer> <rdfs:subClassOf> <gufo:Endurant> .
+<:Organizer> <rdf:type> <gufo:RoleMixin> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Organization> <:Person>) .
+<:mediatesSnowType> <rdf:type> <owl:ObjectProperty> .
+<:mediatesSnowType> <rdfs:domain> <:SnowMeasurement> .
+<:mediatesSnowType> <rdfs:range> <:SnowType> .
+<:mediatesSnowType> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:SnowMeasurement> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> <:mediatesSnowType>;
+  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:SnowType>
+] .
+<:mediatesSnowType> <rdfs:subPropertyOf> <gufo:mediates> .
+<:Organization> <rdf:type> <owl:Class> .
+<:Organization> <rdf:type> <owl:NamedIndividual> .
+<:Organization> <rdfs:label> \\"Organization\\" .
 <:Agent> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:Organization> <:Person>)
 ] .
-<:measuredBy> <rdf:type> <owl:ObjectProperty> .
-<:measuredBy> <rdfs:domain> <:SnowMeasurement> .
-<:measuredBy> <rdfs:range> <:Agent> .
-<:measuredBy> <rdfs:label> \\"measured by\\" .
-<:SnowMeasurement> <rdfs:subClassOf> [
-  <rdf:type> <owl:Restriction>;
-  <owl:onProperty> <:measuredBy>;
-  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
-  <owl:onClass> <:Agent>
-] .
-<:measuredBy> <rdfs:subPropertyOf> <gufo:mediates> .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:ContactPoint> <:Geometry>) .
-<:Organizer> <rdfs:subClassOf> <gufo:Endurant> .
-<:Organizer> <rdf:type> <gufo:RoleMixin> .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:AudioObject> <:ImageObject> <:VideoObject>) .
-<:measuredIn> <rdf:type> <owl:ObjectProperty> .
-<:measuredIn> <rdfs:domain> <:SnowMeasurement> .
-<:measuredIn> <rdfs:range> <:Place> .
-<:measuredIn> <rdfs:label> \\"measured in\\" .
-<:measuredIn> <rdfs:subPropertyOf> <gufo:mediates> .
-<:Organization> <rdf:type> <owl:Class> .
-<:Organization> <rdf:type> <owl:NamedIndividual> .
-<:Organization> <rdfs:label> \\"Organization\\" .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Cancelled> <:Ongoing> <:Realized> <:Rescheduled> <:Scheduled>) .
-<:identifiesSecondarySurface> <rdf:type> <owl:ObjectProperty> .
-<:identifiesSecondarySurface> <rdfs:domain> <:SnowMeasurement> .
-<:identifiesSecondarySurface> <rdfs:range> <:SnowType> .
-<:identifiesSecondarySurface> <rdfs:label> \\"identifies secondary surface\\" .
-<:SnowMeasurement> <rdfs:subClassOf> [
-  <rdf:type> <owl:Restriction>;
-  <owl:onProperty> <:identifiesSecondarySurface>;
-  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
-  <owl:onClass> <:SnowType>
-] .
-<:identifiesSecondarySurface> <rdfs:subPropertyOf> <gufo:mediates> .
-<:Organization> <rdfs:subClassOf> <:Agent> .
-<:Event> <owl:equivalentClass> [
-  <rdf:type> <owl:Class>;
-  <owl:unionOf> (<:Cancelled> <:Ongoing> <:Realized> <:Rescheduled> <:Scheduled>)
-] .
-<:identifiesPrimarySurface> <rdf:type> <owl:ObjectProperty> .
-<:identifiesPrimarySurface> <rdfs:domain> <:SnowMeasurement> .
-<:identifiesPrimarySurface> <rdfs:range> <:SnowType> .
-<:identifiesPrimarySurface> <rdfs:label> \\"identifies primary surface\\" .
-<:SnowMeasurement> <rdfs:subClassOf> [
-  <rdf:type> <owl:Restriction>;
-  <owl:onProperty> <:identifiesPrimarySurface>;
-  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
-  <owl:onClass> <:SnowType>
-] .
-<:identifiesPrimarySurface> <rdfs:subPropertyOf> <gufo:mediates> .
-<:Organization> <rdfs:subClassOf> <gufo:FunctionalComplex> .
-<:Organization> <rdf:type> <gufo:Kind> .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:CompositeEvent> <:SimpleEvent>) .
 <:isComponentOfMountainArea> <rdf:type> <owl:ObjectProperty> .
 <:isComponentOfMountainArea> <rdfs:domain> <:CompositeArea> .
 <:isComponentOfMountainArea> <rdfs:range> <:MountainArea> .
@@ -258,125 +231,141 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:onClass> <:CompositeArea>
 ] .
 <:isComponentOfMountainArea> <rdfs:subPropertyOf> <gufo:isComponentOf> .
+<:Organization> <rdfs:subClassOf> <:Agent> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:AudioObject> <:ImageObject> <:VideoObject>) .
+<:materialRelationshipTypePlace> <rdf:type> <owl:ObjectProperty> .
+<:materialRelationshipTypePlace> <rdfs:domain> <:Place> .
+<:materialRelationshipTypePlace> <rdfs:range> <:Place> .
+<:materialRelationshipTypePlace> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:materialRelationshipTypePlace> <rdf:type> <gufo:MaterialRelationshipType> .
+<:Organization> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:Organization> <rdf:type> <gufo:Kind> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Cancelled> <:Published>) .
+<:materialRelationshipTypeMountainArea> <rdf:type> <owl:ObjectProperty> .
+<:materialRelationshipTypeMountainArea> <rdfs:domain> <:AreaOwner> .
+<:materialRelationshipTypeMountainArea> <rdfs:range> <:MountainArea> .
+<:materialRelationshipTypeMountainArea> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:materialRelationshipTypeMountainArea> <rdf:type> <gufo:MaterialRelationshipType> .
 <:Person> <rdf:type> <owl:Class> .
 <:Person> <rdf:type> <owl:NamedIndividual> .
 <:Person> <rdfs:label> \\"Person\\" .
 <:Event> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
-  <owl:unionOf> (<:CompositeEvent> <:SimpleEvent>)
+  <owl:unionOf> (<:Cancelled> <:Published>)
 ] .
-<:manages> <rdf:type> <owl:ObjectProperty> .
-<:manages> <rdfs:domain> <:AreaOwner> .
-<:manages> <rdfs:range> <:MountainArea> .
-<:manages> <rdfs:label> \\"manages\\" .
-<:manages> <rdf:type> <gufo:MaterialRelationshipType> .
+<:categorizesMediaObjectType> <rdf:type> <owl:ObjectProperty> .
+<:categorizesMediaObjectType> <rdfs:domain> <:MediaObject> .
+<:categorizesMediaObjectType> <rdfs:range> <:MediaObjectType> .
+<:categorizesMediaObjectType> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:categorizesMediaObjectType> <rdfs:subPropertyOf> <gufo:categorizes> .
 <:Person> <rdfs:subClassOf> <:Agent> .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Closed> <:Open> <:PermanentlyClosed>) .
-<:availableUnder> <rdf:type> <owl:ObjectProperty> .
-<:availableUnder> <rdfs:domain> <:CopyrightOwnership> .
-<:availableUnder> <rdfs:range> <:LicenseType> .
-<:availableUnder> <rdfs:label> \\"available under\\" .
-<:CopyrightOwnership> <rdfs:subClassOf> [
-  <rdf:type> <owl:Restriction>;
-  <owl:onProperty> <:availableUnder>;
-  <owl:maxQualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
-  <owl:onClass> <:LicenseType>
-] .
-<:availableUnder> <rdfs:subPropertyOf> <gufo:mediates> .
-<:Person> <rdfs:subClassOf> <gufo:FunctionalComplex> .
-<:Person> <rdf:type> <gufo:Kind> .
-<:Place> <owl:equivalentClass> [
-  <rdf:type> <owl:Class>;
-  <owl:unionOf> (<:Closed> <:Open> <:PermanentlyClosed>)
-] .
-<:ownedBy> <rdf:type> <owl:ObjectProperty> .
-<:ownedBy> <rdfs:domain> <:CopyrightOwnership> .
-<:ownedBy> <rdfs:range> <:CopyrightOwner> .
-<:ownedBy> <rdfs:label> \\"owned by\\" .
-<:CopyrightOwnership> <rdfs:subClassOf> [
-  <rdf:type> <owl:Restriction>;
-  <owl:onProperty> <:ownedBy>;
-  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
-  <owl:onClass> <:CopyrightOwner>
-] .
-<:ownedBy> <rdfs:subPropertyOf> <gufo:mediates> .
-<:Agent> <rdf:type> <owl:Class> .
-<:Agent> <rdf:type> <owl:NamedIndividual> .
-<:Agent> <rdfs:label> \\"Agent\\" .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:LineString> <:MultiLineString> <:Multipoint> <:Multipolygon> <:Point> <:Polygon>) .
-<:isInstantiationMediaObjectType> <rdf:type> <owl:ObjectProperty> .
-<:isInstantiationMediaObjectType> <rdfs:domain> <:MediaObject> .
-<:isInstantiationMediaObjectType> <rdfs:range> <:MediaObjectType> .
-<:isInstantiationMediaObjectType> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
-<:MediaObject> <rdfs:subClassOf> [
-  <rdf:type> <owl:Restriction>;
-  <owl:onProperty> <:isInstantiationMediaObjectType>;
-  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
-  <owl:onClass> <:MediaObjectType>
-] .
-<:isInstantiationMediaObjectType> <rdfs:subPropertyOf> <gufo:categorizes> .
-<:Agent> <rdfs:subClassOf> <:NamedEntity> .
-<:Geometry> <owl:equivalentClass> [
-  <rdf:type> <owl:Class>;
-  <owl:unionOf> (<:LineString> <:MultiLineString> <:Multipoint> <:Multipolygon> <:Point> <:Polygon>)
-] .
-<:refersTo> <rdf:type> <owl:ObjectProperty> .
-<:refersTo> <rdfs:domain> <:MediaObject> .
-<:refersTo> <rdfs:range> <:CopyrightOwnership> .
-<:refersTo> <rdfs:label> \\"refers to\\" .
-<:MediaObject> <rdfs:subClassOf> [
-  <rdf:type> <owl:Restriction>;
-  <owl:onProperty> <:refersTo>;
-  <owl:maxQualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
-  <owl:onClass> <:CopyrightOwnership>
-] .
-<:CopyrightOwnership> <rdfs:subClassOf> [
-  <rdf:type> <owl:Restriction>;
-  <owl:onProperty> [ <owl:inverseOf> <:refersTo> ];
-  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
-  <owl:onClass> <:MediaObject>
-] .
-<:refersTo> <rdfs:subPropertyOf> <gufo:mediates> .
-<:Agent> <rdfs:subClassOf> <gufo:Endurant> .
-<:Agent> <rdf:type> <gufo:Category> .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:SkiSlope> <:Snowpark>) .
-<:isCharacterizationGeospatialfeature> <rdf:type> <owl:ObjectProperty> .
-<:isCharacterizationGeospatialfeature> <rdfs:domain> <:Geometry> .
-<:isCharacterizationGeospatialfeature> <rdfs:range> <:Geospatialfeature> .
-<:isCharacterizationGeospatialfeature> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:CompositeEvent> <:SimpleEvent>) .
+<:inheresInGeospatialFeature> <rdf:type> <owl:ObjectProperty> .
+<:inheresInGeospatialFeature> <rdfs:domain> <:Geometry> .
+<:inheresInGeospatialFeature> <rdfs:range> <:GeospatialFeature> .
+<:inheresInGeospatialFeature> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
 <:Geometry> <rdfs:subClassOf> [
   <rdf:type> <owl:Restriction>;
-  <owl:onProperty> <:isCharacterizationGeospatialfeature>;
+  <owl:onProperty> <:inheresInGeospatialFeature>;
   <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
-  <owl:onClass> <:Geospatialfeature>
+  <owl:onClass> <:GeospatialFeature>
 ] .
-<:isCharacterizationGeospatialfeature> <rdfs:subPropertyOf> <gufo:inheresIn> .
-<:Place> <rdf:type> <owl:Class> .
-<:Place> <rdf:type> <owl:NamedIndividual> .
-<:Place> <rdfs:label> \\"Place\\" .
-[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Lift> <:MountainArea> <:Trail>) .
+<:inheresInGeospatialFeature> <rdfs:subPropertyOf> <gufo:inheresIn> .
+<:Person> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:Person> <rdf:type> <gufo:Kind> .
+<:Event> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:CompositeEvent> <:SimpleEvent>)
+] .
 <:isComponentOfMountainArea> <rdf:type> <owl:ObjectProperty> .
 <:isComponentOfMountainArea> <rdfs:domain> <:Snowpark> .
 <:isComponentOfMountainArea> <rdfs:range> <:MountainArea> .
 <:isComponentOfMountainArea> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
 <:isComponentOfMountainArea> <rdfs:subPropertyOf> <gufo:isComponentOf> .
-<:Place> <rdfs:subClassOf> <:Geospatialfeature> .
+<:Agent> <rdf:type> <owl:Class> .
+<:Agent> <rdf:type> <owl:NamedIndividual> .
+<:Agent> <rdfs:label> \\"Agent\\" .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Closed> <:Open> <:PermanentlyClosed>) .
+<:materialRelationshipTypeLicenseType> <rdf:type> <owl:ObjectProperty> .
+<:materialRelationshipTypeLicenseType> <rdfs:domain> <:MediaObject> .
+<:materialRelationshipTypeLicenseType> <rdfs:range> <:LicenseType> .
+<:materialRelationshipTypeLicenseType> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:MediaObject> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> <:materialRelationshipTypeLicenseType>;
+  <owl:maxQualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:LicenseType>
+] .
+<:materialRelationshipTypeLicenseType> <rdf:type> <gufo:MaterialRelationshipType> .
+<:Agent> <rdfs:subClassOf> <:NamedIndividual> .
+<:Place> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:Closed> <:Open> <:PermanentlyClosed>)
+] .
+<:materialRelationshipTypeCopyrightOwner> <rdf:type> <owl:ObjectProperty> .
+<:materialRelationshipTypeCopyrightOwner> <rdfs:domain> <:MediaObject> .
+<:materialRelationshipTypeCopyrightOwner> <rdfs:range> <:CopyrightOwner> .
+<:materialRelationshipTypeCopyrightOwner> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:MediaObject> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> <:materialRelationshipTypeCopyrightOwner>;
+  <owl:maxQualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:CopyrightOwner>
+] .
+<:materialRelationshipTypeCopyrightOwner> <rdf:type> <gufo:MaterialRelationshipType> .
+<:Agent> <rdfs:subClassOf> <gufo:Endurant> .
+<:Agent> <rdf:type> <gufo:Category> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:LineString> <:MultiLineString> <:Multipoint> <:Multipolygon> <:Point> <:Polygon>) .
+<:categorizesMountainAreaType> <rdf:type> <owl:ObjectProperty> .
+<:categorizesMountainAreaType> <rdfs:domain> <:MountainArea> .
+<:categorizesMountainAreaType> <rdfs:range> <:MountainAreaType> .
+<:categorizesMountainAreaType> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:categorizesMountainAreaType> <rdfs:subPropertyOf> <gufo:categorizes> .
+<:Place> <rdf:type> <owl:Class> .
+<:Place> <rdf:type> <owl:NamedIndividual> .
+<:Place> <rdfs:label> \\"Place\\" .
+<:Geometry> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:LineString> <:MultiLineString> <:Multipoint> <:Multipolygon> <:Point> <:Polygon>)
+] .
+<:inheresInTrail> <rdf:type> <owl:ObjectProperty> .
+<:inheresInTrail> <rdfs:domain> <:Difficulty> .
+<:inheresInTrail> <rdfs:range> <:Trail> .
+<:inheresInTrail> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:Difficulty> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> <:inheresInTrail>;
+  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:Trail>
+] .
+<:Trail> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> [ <owl:inverseOf> <:inheresInTrail> ];
+  <owl:qualifiedCardinality> \\"1\\"^^<xsd:nonNegativeInteger>;
+  <owl:onClass> <:Difficulty>
+] .
+<:inheresInTrail> <rdfs:subPropertyOf> <gufo:inheresIn> .
+<:Place> <rdfs:subClassOf> <:GeospatialFeature> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:SkiSlope> <:Snowpark>) .
+<:Place> <rdfs:subClassOf> <:NamedIndividual> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Lift> <:MountainArea> <:Trail>) .
+<:Place> <rdfs:subClassOf> <gufo:Endurant> .
+<:Place> <rdf:type> <gufo:Category> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:CompositeArea> <:Simplearea>) .
-<:isDerivationUyoo0agaqaovrec> <rdf:type> <owl:ObjectProperty> .
-<:isDerivationUyoo0agaqaovrec> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
-<:zVD0FeaGAqACByXj> <gufo:isDerivedFrom> <:xNW0aGAqAovRVX> .
-<:Place> <rdfs:subClassOf> <:NamedEntity> .
+<:Rescheduled> <rdf:type> <owl:Class> .
+<:Rescheduled> <rdf:type> <owl:NamedIndividual> .
+<:Rescheduled> <rdfs:label> \\"Rescheduled\\" .
 <:MountainArea> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:CompositeArea> <:Simplearea>)
 ] .
-<:Place> <rdfs:subClassOf> <gufo:Endurant> .
-<:Place> <rdf:type> <gufo:Category> .
-<:Rescheduled> <rdf:type> <owl:Class> .
-<:Rescheduled> <rdf:type> <owl:NamedIndividual> .
-<:Rescheduled> <rdfs:label> \\"Rescheduled\\" .
-<:Rescheduled> <rdfs:subClassOf> <:Event> .
+<:Rescheduled> <rdfs:subClassOf> <:Published> .
+[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Ongoing> <:Realized> <:Rescheduled> <:Scheduled>) .
 <:Rescheduled> <rdf:type> <gufo:Phase> .
+<:Published> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:unionOf> (<:Ongoing> <:Realized> <:Rescheduled> <:Scheduled>)
+] .
 <:CompositeEvent> <rdf:type> <owl:Class> .
 <:CompositeEvent> <rdf:type> <owl:NamedIndividual> .
 <:CompositeEvent> <rdfs:label> \\"Composite Event\\" .
@@ -395,34 +384,29 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:Realized> <rdf:type> <owl:Class> .
 <:Realized> <rdf:type> <owl:NamedIndividual> .
 <:Realized> <rdfs:label> \\"Realized\\" .
-<:Realized> <rdfs:subClassOf> <:Event> .
+<:Realized> <rdfs:subClassOf> <:Published> .
 <:Realized> <rdf:type> <gufo:Phase> .
 <:Ongoing> <rdf:type> <owl:Class> .
 <:Ongoing> <rdf:type> <owl:NamedIndividual> .
 <:Ongoing> <rdfs:label> \\"Ongoing\\" .
-<:Ongoing> <rdfs:subClassOf> <:Event> .
+<:Ongoing> <rdfs:subClassOf> <:Published> .
 <:Ongoing> <rdf:type> <gufo:Phase> .
 <:Scheduled> <rdf:type> <owl:Class> .
 <:Scheduled> <rdf:type> <owl:NamedIndividual> .
 <:Scheduled> <rdfs:label> \\"Scheduled\\" .
-<:Scheduled> <rdfs:subClassOf> <:Event> .
+<:Scheduled> <rdfs:subClassOf> <:Published> .
 <:Scheduled> <rdf:type> <gufo:Phase> .
 <:Event> <rdf:type> <owl:Class> .
 <:Event> <rdf:type> <owl:NamedIndividual> .
 <:Event> <rdfs:label> \\"Event\\" .
-<:Event> <rdfs:subClassOf> <:NamedEntity> .
+<:Event> <rdfs:subClassOf> <:NamedIndividual> .
 <:Event> <rdfs:subClassOf> <gufo:Relator> .
 <:Event> <rdf:type> <gufo:Kind> .
-<:ContactPoint> <rdf:type> <owl:Class> .
-<:ContactPoint> <rdf:type> <owl:NamedIndividual> .
-<:ContactPoint> <rdfs:label> \\"Contact Point\\" .
-<:ContactPoint> <rdfs:subClassOf> <gufo:Quality> .
-<:ContactPoint> <rdf:type> <gufo:Kind> .
-<:NamedEntity> <rdf:type> <owl:Class> .
-<:NamedEntity> <rdf:type> <owl:NamedIndividual> .
-<:NamedEntity> <rdfs:label> \\"Named Entity\\" .
-<:NamedEntity> <rdfs:subClassOf> <gufo:Endurant> .
-<:NamedEntity> <rdf:type> <gufo:Category> .
+<:NamedIndividual> <rdf:type> <owl:Class> .
+<:NamedIndividual> <rdf:type> <owl:NamedIndividual> .
+<:NamedIndividual> <rdfs:label> \\"Named Individual\\" .
+<:NamedIndividual> <rdfs:subClassOf> <gufo:Endurant> .
+<:NamedIndividual> <rdf:type> <gufo:Category> .
 <:Simplearea> <rdf:type> <owl:Class> .
 <:Simplearea> <rdf:type> <owl:NamedIndividual> .
 <:Simplearea> <rdfs:label> \\"SimpleArea\\" .
@@ -444,11 +428,11 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:Trail> <rdfs:subClassOf> <:Place> .
 <:Trail> <rdfs:subClassOf> <gufo:FunctionalComplex> .
 <:Trail> <rdf:type> <gufo:Kind> .
-<:Geospatialfeature> <rdf:type> <owl:Class> .
-<:Geospatialfeature> <rdf:type> <owl:NamedIndividual> .
-<:Geospatialfeature> <rdfs:label> \\"GeoSpatialFeature\\" .
-<:Geospatialfeature> <rdfs:subClassOf> <gufo:Endurant> .
-<:Geospatialfeature> <rdf:type> <gufo:Category> .
+<:GeospatialFeature> <rdf:type> <owl:Class> .
+<:GeospatialFeature> <rdf:type> <owl:NamedIndividual> .
+<:GeospatialFeature> <rdfs:label> \\"Geospatial Feature\\" .
+<:GeospatialFeature> <rdfs:subClassOf> <gufo:Endurant> .
+<:GeospatialFeature> <rdf:type> <gufo:Category> .
 <:PermanentlyClosed> <rdf:type> <owl:Class> .
 <:PermanentlyClosed> <rdf:type> <owl:NamedIndividual> .
 <:PermanentlyClosed> <rdfs:label> \\"Permanently Closed\\" .
@@ -506,7 +490,7 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:MediaObject> <rdf:type> <owl:Class> .
 <:MediaObject> <rdf:type> <owl:NamedIndividual> .
 <:MediaObject> <rdfs:label> \\"Media Object\\" .
-<:MediaObject> <rdfs:subClassOf> <:NamedEntity> .
+<:MediaObject> <rdfs:subClassOf> <:NamedIndividual> .
 <:MediaObject> <rdfs:subClassOf> <gufo:Endurant> .
 <:MediaObject> <rdf:type> <gufo:Category> .
 <:SkiSlope> <rdf:type> <owl:Class> .
@@ -517,14 +501,14 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:SnowMeasurement> <rdf:type> <owl:Class> .
 <:SnowMeasurement> <rdf:type> <owl:NamedIndividual> .
 <:SnowMeasurement> <rdfs:label> \\"Snow Measurement\\" .
-<:SnowMeasurement> <rdfs:subClassOf> <:Geospatialfeature> .
+<:SnowMeasurement> <rdfs:subClassOf> <:GeospatialFeature> .
 <:SnowMeasurement> <rdfs:subClassOf> <gufo:Relator> .
 <:SnowMeasurement> <rdf:type> <gufo:Kind> .
 <:SnowparkFeature> <rdf:type> <owl:Class> .
 <:SnowparkFeature> <rdf:type> <owl:NamedIndividual> .
 <:SnowparkFeature> <rdfs:label> \\"Snowpark Feature\\" .
-<:SnowparkFeature> <rdfs:subClassOf> <:NamedEntity> .
-<:SnowparkFeature> <rdfs:subClassOf> <:Geospatialfeature> .
+<:SnowparkFeature> <rdfs:subClassOf> <:NamedIndividual> .
+<:SnowparkFeature> <rdfs:subClassOf> <:GeospatialFeature> .
 <:SnowparkFeature> <rdfs:subClassOf> <gufo:FunctionalComplex> .
 <:SnowparkFeature> <rdf:type> <gufo:Kind> .
 <:MediaObjectType> <rdf:type> <owl:Class> .
@@ -570,27 +554,17 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:EventSeries> <rdf:type> <owl:Class> .
 <:EventSeries> <rdf:type> <owl:NamedIndividual> .
 <:EventSeries> <rdfs:label> \\"Event Series\\" .
-<:EventSeries> <rdfs:subClassOf> <:NamedEntity> .
+<:EventSeries> <rdfs:subClassOf> <:NamedIndividual> .
 <:EventSeries> <rdfs:subClassOf> <gufo:FunctionalComplex> .
 <:EventSeries> <rdf:type> <gufo:Kind> .
 <:EventType> <rdf:type> <owl:Class> .
 <:EventType> <rdf:type> <owl:NamedIndividual> .
 <:EventType> <rdfs:label> \\"Event Type\\" .
 <:EventType> <rdfs:subClassOf> <gufo:ConcreteIndividualType> .
-<:VenueAllocation> <rdf:type> <owl:Class> .
-<:VenueAllocation> <rdf:type> <owl:NamedIndividual> .
-<:VenueAllocation> <rdfs:label> \\"Venue Allocation\\" .
-<:VenueAllocation> <rdfs:subClassOf> <gufo:Relator> .
-<:VenueAllocation> <rdf:type> <gufo:Kind> .
 <:SnowType> <rdf:type> <owl:Class> .
 <:SnowType> <rdf:type> <owl:NamedIndividual> .
 <:SnowType> <rdfs:label> \\"Snow Type\\" .
 <:SnowType> <rdfs:subClassOf> <gufo:ConcreteIndividualType> .
-<:CopyrightOwnership> <rdf:type> <owl:Class> .
-<:CopyrightOwnership> <rdf:type> <owl:NamedIndividual> .
-<:CopyrightOwnership> <rdfs:label> \\"Copyright Ownership\\" .
-<:CopyrightOwnership> <rdfs:subClassOf> <gufo:Relator> .
-<:CopyrightOwnership> <rdf:type> <gufo:Kind> .
 <:Multipoint> <rdf:type> <owl:Class> .
 <:Multipoint> <rdf:type> <owl:NamedIndividual> .
 <:Multipoint> <rdfs:label> \\"Multi-Point\\" .
@@ -606,6 +580,20 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:Multipolygon> <rdfs:label> \\"Multi-Polygon\\" .
 <:Multipolygon> <rdfs:subClassOf> <:Geometry> .
 <:Multipolygon> <rdf:type> <gufo:SubKind> .
+<:Published> <rdf:type> <owl:Class> .
+<:Published> <rdf:type> <owl:NamedIndividual> .
+<:Published> <rdfs:label> \\"Published\\" .
+<:Published> <rdfs:subClassOf> <:Event> .
+<:Published> <rdf:type> <gufo:Phase> .
+<:MountainAreaType> <rdf:type> <owl:Class> .
+<:MountainAreaType> <rdf:type> <owl:NamedIndividual> .
+<:MountainAreaType> <rdfs:label> \\"Mountain Area Type\\" .
+<:MountainAreaType> <rdfs:subClassOf> <gufo:ConcreteIndividualType> .
+<:Difficulty> <rdf:type> <owl:Class> .
+<:Difficulty> <rdf:type> <owl:NamedIndividual> .
+<:Difficulty> <rdfs:label> \\"Difficulty\\" .
+<:Difficulty> <rdfs:subClassOf> <gufo:Quality> .
+<:Difficulty> <rdf:type> <gufo:Kind> .
 "
 `;
 
@@ -623,121 +611,90 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 :AreaOwner rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Area Owner\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Organization :Person).
-:organizedBy rdf:type owl:ObjectProperty;
+:mediatesOrganizer rdf:type owl:ObjectProperty;
     rdfs:domain :Event;
     rdfs:range :Organizer;
-    rdfs:label \\"organized by\\";
+    rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:mediates.
 :AreaOwner rdfs:subClassOf :Agent.
 :Agent owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Organization :Person)
 ].
-:sponsoredBy rdf:type owl:ObjectProperty;
+:materialRelationshipTypeSponsor rdf:type owl:ObjectProperty;
     rdfs:domain :Event;
     rdfs:range :Sponsor;
-    rdfs:label \\"sponsored by\\";
+    rdfs:comment \\"Relation URI was automatically generated.\\";
     rdf:type gufo:MaterialRelationshipType.
 :AreaOwner rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:RoleMixin.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:AudioObject :ImageObject :VideoObject).
-:contributesIn rdf:type owl:ObjectProperty;
+:materialRelationshipTypeContributor rdf:type owl:ObjectProperty;
     rdfs:domain :Event;
     rdfs:range :Contributor;
-    rdfs:label \\"contributes in\\";
+    rdfs:comment \\"Relation URI was automatically generated.\\";
     rdf:type gufo:MaterialRelationshipType.
 :CopyrightOwner rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Copyright Owner\\".
-[ rdf:type owl:AllDisjointClasses ] owl:members (:Cancelled :Ongoing :Realized :Rescheduled :Scheduled).
-:publishedBy rdf:type owl:ObjectProperty;
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Cancelled :Published).
+:materialRelationshipTypePublisher rdf:type owl:ObjectProperty;
     rdfs:domain :Event;
     rdfs:range :Publisher;
-    rdfs:label \\"published by\\";
-    rdf:type gufo:MaterialRelationshipType.
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:Event rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :materialRelationshipTypePublisher;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Publisher
+].
+:materialRelationshipTypePublisher rdf:type gufo:MaterialRelationshipType.
 :CopyrightOwner rdfs:subClassOf :Agent.
 :Event owl:equivalentClass [
   rdf:type owl:Class;
-  owl:unionOf (:Cancelled :Ongoing :Realized :Rescheduled :Scheduled)
+  owl:unionOf (:Cancelled :Published)
 ].
-:isInstantiationEventType rdf:type owl:ObjectProperty;
+:historicallyDependsOnNamedIndividual rdf:type owl:ObjectProperty;
+    rdfs:domain :MediaObject;
+    rdfs:range :NamedIndividual;
+    rdfs:comment \\"Relation URI was automatically generated.\\";
+    rdfs:subPropertyOf gufo:historicallyDependsOn.
+:CopyrightOwner rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:RoleMixin.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:CompositeEvent :SimpleEvent).
+:categorizesEventType rdf:type owl:ObjectProperty;
     rdfs:domain :Event;
     rdfs:range :EventType;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:categorizes.
-:CopyrightOwner rdfs:subClassOf gufo:Endurant;
-    rdf:type gufo:RoleMixin.
-[ rdf:type owl:AllDisjointClasses ] owl:members (:CompositeEvent :SimpleEvent).
-:happensAt rdf:type owl:ObjectProperty;
-    rdfs:domain :Event;
-    rdfs:range :Venue;
-    rdfs:label \\"happens at\\";
-    rdf:type gufo:MaterialRelationshipType.
 :Contributor rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Contributor\\".
 :Event owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:CompositeEvent :SimpleEvent)
 ].
-:editionOf rdf:type owl:ObjectProperty;
+:materialRelationshipTypeVenue rdf:type owl:ObjectProperty;
+    rdfs:domain :Event;
+    rdfs:range :Venue;
+    rdfs:comment \\"Relation URI was automatically generated.\\";
+    rdf:type gufo:MaterialRelationshipType.
+:Contributor rdfs:subClassOf :Agent.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Closed :Open :PermanentlyClosed).
+:mediatesEventSeries rdf:type owl:ObjectProperty;
     rdfs:domain :Event;
     rdfs:range :EventSeries;
-    rdfs:label \\"edition of\\".
+    rdfs:comment \\"Relation URI was automatically generated.\\".
 :Event rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :editionOf;
+  owl:onProperty :mediatesEventSeries;
   owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :EventSeries
 ].
-:editionOf rdfs:subPropertyOf gufo:mediates.
-:Contributor rdfs:subClassOf :Agent.
-[ rdf:type owl:AllDisjointClasses ] owl:members (:Closed :Open :PermanentlyClosed).
-:reachableBy rdf:type owl:ObjectProperty;
-    rdfs:domain :Agent;
-    rdfs:range :ContactPoint;
-    rdfs:label \\"reachable by\\".
-:ContactPoint rdfs:subClassOf [
-  rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :reachableBy ];
-  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
-  owl:onClass :Agent
-].
-:reachableBy rdfs:subPropertyOf gufo:inheresIn.
+:mediatesEventSeries rdfs:subPropertyOf gufo:mediates.
 :Contributor rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:RoleMixin.
 :Place owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Closed :Open :PermanentlyClosed)
-].
-:inContextOf rdf:type owl:ObjectProperty;
-    rdfs:domain :VenueAllocation;
-    rdfs:range :Event;
-    rdfs:label \\"in context of\\".
-:VenueAllocation rdfs:subClassOf [
-  rdf:type owl:Restriction;
-  owl:onProperty :inContextOf;
-  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
-  owl:onClass :Event
-].
-:inContextOf rdfs:subPropertyOf gufo:mediates.
-:Publisher rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Publisher\\".
-[ rdf:type owl:AllDisjointClasses ] owl:members (:LineString :MultiLineString :Multipoint :Multipolygon :Point :Polygon).
-:refersTo rdf:type owl:ObjectProperty;
-    rdfs:domain :VenueAllocation;
-    rdfs:range :Venue;
-    rdfs:label \\"refers to\\".
-:VenueAllocation rdfs:subClassOf [
-  rdf:type owl:Restriction;
-  owl:onProperty :refersTo;
-  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
-  owl:onClass :Venue
-].
-:refersTo rdfs:subPropertyOf gufo:mediates.
-[ rdf:type owl:AllDisjointClasses ] owl:members (:Event :SnowMeasurement :VenueAllocation :CopyrightOwnership).
-:Publisher rdfs:subClassOf :Agent.
-:Geometry owl:equivalentClass [
-  rdf:type owl:Class;
-  owl:unionOf (:LineString :MultiLineString :Multipoint :Multipolygon :Point :Polygon)
 ].
 :isComponentOfSnowpark rdf:type owl:ObjectProperty;
     rdfs:domain :SnowparkFeature;
@@ -750,27 +707,46 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:onClass :Snowpark
 ].
 :isComponentOfSnowpark rdfs:subPropertyOf gufo:isComponentOf.
+:Publisher rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Publisher\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:LineString :MultiLineString :Multipoint :Multipolygon :Point :Polygon).
+:isComponentOfMountainArea rdf:type owl:ObjectProperty;
+    rdfs:domain :Lift;
+    rdfs:range :MountainArea;
+    rdfs:comment \\"Relation URI was automatically generated.\\";
+    rdfs:subPropertyOf gufo:isComponentOf.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Event :SnowMeasurement).
+:Publisher rdfs:subClassOf :Agent.
+:Geometry owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:LineString :MultiLineString :Multipoint :Multipolygon :Point :Polygon)
+].
+:isComponentOfMountainArea rdf:type owl:ObjectProperty;
+    rdfs:domain :Trail;
+    rdfs:range :MountainArea;
+    rdfs:comment \\"Relation URI was automatically generated.\\";
+    rdfs:subPropertyOf gufo:isComponentOf.
 :Publisher rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:RoleMixin.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:SkiSlope :Snowpark).
-:isComponentOfMountainArea rdf:type owl:ObjectProperty;
+:categorizesLiftType rdf:type owl:ObjectProperty;
     rdfs:domain :Lift;
-    rdfs:range :MountainArea;
+    rdfs:range :LiftType;
     rdfs:comment \\"Relation URI was automatically generated.\\";
-    rdfs:subPropertyOf gufo:isComponentOf.
+    rdfs:subPropertyOf gufo:categorizes.
 :Sponsor rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Sponsor\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Lift :MountainArea :Trail).
-:isComponentOfMountainArea rdf:type owl:ObjectProperty;
-    rdfs:domain :SkiSlope;
-    rdfs:range :MountainArea;
+:categorizesTrailType rdf:type owl:ObjectProperty;
+    rdfs:domain :Trail;
+    rdfs:range :TrailType;
     rdfs:comment \\"Relation URI was automatically generated.\\";
-    rdfs:subPropertyOf gufo:isComponentOf.
+    rdfs:subPropertyOf gufo:categorizes.
 :Sponsor rdfs:subClassOf :Agent.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:CompositeArea :Simplearea).
-:isInstantiationLiftType rdf:type owl:ObjectProperty;
-    rdfs:domain :Lift;
-    rdfs:range :LiftType;
+:categorizesSnowparkFeatureType rdf:type owl:ObjectProperty;
+    rdfs:domain :SnowparkFeature;
+    rdfs:range :SnowparkFeatureType;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:categorizes.
 :Sponsor rdfs:subClassOf gufo:Endurant;
@@ -779,77 +755,62 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   rdf:type owl:Class;
   owl:unionOf (:CompositeArea :Simplearea)
 ].
-:isInstantiationTrailType rdf:type owl:ObjectProperty;
-    rdfs:domain :Trail;
-    rdfs:range :TrailType;
-    rdfs:comment \\"Relation URI was automatically generated.\\";
-    rdfs:subPropertyOf gufo:categorizes.
+:mediatesAgent rdf:type owl:ObjectProperty;
+    rdfs:domain :SnowMeasurement;
+    rdfs:range :Agent;
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:SnowMeasurement rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :mediatesAgent;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Agent
+].
+:mediatesAgent rdfs:subPropertyOf gufo:mediates.
 :Organizer rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Organizer\\".
-[ rdf:type owl:AllDisjointClasses ] owl:members (:Organization :Person).
-:isInstantiationSnowparkFeatureType rdf:type owl:ObjectProperty;
-    rdfs:domain :SnowparkFeature;
-    rdfs:range :SnowparkFeatureType;
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Ongoing :Realized :Rescheduled :Scheduled).
+:mediatesPlace rdf:type owl:ObjectProperty;
+    rdfs:domain :SnowMeasurement;
+    rdfs:range :Place;
     rdfs:comment \\"Relation URI was automatically generated.\\";
-    rdfs:subPropertyOf gufo:categorizes.
+    rdfs:subPropertyOf gufo:mediates.
 :Organizer rdfs:subClassOf :Agent.
+:Published owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:Ongoing :Realized :Rescheduled :Scheduled)
+].
+:mediatesSnowType rdf:type owl:ObjectProperty;
+    rdfs:domain :SnowMeasurement;
+    rdfs:range :SnowType;
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:SnowMeasurement rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :mediatesSnowType;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :SnowType
+].
+:mediatesSnowType rdfs:subPropertyOf gufo:mediates.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Geometry :Difficulty).
+:Organizer rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:RoleMixin.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Organization :Person).
+:mediatesSnowType rdf:type owl:ObjectProperty;
+    rdfs:domain :SnowMeasurement;
+    rdfs:range :SnowType;
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:SnowMeasurement rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :mediatesSnowType;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :SnowType
+].
+:mediatesSnowType rdfs:subPropertyOf gufo:mediates.
+:Organization rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Organization\\".
 :Agent owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Organization :Person)
 ].
-:measuredBy rdf:type owl:ObjectProperty;
-    rdfs:domain :SnowMeasurement;
-    rdfs:range :Agent;
-    rdfs:label \\"measured by\\".
-:SnowMeasurement rdfs:subClassOf [
-  rdf:type owl:Restriction;
-  owl:onProperty :measuredBy;
-  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
-  owl:onClass :Agent
-].
-:measuredBy rdfs:subPropertyOf gufo:mediates.
-[ rdf:type owl:AllDisjointClasses ] owl:members (:ContactPoint :Geometry).
-:Organizer rdfs:subClassOf gufo:Endurant;
-    rdf:type gufo:RoleMixin.
-[ rdf:type owl:AllDisjointClasses ] owl:members (:AudioObject :ImageObject :VideoObject).
-:measuredIn rdf:type owl:ObjectProperty;
-    rdfs:domain :SnowMeasurement;
-    rdfs:range :Place;
-    rdfs:label \\"measured in\\";
-    rdfs:subPropertyOf gufo:mediates.
-:Organization rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Organization\\".
-[ rdf:type owl:AllDisjointClasses ] owl:members (:Cancelled :Ongoing :Realized :Rescheduled :Scheduled).
-:identifiesSecondarySurface rdf:type owl:ObjectProperty;
-    rdfs:domain :SnowMeasurement;
-    rdfs:range :SnowType;
-    rdfs:label \\"identifies secondary surface\\".
-:SnowMeasurement rdfs:subClassOf [
-  rdf:type owl:Restriction;
-  owl:onProperty :identifiesSecondarySurface;
-  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
-  owl:onClass :SnowType
-].
-:identifiesSecondarySurface rdfs:subPropertyOf gufo:mediates.
-:Organization rdfs:subClassOf :Agent.
-:Event owl:equivalentClass [
-  rdf:type owl:Class;
-  owl:unionOf (:Cancelled :Ongoing :Realized :Rescheduled :Scheduled)
-].
-:identifiesPrimarySurface rdf:type owl:ObjectProperty;
-    rdfs:domain :SnowMeasurement;
-    rdfs:range :SnowType;
-    rdfs:label \\"identifies primary surface\\".
-:SnowMeasurement rdfs:subClassOf [
-  rdf:type owl:Restriction;
-  owl:onProperty :identifiesPrimarySurface;
-  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
-  owl:onClass :SnowType
-].
-:identifiesPrimarySurface rdfs:subPropertyOf gufo:mediates.
-:Organization rdfs:subClassOf gufo:FunctionalComplex;
-    rdf:type gufo:Kind.
-[ rdf:type owl:AllDisjointClasses ] owl:members (:CompositeEvent :SimpleEvent).
 :isComponentOfMountainArea rdf:type owl:ObjectProperty;
     rdfs:domain :CompositeArea;
     rdfs:range :MountainArea;
@@ -867,121 +828,137 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:onClass :CompositeArea
 ].
 :isComponentOfMountainArea rdfs:subPropertyOf gufo:isComponentOf.
+:Organization rdfs:subClassOf :Agent.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:AudioObject :ImageObject :VideoObject).
+:materialRelationshipTypePlace rdf:type owl:ObjectProperty;
+    rdfs:domain :Place;
+    rdfs:range :Place;
+    rdfs:comment \\"Relation URI was automatically generated.\\";
+    rdf:type gufo:MaterialRelationshipType.
+:Organization rdfs:subClassOf gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Cancelled :Published).
+:materialRelationshipTypeMountainArea rdf:type owl:ObjectProperty;
+    rdfs:domain :AreaOwner;
+    rdfs:range :MountainArea;
+    rdfs:comment \\"Relation URI was automatically generated.\\";
+    rdf:type gufo:MaterialRelationshipType.
 :Person rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Person\\".
 :Event owl:equivalentClass [
   rdf:type owl:Class;
-  owl:unionOf (:CompositeEvent :SimpleEvent)
+  owl:unionOf (:Cancelled :Published)
 ].
-:manages rdf:type owl:ObjectProperty;
-    rdfs:domain :AreaOwner;
-    rdfs:range :MountainArea;
-    rdfs:label \\"manages\\";
-    rdf:type gufo:MaterialRelationshipType.
-:Person rdfs:subClassOf :Agent.
-[ rdf:type owl:AllDisjointClasses ] owl:members (:Closed :Open :PermanentlyClosed).
-:availableUnder rdf:type owl:ObjectProperty;
-    rdfs:domain :CopyrightOwnership;
-    rdfs:range :LicenseType;
-    rdfs:label \\"available under\\".
-:CopyrightOwnership rdfs:subClassOf [
-  rdf:type owl:Restriction;
-  owl:onProperty :availableUnder;
-  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
-  owl:onClass :LicenseType
-].
-:availableUnder rdfs:subPropertyOf gufo:mediates.
-:Person rdfs:subClassOf gufo:FunctionalComplex;
-    rdf:type gufo:Kind.
-:Place owl:equivalentClass [
-  rdf:type owl:Class;
-  owl:unionOf (:Closed :Open :PermanentlyClosed)
-].
-:ownedBy rdf:type owl:ObjectProperty;
-    rdfs:domain :CopyrightOwnership;
-    rdfs:range :CopyrightOwner;
-    rdfs:label \\"owned by\\".
-:CopyrightOwnership rdfs:subClassOf [
-  rdf:type owl:Restriction;
-  owl:onProperty :ownedBy;
-  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
-  owl:onClass :CopyrightOwner
-].
-:ownedBy rdfs:subPropertyOf gufo:mediates.
-:Agent rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Agent\\".
-[ rdf:type owl:AllDisjointClasses ] owl:members (:LineString :MultiLineString :Multipoint :Multipolygon :Point :Polygon).
-:isInstantiationMediaObjectType rdf:type owl:ObjectProperty;
+:categorizesMediaObjectType rdf:type owl:ObjectProperty;
     rdfs:domain :MediaObject;
     rdfs:range :MediaObjectType;
-    rdfs:comment \\"Relation URI was automatically generated.\\".
-:MediaObject rdfs:subClassOf [
-  rdf:type owl:Restriction;
-  owl:onProperty :isInstantiationMediaObjectType;
-  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
-  owl:onClass :MediaObjectType
-].
-:isInstantiationMediaObjectType rdfs:subPropertyOf gufo:categorizes.
-:Agent rdfs:subClassOf :NamedEntity.
-:Geometry owl:equivalentClass [
-  rdf:type owl:Class;
-  owl:unionOf (:LineString :MultiLineString :Multipoint :Multipolygon :Point :Polygon)
-].
-:refersTo rdf:type owl:ObjectProperty;
-    rdfs:domain :MediaObject;
-    rdfs:range :CopyrightOwnership;
-    rdfs:label \\"refers to\\".
-:MediaObject rdfs:subClassOf [
-  rdf:type owl:Restriction;
-  owl:onProperty :refersTo;
-  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
-  owl:onClass :CopyrightOwnership
-].
-:CopyrightOwnership rdfs:subClassOf [
-  rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :refersTo ];
-  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
-  owl:onClass :MediaObject
-].
-:refersTo rdfs:subPropertyOf gufo:mediates.
-:Agent rdfs:subClassOf gufo:Endurant;
-    rdf:type gufo:Category.
-[ rdf:type owl:AllDisjointClasses ] owl:members (:SkiSlope :Snowpark).
-:isCharacterizationGeospatialfeature rdf:type owl:ObjectProperty;
+    rdfs:comment \\"Relation URI was automatically generated.\\";
+    rdfs:subPropertyOf gufo:categorizes.
+:Person rdfs:subClassOf :Agent.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:CompositeEvent :SimpleEvent).
+:inheresInGeospatialFeature rdf:type owl:ObjectProperty;
     rdfs:domain :Geometry;
-    rdfs:range :Geospatialfeature;
+    rdfs:range :GeospatialFeature;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :Geometry rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isCharacterizationGeospatialfeature;
+  owl:onProperty :inheresInGeospatialFeature;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
-  owl:onClass :Geospatialfeature
+  owl:onClass :GeospatialFeature
 ].
-:isCharacterizationGeospatialfeature rdfs:subPropertyOf gufo:inheresIn.
-:Place rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Place\\".
-[ rdf:type owl:AllDisjointClasses ] owl:members (:Lift :MountainArea :Trail).
+:inheresInGeospatialFeature rdfs:subPropertyOf gufo:inheresIn.
+:Person rdfs:subClassOf gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:Event owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:CompositeEvent :SimpleEvent)
+].
 :isComponentOfMountainArea rdf:type owl:ObjectProperty;
     rdfs:domain :Snowpark;
     rdfs:range :MountainArea;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:isComponentOf.
-:Place rdfs:subClassOf :Geospatialfeature.
-[ rdf:type owl:AllDisjointClasses ] owl:members (:CompositeArea :Simplearea).
-:isDerivationUyoo0agaqaovrec rdf:type owl:ObjectProperty;
+:Agent rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Agent\\".
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Closed :Open :PermanentlyClosed).
+:materialRelationshipTypeLicenseType rdf:type owl:ObjectProperty;
+    rdfs:domain :MediaObject;
+    rdfs:range :LicenseType;
     rdfs:comment \\"Relation URI was automatically generated.\\".
-:zVD0FeaGAqACByXj gufo:isDerivedFrom :xNW0aGAqAovRVX.
-:Place rdfs:subClassOf :NamedEntity.
+:MediaObject rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :materialRelationshipTypeLicenseType;
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :LicenseType
+].
+:materialRelationshipTypeLicenseType rdf:type gufo:MaterialRelationshipType.
+:Agent rdfs:subClassOf :NamedIndividual.
+:Place owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:Closed :Open :PermanentlyClosed)
+].
+:materialRelationshipTypeCopyrightOwner rdf:type owl:ObjectProperty;
+    rdfs:domain :MediaObject;
+    rdfs:range :CopyrightOwner;
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:MediaObject rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :materialRelationshipTypeCopyrightOwner;
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :CopyrightOwner
+].
+:materialRelationshipTypeCopyrightOwner rdf:type gufo:MaterialRelationshipType.
+:Agent rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:Category.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:LineString :MultiLineString :Multipoint :Multipolygon :Point :Polygon).
+:categorizesMountainAreaType rdf:type owl:ObjectProperty;
+    rdfs:domain :MountainArea;
+    rdfs:range :MountainAreaType;
+    rdfs:comment \\"Relation URI was automatically generated.\\";
+    rdfs:subPropertyOf gufo:categorizes.
+:Place rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Place\\".
+:Geometry owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:LineString :MultiLineString :Multipoint :Multipolygon :Point :Polygon)
+].
+:inheresInTrail rdf:type owl:ObjectProperty;
+    rdfs:domain :Difficulty;
+    rdfs:range :Trail;
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:Difficulty rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :inheresInTrail;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Trail
+].
+:Trail rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :inheresInTrail ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Difficulty
+].
+:inheresInTrail rdfs:subPropertyOf gufo:inheresIn.
+:Place rdfs:subClassOf :GeospatialFeature.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:SkiSlope :Snowpark).
+:Place rdfs:subClassOf :NamedIndividual.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Lift :MountainArea :Trail).
+:Place rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:Category.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:CompositeArea :Simplearea).
+:Rescheduled rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Rescheduled\\".
 :MountainArea owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:CompositeArea :Simplearea)
 ].
-:Place rdfs:subClassOf gufo:Endurant;
-    rdf:type gufo:Category.
-:Rescheduled rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Rescheduled\\";
-    rdfs:subClassOf :Event;
-    rdf:type gufo:Phase.
+:Rescheduled rdfs:subClassOf :Published.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Ongoing :Realized :Rescheduled :Scheduled).
+:Rescheduled rdf:type gufo:Phase.
+:Published owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:Ongoing :Realized :Rescheduled :Scheduled)
+].
 :CompositeEvent rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Composite Event\\";
     rdfs:subClassOf :Event;
@@ -996,26 +973,22 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
     rdf:type gufo:Phase.
 :Realized rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Realized\\";
-    rdfs:subClassOf :Event;
+    rdfs:subClassOf :Published;
     rdf:type gufo:Phase.
 :Ongoing rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Ongoing\\";
-    rdfs:subClassOf :Event;
+    rdfs:subClassOf :Published;
     rdf:type gufo:Phase.
 :Scheduled rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Scheduled\\";
-    rdfs:subClassOf :Event;
+    rdfs:subClassOf :Published;
     rdf:type gufo:Phase.
 :Event rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Event\\";
-    rdfs:subClassOf :NamedEntity, gufo:Relator;
+    rdfs:subClassOf :NamedIndividual, gufo:Relator;
     rdf:type gufo:Kind.
-:ContactPoint rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Contact Point\\";
-    rdfs:subClassOf gufo:Quality;
-    rdf:type gufo:Kind.
-:NamedEntity rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Named Entity\\";
+:NamedIndividual rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Named Individual\\";
     rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:Category.
 :Simplearea rdf:type owl:Class, owl:NamedIndividual;
@@ -1034,8 +1007,8 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
     rdfs:label \\"Trail\\";
     rdfs:subClassOf :Place, gufo:FunctionalComplex;
     rdf:type gufo:Kind.
-:Geospatialfeature rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"GeoSpatialFeature\\";
+:GeospatialFeature rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Geospatial Feature\\";
     rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:Category.
 :PermanentlyClosed rdf:type owl:Class, owl:NamedIndividual;
@@ -1076,7 +1049,7 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
     rdf:type gufo:Kind.
 :MediaObject rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Media Object\\";
-    rdfs:subClassOf :NamedEntity, gufo:Endurant;
+    rdfs:subClassOf :NamedIndividual, gufo:Endurant;
     rdf:type gufo:Category.
 :SkiSlope rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Ski Slope\\";
@@ -1084,11 +1057,11 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
     rdf:type gufo:SubKind.
 :SnowMeasurement rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Snow Measurement\\";
-    rdfs:subClassOf :Geospatialfeature, gufo:Relator;
+    rdfs:subClassOf :GeospatialFeature, gufo:Relator;
     rdf:type gufo:Kind.
 :SnowparkFeature rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Snowpark Feature\\";
-    rdfs:subClassOf :NamedEntity, :Geospatialfeature, gufo:FunctionalComplex;
+    rdfs:subClassOf :NamedIndividual, :GeospatialFeature, gufo:FunctionalComplex;
     rdf:type gufo:Kind.
 :MediaObjectType rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Media Object Type\\";
@@ -1123,22 +1096,14 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
     rdfs:subClassOf gufo:ConcreteIndividualType.
 :EventSeries rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Event Series\\";
-    rdfs:subClassOf :NamedEntity, gufo:FunctionalComplex;
+    rdfs:subClassOf :NamedIndividual, gufo:FunctionalComplex;
     rdf:type gufo:Kind.
 :EventType rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Event Type\\";
     rdfs:subClassOf gufo:ConcreteIndividualType.
-:VenueAllocation rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Venue Allocation\\";
-    rdfs:subClassOf gufo:Relator;
-    rdf:type gufo:Kind.
 :SnowType rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Snow Type\\";
     rdfs:subClassOf gufo:ConcreteIndividualType.
-:CopyrightOwnership rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Copyright Ownership\\";
-    rdfs:subClassOf gufo:Relator;
-    rdf:type gufo:Kind.
 :Multipoint rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Multi-Point\\";
     rdfs:subClassOf :Geometry;
@@ -1151,6 +1116,17 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
     rdfs:label \\"Multi-Polygon\\";
     rdfs:subClassOf :Geometry;
     rdf:type gufo:SubKind.
+:Published rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Published\\";
+    rdfs:subClassOf :Event;
+    rdf:type gufo:Phase.
+:MountainAreaType rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Mountain Area Type\\";
+    rdfs:subClassOf gufo:ConcreteIndividualType.
+:Difficulty rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Difficulty\\";
+    rdfs:subClassOf gufo:Quality;
+    rdf:type gufo:Kind.
 "
 `;
 
@@ -1339,7 +1315,7 @@ exports[`should transform OntoUML <<relator>> class 1`] = `
 <:ech5mg6DAAAAQqj> <rdfs:subClassOf> <:IsW5mg6DAAAAQqE> .
 <:gk0lmg6DAAAAQv1> <rdf:type> <owl:ObjectProperty> .
 <:gk0lmg6DAAAAQv1> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
-<:7k4lmg6D.AAAAQvd> <gufo:isDerivedFrom> <:SzOFmg6D.AAAAQuF> .
+<:undefined> <gufo:isDerivedFrom> <:undefined> .
 <:ech5mg6DAAAAQqj> <rdf:type> <gufo:SubKind> .
 <:jiZ5mg6DAAAAQrK> <rdf:type> <owl:Class> .
 <:jiZ5mg6DAAAAQrK> <rdf:type> <owl:NamedIndividual> .
@@ -1414,7 +1390,7 @@ exports[`should transform OntoUML generic model to gUFO 1`] = `
 :Agent rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Agent\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Organization :Person).
-:isMediationSchool rdf:type owl:ObjectProperty;
+:mediatesSchool rdf:type owl:ObjectProperty;
     rdfs:domain :Enrollment;
     rdfs:range :School;
     rdfs:comment \\"Relation URI was automatically generated.\\";
@@ -1425,14 +1401,14 @@ exports[`should transform OntoUML generic model to gUFO 1`] = `
   rdf:type owl:Class;
   owl:unionOf (:Organization :Person)
 ].
-:isMediationStudent rdf:type owl:ObjectProperty;
+:mediatesStudent rdf:type owl:ObjectProperty;
     rdfs:domain :Enrollment;
     rdfs:range :Student;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:mediates.
 :Person rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Person\\".
-:isCharacterizationEnrollment rdf:type owl:ObjectProperty;
+:inheresInEnrollment rdf:type owl:ObjectProperty;
     rdfs:domain :EnrollmentDate;
     rdfs:range :Enrollment;
     rdfs:comment \\"Relation URI was automatically generated.\\";
@@ -1445,14 +1421,14 @@ exports[`should transform OntoUML generic model to gUFO 1`] = `
     rdfs:subPropertyOf gufo:isComponentOf.
 :Person rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
-:isMediationEnrollment rdf:type owl:ObjectProperty;
+:mediatesEnrollment rdf:type owl:ObjectProperty;
     rdfs:domain :Sophomore;
     rdfs:range :Enrollment;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:mediates.
 :Organization rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Organization\\".
-:isMediationEnrollment rdf:type owl:ObjectProperty;
+:mediatesEnrollment rdf:type owl:ObjectProperty;
     rdfs:domain :PrivatelyEnrolled;
     rdfs:range :Enrollment;
     rdfs:comment \\"Relation URI was automatically generated.\\";
@@ -1465,16 +1441,16 @@ exports[`should transform OntoUML generic model to gUFO 1`] = `
     rdf:type gufo:MaterialRelationshipType.
 :Organization rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
-:isInstantiationAgentType rdf:type owl:ObjectProperty;
+:categorizesAgentType rdf:type owl:ObjectProperty;
     rdfs:domain :Agent;
     rdfs:range :AgentType;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:categorizes.
 :School rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"School\\".
-:isDerivationJnsvza6gaqacnat rdf:type owl:ObjectProperty;
+:isDerivedFromJnsvza6gaqacnat rdf:type owl:ObjectProperty;
     rdfs:comment \\"Relation URI was automatically generated.\\".
-:iDpDhA6GAqACnA41 gufo:isDerivedFrom :JLnhBA6AUB0UtAwO.
+:null gufo:isDerivedFrom :null.
 :School rdfs:subClassOf :Organization;
     rdf:type gufo:SubKind.
 :Student rdf:type owl:Class, owl:NamedIndividual;
@@ -1563,34 +1539,34 @@ exports[`should transform iStandard model to gUFO 1`] = `
 :Household rdfs:subClassOf gufo:Collection;
     rdf:type gufo:Kind.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:AdministrativeLtcAllocation :RegularLtcAllocation :TransitionalLtcAllocation).
-:isMemberOfHouseholdMember rdf:type owl:ObjectProperty;
+:isCollectionMemberOfHouseholdMember rdf:type owl:ObjectProperty;
     rdfs:domain :Household;
     rdfs:range :HouseholdMember;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :HouseholdMember rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isMemberOfHouseholdMember ];
+  owl:onProperty [ owl:inverseOf :isCollectionMemberOfHouseholdMember ];
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :Household
 ].
-:isMemberOfHouseholdMember rdfs:subPropertyOf gufo:isCollectionMemberOf.
+:isCollectionMemberOfHouseholdMember rdfs:subPropertyOf gufo:isCollectionMemberOf.
 :HouseholdMember rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Household Member\\".
 :LtcAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:AdministrativeLtcAllocation :RegularLtcAllocation :TransitionalLtcAllocation)
 ].
-:isMediationAgent rdf:type owl:ObjectProperty;
+:mediatesAgent rdf:type owl:ObjectProperty;
     rdfs:domain :SocialRelationship;
     rdfs:range :Agent;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :SocialRelationship rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationAgent;
+  owl:onProperty :mediatesAgent;
   owl:minQualifiedCardinality \\"2\\"^^xsd:nonNegativeInteger;
   owl:onClass :Agent
 ].
-:isMediationAgent rdfs:subPropertyOf gufo:mediates.
+:mediatesAgent rdfs:subPropertyOf gufo:mediates.
 :HouseholdMember rdfs:subClassOf :Person.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:AcceptedAllocation :DeclinedAllocation :RequestedAllocation :RevokedAllocation).
 :creates rdf:type owl:ObjectProperty;
@@ -1615,37 +1591,37 @@ exports[`should transform iStandard model to gUFO 1`] = `
   rdf:type owl:Class;
   owl:unionOf (:AcceptedAllocation :DeclinedAllocation :RequestedAllocation :RevokedAllocation)
 ].
-:isCharacterizationAgent rdf:type owl:ObjectProperty;
+:inheresInAgent rdf:type owl:ObjectProperty;
     rdfs:domain :ContactInfo;
     rdfs:range :Agent;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :ContactInfo rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isCharacterizationAgent;
+  owl:onProperty :inheresInAgent;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :Agent
 ].
-:isCharacterizationAgent rdfs:subPropertyOf gufo:inheresIn.
+:inheresInAgent rdfs:subPropertyOf gufo:inheresIn.
 :Person rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Person\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DeceasedPerson :LivingPerson :Unborn).
-:isMediationResidentInHealthcareInstitution rdf:type owl:ObjectProperty;
+:mediatesResidentInHealthcareInstitution rdf:type owl:ObjectProperty;
     rdfs:domain :Stay;
     rdfs:range :ResidentInHealthcareInstitution;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :Stay rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationResidentInHealthcareInstitution;
+  owl:onProperty :mediatesResidentInHealthcareInstitution;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :ResidentInHealthcareInstitution
 ].
-:isMediationResidentInHealthcareInstitution rdfs:subPropertyOf gufo:mediates.
+:mediatesResidentInHealthcareInstitution rdfs:subPropertyOf gufo:mediates.
 :Person rdfs:subClassOf :Agent;
     owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:DeceasedPerson :LivingPerson :Unborn)
 ].
-:isMediationHealthcareProvider rdf:type owl:ObjectProperty;
+:mediatesHealthcareProvider rdf:type owl:ObjectProperty;
     rdfs:domain :Stay;
     rdfs:range :HealthcareProvider;
     rdfs:comment \\"Relation URI was automatically generated.\\";
@@ -1723,37 +1699,37 @@ exports[`should transform iStandard model to gUFO 1`] = `
   rdf:type owl:Class;
   owl:unionOf (:StayAtHealthcareProvider :CareAtHome)
 ].
-:isMediationLegalGender rdf:type owl:ObjectProperty;
+:mediatesLegalGender rdf:type owl:ObjectProperty;
     rdfs:domain :CivilRegistration;
     rdfs:range :LegalGender;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :CivilRegistration rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationLegalGender;
+  owl:onProperty :mediatesLegalGender;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :LegalGender
 ].
-:isMediationLegalGender rdfs:subPropertyOf gufo:mediates.
+:mediatesLegalGender rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:LanguageCapability :Disease :Disability :Disorder :Prognosis :Restriction :SpatialRegion).
 :Widowwidower rdfs:subClassOf :Person.
 :FinancingType owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:HealthcareinNatura :PersonalBudget)
 ].
-:isMediationPerson rdf:type owl:ObjectProperty;
+:mediatesPerson rdf:type owl:ObjectProperty;
     rdfs:domain :CourtDecision;
     rdfs:range :Person;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :CourtDecision rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationPerson;
+  owl:onProperty :mediatesPerson;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :Person
 ].
-:isMediationPerson rdfs:subPropertyOf gufo:mediates.
+:mediatesPerson rdfs:subPropertyOf gufo:mediates.
 :Widowwidower rdf:type gufo:Role.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:FullCarevpt :ModularCarempt).
-:isInstantiationSocialRelationship rdf:type owl:ObjectProperty;
+:categorizesSocialRelationship rdf:type owl:ObjectProperty;
     rdfs:domain :SocialRelationshipType;
     rdfs:range :SocialRelationship;
     rdfs:comment \\"Relation URI was automatically generated.\\";
@@ -1764,17 +1740,17 @@ exports[`should transform iStandard model to gUFO 1`] = `
   rdf:type owl:Class;
   owl:unionOf (:FullCarevpt :ModularCarempt)
 ].
-:isMediationSpouse rdf:type owl:ObjectProperty;
+:mediatesSpouse rdf:type owl:ObjectProperty;
     rdfs:domain :Marriage;
     rdfs:range :Spouse;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :Marriage rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationSpouse;
+  owl:onProperty :mediatesSpouse;
   owl:qualifiedCardinality \\"2\\"^^xsd:nonNegativeInteger;
   owl:onClass :Spouse
 ].
-:isMediationSpouse rdfs:subPropertyOf gufo:mediates.
+:mediatesSpouse rdfs:subPropertyOf gufo:mediates.
 :Unknown rdfs:subClassOf :Person.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:CareAtHomeAgreement :CareAtHealthcareOrganisationAgreement).
 :hasLegalParent rdf:type owl:ObjectProperty;
@@ -1835,40 +1811,40 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdf:type gufo:MaterialRelationshipType.
 :SinglePersonHousehold rdf:type gufo:Phase.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DirectStartAllocation :PendingAllocation).
-:isMediationPerson rdf:type owl:ObjectProperty;
+:mediatesPerson rdf:type owl:ObjectProperty;
     rdfs:domain :GpRegistration;
     rdfs:range :Person;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :GpRegistration rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationPerson;
+  owl:onProperty :mediatesPerson;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :Person
 ].
 :Person rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isMediationPerson ];
+  owl:onProperty [ owl:inverseOf :mediatesPerson ];
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :GpRegistration
 ].
-:isMediationPerson rdfs:subPropertyOf gufo:mediates.
+:mediatesPerson rdfs:subPropertyOf gufo:mediates.
 :SeparatedFromRp rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Separated from RP\\".
 :AcceptedAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:DirectStartAllocation :PendingAllocation)
 ].
-:isMediationGeneralPractitioner rdf:type owl:ObjectProperty;
+:mediatesGeneralPractitioner rdf:type owl:ObjectProperty;
     rdfs:domain :GpRegistration;
     rdfs:range :GeneralPractitioner;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :GpRegistration rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationGeneralPractitioner;
+  owl:onProperty :mediatesGeneralPractitioner;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :GeneralPractitioner
 ].
-:isMediationGeneralPractitioner rdfs:subPropertyOf gufo:mediates.
+:mediatesGeneralPractitioner rdfs:subPropertyOf gufo:mediates.
 :SeparatedFromRp rdfs:subClassOf :Person.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DeclinedByClient :DeclinedByProvider).
 :providesbasiccarefor rdf:type owl:ObjectProperty;
@@ -1887,7 +1863,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   rdf:type owl:Class;
   owl:unionOf (:DeclinedByClient :DeclinedByProvider)
 ].
-:isCharacterizationPerson rdf:type owl:ObjectProperty;
+:inheresInPerson rdf:type owl:ObjectProperty;
     rdfs:domain :LanguageCapability;
     rdfs:range :Person;
     rdfs:comment \\"Relation URI was automatically generated.\\";
@@ -1895,172 +1871,172 @@ exports[`should transform iStandard model to gUFO 1`] = `
 :Separated rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Separated\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Adult :Child).
-:isExternalDependenceLanguage rdf:type owl:ObjectProperty;
+:externallyDependsOnLanguage rdf:type owl:ObjectProperty;
     rdfs:domain :LanguageCapability;
     rdfs:range :Language;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :LanguageCapability rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isExternalDependenceLanguage;
+  owl:onProperty :externallyDependsOnLanguage;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :Language
 ].
-:isExternalDependenceLanguage rdfs:subPropertyOf gufo:externallyDependsOn.
+:externallyDependsOnLanguage rdfs:subPropertyOf gufo:externallyDependsOn.
 :Separated rdfs:subClassOf :Person.
 :Person owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Adult :Child)
 ].
-:isCharacterizationMedicalCondition rdf:type owl:ObjectProperty;
+:inheresInMedicalCondition rdf:type owl:ObjectProperty;
     rdfs:domain :Person;
     rdfs:range :MedicalCondition;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :MedicalCondition rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isCharacterizationMedicalCondition ];
+  owl:onProperty [ owl:inverseOf :inheresInMedicalCondition ];
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :Person
 ].
-:isCharacterizationMedicalCondition rdfs:subPropertyOf gufo:inheresIn.
+:inheresInMedicalCondition rdfs:subPropertyOf gufo:inheresIn.
 :Separated rdf:type gufo:Role.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Single :DivorcedFromRp :Divorced :Spouse :RegisteredPartner :SeparatedFromRp :Separated :Widowwidower).
-:isMediationMedicalProfessional rdf:type owl:ObjectProperty;
+:mediatesMedicalProfessional rdf:type owl:ObjectProperty;
     rdfs:domain :Diagnosis;
     rdfs:range :MedicalProfessional;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :Diagnosis rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationMedicalProfessional;
+  owl:onProperty :mediatesMedicalProfessional;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :MedicalProfessional
 ].
-:isMediationMedicalProfessional rdfs:subPropertyOf gufo:mediates.
+:mediatesMedicalProfessional rdfs:subPropertyOf gufo:mediates.
 :RegisteredPartner rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Registered Partner\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Man :Unknown :Woman).
-:isMediationPerson rdf:type owl:ObjectProperty;
+:mediatesPerson rdf:type owl:ObjectProperty;
     rdfs:domain :Diagnosis;
     rdfs:range :Person;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :Diagnosis rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationPerson;
+  owl:onProperty :mediatesPerson;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :Person
 ].
-:isMediationPerson rdfs:subPropertyOf gufo:mediates.
+:mediatesPerson rdfs:subPropertyOf gufo:mediates.
 :RegisteredPartner rdfs:subClassOf :Person.
 :Person owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Man :Unknown :Woman)
 ].
-:isMediationMedicalConditionType rdf:type owl:ObjectProperty;
+:mediatesMedicalConditionType rdf:type owl:ObjectProperty;
     rdfs:domain :DisorderAssessment;
     rdfs:range :MedicalConditionType;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :DisorderAssessment rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationMedicalConditionType;
+  owl:onProperty :mediatesMedicalConditionType;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :MedicalConditionType
 ].
-:isMediationMedicalConditionType rdfs:subPropertyOf gufo:mediates.
+:mediatesMedicalConditionType rdfs:subPropertyOf gufo:mediates.
 :RegisteredPartner rdf:type gufo:Role.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DeceasedPerson :LivingPerson :Unborn).
-:isMediationDisorderQuestion rdf:type owl:ObjectProperty;
+:mediatesDisorderQuestion rdf:type owl:ObjectProperty;
     rdfs:domain :DisorderQuestionAssessment;
     rdfs:range :DisorderQuestion;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :DisorderQuestionAssessment rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationDisorderQuestion;
+  owl:onProperty :mediatesDisorderQuestion;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :DisorderQuestion
 ].
-:isMediationDisorderQuestion rdfs:subPropertyOf gufo:mediates.
+:mediatesDisorderQuestion rdfs:subPropertyOf gufo:mediates.
 :Organization rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Organization\\".
 :Person owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:DeceasedPerson :LivingPerson :Unborn)
 ].
-:isMediationRestrictionType rdf:type owl:ObjectProperty;
+:mediatesRestrictionType rdf:type owl:ObjectProperty;
     rdfs:domain :RestrictionAssessment;
     rdfs:range :RestrictionType;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :RestrictionAssessment rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationRestrictionType;
+  owl:onProperty :mediatesRestrictionType;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :RestrictionType
 ].
-:isMediationRestrictionType rdfs:subPropertyOf gufo:mediates.
+:mediatesRestrictionType rdfs:subPropertyOf gufo:mediates.
 :Organization rdfs:subClassOf :Agent.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Adult :Child).
-:isMediationRestrictionQuestion rdf:type owl:ObjectProperty;
+:mediatesRestrictionQuestion rdf:type owl:ObjectProperty;
     rdfs:domain :RestrictionQuestionAssessment;
     rdfs:range :RestrictionQuestion;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :RestrictionQuestionAssessment rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationRestrictionQuestion;
+  owl:onProperty :mediatesRestrictionQuestion;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :RestrictionQuestion
 ].
-:isMediationRestrictionQuestion rdfs:subPropertyOf gufo:mediates.
+:mediatesRestrictionQuestion rdfs:subPropertyOf gufo:mediates.
 :Organization rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
 :Person owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Adult :Child)
 ].
-:isMaterialHealthcareOfficeRegion rdf:type owl:ObjectProperty;
+:materialRelationshipTypeHealthcareOfficeRegion rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareOffice;
     rdfs:range :HealthcareOfficeRegion;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :HealthcareOffice rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMaterialHealthcareOfficeRegion;
+  owl:onProperty :materialRelationshipTypeHealthcareOfficeRegion;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareOfficeRegion
 ].
 :HealthcareOfficeRegion rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isMaterialHealthcareOfficeRegion ];
+  owl:onProperty [ owl:inverseOf :materialRelationshipTypeHealthcareOfficeRegion ];
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareOffice
 ].
-:isMaterialHealthcareOfficeRegion rdf:type gufo:MaterialRelationshipType.
+:materialRelationshipTypeHealthcareOfficeRegion rdf:type gufo:MaterialRelationshipType.
 :MultipersonHousehold rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Multi-person Household\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:NegativeDecision :PositiveDecision).
-:isMediationHealthcareOffice rdf:type owl:ObjectProperty;
+:mediatesHealthcareOffice rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareServiceAgreement;
     rdfs:range :HealthcareOffice;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :HealthcareServiceAgreement rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationHealthcareOffice;
+  owl:onProperty :mediatesHealthcareOffice;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareOffice
 ].
-:isMediationHealthcareOffice rdfs:subPropertyOf gufo:mediates.
+:mediatesHealthcareOffice rdfs:subPropertyOf gufo:mediates.
 :MultipersonHousehold rdfs:subClassOf :Household.
 :RequestDecision owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:NegativeDecision :PositiveDecision)
 ].
-:isMediationLongTermHealthcareProvider rdf:type owl:ObjectProperty;
+:mediatesLongTermHealthcareProvider rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareServiceAgreement;
     rdfs:range :LongTermHealthcareProvider;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :HealthcareServiceAgreement rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationLongTermHealthcareProvider;
+  owl:onProperty :mediatesLongTermHealthcareProvider;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :LongTermHealthcareProvider
 ].
-:isMediationLongTermHealthcareProvider rdfs:subPropertyOf gufo:mediates.
+:mediatesLongTermHealthcareProvider rdfs:subPropertyOf gufo:mediates.
 :MultipersonHousehold rdf:type gufo:Phase.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:InactiveLtcIndication :ActiveLtcIndication).
 :madeTo rdf:type owl:ObjectProperty;
@@ -2152,118 +2128,118 @@ exports[`should transform iStandard model to gUFO 1`] = `
 :conformsTo rdfs:subPropertyOf gufo:mediates.
 :Man rdf:type gufo:Role.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:AcceptedAllocation :DeclinedAllocation :RequestedAllocation :RevokedAllocation).
-:isMediationBsnHolder rdf:type owl:ObjectProperty;
+:mediatesBsnHolder rdf:type owl:ObjectProperty;
     rdfs:domain :CivilRegistration;
     rdfs:range :BsnHolder;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :CivilRegistration rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationBsnHolder;
+  owl:onProperty :mediatesBsnHolder;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :BsnHolder
 ].
 :BsnHolder rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isMediationBsnHolder ];
+  owl:onProperty [ owl:inverseOf :mediatesBsnHolder ];
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :CivilRegistration
 ].
-:isMediationBsnHolder rdfs:subPropertyOf gufo:mediates.
+:mediatesBsnHolder rdfs:subPropertyOf gufo:mediates.
 :DivorcedFromRp rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Divorced from RP\\".
 :LtcAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:AcceptedAllocation :DeclinedAllocation :RequestedAllocation :RevokedAllocation)
 ].
-:isMediationCivilStatus rdf:type owl:ObjectProperty;
+:mediatesCivilStatus rdf:type owl:ObjectProperty;
     rdfs:domain :CivilRegistration;
     rdfs:range :CivilStatus;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :CivilRegistration rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationCivilStatus;
+  owl:onProperty :mediatesCivilStatus;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :CivilStatus
 ].
-:isMediationCivilStatus rdfs:subPropertyOf gufo:mediates.
+:mediatesCivilStatus rdfs:subPropertyOf gufo:mediates.
 :DivorcedFromRp rdfs:subClassOf :Person.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DirectStartAllocation :PendingAllocation).
-:isMediationLegalRepresentative rdf:type owl:ObjectProperty;
+:mediatesLegalRepresentative rdf:type owl:ObjectProperty;
     rdfs:domain :LegalRepresentation;
     rdfs:range :LegalRepresentative;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :LegalRepresentation rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationLegalRepresentative;
+  owl:onProperty :mediatesLegalRepresentative;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :LegalRepresentative
 ].
-:isMediationLegalRepresentative rdfs:subPropertyOf gufo:mediates.
+:mediatesLegalRepresentative rdfs:subPropertyOf gufo:mediates.
 :DivorcedFromRp rdf:type gufo:Role.
 :AcceptedAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:DirectStartAllocation :PendingAllocation)
 ].
-:isMediationPerson rdf:type owl:ObjectProperty;
+:mediatesPerson rdf:type owl:ObjectProperty;
     rdfs:domain :LegalRepresentation;
     rdfs:range :Person;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :LegalRepresentation rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationPerson;
+  owl:onProperty :mediatesPerson;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :Person
 ].
-:isMediationPerson rdfs:subPropertyOf gufo:mediates.
+:mediatesPerson rdfs:subPropertyOf gufo:mediates.
 :Divorced rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Divorced\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DeclinedByClient :DeclinedByProvider).
-:isInstantiationLegalRepresentationType rdf:type owl:ObjectProperty;
+:categorizesLegalRepresentationType rdf:type owl:ObjectProperty;
     rdfs:domain :LegalRepresentation;
     rdfs:range :LegalRepresentationType;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :LegalRepresentation rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isInstantiationLegalRepresentationType;
+  owl:onProperty :categorizesLegalRepresentationType;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :LegalRepresentationType
 ].
-:isInstantiationLegalRepresentationType rdfs:subPropertyOf gufo:categorizes.
+:categorizesLegalRepresentationType rdfs:subPropertyOf gufo:categorizes.
 :Divorced rdfs:subClassOf :Person.
 :DeclinedAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:DeclinedByClient :DeclinedByProvider)
 ].
-:isMediationLegalRepresentation rdf:type owl:ObjectProperty;
+:mediatesLegalRepresentation rdf:type owl:ObjectProperty;
     rdfs:domain :CourtDecision;
     rdfs:range :LegalRepresentation;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :CourtDecision rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationLegalRepresentation;
+  owl:onProperty :mediatesLegalRepresentation;
   owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :LegalRepresentation
 ].
 :LegalRepresentation rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isMediationLegalRepresentation ];
+  owl:onProperty [ owl:inverseOf :mediatesLegalRepresentation ];
   owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :CourtDecision
 ].
-:isMediationLegalRepresentation rdfs:subPropertyOf gufo:mediates.
+:mediatesLegalRepresentation rdfs:subPropertyOf gufo:mediates.
 :Divorced rdf:type gufo:Role.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:CareAtHomeAgreement :CareAtHealthcareOrganisationAgreement).
-:isInstantiationCourtDecision rdf:type owl:ObjectProperty;
+:categorizesCourtDecision rdf:type owl:ObjectProperty;
     rdfs:domain :CourtDecisionType;
     rdfs:range :CourtDecision;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :CourtDecision rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isInstantiationCourtDecision ];
+  owl:onProperty [ owl:inverseOf :categorizesCourtDecision ];
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :CourtDecisionType
 ].
-:isInstantiationCourtDecision rdfs:subPropertyOf gufo:categorizes.
+:categorizesCourtDecision rdfs:subPropertyOf gufo:categorizes.
 :ContactInfo rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Contact Info\\".
 :LtcServiceAgreement owl:equivalentClass [
@@ -2329,7 +2305,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   rdf:type owl:Class;
   owl:unionOf (:FullCarevpt :ModularCarempt)
 ].
-:isMediationHealthcareServiceDeliveryType rdf:type owl:ObjectProperty;
+:mediatesHealthcareServiceDeliveryType rdf:type owl:ObjectProperty;
     rdfs:domain :IndicatedHealthcareServicePackage;
     rdfs:range :HealthcareServiceDeliveryType;
     rdfs:comment \\"Relation URI was automatically generated.\\";
@@ -2347,17 +2323,17 @@ exports[`should transform iStandard model to gUFO 1`] = `
 ].
 :benefits rdfs:subPropertyOf gufo:mediates.
 :ResidentInHealthcareInstitution rdf:type gufo:Role.
-:isMediationMedicalConditionType rdf:type owl:ObjectProperty;
+:mediatesMedicalConditionType rdf:type owl:ObjectProperty;
     rdfs:domain :CareProfile;
     rdfs:range :MedicalConditionType;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :CareProfile rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationMedicalConditionType;
+  owl:onProperty :mediatesMedicalConditionType;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :MedicalConditionType
 ].
-:isMediationMedicalConditionType rdfs:subPropertyOf gufo:mediates.
+:mediatesMedicalConditionType rdfs:subPropertyOf gufo:mediates.
 :CourtDecision rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Court Decision\\".
 :temporaryReplaces rdf:type owl:ObjectProperty;
@@ -2373,17 +2349,17 @@ exports[`should transform iStandard model to gUFO 1`] = `
 :temporaryReplaces rdfs:subPropertyOf gufo:mediates.
 :CourtDecision rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
-:isMediationRegularLtcAllocation rdf:type owl:ObjectProperty;
+:mediatesRegularLtcAllocation rdf:type owl:ObjectProperty;
     rdfs:domain :AdministrativeLtcAllocation;
     rdfs:range :RegularLtcAllocation;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :AdministrativeLtcAllocation rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationRegularLtcAllocation;
+  owl:onProperty :mediatesRegularLtcAllocation;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :RegularLtcAllocation
 ].
-:isMediationRegularLtcAllocation rdfs:subPropertyOf gufo:mediates.
+:mediatesRegularLtcAllocation rdfs:subPropertyOf gufo:mediates.
 :CivilStatus rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Civil Status\\".
 :benefits rdf:type owl:ObjectProperty;
@@ -2411,60 +2387,60 @@ exports[`should transform iStandard model to gUFO 1`] = `
 :deliveredBy rdfs:subPropertyOf gufo:mediates.
 :LegalGender rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Legal Gender\\".
-:isParticipationStay rdf:type owl:ObjectProperty;
+:participatedInStay rdf:type owl:ObjectProperty;
     rdfs:domain :StayAgreement;
     rdfs:range :Stay;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :StayAgreement rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isParticipationStay;
+  owl:onProperty :participatedInStay;
   owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :Stay
 ].
 :Stay rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isParticipationStay ];
+  owl:onProperty [ owl:inverseOf :participatedInStay ];
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :StayAgreement
 ].
-:isParticipationStay rdfs:subPropertyOf gufo:participatedIn.
+:participatedInStay rdfs:subPropertyOf gufo:participatedIn.
 :LegalGender rdfs:subClassOf gufo:ConcreteIndividualType.
-:isCharacterizationLtcIndicationBudget rdf:type owl:ObjectProperty;
+:inheresInLtcIndicationBudget rdf:type owl:ObjectProperty;
     rdfs:domain :LtcIndication;
     rdfs:range :LtcIndicationBudget;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :LtcIndication rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isCharacterizationLtcIndicationBudget;
+  owl:onProperty :inheresInLtcIndicationBudget;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :LtcIndicationBudget
 ].
 :LtcIndicationBudget rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isCharacterizationLtcIndicationBudget ];
+  owl:onProperty [ owl:inverseOf :inheresInLtcIndicationBudget ];
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :LtcIndication
 ].
-:isCharacterizationLtcIndicationBudget rdfs:subPropertyOf gufo:inheresIn.
+:inheresInLtcIndicationBudget rdfs:subPropertyOf gufo:inheresIn.
 :SocialRelationship rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Social Relationship\\".
-:isCharacterizationLtcAllocation rdf:type owl:ObjectProperty;
+:inheresInLtcAllocation rdf:type owl:ObjectProperty;
     rdfs:domain :LtcAllocationBudget;
     rdfs:range :LtcAllocation;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :LtcAllocationBudget rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isCharacterizationLtcAllocation;
+  owl:onProperty :inheresInLtcAllocation;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :LtcAllocation
 ].
 :LtcAllocation rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isCharacterizationLtcAllocation ];
+  owl:onProperty [ owl:inverseOf :inheresInLtcAllocation ];
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :LtcAllocationBudget
 ].
-:isCharacterizationLtcAllocation rdfs:subPropertyOf gufo:inheresIn.
+:inheresInLtcAllocation rdfs:subPropertyOf gufo:inheresIn.
 :SocialRelationship rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
 :partOf rdf:type owl:ObjectProperty;
@@ -2480,17 +2456,17 @@ exports[`should transform iStandard model to gUFO 1`] = `
 :partOf rdf:type gufo:MaterialRelationshipType.
 :SocialRelationshipType rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Social Relationship Type\\".
-:isMediationLtcAllocation rdf:type owl:ObjectProperty;
+:mediatesLtcAllocation rdf:type owl:ObjectProperty;
     rdfs:domain :DeliveryForm;
     rdfs:range :LtcAllocation;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :LtcAllocation rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isMediationLtcAllocation ];
+  owl:onProperty [ owl:inverseOf :mediatesLtcAllocation ];
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :DeliveryForm
 ].
-:isMediationLtcAllocation rdfs:subPropertyOf gufo:mediates.
+:mediatesLtcAllocation rdfs:subPropertyOf gufo:mediates.
 :SocialRelationshipType rdfs:subClassOf gufo:ConcreteIndividualType.
 :abc rdf:type owl:ObjectProperty;
     rdfs:domain :LtcAllocation;
@@ -2499,30 +2475,30 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdfs:subPropertyOf gufo:mediates.
 :Marriage rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Marriage\\".
-:isMediationLthClient rdf:type owl:ObjectProperty;
+:mediatesLthClient rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareOfficeClientDossier;
     rdfs:range :LthClient;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :HealthcareOfficeClientDossier rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationLthClient;
+  owl:onProperty :mediatesLthClient;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :LthClient
 ].
-:isMediationLthClient rdfs:subPropertyOf gufo:mediates.
+:mediatesLthClient rdfs:subPropertyOf gufo:mediates.
 :Marriage rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
-:isMediationHealthcareOffice rdf:type owl:ObjectProperty;
+:mediatesHealthcareOffice rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareOfficeClientDossier;
     rdfs:range :HealthcareOffice;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :HealthcareOfficeClientDossier rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationHealthcareOffice;
+  owl:onProperty :mediatesHealthcareOffice;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareOffice
 ].
-:isMediationHealthcareOffice rdfs:subPropertyOf gufo:mediates.
+:mediatesHealthcareOffice rdfs:subPropertyOf gufo:mediates.
 :LegalParent rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Legal Parent\\".
 :creates rdf:type owl:ObjectProperty;
@@ -2543,36 +2519,36 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdfs:label \\"is subject of\\";
     rdfs:subPropertyOf gufo:mediates.
 :LegalParent rdf:type gufo:Role.
-:isMediationLthClient rdf:type owl:ObjectProperty;
+:mediatesLthClient rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareProviderClientDossier;
     rdfs:range :LthClient;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :HealthcareProviderClientDossier rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationLthClient;
+  owl:onProperty :mediatesLthClient;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :LthClient
 ].
 :LthClient rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isMediationLthClient ];
+  owl:onProperty [ owl:inverseOf :mediatesLthClient ];
   owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareProviderClientDossier
 ].
-:isMediationLthClient rdfs:subPropertyOf gufo:mediates.
+:mediatesLthClient rdfs:subPropertyOf gufo:mediates.
 :Single rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Single\\".
-:isMediationHealthcareProvider rdf:type owl:ObjectProperty;
+:mediatesHealthcareProvider rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareProviderClientDossier;
     rdfs:range :HealthcareProvider;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :HealthcareProviderClientDossier rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationHealthcareProvider;
+  owl:onProperty :mediatesHealthcareProvider;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareProvider
 ].
-:isMediationHealthcareProvider rdfs:subPropertyOf gufo:mediates.
+:mediatesHealthcareProvider rdfs:subPropertyOf gufo:mediates.
 :Single rdfs:subClassOf :Person.
 :represents rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareContactAssigment;
@@ -2629,7 +2605,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
 ].
 :replaces rdfs:subPropertyOf gufo:mediates.
 :GeneralPractitioner rdf:type gufo:Role.
-:isInstantiationHealthcareOfficeCode rdf:type owl:ObjectProperty;
+:categorizesHealthcareOfficeCode rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareOffice;
     rdfs:range :HealthcareOfficeCode;
     rdfs:comment \\"Relation URI was automatically generated.\\";
@@ -2649,37 +2625,37 @@ exports[`should transform iStandard model to gUFO 1`] = `
 :prefers rdfs:subPropertyOf gufo:mediates.
 :GpRegistration rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
-:isMediationPreferredHealthcareProvider rdf:type owl:ObjectProperty;
+:mediatesPreferredHealthcareProvider rdf:type owl:ObjectProperty;
     rdfs:domain :ClientPreference;
     rdfs:range :PreferredHealthcareProvider;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :ClientPreference rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationPreferredHealthcareProvider;
+  owl:onProperty :mediatesPreferredHealthcareProvider;
   owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :PreferredHealthcareProvider
 ].
-:isMediationPreferredHealthcareProvider rdfs:subPropertyOf gufo:mediates.
+:mediatesPreferredHealthcareProvider rdfs:subPropertyOf gufo:mediates.
 :LanguageCapability rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Language Capability\\".
-:isMediationPreferredFinancingType rdf:type owl:ObjectProperty;
+:mediatesPreferredFinancingType rdf:type owl:ObjectProperty;
     rdfs:domain :ClientPreference;
     rdfs:range :PreferredFinancingType;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:mediates.
 :LanguageCapability rdfs:subClassOf gufo:ExtrinsicMode;
     rdf:type gufo:Kind.
-:isMediationPreferredCareLocationType rdf:type owl:ObjectProperty;
+:mediatesPreferredCareLocationType rdf:type owl:ObjectProperty;
     rdfs:domain :ClientPreference;
     rdfs:range :PreferredCareLocationType;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :ClientPreference rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationPreferredCareLocationType;
+  owl:onProperty :mediatesPreferredCareLocationType;
   owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :PreferredCareLocationType
 ].
-:isMediationPreferredCareLocationType rdfs:subPropertyOf gufo:mediates.
+:mediatesPreferredCareLocationType rdfs:subPropertyOf gufo:mediates.
 :Language rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Language\\".
 :classifiesPatientIn rdf:type owl:ObjectProperty;
@@ -2695,23 +2671,23 @@ exports[`should transform iStandard model to gUFO 1`] = `
 :classifiesPatientIn rdfs:subPropertyOf gufo:mediates.
 :Language rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
-:isMediationCareProfile rdf:type owl:ObjectProperty;
+:mediatesCareProfile rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareServicePackageType;
     rdfs:range :CareProfile;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :HealthcareServicePackageType rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationCareProfile;
+  owl:onProperty :mediatesCareProfile;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :CareProfile
 ].
 :CareProfile rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isMediationCareProfile ];
+  owl:onProperty [ owl:inverseOf :mediatesCareProfile ];
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareServicePackageType
 ].
-:isMediationCareProfile rdfs:subPropertyOf gufo:mediates.
+:mediatesCareProfile rdfs:subPropertyOf gufo:mediates.
 :HealthcareProfessional rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Healthcare Professional\\".
 :requests rdf:type owl:ObjectProperty;
@@ -2720,38 +2696,38 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdfs:label \\"requests\\";
     rdfs:subPropertyOf gufo:mediates.
 :HealthcareProfessional rdfs:subClassOf :Person.
-:isMediationLtcServiceAgreement rdf:type owl:ObjectProperty;
+:mediatesLtcServiceAgreement rdf:type owl:ObjectProperty;
     rdfs:domain :ClientPreference;
     rdfs:range :LtcServiceAgreement;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :ClientPreference rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationLtcServiceAgreement;
+  owl:onProperty :mediatesLtcServiceAgreement;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :LtcServiceAgreement
 ].
-:isMediationLtcServiceAgreement rdfs:subPropertyOf gufo:mediates.
+:mediatesLtcServiceAgreement rdfs:subPropertyOf gufo:mediates.
 :HealthcareProfessional rdf:type gufo:Role.
-:isInstantiationCareLocationType rdf:type owl:ObjectProperty;
+:categorizesCareLocationType rdf:type owl:ObjectProperty;
     rdfs:domain :CareLocation;
     rdfs:range :CareLocationType;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:categorizes.
 :Ciz rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"CIZ\\".
-:isInstantiationHealthcareServicePackageType rdf:type owl:ObjectProperty;
+:categorizesHealthcareServicePackageType rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareServicePackage;
     rdfs:range :HealthcareServicePackageType;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :HealthcareServicePackage rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isInstantiationHealthcareServicePackageType;
+  owl:onProperty :categorizesHealthcareServicePackageType;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareServicePackageType
 ].
-:isInstantiationHealthcareServicePackageType rdfs:subPropertyOf gufo:categorizes.
+:categorizesHealthcareServicePackageType rdfs:subPropertyOf gufo:categorizes.
 :Ciz rdfs:subClassOf :Organization.
-:isInstantiationEligibleLthClient rdf:type owl:ObjectProperty;
+:categorizesEligibleLthClient rdf:type owl:ObjectProperty;
     rdfs:domain :CareProfile;
     rdfs:range :EligibleLthClient;
     rdfs:comment \\"Relation URI was automatically generated.\\";
@@ -2782,36 +2758,36 @@ exports[`should transform iStandard model to gUFO 1`] = `
 ].
 :represents rdfs:subPropertyOf gufo:mediates.
 :HealthcareOffice rdfs:subClassOf :Organization.
-:isCharacterizationPerson rdf:type owl:ObjectProperty;
+:inheresInPerson rdf:type owl:ObjectProperty;
     rdfs:domain :Name;
     rdfs:range :Person;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :Name rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isCharacterizationPerson;
+  owl:onProperty :inheresInPerson;
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :Person
 ].
 :Person rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isCharacterizationPerson ];
+  owl:onProperty [ owl:inverseOf :inheresInPerson ];
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :Name
 ].
-:isCharacterizationPerson rdfs:subPropertyOf gufo:inheresIn.
+:inheresInPerson rdfs:subPropertyOf gufo:inheresIn.
 :HealthcareOffice rdf:type gufo:SubKind.
-:isDerivationNergvnagaqaedisp rdf:type owl:ObjectProperty;
+:isDerivedFromNergvnagaqaedisp rdf:type owl:ObjectProperty;
     rdfs:comment \\"Relation URI was automatically generated.\\".
-:rXdgVnaGAqAeDiSQ gufo:isDerivedFrom :GyZ0zHaGAqAe8CuO.
+:null gufo:isDerivedFrom :null.
 :MedicalDoctor rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Medical Doctor\\".
-:isDerivationGgduvnagaqaeditx rdf:type owl:ObjectProperty;
+:isDerivedFromGgduvnagaqaeditx rdf:type owl:ObjectProperty;
     rdfs:comment \\"Relation URI was automatically generated.\\".
-:jlAkVnaGAqAeDikV gufo:isDerivedFrom :t4kUVnaGAqAeDiq5.
+:null gufo:isDerivedFrom :null.
 :MedicalDoctor rdfs:subClassOf :BigRegistredHealthcareProfessional.
-:isDerivationEwis43aaubayscyz rdf:type owl:ObjectProperty;
+:isDerivedFromEwis43aaubayscyz rdf:type owl:ObjectProperty;
     rdfs:comment \\"Relation URI was automatically generated.\\".
-:hcki43aAUBAyscBo gufo:isDerivedFrom :oG0S43aAUBAyscXe.
+:null gufo:isDerivedFrom :null.
 :MedicalDoctor rdfs:subClassOf :MedicalProfessional;
     rdf:type gufo:Role.
 :Diagnosis rdf:type owl:Class, owl:NamedIndividual;

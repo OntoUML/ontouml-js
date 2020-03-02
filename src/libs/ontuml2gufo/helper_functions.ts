@@ -1,5 +1,6 @@
 import memoizee from 'memoizee';
 import { IRelation } from '@types';
+import { RelationStereotypeToGUFOMapping } from '@constants/.';
 
 type GetURI = {
   id: string;
@@ -26,10 +27,9 @@ export const getURI = memoizee(
         .replace(/[\u0300-\u036f]/g, '')
         .replace(/[^a-zA-Z0-9 ]/g, '')
         .replace(/ /g, '');
-      const stereotypeName =
-        stereotypes[0].charAt(0).toUpperCase() + stereotypes[0].substring(1);
+      const stereotypeName = RelationStereotypeToGUFOMapping[stereotypes[0]];
 
-      suggestedName = `is${stereotypeName}${formattedTargetName}`;
+      suggestedName = `${stereotypeName}${formattedTargetName}`;
     }
 
     const formattedName = name

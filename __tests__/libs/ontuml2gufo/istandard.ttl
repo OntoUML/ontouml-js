@@ -56,34 +56,34 @@
 :Household rdfs:subClassOf gufo:Collection;
     rdf:type gufo:Kind.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:AdministrativeLtcAllocation :RegularLtcAllocation :TransitionalLtcAllocation).
-:isMemberOfHouseholdMember rdf:type owl:ObjectProperty;
+:isCollectionMemberOfHouseholdMember rdf:type owl:ObjectProperty;
     rdfs:domain :Household;
     rdfs:range :HouseholdMember;
     rdfs:comment "Relation URI was automatically generated.".
 :HouseholdMember rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isMemberOfHouseholdMember ];
+  owl:onProperty [ owl:inverseOf :isCollectionMemberOfHouseholdMember ];
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :Household
 ].
-:isMemberOfHouseholdMember rdfs:subPropertyOf gufo:isCollectionMemberOf.
+:isCollectionMemberOfHouseholdMember rdfs:subPropertyOf gufo:isCollectionMemberOf.
 :HouseholdMember rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Household Member".
 :LtcAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:AdministrativeLtcAllocation :RegularLtcAllocation :TransitionalLtcAllocation)
 ].
-:isMediationAgent rdf:type owl:ObjectProperty;
+:mediatesAgent rdf:type owl:ObjectProperty;
     rdfs:domain :SocialRelationship;
     rdfs:range :Agent;
     rdfs:comment "Relation URI was automatically generated.".
 :SocialRelationship rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationAgent;
+  owl:onProperty :mediatesAgent;
   owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger;
   owl:onClass :Agent
 ].
-:isMediationAgent rdfs:subPropertyOf gufo:mediates.
+:mediatesAgent rdfs:subPropertyOf gufo:mediates.
 :HouseholdMember rdfs:subClassOf :Person.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:AcceptedAllocation :DeclinedAllocation :RequestedAllocation :RevokedAllocation).
 :creates rdf:type owl:ObjectProperty;
@@ -108,37 +108,37 @@
   rdf:type owl:Class;
   owl:unionOf (:AcceptedAllocation :DeclinedAllocation :RequestedAllocation :RevokedAllocation)
 ].
-:isCharacterizationAgent rdf:type owl:ObjectProperty;
+:inheresInAgent rdf:type owl:ObjectProperty;
     rdfs:domain :ContactInfo;
     rdfs:range :Agent;
     rdfs:comment "Relation URI was automatically generated.".
 :ContactInfo rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isCharacterizationAgent;
+  owl:onProperty :inheresInAgent;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :Agent
 ].
-:isCharacterizationAgent rdfs:subPropertyOf gufo:inheresIn.
+:inheresInAgent rdfs:subPropertyOf gufo:inheresIn.
 :Person rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Person".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DeceasedPerson :LivingPerson :Unborn).
-:isMediationResidentInHealthcareInstitution rdf:type owl:ObjectProperty;
+:mediatesResidentInHealthcareInstitution rdf:type owl:ObjectProperty;
     rdfs:domain :Stay;
     rdfs:range :ResidentInHealthcareInstitution;
     rdfs:comment "Relation URI was automatically generated.".
 :Stay rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationResidentInHealthcareInstitution;
+  owl:onProperty :mediatesResidentInHealthcareInstitution;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :ResidentInHealthcareInstitution
 ].
-:isMediationResidentInHealthcareInstitution rdfs:subPropertyOf gufo:mediates.
+:mediatesResidentInHealthcareInstitution rdfs:subPropertyOf gufo:mediates.
 :Person rdfs:subClassOf :Agent;
     owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:DeceasedPerson :LivingPerson :Unborn)
 ].
-:isMediationHealthcareProvider rdf:type owl:ObjectProperty;
+:mediatesHealthcareProvider rdf:type owl:ObjectProperty;
     rdfs:domain :Stay;
     rdfs:range :HealthcareProvider;
     rdfs:comment "Relation URI was automatically generated.";
@@ -216,37 +216,37 @@
   rdf:type owl:Class;
   owl:unionOf (:StayAtHealthcareProvider :CareAtHome)
 ].
-:isMediationLegalGender rdf:type owl:ObjectProperty;
+:mediatesLegalGender rdf:type owl:ObjectProperty;
     rdfs:domain :CivilRegistration;
     rdfs:range :LegalGender;
     rdfs:comment "Relation URI was automatically generated.".
 :CivilRegistration rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationLegalGender;
+  owl:onProperty :mediatesLegalGender;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :LegalGender
 ].
-:isMediationLegalGender rdfs:subPropertyOf gufo:mediates.
+:mediatesLegalGender rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:LanguageCapability :Disease :Disability :Disorder :Prognosis :Restriction :SpatialRegion).
 :Widowwidower rdfs:subClassOf :Person.
 :FinancingType owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:HealthcareinNatura :PersonalBudget)
 ].
-:isMediationPerson rdf:type owl:ObjectProperty;
+:mediatesPerson rdf:type owl:ObjectProperty;
     rdfs:domain :CourtDecision;
     rdfs:range :Person;
     rdfs:comment "Relation URI was automatically generated.".
 :CourtDecision rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationPerson;
+  owl:onProperty :mediatesPerson;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :Person
 ].
-:isMediationPerson rdfs:subPropertyOf gufo:mediates.
+:mediatesPerson rdfs:subPropertyOf gufo:mediates.
 :Widowwidower rdf:type gufo:Role.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:FullCarevpt :ModularCarempt).
-:isInstantiationSocialRelationship rdf:type owl:ObjectProperty;
+:categorizesSocialRelationship rdf:type owl:ObjectProperty;
     rdfs:domain :SocialRelationshipType;
     rdfs:range :SocialRelationship;
     rdfs:comment "Relation URI was automatically generated.";
@@ -257,17 +257,17 @@
   rdf:type owl:Class;
   owl:unionOf (:FullCarevpt :ModularCarempt)
 ].
-:isMediationSpouse rdf:type owl:ObjectProperty;
+:mediatesSpouse rdf:type owl:ObjectProperty;
     rdfs:domain :Marriage;
     rdfs:range :Spouse;
     rdfs:comment "Relation URI was automatically generated.".
 :Marriage rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationSpouse;
+  owl:onProperty :mediatesSpouse;
   owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger;
   owl:onClass :Spouse
 ].
-:isMediationSpouse rdfs:subPropertyOf gufo:mediates.
+:mediatesSpouse rdfs:subPropertyOf gufo:mediates.
 :Unknown rdfs:subClassOf :Person.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:CareAtHomeAgreement :CareAtHealthcareOrganisationAgreement).
 :hasLegalParent rdf:type owl:ObjectProperty;
@@ -328,40 +328,40 @@
     rdf:type gufo:MaterialRelationshipType.
 :SinglePersonHousehold rdf:type gufo:Phase.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DirectStartAllocation :PendingAllocation).
-:isMediationPerson rdf:type owl:ObjectProperty;
+:mediatesPerson rdf:type owl:ObjectProperty;
     rdfs:domain :GpRegistration;
     rdfs:range :Person;
     rdfs:comment "Relation URI was automatically generated.".
 :GpRegistration rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationPerson;
+  owl:onProperty :mediatesPerson;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :Person
 ].
 :Person rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isMediationPerson ];
+  owl:onProperty [ owl:inverseOf :mediatesPerson ];
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :GpRegistration
 ].
-:isMediationPerson rdfs:subPropertyOf gufo:mediates.
+:mediatesPerson rdfs:subPropertyOf gufo:mediates.
 :SeparatedFromRp rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Separated from RP".
 :AcceptedAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:DirectStartAllocation :PendingAllocation)
 ].
-:isMediationGeneralPractitioner rdf:type owl:ObjectProperty;
+:mediatesGeneralPractitioner rdf:type owl:ObjectProperty;
     rdfs:domain :GpRegistration;
     rdfs:range :GeneralPractitioner;
     rdfs:comment "Relation URI was automatically generated.".
 :GpRegistration rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationGeneralPractitioner;
+  owl:onProperty :mediatesGeneralPractitioner;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :GeneralPractitioner
 ].
-:isMediationGeneralPractitioner rdfs:subPropertyOf gufo:mediates.
+:mediatesGeneralPractitioner rdfs:subPropertyOf gufo:mediates.
 :SeparatedFromRp rdfs:subClassOf :Person.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DeclinedByClient :DeclinedByProvider).
 :providesbasiccarefor rdf:type owl:ObjectProperty;
@@ -380,7 +380,7 @@
   rdf:type owl:Class;
   owl:unionOf (:DeclinedByClient :DeclinedByProvider)
 ].
-:isCharacterizationPerson rdf:type owl:ObjectProperty;
+:inheresInPerson rdf:type owl:ObjectProperty;
     rdfs:domain :LanguageCapability;
     rdfs:range :Person;
     rdfs:comment "Relation URI was automatically generated.";
@@ -388,172 +388,172 @@
 :Separated rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Separated".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Adult :Child).
-:isExternalDependenceLanguage rdf:type owl:ObjectProperty;
+:externallyDependsOnLanguage rdf:type owl:ObjectProperty;
     rdfs:domain :LanguageCapability;
     rdfs:range :Language;
     rdfs:comment "Relation URI was automatically generated.".
 :LanguageCapability rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isExternalDependenceLanguage;
+  owl:onProperty :externallyDependsOnLanguage;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :Language
 ].
-:isExternalDependenceLanguage rdfs:subPropertyOf gufo:externallyDependsOn.
+:externallyDependsOnLanguage rdfs:subPropertyOf gufo:externallyDependsOn.
 :Separated rdfs:subClassOf :Person.
 :Person owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Adult :Child)
 ].
-:isCharacterizationMedicalCondition rdf:type owl:ObjectProperty;
+:inheresInMedicalCondition rdf:type owl:ObjectProperty;
     rdfs:domain :Person;
     rdfs:range :MedicalCondition;
     rdfs:comment "Relation URI was automatically generated.".
 :MedicalCondition rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isCharacterizationMedicalCondition ];
+  owl:onProperty [ owl:inverseOf :inheresInMedicalCondition ];
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :Person
 ].
-:isCharacterizationMedicalCondition rdfs:subPropertyOf gufo:inheresIn.
+:inheresInMedicalCondition rdfs:subPropertyOf gufo:inheresIn.
 :Separated rdf:type gufo:Role.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Single :DivorcedFromRp :Divorced :Spouse :RegisteredPartner :SeparatedFromRp :Separated :Widowwidower).
-:isMediationMedicalProfessional rdf:type owl:ObjectProperty;
+:mediatesMedicalProfessional rdf:type owl:ObjectProperty;
     rdfs:domain :Diagnosis;
     rdfs:range :MedicalProfessional;
     rdfs:comment "Relation URI was automatically generated.".
 :Diagnosis rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationMedicalProfessional;
+  owl:onProperty :mediatesMedicalProfessional;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :MedicalProfessional
 ].
-:isMediationMedicalProfessional rdfs:subPropertyOf gufo:mediates.
+:mediatesMedicalProfessional rdfs:subPropertyOf gufo:mediates.
 :RegisteredPartner rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Registered Partner".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Man :Unknown :Woman).
-:isMediationPerson rdf:type owl:ObjectProperty;
+:mediatesPerson rdf:type owl:ObjectProperty;
     rdfs:domain :Diagnosis;
     rdfs:range :Person;
     rdfs:comment "Relation URI was automatically generated.".
 :Diagnosis rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationPerson;
+  owl:onProperty :mediatesPerson;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :Person
 ].
-:isMediationPerson rdfs:subPropertyOf gufo:mediates.
+:mediatesPerson rdfs:subPropertyOf gufo:mediates.
 :RegisteredPartner rdfs:subClassOf :Person.
 :Person owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Man :Unknown :Woman)
 ].
-:isMediationMedicalConditionType rdf:type owl:ObjectProperty;
+:mediatesMedicalConditionType rdf:type owl:ObjectProperty;
     rdfs:domain :DisorderAssessment;
     rdfs:range :MedicalConditionType;
     rdfs:comment "Relation URI was automatically generated.".
 :DisorderAssessment rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationMedicalConditionType;
+  owl:onProperty :mediatesMedicalConditionType;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :MedicalConditionType
 ].
-:isMediationMedicalConditionType rdfs:subPropertyOf gufo:mediates.
+:mediatesMedicalConditionType rdfs:subPropertyOf gufo:mediates.
 :RegisteredPartner rdf:type gufo:Role.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DeceasedPerson :LivingPerson :Unborn).
-:isMediationDisorderQuestion rdf:type owl:ObjectProperty;
+:mediatesDisorderQuestion rdf:type owl:ObjectProperty;
     rdfs:domain :DisorderQuestionAssessment;
     rdfs:range :DisorderQuestion;
     rdfs:comment "Relation URI was automatically generated.".
 :DisorderQuestionAssessment rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationDisorderQuestion;
+  owl:onProperty :mediatesDisorderQuestion;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :DisorderQuestion
 ].
-:isMediationDisorderQuestion rdfs:subPropertyOf gufo:mediates.
+:mediatesDisorderQuestion rdfs:subPropertyOf gufo:mediates.
 :Organization rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Organization".
 :Person owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:DeceasedPerson :LivingPerson :Unborn)
 ].
-:isMediationRestrictionType rdf:type owl:ObjectProperty;
+:mediatesRestrictionType rdf:type owl:ObjectProperty;
     rdfs:domain :RestrictionAssessment;
     rdfs:range :RestrictionType;
     rdfs:comment "Relation URI was automatically generated.".
 :RestrictionAssessment rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationRestrictionType;
+  owl:onProperty :mediatesRestrictionType;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :RestrictionType
 ].
-:isMediationRestrictionType rdfs:subPropertyOf gufo:mediates.
+:mediatesRestrictionType rdfs:subPropertyOf gufo:mediates.
 :Organization rdfs:subClassOf :Agent.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Adult :Child).
-:isMediationRestrictionQuestion rdf:type owl:ObjectProperty;
+:mediatesRestrictionQuestion rdf:type owl:ObjectProperty;
     rdfs:domain :RestrictionQuestionAssessment;
     rdfs:range :RestrictionQuestion;
     rdfs:comment "Relation URI was automatically generated.".
 :RestrictionQuestionAssessment rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationRestrictionQuestion;
+  owl:onProperty :mediatesRestrictionQuestion;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :RestrictionQuestion
 ].
-:isMediationRestrictionQuestion rdfs:subPropertyOf gufo:mediates.
+:mediatesRestrictionQuestion rdfs:subPropertyOf gufo:mediates.
 :Organization rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
 :Person owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Adult :Child)
 ].
-:isMaterialHealthcareOfficeRegion rdf:type owl:ObjectProperty;
+:materialRelationshipTypeHealthcareOfficeRegion rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareOffice;
     rdfs:range :HealthcareOfficeRegion;
     rdfs:comment "Relation URI was automatically generated.".
 :HealthcareOffice rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMaterialHealthcareOfficeRegion;
+  owl:onProperty :materialRelationshipTypeHealthcareOfficeRegion;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareOfficeRegion
 ].
 :HealthcareOfficeRegion rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isMaterialHealthcareOfficeRegion ];
+  owl:onProperty [ owl:inverseOf :materialRelationshipTypeHealthcareOfficeRegion ];
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareOffice
 ].
-:isMaterialHealthcareOfficeRegion rdf:type gufo:MaterialRelationshipType.
+:materialRelationshipTypeHealthcareOfficeRegion rdf:type gufo:MaterialRelationshipType.
 :MultipersonHousehold rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Multi-person Household".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:NegativeDecision :PositiveDecision).
-:isMediationHealthcareOffice rdf:type owl:ObjectProperty;
+:mediatesHealthcareOffice rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareServiceAgreement;
     rdfs:range :HealthcareOffice;
     rdfs:comment "Relation URI was automatically generated.".
 :HealthcareServiceAgreement rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationHealthcareOffice;
+  owl:onProperty :mediatesHealthcareOffice;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareOffice
 ].
-:isMediationHealthcareOffice rdfs:subPropertyOf gufo:mediates.
+:mediatesHealthcareOffice rdfs:subPropertyOf gufo:mediates.
 :MultipersonHousehold rdfs:subClassOf :Household.
 :RequestDecision owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:NegativeDecision :PositiveDecision)
 ].
-:isMediationLongTermHealthcareProvider rdf:type owl:ObjectProperty;
+:mediatesLongTermHealthcareProvider rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareServiceAgreement;
     rdfs:range :LongTermHealthcareProvider;
     rdfs:comment "Relation URI was automatically generated.".
 :HealthcareServiceAgreement rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationLongTermHealthcareProvider;
+  owl:onProperty :mediatesLongTermHealthcareProvider;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :LongTermHealthcareProvider
 ].
-:isMediationLongTermHealthcareProvider rdfs:subPropertyOf gufo:mediates.
+:mediatesLongTermHealthcareProvider rdfs:subPropertyOf gufo:mediates.
 :MultipersonHousehold rdf:type gufo:Phase.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:InactiveLtcIndication :ActiveLtcIndication).
 :madeTo rdf:type owl:ObjectProperty;
@@ -645,118 +645,118 @@
 :conformsTo rdfs:subPropertyOf gufo:mediates.
 :Man rdf:type gufo:Role.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:AcceptedAllocation :DeclinedAllocation :RequestedAllocation :RevokedAllocation).
-:isMediationBsnHolder rdf:type owl:ObjectProperty;
+:mediatesBsnHolder rdf:type owl:ObjectProperty;
     rdfs:domain :CivilRegistration;
     rdfs:range :BsnHolder;
     rdfs:comment "Relation URI was automatically generated.".
 :CivilRegistration rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationBsnHolder;
+  owl:onProperty :mediatesBsnHolder;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :BsnHolder
 ].
 :BsnHolder rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isMediationBsnHolder ];
+  owl:onProperty [ owl:inverseOf :mediatesBsnHolder ];
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :CivilRegistration
 ].
-:isMediationBsnHolder rdfs:subPropertyOf gufo:mediates.
+:mediatesBsnHolder rdfs:subPropertyOf gufo:mediates.
 :DivorcedFromRp rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Divorced from RP".
 :LtcAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:AcceptedAllocation :DeclinedAllocation :RequestedAllocation :RevokedAllocation)
 ].
-:isMediationCivilStatus rdf:type owl:ObjectProperty;
+:mediatesCivilStatus rdf:type owl:ObjectProperty;
     rdfs:domain :CivilRegistration;
     rdfs:range :CivilStatus;
     rdfs:comment "Relation URI was automatically generated.".
 :CivilRegistration rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationCivilStatus;
+  owl:onProperty :mediatesCivilStatus;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :CivilStatus
 ].
-:isMediationCivilStatus rdfs:subPropertyOf gufo:mediates.
+:mediatesCivilStatus rdfs:subPropertyOf gufo:mediates.
 :DivorcedFromRp rdfs:subClassOf :Person.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DirectStartAllocation :PendingAllocation).
-:isMediationLegalRepresentative rdf:type owl:ObjectProperty;
+:mediatesLegalRepresentative rdf:type owl:ObjectProperty;
     rdfs:domain :LegalRepresentation;
     rdfs:range :LegalRepresentative;
     rdfs:comment "Relation URI was automatically generated.".
 :LegalRepresentation rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationLegalRepresentative;
+  owl:onProperty :mediatesLegalRepresentative;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :LegalRepresentative
 ].
-:isMediationLegalRepresentative rdfs:subPropertyOf gufo:mediates.
+:mediatesLegalRepresentative rdfs:subPropertyOf gufo:mediates.
 :DivorcedFromRp rdf:type gufo:Role.
 :AcceptedAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:DirectStartAllocation :PendingAllocation)
 ].
-:isMediationPerson rdf:type owl:ObjectProperty;
+:mediatesPerson rdf:type owl:ObjectProperty;
     rdfs:domain :LegalRepresentation;
     rdfs:range :Person;
     rdfs:comment "Relation URI was automatically generated.".
 :LegalRepresentation rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationPerson;
+  owl:onProperty :mediatesPerson;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :Person
 ].
-:isMediationPerson rdfs:subPropertyOf gufo:mediates.
+:mediatesPerson rdfs:subPropertyOf gufo:mediates.
 :Divorced rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Divorced".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DeclinedByClient :DeclinedByProvider).
-:isInstantiationLegalRepresentationType rdf:type owl:ObjectProperty;
+:categorizesLegalRepresentationType rdf:type owl:ObjectProperty;
     rdfs:domain :LegalRepresentation;
     rdfs:range :LegalRepresentationType;
     rdfs:comment "Relation URI was automatically generated.".
 :LegalRepresentation rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isInstantiationLegalRepresentationType;
+  owl:onProperty :categorizesLegalRepresentationType;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :LegalRepresentationType
 ].
-:isInstantiationLegalRepresentationType rdfs:subPropertyOf gufo:categorizes.
+:categorizesLegalRepresentationType rdfs:subPropertyOf gufo:categorizes.
 :Divorced rdfs:subClassOf :Person.
 :DeclinedAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:DeclinedByClient :DeclinedByProvider)
 ].
-:isMediationLegalRepresentation rdf:type owl:ObjectProperty;
+:mediatesLegalRepresentation rdf:type owl:ObjectProperty;
     rdfs:domain :CourtDecision;
     rdfs:range :LegalRepresentation;
     rdfs:comment "Relation URI was automatically generated.".
 :CourtDecision rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationLegalRepresentation;
+  owl:onProperty :mediatesLegalRepresentation;
   owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :LegalRepresentation
 ].
 :LegalRepresentation rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isMediationLegalRepresentation ];
+  owl:onProperty [ owl:inverseOf :mediatesLegalRepresentation ];
   owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :CourtDecision
 ].
-:isMediationLegalRepresentation rdfs:subPropertyOf gufo:mediates.
+:mediatesLegalRepresentation rdfs:subPropertyOf gufo:mediates.
 :Divorced rdf:type gufo:Role.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:CareAtHomeAgreement :CareAtHealthcareOrganisationAgreement).
-:isInstantiationCourtDecision rdf:type owl:ObjectProperty;
+:categorizesCourtDecision rdf:type owl:ObjectProperty;
     rdfs:domain :CourtDecisionType;
     rdfs:range :CourtDecision;
     rdfs:comment "Relation URI was automatically generated.".
 :CourtDecision rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isInstantiationCourtDecision ];
+  owl:onProperty [ owl:inverseOf :categorizesCourtDecision ];
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :CourtDecisionType
 ].
-:isInstantiationCourtDecision rdfs:subPropertyOf gufo:categorizes.
+:categorizesCourtDecision rdfs:subPropertyOf gufo:categorizes.
 :ContactInfo rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Contact Info".
 :LtcServiceAgreement owl:equivalentClass [
@@ -822,7 +822,7 @@
   rdf:type owl:Class;
   owl:unionOf (:FullCarevpt :ModularCarempt)
 ].
-:isMediationHealthcareServiceDeliveryType rdf:type owl:ObjectProperty;
+:mediatesHealthcareServiceDeliveryType rdf:type owl:ObjectProperty;
     rdfs:domain :IndicatedHealthcareServicePackage;
     rdfs:range :HealthcareServiceDeliveryType;
     rdfs:comment "Relation URI was automatically generated.";
@@ -840,17 +840,17 @@
 ].
 :benefits rdfs:subPropertyOf gufo:mediates.
 :ResidentInHealthcareInstitution rdf:type gufo:Role.
-:isMediationMedicalConditionType rdf:type owl:ObjectProperty;
+:mediatesMedicalConditionType rdf:type owl:ObjectProperty;
     rdfs:domain :CareProfile;
     rdfs:range :MedicalConditionType;
     rdfs:comment "Relation URI was automatically generated.".
 :CareProfile rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationMedicalConditionType;
+  owl:onProperty :mediatesMedicalConditionType;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :MedicalConditionType
 ].
-:isMediationMedicalConditionType rdfs:subPropertyOf gufo:mediates.
+:mediatesMedicalConditionType rdfs:subPropertyOf gufo:mediates.
 :CourtDecision rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Court Decision".
 :temporaryReplaces rdf:type owl:ObjectProperty;
@@ -866,17 +866,17 @@
 :temporaryReplaces rdfs:subPropertyOf gufo:mediates.
 :CourtDecision rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
-:isMediationRegularLtcAllocation rdf:type owl:ObjectProperty;
+:mediatesRegularLtcAllocation rdf:type owl:ObjectProperty;
     rdfs:domain :AdministrativeLtcAllocation;
     rdfs:range :RegularLtcAllocation;
     rdfs:comment "Relation URI was automatically generated.".
 :AdministrativeLtcAllocation rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationRegularLtcAllocation;
+  owl:onProperty :mediatesRegularLtcAllocation;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :RegularLtcAllocation
 ].
-:isMediationRegularLtcAllocation rdfs:subPropertyOf gufo:mediates.
+:mediatesRegularLtcAllocation rdfs:subPropertyOf gufo:mediates.
 :CivilStatus rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Civil Status".
 :benefits rdf:type owl:ObjectProperty;
@@ -904,60 +904,60 @@
 :deliveredBy rdfs:subPropertyOf gufo:mediates.
 :LegalGender rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Legal Gender".
-:isParticipationStay rdf:type owl:ObjectProperty;
+:participatedInStay rdf:type owl:ObjectProperty;
     rdfs:domain :StayAgreement;
     rdfs:range :Stay;
     rdfs:comment "Relation URI was automatically generated.".
 :StayAgreement rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isParticipationStay;
+  owl:onProperty :participatedInStay;
   owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :Stay
 ].
 :Stay rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isParticipationStay ];
+  owl:onProperty [ owl:inverseOf :participatedInStay ];
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :StayAgreement
 ].
-:isParticipationStay rdfs:subPropertyOf gufo:participatedIn.
+:participatedInStay rdfs:subPropertyOf gufo:participatedIn.
 :LegalGender rdfs:subClassOf gufo:ConcreteIndividualType.
-:isCharacterizationLtcIndicationBudget rdf:type owl:ObjectProperty;
+:inheresInLtcIndicationBudget rdf:type owl:ObjectProperty;
     rdfs:domain :LtcIndication;
     rdfs:range :LtcIndicationBudget;
     rdfs:comment "Relation URI was automatically generated.".
 :LtcIndication rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isCharacterizationLtcIndicationBudget;
+  owl:onProperty :inheresInLtcIndicationBudget;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :LtcIndicationBudget
 ].
 :LtcIndicationBudget rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isCharacterizationLtcIndicationBudget ];
+  owl:onProperty [ owl:inverseOf :inheresInLtcIndicationBudget ];
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :LtcIndication
 ].
-:isCharacterizationLtcIndicationBudget rdfs:subPropertyOf gufo:inheresIn.
+:inheresInLtcIndicationBudget rdfs:subPropertyOf gufo:inheresIn.
 :SocialRelationship rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Social Relationship".
-:isCharacterizationLtcAllocation rdf:type owl:ObjectProperty;
+:inheresInLtcAllocation rdf:type owl:ObjectProperty;
     rdfs:domain :LtcAllocationBudget;
     rdfs:range :LtcAllocation;
     rdfs:comment "Relation URI was automatically generated.".
 :LtcAllocationBudget rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isCharacterizationLtcAllocation;
+  owl:onProperty :inheresInLtcAllocation;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :LtcAllocation
 ].
 :LtcAllocation rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isCharacterizationLtcAllocation ];
+  owl:onProperty [ owl:inverseOf :inheresInLtcAllocation ];
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :LtcAllocationBudget
 ].
-:isCharacterizationLtcAllocation rdfs:subPropertyOf gufo:inheresIn.
+:inheresInLtcAllocation rdfs:subPropertyOf gufo:inheresIn.
 :SocialRelationship rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
 :partOf rdf:type owl:ObjectProperty;
@@ -973,17 +973,17 @@
 :partOf rdf:type gufo:MaterialRelationshipType.
 :SocialRelationshipType rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Social Relationship Type".
-:isMediationLtcAllocation rdf:type owl:ObjectProperty;
+:mediatesLtcAllocation rdf:type owl:ObjectProperty;
     rdfs:domain :DeliveryForm;
     rdfs:range :LtcAllocation;
     rdfs:comment "Relation URI was automatically generated.".
 :LtcAllocation rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isMediationLtcAllocation ];
+  owl:onProperty [ owl:inverseOf :mediatesLtcAllocation ];
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :DeliveryForm
 ].
-:isMediationLtcAllocation rdfs:subPropertyOf gufo:mediates.
+:mediatesLtcAllocation rdfs:subPropertyOf gufo:mediates.
 :SocialRelationshipType rdfs:subClassOf gufo:ConcreteIndividualType.
 :abc rdf:type owl:ObjectProperty;
     rdfs:domain :LtcAllocation;
@@ -992,30 +992,30 @@
     rdfs:subPropertyOf gufo:mediates.
 :Marriage rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Marriage".
-:isMediationLthClient rdf:type owl:ObjectProperty;
+:mediatesLthClient rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareOfficeClientDossier;
     rdfs:range :LthClient;
     rdfs:comment "Relation URI was automatically generated.".
 :HealthcareOfficeClientDossier rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationLthClient;
+  owl:onProperty :mediatesLthClient;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :LthClient
 ].
-:isMediationLthClient rdfs:subPropertyOf gufo:mediates.
+:mediatesLthClient rdfs:subPropertyOf gufo:mediates.
 :Marriage rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
-:isMediationHealthcareOffice rdf:type owl:ObjectProperty;
+:mediatesHealthcareOffice rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareOfficeClientDossier;
     rdfs:range :HealthcareOffice;
     rdfs:comment "Relation URI was automatically generated.".
 :HealthcareOfficeClientDossier rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationHealthcareOffice;
+  owl:onProperty :mediatesHealthcareOffice;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareOffice
 ].
-:isMediationHealthcareOffice rdfs:subPropertyOf gufo:mediates.
+:mediatesHealthcareOffice rdfs:subPropertyOf gufo:mediates.
 :LegalParent rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Legal Parent".
 :creates rdf:type owl:ObjectProperty;
@@ -1036,36 +1036,36 @@
     rdfs:label "is subject of";
     rdfs:subPropertyOf gufo:mediates.
 :LegalParent rdf:type gufo:Role.
-:isMediationLthClient rdf:type owl:ObjectProperty;
+:mediatesLthClient rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareProviderClientDossier;
     rdfs:range :LthClient;
     rdfs:comment "Relation URI was automatically generated.".
 :HealthcareProviderClientDossier rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationLthClient;
+  owl:onProperty :mediatesLthClient;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :LthClient
 ].
 :LthClient rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isMediationLthClient ];
+  owl:onProperty [ owl:inverseOf :mediatesLthClient ];
   owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareProviderClientDossier
 ].
-:isMediationLthClient rdfs:subPropertyOf gufo:mediates.
+:mediatesLthClient rdfs:subPropertyOf gufo:mediates.
 :Single rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Single".
-:isMediationHealthcareProvider rdf:type owl:ObjectProperty;
+:mediatesHealthcareProvider rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareProviderClientDossier;
     rdfs:range :HealthcareProvider;
     rdfs:comment "Relation URI was automatically generated.".
 :HealthcareProviderClientDossier rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationHealthcareProvider;
+  owl:onProperty :mediatesHealthcareProvider;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareProvider
 ].
-:isMediationHealthcareProvider rdfs:subPropertyOf gufo:mediates.
+:mediatesHealthcareProvider rdfs:subPropertyOf gufo:mediates.
 :Single rdfs:subClassOf :Person.
 :represents rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareContactAssigment;
@@ -1122,7 +1122,7 @@
 ].
 :replaces rdfs:subPropertyOf gufo:mediates.
 :GeneralPractitioner rdf:type gufo:Role.
-:isInstantiationHealthcareOfficeCode rdf:type owl:ObjectProperty;
+:categorizesHealthcareOfficeCode rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareOffice;
     rdfs:range :HealthcareOfficeCode;
     rdfs:comment "Relation URI was automatically generated.";
@@ -1142,37 +1142,37 @@
 :prefers rdfs:subPropertyOf gufo:mediates.
 :GpRegistration rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
-:isMediationPreferredHealthcareProvider rdf:type owl:ObjectProperty;
+:mediatesPreferredHealthcareProvider rdf:type owl:ObjectProperty;
     rdfs:domain :ClientPreference;
     rdfs:range :PreferredHealthcareProvider;
     rdfs:comment "Relation URI was automatically generated.".
 :ClientPreference rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationPreferredHealthcareProvider;
+  owl:onProperty :mediatesPreferredHealthcareProvider;
   owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :PreferredHealthcareProvider
 ].
-:isMediationPreferredHealthcareProvider rdfs:subPropertyOf gufo:mediates.
+:mediatesPreferredHealthcareProvider rdfs:subPropertyOf gufo:mediates.
 :LanguageCapability rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Language Capability".
-:isMediationPreferredFinancingType rdf:type owl:ObjectProperty;
+:mediatesPreferredFinancingType rdf:type owl:ObjectProperty;
     rdfs:domain :ClientPreference;
     rdfs:range :PreferredFinancingType;
     rdfs:comment "Relation URI was automatically generated.";
     rdfs:subPropertyOf gufo:mediates.
 :LanguageCapability rdfs:subClassOf gufo:ExtrinsicMode;
     rdf:type gufo:Kind.
-:isMediationPreferredCareLocationType rdf:type owl:ObjectProperty;
+:mediatesPreferredCareLocationType rdf:type owl:ObjectProperty;
     rdfs:domain :ClientPreference;
     rdfs:range :PreferredCareLocationType;
     rdfs:comment "Relation URI was automatically generated.".
 :ClientPreference rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationPreferredCareLocationType;
+  owl:onProperty :mediatesPreferredCareLocationType;
   owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :PreferredCareLocationType
 ].
-:isMediationPreferredCareLocationType rdfs:subPropertyOf gufo:mediates.
+:mediatesPreferredCareLocationType rdfs:subPropertyOf gufo:mediates.
 :Language rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Language".
 :classifiesPatientIn rdf:type owl:ObjectProperty;
@@ -1188,23 +1188,23 @@
 :classifiesPatientIn rdfs:subPropertyOf gufo:mediates.
 :Language rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
-:isMediationCareProfile rdf:type owl:ObjectProperty;
+:mediatesCareProfile rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareServicePackageType;
     rdfs:range :CareProfile;
     rdfs:comment "Relation URI was automatically generated.".
 :HealthcareServicePackageType rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationCareProfile;
+  owl:onProperty :mediatesCareProfile;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :CareProfile
 ].
 :CareProfile rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isMediationCareProfile ];
+  owl:onProperty [ owl:inverseOf :mediatesCareProfile ];
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareServicePackageType
 ].
-:isMediationCareProfile rdfs:subPropertyOf gufo:mediates.
+:mediatesCareProfile rdfs:subPropertyOf gufo:mediates.
 :HealthcareProfessional rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Healthcare Professional".
 :requests rdf:type owl:ObjectProperty;
@@ -1213,38 +1213,38 @@
     rdfs:label "requests";
     rdfs:subPropertyOf gufo:mediates.
 :HealthcareProfessional rdfs:subClassOf :Person.
-:isMediationLtcServiceAgreement rdf:type owl:ObjectProperty;
+:mediatesLtcServiceAgreement rdf:type owl:ObjectProperty;
     rdfs:domain :ClientPreference;
     rdfs:range :LtcServiceAgreement;
     rdfs:comment "Relation URI was automatically generated.".
 :ClientPreference rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isMediationLtcServiceAgreement;
+  owl:onProperty :mediatesLtcServiceAgreement;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :LtcServiceAgreement
 ].
-:isMediationLtcServiceAgreement rdfs:subPropertyOf gufo:mediates.
+:mediatesLtcServiceAgreement rdfs:subPropertyOf gufo:mediates.
 :HealthcareProfessional rdf:type gufo:Role.
-:isInstantiationCareLocationType rdf:type owl:ObjectProperty;
+:categorizesCareLocationType rdf:type owl:ObjectProperty;
     rdfs:domain :CareLocation;
     rdfs:range :CareLocationType;
     rdfs:comment "Relation URI was automatically generated.";
     rdfs:subPropertyOf gufo:categorizes.
 :Ciz rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "CIZ".
-:isInstantiationHealthcareServicePackageType rdf:type owl:ObjectProperty;
+:categorizesHealthcareServicePackageType rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareServicePackage;
     rdfs:range :HealthcareServicePackageType;
     rdfs:comment "Relation URI was automatically generated.".
 :HealthcareServicePackage rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isInstantiationHealthcareServicePackageType;
+  owl:onProperty :categorizesHealthcareServicePackageType;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :HealthcareServicePackageType
 ].
-:isInstantiationHealthcareServicePackageType rdfs:subPropertyOf gufo:categorizes.
+:categorizesHealthcareServicePackageType rdfs:subPropertyOf gufo:categorizes.
 :Ciz rdfs:subClassOf :Organization.
-:isInstantiationEligibleLthClient rdf:type owl:ObjectProperty;
+:categorizesEligibleLthClient rdf:type owl:ObjectProperty;
     rdfs:domain :CareProfile;
     rdfs:range :EligibleLthClient;
     rdfs:comment "Relation URI was automatically generated.";
@@ -1275,36 +1275,36 @@
 ].
 :represents rdfs:subPropertyOf gufo:mediates.
 :HealthcareOffice rdfs:subClassOf :Organization.
-:isCharacterizationPerson rdf:type owl:ObjectProperty;
+:inheresInPerson rdf:type owl:ObjectProperty;
     rdfs:domain :Name;
     rdfs:range :Person;
     rdfs:comment "Relation URI was automatically generated.".
 :Name rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :isCharacterizationPerson;
+  owl:onProperty :inheresInPerson;
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :Person
 ].
 :Person rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :isCharacterizationPerson ];
+  owl:onProperty [ owl:inverseOf :inheresInPerson ];
   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger;
   owl:onClass :Name
 ].
-:isCharacterizationPerson rdfs:subPropertyOf gufo:inheresIn.
+:inheresInPerson rdfs:subPropertyOf gufo:inheresIn.
 :HealthcareOffice rdf:type gufo:SubKind.
-:isDerivationNergvnagaqaedisp rdf:type owl:ObjectProperty;
+:isDerivedFromNergvnagaqaedisp rdf:type owl:ObjectProperty;
     rdfs:comment "Relation URI was automatically generated.".
-:rXdgVnaGAqAeDiSQ gufo:isDerivedFrom :GyZ0zHaGAqAe8CuO.
+:null gufo:isDerivedFrom :null.
 :MedicalDoctor rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label "Medical Doctor".
-:isDerivationGgduvnagaqaeditx rdf:type owl:ObjectProperty;
+:isDerivedFromGgduvnagaqaeditx rdf:type owl:ObjectProperty;
     rdfs:comment "Relation URI was automatically generated.".
-:jlAkVnaGAqAeDikV gufo:isDerivedFrom :t4kUVnaGAqAeDiq5.
+:null gufo:isDerivedFrom :null.
 :MedicalDoctor rdfs:subClassOf :BigRegistredHealthcareProfessional.
-:isDerivationEwis43aaubayscyz rdf:type owl:ObjectProperty;
+:isDerivedFromEwis43aaubayscyz rdf:type owl:ObjectProperty;
     rdfs:comment "Relation URI was automatically generated.".
-:hcki43aAUBAyscBo gufo:isDerivedFrom :oG0S43aAUBAyscXe.
+:null gufo:isDerivedFrom :null.
 :MedicalDoctor rdfs:subClassOf :MedicalProfessional;
     rdf:type gufo:Role.
 :Diagnosis rdf:type owl:Class, owl:NamedIndividual;
