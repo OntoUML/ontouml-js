@@ -130,6 +130,14 @@ function transformRelationBase(
     ),
   ];
 
+  if(name!==null && name.trim().length>0)
+    quads.push(
+      quad(
+          namedNode(`:${uri}`), 
+          namedNode('rdfs:label'), 
+          literal(name))
+    );
+
   if (domainClassUri && rangeClassUri) {
     quads.push(
       quad(

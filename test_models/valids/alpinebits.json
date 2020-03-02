@@ -323,12 +323,12 @@
             },
             {
               "type": "Property",
-              "id": "9D6eMFaAUB22dh3u",
-              "name": "howToArrive",
+              "id": "a1dWMFaAUB22dhh7",
+              "name": "address",
               "description": null,
               "propertyType": {
                 "type": "Class",
-                "id": "DLpkJeaGAqACBwhj"
+                "id": "W_cOMFaAUB22dhob"
               },
               "cardinality": null,
               "isDerived": false,
@@ -342,12 +342,12 @@
             },
             {
               "type": "Property",
-              "id": "a1dWMFaAUB22dhh7",
-              "name": "address",
+              "id": "9D6eMFaAUB22dh3u",
+              "name": "howToArrive",
               "description": null,
               "propertyType": {
                 "type": "Class",
-                "id": "W_cOMFaAUB22dhob"
+                "id": "DLpkJeaGAqACBwhj"
               },
               "cardinality": null,
               "isDerived": false,
@@ -474,8 +474,8 @@
           "properties": [
             {
               "type": "Property",
-              "id": "4L.UFeaGAqACByRT",
-              "name": "endDate",
+              "id": "sN8UFeaGAqACByQW",
+              "name": "startDate",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -493,8 +493,8 @@
             },
             {
               "type": "Property",
-              "id": "sN8UFeaGAqACByQW",
-              "name": "startDate",
+              "id": "4L.UFeaGAqACByRT",
+              "name": "endDate",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -546,31 +546,12 @@
           "properties": [
             {
               "type": "Property",
-              "id": "Hpa60.aGAqAovROa",
-              "name": "telephone",
+              "id": "n8DO.g6AUB20tyfy",
+              "name": "address",
               "description": null,
               "propertyType": {
                 "type": "Class",
-                "id": "DLpkJeaGAqACBwhj"
-              },
-              "cardinality": null,
-              "isDerived": false,
-              "isOrdered": false,
-              "isReadOnly": false,
-              "stereotypes": null,
-              "propertyAssignments": null,
-              "subsettedProperties": null,
-              "redefinedProperties": null,
-              "aggregationKind": "NONE"
-            },
-            {
-              "type": "Property",
-              "id": "Pi660.aGAqAovROd",
-              "name": "email",
-              "description": null,
-              "propertyType": {
-                "type": "Class",
-                "id": "DLpkJeaGAqACBwhj"
+                "id": "W_cOMFaAUB22dhob"
               },
               "cardinality": null,
               "isDerived": false,
@@ -603,12 +584,31 @@
             },
             {
               "type": "Property",
-              "id": "n8DO.g6AUB20tyfy",
-              "name": "address",
+              "id": "Pi660.aGAqAovROd",
+              "name": "email",
               "description": null,
               "propertyType": {
                 "type": "Class",
-                "id": "W_cOMFaAUB22dhob"
+                "id": "DLpkJeaGAqACBwhj"
+              },
+              "cardinality": null,
+              "isDerived": false,
+              "isOrdered": false,
+              "isReadOnly": false,
+              "stereotypes": null,
+              "propertyAssignments": null,
+              "subsettedProperties": null,
+              "redefinedProperties": null,
+              "aggregationKind": "NONE"
+            },
+            {
+              "type": "Property",
+              "id": "Hpa60.aGAqAovROa",
+              "name": "telephone",
+              "description": null,
+              "propertyType": {
+                "type": "Class",
+                "id": "DLpkJeaGAqACBwhj"
               },
               "cardinality": null,
               "isDerived": false,
@@ -637,8 +637,8 @@
           "properties": [
             {
               "type": "Property",
-              "id": "VZeMeg6AUB20txBY",
-              "name": "description",
+              "id": "d2uMeg6AUB20txBU",
+              "name": "short name",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -694,8 +694,8 @@
             },
             {
               "type": "Property",
-              "id": "d2uMeg6AUB20txBU",
-              "name": "short name",
+              "id": "VZeMeg6AUB20txBY",
+              "name": "description",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -855,8 +855,8 @@
             },
             {
               "type": "Property",
-              "id": "KiXlFRaGAqCsIBO0",
-              "name": "length",
+              "id": "tZNlFRaGAqCsIBOU",
+              "name": "area",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -874,8 +874,8 @@
             },
             {
               "type": "Property",
-              "id": "tZNlFRaGAqCsIBOU",
-              "name": "area",
+              "id": "KiXlFRaGAqCsIBO0",
+              "name": "length",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -1025,8 +1025,8 @@
           "properties": [
             {
               "type": "Property",
-              "id": "Urhh.g6AUB20ty7Y",
-              "name": "category",
+              "id": "UI.h.g6AUB20ty7Q",
+              "name": "region",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -1063,25 +1063,6 @@
             },
             {
               "type": "Property",
-              "id": "GDHkwQ6GAqACChVO",
-              "name": "complement",
-              "description": null,
-              "propertyType": {
-                "type": "Class",
-                "id": "DLpkJeaGAqACBwhj"
-              },
-              "cardinality": null,
-              "isDerived": false,
-              "isOrdered": false,
-              "isReadOnly": false,
-              "stereotypes": null,
-              "propertyAssignments": null,
-              "subsettedProperties": null,
-              "redefinedProperties": null,
-              "aggregationKind": "NONE"
-            },
-            {
-              "type": "Property",
               "id": ".i2h.g6AUB20ty7I",
               "name": "street",
               "description": null,
@@ -1101,8 +1082,46 @@
             },
             {
               "type": "Property",
-              "id": "UI.h.g6AUB20ty7Q",
-              "name": "region",
+              "id": "tnxh.g6AUB20ty7c",
+              "name": "zipcode",
+              "description": null,
+              "propertyType": {
+                "type": "Class",
+                "id": "DLpkJeaGAqACBwhj"
+              },
+              "cardinality": null,
+              "isDerived": false,
+              "isOrdered": false,
+              "isReadOnly": false,
+              "stereotypes": null,
+              "propertyAssignments": null,
+              "subsettedProperties": null,
+              "redefinedProperties": null,
+              "aggregationKind": "NONE"
+            },
+            {
+              "type": "Property",
+              "id": "GDHkwQ6GAqACChVO",
+              "name": "complement",
+              "description": null,
+              "propertyType": {
+                "type": "Class",
+                "id": "DLpkJeaGAqACBwhj"
+              },
+              "cardinality": null,
+              "isDerived": false,
+              "isOrdered": false,
+              "isReadOnly": false,
+              "stereotypes": null,
+              "propertyAssignments": null,
+              "subsettedProperties": null,
+              "redefinedProperties": null,
+              "aggregationKind": "NONE"
+            },
+            {
+              "type": "Property",
+              "id": "Urhh.g6AUB20ty7Y",
+              "name": "category",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -1122,25 +1141,6 @@
               "type": "Property",
               "id": "l8Bh.g6AUB20ty7U",
               "name": "country",
-              "description": null,
-              "propertyType": {
-                "type": "Class",
-                "id": "DLpkJeaGAqACBwhj"
-              },
-              "cardinality": null,
-              "isDerived": false,
-              "isOrdered": false,
-              "isReadOnly": false,
-              "stereotypes": null,
-              "propertyAssignments": null,
-              "subsettedProperties": null,
-              "redefinedProperties": null,
-              "aggregationKind": "NONE"
-            },
-            {
-              "type": "Property",
-              "id": "tnxh.g6AUB20ty7c",
-              "name": "zipcode",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -1204,12 +1204,12 @@
           "properties": [
             {
               "type": "Property",
-              "id": "v78m.g6AUB20tyVP",
-              "name": "duration",
+              "id": "HZaSeg6AUB20txjL",
+              "name": "height",
               "description": null,
               "propertyType": {
                 "type": "Class",
-                "id": "cFcG.g6AUB20tySh"
+                "id": "dLpkJeaGAqACBwhf"
               },
               "cardinality": null,
               "isDerived": false,
@@ -1242,12 +1242,12 @@
             },
             {
               "type": "Property",
-              "id": "HZaSeg6AUB20txjL",
-              "name": "height",
+              "id": "v78m.g6AUB20tyVP",
+              "name": "duration",
               "description": null,
               "propertyType": {
                 "type": "Class",
-                "id": "dLpkJeaGAqACBwhf"
+                "id": "cFcG.g6AUB20tySh"
               },
               "cardinality": null,
               "isDerived": false,
@@ -1393,25 +1393,6 @@
             },
             {
               "type": "Property",
-              "id": "nISxFRaGAqCsIA9K",
-              "name": "snowOverNight",
-              "description": null,
-              "propertyType": {
-                "type": "Class",
-                "id": "dLpkJeaGAqACBwhf"
-              },
-              "cardinality": null,
-              "isDerived": false,
-              "isOrdered": false,
-              "isReadOnly": false,
-              "stereotypes": null,
-              "propertyAssignments": null,
-              "subsettedProperties": null,
-              "redefinedProperties": null,
-              "aggregationKind": "NONE"
-            },
-            {
-              "type": "Property",
               "id": "0j4OsQ6GAqACClU_",
               "name": "groomed",
               "description": null,
@@ -1419,41 +1400,6 @@
                 "type": "Class",
                 "id": "VLpkJeaGAqACBwha"
               },
-              "cardinality": null,
-              "isDerived": false,
-              "isOrdered": false,
-              "isReadOnly": false,
-              "stereotypes": null,
-              "propertyAssignments": null,
-              "subsettedProperties": null,
-              "redefinedProperties": null,
-              "aggregationKind": "NONE"
-            },
-            {
-              "type": "Property",
-              "id": "RVLhFRaGAqCsIA2c",
-              "name": "obtainedIn",
-              "description": null,
-              "propertyType": {
-                "type": "Class",
-                "id": "FhhSeg6AUB20txj9"
-              },
-              "cardinality": null,
-              "isDerived": false,
-              "isOrdered": false,
-              "isReadOnly": false,
-              "stereotypes": null,
-              "propertyAssignments": null,
-              "subsettedProperties": null,
-              "redefinedProperties": null,
-              "aggregationKind": "NONE"
-            },
-            {
-              "type": "Property",
-              "id": "dcsxFRaGAqCsIA9D",
-              "name": "baseSnowRange",
-              "description": null,
-              "propertyType": null,
               "cardinality": null,
               "isDerived": false,
               "isOrdered": false,
@@ -1485,12 +1431,66 @@
             },
             {
               "type": "Property",
+              "id": "nISxFRaGAqCsIA9K",
+              "name": "snowOverNight",
+              "description": null,
+              "propertyType": {
+                "type": "Class",
+                "id": "dLpkJeaGAqACBwhf"
+              },
+              "cardinality": null,
+              "isDerived": false,
+              "isOrdered": false,
+              "isReadOnly": false,
+              "stereotypes": null,
+              "propertyAssignments": null,
+              "subsettedProperties": null,
+              "redefinedProperties": null,
+              "aggregationKind": "NONE"
+            },
+            {
+              "type": "Property",
               "id": "1K0xFRaGAqCsIA8_",
               "name": "baseSnow",
               "description": null,
               "propertyType": {
                 "type": "Class",
                 "id": "dLpkJeaGAqACBwhf"
+              },
+              "cardinality": null,
+              "isDerived": false,
+              "isOrdered": false,
+              "isReadOnly": false,
+              "stereotypes": null,
+              "propertyAssignments": null,
+              "subsettedProperties": null,
+              "redefinedProperties": null,
+              "aggregationKind": "NONE"
+            },
+            {
+              "type": "Property",
+              "id": "dcsxFRaGAqCsIA9D",
+              "name": "baseSnowRange",
+              "description": null,
+              "propertyType": null,
+              "cardinality": null,
+              "isDerived": false,
+              "isOrdered": false,
+              "isReadOnly": false,
+              "stereotypes": null,
+              "propertyAssignments": null,
+              "subsettedProperties": null,
+              "redefinedProperties": null,
+              "aggregationKind": "NONE"
+            },
+            {
+              "type": "Property",
+              "id": "RVLhFRaGAqCsIA2c",
+              "name": "obtainedIn",
+              "description": null,
+              "propertyType": {
+                "type": "Class",
+                "id": "FhhSeg6AUB20txj9"
               },
               "cardinality": null,
               "isDerived": false,
@@ -1787,6 +1787,41 @@
           "properties": [
             {
               "type": "Property",
+              "id": "t5wG0.aGAqAovRPU",
+              "name": "opens",
+              "description": null,
+              "propertyType": null,
+              "cardinality": null,
+              "isDerived": false,
+              "isOrdered": false,
+              "isReadOnly": false,
+              "stereotypes": null,
+              "propertyAssignments": null,
+              "subsettedProperties": null,
+              "redefinedProperties": null,
+              "aggregationKind": "NONE"
+            },
+            {
+              "type": "Property",
+              "id": "bPDZWRaGAqCsIDBz",
+              "name": "valid from",
+              "description": null,
+              "propertyType": {
+                "type": "Class",
+                "id": "FhhSeg6AUB20txj9"
+              },
+              "cardinality": null,
+              "isDerived": false,
+              "isOrdered": false,
+              "isReadOnly": false,
+              "stereotypes": null,
+              "propertyAssignments": null,
+              "subsettedProperties": null,
+              "redefinedProperties": null,
+              "aggregationKind": "NONE"
+            },
+            {
+              "type": "Property",
               "id": "U_jZWRaGAqCsIDB2",
               "name": "valid to",
               "description": null,
@@ -1838,41 +1873,6 @@
               "subsettedProperties": null,
               "redefinedProperties": null,
               "aggregationKind": "NONE"
-            },
-            {
-              "type": "Property",
-              "id": "t5wG0.aGAqAovRPU",
-              "name": "opens",
-              "description": null,
-              "propertyType": null,
-              "cardinality": null,
-              "isDerived": false,
-              "isOrdered": false,
-              "isReadOnly": false,
-              "stereotypes": null,
-              "propertyAssignments": null,
-              "subsettedProperties": null,
-              "redefinedProperties": null,
-              "aggregationKind": "NONE"
-            },
-            {
-              "type": "Property",
-              "id": "bPDZWRaGAqCsIDBz",
-              "name": "valid from",
-              "description": null,
-              "propertyType": {
-                "type": "Class",
-                "id": "FhhSeg6AUB20txj9"
-              },
-              "cardinality": null,
-              "isDerived": false,
-              "isOrdered": false,
-              "isReadOnly": false,
-              "stereotypes": null,
-              "propertyAssignments": null,
-              "subsettedProperties": null,
-              "redefinedProperties": null,
-              "aggregationKind": "NONE"
             }
           ],
           "literals": null,
@@ -1889,6 +1889,25 @@
           "name": "Coordinate",
           "description": null,
           "properties": [
+            {
+              "type": "Property",
+              "id": "kPz.WRaGAqCsIC44",
+              "name": "longitude",
+              "description": null,
+              "propertyType": {
+                "type": "Class",
+                "id": "dLpkJeaGAqACBwhe"
+              },
+              "cardinality": null,
+              "isDerived": false,
+              "isOrdered": false,
+              "isReadOnly": false,
+              "stereotypes": null,
+              "propertyAssignments": null,
+              "subsettedProperties": null,
+              "redefinedProperties": null,
+              "aggregationKind": "NONE"
+            },
             {
               "type": "Property",
               "id": "Rdb.WRaGAqCsIC46",
@@ -1912,25 +1931,6 @@
               "type": "Property",
               "id": "l97.WRaGAqCsIC48",
               "name": "elevation",
-              "description": null,
-              "propertyType": {
-                "type": "Class",
-                "id": "dLpkJeaGAqACBwhe"
-              },
-              "cardinality": null,
-              "isDerived": false,
-              "isOrdered": false,
-              "isReadOnly": false,
-              "stereotypes": null,
-              "propertyAssignments": null,
-              "subsettedProperties": null,
-              "redefinedProperties": null,
-              "aggregationKind": "NONE"
-            },
-            {
-              "type": "Property",
-              "id": "kPz.WRaGAqCsIC44",
-              "name": "longitude",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -3749,7 +3749,7 @@
         {
           "type": "Property",
           "id": "dXIEFeaGAqACByF9",
-          "name": null,
+          "name": "described",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4612,11 +4612,11 @@
         {
           "type": "Property",
           "id": "iiSilRaGAqCsICVX",
-          "name": "areaOwner",
+          "name": null,
           "description": null,
           "propertyType": {
             "type": "Class",
-            "id": "vQNfFRaGAqCsICRd"
+            "id": "avP3KRaGAqACCBJV"
           },
           "cardinality": "1..*",
           "isDerived": false,
@@ -4631,11 +4631,11 @@
         {
           "type": "Property",
           "id": "iiSilRaGAqCsICVZ",
-          "name": null,
+          "name": "areaOwner",
           "description": null,
           "propertyType": {
             "type": "Class",
-            "id": "avP3KRaGAqACCBJV"
+            "id": "vQNfFRaGAqCsICRd"
           },
           "cardinality": "1..*",
           "isDerived": false,
