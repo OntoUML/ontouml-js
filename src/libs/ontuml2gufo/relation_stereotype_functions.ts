@@ -11,7 +11,12 @@ export function transformCharacterization(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(
@@ -27,7 +32,12 @@ export function transformComparative(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(
@@ -43,7 +53,12 @@ export function transformComponentOf(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(
@@ -59,7 +74,12 @@ export function transformCreation(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(
@@ -92,7 +112,12 @@ export function transformExternalDependence(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(
@@ -108,7 +133,12 @@ export function transformHistorical(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(
@@ -124,7 +154,12 @@ export function transformHistoricalDependence(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(
@@ -140,7 +175,12 @@ export function transformInstantiation(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(
@@ -156,7 +196,12 @@ export function transformManifestation(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(
@@ -172,7 +217,12 @@ export function transformMaterial(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(
@@ -188,7 +238,12 @@ export function transformMediation(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(
@@ -204,7 +259,12 @@ export function transformMemberOf(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(
@@ -220,7 +280,12 @@ export function transformParticipation(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(
@@ -236,7 +301,12 @@ export function transformParticipational(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(
@@ -252,7 +322,12 @@ export function transformSubCollectionOf(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(
@@ -268,7 +343,12 @@ export function transformSubQuantityOf(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(
@@ -284,7 +364,12 @@ export function transformTermination(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   return [
     quad(

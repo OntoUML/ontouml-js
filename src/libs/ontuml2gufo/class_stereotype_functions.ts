@@ -12,7 +12,7 @@ export function transformKind(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = classElement;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
   return [
     quad(
@@ -29,7 +29,7 @@ export function transformSubkind(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = classElement;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
   return [
     quad(
@@ -45,7 +45,7 @@ export function transformRole(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = classElement;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
   return [
     quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Role')),
@@ -57,7 +57,7 @@ export function transformPhase(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = classElement;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
   return [
     quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Phase')),
@@ -69,7 +69,7 @@ export function transformCategory(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = classElement;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
   return [
     quad(
@@ -90,7 +90,7 @@ export function transformMixin(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = classElement;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
   return [
     quad(
@@ -107,7 +107,7 @@ export function transformRoleMixin(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = classElement;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
   return [
     quad(
@@ -128,7 +128,7 @@ export function transformPhaseMixin(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = classElement;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
   return [
     quad(
@@ -149,7 +149,7 @@ export function transformRelator(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = classElement;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
   return [
     quad(
@@ -166,7 +166,7 @@ export function transformMode(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = classElement;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
   const relations = classElement.getRelations();
   const relationStereotypes = relations
     .filter((relation: IRelation) => relation.stereotypes !== null)
@@ -205,7 +205,7 @@ export function transformQuality(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = classElement;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
   return [
     quad(
@@ -222,7 +222,7 @@ export function transformQuantity(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = classElement;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
   return [
     quad(
@@ -239,7 +239,7 @@ export function transformCollective(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = classElement;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
   return [
     quad(
@@ -256,7 +256,7 @@ export function transformEvent(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = classElement;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
   return [
     quad(
@@ -272,13 +272,13 @@ export function transformType(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = classElement;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
   return [
     quad(
       namedNode(`:${uri}`),
       namedNode('rdfs:subClassOf'),
       namedNode('gufo:ConcreteIndividualType'),
-    )
+    ),
   ];
 }

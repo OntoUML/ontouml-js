@@ -34,7 +34,7 @@ async function transformOntoUML2GUFO(
 
 it('should transform AlpineBits model to gUFO', async () => {
   const result = await transformOntoUML2GUFO(alpinebits, { format: 'Turtle' });
-  fs.writeFileSync('__tests__/libs/ontuml2gufo/alpinebits.ttl',result);
+  fs.writeFileSync('__tests__/libs/ontuml2gufo/alpinebits.ttl', result);
   expect(result).toMatchSnapshot();
 });
 
@@ -46,7 +46,7 @@ it('should transform AlpineBits model to gUFO - N-Triple', async () => {
 
 it('should transform iStandard model to gUFO', async () => {
   const result = await transformOntoUML2GUFO(istandard, { format: 'Turtle' });
-  fs.writeFileSync('__tests__/libs/ontuml2gufo/alpinebits.ttl',result);
+  fs.writeFileSync('__tests__/libs/ontuml2gufo/istandard.ttl', result);
   expect(result).toMatchSnapshot();
 });
 

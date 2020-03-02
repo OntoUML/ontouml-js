@@ -1,4 +1,5 @@
 import { N3Writer, Quad, BlankNode } from 'n3';
+import memoizee from 'memoizee';
 import { IRelation, IOntoUML2GUFOOptions } from '@types';
 import { RelationStereotype } from '@constants/.';
 import { getURI } from './helper_functions';
@@ -101,21 +102,26 @@ function transformRelationBase(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
 
   const sourceClass = relation.getSource();
   const targetClass = relation.getTarget();
 
-  const domainClassUri = getURI(
-    sourceClass.id,
-    sourceClass.name,
-    options.uriFormatBy,
-  );
-  const rangeClassUri = getURI(
-    targetClass.id,
-    targetClass.name,
-    options.uriFormatBy,
-  );
+  const domainClassUri = getURI({
+    id: sourceClass.id,
+    name: sourceClass.name,
+    uriFormatBy: options.uriFormatBy,
+  });
+  const rangeClassUri = getURI({
+    id: targetClass.id,
+    name: targetClass.name,
+    uriFormatBy: options.uriFormatBy,
+  });
 
   const quads = [
     quad(
@@ -174,14 +180,14 @@ function transformRelationCardinalities(
       ...transformRelationCardinality({
         writer,
         relation,
-        cardinality: domainCardinality,
+        cardinality: rangeCardinality,
         isDomain: true,
         options,
       }),
       ...transformRelationCardinality({
         writer,
         relation,
-        cardinality: rangeCardinality,
+        cardinality: domainCardinality,
         isDomain: false,
         options,
       }),
@@ -209,11 +215,11 @@ function transformRelationCardinality({
 }): Quad[] {
   // get domain
   const classElement = isDomain ? relation.getSource() : relation.getTarget();
-  const classUri = getURI(
-    classElement.id,
-    classElement.name,
-    options.uriFormatBy,
-  );
+  const classUri = getURI({
+    id: classElement.id,
+    name: classElement.name,
+    uriFormatBy: options.uriFormatBy,
+  });
 
   const quads = [];
 
@@ -251,7 +257,11 @@ function transformRelationCardinality({
     );
   }
   // 2..*, 3..* ...
-  else if (lowerboundDomainCardinality > 1 && hasInfiniteCardinality) {
+  else if (
+    lowerboundDomainCardinality > 1 &&
+    lowerboundDomainCardinality < 99999 &&
+    hasInfiniteCardinality
+  ) {
     quads.push(
       generateRelationCardinalityQuad({
         writer,
@@ -323,11 +333,11 @@ function generateRelationCardinalityQuad({
 }): Quad {
   // get domain
   const classElement = isDomain ? relation.getSource() : relation.getTarget();
-  const classUri = getURI(
-    classElement.id,
-    classElement.name,
-    options.uriFormatBy,
-  );
+  const classUri = getURI({
+    id: classElement.id,
+    name: classElement.name,
+    uriFormatBy: options.uriFormatBy,
+  });
 
   return quad(
     namedNode(`:${classUri}`),
@@ -359,14 +369,19 @@ function generateRelationBlankQuad({
   options: IOntoUML2GUFOOptions;
 }): BlankNode {
   const { id, name } = relation;
-  const uri = getURI(id, name, options.uriFormatBy);
+  const uri = getURI({
+    id,
+    name,
+    uriFormatBy: options.uriFormatBy,
+    isRelation: true,
+  });
   // get range
   const classElement = isDomain ? relation.getTarget() : relation.getSource();
-  const classUri = getURI(
-    classElement.id,
-    classElement.name,
-    options.uriFormatBy,
-  );
+  const classUri = getURI({
+    id: classElement.id,
+    name: classElement.name,
+    uriFormatBy: options.uriFormatBy,
+  });
 
   const blankTriples = [
     {
@@ -399,16 +414,16 @@ function generateRelationBlankQuad({
   return writer.blank(blankTriples);
 }
 
-function getLowerboundCardinality(cardinality: string): number {
+const getLowerboundCardinality = memoizee((cardinality: string): number => {
   const cardinalities = cardinality.split('..');
   const lowerbound = cardinalities[0];
 
   return lowerbound === '*' ? 99999 : Number(lowerbound);
-}
+});
 
-function getUpperboundCardinality(cardinality: string): number {
+const getUpperboundCardinality = memoizee((cardinality: string): number => {
   const cardinalities = cardinality.split('..');
   const upperbound = cardinalities[1] || cardinalities[0];
 
   return upperbound === '*' ? 99999 : Number(upperbound);
-}
+});

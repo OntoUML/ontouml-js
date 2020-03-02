@@ -17,7 +17,7 @@ import {
   transformMode,
   transformQuality,
   transformEvent,
-  transformType
+  transformType,
 } from './class_stereotype_functions';
 
 const N3 = require('n3');
@@ -49,7 +49,7 @@ export async function transformDisjointClasses(
           stereotypes && stereotypes[0] === stereotype,
       )
       .map(({ id, name }: IClass) => {
-        const uri = getURI(id, name, options.uriFormatBy);
+        const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
         return namedNode(`:${uri}`);
       });
@@ -93,13 +93,13 @@ export async function transformClassesByStereotype(
     [ClassStereotype.MODE]: transformMode,
     [ClassStereotype.QUALITY]: transformQuality,
     [ClassStereotype.EVENT]: transformEvent,
-    [ClassStereotype.TYPE]: transformType
+    [ClassStereotype.TYPE]: transformType,
   };
 
   for (let i = 0; i < classes.length; i += 1) {
     const classElement = classes[i];
     const { id, name, stereotypes } = classElement;
-    const uri = getURI(id, name, options.uriFormatBy);
+    const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
     if (!stereotypes || stereotypes.length !== 1) continue;
 
@@ -127,11 +127,11 @@ export async function transformClassesByStereotype(
       // Add subClassOf for all parents
       if (parents) {
         for (let i = 0; i < parents.length; i += 1) {
-          const parentUri = getURI(
-            parents[i].id,
-            parents[i].name,
-            options.uriFormatBy,
-          );
+          const parentUri = getURI({
+            id: parents[i].id,
+            name: parents[i].name,
+            uriFormatBy: options.uriFormatBy,
+          });
 
           await writer.addQuad(
             namedNode(`:${uri}`),
