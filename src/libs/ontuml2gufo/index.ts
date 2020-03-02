@@ -1,20 +1,24 @@
 import { N3Writer } from 'n3';
 import { ModelManager } from '@libs/model';
-import { IClass, IPackage, IGeneralizationSet, IGeneralization } from '@types';
+import {
+  IClass,
+  IPackage,
+  IGeneralizationSet,
+  IGeneralization,
+  IRelation,
+  IOntoUML2GUFOOptions,
+} from '@types';
 import { OntoUMLType } from '@constants/.';
 import {
   transformDisjointClasses,
   transformClassesByStereotype,
 } from './class_functions';
+import { transformRelations } from './relation_functions';
+import { getURI } from './helper_functions';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
 const { namedNode, quad } = DataFactory;
-
-type Options = {
-  baseIRI: string;
-  format?: string;
-};
 
 /**
  * Utility class for transform OntoUML models in OWL using the gUFO ontology
@@ -29,7 +33,7 @@ export class OntoUML2GUFO {
     this.model = model.rootPackage;
   }
 
-  async transformOntoUML2GUFO(options: Options): Promise<string> {
+  async transformOntoUML2GUFO(options: IOntoUML2GUFOOptions): Promise<string> {
     const { baseIRI, format } = options;
 
     const writer = new N3.Writer({
@@ -40,6 +44,7 @@ export class OntoUML2GUFO {
         rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
         owl: 'http://www.w3.org/2002/07/owl#',
+        xsd: 'http://www.w3.org/2001/XMLSchema#',
       },
     });
 
@@ -53,8 +58,9 @@ export class OntoUML2GUFO {
     ]);
 
     await Promise.all([
-      this.transformOntoUMLClasses2GUFO(writer),
-      this.transformGeneralizationSets(writer),
+      this.transformOntoUMLClasses2GUFO(writer, options),
+      this.transformGeneralizationSets(writer, options),
+      this.transformOntoUMLRelations2GUFO(writer, options),
     ]);
 
     return await new Promise<string>((resolve: (result: string) => null) => {
@@ -71,15 +77,34 @@ export class OntoUML2GUFO {
   /**
    * Main method to transform OntoUML classes in gUFO. The method will be responsable to run different class transformations.
    */
-  async transformOntoUMLClasses2GUFO(writer: N3Writer) {
+  async transformOntoUMLClasses2GUFO(
+    writer: N3Writer,
+    options: IOntoUML2GUFOOptions,
+  ) {
     const classes = this.model.getAllContentsByType([
       OntoUMLType.CLASS_TYPE,
     ]) as IClass[];
 
     await Promise.all([
-      transformDisjointClasses(writer, classes),
-      transformClassesByStereotype(writer, classes),
+      transformDisjointClasses(writer, classes, options),
+      transformClassesByStereotype(writer, classes, options),
     ]);
+
+    return true;
+  }
+
+  /**
+   * Main method to transform OntoUML relations in gUFO. The method will be responsable to run different relations transformations.
+   */
+  async transformOntoUMLRelations2GUFO(
+    writer: N3Writer,
+    options: IOntoUML2GUFOOptions,
+  ) {
+    const relations = this.model.getAllContentsByType([
+      OntoUMLType.RELATION_TYPE,
+    ]) as IRelation[];
+
+    await transformRelations(writer, relations, options);
 
     return true;
   }
@@ -87,7 +112,10 @@ export class OntoUML2GUFO {
   /**
    * The method will be responsable to parse all properties (disjoint, complete) of generalization sets.
    */
-  async transformGeneralizationSets(writer: N3Writer) {
+  async transformGeneralizationSets(
+    writer: N3Writer,
+    options: IOntoUML2GUFOOptions,
+  ) {
     const generalizationSets = this.model.getAllContentsByType([
       OntoUMLType.GENERALIZATION_SET_TYPE,
     ]) as IGeneralizationSet[];
@@ -100,13 +128,19 @@ export class OntoUML2GUFO {
         (generalization: IGeneralization) =>
           generalization.specific.type === OntoUMLType.CLASS_TYPE,
       );
-      const parent = classGeneralizations[0].general;
+      const parent = classGeneralizations[0].general as IClass;
       const classes = classGeneralizations.map(
         (generalization: IGeneralization) => generalization.specific,
       );
-      const classNodes = classes.map((classElement: IClass) =>
-        namedNode(`:${classElement.id}`),
-      );
+      const classNodes = classes.map((classElement: IClass) => {
+        const uri = getURI({
+          id: classElement.id,
+          name: classElement.name,
+          uriFormatBy: options.uriFormatBy,
+        });
+
+        return namedNode(`:${uri}`);
+      });
 
       // check if has at least 2 classes to avoid insconsistence
       if (classNodes.length > 1) {
@@ -124,8 +158,14 @@ export class OntoUML2GUFO {
 
         // add complete
         if (generalizationSet.isComplete) {
+          const parentUri = getURI({
+            id: parent.id,
+            name: parent.name,
+            uriFormatBy: options.uriFormatBy,
+          });
+
           await writer.addQuad(
-            namedNode(`:${parent.id}`),
+            namedNode(`:${parentUri}`),
             namedNode('owl:equivalentClass'),
             writer.blank([
               {

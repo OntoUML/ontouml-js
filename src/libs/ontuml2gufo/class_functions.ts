@@ -1,6 +1,7 @@
 import { N3Writer } from 'n3';
-import { IClass } from '@types';
+import { IClass, IOntoUML2GUFOOptions } from '@types';
 import { ClassStereotype } from '@constants/.';
+import { getURI } from './helper_functions';
 import {
   transformKind,
   transformQuantity,
@@ -16,6 +17,7 @@ import {
   transformMode,
   transformQuality,
   transformEvent,
+  transformType,
 } from './class_stereotype_functions';
 
 const N3 = require('n3');
@@ -28,6 +30,7 @@ const { namedNode, literal, quad } = DataFactory;
 export async function transformDisjointClasses(
   writer: N3Writer,
   classes: IClass[],
+  options: IOntoUML2GUFOOptions,
 ): Promise<boolean> {
   const disjointStereotypes = [
     ClassStereotype.KIND,
@@ -45,7 +48,11 @@ export async function transformDisjointClasses(
         ({ stereotypes }: IClass) =>
           stereotypes && stereotypes[0] === stereotype,
       )
-      .map(({ id }: IClass) => namedNode(`:${id}`));
+      .map(({ id, name }: IClass) => {
+        const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+
+        return namedNode(`:${uri}`);
+      });
 
     // check if has at least 2 classes to avoid insconsistence
     if (stereotypeClasses.length > 1) {
@@ -69,6 +76,7 @@ export async function transformDisjointClasses(
 export async function transformClassesByStereotype(
   writer: N3Writer,
   classes: IClass[],
+  options: IOntoUML2GUFOOptions,
 ): Promise<boolean> {
   const transformStereotypeFunction = {
     [ClassStereotype.KIND]: transformKind,
@@ -85,11 +93,13 @@ export async function transformClassesByStereotype(
     [ClassStereotype.MODE]: transformMode,
     [ClassStereotype.QUALITY]: transformQuality,
     [ClassStereotype.EVENT]: transformEvent,
+    [ClassStereotype.TYPE]: transformType,
   };
 
   for (let i = 0; i < classes.length; i += 1) {
     const classElement = classes[i];
     const { id, name, stereotypes } = classElement;
+    const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
 
     if (!stereotypes || stereotypes.length !== 1) continue;
 
@@ -102,31 +112,40 @@ export async function transformClassesByStereotype(
     ) {
       await writer.addQuads([
         quad(
-          namedNode(`:${id}`),
+          namedNode(`:${uri}`),
           namedNode('rdf:type'),
           namedNode('owl:Class'),
         ),
         quad(
-          namedNode(`:${id}`),
+          namedNode(`:${uri}`),
           namedNode('rdf:type'),
           namedNode('owl:NamedIndividual'),
         ),
-        quad(namedNode(`:${id}`), namedNode('rdfs:label'), literal(name)),
+        quad(namedNode(`:${uri}`), namedNode('rdfs:label'), literal(name)),
       ]);
 
       // Add subClassOf for all parents
       if (parents) {
         for (let i = 0; i < parents.length; i += 1) {
+          const parentUri = getURI({
+            id: parents[i].id,
+            name: parents[i].name,
+            uriFormatBy: options.uriFormatBy,
+          });
+
           await writer.addQuad(
-            namedNode(`:${id}`),
+            namedNode(`:${uri}`),
             namedNode('rdfs:subClassOf'),
-            namedNode(`:${parents[i].id}`),
+            namedNode(`:${parentUri}`),
           );
         }
       }
 
       // Get quads from class stereotype function
-      const quads = transformStereotypeFunction[stereotype](classElement);
+      const quads = transformStereotypeFunction[stereotype](
+        classElement,
+        options,
+      );
 
       await writer.addQuads(quads);
     }

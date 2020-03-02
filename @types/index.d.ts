@@ -176,6 +176,7 @@ interface IClass extends IElement, IContainer, IDecoratable, IClassifier {
 interface IRelation extends IElement, IContainer, IDecoratable, IClassifier {
   type: OntoUMLType.RELATION_TYPE;
   // TODO: why there is a `properType` here?
+
   propertyType: IReference;
 
   /**
@@ -192,6 +193,26 @@ interface IRelation extends IElement, IContainer, IDecoratable, IClassifier {
    * Returns `true` if the relation is binary and relates an IRelation object to an IClass object
    */
   isDerivation?: () => boolean;
+
+  /**
+   * Returns the `propertyType` of `properties[0]` if the relation is binary (see `isBinary()`).
+   */
+  getSource?: () => IClass;
+
+  /**
+   * Returns the `propertyType` of `properties[1]` if the relation is binary (see `isBinary()`).
+   */
+  getTarget?: () => IClass;
+
+  /**
+   * Returns the `propertyType` of `properties[0]` if the relation is a derivation relation (see `isDerivation()`).
+   */
+  getDerivingRelation?: () => IRelation;
+
+  /**
+   * Returns the `propertyType` of `properties[1]` if the relation is a derivation relation (see `isDerivation()`).
+   */
+  getDerivedClass?: () => IClass;
 }
 
 /**
@@ -304,4 +325,10 @@ interface IOntoUMLError {
   detail: string;
   links: ISelfLink | IRelatedLink;
   meta?: object;
+}
+
+interface IOntoUML2GUFOOptions {
+  baseIRI: string;
+  format?: string;
+  uriFormatBy?: 'name' | 'id';
 }

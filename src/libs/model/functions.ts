@@ -7,6 +7,7 @@ import {
   IRelation,
   IGeneralizationSet,
   IProperty,
+  IClass,
 } from '@types';
 import { OntoUMLType } from '@constants/.';
 import memoizee from 'memoizee';
@@ -104,6 +105,10 @@ const functions = {
     isBinary,
     isTernary,
     isDerivation,
+    getSource,
+    getTarget,
+    getDerivingRelation,
+    getDerivedClass,
   },
   _IGeneralization: {},
   _IGeneralizationSet: {
@@ -313,6 +318,34 @@ function isDerivation(): boolean {
     source.type === OntoUMLType.RELATION_TYPE &&
     target.type === OntoUMLType.CLASS_TYPE
   );
+}
+
+function getSource(): IClass {
+  const self = this as IRelation;
+  return self.isBinary() && self.properties[0]
+    ? (self.properties[0].propertyType as IClass)
+    : ({} as IClass);
+}
+
+function getTarget(): IClass {
+  const self = this as IRelation;
+  return self.isBinary() && self.properties[1]
+    ? (self.properties[1].propertyType as IClass)
+    : ({} as IClass);
+}
+
+function getDerivingRelation(): IRelation {
+  const self = this as IRelation;
+  return self.isDerivation() && self.properties[0]
+    ? (self.properties[0].propertyType as IRelation)
+    : null;
+}
+
+function getDerivedClass(): IClass {
+  const self = this as IRelation;
+  return self.isDerivation() && self.properties[1]
+    ? (self.properties[1].propertyType as IClass)
+    : null;
 }
 
 function getGeneral(): IClassifier {

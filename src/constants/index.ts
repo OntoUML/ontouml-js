@@ -1,4 +1,3 @@
-
 export enum Rigidity {
   RIGID = 'RIGID',
   ANTI_RIGID = 'ANTI_RIGID',
@@ -48,21 +47,43 @@ export enum ClassStereotype {
 }
 
 export enum RelationStereotype {
+  CHARACTERIZATION = 'characterization',
+  COMPARATIVE = 'comparative',
+  COMPONENT_OF = 'componentOf',
+  CREATION = 'creation',
+  DERIVATION = 'derivation',
+  EXTERNAL_DEPENDENCE = 'externalDependence',
+  HISTORICAL_DEPENDENCE = 'historicalDependence',
+  INSTANTIATION = 'instantiation',
+  MANIFESTATION = 'manifestation',
   MATERIAL = 'material',
   MEDIATION = 'mediation',
-  COMPARATIVE = 'comparative',
-  HISTORICAL = 'historical',
-  EXTERNAL_DEPENDENCE = 'externalDependence',
-  CHARACTERIZATION = 'characterization',
-  DERIVATION = 'derivation',
-  COMPONENT_OF = 'componentOf',
-  SUBQUANTITY_OF = 'subQuantityOf',
   MEMBER_OF = 'memberOf',
-  SUBCOLLECTION_OF = 'subCollectionOf',
-  CREATION = 'creation',
-  HISTORICAL_DEPENDENCE = 'historicalDependence',
   PARTICIPATION = 'participation',
   PARTICIPATIONAL = 'participational',
+  SUBCOLLECTION_OF = 'subCollectionOf',
+  SUBQUANTITY_OF = 'subQuantityOf',
   TERMINATION = 'termination',
-  INSTANTIATION = 'instantiation',
 }
+
+export const RelationsInvertedInGUFO = ['instantiation'];
+
+export const RelationStereotypeToGUFOMapping = {
+  characterization: 'inheresIn',
+  comparative: 'comparativeRelationshipType',
+  componentOf: 'isComponentOf',
+  creation: 'wasCreatedIn',
+  derivation: 'isDerivedFrom',
+  externalDependence: 'externallyDependsOn',
+  historicalDependence: 'historicallyDependsOn',
+  instantiation: 'categorizes',
+  manifestation: 'manifestedIn',
+  material: 'materialRelationshipType',
+  mediation: 'mediates',
+  memberOf: 'isCollectionMemberOf',
+  participation: 'participatedIn',
+  participational: 'isEventProperPartOf',
+  subCollectionOf: 'isSubCollectionOf',
+  subQuantityOf: 'isSubQuantityOf',
+  termination: 'wasTerminatedIn',
+};
