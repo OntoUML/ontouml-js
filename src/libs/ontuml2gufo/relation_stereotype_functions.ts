@@ -108,13 +108,17 @@ export function transformDerivation(
     uriFormatBy: options.uriFormatBy,
   });
 
-  return [
-    quad(
-      namedNode(`:${domainUri}`),
-      namedNode('gufo:isDerivedFrom'),
-      namedNode(`:${rangeUri}`),
-    ),
-  ];
+  if (domainUri && rangeUri) {
+    return [
+      quad(
+        namedNode(`:${domainUri}`),
+        namedNode('gufo:isDerivedFrom'),
+        namedNode(`:${rangeUri}`),
+      ),
+    ];
+  }
+
+  return [];
 }
 
 export function transformExternalDependence(
