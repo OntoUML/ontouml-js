@@ -169,3 +169,14 @@ it('should transform OntoUML <<role>> class', async () => {
   );
   expect(result).toContain('<:IsW5mg6DAAAAQqE> <rdfs:label> "Person"');
 });
+
+it('should transform <<enumeration>> class', async () => {
+  const result = await transformOntoUML2GUFO(alpinebits);
+
+  expect(result).toContain(
+    `<:SnowparkDifficulty> <owl:equivalentClass> [
+      <rdf:type> <owl:Class>;
+      <owl:oneOf> (<:S> <:M> <:L> <:Xl>)
+    ] .`.replace(/ {4}/gm, ''),
+  );
+});
