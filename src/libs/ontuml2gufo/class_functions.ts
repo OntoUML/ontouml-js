@@ -18,6 +18,7 @@ import {
   transformQuality,
   transformEvent,
   transformType,
+  transformEnumeration,
 } from './class_stereotype_functions';
 
 const N3 = require('n3');
@@ -94,6 +95,7 @@ export async function transformClassesByStereotype(
     [ClassStereotype.QUALITY]: transformQuality,
     [ClassStereotype.EVENT]: transformEvent,
     [ClassStereotype.TYPE]: transformType,
+    [ClassStereotype.ENUMERATION]: transformEnumeration,
   };
 
   for (let i = 0; i < classes.length; i += 1) {
@@ -145,6 +147,7 @@ export async function transformClassesByStereotype(
       const quads = transformStereotypeFunction[stereotype](
         classElement,
         options,
+        writer,
       );
 
       await writer.addQuads(quads);

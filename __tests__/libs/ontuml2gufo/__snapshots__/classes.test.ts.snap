@@ -32,6 +32,11 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:sponsors> <rdfs:domain> <:Event> .
 <:sponsors> <rdfs:range> <:Sponsor> .
 <:sponsors> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:Sponsor> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> [ <owl:inverseOf> <:sponsors> ];
+  <owl:someValuesFrom> <:Event>
+] .
 <:sponsors> <rdf:type> <gufo:MaterialRelationshipType> .
 <:AreaOwner> <rdfs:subClassOf> <gufo:Endurant> .
 <:AreaOwner> <rdf:type> <gufo:RoleMixin> .
@@ -40,6 +45,11 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:contributors> <rdfs:domain> <:Event> .
 <:contributors> <rdfs:range> <:Contributor> .
 <:contributors> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:Contributor> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> [ <owl:inverseOf> <:contributors> ];
+  <owl:someValuesFrom> <:Event>
+] .
 <:contributors> <rdf:type> <gufo:MaterialRelationshipType> .
 <:CopyrightOwner> <rdf:type> <owl:Class> .
 <:CopyrightOwner> <rdf:type> <owl:NamedIndividual> .
@@ -66,11 +76,11 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:Cancelled> <:Published>)
 ] .
-<:historicallyDependsOnNamedIndividual> <rdf:type> <owl:ObjectProperty> .
-<:historicallyDependsOnNamedIndividual> <rdfs:domain> <:MediaObject> .
-<:historicallyDependsOnNamedIndividual> <rdfs:range> <:NamedIndividual> .
-<:historicallyDependsOnNamedIndividual> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
-<:historicallyDependsOnNamedIndividual> <rdfs:subPropertyOf> <gufo:historicallyDependsOn> .
+<:described> <rdf:type> <owl:ObjectProperty> .
+<:described> <rdfs:domain> <:MediaObject> .
+<:described> <rdfs:range> <:NamedIndividual> .
+<:described> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:described> <rdfs:subPropertyOf> <gufo:historicallyDependsOn> .
 <:CopyrightOwner> <rdfs:subClassOf> <gufo:Endurant> .
 <:CopyrightOwner> <rdf:type> <gufo:RoleMixin> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:CompositeEvent> <:SimpleEvent>) .
@@ -311,21 +321,21 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:Organization> <rdfs:subClassOf> <gufo:FunctionalComplex> .
 <:Organization> <rdf:type> <gufo:Kind> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Cancelled> <:Published>) .
-<:materialRelationshipTypeMountainArea> <rdf:type> <owl:ObjectProperty> .
-<:materialRelationshipTypeMountainArea> <rdfs:domain> <:AreaOwner> .
-<:materialRelationshipTypeMountainArea> <rdfs:range> <:MountainArea> .
-<:materialRelationshipTypeMountainArea> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
-<:AreaOwner> <rdfs:subClassOf> [
-  <rdf:type> <owl:Restriction>;
-  <owl:onProperty> <:materialRelationshipTypeMountainArea>;
-  <owl:someValuesFrom> <:MountainArea>
-] .
+<:areaowner> <rdf:type> <owl:ObjectProperty> .
+<:areaowner> <rdfs:domain> <:MountainArea> .
+<:areaowner> <rdfs:range> <:AreaOwner> .
+<:areaowner> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
 <:MountainArea> <rdfs:subClassOf> [
   <rdf:type> <owl:Restriction>;
-  <owl:onProperty> [ <owl:inverseOf> <:materialRelationshipTypeMountainArea> ];
+  <owl:onProperty> <:areaowner>;
   <owl:someValuesFrom> <:AreaOwner>
 ] .
-<:materialRelationshipTypeMountainArea> <rdf:type> <gufo:MaterialRelationshipType> .
+<:AreaOwner> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> [ <owl:inverseOf> <:areaowner> ];
+  <owl:someValuesFrom> <:MountainArea>
+] .
+<:areaowner> <rdf:type> <gufo:MaterialRelationshipType> .
 <:Person> <rdf:type> <owl:Class> .
 <:Person> <rdf:type> <owl:NamedIndividual> .
 <:Person> <rdfs:label> \\"Person\\" .
@@ -416,11 +426,16 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:Agent> <rdfs:subClassOf> <gufo:Endurant> .
 <:Agent> <rdf:type> <gufo:Category> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:LineString> <:MultiLineString> <:Multipoint> <:Multipolygon> <:Point> <:Polygon>) .
-<:mountainArea> <rdf:type> <owl:ObjectProperty> .
-<:mountainArea> <rdfs:range> <:MountainArea> .
-<:mountainArea> <rdfs:domain> <:MountainAreaType> .
-<:mountainArea> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
-<:mountainArea> <rdfs:subPropertyOf> <gufo:categorizes> .
+<:categorizesMountainArea> <rdf:type> <owl:ObjectProperty> .
+<:categorizesMountainArea> <rdfs:range> <:MountainArea> .
+<:categorizesMountainArea> <rdfs:domain> <:MountainAreaType> .
+<:categorizesMountainArea> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:MountainArea> <rdfs:subClassOf> [
+  <rdf:type> <owl:Restriction>;
+  <owl:onProperty> <:categorizesMountainArea>;
+  <owl:someValuesFrom> <:MountainAreaType>
+] .
+<:categorizesMountainArea> <rdfs:subPropertyOf> <gufo:categorizes> .
 <:Place> <rdf:type> <owl:Class> .
 <:Place> <rdf:type> <owl:NamedIndividual> .
 <:Place> <rdfs:label> \\"Place\\" .
@@ -619,6 +634,63 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:LicenseType> <rdf:type> <owl:NamedIndividual> .
 <:LicenseType> <rdfs:label> \\"License Type\\" .
 <:LicenseType> <rdfs:subClassOf> <gufo:ConcreteIndividualType> .
+<:SnowparkDifficulty> <rdf:type> <owl:Class> .
+<:SnowparkDifficulty> <rdf:type> <owl:NamedIndividual> .
+<:SnowparkDifficulty> <rdfs:label> \\"Snowpark Difficulty\\" .
+<:SnowparkDifficulty> <rdf:type> <owl:Class> .
+<:SnowparkDifficulty> <rdfs:subClassOf> <gufo:QualityValue> .
+<:SnowparkDifficulty> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:oneOf> (<:S> <:M> <:L> <:Xl>)
+] .
+<:S> <rdf:type> <:SnowparkDifficulty> .
+<:S> <rdf:label> \\"S\\" .
+<:M> <rdf:type> <:SnowparkDifficulty> .
+<:M> <rdf:label> \\"M\\" .
+<:L> <rdf:type> <:SnowparkDifficulty> .
+<:L> <rdf:label> \\"L\\" .
+<:Xl> <rdf:type> <:SnowparkDifficulty> .
+<:Xl> <rdf:label> \\"XL\\" .
+<:UsDifficulty> <rdf:type> <owl:Class> .
+<:UsDifficulty> <rdf:type> <owl:NamedIndividual> .
+<:UsDifficulty> <rdfs:label> \\"US Difficulty\\" .
+<:UsDifficulty> <rdf:type> <owl:Class> .
+<:UsDifficulty> <rdfs:subClassOf> <gufo:QualityValue> .
+<:UsDifficulty> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:oneOf> (<:Beginner> <:Beginnerintermediate> <:Intermediate> <:Intermediateadvanced> <:Advanced> <:Expert> <:Terrainpark>)
+] .
+<:Beginner> <rdf:type> <:UsDifficulty> .
+<:Beginner> <rdf:label> \\"Beginner\\" .
+<:Beginnerintermediate> <rdf:type> <:UsDifficulty> .
+<:Beginnerintermediate> <rdf:label> \\"BeginnerIntermediate\\" .
+<:Intermediate> <rdf:type> <:UsDifficulty> .
+<:Intermediate> <rdf:label> \\"Intermediate\\" .
+<:Intermediateadvanced> <rdf:type> <:UsDifficulty> .
+<:Intermediateadvanced> <rdf:label> \\"IntermediateAdvanced\\" .
+<:Advanced> <rdf:type> <:UsDifficulty> .
+<:Advanced> <rdf:label> \\"Advanced\\" .
+<:Expert> <rdf:type> <:UsDifficulty> .
+<:Expert> <rdf:label> \\"Expert\\" .
+<:Terrainpark> <rdf:type> <:UsDifficulty> .
+<:Terrainpark> <rdf:label> \\"TerrainPark\\" .
+<:EuDifficulty> <rdf:type> <owl:Class> .
+<:EuDifficulty> <rdf:type> <owl:NamedIndividual> .
+<:EuDifficulty> <rdfs:label> \\"EU Difficulty\\" .
+<:EuDifficulty> <rdf:type> <owl:Class> .
+<:EuDifficulty> <rdfs:subClassOf> <gufo:QualityValue> .
+<:EuDifficulty> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:oneOf> (<:Novice> <:Beginner_XrIWWRaGAqCsIC1m> <:Intermediate_uMoWWRaGAqCsIC1p> <:Expert_5RoWWRaGAqCsIC1s>)
+] .
+<:Novice> <rdf:type> <:EuDifficulty> .
+<:Novice> <rdf:label> \\"Novice\\" .
+<:Beginner_XrIWWRaGAqCsIC1m> <rdf:type> <:EuDifficulty> .
+<:Beginner_XrIWWRaGAqCsIC1m> <rdf:label> \\"Beginner\\" .
+<:Intermediate_uMoWWRaGAqCsIC1p> <rdf:type> <:EuDifficulty> .
+<:Intermediate_uMoWWRaGAqCsIC1p> <rdf:label> \\"Intermediate\\" .
+<:Expert_5RoWWRaGAqCsIC1s> <rdf:type> <:EuDifficulty> .
+<:Expert_5RoWWRaGAqCsIC1s> <rdf:label> \\"Expert\\" .
 <:LineString> <rdf:type> <owl:Class> .
 <:LineString> <rdf:type> <owl:NamedIndividual> .
 <:LineString> <rdfs:label> \\"Line String\\" .
@@ -680,6 +752,29 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:Multipolygon> <rdfs:label> \\"Multi-Polygon\\" .
 <:Multipolygon> <rdfs:subClassOf> <:Geometry> .
 <:Multipolygon> <rdf:type> <gufo:SubKind> .
+<:DayOfWeek> <rdf:type> <owl:Class> .
+<:DayOfWeek> <rdf:type> <owl:NamedIndividual> .
+<:DayOfWeek> <rdfs:label> \\"Day of Week\\" .
+<:DayOfWeek> <rdf:type> <owl:Class> .
+<:DayOfWeek> <rdfs:subClassOf> <gufo:QualityValue> .
+<:DayOfWeek> <owl:equivalentClass> [
+  <rdf:type> <owl:Class>;
+  <owl:oneOf> (<:Sunday> <:Monday> <:Tuesday> <:Wednesday> <:Thursday> <:Friday> <:Saturday>)
+] .
+<:Sunday> <rdf:type> <:DayOfWeek> .
+<:Sunday> <rdf:label> \\"Sunday\\" .
+<:Monday> <rdf:type> <:DayOfWeek> .
+<:Monday> <rdf:label> \\"Monday\\" .
+<:Tuesday> <rdf:type> <:DayOfWeek> .
+<:Tuesday> <rdf:label> \\"Tuesday\\" .
+<:Wednesday> <rdf:type> <:DayOfWeek> .
+<:Wednesday> <rdf:label> \\"Wednesday\\" .
+<:Thursday> <rdf:type> <:DayOfWeek> .
+<:Thursday> <rdf:label> \\"Thursday\\" .
+<:Friday> <rdf:type> <:DayOfWeek> .
+<:Friday> <rdf:label> \\"Friday\\" .
+<:Saturday> <rdf:type> <:DayOfWeek> .
+<:Saturday> <rdf:label> \\"Saturday\\" .
 <:Published> <rdf:type> <owl:Class> .
 <:Published> <rdf:type> <owl:NamedIndividual> .
 <:Published> <rdfs:label> \\"Published\\" .
@@ -734,16 +829,26 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 :sponsors rdf:type owl:ObjectProperty;
     rdfs:domain :Event;
     rdfs:range :Sponsor;
-    rdfs:comment \\"Relation URI was automatically generated.\\";
-    rdf:type gufo:MaterialRelationshipType.
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:Sponsor rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :sponsors ];
+  owl:someValuesFrom :Event
+].
+:sponsors rdf:type gufo:MaterialRelationshipType.
 :AreaOwner rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:RoleMixin.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:AudioObject :ImageObject :VideoObject).
 :contributors rdf:type owl:ObjectProperty;
     rdfs:domain :Event;
     rdfs:range :Contributor;
-    rdfs:comment \\"Relation URI was automatically generated.\\";
-    rdf:type gufo:MaterialRelationshipType.
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:Contributor rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :contributors ];
+  owl:someValuesFrom :Event
+].
+:contributors rdf:type gufo:MaterialRelationshipType.
 :CopyrightOwner rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Copyright Owner\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Cancelled :Published).
@@ -768,7 +873,7 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   rdf:type owl:Class;
   owl:unionOf (:Cancelled :Published)
 ].
-:historicallyDependsOnNamedIndividual rdf:type owl:ObjectProperty;
+:described rdf:type owl:ObjectProperty;
     rdfs:domain :MediaObject;
     rdfs:range :NamedIndividual;
     rdfs:comment \\"Relation URI was automatically generated.\\";
@@ -1008,21 +1113,21 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 :Organization rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Cancelled :Published).
-:materialRelationshipTypeMountainArea rdf:type owl:ObjectProperty;
-    rdfs:domain :AreaOwner;
-    rdfs:range :MountainArea;
+:areaowner rdf:type owl:ObjectProperty;
+    rdfs:domain :MountainArea;
+    rdfs:range :AreaOwner;
     rdfs:comment \\"Relation URI was automatically generated.\\".
-:AreaOwner rdfs:subClassOf [
-  rdf:type owl:Restriction;
-  owl:onProperty :materialRelationshipTypeMountainArea;
-  owl:someValuesFrom :MountainArea
-].
 :MountainArea rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :materialRelationshipTypeMountainArea ];
+  owl:onProperty :areaowner;
   owl:someValuesFrom :AreaOwner
 ].
-:materialRelationshipTypeMountainArea rdf:type gufo:MaterialRelationshipType.
+:AreaOwner rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :areaowner ];
+  owl:someValuesFrom :MountainArea
+].
+:areaowner rdf:type gufo:MaterialRelationshipType.
 :Person rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Person\\".
 :Event owl:equivalentClass [
@@ -1111,11 +1216,16 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 :Agent rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:Category.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:LineString :MultiLineString :Multipoint :Multipolygon :Point :Polygon).
-:mountainArea rdf:type owl:ObjectProperty;
+:categorizesMountainArea rdf:type owl:ObjectProperty;
     rdfs:range :MountainArea;
     rdfs:domain :MountainAreaType;
-    rdfs:comment \\"Relation URI was automatically generated.\\";
-    rdfs:subPropertyOf gufo:categorizes.
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:MountainArea rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :categorizesMountainArea;
+  owl:someValuesFrom :MountainAreaType
+].
+:categorizesMountainArea rdfs:subPropertyOf gufo:categorizes.
 :Place rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Place\\".
 :Geometry owl:equivalentClass [
@@ -1269,6 +1379,60 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 :LicenseType rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"License Type\\";
     rdfs:subClassOf gufo:ConcreteIndividualType.
+:SnowparkDifficulty rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Snowpark Difficulty\\";
+    rdf:type owl:Class;
+    rdfs:subClassOf gufo:QualityValue;
+    owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:oneOf (:S :M :L :Xl)
+].
+:S rdf:type :SnowparkDifficulty;
+    rdf:label \\"S\\".
+:M rdf:type :SnowparkDifficulty;
+    rdf:label \\"M\\".
+:L rdf:type :SnowparkDifficulty;
+    rdf:label \\"L\\".
+:Xl rdf:type :SnowparkDifficulty;
+    rdf:label \\"XL\\".
+:UsDifficulty rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"US Difficulty\\";
+    rdf:type owl:Class;
+    rdfs:subClassOf gufo:QualityValue;
+    owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:oneOf (:Beginner :Beginnerintermediate :Intermediate :Intermediateadvanced :Advanced :Expert :Terrainpark)
+].
+:Beginner rdf:type :UsDifficulty;
+    rdf:label \\"Beginner\\".
+:Beginnerintermediate rdf:type :UsDifficulty;
+    rdf:label \\"BeginnerIntermediate\\".
+:Intermediate rdf:type :UsDifficulty;
+    rdf:label \\"Intermediate\\".
+:Intermediateadvanced rdf:type :UsDifficulty;
+    rdf:label \\"IntermediateAdvanced\\".
+:Advanced rdf:type :UsDifficulty;
+    rdf:label \\"Advanced\\".
+:Expert rdf:type :UsDifficulty;
+    rdf:label \\"Expert\\".
+:Terrainpark rdf:type :UsDifficulty;
+    rdf:label \\"TerrainPark\\".
+:EuDifficulty rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"EU Difficulty\\";
+    rdf:type owl:Class;
+    rdfs:subClassOf gufo:QualityValue;
+    owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:oneOf (:Novice :Beginner_XrIWWRaGAqCsIC1m :Intermediate_uMoWWRaGAqCsIC1p :Expert_5RoWWRaGAqCsIC1s)
+].
+:Novice rdf:type :EuDifficulty;
+    rdf:label \\"Novice\\".
+:Beginner_XrIWWRaGAqCsIC1m rdf:type :EuDifficulty;
+    rdf:label \\"Beginner\\".
+:Intermediate_uMoWWRaGAqCsIC1p rdf:type :EuDifficulty;
+    rdf:label \\"Intermediate\\".
+:Expert_5RoWWRaGAqCsIC1s rdf:type :EuDifficulty;
+    rdf:label \\"Expert\\".
 :LineString rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Line String\\";
     rdfs:subClassOf :Geometry;
@@ -1316,6 +1480,28 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
     rdfs:label \\"Multi-Polygon\\";
     rdfs:subClassOf :Geometry;
     rdf:type gufo:SubKind.
+:DayOfWeek rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Day of Week\\";
+    rdf:type owl:Class;
+    rdfs:subClassOf gufo:QualityValue;
+    owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:oneOf (:Sunday :Monday :Tuesday :Wednesday :Thursday :Friday :Saturday)
+].
+:Sunday rdf:type :DayOfWeek;
+    rdf:label \\"Sunday\\".
+:Monday rdf:type :DayOfWeek;
+    rdf:label \\"Monday\\".
+:Tuesday rdf:type :DayOfWeek;
+    rdf:label \\"Tuesday\\".
+:Wednesday rdf:type :DayOfWeek;
+    rdf:label \\"Wednesday\\".
+:Thursday rdf:type :DayOfWeek;
+    rdf:label \\"Thursday\\".
+:Friday rdf:type :DayOfWeek;
+    rdf:label \\"Friday\\".
+:Saturday rdf:type :DayOfWeek;
+    rdf:label \\"Saturday\\".
 :Published rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Published\\";
     rdfs:subClassOf :Event;
@@ -1586,17 +1772,15 @@ exports[`should transform OntoUML generic model to gUFO 1`] = `
 <https://example.com> rdf:type owl:Ontology;
     owl:imports gufo:.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Person_2uxhBA6AUB0UtArb :Organization_j5phBA6AUB0UtAts).
-:Agent_rwhBA6AUB0UtArB rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Agent\\".
+:Month rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Month\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Organization_j5phBA6AUB0UtAts :Person_2uxhBA6AUB0UtArb).
 :mediatesSchool rdf:type owl:ObjectProperty;
     rdfs:domain :Enrollment;
     rdfs:range :School;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:mediates.
-:Agent_rwhBA6AUB0UtArB rdfs:subClassOf gufo:Endurant;
-    rdf:type gufo:Category;
-    owl:equivalentClass [
+:Agent_rwhBA6AUB0UtArB owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Organization_j5phBA6AUB0UtAts :Person_2uxhBA6AUB0UtArb)
 ].
@@ -1605,51 +1789,55 @@ exports[`should transform OntoUML generic model to gUFO 1`] = `
     rdfs:range :Student;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:mediates.
-:Person_2uxhBA6AUB0UtArb rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Person\\".
+:Agent_rwhBA6AUB0UtArB rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Agent\\".
 :inheresInEnrollment rdf:type owl:ObjectProperty;
     rdfs:domain :EnrollmentDate;
     rdfs:range :Enrollment;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:inheresIn.
-:Person_2uxhBA6AUB0UtArb rdfs:subClassOf :Agent_rwhBA6AUB0UtArB.
+:Agent_rwhBA6AUB0UtArB rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:Category.
 :isComponentOfSchool rdf:type owl:ObjectProperty;
     rdfs:domain :Department;
     rdfs:range :School;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:isComponentOf.
-:Person_2uxhBA6AUB0UtArb rdfs:subClassOf gufo:FunctionalComplex;
-    rdf:type gufo:Kind.
+:Person_2uxhBA6AUB0UtArb rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Person\\".
 :mediatesEnrollment rdf:type owl:ObjectProperty;
     rdfs:domain :Sophomore;
     rdfs:range :Enrollment;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:mediates.
-:Organization_j5phBA6AUB0UtAts rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Organization\\".
+:Person_2uxhBA6AUB0UtArb rdfs:subClassOf :Agent_rwhBA6AUB0UtArB.
 :mediatesEnrollment_dnp9hA6GAqACnA27 rdf:type owl:ObjectProperty;
     rdfs:domain :PrivatelyEnrolled;
     rdfs:range :Enrollment;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:mediates.
-:Organization_j5phBA6AUB0UtAts rdfs:subClassOf :Agent_rwhBA6AUB0UtArB.
+:Person_2uxhBA6AUB0UtArb rdfs:subClassOf gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
 :studiesat rdf:type owl:ObjectProperty;
     rdfs:domain :Student;
     rdfs:range :School;
     rdfs:label \\"studies-at\\";
     rdf:type gufo:MaterialRelationshipType.
-:Organization_j5phBA6AUB0UtAts rdfs:subClassOf gufo:FunctionalComplex;
-    rdf:type gufo:Kind.
+:Organization_j5phBA6AUB0UtAts rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Organization\\".
 :categorizesAgent rdf:type owl:ObjectProperty;
     rdfs:range :Agent_rwhBA6AUB0UtArB;
     rdfs:domain :AgentType;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:categorizes.
-:School rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"School\\".
+:Organization_j5phBA6AUB0UtAts rdfs:subClassOf :Agent_rwhBA6AUB0UtArB.
 :isDerivedFromJnsvza6gaqacnat rdf:type owl:ObjectProperty;
     rdfs:comment \\"Relation URI was automatically generated.\\".
-:School rdfs:subClassOf :Organization_j5phBA6AUB0UtAts;
+:Organization_j5phBA6AUB0UtAts rdfs:subClassOf gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:School rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"School\\";
+    rdfs:subClassOf :Organization_j5phBA6AUB0UtAts;
     rdf:type gufo:SubKind.
 :Student rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Student\\";

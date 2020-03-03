@@ -1,11 +1,11 @@
-import { Quad } from 'n3';
-import { IClass, IOntoUML2GUFOOptions, IRelation } from '@types';
+import { Quad, N3Writer } from 'n3';
+import { IClass, ILiteral, IOntoUML2GUFOOptions, IRelation } from '@types';
 import { RelationStereotype } from '@constants/.';
 import { getURI } from './helper_functions';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
-const { namedNode, quad } = DataFactory;
+const { namedNode, quad, literal } = DataFactory;
 
 export function transformKind(
   classElement: IClass,
@@ -281,4 +281,61 @@ export function transformType(
       namedNode('gufo:ConcreteIndividualType'),
     ),
   ];
+}
+
+export function transformEnumeration(
+  classElement: IClass,
+  options: IOntoUML2GUFOOptions,
+  writer?: N3Writer,
+): Quad[] {
+  const { id, name, literals } = classElement;
+
+  if (!literals) {
+    return [];
+  }
+
+  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+  const literalUris = literals.map((literal: ILiteral) =>
+    namedNode(
+      `:${getURI({
+        id: literal.id,
+        name: literal.name,
+        uriFormatBy: options.uriFormatBy,
+      })}`,
+    ),
+  );
+
+  const quads = [
+    quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('owl:Class')),
+    quad(
+      namedNode(`:${uri}`),
+      namedNode('rdfs:subClassOf'),
+      namedNode('gufo:QualityValue'),
+    ),
+    quad(
+      namedNode(`:${uri}`),
+      namedNode('owl:equivalentClass'),
+      writer.blank([
+        {
+          predicate: namedNode('rdf:type'),
+          object: namedNode('owl:Class'),
+        },
+        {
+          predicate: namedNode('owl:oneOf'),
+          object: writer.list(literalUris),
+        },
+      ]),
+    ),
+  ];
+
+  for (let i = 0; i < literalUris.length; i += 1) {
+    const literalUri = literalUris[i];
+
+    quads.push(quad(literalUri, namedNode('rdf:type'), namedNode(`:${uri}`)));
+    quads.push(
+      quad(literalUri, namedNode('rdf:label'), literal(literals[i].name)),
+    );
+  }
+
+  return quads;
 }
