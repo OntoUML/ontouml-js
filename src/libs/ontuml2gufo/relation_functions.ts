@@ -357,7 +357,9 @@ function generateRelationBlankQuad({
   cardinality?: number;
   options: IOntoUML2GUFOOptions;
 }): BlankNode {
+  const { stereotypes } = relation;
   const uri = getURI({ element: relation, options });
+  const isInvertedRelation = RelationsInvertedInGUFO.includes(stereotypes[0]);
   // get range
   const classElement = isDomain ? relation.getTarget() : relation.getSource();
   const classUri = getURI({ element: classElement, options });
@@ -369,9 +371,10 @@ function generateRelationBlankQuad({
     },
     {
       predicate: namedNode('owl:onProperty'),
-      object: isDomain
-        ? namedNode(`:${uri}`)
-        : writer.blank(namedNode('owl:inverseOf'), namedNode(`:${uri}`)),
+      object:
+        isDomain && !isInvertedRelation
+          ? namedNode(`:${uri}`)
+          : writer.blank(namedNode('owl:inverseOf'), namedNode(`:${uri}`)),
     },
   ];
 

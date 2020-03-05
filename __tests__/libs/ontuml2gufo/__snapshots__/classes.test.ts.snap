@@ -3259,7 +3259,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
 ].
 :StayAgreement rdfs:subClassOf [
   rdf:type owl:Restriction;
-  owl:onProperty :participatedInStayAgreement;
+  owl:onProperty [ owl:inverseOf :participatedInStayAgreement ];
   owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :Stay_NK8LuPaAUAACnkbx
 ].
