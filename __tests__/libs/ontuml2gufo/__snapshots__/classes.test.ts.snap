@@ -446,7 +446,6 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:contactPoints> <rdf:type> <owl:ObjectProperty> .
 <:contactPoints> <rdfs:domain> <:Agent> .
 <:contactPoints> <rdfs:range> <:ContactPoint> .
-<:contactPoints> <rdfs:subClassOf> <gufo:hasReifiedQualityValue> .
 <:contactPoints> <rdfs:label> \\"contactPoints\\" .
 <:Geometry> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
@@ -474,12 +473,10 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:openingHours> <rdf:type> <owl:ObjectProperty> .
 <:openingHours> <rdfs:domain> <:Place> .
 <:openingHours> <rdfs:range> <:HoursSpecification> .
-<:openingHours> <rdfs:subClassOf> <gufo:hasReifiedQualityValue> .
 <:openingHours> <rdfs:label> \\"openingHours\\" .
 <:address> <rdf:type> <owl:ObjectProperty> .
 <:address> <rdfs:domain> <:Place> .
 <:address> <rdfs:range> <:Address> .
-<:address> <rdfs:subClassOf> <gufo:hasReifiedQualityValue> .
 <:address> <rdfs:label> \\"address\\" .
 <:howToArrive> <rdf:type> <owl:DatatypeProperty> .
 <:howToArrive> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
@@ -855,7 +852,6 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:coordinates> <rdf:type> <owl:ObjectProperty> .
 <:coordinates> <rdfs:domain> <:Geometry> .
 <:coordinates> <rdfs:range> <:Coordinate> .
-<:coordinates> <rdfs:subClassOf> <gufo:hasReifiedQualityValue> .
 <:coordinates> <rdfs:label> \\"coordinates\\" .
 <:SnowparkFeatureType> <rdf:type> <owl:Class> .
 <:SnowparkFeatureType> <rdf:type> <owl:NamedIndividual> .
@@ -1387,7 +1383,6 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 :contactPoints rdf:type owl:ObjectProperty;
     rdfs:domain :Agent;
     rdfs:range :ContactPoint;
-    rdfs:subClassOf gufo:hasReifiedQualityValue;
     rdfs:label \\"contactPoints\\".
 :Geometry owl:equivalentClass [
   rdf:type owl:Class;
@@ -1414,12 +1409,10 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 :openingHours rdf:type owl:ObjectProperty;
     rdfs:domain :Place;
     rdfs:range :HoursSpecification;
-    rdfs:subClassOf gufo:hasReifiedQualityValue;
     rdfs:label \\"openingHours\\".
 :address rdf:type owl:ObjectProperty;
     rdfs:domain :Place;
     rdfs:range :Address;
-    rdfs:subClassOf gufo:hasReifiedQualityValue;
     rdfs:label \\"address\\".
 :howToArrive rdf:type owl:DatatypeProperty;
     rdfs:subPropertyOf gufo:hasQualityValue;
@@ -1744,7 +1737,6 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 :coordinates rdf:type owl:ObjectProperty;
     rdfs:domain :Geometry;
     rdfs:range :Coordinate;
-    rdfs:subClassOf gufo:hasReifiedQualityValue;
     rdfs:label \\"coordinates\\".
 :SnowparkFeatureType rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Snowpark Feature Type\\";
@@ -2156,7 +2148,6 @@ exports[`should transform OntoUML generic model to gUFO 1`] = `
 :date rdf:type owl:ObjectProperty;
     rdfs:domain :EnrollmentDate;
     rdfs:range :Date;
-    rdfs:subClassOf gufo:hasReifiedQualityValue;
     rdfs:label \\"date\\".
 :Sophomore rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Sophomore\\";
@@ -2367,6 +2358,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
 :dateofbirth rdf:type owl:ObjectProperty;
     rdfs:domain :Person_QFOaFHaGAqAe8AX;
     rdfs:range :TimeInstant_KN80vaFYFAUAhra;
+    rdfs:subClassOf gufo:hasReifiedQualityValue;
     rdfs:label \\"date of birth\\".
 :LtcIndication owl:equivalentClass [
   rdf:type owl:Class;
@@ -3629,7 +3621,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdf:type gufo:Kind.
 :Disease rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Disease\\";
-    rdfs:subClassOf :MedicalCondition;
+    rdfs:subClassOf :MedicalCondition, gufo:IntrinsicMode;
     rdf:type gufo:Kind.
 :DiseaseType rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Disease Type\\";
@@ -3639,11 +3631,11 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdfs:subClassOf :MedicalConditionType, gufo:ConcreteIndividualType.
 :Disability rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Disability\\";
-    rdfs:subClassOf :MedicalCondition;
+    rdfs:subClassOf :MedicalCondition, gufo:IntrinsicMode;
     rdf:type gufo:Kind.
 :Disorder rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Disorder\\";
-    rdfs:subClassOf :MedicalCondition;
+    rdfs:subClassOf :MedicalCondition, gufo:IntrinsicMode;
     rdf:type gufo:Kind.
 :DisorderType rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Disorder Type\\";
@@ -3654,6 +3646,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdf:type gufo:Category.
 :Prognosis rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Prognosis\\";
+    rdfs:subClassOf gufo:IntrinsicMode;
     rdf:type gufo:Kind.
 :expectedduration rdf:type owl:DatatypeProperty;
     rdfs:subPropertyOf gufo:hasQualityValue;
@@ -3684,7 +3677,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdfs:subClassOf :MedicalConditionType, gufo:ConcreteIndividualType.
 :Restriction rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Restriction\\";
-    rdfs:subClassOf :MedicalCondition;
+    rdfs:subClassOf :MedicalCondition, gufo:IntrinsicMode;
     rdf:type gufo:Kind.
 :RestrictionAssessment rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Restriction Assessment\\";
@@ -3808,6 +3801,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdfs:subClassOf gufo:ConcreteIndividualType.
 :SpatialRegion rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Spatial Region\\";
+    rdfs:subClassOf gufo:IntrinsicMode;
     rdf:type gufo:Kind.
 :Inhabitant rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Inhabitant\\";
@@ -3896,6 +3890,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
 :decistiondate rdf:type owl:ObjectProperty;
     rdfs:domain :RequestDecision;
     rdfs:range :TimeInstant_KN80vaFYFAUAhra;
+    rdfs:subClassOf gufo:hasReifiedQualityValue;
     rdfs:label \\"decistion date\\".
 :RequestBeneficiary rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Request Beneficiary\\";
@@ -3969,10 +3964,12 @@ exports[`should transform iStandard model to gUFO 1`] = `
 :validuntil rdf:type owl:ObjectProperty;
     rdfs:domain :LtcIndication;
     rdfs:range :TimeInstant_KN80vaFYFAUAhra;
+    rdfs:subClassOf gufo:hasReifiedQualityValue;
     rdfs:label \\"valid until\\".
 :validfrom rdf:type owl:ObjectProperty;
     rdfs:domain :LtcIndication;
     rdfs:range :TimeInstant_KN80vaFYFAUAhra;
+    rdfs:subClassOf gufo:hasReifiedQualityValue;
     rdfs:label \\"valid from\\".
 :LtcIndicationBudget rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"LTC Indication Budget\\";
@@ -4162,6 +4159,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
 :created rdf:type owl:ObjectProperty;
     rdfs:domain :AllocatedHealthcareServicePackage;
     rdfs:range :TimeInstant_KN80vaFYFAUAhra;
+    rdfs:subClassOf gufo:hasReifiedQualityValue;
     rdfs:label \\"created\\".
 :DeliveredHealthcareServicePackage rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Delivered Healthcare Service Package\\";
@@ -4178,10 +4176,12 @@ exports[`should transform iStandard model to gUFO 1`] = `
 :validfrom_qjWq03aFYFAUAs6J rdf:type owl:ObjectProperty;
     rdfs:domain :LtcAllocation;
     rdfs:range :TimeInstant_KN80vaFYFAUAhra;
+    rdfs:subClassOf gufo:hasReifiedQualityValue;
     rdfs:label \\"valid from\\".
 :validuntil_k12q03aFYFAUAs6N rdf:type owl:ObjectProperty;
     rdfs:domain :LtcAllocation;
     rdfs:range :TimeInstant_KN80vaFYFAUAhra;
+    rdfs:subClassOf gufo:hasReifiedQualityValue;
     rdfs:label \\"valid until\\".
 :CareProfile rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Care Profile\\";
@@ -4234,10 +4234,12 @@ exports[`should transform iStandard model to gUFO 1`] = `
 :effectivefrom rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareServicePackage;
     rdfs:range :TimeInstant_KN80vaFYFAUAhra;
+    rdfs:subClassOf gufo:hasReifiedQualityValue;
     rdfs:label \\"effective from\\".
 :effectiveuntil rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareServicePackage;
     rdfs:range :TimeInstant_KN80vaFYFAUAhra;
+    rdfs:subClassOf gufo:hasReifiedQualityValue;
     rdfs:label \\"effective until\\".
 "
 `;

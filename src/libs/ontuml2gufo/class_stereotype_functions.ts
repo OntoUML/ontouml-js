@@ -163,24 +163,26 @@ export function transformMode(
     .map((relation: IRelation) => relation.stereotypes[0]);
   const quads = [];
 
-  if (relationStereotypes.includes(RelationStereotype.CHARACTERIZATION) && 
-    relationStereotypes.includes(RelationStereotype.EXTERNAL_DEPENDENCE)) {
-      quads.push(
-        quad(
-          namedNode(`:${uri}`),
-          namedNode('rdfs:subClassOf'),
-          namedNode('gufo:ExtrinsicMode'),
-        ),
-      );
-    } else {
-      quads.push(
-        quad(
-          namedNode(`:${uri}`),
-          namedNode('rdfs:subClassOf'),
-          namedNode('gufo:IntrinsicMode'),
-        ),
-      );
-    }
+  if (
+    relationStereotypes.includes(RelationStereotype.CHARACTERIZATION) &&
+    relationStereotypes.includes(RelationStereotype.EXTERNAL_DEPENDENCE)
+  ) {
+    quads.push(
+      quad(
+        namedNode(`:${uri}`),
+        namedNode('rdfs:subClassOf'),
+        namedNode('gufo:ExtrinsicMode'),
+      ),
+    );
+  } else {
+    quads.push(
+      quad(
+        namedNode(`:${uri}`),
+        namedNode('rdfs:subClassOf'),
+        namedNode('gufo:IntrinsicMode'),
+      ),
+    );
+  }
 
   quads.push(
     quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Kind')),

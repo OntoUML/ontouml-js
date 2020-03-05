@@ -63,23 +63,26 @@ export async function transformAttributes(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Promise<boolean> {
-  const { properties, stereotypes } = classElement;
+  const { properties: attributes, stereotypes } = classElement;
+  const isDatatypeClass = stereotypes[0] !== ClassStereotype.DATATYPE;
   const quads = [];
 
-  for (let i = 0; i < properties.length; i += 1) {
-    const { name, propertyType } = properties[i];
-    const uri = getURI({ element: properties[i], options });
+  for (let i = 0; i < attributes.length; i += 1) {
+    const { name, propertyType } = attributes[i];
+    const uri = getURI({ element: attributes[i], options });
     const classUri = getURI({ element: classElement, options });
     const {
       name: datatypeName,
       stereotypes: datatypeStereotypes,
-      properties: datatypeProperties,
+      properties: datatypeAttributes,
     } = (propertyType || {}) as IClass;
     const datatypeStereotype = datatypeStereotypes
       ? datatypeStereotypes[0]
       : null;
     const isComplexDatatype =
-      datatypeStereotype === ClassStereotype.DATATYPE && datatypeProperties;
+      datatypeStereotype === ClassStereotype.DATATYPE && !!datatypeAttributes;
+    const isEnumerationDatatype =
+      datatypeStereotype === ClassStereotype.ENUMERATION;
 
     if (
       !propertyType ||
@@ -122,6 +125,10 @@ export async function transformAttributes(
     ) {
       const rangeUri = getURI({ element: propertyType, options });
 
+      // complex attribute is an attribute of a datatype class with type defined as datatype or enumeration
+      const isComplexAttribute =
+        isDatatypeClass && (isComplexDatatype || isEnumerationDatatype);
+
       quads.push(
         quad(
           namedNode(`:${uri}`),
@@ -144,7 +151,7 @@ export async function transformAttributes(
         ),
       );
 
-      if (isComplexDatatype && stereotypes[0] !== ClassStereotype.DATATYPE) {
+      if (!isComplexAttribute) {
         quads.push(
           quad(
             namedNode(`:${uri}`),
