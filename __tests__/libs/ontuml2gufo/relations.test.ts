@@ -39,7 +39,7 @@ describe('Relations', () => {
   });
 
   it('should generate a domain and range to relation', async () => {
-    expect(result).toContain('<:organizers> <rdfs:domain> <:Event>');
+    expect(result).toContain('<:organizers> <rdfs:domain> <:EventPlan>');
     expect(result).toContain('<:organizers> <rdfs:range> <:Organizer>');
   });
 
@@ -51,7 +51,7 @@ describe('Relations', () => {
       '<:described> <rdfs:subPropertyOf> <gufo:historicallyDependsOn>',
     );
     expect(result).toContain(
-      '<:categorizesEvent> <rdfs:subPropertyOf> <gufo:categorizes>',
+      '<:categorizesEventPlan> <rdfs:subPropertyOf> <gufo:categorizes>',
     );
     expect(result).toContain(
       '<:isComponentOfSnowpark> <rdfs:subPropertyOf> <gufo:isComponentOf>',
@@ -84,7 +84,7 @@ describe('Relations', () => {
 
   it('should generate a cardinality restriction of 0..1', () => {
     expect(result).toContain(
-      `<:Event> <rdfs:subClassOf> [
+      `<:EventPlan> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
         <owl:onProperty> <:eventseries>;
         <owl:maxQualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;

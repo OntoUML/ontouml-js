@@ -33,7 +33,7 @@ describe('Relations', () => {
     expect(result).toContain(
       '<:capacity> <rdfs:subPropertyOf> <gufo:hasQualityValue>',
     );
-    expect(result).toContain('<:capacity> <rdfs:domain> <:Event>');
+    expect(result).toContain('<:capacity> <rdfs:domain> <:EventPlan>');
     expect(result).toContain('<:capacity> <rdfs:range> <xsd:int>');
     expect(result).toContain('<:capacity> <rdfs:label> "capacity"');
   });
