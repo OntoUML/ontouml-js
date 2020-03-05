@@ -163,8 +163,8 @@ export function transformMode(
     .map((relation: IRelation) => relation.stereotypes[0]);
   const quads = [];
 
-  if (relationStereotypes.includes(RelationStereotype.CHARACTERIZATION)) {
-    if (relationStereotypes.includes(RelationStereotype.EXTERNAL_DEPENDENCE)) {
+  if (relationStereotypes.includes(RelationStereotype.CHARACTERIZATION) && 
+    relationStereotypes.includes(RelationStereotype.EXTERNAL_DEPENDENCE)) {
       quads.push(
         quad(
           namedNode(`:${uri}`),
@@ -181,7 +181,6 @@ export function transformMode(
         ),
       );
     }
-  }
 
   quads.push(
     quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Kind')),
