@@ -113,4 +113,65 @@ describe('Model deserializing', () => {
         ),
     ).toBeTruthy();
   });
+
+  it('Stringify issues', () => {
+    try {
+      console.log(JSON.stringify(issues, replacer));
+      expect(true).toBeTruthy();
+    } catch (error) {
+      expect(false).toBeTruthy();
+    }
+  });
 });
+
+// TODO: move replacer to serialization library
+function replacer(key, value) {
+  if (key.startsWith('_')) {
+    return undefined;
+  }
+
+  if (this.type) {
+    let contentsFields = [];
+
+    switch (this.type) {
+      case 'Package':
+        contentsFields = ['contents'];
+        break;
+      case 'Class':
+        contentsFields = ['properties', 'literals'];
+        break;
+      case 'Relation':
+        contentsFields = ['properties'];
+        break;
+      case 'Literal':
+        break;
+      case 'Property':
+        break;
+      case 'Generalization':
+        break;
+      case 'GeneralizationSet':
+        // contentsFields = ['generalizations'];
+        break;
+    }
+
+    if (
+      !contentsFields.includes(key) &&
+      key !== 'stereotypes' &&
+      Array.isArray(value)
+    ) {
+      return value.map(item =>
+        item.id && item.type ? { id: item.id, type: item.type } : value,
+      );
+    } else if (
+      !contentsFields.includes(key) &&
+      key !== 'stereotypes' &&
+      value instanceof Object
+    ) {
+      return value.id && value.type
+        ? { id: value.id, type: value.type }
+        : value;
+    }
+  }
+
+  return value;
+}
