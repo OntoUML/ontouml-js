@@ -157,14 +157,14 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:LineString> <:MultiLineString> <:Multipoint> <:Multipolygon> <:Point> <:Polygon>)
 ] .
-<:Lift> <gufo:categorizes> <:LiftType> .
+<:LiftType> <gufo:categorizes> <:Lift> .
 <:AreaOwner> <rdfs:subClassOf> <:Agent> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:SkiSlope> <:Snowpark>) .
-<:Trail> <gufo:categorizes> <:TrailType> .
+<:TrailType> <gufo:categorizes> <:Trail> .
 <:AreaOwner> <rdfs:subClassOf> <gufo:Endurant> .
 <:AreaOwner> <rdf:type> <gufo:RoleMixin> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Lift> <:MountainArea> <:Trail>) .
-<:SnowparkFeature> <gufo:categorizes> <:SnowparkFeatureType> .
+<:SnowparkFeatureType> <gufo:categorizes> <:SnowparkFeature> .
 <:CopyrightOwner> <rdf:type> <owl:Class> .
 <:CopyrightOwner> <rdf:type> <owl:NamedIndividual> .
 <:CopyrightOwner> <rdfs:label> \\"Copyright Owner\\" .
@@ -279,7 +279,7 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:areaowner> <rdf:type> <gufo:MaterialRelationshipType> .
 <:Publisher> <rdfs:subClassOf> <:Agent> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Cancelled> <:Published>) .
-<:MediaObject> <gufo:categorizes> <:MediaObjectType> .
+<:MediaObjectType> <gufo:categorizes> <:MediaObject> .
 <:Publisher> <rdfs:subClassOf> <gufo:Endurant> .
 <:Publisher> <rdf:type> <gufo:RoleMixin> .
 <:EventPlan> <owl:equivalentClass> [
@@ -341,7 +341,7 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:Sponsor> <rdfs:subClassOf> <gufo:Endurant> .
 <:Sponsor> <rdf:type> <gufo:RoleMixin> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Closed> <:Open> <:PermanentlyClosed>) .
-<:MountainArea> <gufo:categorizes> <:MountainAreaType> .
+<:MountainAreaType> <gufo:categorizes> <:MountainArea> .
 <:Organizer> <rdf:type> <owl:Class> .
 <:Organizer> <rdf:type> <owl:NamedIndividual> .
 <:Organizer> <rdfs:label> \\"Organizer\\" .
@@ -368,7 +368,7 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:inheresInTrail> <rdfs:subPropertyOf> <gufo:inheresIn> .
 <:Organizer> <rdfs:subClassOf> <:Agent> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:LineString> <:MultiLineString> <:Multipoint> <:Multipolygon> <:Point> <:Polygon>) .
-<:EventPlan> <gufo:categorizes> <:EventType> .
+<:EventType> <gufo:categorizes> <:EventPlan> .
 <:Organizer> <rdfs:subClassOf> <gufo:Endurant> .
 <:Organizer> <rdf:type> <gufo:RoleMixin> .
 <:Geometry> <owl:equivalentClass> [
@@ -1165,14 +1165,14 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   rdf:type owl:Class;
   owl:unionOf (:LineString :MultiLineString :Multipoint :Multipolygon :Point :Polygon)
 ].
-:Lift gufo:categorizes :LiftType.
+:LiftType gufo:categorizes :Lift.
 :AreaOwner rdfs:subClassOf :Agent.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:SkiSlope :Snowpark).
-:Trail gufo:categorizes :TrailType.
+:TrailType gufo:categorizes :Trail.
 :AreaOwner rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:RoleMixin.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Lift :MountainArea :Trail).
-:SnowparkFeature gufo:categorizes :SnowparkFeatureType.
+:SnowparkFeatureType gufo:categorizes :SnowparkFeature.
 :CopyrightOwner rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Copyright Owner\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:CompositeArea :Simplearea).
@@ -1284,7 +1284,7 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 :areaowner rdf:type gufo:MaterialRelationshipType.
 :Publisher rdfs:subClassOf :Agent.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Cancelled :Published).
-:MediaObject gufo:categorizes :MediaObjectType.
+:MediaObjectType gufo:categorizes :MediaObject.
 :Publisher rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:RoleMixin.
 :EventPlan owl:equivalentClass [
@@ -1345,7 +1345,7 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 :Sponsor rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:RoleMixin.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Closed :Open :PermanentlyClosed).
-:MountainArea gufo:categorizes :MountainAreaType.
+:MountainAreaType gufo:categorizes :MountainArea.
 :Organizer rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Organizer\\".
 :Place owl:equivalentClass [
@@ -1371,7 +1371,7 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 :inheresInTrail rdfs:subPropertyOf gufo:inheresIn.
 :Organizer rdfs:subClassOf :Agent.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:LineString :MultiLineString :Multipoint :Multipolygon :Point :Polygon).
-:EventPlan gufo:categorizes :EventType.
+:EventType gufo:categorizes :EventPlan.
 :Organizer rdfs:subClassOf gufo:Endurant;
     rdf:type gufo:RoleMixin.
 :Geometry owl:equivalentClass [
@@ -2224,7 +2224,7 @@ exports[`should transform OntoUML generic model to gUFO 1`] = `
     rdfs:range :School;
     rdfs:label \\"studies-at\\";
     rdf:type gufo:MaterialRelationshipType.
-:Agent_rwhBA6AUB0UtArB gufo:categorizes :AgentType.
+:AgentType gufo:categorizes :Agent_rwhBA6AUB0UtArB.
 :isDerivedFromJnsvza6gaqacnat rdf:type owl:ObjectProperty;
     rdfs:comment \\"Relation URI was automatically generated.\\".
 :Date rdf:type owl:Class, owl:NamedIndividual;
@@ -2564,7 +2564,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
 :mediatesPerson rdfs:subPropertyOf gufo:mediates.
 :HouseholdMember rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:FullCarevpt :ModularCarempt).
-:SocialRelationshipType gufo:categorizes :SocialRelationship.
+:SocialRelationship gufo:categorizes :SocialRelationshipType.
 :HouseholdMember rdf:type gufo:Role.
 :CareAtHome owl:equivalentClass [
   rdf:type owl:Class;
@@ -3064,7 +3064,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
 :mediatesPerson_mYV443aAUBAysY9q rdfs:subPropertyOf gufo:mediates.
 :Organization_PgJFHaGAqAe8BSn rdfs:subClassOf :Agent_VvxaFHaGAqAe8BAf.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DeclinedByClient :DeclinedByProvider).
-:LegalRepresentation gufo:categorizes :LegalRepresentationType.
+:LegalRepresentationType gufo:categorizes :LegalRepresentation.
 :Organization_PgJFHaGAqAe8BSn rdfs:subClassOf gufo:FunctionalComplex;
     rdf:type gufo:Kind.
 :DeclinedAllocation owl:equivalentClass [
@@ -3093,7 +3093,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdfs:domain :Organization_PgJFHaGAqAe8BSn;
     rdfs:label \\"kvk number\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:CareAtHomeAgreement :CareAtHealthcareOrganisationAgreement).
-:CourtDecisionType gufo:categorizes :CourtDecision.
+:CourtDecision gufo:categorizes :CourtDecisionType.
 :LtcServiceAgreement owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:CareAtHomeAgreement :CareAtHealthcareOrganisationAgreement)
@@ -3488,7 +3488,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :LtcIndication
 ].
 :Replaces rdfs:subPropertyOf gufo:mediates.
-:HealthcareOffice gufo:categorizes :HealthcareOfficeCode.
+:HealthcareOfficeCode gufo:categorizes :HealthcareOffice.
 :Prefers rdf:type owl:ObjectProperty;
     rdfs:domain :EligibleLthClient;
     rdfs:range :ClientPreference;
@@ -3592,12 +3592,12 @@ exports[`should transform iStandard model to gUFO 1`] = `
 ].
 :mediatesLtcServiceAgreement rdfs:subPropertyOf gufo:mediates.
 :CivilStatus rdfs:subClassOf gufo:ConcreteIndividualType.
-:CareLocation gufo:categorizes :CareLocationType.
+:CareLocationType gufo:categorizes :CareLocation.
 :LegalGender rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Legal Gender\\".
-:HealthcareServicePackage gufo:categorizes :HealthcareServicePackageType.
+:HealthcareServicePackageType gufo:categorizes :HealthcareServicePackage.
 :LegalGender rdfs:subClassOf gufo:ConcreteIndividualType.
-:CareProfile gufo:categorizes :EligibleLthClient.
+:EligibleLthClient gufo:categorizes :CareProfile.
 :SocialRelationship rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Social Relationship\\".
 :GrantedBy rdf:type owl:ObjectProperty;
