@@ -168,7 +168,8 @@ export class ModelManager {
   updateReadOnlyReferencesToIClass(_class: IClass): void {}
 
   updateReadOnlyReferencesToIRelation(relation: IRelation): void {
-    // console.log(relation);
+    if (relation) {
+    }
   }
 
   updateReadOnlyReferencesToIGeneralization(
@@ -190,12 +191,15 @@ export class ModelManager {
   updateReadOnlyReferencesToIGeneralizationSet(
     generalizationSet: IGeneralizationSet,
   ): void {
-    if(generalizationSet.generalizations) {
+    if (generalizationSet.generalizations) {
       generalizationSet.generalizations.forEach(
         (generalization: IGeneralization) => {
           generalization._memberOfGeneralizationSets = !generalization._memberOfGeneralizationSets
             ? []
-            : [...generalization._memberOfGeneralizationSets, generalizationSet];
+            : [
+                ...generalization._memberOfGeneralizationSets,
+                generalizationSet,
+              ];
         },
       );
     }
@@ -225,7 +229,8 @@ export class ModelManager {
   }
 
   updateReadOnlyReferencesToILiteral(literal: ILiteral): void {
-    // console.log(literal);
+    if (literal) {
+    }
   }
 
   resolveReference(reference: IReference | IReference[]): any {

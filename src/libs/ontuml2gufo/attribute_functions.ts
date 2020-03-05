@@ -63,7 +63,7 @@ export async function transformAttributes(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Promise<boolean> {
-  const { properties } = classElement;
+  const { properties, stereotypes } = classElement;
   const quads = [];
 
   for (let i = 0; i < properties.length; i += 1) {
@@ -73,12 +73,18 @@ export async function transformAttributes(
     const {
       name: datatypeName,
       stereotypes: datatypeStereotypes,
+      properties: datatypeProperties,
     } = (propertyType || {}) as IClass;
     const datatypeStereotype = datatypeStereotypes
       ? datatypeStereotypes[0]
       : null;
+    const isComplexDatatype =
+      datatypeStereotype === ClassStereotype.DATATYPE && datatypeProperties;
 
-    if (!propertyType || datatypeStereotype === ClassStereotype.DATATYPE) {
+    if (
+      !propertyType ||
+      (datatypeStereotype === ClassStereotype.DATATYPE && !isComplexDatatype)
+    ) {
       quads.push(
         quad(
           namedNode(`:${uri}`),
@@ -112,8 +118,7 @@ export async function transformAttributes(
       }
     } else if (
       propertyType &&
-      datatypeStereotype &&
-      datatypeStereotype !== ClassStereotype.DATATYPE
+      (datatypeStereotype !== ClassStereotype.DATATYPE || isComplexDatatype)
     ) {
       const rangeUri = getURI({ element: propertyType, options });
 
@@ -138,6 +143,16 @@ export async function transformAttributes(
           namedNode(`:${rangeUri}`),
         ),
       );
+
+      if (isComplexDatatype && stereotypes[0] !== ClassStereotype.DATATYPE) {
+        quads.push(
+          quad(
+            namedNode(`:${uri}`),
+            namedNode('rdfs:subClassOf'),
+            namedNode('gufo:hasReifiedQualityValue'),
+          ),
+        );
+      }
     }
 
     if (name) {

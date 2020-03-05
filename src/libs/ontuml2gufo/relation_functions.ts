@@ -161,7 +161,8 @@ function transformRelationCardinalities(
   relation: IRelation,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { properties } = relation;
+  const { properties, stereotypes } = relation;
+  const isInvertedRelation = RelationsInvertedInGUFO.includes(stereotypes[0]);
 
   const domain = properties[0];
   const range = properties[1];
@@ -175,14 +176,14 @@ function transformRelationCardinalities(
         writer,
         relation,
         cardinality: rangeCardinality,
-        isDomain: true,
+        isDomain: !isInvertedRelation,
         options,
       }),
       ...transformRelationCardinality({
         writer,
         relation,
         cardinality: domainCardinality,
-        isDomain: false,
+        isDomain: isInvertedRelation,
         options,
       }),
     ];
@@ -314,10 +315,7 @@ function generateRelationCardinalityQuad({
 }): Quad {
   // get domain
   const classElement = isDomain ? relation.getSource() : relation.getTarget();
-  const classUri = getURI({
-    element: classElement,
-    options,
-  });
+  const classUri = getURI({ element: classElement, options });
 
   return quad(
     namedNode(`:${classUri}`),

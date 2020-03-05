@@ -122,9 +122,8 @@ export class OntoUML2GUFO {
 
     for (let i = 0; i < generalizationSets.length; i += 1) {
       const generalizationSet = generalizationSets[i];
-      
-      if(!generalizationSet.generalizations)
-        continue;
+
+      if (!generalizationSet.generalizations) continue;
 
       const classGeneralizations = (<IGeneralization[]>(
         generalizationSet.generalizations
