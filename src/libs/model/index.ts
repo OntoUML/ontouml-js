@@ -168,7 +168,7 @@ export class ModelManager {
   updateReadOnlyReferencesToIClass(_class: IClass): void {}
 
   updateReadOnlyReferencesToIRelation(relation: IRelation): void {
-    console.log(relation);
+    // console.log(relation);
   }
 
   updateReadOnlyReferencesToIGeneralization(
@@ -225,7 +225,7 @@ export class ModelManager {
   }
 
   updateReadOnlyReferencesToILiteral(literal: ILiteral): void {
-    console.log(literal);
+    // console.log(literal);
   }
 
   resolveReference(reference: IReference | IReference[]): any {
