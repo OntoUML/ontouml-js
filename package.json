@@ -23,9 +23,13 @@
     "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'",
     "test": "jest --coverage",
     "test:clean": "jest --clearCache",
-    "test:watch": "jest --watch",
-    "prepublish": "npm run build",
-    "pre-push": "npm run lint && npm test"
+    "test:watch": "jest --watch"
+  },
+  "husky": {
+    "hooks": {
+      "prepublish": "npm run build",
+      "pre-push": "npm test"
+    }
   },
   "_moduleAliases": {
     "@test-models": "test_models",
