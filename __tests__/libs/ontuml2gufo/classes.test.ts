@@ -9,6 +9,7 @@ import {
   roleExample1,
   alpinebits,
   istandard,
+  person,
 } from '@test-models/valids';
 import { IPackage, IOntoUML2GUFOOptions } from '@types';
 
@@ -47,6 +48,12 @@ it('should transform AlpineBits model to gUFO - N-Triple', async () => {
 it('should transform iStandard model to gUFO', async () => {
   const result = await transformOntoUML2GUFO(istandard, { format: 'Turtle' });
   fs.writeFileSync('__tests__/libs/ontuml2gufo/istandard.ttl', result);
+  expect(result).toMatchSnapshot();
+});
+
+it('should transform iStandard model to gUFO', async () => {
+  const result = await transformOntoUML2GUFO(person, { format: 'Turtle' });
+  fs.writeFileSync('__tests__/libs/ontuml2gufo/person.ttl', result);
   expect(result).toMatchSnapshot();
 });
 

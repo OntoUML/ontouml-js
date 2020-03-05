@@ -172,8 +172,7 @@ function transformRelationCardinalities(
   relation: IRelation,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { properties, stereotypes } = relation;
-  const isInvertedRelation = RelationsInvertedInGUFO.includes(stereotypes[0]);
+  const { properties } = relation;
 
   const domain = properties[0];
   const range = properties[1];
@@ -187,14 +186,14 @@ function transformRelationCardinalities(
         writer,
         relation,
         cardinality: rangeCardinality,
-        isDomain: !isInvertedRelation,
+        isDomain: true,
         options,
       }),
       ...transformRelationCardinality({
         writer,
         relation,
         cardinality: domainCardinality,
-        isDomain: isInvertedRelation,
+        isDomain: false,
         options,
       }),
     ];
@@ -363,6 +362,7 @@ function generateRelationBlankQuad({
   // get range
   const classElement = isDomain ? relation.getTarget() : relation.getSource();
   const classUri = getURI({ element: classElement, options });
+  const isRelationDomain = isInvertedRelation ? !isDomain : isDomain;
 
   const blankTriples = [
     {
@@ -371,10 +371,9 @@ function generateRelationBlankQuad({
     },
     {
       predicate: namedNode('owl:onProperty'),
-      object:
-        isDomain && !isInvertedRelation
-          ? namedNode(`:${uri}`)
-          : writer.blank(namedNode('owl:inverseOf'), namedNode(`:${uri}`)),
+      object: isRelationDomain
+        ? namedNode(`:${uri}`)
+        : writer.blank(namedNode('owl:inverseOf'), namedNode(`:${uri}`)),
     },
   ];
 

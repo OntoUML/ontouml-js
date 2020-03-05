@@ -3251,17 +3251,17 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdfs:range :StayAgreement;
     rdfs:domain :Stay_NK8LuPaAUAACnkbx;
     rdfs:comment \\"Relation URI was automatically generated.\\".
-:Stay_NK8LuPaAUAACnkbx rdfs:subClassOf [
-  rdf:type owl:Restriction;
-  owl:onProperty [ owl:inverseOf :participatedInStayAgreement ];
-  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
-  owl:onClass :StayAgreement
-].
 :StayAgreement rdfs:subClassOf [
   rdf:type owl:Restriction;
   owl:onProperty [ owl:inverseOf :participatedInStayAgreement ];
-  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
   owl:onClass :Stay_NK8LuPaAUAACnkbx
+].
+:Stay_NK8LuPaAUAACnkbx rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :participatedInStayAgreement;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :StayAgreement
 ].
 :participatedInStayAgreement rdfs:subPropertyOf gufo:participatedIn.
 :DivorcedFromRp rdf:type owl:Class, owl:NamedIndividual;
@@ -4385,5 +4385,197 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdfs:range :TimeInstant_KN80vaFYFAUAhra;
     rdfs:subPropertyOf gufo:hasReifiedQualityValue;
     rdfs:label \\"effective until\\".
+"
+`;
+
+exports[`should transform iStandard model to gUFO 2`] = `
+"@prefix : <https://example.com#>.
+@prefix gufo: <http://purl.org/nemo/gufo#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+
+<https://example.com> rdf:type owl:Ontology;
+    owl:imports gufo:.
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Person_UvtCNQ6GAqACCAt :Car).
+[ rdf:type owl:AllDisjointClasses ] owl:members (:Adult_vQoaNQ6GAqACCAif :Child_0VoaNQ6GAqACCAir).
+:inheresInPerson_lOKGNQ6GAqACCAnJ rdf:type owl:ObjectProperty;
+    rdfs:domain :Love;
+    rdfs:range :Person_UvtCNQ6GAqACCAt;
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:Love rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :inheresInPerson_lOKGNQ6GAqACCAnJ;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Person_UvtCNQ6GAqACCAt
+].
+:inheresInPerson_lOKGNQ6GAqACCAnJ rdfs:subPropertyOf gufo:inheresIn.
+:Person_UvtCNQ6GAqACCAt owl:equivalentClass [
+  rdf:type owl:Class;
+  owl:unionOf (:Man_UlfKNQ6GAqACCAbv :Woman_6dIqNQ6GAqACCAcd)
+].
+:externallyDependsOnPerson rdf:type owl:ObjectProperty;
+    rdfs:domain :Love;
+    rdfs:range :Person_UvtCNQ6GAqACCAt;
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:Love rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :externallyDependsOnPerson;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Person_UvtCNQ6GAqACCAt
+].
+:externallyDependsOnPerson rdfs:subPropertyOf gufo:externallyDependsOn.
+:mediatesPerson_sUp2NQ6GAqACCArY rdf:type owl:ObjectProperty;
+    rdfs:domain :Ownership;
+    rdfs:range :Person_UvtCNQ6GAqACCAt;
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:Ownership rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :mediatesPerson_sUp2NQ6GAqACCArY;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Person_UvtCNQ6GAqACCAt
+].
+:mediatesPerson_sUp2NQ6GAqACCArY rdfs:subPropertyOf gufo:mediates.
+:mediatesCar rdf:type owl:ObjectProperty;
+    rdfs:domain :Ownership;
+    rdfs:range :Car;
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:Ownership rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :mediatesCar;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Car
+].
+:Car rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :mediatesCar ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Ownership
+].
+:mediatesCar rdfs:subPropertyOf gufo:mediates.
+:isCollectionMemberOfAgent rdf:type owl:ObjectProperty;
+    rdfs:domain :Group;
+    rdfs:range :Agent_AjXKNQ6GAqACCAbQ;
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:Group rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :isCollectionMemberOfAgent;
+  owl:minQualifiedCardinality \\"2\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Agent_AjXKNQ6GAqACCAbQ
+].
+:isCollectionMemberOfAgent rdfs:subPropertyOf gufo:isCollectionMemberOf.
+:PersonType gufo:categorizes :Person_UvtCNQ6GAqACCAt.
+:participatedInMatch rdf:type owl:ObjectProperty;
+    rdfs:range :Match;
+    rdfs:domain :Woman_6dIqNQ6GAqACCAcd;
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:Match rdfs:subClassOf [
+  rdf:type owl:Class;
+  owl:intersectionOf ([
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :participatedInMatch ];
+  owl:minQualifiedCardinality \\"10\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Woman_6dIqNQ6GAqACCAcd
+] [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :participatedInMatch ];
+  owl:maxQualifiedCardinality \\"22\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Woman_6dIqNQ6GAqACCAcd
+])
+].
+:participatedInMatch rdfs:subPropertyOf gufo:participatedIn.
+:wasTerminatedInDeath rdf:type owl:ObjectProperty;
+    rdfs:range :Death_fkoRNQ6GAqACCA1A;
+    rdfs:domain :Person_UvtCNQ6GAqACCAt;
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:Death_fkoRNQ6GAqACCA1A rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :wasTerminatedInDeath ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Person_UvtCNQ6GAqACCAt
+].
+:Person_UvtCNQ6GAqACCAt rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :wasTerminatedInDeath;
+  owl:maxQualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Death_fkoRNQ6GAqACCA1A
+].
+:wasTerminatedInDeath rdfs:subPropertyOf gufo:wasTerminatedIn.
+:wasCreatedInBirth rdf:type owl:ObjectProperty;
+    rdfs:range :Birth;
+    rdfs:domain :Person_UvtCNQ6GAqACCAt;
+    rdfs:comment \\"Relation URI was automatically generated.\\".
+:Birth rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty [ owl:inverseOf :wasCreatedInBirth ];
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Person_UvtCNQ6GAqACCAt
+].
+:Person_UvtCNQ6GAqACCAt rdfs:subClassOf [
+  rdf:type owl:Restriction;
+  owl:onProperty :wasCreatedInBirth;
+  owl:qualifiedCardinality \\"1\\"^^xsd:nonNegativeInteger;
+  owl:onClass :Birth
+].
+:wasCreatedInBirth rdfs:subPropertyOf gufo:wasCreatedIn.
+:Person_UvtCNQ6GAqACCAt rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Person\\";
+    rdfs:subClassOf :Agent_AjXKNQ6GAqACCAbQ, gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:Group rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Group\\";
+    rdfs:subClassOf gufo:Collection;
+    rdf:type gufo:Kind.
+:Agent_AjXKNQ6GAqACCAbQ rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Agent\\";
+    rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:Category.
+:FootballMatch rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Football Match\\";
+    rdfs:subClassOf :Match, gufo:Event.
+:Man_UlfKNQ6GAqACCAbv rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Man\\";
+    rdfs:subClassOf :Person_UvtCNQ6GAqACCAt;
+    rdf:type gufo:SubKind.
+:Woman_6dIqNQ6GAqACCAcd rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Woman\\";
+    rdfs:subClassOf :Person_UvtCNQ6GAqACCAt;
+    rdf:type gufo:SubKind.
+:Love rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Love\\";
+    rdfs:subClassOf gufo:ExtrinsicMode;
+    rdf:type gufo:Kind.
+:Adult_vQoaNQ6GAqACCAif rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Adult\\";
+    rdfs:subClassOf :Person_UvtCNQ6GAqACCAt;
+    rdf:type gufo:Phase.
+:Child_0VoaNQ6GAqACCAir rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Child\\";
+    rdfs:subClassOf :Person_UvtCNQ6GAqACCAt;
+    rdf:type gufo:Phase.
+:Match rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Match\\";
+    rdfs:subClassOf gufo:Event.
+:BasketballMatch rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Basketball Match\\";
+    rdfs:subClassOf :Match, gufo:Event.
+:Ownership rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Ownership\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:PersonType rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Person Type\\";
+    rdfs:subClassOf gufo:ConcreteIndividualType.
+:Car rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Car\\";
+    rdfs:subClassOf gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:Birth rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Birth\\";
+    rdfs:subClassOf gufo:Event.
+:Death_fkoRNQ6GAqACCA1A rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Death\\";
+    rdfs:subClassOf gufo:Event.
 "
 `;
