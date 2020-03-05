@@ -269,6 +269,27 @@ export function transformType(
   ];
 }
 
+export function transformDatatype(
+  classElement: IClass,
+  options: IOntoUML2GUFOOptions,
+): Quad[] {
+  const { properties } = classElement;
+  const uri = getURI({ element: classElement, options });
+  const isComplexDatatype = !!properties;
+
+  if (isComplexDatatype) {
+    return [
+      quad(
+        namedNode(`:${uri}`),
+        namedNode('rdfs:subClassOf'),
+        namedNode('gufo:QualityValue'),
+      ),
+    ];
+  }
+
+  return [];
+}
+
 export function transformEnumeration(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
@@ -291,7 +312,6 @@ export function transformEnumeration(
   );
 
   const quads = [
-    quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('owl:Class')),
     quad(
       namedNode(`:${uri}`),
       namedNode('rdfs:subClassOf'),
