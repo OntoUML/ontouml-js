@@ -123,13 +123,17 @@ export function transformInstantiation(
   relation: IRelation,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const uri = getURI({ element: relation, options });
+  const source = relation.getSource();
+  const target = relation.getTarget();
+
+  const domainUri = getURI({ element: source, options });
+  const rangeUri = getURI({ element: target, options });
 
   return [
     quad(
-      namedNode(`:${uri}`),
-      namedNode('rdfs:subPropertyOf'),
+      namedNode(`:${domainUri}`),
       namedNode('gufo:categorizes'),
+      namedNode(`:${rangeUri}`),
     ),
   ];
 }

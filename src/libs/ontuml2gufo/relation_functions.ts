@@ -1,7 +1,11 @@
 import { N3Writer, Quad, BlankNode } from 'n3';
 import memoizee from 'memoizee';
 import { IRelation, IOntoUML2GUFOOptions } from '@types';
-import { RelationStereotype, RelationsInvertedInGUFO } from '@constants/.';
+import {
+  RelationStereotype,
+  RelationsInvertedInGUFO,
+  RelationsAsPredicateInGUFO,
+} from '@constants/.';
 import { getURI } from './helper_functions';
 import {
   transformCharacterization,
@@ -67,14 +71,21 @@ export async function transformRelations(
       stereotype &&
       Object.keys(transformStereotypeFunction).includes(stereotype)
     ) {
-      // Get base quads (type, domain, range) from relation
-      const baseQuads = transformRelationBase(relation, options);
-      // Get cardinalities quads from relation
-      const cardinalityQuads = transformRelationCardinalities(
-        writer,
-        relation,
-        options,
-      );
+      let baseQuads = [];
+      let cardinalityQuads = [];
+
+      // ignore predicate relations like instantiation
+      if (!RelationsAsPredicateInGUFO.includes(stereotype)) {
+        // Get base quads (type, domain, range) from relation
+        baseQuads = transformRelationBase(relation, options);
+        // Get cardinalities quads from relation
+        cardinalityQuads = transformRelationCardinalities(
+          writer,
+          relation,
+          options,
+        );
+      }
+
       // Get stereotype quads from relation
       const stereotypeQuads = transformStereotypeFunction[stereotype](
         relation,

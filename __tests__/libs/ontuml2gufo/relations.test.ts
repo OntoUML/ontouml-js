@@ -51,9 +51,6 @@ describe('Relations', () => {
       '<:described> <rdfs:subPropertyOf> <gufo:historicallyDependsOn>',
     );
     expect(result).toContain(
-      '<:categorizesEventPlan> <rdfs:subPropertyOf> <gufo:categorizes>',
-    );
-    expect(result).toContain(
       '<:isComponentOfSnowpark> <rdfs:subPropertyOf> <gufo:isComponentOf>',
     );
     expect(result).toContain(
