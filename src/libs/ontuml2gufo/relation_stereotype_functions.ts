@@ -126,8 +126,8 @@ export function transformInstantiation(
   const source = relation.getSource();
   const target = relation.getTarget();
 
-  const domainUri = getURI({ element: source, options });
-  const rangeUri = getURI({ element: target, options });
+  const domainUri = getURI({ element: target, options });
+  const rangeUri = getURI({ element: source, options });
 
   return [
     quad(
