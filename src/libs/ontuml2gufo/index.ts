@@ -133,11 +133,7 @@ export class OntoUML2GUFO {
         (generalization: IGeneralization) => generalization.specific,
       );
       const classNodes = classes.map((classElement: IClass) => {
-        const uri = getURI({
-          id: classElement.id,
-          name: classElement.name,
-          uriFormatBy: options.uriFormatBy,
-        });
+        const uri = getURI({ element: classElement, options });
 
         return namedNode(`:${uri}`);
       });
@@ -158,11 +154,7 @@ export class OntoUML2GUFO {
 
         // add complete
         if (generalizationSet.isComplete) {
-          const parentUri = getURI({
-            id: parent.id,
-            name: parent.name,
-            uriFormatBy: options.uriFormatBy,
-          });
+          const parentUri = getURI({ element: parent, options });
 
           await writer.addQuad(
             namedNode(`:${parentUri}`),

@@ -176,7 +176,7 @@ it('should transform <<enumeration>> class', async () => {
   expect(result).toContain(
     `<:SnowparkDifficulty> <owl:equivalentClass> [
       <rdf:type> <owl:Class>;
-      <owl:oneOf> (<:S> <:M> <:L> <:Xl>)
+      <owl:oneOf> (<:S> <:M> <:L> <:XL>)
     ] .`.replace(/ {4}/gm, ''),
   );
 });

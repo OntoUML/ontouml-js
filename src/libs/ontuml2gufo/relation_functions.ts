@@ -99,28 +99,15 @@ function transformRelationBase(
   relation: IRelation,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name, stereotypes } = relation;
-  const uri = getURI({
-    id,
-    name,
-    uriFormatBy: options.uriFormatBy,
-    relation,
-  });
+  const { name, stereotypes } = relation;
+  const uri = getURI({ element: relation, options });
   const isInvertedRelation = RelationsInvertedInGUFO.includes(stereotypes[0]);
 
   const sourceClass = relation.getSource();
   const targetClass = relation.getTarget();
 
-  const domainClassUri = getURI({
-    id: sourceClass.id,
-    name: sourceClass.name,
-    uriFormatBy: options.uriFormatBy,
-  });
-  const rangeClassUri = getURI({
-    id: targetClass.id,
-    name: targetClass.name,
-    uriFormatBy: options.uriFormatBy,
-  });
+  const domainClassUri = getURI({ element: sourceClass, options });
+  const rangeClassUri = getURI({ element: targetClass, options });
 
   const quads = [
     quad(
@@ -222,11 +209,7 @@ function transformRelationCardinality({
 }): Quad[] {
   // get domain
   const classElement = isDomain ? relation.getSource() : relation.getTarget();
-  const classUri = getURI({
-    id: classElement.id,
-    name: classElement.name,
-    uriFormatBy: options.uriFormatBy,
-  });
+  const classUri = getURI({ element: classElement, options });
 
   const quads = [];
 
@@ -332,9 +315,8 @@ function generateRelationCardinalityQuad({
   // get domain
   const classElement = isDomain ? relation.getSource() : relation.getTarget();
   const classUri = getURI({
-    id: classElement.id,
-    name: classElement.name,
-    uriFormatBy: options.uriFormatBy,
+    element: classElement,
+    options,
   });
 
   return quad(
@@ -366,20 +348,10 @@ function generateRelationBlankQuad({
   cardinality?: number;
   options: IOntoUML2GUFOOptions;
 }): BlankNode {
-  const { id, name } = relation;
-  const uri = getURI({
-    id,
-    name,
-    uriFormatBy: options.uriFormatBy,
-    relation,
-  });
+  const uri = getURI({ element: relation, options });
   // get range
   const classElement = isDomain ? relation.getTarget() : relation.getSource();
-  const classUri = getURI({
-    id: classElement.id,
-    name: classElement.name,
-    uriFormatBy: options.uriFormatBy,
-  });
+  const classUri = getURI({ element: classElement, options });
 
   const blankTriples = [
     {
