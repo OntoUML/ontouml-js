@@ -18,6 +18,7 @@ import {
   transformQuality,
   transformEvent,
   transformType,
+  transformDatatype,
   transformEnumeration,
 } from './class_stereotype_functions';
 import { transformAttributes } from './attribute_functions';
@@ -96,36 +97,42 @@ export async function transformClassesByStereotype(
     [ClassStereotype.QUALITY]: transformQuality,
     [ClassStereotype.EVENT]: transformEvent,
     [ClassStereotype.TYPE]: transformType,
+    [ClassStereotype.DATATYPE]: transformDatatype,
     [ClassStereotype.ENUMERATION]: transformEnumeration,
   };
 
   for (let i = 0; i < classes.length; i += 1) {
     const classElement = classes[i];
-    const { name, stereotypes } = classElement;
+    const { name, stereotypes, properties } = classElement;
     const uri = getURI({ element: classElement, options });
 
     if (!stereotypes || stereotypes.length !== 1) continue;
 
     const stereotype = stereotypes[0];
     const parents = classElement.getParents();
-
-    if (
+    const hasStereotypeFunction =
       stereotype &&
-      Object.keys(transformStereotypeFunction).includes(stereotype)
-    ) {
-      await writer.addQuads([
-        quad(
-          namedNode(`:${uri}`),
-          namedNode('rdf:type'),
-          namedNode('owl:Class'),
-        ),
-        quad(
-          namedNode(`:${uri}`),
-          namedNode('rdf:type'),
-          namedNode('owl:NamedIndividual'),
-        ),
-        quad(namedNode(`:${uri}`), namedNode('rdfs:label'), literal(name)),
-      ]);
+      Object.keys(transformStereotypeFunction).includes(stereotype);
+
+    if (hasStereotypeFunction) {
+      const isPrimitiveDatatype =
+        stereotype === ClassStereotype.DATATYPE && !properties;
+
+      if (!isPrimitiveDatatype) {
+        await writer.addQuads([
+          quad(
+            namedNode(`:${uri}`),
+            namedNode('rdf:type'),
+            namedNode('owl:Class'),
+          ),
+          quad(
+            namedNode(`:${uri}`),
+            namedNode('rdf:type'),
+            namedNode('owl:NamedIndividual'),
+          ),
+          quad(namedNode(`:${uri}`), namedNode('rdfs:label'), literal(name)),
+        ]);
+      }
 
       // Add subClassOf for all parents
       if (parents) {

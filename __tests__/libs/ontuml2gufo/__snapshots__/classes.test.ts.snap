@@ -4,9 +4,6 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 "<https://example.com> <rdf:type> <owl:Ontology> .
 <https://example.com> <owl:imports> <gufo:> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Organization> <:Person> <:Trail> <:Lift> <:MountainArea> <:AudioObject> <:VideoObject> <:ImageObject> <:SnowparkFeature> <:EventSeries>) .
-<:AreaOwner> <rdf:type> <owl:Class> .
-<:AreaOwner> <rdf:type> <owl:NamedIndividual> .
-<:AreaOwner> <rdfs:label> \\"Area Owner\\" .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Organization> <:Person>) .
 <:organizers> <rdf:type> <owl:ObjectProperty> .
 <:organizers> <rdfs:domain> <:EventPlan> .
@@ -23,7 +20,6 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:someValuesFrom> <:EventPlan>
 ] .
 <:organizers> <rdfs:subPropertyOf> <gufo:mediates> .
-<:AreaOwner> <rdfs:subClassOf> <:Agent> .
 <:Agent> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:Organization> <:Person>)
@@ -38,8 +34,6 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:someValuesFrom> <:EventPlan>
 ] .
 <:sponsors> <rdf:type> <gufo:MaterialRelationshipType> .
-<:AreaOwner> <rdfs:subClassOf> <gufo:Endurant> .
-<:AreaOwner> <rdf:type> <gufo:RoleMixin> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:AudioObject> <:ImageObject> <:VideoObject>) .
 <:contributors> <rdf:type> <owl:ObjectProperty> .
 <:contributors> <rdfs:domain> <:EventPlan> .
@@ -51,9 +45,6 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:someValuesFrom> <:EventPlan>
 ] .
 <:contributors> <rdf:type> <gufo:MaterialRelationshipType> .
-<:CopyrightOwner> <rdf:type> <owl:Class> .
-<:CopyrightOwner> <rdf:type> <owl:NamedIndividual> .
-<:CopyrightOwner> <rdfs:label> \\"Copyright Owner\\" .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Cancelled> <:Published>) .
 <:publisher> <rdf:type> <owl:ObjectProperty> .
 <:publisher> <rdfs:domain> <:EventPlan> .
@@ -71,7 +62,6 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:someValuesFrom> <:EventPlan>
 ] .
 <:publisher> <rdf:type> <gufo:MaterialRelationshipType> .
-<:CopyrightOwner> <rdfs:subClassOf> <:Agent> .
 <:EventPlan> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:Cancelled> <:Published>)
@@ -81,8 +71,6 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:described> <rdfs:range> <:NamedIndividual> .
 <:described> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
 <:described> <rdfs:subPropertyOf> <gufo:historicallyDependsOn> .
-<:CopyrightOwner> <rdfs:subClassOf> <gufo:Endurant> .
-<:CopyrightOwner> <rdf:type> <gufo:RoleMixin> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:CompositeEvent> <:SimpleEvent>) .
 <:venues> <rdf:type> <owl:ObjectProperty> .
 <:venues> <rdfs:domain> <:EventPlan> .
@@ -99,9 +87,6 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:someValuesFrom> <:EventPlan>
 ] .
 <:venues> <rdf:type> <gufo:MaterialRelationshipType> .
-<:Contributor> <rdf:type> <owl:Class> .
-<:Contributor> <rdf:type> <owl:NamedIndividual> .
-<:Contributor> <rdfs:label> \\"Contributor\\" .
 <:EventPlan> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:CompositeEvent> <:SimpleEvent>)
@@ -117,7 +102,6 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:onClass> <:EventSeries>
 ] .
 <:eventseries> <rdfs:subPropertyOf> <gufo:mediates> .
-<:Contributor> <rdfs:subClassOf> <:Agent> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Closed> <:Open> <:PermanentlyClosed>) .
 <:isComponentOfSnowpark> <rdf:type> <owl:ObjectProperty> .
 <:isComponentOfSnowpark> <rdfs:domain> <:SnowparkFeature> .
@@ -130,8 +114,6 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:onClass> <:Snowpark>
 ] .
 <:isComponentOfSnowpark> <rdfs:subPropertyOf> <gufo:isComponentOf> .
-<:Contributor> <rdfs:subClassOf> <gufo:Endurant> .
-<:Contributor> <rdf:type> <gufo:RoleMixin> .
 <:Place> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:Closed> <:Open> <:PermanentlyClosed>)
@@ -151,9 +133,6 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:someValuesFrom> <:Lift>
 ] .
 <:isComponentOfMountainArea> <rdfs:subPropertyOf> <gufo:isComponentOf> .
-<:Publisher> <rdf:type> <owl:Class> .
-<:Publisher> <rdf:type> <owl:NamedIndividual> .
-<:Publisher> <rdfs:label> \\"Publisher\\" .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:LineString> <:MultiLineString> <:Multipoint> <:Multipolygon> <:Point> <:Polygon>) .
 <:isComponentOfMountainArea_3x40WRaGAqCsIB4W> <rdf:type> <owl:ObjectProperty> .
 <:isComponentOfMountainArea_3x40WRaGAqCsIB4W> <rdfs:domain> <:Trail> .
@@ -171,22 +150,24 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 ] .
 <:isComponentOfMountainArea_3x40WRaGAqCsIB4W> <rdfs:subPropertyOf> <gufo:isComponentOf> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:EventPlan> <:SnowMeasurement>) .
-<:Publisher> <rdfs:subClassOf> <:Agent> .
+<:AreaOwner> <rdf:type> <owl:Class> .
+<:AreaOwner> <rdf:type> <owl:NamedIndividual> .
+<:AreaOwner> <rdfs:label> \\"Area Owner\\" .
 <:Geometry> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:LineString> <:MultiLineString> <:Multipoint> <:Multipolygon> <:Point> <:Polygon>)
 ] .
 <:Lift> <gufo:categorizes> <:LiftType> .
-<:Publisher> <rdfs:subClassOf> <gufo:Endurant> .
-<:Publisher> <rdf:type> <gufo:RoleMixin> .
+<:AreaOwner> <rdfs:subClassOf> <:Agent> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:SkiSlope> <:Snowpark>) .
 <:Trail> <gufo:categorizes> <:TrailType> .
-<:Sponsor> <rdf:type> <owl:Class> .
-<:Sponsor> <rdf:type> <owl:NamedIndividual> .
-<:Sponsor> <rdfs:label> \\"Sponsor\\" .
+<:AreaOwner> <rdfs:subClassOf> <gufo:Endurant> .
+<:AreaOwner> <rdf:type> <gufo:RoleMixin> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Lift> <:MountainArea> <:Trail>) .
 <:SnowparkFeature> <gufo:categorizes> <:SnowparkFeatureType> .
-<:Sponsor> <rdfs:subClassOf> <:Agent> .
+<:CopyrightOwner> <rdf:type> <owl:Class> .
+<:CopyrightOwner> <rdf:type> <owl:NamedIndividual> .
+<:CopyrightOwner> <rdfs:label> \\"Copyright Owner\\" .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:CompositeArea> <:Simplearea>) .
 <:measuredby> <rdf:type> <owl:ObjectProperty> .
 <:measuredby> <rdfs:domain> <:SnowMeasurement> .
@@ -199,8 +180,7 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:onClass> <:Agent>
 ] .
 <:measuredby> <rdfs:subPropertyOf> <gufo:mediates> .
-<:Sponsor> <rdfs:subClassOf> <gufo:Endurant> .
-<:Sponsor> <rdf:type> <gufo:RoleMixin> .
+<:CopyrightOwner> <rdfs:subClassOf> <:Agent> .
 <:MountainArea> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:CompositeArea> <:Simplearea>)
@@ -215,9 +195,8 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:someValuesFrom> <:Place>
 ] .
 <:mediatesPlace> <rdfs:subPropertyOf> <gufo:mediates> .
-<:Organizer> <rdf:type> <owl:Class> .
-<:Organizer> <rdf:type> <owl:NamedIndividual> .
-<:Organizer> <rdfs:label> \\"Organizer\\" .
+<:CopyrightOwner> <rdfs:subClassOf> <gufo:Endurant> .
+<:CopyrightOwner> <rdf:type> <gufo:RoleMixin> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Ongoing> <:Realized> <:Rescheduled> <:Scheduled>) .
 <:secondarysurface> <rdf:type> <owl:ObjectProperty> .
 <:secondarysurface> <rdfs:domain> <:SnowMeasurement> .
@@ -230,7 +209,9 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:onClass> <:Snow>
 ] .
 <:secondarysurface> <rdfs:subPropertyOf> <gufo:mediates> .
-<:Organizer> <rdfs:subClassOf> <:Agent> .
+<:Contributor> <rdf:type> <owl:Class> .
+<:Contributor> <rdf:type> <owl:NamedIndividual> .
+<:Contributor> <rdfs:label> \\"Contributor\\" .
 <:Published> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:Ongoing> <:Realized> <:Rescheduled> <:Scheduled>)
@@ -247,8 +228,7 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 ] .
 <:primarysurface> <rdfs:subPropertyOf> <gufo:mediates> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Geometry> <:Difficulty>) .
-<:Organizer> <rdfs:subClassOf> <gufo:Endurant> .
-<:Organizer> <rdf:type> <gufo:RoleMixin> .
+<:Contributor> <rdfs:subClassOf> <:Agent> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Organization> <:Person>) .
 <:subareas> <rdf:type> <owl:ObjectProperty> .
 <:subareas> <rdfs:domain> <:CompositeArea> .
@@ -267,9 +247,8 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:onClass> <:CompositeArea>
 ] .
 <:subareas> <rdfs:subPropertyOf> <gufo:isComponentOf> .
-<:Organization> <rdf:type> <owl:Class> .
-<:Organization> <rdf:type> <owl:NamedIndividual> .
-<:Organization> <rdfs:label> \\"Organization\\" .
+<:Contributor> <rdfs:subClassOf> <gufo:Endurant> .
+<:Contributor> <rdf:type> <gufo:RoleMixin> .
 <:Agent> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:Organization> <:Person>)
@@ -279,7 +258,9 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:connections> <rdfs:range> <:Place> .
 <:connections> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
 <:connections> <rdf:type> <gufo:MaterialRelationshipType> .
-<:Organization> <rdfs:subClassOf> <:Agent> .
+<:Publisher> <rdf:type> <owl:Class> .
+<:Publisher> <rdf:type> <owl:NamedIndividual> .
+<:Publisher> <rdfs:label> \\"Publisher\\" .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:AudioObject> <:ImageObject> <:VideoObject>) .
 <:areaowner> <rdf:type> <owl:ObjectProperty> .
 <:areaowner> <rdfs:domain> <:MountainArea> .
@@ -296,13 +277,11 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:someValuesFrom> <:MountainArea>
 ] .
 <:areaowner> <rdf:type> <gufo:MaterialRelationshipType> .
-<:Organization> <rdfs:subClassOf> <gufo:FunctionalComplex> .
-<:Organization> <rdf:type> <gufo:Kind> .
+<:Publisher> <rdfs:subClassOf> <:Agent> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Cancelled> <:Published>) .
 <:MediaObject> <gufo:categorizes> <:MediaObjectType> .
-<:Person> <rdf:type> <owl:Class> .
-<:Person> <rdf:type> <owl:NamedIndividual> .
-<:Person> <rdfs:label> \\"Person\\" .
+<:Publisher> <rdfs:subClassOf> <gufo:Endurant> .
+<:Publisher> <rdf:type> <gufo:RoleMixin> .
 <:EventPlan> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:Cancelled> <:Published>)
@@ -323,7 +302,9 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:someValuesFrom> <:Geometry>
 ] .
 <:inheresInGeospatialFeature> <rdfs:subPropertyOf> <gufo:inheresIn> .
-<:Person> <rdfs:subClassOf> <:Agent> .
+<:Sponsor> <rdf:type> <owl:Class> .
+<:Sponsor> <rdf:type> <owl:NamedIndividual> .
+<:Sponsor> <rdfs:label> \\"Sponsor\\" .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:CompositeEvent> <:SimpleEvent>) .
 <:license> <rdf:type> <owl:ObjectProperty> .
 <:license> <rdfs:domain> <:MediaObject> .
@@ -336,8 +317,7 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:onClass> <:LicenseType>
 ] .
 <:license> <rdf:type> <gufo:MaterialRelationshipType> .
-<:Person> <rdfs:subClassOf> <gufo:FunctionalComplex> .
-<:Person> <rdf:type> <gufo:Kind> .
+<:Sponsor> <rdfs:subClassOf> <:Agent> .
 <:EventPlan> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:CompositeEvent> <:SimpleEvent>)
@@ -358,12 +338,13 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:someValuesFrom> <:MediaObject>
 ] .
 <:copyrightowner> <rdf:type> <gufo:MaterialRelationshipType> .
-<:Agent> <rdf:type> <owl:Class> .
-<:Agent> <rdf:type> <owl:NamedIndividual> .
-<:Agent> <rdfs:label> \\"Agent\\" .
+<:Sponsor> <rdfs:subClassOf> <gufo:Endurant> .
+<:Sponsor> <rdf:type> <gufo:RoleMixin> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Closed> <:Open> <:PermanentlyClosed>) .
 <:MountainArea> <gufo:categorizes> <:MountainAreaType> .
-<:Agent> <rdfs:subClassOf> <:NamedIndividual> .
+<:Organizer> <rdf:type> <owl:Class> .
+<:Organizer> <rdf:type> <owl:NamedIndividual> .
+<:Organizer> <rdfs:label> \\"Organizer\\" .
 <:Place> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:Closed> <:Open> <:PermanentlyClosed>)
@@ -385,35 +366,54 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
   <owl:onClass> <:Difficulty>
 ] .
 <:inheresInTrail> <rdfs:subPropertyOf> <gufo:inheresIn> .
-<:Agent> <rdfs:subClassOf> <gufo:Endurant> .
-<:Agent> <rdf:type> <gufo:Category> .
+<:Organizer> <rdfs:subClassOf> <:Agent> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:LineString> <:MultiLineString> <:Multipoint> <:Multipolygon> <:Point> <:Polygon>) .
 <:EventPlan> <gufo:categorizes> <:EventType> .
-<:contactPoints> <rdf:type> <owl:ObjectProperty> .
-<:contactPoints> <rdfs:domain> <:Agent> .
-<:contactPoints> <rdfs:range> <:ContactPoint> .
-<:contactPoints> <rdfs:label> \\"contactPoints\\" .
+<:Organizer> <rdfs:subClassOf> <gufo:Endurant> .
+<:Organizer> <rdf:type> <gufo:RoleMixin> .
 <:Geometry> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:LineString> <:MultiLineString> <:Multipoint> <:Multipolygon> <:Point> <:Polygon>)
 ] .
+<:Organization> <rdf:type> <owl:Class> .
+<:Organization> <rdf:type> <owl:NamedIndividual> .
+<:Organization> <rdfs:label> \\"Organization\\" .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:SkiSlope> <:Snowpark>) .
+<:Organization> <rdfs:subClassOf> <:Agent> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Lift> <:MountainArea> <:Trail>) .
+<:Organization> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:Organization> <rdf:type> <gufo:Kind> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:CompositeArea> <:Simplearea>) .
-<:Place> <rdf:type> <owl:Class> .
-<:Place> <rdf:type> <owl:NamedIndividual> .
-<:Place> <rdfs:label> \\"Place\\" .
+<:Person> <rdf:type> <owl:Class> .
+<:Person> <rdf:type> <owl:NamedIndividual> .
+<:Person> <rdfs:label> \\"Person\\" .
 <:MountainArea> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:CompositeArea> <:Simplearea>)
 ] .
-<:Place> <rdfs:subClassOf> <:GeospatialFeature> .
+<:Person> <rdfs:subClassOf> <:Agent> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Ongoing> <:Realized> <:Rescheduled> <:Scheduled>) .
-<:Place> <rdfs:subClassOf> <:NamedIndividual> .
+<:Person> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:Person> <rdf:type> <gufo:Kind> .
 <:Published> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:Ongoing> <:Realized> <:Rescheduled> <:Scheduled>)
 ] .
+<:Agent> <rdf:type> <owl:Class> .
+<:Agent> <rdf:type> <owl:NamedIndividual> .
+<:Agent> <rdfs:label> \\"Agent\\" .
+<:Agent> <rdfs:subClassOf> <:NamedIndividual> .
+<:Agent> <rdfs:subClassOf> <gufo:Endurant> .
+<:Agent> <rdf:type> <gufo:Category> .
+<:contactPoints> <rdf:type> <owl:ObjectProperty> .
+<:contactPoints> <rdfs:domain> <:Agent> .
+<:contactPoints> <rdfs:range> <:ContactPoint> .
+<:contactPoints> <rdfs:label> \\"contactPoints\\" .
+<:Place> <rdf:type> <owl:Class> .
+<:Place> <rdf:type> <owl:NamedIndividual> .
+<:Place> <rdfs:label> \\"Place\\" .
+<:Place> <rdfs:subClassOf> <:GeospatialFeature> .
+<:Place> <rdfs:subClassOf> <:NamedIndividual> .
 <:Place> <rdfs:subClassOf> <gufo:Endurant> .
 <:Place> <rdf:type> <gufo:Category> .
 <:openingHours> <rdf:type> <owl:ObjectProperty> .
@@ -483,6 +483,28 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:endDate> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
 <:endDate> <rdfs:domain> <:EventPlan> .
 <:endDate> <rdfs:label> \\"endDate\\" .
+<:ContactPoint> <rdf:type> <owl:Class> .
+<:ContactPoint> <rdfs:subClassOf> <gufo:QualityValue> .
+<:availableHours> <rdf:type> <owl:ObjectProperty> .
+<:availableHours> <rdfs:domain> <:ContactPoint> .
+<:availableHours> <rdfs:range> <:HoursSpecification> .
+<:availableHours> <rdfs:subClassOf> <gufo:hasReifiedQualityValue> .
+<:availableHours> <rdfs:label> \\"availableHours\\" .
+<:address_n8DOg6AUB20tyfy> <rdf:type> <owl:ObjectProperty> .
+<:address_n8DOg6AUB20tyfy> <rdfs:domain> <:ContactPoint> .
+<:address_n8DOg6AUB20tyfy> <rdfs:range> <:Address> .
+<:address_n8DOg6AUB20tyfy> <rdfs:subClassOf> <gufo:hasReifiedQualityValue> .
+<:address_n8DOg6AUB20tyfy> <rdfs:label> \\"address\\" .
+<:telephone> <rdf:type> <owl:DatatypeProperty> .
+<:telephone> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:telephone> <rdfs:domain> <:ContactPoint> .
+<:telephone> <rdfs:range> <xsd:string> .
+<:telephone> <rdfs:label> \\"telephone\\" .
+<:email> <rdf:type> <owl:DatatypeProperty> .
+<:email> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:email> <rdfs:domain> <:ContactPoint> .
+<:email> <rdfs:range> <xsd:string> .
+<:email> <rdfs:label> \\"email\\" .
 <:NamedIndividual> <rdf:type> <owl:Class> .
 <:NamedIndividual> <rdf:type> <owl:NamedIndividual> .
 <:NamedIndividual> <rdfs:label> \\"Named Individual\\" .
@@ -603,6 +625,43 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:Venue> <rdfs:subClassOf> <:Place> .
 <:Venue> <rdfs:subClassOf> <gufo:Endurant> .
 <:Venue> <rdf:type> <gufo:RoleMixin> .
+<:Address> <rdf:type> <owl:Class> .
+<:Address> <rdfs:subClassOf> <gufo:QualityValue> .
+<:street> <rdf:type> <owl:DatatypeProperty> .
+<:street> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:street> <rdfs:domain> <:Address> .
+<:street> <rdfs:range> <xsd:string> .
+<:street> <rdfs:label> \\"street\\" .
+<:category> <rdf:type> <owl:DatatypeProperty> .
+<:category> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:category> <rdfs:domain> <:Address> .
+<:category> <rdfs:range> <xsd:string> .
+<:category> <rdfs:label> \\"category\\" .
+<:complement> <rdf:type> <owl:DatatypeProperty> .
+<:complement> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:complement> <rdfs:domain> <:Address> .
+<:complement> <rdfs:range> <xsd:string> .
+<:complement> <rdfs:label> \\"complement\\" .
+<:country> <rdf:type> <owl:DatatypeProperty> .
+<:country> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:country> <rdfs:domain> <:Address> .
+<:country> <rdfs:range> <xsd:string> .
+<:country> <rdfs:label> \\"country\\" .
+<:region> <rdf:type> <owl:DatatypeProperty> .
+<:region> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:region> <rdfs:domain> <:Address> .
+<:region> <rdfs:range> <xsd:string> .
+<:region> <rdfs:label> \\"region\\" .
+<:city> <rdf:type> <owl:DatatypeProperty> .
+<:city> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:city> <rdfs:domain> <:Address> .
+<:city> <rdfs:range> <xsd:string> .
+<:city> <rdfs:label> \\"city\\" .
+<:zipcode> <rdf:type> <owl:DatatypeProperty> .
+<:zipcode> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:zipcode> <rdfs:domain> <:Address> .
+<:zipcode> <rdfs:range> <xsd:string> .
+<:zipcode> <rdfs:label> \\"zipcode\\" .
 <:AudioObject> <rdf:type> <owl:Class> .
 <:AudioObject> <rdf:type> <owl:NamedIndividual> .
 <:AudioObject> <rdfs:label> \\"Audio Object\\" .
@@ -719,9 +778,6 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:LicenseType> <rdfs:label> \\"License Type\\" .
 <:LicenseType> <rdfs:subClassOf> <gufo:ConcreteIndividualType> .
 <:SnowparkDifficulty> <rdf:type> <owl:Class> .
-<:SnowparkDifficulty> <rdf:type> <owl:NamedIndividual> .
-<:SnowparkDifficulty> <rdfs:label> \\"Snowpark Difficulty\\" .
-<:SnowparkDifficulty> <rdf:type> <owl:Class> .
 <:SnowparkDifficulty> <rdfs:subClassOf> <gufo:QualityValue> .
 <:SnowparkDifficulty> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
@@ -735,9 +791,6 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:L> <rdf:label> \\"L\\" .
 <:XL> <rdf:type> <:SnowparkDifficulty> .
 <:XL> <rdf:label> \\"XL\\" .
-<:UsDifficulty> <rdf:type> <owl:Class> .
-<:UsDifficulty> <rdf:type> <owl:NamedIndividual> .
-<:UsDifficulty> <rdfs:label> \\"US Difficulty\\" .
 <:UsDifficulty> <rdf:type> <owl:Class> .
 <:UsDifficulty> <rdfs:subClassOf> <gufo:QualityValue> .
 <:UsDifficulty> <owl:equivalentClass> [
@@ -758,9 +811,6 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:Expert> <rdf:label> \\"Expert\\" .
 <:TerrainPark> <rdf:type> <:UsDifficulty> .
 <:TerrainPark> <rdf:label> \\"TerrainPark\\" .
-<:EuDifficulty> <rdf:type> <owl:Class> .
-<:EuDifficulty> <rdf:type> <owl:NamedIndividual> .
-<:EuDifficulty> <rdfs:label> \\"EU Difficulty\\" .
 <:EuDifficulty> <rdf:type> <owl:Class> .
 <:EuDifficulty> <rdfs:subClassOf> <gufo:QualityValue> .
 <:EuDifficulty> <owl:equivalentClass> [
@@ -799,6 +849,46 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:coordinates> <rdfs:domain> <:Geometry> .
 <:coordinates> <rdfs:range> <:Coordinate> .
 <:coordinates> <rdfs:label> \\"coordinates\\" .
+<:HoursSpecification> <rdf:type> <owl:Class> .
+<:HoursSpecification> <rdfs:subClassOf> <gufo:QualityValue> .
+<:validfrom> <rdf:type> <owl:DatatypeProperty> .
+<:validfrom> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:validfrom> <rdfs:domain> <:HoursSpecification> .
+<:validfrom> <rdfs:label> \\"valid from\\" .
+<:closes> <rdf:type> <owl:DatatypeProperty> .
+<:closes> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:closes> <rdfs:domain> <:HoursSpecification> .
+<:closes> <rdfs:label> \\"closes\\" .
+<:validto> <rdf:type> <owl:DatatypeProperty> .
+<:validto> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:validto> <rdfs:domain> <:HoursSpecification> .
+<:validto> <rdfs:label> \\"valid to\\" .
+<:opens> <rdf:type> <owl:DatatypeProperty> .
+<:opens> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:opens> <rdfs:domain> <:HoursSpecification> .
+<:opens> <rdfs:label> \\"opens\\" .
+<:dayofweek> <rdf:type> <owl:ObjectProperty> .
+<:dayofweek> <rdfs:domain> <:HoursSpecification> .
+<:dayofweek> <rdfs:range> <:DayOfWeek> .
+<:dayofweek> <rdfs:subClassOf> <gufo:hasReifiedQualityValue> .
+<:dayofweek> <rdfs:label> \\"day of week\\" .
+<:Coordinate> <rdf:type> <owl:Class> .
+<:Coordinate> <rdfs:subClassOf> <gufo:QualityValue> .
+<:longitude> <rdf:type> <owl:DatatypeProperty> .
+<:longitude> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:longitude> <rdfs:domain> <:Coordinate> .
+<:longitude> <rdfs:range> <xsd:float> .
+<:longitude> <rdfs:label> \\"longitude\\" .
+<:elevation> <rdf:type> <owl:DatatypeProperty> .
+<:elevation> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:elevation> <rdfs:domain> <:Coordinate> .
+<:elevation> <rdfs:range> <xsd:float> .
+<:elevation> <rdfs:label> \\"elevation\\" .
+<:latitude> <rdf:type> <owl:DatatypeProperty> .
+<:latitude> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:latitude> <rdfs:domain> <:Coordinate> .
+<:latitude> <rdfs:range> <xsd:float> .
+<:latitude> <rdfs:label> \\"latitude\\" .
 <:SnowparkFeatureType> <rdf:type> <owl:Class> .
 <:SnowparkFeatureType> <rdf:type> <owl:NamedIndividual> .
 <:SnowparkFeatureType> <rdfs:label> \\"Snowpark Feature Type\\" .
@@ -846,9 +936,6 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:Multipolygon> <rdfs:subClassOf> <:Geometry> .
 <:Multipolygon> <rdf:type> <gufo:SubKind> .
 <:DayOfWeek> <rdf:type> <owl:Class> .
-<:DayOfWeek> <rdf:type> <owl:NamedIndividual> .
-<:DayOfWeek> <rdfs:label> \\"Day of Week\\" .
-<:DayOfWeek> <rdf:type> <owl:Class> .
 <:DayOfWeek> <rdfs:subClassOf> <gufo:QualityValue> .
 <:DayOfWeek> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
@@ -868,6 +955,18 @@ exports[`should transform AlpineBits model to gUFO - N-Triple 1`] = `
 <:Friday> <rdf:label> \\"Friday\\" .
 <:Saturday> <rdf:type> <:DayOfWeek> .
 <:Saturday> <rdf:label> \\"Saturday\\" .
+<:Range> <rdf:type> <owl:Class> .
+<:Range> <rdfs:subClassOf> <gufo:QualityValue> .
+<:lower> <rdf:type> <owl:DatatypeProperty> .
+<:lower> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:lower> <rdfs:domain> <:Range> .
+<:lower> <rdfs:range> <xsd:int> .
+<:lower> <rdfs:label> \\"lower\\" .
+<:upper> <rdf:type> <owl:DatatypeProperty> .
+<:upper> <rdfs:subPropertyOf> <gufo:hasQualityValue> .
+<:upper> <rdfs:domain> <:Range> .
+<:upper> <rdfs:range> <xsd:int> .
+<:upper> <rdfs:label> \\"upper\\" .
 <:Published> <rdf:type> <owl:Class> .
 <:Published> <rdf:type> <owl:NamedIndividual> .
 <:Published> <rdfs:label> \\"Published\\" .
@@ -896,8 +995,6 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 <https://example.com> rdf:type owl:Ontology;
     owl:imports gufo:.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Organization :Person :Trail :Lift :MountainArea :AudioObject :VideoObject :ImageObject :SnowparkFeature :EventSeries).
-:AreaOwner rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Area Owner\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Organization :Person).
 :organizers rdf:type owl:ObjectProperty;
     rdfs:domain :EventPlan;
@@ -914,7 +1011,6 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:someValuesFrom :EventPlan
 ].
 :organizers rdfs:subPropertyOf gufo:mediates.
-:AreaOwner rdfs:subClassOf :Agent.
 :Agent owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Organization :Person)
@@ -929,8 +1025,6 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:someValuesFrom :EventPlan
 ].
 :sponsors rdf:type gufo:MaterialRelationshipType.
-:AreaOwner rdfs:subClassOf gufo:Endurant;
-    rdf:type gufo:RoleMixin.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:AudioObject :ImageObject :VideoObject).
 :contributors rdf:type owl:ObjectProperty;
     rdfs:domain :EventPlan;
@@ -942,8 +1036,6 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:someValuesFrom :EventPlan
 ].
 :contributors rdf:type gufo:MaterialRelationshipType.
-:CopyrightOwner rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Copyright Owner\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Cancelled :Published).
 :publisher rdf:type owl:ObjectProperty;
     rdfs:domain :EventPlan;
@@ -961,7 +1053,6 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:someValuesFrom :EventPlan
 ].
 :publisher rdf:type gufo:MaterialRelationshipType.
-:CopyrightOwner rdfs:subClassOf :Agent.
 :EventPlan owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Cancelled :Published)
@@ -971,8 +1062,6 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
     rdfs:range :NamedIndividual;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:historicallyDependsOn.
-:CopyrightOwner rdfs:subClassOf gufo:Endurant;
-    rdf:type gufo:RoleMixin.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:CompositeEvent :SimpleEvent).
 :venues rdf:type owl:ObjectProperty;
     rdfs:domain :EventPlan;
@@ -989,8 +1078,6 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:someValuesFrom :EventPlan
 ].
 :venues rdf:type gufo:MaterialRelationshipType.
-:Contributor rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Contributor\\".
 :EventPlan owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:CompositeEvent :SimpleEvent)
@@ -1006,7 +1093,6 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:onClass :EventSeries
 ].
 :eventseries rdfs:subPropertyOf gufo:mediates.
-:Contributor rdfs:subClassOf :Agent.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Closed :Open :PermanentlyClosed).
 :isComponentOfSnowpark rdf:type owl:ObjectProperty;
     rdfs:domain :SnowparkFeature;
@@ -1019,8 +1105,6 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:onClass :Snowpark
 ].
 :isComponentOfSnowpark rdfs:subPropertyOf gufo:isComponentOf.
-:Contributor rdfs:subClassOf gufo:Endurant;
-    rdf:type gufo:RoleMixin.
 :Place owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Closed :Open :PermanentlyClosed)
@@ -1040,8 +1124,6 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:someValuesFrom :Lift
 ].
 :isComponentOfMountainArea rdfs:subPropertyOf gufo:isComponentOf.
-:Publisher rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Publisher\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:LineString :MultiLineString :Multipoint :Multipolygon :Point :Polygon).
 :isComponentOfMountainArea_3x40WRaGAqCsIB4W rdf:type owl:ObjectProperty;
     rdfs:domain :Trail;
@@ -1059,21 +1141,22 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 ].
 :isComponentOfMountainArea_3x40WRaGAqCsIB4W rdfs:subPropertyOf gufo:isComponentOf.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:EventPlan :SnowMeasurement).
-:Publisher rdfs:subClassOf :Agent.
+:AreaOwner rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Area Owner\\".
 :Geometry owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:LineString :MultiLineString :Multipoint :Multipolygon :Point :Polygon)
 ].
 :Lift gufo:categorizes :LiftType.
-:Publisher rdfs:subClassOf gufo:Endurant;
-    rdf:type gufo:RoleMixin.
+:AreaOwner rdfs:subClassOf :Agent.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:SkiSlope :Snowpark).
 :Trail gufo:categorizes :TrailType.
-:Sponsor rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Sponsor\\".
+:AreaOwner rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:RoleMixin.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Lift :MountainArea :Trail).
 :SnowparkFeature gufo:categorizes :SnowparkFeatureType.
-:Sponsor rdfs:subClassOf :Agent.
+:CopyrightOwner rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Copyright Owner\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:CompositeArea :Simplearea).
 :measuredby rdf:type owl:ObjectProperty;
     rdfs:domain :SnowMeasurement;
@@ -1086,8 +1169,7 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:onClass :Agent
 ].
 :measuredby rdfs:subPropertyOf gufo:mediates.
-:Sponsor rdfs:subClassOf gufo:Endurant;
-    rdf:type gufo:RoleMixin.
+:CopyrightOwner rdfs:subClassOf :Agent.
 :MountainArea owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:CompositeArea :Simplearea)
@@ -1102,8 +1184,8 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:someValuesFrom :Place
 ].
 :mediatesPlace rdfs:subPropertyOf gufo:mediates.
-:Organizer rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Organizer\\".
+:CopyrightOwner rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:RoleMixin.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Ongoing :Realized :Rescheduled :Scheduled).
 :secondarysurface rdf:type owl:ObjectProperty;
     rdfs:domain :SnowMeasurement;
@@ -1116,7 +1198,8 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:onClass :Snow
 ].
 :secondarysurface rdfs:subPropertyOf gufo:mediates.
-:Organizer rdfs:subClassOf :Agent.
+:Contributor rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Contributor\\".
 :Published owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Ongoing :Realized :Rescheduled :Scheduled)
@@ -1133,8 +1216,7 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 ].
 :primarysurface rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Geometry :Difficulty).
-:Organizer rdfs:subClassOf gufo:Endurant;
-    rdf:type gufo:RoleMixin.
+:Contributor rdfs:subClassOf :Agent.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Organization :Person).
 :subareas rdf:type owl:ObjectProperty;
     rdfs:domain :CompositeArea;
@@ -1153,8 +1235,8 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:onClass :CompositeArea
 ].
 :subareas rdfs:subPropertyOf gufo:isComponentOf.
-:Organization rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Organization\\".
+:Contributor rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:RoleMixin.
 :Agent owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Organization :Person)
@@ -1164,7 +1246,8 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
     rdfs:range :Place;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdf:type gufo:MaterialRelationshipType.
-:Organization rdfs:subClassOf :Agent.
+:Publisher rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Publisher\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:AudioObject :ImageObject :VideoObject).
 :areaowner rdf:type owl:ObjectProperty;
     rdfs:domain :MountainArea;
@@ -1181,12 +1264,11 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:someValuesFrom :MountainArea
 ].
 :areaowner rdf:type gufo:MaterialRelationshipType.
-:Organization rdfs:subClassOf gufo:FunctionalComplex;
-    rdf:type gufo:Kind.
+:Publisher rdfs:subClassOf :Agent.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Cancelled :Published).
 :MediaObject gufo:categorizes :MediaObjectType.
-:Person rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Person\\".
+:Publisher rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:RoleMixin.
 :EventPlan owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Cancelled :Published)
@@ -1207,7 +1289,8 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:someValuesFrom :Geometry
 ].
 :inheresInGeospatialFeature rdfs:subPropertyOf gufo:inheresIn.
-:Person rdfs:subClassOf :Agent.
+:Sponsor rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Sponsor\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:CompositeEvent :SimpleEvent).
 :license rdf:type owl:ObjectProperty;
     rdfs:domain :MediaObject;
@@ -1220,8 +1303,7 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:onClass :LicenseType
 ].
 :license rdf:type gufo:MaterialRelationshipType.
-:Person rdfs:subClassOf gufo:FunctionalComplex;
-    rdf:type gufo:Kind.
+:Sponsor rdfs:subClassOf :Agent.
 :EventPlan owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:CompositeEvent :SimpleEvent)
@@ -1242,11 +1324,12 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:someValuesFrom :MediaObject
 ].
 :copyrightowner rdf:type gufo:MaterialRelationshipType.
-:Agent rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Agent\\".
+:Sponsor rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:RoleMixin.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Closed :Open :PermanentlyClosed).
 :MountainArea gufo:categorizes :MountainAreaType.
-:Agent rdfs:subClassOf :NamedIndividual.
+:Organizer rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Organizer\\".
 :Place owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Closed :Open :PermanentlyClosed)
@@ -1268,35 +1351,48 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
   owl:onClass :Difficulty
 ].
 :inheresInTrail rdfs:subPropertyOf gufo:inheresIn.
-:Agent rdfs:subClassOf gufo:Endurant;
-    rdf:type gufo:Category.
+:Organizer rdfs:subClassOf :Agent.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:LineString :MultiLineString :Multipoint :Multipolygon :Point :Polygon).
 :EventPlan gufo:categorizes :EventType.
-:contactPoints rdf:type owl:ObjectProperty;
-    rdfs:domain :Agent;
-    rdfs:range :ContactPoint;
-    rdfs:label \\"contactPoints\\".
+:Organizer rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:RoleMixin.
 :Geometry owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:LineString :MultiLineString :Multipoint :Multipolygon :Point :Polygon)
 ].
+:Organization rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Organization\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:SkiSlope :Snowpark).
+:Organization rdfs:subClassOf :Agent.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Lift :MountainArea :Trail).
+:Organization rdfs:subClassOf gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:CompositeArea :Simplearea).
-:Place rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Place\\".
+:Person rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Person\\".
 :MountainArea owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:CompositeArea :Simplearea)
 ].
-:Place rdfs:subClassOf :GeospatialFeature.
+:Person rdfs:subClassOf :Agent.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Ongoing :Realized :Rescheduled :Scheduled).
-:Place rdfs:subClassOf :NamedIndividual.
+:Person rdfs:subClassOf gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
 :Published owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Ongoing :Realized :Rescheduled :Scheduled)
 ].
-:Place rdfs:subClassOf gufo:Endurant;
+:Agent rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Agent\\";
+    rdfs:subClassOf :NamedIndividual, gufo:Endurant;
+    rdf:type gufo:Category.
+:contactPoints rdf:type owl:ObjectProperty;
+    rdfs:domain :Agent;
+    rdfs:range :ContactPoint;
+    rdfs:label \\"contactPoints\\".
+:Place rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Place\\";
+    rdfs:subClassOf :GeospatialFeature, :NamedIndividual, gufo:Endurant;
     rdf:type gufo:Category.
 :openingHours rdf:type owl:ObjectProperty;
     rdfs:domain :Place;
@@ -1356,6 +1452,28 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
     rdfs:subPropertyOf gufo:hasQualityValue;
     rdfs:domain :EventPlan;
     rdfs:label \\"endDate\\".
+:ContactPoint rdf:type owl:Class;
+    rdfs:subClassOf gufo:QualityValue.
+:availableHours rdf:type owl:ObjectProperty;
+    rdfs:domain :ContactPoint;
+    rdfs:range :HoursSpecification;
+    rdfs:subClassOf gufo:hasReifiedQualityValue;
+    rdfs:label \\"availableHours\\".
+:address_n8DOg6AUB20tyfy rdf:type owl:ObjectProperty;
+    rdfs:domain :ContactPoint;
+    rdfs:range :Address;
+    rdfs:subClassOf gufo:hasReifiedQualityValue;
+    rdfs:label \\"address\\".
+:telephone rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :ContactPoint;
+    rdfs:range xsd:string;
+    rdfs:label \\"telephone\\".
+:email rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :ContactPoint;
+    rdfs:range xsd:string;
+    rdfs:label \\"email\\".
 :NamedIndividual rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Named Individual\\";
     rdfs:subClassOf gufo:Endurant;
@@ -1457,6 +1575,43 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
     rdfs:label \\"Venue\\";
     rdfs:subClassOf :Place, gufo:Endurant;
     rdf:type gufo:RoleMixin.
+:Address rdf:type owl:Class;
+    rdfs:subClassOf gufo:QualityValue.
+:street rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Address;
+    rdfs:range xsd:string;
+    rdfs:label \\"street\\".
+:category rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Address;
+    rdfs:range xsd:string;
+    rdfs:label \\"category\\".
+:complement rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Address;
+    rdfs:range xsd:string;
+    rdfs:label \\"complement\\".
+:country rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Address;
+    rdfs:range xsd:string;
+    rdfs:label \\"country\\".
+:region rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Address;
+    rdfs:range xsd:string;
+    rdfs:label \\"region\\".
+:city rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Address;
+    rdfs:range xsd:string;
+    rdfs:label \\"city\\".
+:zipcode rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Address;
+    rdfs:range xsd:string;
+    rdfs:label \\"zipcode\\".
 :AudioObject rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Audio Object\\";
     rdfs:subClassOf :MediaObject, gufo:FunctionalComplex;
@@ -1556,9 +1711,7 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
 :LicenseType rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"License Type\\";
     rdfs:subClassOf gufo:ConcreteIndividualType.
-:SnowparkDifficulty rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Snowpark Difficulty\\";
-    rdf:type owl:Class;
+:SnowparkDifficulty rdf:type owl:Class;
     rdfs:subClassOf gufo:QualityValue;
     owl:equivalentClass [
   rdf:type owl:Class;
@@ -1572,9 +1725,7 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
     rdf:label \\"L\\".
 :XL rdf:type :SnowparkDifficulty;
     rdf:label \\"XL\\".
-:UsDifficulty rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"US Difficulty\\";
-    rdf:type owl:Class;
+:UsDifficulty rdf:type owl:Class;
     rdfs:subClassOf gufo:QualityValue;
     owl:equivalentClass [
   rdf:type owl:Class;
@@ -1594,9 +1745,7 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
     rdf:label \\"Expert\\".
 :TerrainPark rdf:type :UsDifficulty;
     rdf:label \\"TerrainPark\\".
-:EuDifficulty rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"EU Difficulty\\";
-    rdf:type owl:Class;
+:EuDifficulty rdf:type owl:Class;
     rdfs:subClassOf gufo:QualityValue;
     owl:equivalentClass [
   rdf:type owl:Class;
@@ -1630,6 +1779,46 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
     rdfs:domain :Geometry;
     rdfs:range :Coordinate;
     rdfs:label \\"coordinates\\".
+:HoursSpecification rdf:type owl:Class;
+    rdfs:subClassOf gufo:QualityValue.
+:validfrom rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :HoursSpecification;
+    rdfs:label \\"valid from\\".
+:closes rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :HoursSpecification;
+    rdfs:label \\"closes\\".
+:validto rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :HoursSpecification;
+    rdfs:label \\"valid to\\".
+:opens rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :HoursSpecification;
+    rdfs:label \\"opens\\".
+:dayofweek rdf:type owl:ObjectProperty;
+    rdfs:domain :HoursSpecification;
+    rdfs:range :DayOfWeek;
+    rdfs:subClassOf gufo:hasReifiedQualityValue;
+    rdfs:label \\"day of week\\".
+:Coordinate rdf:type owl:Class;
+    rdfs:subClassOf gufo:QualityValue.
+:longitude rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Coordinate;
+    rdfs:range xsd:float;
+    rdfs:label \\"longitude\\".
+:elevation rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Coordinate;
+    rdfs:range xsd:float;
+    rdfs:label \\"elevation\\".
+:latitude rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Coordinate;
+    rdfs:range xsd:float;
+    rdfs:label \\"latitude\\".
 :SnowparkFeatureType rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Snowpark Feature Type\\";
     rdfs:subClassOf gufo:ConcreteIndividualType.
@@ -1666,9 +1855,7 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
     rdfs:label \\"Multi-Polygon\\";
     rdfs:subClassOf :Geometry;
     rdf:type gufo:SubKind.
-:DayOfWeek rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Day of Week\\";
-    rdf:type owl:Class;
+:DayOfWeek rdf:type owl:Class;
     rdfs:subClassOf gufo:QualityValue;
     owl:equivalentClass [
   rdf:type owl:Class;
@@ -1688,6 +1875,18 @@ exports[`should transform AlpineBits model to gUFO 1`] = `
     rdf:label \\"Friday\\".
 :Saturday rdf:type :DayOfWeek;
     rdf:label \\"Saturday\\".
+:Range rdf:type owl:Class;
+    rdfs:subClassOf gufo:QualityValue.
+:lower rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Range;
+    rdfs:range xsd:int;
+    rdfs:label \\"lower\\".
+:upper rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Range;
+    rdfs:range xsd:int;
+    rdfs:label \\"upper\\".
 :Published rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Published\\";
     rdfs:subClassOf :EventPlan;
@@ -1706,25 +1905,25 @@ exports[`should transform OntoUML <<mixin>> class 1`] = `
 "<https://example.com> <rdf:type> <owl:Ontology> .
 <https://example.com> <owl:imports> <gufo:> .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:addoWg6DAAAARS0> <:SgLoWg6DAAAARTw>) .
-<:yhVoWg6DAAAARSb> <rdf:type> <owl:Class> .
-<:yhVoWg6DAAAARSb> <rdf:type> <owl:NamedIndividual> .
-<:yhVoWg6DAAAARSb> <rdfs:label> \\"Seatable\\" .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:addoWg6DAAAARS0> <:OtjoWg6DAAAARTV>) .
-<:yhVoWg6DAAAARSb> <rdfs:subClassOf> <gufo:Endurant> .
-<:yhVoWg6DAAAARSb> <rdf:type> <gufo:Mixin> .
 <:yhVoWg6DAAAARSb> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:addoWg6DAAAARS0> <:OtjoWg6DAAAARTV>)
 ] .
-<:addoWg6DAAAARS0> <rdf:type> <owl:Class> .
-<:addoWg6DAAAARS0> <rdf:type> <owl:NamedIndividual> .
-<:addoWg6DAAAARS0> <rdfs:label> \\"Chair\\" .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:s5HoWg6DAAAARUX> <:OtjoWg6DAAAARTV>) .
-<:addoWg6DAAAARS0> <rdfs:subClassOf> <:yhVoWg6DAAAARSb> .
 <:SgLoWg6DAAAARTw> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:s5HoWg6DAAAARUX> <:OtjoWg6DAAAARTV>)
 ] .
+<:yhVoWg6DAAAARSb> <rdf:type> <owl:Class> .
+<:yhVoWg6DAAAARSb> <rdf:type> <owl:NamedIndividual> .
+<:yhVoWg6DAAAARSb> <rdfs:label> \\"Seatable\\" .
+<:yhVoWg6DAAAARSb> <rdfs:subClassOf> <gufo:Endurant> .
+<:yhVoWg6DAAAARSb> <rdf:type> <gufo:Mixin> .
+<:addoWg6DAAAARS0> <rdf:type> <owl:Class> .
+<:addoWg6DAAAARS0> <rdf:type> <owl:NamedIndividual> .
+<:addoWg6DAAAARS0> <rdfs:label> \\"Chair\\" .
+<:addoWg6DAAAARS0> <rdfs:subClassOf> <:yhVoWg6DAAAARSb> .
 <:addoWg6DAAAARS0> <rdfs:subClassOf> <gufo:FunctionalComplex> .
 <:addoWg6DAAAARS0> <rdf:type> <gufo:Kind> .
 <:OtjoWg6DAAAARTV> <rdf:type> <owl:Class> .
@@ -1820,9 +2019,6 @@ exports[`should transform OntoUML <<mode>> class as IntrinsicMode 1`] = `
 exports[`should transform OntoUML <<relator>> class 1`] = `
 "<https://example.com> <rdf:type> <owl:Ontology> .
 <https://example.com> <owl:imports> <gufo:> .
-<:IsW5mg6DAAAAQqE> <rdf:type> <owl:Class> .
-<:IsW5mg6DAAAAQqE> <rdf:type> <owl:NamedIndividual> .
-<:IsW5mg6DAAAAQqE> <rdfs:label> \\"Person\\" .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:ech5mg6DAAAAQqj> <:jiZ5mg6DAAAAQrK>) .
 <:di3Fmg6DAAAAQud> <rdf:type> <owl:ObjectProperty> .
 <:di3Fmg6DAAAAQud> <rdfs:domain> <:zT5mg6DAAAAQsY> .
@@ -1841,8 +2037,6 @@ exports[`should transform OntoUML <<relator>> class 1`] = `
   <owl:onClass> <:zT5mg6DAAAAQsY>
 ] .
 <:di3Fmg6DAAAAQud> <rdfs:subPropertyOf> <gufo:mediates> .
-<:IsW5mg6DAAAAQqE> <rdfs:subClassOf> <gufo:FunctionalComplex> .
-<:IsW5mg6DAAAAQqE> <rdf:type> <gufo:Kind> .
 <:IsW5mg6DAAAAQqE> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:ech5mg6DAAAAQqj> <:jiZ5mg6DAAAAQrK>)
@@ -1864,9 +2058,6 @@ exports[`should transform OntoUML <<relator>> class 1`] = `
   <owl:onClass> <:SzOFmg6DAAAAQuF>
 ] .
 <:gWAlmg6DAAAAQu9> <rdfs:subPropertyOf> <gufo:mediates> .
-<:ech5mg6DAAAAQqj> <rdf:type> <owl:Class> .
-<:ech5mg6DAAAAQqj> <rdf:type> <owl:NamedIndividual> .
-<:ech5mg6DAAAAQqj> <rdfs:label> \\"Man\\" .
 <:7k4lmg6DAAAAQvd> <rdf:type> <owl:ObjectProperty> .
 <:7k4lmg6DAAAAQvd> <rdfs:domain> <:zT5mg6DAAAAQsY> .
 <:7k4lmg6DAAAAQvd> <rdfs:range> <:yPX5mg6DAAAAQtn> .
@@ -1884,9 +2075,17 @@ exports[`should transform OntoUML <<relator>> class 1`] = `
   <owl:onClass> <:zT5mg6DAAAAQsY>
 ] .
 <:7k4lmg6DAAAAQvd> <rdf:type> <gufo:MaterialRelationshipType> .
-<:ech5mg6DAAAAQqj> <rdfs:subClassOf> <:IsW5mg6DAAAAQqE> .
 <:gk0lmg6DAAAAQv1> <rdf:type> <owl:ObjectProperty> .
 <:gk0lmg6DAAAAQv1> <rdfs:comment> \\"Relation URI was automatically generated.\\" .
+<:IsW5mg6DAAAAQqE> <rdf:type> <owl:Class> .
+<:IsW5mg6DAAAAQqE> <rdf:type> <owl:NamedIndividual> .
+<:IsW5mg6DAAAAQqE> <rdfs:label> \\"Person\\" .
+<:IsW5mg6DAAAAQqE> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:IsW5mg6DAAAAQqE> <rdf:type> <gufo:Kind> .
+<:ech5mg6DAAAAQqj> <rdf:type> <owl:Class> .
+<:ech5mg6DAAAAQqj> <rdf:type> <owl:NamedIndividual> .
+<:ech5mg6DAAAAQqj> <rdfs:label> \\"Man\\" .
+<:ech5mg6DAAAAQqj> <rdfs:subClassOf> <:IsW5mg6DAAAAQqE> .
 <:ech5mg6DAAAAQqj> <rdf:type> <gufo:SubKind> .
 <:jiZ5mg6DAAAAQrK> <rdf:type> <owl:Class> .
 <:jiZ5mg6DAAAAQrK> <rdf:type> <owl:NamedIndividual> .
@@ -1914,16 +2113,16 @@ exports[`should transform OntoUML <<relator>> class 1`] = `
 exports[`should transform OntoUML <<role>> class 1`] = `
 "<https://example.com> <rdf:type> <owl:Ontology> .
 <https://example.com> <owl:imports> <gufo:> .
-<:IsW5mg6DAAAAQqE> <rdf:type> <owl:Class> .
-<:IsW5mg6DAAAAQqE> <rdf:type> <owl:NamedIndividual> .
-<:IsW5mg6DAAAAQqE> <rdfs:label> \\"Person\\" .
 [ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:ech5mg6DAAAAQqj> <:jiZ5mg6DAAAAQrK>) .
-<:IsW5mg6DAAAAQqE> <rdfs:subClassOf> <gufo:FunctionalComplex> .
-<:IsW5mg6DAAAAQqE> <rdf:type> <gufo:Kind> .
 <:IsW5mg6DAAAAQqE> <owl:equivalentClass> [
   <rdf:type> <owl:Class>;
   <owl:unionOf> (<:ech5mg6DAAAAQqj> <:jiZ5mg6DAAAAQrK>)
 ] .
+<:IsW5mg6DAAAAQqE> <rdf:type> <owl:Class> .
+<:IsW5mg6DAAAAQqE> <rdf:type> <owl:NamedIndividual> .
+<:IsW5mg6DAAAAQqE> <rdfs:label> \\"Person\\" .
+<:IsW5mg6DAAAAQqE> <rdfs:subClassOf> <gufo:FunctionalComplex> .
+<:IsW5mg6DAAAAQqE> <rdf:type> <gufo:Kind> .
 <:ech5mg6DAAAAQqj> <rdf:type> <owl:Class> .
 <:ech5mg6DAAAAQqj> <rdf:type> <owl:NamedIndividual> .
 <:ech5mg6DAAAAQqj> <rdfs:label> \\"Man\\" .
@@ -1958,8 +2157,6 @@ exports[`should transform OntoUML generic model to gUFO 1`] = `
 <https://example.com> rdf:type owl:Ontology;
     owl:imports gufo:.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Person_2uxhBA6AUB0UtArb :Organization_j5phBA6AUB0UtAts).
-:Month rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Month\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Organization_j5phBA6AUB0UtAts :Person_2uxhBA6AUB0UtArb).
 :mediatesSchool rdf:type owl:ObjectProperty;
     rdfs:domain :Enrollment;
@@ -1975,47 +2172,62 @@ exports[`should transform OntoUML generic model to gUFO 1`] = `
     rdfs:range :Student;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:mediates.
-:Agent_rwhBA6AUB0UtArB rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Agent\\".
 :inheresInEnrollment rdf:type owl:ObjectProperty;
     rdfs:domain :EnrollmentDate;
     rdfs:range :Enrollment;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:inheresIn.
-:Agent_rwhBA6AUB0UtArB rdfs:subClassOf gufo:Endurant;
-    rdf:type gufo:Category.
 :isComponentOfSchool rdf:type owl:ObjectProperty;
     rdfs:domain :Department;
     rdfs:range :School;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:isComponentOf.
-:Person_2uxhBA6AUB0UtArb rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Person\\".
 :mediatesEnrollment rdf:type owl:ObjectProperty;
     rdfs:domain :Sophomore;
     rdfs:range :Enrollment;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:mediates.
-:Person_2uxhBA6AUB0UtArb rdfs:subClassOf :Agent_rwhBA6AUB0UtArB.
 :mediatesEnrollment_dnp9hA6GAqACnA27 rdf:type owl:ObjectProperty;
     rdfs:domain :PrivatelyEnrolled;
     rdfs:range :Enrollment;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:mediates.
-:Person_2uxhBA6AUB0UtArb rdfs:subClassOf gufo:FunctionalComplex;
-    rdf:type gufo:Kind.
 :Studiesat rdf:type owl:ObjectProperty;
     rdfs:domain :Student;
     rdfs:range :School;
     rdfs:label \\"studies-at\\";
     rdf:type gufo:MaterialRelationshipType.
-:Organization_j5phBA6AUB0UtAts rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Organization\\".
 :Agent_rwhBA6AUB0UtArB gufo:categorizes :AgentType.
-:Organization_j5phBA6AUB0UtAts rdfs:subClassOf :Agent_rwhBA6AUB0UtArB.
 :isDerivedFromJnsvza6gaqacnat rdf:type owl:ObjectProperty;
     rdfs:comment \\"Relation URI was automatically generated.\\".
-:Organization_j5phBA6AUB0UtAts rdfs:subClassOf gufo:FunctionalComplex;
+:Date rdf:type owl:Class;
+    rdfs:subClassOf gufo:QualityValue.
+:day rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Date;
+    rdfs:range xsd:int;
+    rdfs:label \\"day\\".
+:year rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Date;
+    rdfs:range xsd:int;
+    rdfs:label \\"year\\".
+:month rdf:type owl:ObjectProperty;
+    rdfs:domain :Date;
+    rdfs:range :Month;
+    rdfs:subClassOf gufo:hasReifiedQualityValue;
+    rdfs:label \\"month\\".
+:Agent_rwhBA6AUB0UtArB rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Agent\\";
+    rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:Category.
+:Person_2uxhBA6AUB0UtArb rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Person\\";
+    rdfs:subClassOf :Agent_rwhBA6AUB0UtArB, gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
+:Organization_j5phBA6AUB0UtAts rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Organization\\";
+    rdfs:subClassOf :Agent_rwhBA6AUB0UtArB, gufo:FunctionalComplex;
     rdf:type gufo:Kind.
 :School rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"School\\";
@@ -2063,8 +2275,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
 <https://example.com> rdf:type owl:Ontology;
     owl:imports gufo:.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Person_QFOaFHaGAqAe8AX :Organization_PgJFHaGAqAe8BSn :Language :DisorderQuestion :RestrictionQuestion).
-:Agent_VvxaFHaGAqAe8BAf rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Agent\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Single :DivorcedFromRp :Divorced :Spouse :RegisteredPartner :SeparatedFromRp :Separated :Widowwidower).
 :MadeBy rdf:type owl:ObjectProperty;
     rdfs:domain :LtcRequest;
@@ -2082,8 +2292,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :LtcRequest
 ].
 :MadeBy rdfs:subPropertyOf gufo:mediates.
-:Agent_VvxaFHaGAqAe8BAf rdfs:subClassOf gufo:Endurant;
-    rdf:type gufo:Category.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Man :Unknown :Woman).
 :Benefits rdf:type owl:ObjectProperty;
     rdfs:domain :LtcRequest;
@@ -2101,8 +2309,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :LtcRequest
 ].
 :Benefits rdfs:subPropertyOf gufo:mediates.
-:Household rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Household\\".
 :Person_QFOaFHaGAqAe8AX owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Man :Unknown :Woman)
@@ -2123,8 +2329,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :LtcIndication
 ].
 :HeldBy rdfs:subPropertyOf gufo:mediates.
-:Household rdfs:subClassOf gufo:Collection;
-    rdf:type gufo:Kind.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:AdministrativeLtcAllocation :RegularLtcAllocation :TransitionalLtcAllocation).
 :isCollectionMemberOfHouseholdMember rdf:type owl:ObjectProperty;
     rdfs:domain :Household;
@@ -2142,8 +2346,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :Household
 ].
 :isCollectionMemberOfHouseholdMember rdfs:subPropertyOf gufo:isCollectionMemberOf.
-:HouseholdMember rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Household Member\\".
 :LtcAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:AdministrativeLtcAllocation :RegularLtcAllocation :TransitionalLtcAllocation)
@@ -2159,7 +2361,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :Agent_VvxaFHaGAqAe8BAf
 ].
 :mediatesAgent rdfs:subPropertyOf gufo:mediates.
-:HouseholdMember rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:AcceptedAllocation :DeclinedAllocation :RequestedAllocation :RevokedAllocation).
 :Creates rdf:type owl:ObjectProperty;
     rdfs:domain :PositiveDecision;
@@ -2178,7 +2379,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :PositiveDecision
 ].
 :Creates rdfs:subPropertyOf gufo:mediates.
-:HouseholdMember rdf:type gufo:Role.
 :LtcAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:AcceptedAllocation :DeclinedAllocation :RequestedAllocation :RevokedAllocation)
@@ -2194,8 +2394,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :Agent_VvxaFHaGAqAe8BAf
 ].
 :inheresInAgent rdfs:subPropertyOf gufo:inheresIn.
-:Person_QFOaFHaGAqAe8AX rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Person\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DeceasedPerson :LivingPerson :Unborn).
 :mediatesResidentInHealthcareInstitution rdf:type owl:ObjectProperty;
     rdfs:domain :Stay;
@@ -2213,8 +2411,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :Stay
 ].
 :mediatesResidentInHealthcareInstitution rdfs:subPropertyOf gufo:mediates.
-:Person_QFOaFHaGAqAe8AX rdfs:subClassOf :Agent_VvxaFHaGAqAe8BAf;
-    owl:equivalentClass [
+:Person_QFOaFHaGAqAe8AX owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:DeceasedPerson :LivingPerson :Unborn)
 ].
@@ -2228,8 +2425,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :HealthcareProvider
 ].
 :mediatesHealthcareProvider rdfs:subPropertyOf gufo:mediates.
-:Person_QFOaFHaGAqAe8AX rdfs:subClassOf gufo:FunctionalComplex;
-    rdf:type gufo:Kind.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:InactiveLtcIndication :ActiveLtcIndication).
 :HasPrimaryBasis rdf:type owl:ObjectProperty;
     rdfs:domain :LtcIndication;
@@ -2243,11 +2438,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
 ].
 :HasPrimaryBasis rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Stay :CourtDecision :SocialRelationship :Marriage :GpRegistration :Diagnosis :DisorderQuestionAssessment :RestrictionAssessment :DisorderAssessment :RestrictionQuestionAssessment :HealthcareServiceAgreement :CivilRegistration :LegalRepresentation :HealthcareContactAssigment :RegionalAllocationBasedOnInhabitantship :RequestDecision :LtcRequest :LtcIndication :Dossier :EligibilityDeclaration :AllocatedHealthcareServicePackage :DeliveredHealthcareServicePackage :ClientPreference :LtcAllocation :LtcServiceAgreement :IndicatedHealthcareServicePackage).
-:dateofbirth rdf:type owl:ObjectProperty;
-    rdfs:domain :Person_QFOaFHaGAqAe8AX;
-    rdfs:range :TimeInstant_KN80vaFYFAUAhra;
-    rdfs:subClassOf gufo:hasReifiedQualityValue;
-    rdfs:label \\"date of birth\\".
+:Agent_VvxaFHaGAqAe8BAf rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Agent\\".
 :LtcIndication owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:InactiveLtcIndication :ActiveLtcIndication)
@@ -2263,6 +2455,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :MedicalConditionType
 ].
 :HasSecondaryBasis rdfs:subPropertyOf gufo:mediates.
+:Agent_VvxaFHaGAqAe8BAf rdfs:subClassOf gufo:Endurant;
+    rdf:type gufo:Category.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:InactiveByFulfillment :InactiveByDeath :InactiveByReplacement :PendingIndication).
 :Regards rdf:type owl:ObjectProperty;
     rdfs:domain :RequestDecision;
@@ -2281,6 +2475,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :RequestDecision
 ].
 :Regards rdfs:subPropertyOf gufo:mediates.
+:Household rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Household\\".
 :InactiveLtcIndication owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:InactiveByFulfillment :InactiveByDeath :InactiveByReplacement :PendingIndication)
@@ -2301,6 +2497,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :RequestDecision
 ].
 :MadeBy_HAwPpnaGAqAe8DMJ rdfs:subPropertyOf gufo:mediates.
+:Household rdfs:subClassOf gufo:Collection;
+    rdf:type gufo:Kind.
 :CareLocationType owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:StayAtHealthcareProvider :CareAtHome)
@@ -2317,8 +2515,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
 ].
 :mediatesLegalGender rdfs:subPropertyOf gufo:mediates.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:LanguageCapability :Disease :Disability :Disorder :Prognosis :Restriction :SpatialRegion).
-:Woman rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Woman\\".
+:HouseholdMember rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Household Member\\".
 :FinancingType owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:HealthcareinNatura :PersonalBudget)
@@ -2334,10 +2532,10 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :Person_QFOaFHaGAqAe8AX
 ].
 :mediatesPerson rdfs:subPropertyOf gufo:mediates.
-:Woman rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
+:HouseholdMember rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:FullCarevpt :ModularCarempt).
 :SocialRelationshipType gufo:categorizes :SocialRelationship.
-:Woman rdf:type gufo:Role.
+:HouseholdMember rdf:type gufo:Role.
 :CareAtHome owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:FullCarevpt :ModularCarempt)
@@ -2358,8 +2556,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :Marriage
 ].
 :mediatesSpouse rdfs:subPropertyOf gufo:mediates.
-:Widowwidower rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Widow/Widower\\".
+:Person_QFOaFHaGAqAe8AX rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Person\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:CareAtHomeAgreement :CareAtHealthcareOrganisationAgreement).
 :HasLegalParent rdf:type owl:ObjectProperty;
     rdfs:domain :Person_QFOaFHaGAqAe8AX;
@@ -2377,7 +2575,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
 ].
 :HasLegalParent rdf:type gufo:MaterialRelationshipType.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:ContactInfo :Name :LtcIndicationBudget :LtcAllocationBudget).
-:Widowwidower rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
+:Person_QFOaFHaGAqAe8AX rdfs:subClassOf :Agent_VvxaFHaGAqAe8BAf.
 :LtcServiceAgreement owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:CareAtHomeAgreement :CareAtHealthcareOrganisationAgreement)
@@ -2398,7 +2596,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :Spouse
 ].
 :Marriedto rdf:type gufo:MaterialRelationshipType.
-:Widowwidower rdf:type gufo:Role.
+:Person_QFOaFHaGAqAe8AX rdfs:subClassOf gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:NegativeDecision :PositiveDecision).
 :Partnerof rdf:type owl:ObjectProperty;
     rdfs:domain :RegisteredPartner;
@@ -2416,8 +2615,11 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :RegisteredPartner
 ].
 :Partnerof rdf:type gufo:MaterialRelationshipType.
-:Unknown rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Unknown\\".
+:dateofbirth rdf:type owl:ObjectProperty;
+    rdfs:domain :Person_QFOaFHaGAqAe8AX;
+    rdfs:range :TimeInstant_KN80vaFYFAUAhra;
+    rdfs:subClassOf gufo:hasReifiedQualityValue;
+    rdfs:label \\"date of birth\\".
 :RequestDecision owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:NegativeDecision :PositiveDecision)
@@ -2432,7 +2634,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :HealthcareProvider
 ].
 :LivesIn rdf:type gufo:MaterialRelationshipType.
-:Unknown rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DirectStartAllocation :PendingAllocation).
 :mediatesPerson_QPfkVnaGAqAeDipd rdf:type owl:ObjectProperty;
     rdfs:domain :GpRegistration;
@@ -2451,7 +2652,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :GpRegistration
 ].
 :mediatesPerson_QPfkVnaGAqAeDipd rdfs:subPropertyOf gufo:mediates.
-:Unknown rdf:type gufo:Role.
 :AcceptedAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:DirectStartAllocation :PendingAllocation)
@@ -2472,8 +2672,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :GpRegistration
 ].
 :mediatesGeneralPractitioner rdfs:subPropertyOf gufo:mediates.
-:SinglePersonHousehold rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Single Person Household\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DeclinedByClient :DeclinedByProvider).
 :Providesbasiccarefor rdf:type owl:ObjectProperty;
     rdfs:domain :GeneralPractitioner;
@@ -2491,7 +2689,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :GeneralPractitioner
 ].
 :Providesbasiccarefor rdf:type gufo:MaterialRelationshipType.
-:SinglePersonHousehold rdfs:subClassOf :Household.
+:Woman rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Woman\\".
 :DeclinedAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:DeclinedByClient :DeclinedByProvider)
@@ -2501,7 +2700,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdfs:range :Person_QFOaFHaGAqAe8AX;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:inheresIn.
-:SinglePersonHousehold rdf:type gufo:Phase.
+:Woman rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Adult :Child).
 :externallyDependsOnLanguage rdf:type owl:ObjectProperty;
     rdfs:domain :LanguageCapability;
@@ -2514,8 +2713,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :Language
 ].
 :externallyDependsOnLanguage rdfs:subPropertyOf gufo:externallyDependsOn.
-:SeparatedFromRp rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Separated from RP\\".
+:Woman rdf:type gufo:Role.
 :Person_QFOaFHaGAqAe8AX owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Adult :Child)
@@ -2531,7 +2729,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :Person_QFOaFHaGAqAe8AX
 ].
 :inheresInMedicalCondition rdfs:subPropertyOf gufo:inheresIn.
-:SeparatedFromRp rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
+:Widowwidower rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Widow/Widower\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Single :DivorcedFromRp :Divorced :Spouse :RegisteredPartner :SeparatedFromRp :Separated :Widowwidower).
 :mediatesMedicalProfessional rdf:type owl:ObjectProperty;
     rdfs:domain :Diagnosis;
@@ -2544,7 +2743,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :MedicalProfessional
 ].
 :mediatesMedicalProfessional rdfs:subPropertyOf gufo:mediates.
-:SeparatedFromRp rdf:type gufo:Role.
+:Widowwidower rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Man :Unknown :Woman).
 :mediatesPerson_1Rlw1naGAqAeDjqF rdf:type owl:ObjectProperty;
     rdfs:domain :Diagnosis;
@@ -2557,8 +2756,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :Person_QFOaFHaGAqAe8AX
 ].
 :mediatesPerson_1Rlw1naGAqAeDjqF rdfs:subPropertyOf gufo:mediates.
-:Separated rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Separated\\".
+:Widowwidower rdf:type gufo:Role.
 :Person_QFOaFHaGAqAe8AX owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Man :Unknown :Woman)
@@ -2574,7 +2772,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :MedicalConditionType
 ].
 :mediatesMedicalConditionType rdfs:subPropertyOf gufo:mediates.
-:Separated rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
+:Unknown rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Unknown\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DeceasedPerson :LivingPerson :Unborn).
 :mediatesDisorderQuestion rdf:type owl:ObjectProperty;
     rdfs:domain :DisorderQuestionAssessment;
@@ -2587,7 +2786,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :DisorderQuestion
 ].
 :mediatesDisorderQuestion rdfs:subPropertyOf gufo:mediates.
-:Separated rdf:type gufo:Role.
+:Unknown rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
 :Person_QFOaFHaGAqAe8AX owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:DeceasedPerson :LivingPerson :Unborn)
@@ -2603,8 +2802,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :RestrictionType
 ].
 :mediatesRestrictionType rdfs:subPropertyOf gufo:mediates.
-:RegisteredPartner rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Registered Partner\\".
+:Unknown rdf:type gufo:Role.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:Adult :Child).
 :mediatesRestrictionQuestion rdf:type owl:ObjectProperty;
     rdfs:domain :RestrictionQuestionAssessment;
@@ -2617,7 +2815,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :RestrictionQuestion
 ].
 :mediatesRestrictionQuestion rdfs:subPropertyOf gufo:mediates.
-:RegisteredPartner rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
+:SinglePersonHousehold rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Single Person Household\\".
 :Person_QFOaFHaGAqAe8AX owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:Adult :Child)
@@ -2639,7 +2838,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :HealthcareOffice
 ].
 :materialRelationshipTypeHealthcareOfficeRegion rdf:type gufo:MaterialRelationshipType.
-:RegisteredPartner rdf:type gufo:Role.
+:SinglePersonHousehold rdfs:subClassOf :Household.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:NegativeDecision :PositiveDecision).
 :mediatesHealthcareOffice rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareServiceAgreement;
@@ -2652,8 +2851,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :HealthcareOffice
 ].
 :mediatesHealthcareOffice rdfs:subPropertyOf gufo:mediates.
-:Organization_PgJFHaGAqAe8BSn rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Organization\\".
+:SinglePersonHousehold rdf:type gufo:Phase.
 :RequestDecision owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:NegativeDecision :PositiveDecision)
@@ -2674,7 +2872,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :HealthcareServiceAgreement
 ].
 :mediatesLongTermHealthcareProvider rdfs:subPropertyOf gufo:mediates.
-:Organization_PgJFHaGAqAe8BSn rdfs:subClassOf :Agent_VvxaFHaGAqAe8BAf.
+:SeparatedFromRp rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Separated from RP\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:InactiveLtcIndication :ActiveLtcIndication).
 :MadeTo rdf:type owl:ObjectProperty;
     rdfs:domain :LtcRequest;
@@ -2687,8 +2886,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :Ciz
 ].
 :MadeTo rdfs:subPropertyOf gufo:mediates.
-:Organization_PgJFHaGAqAe8BSn rdfs:subClassOf gufo:FunctionalComplex;
-    rdf:type gufo:Kind.
+:SeparatedFromRp rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
 :LtcIndication owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:InactiveLtcIndication :ActiveLtcIndication)
@@ -2704,10 +2902,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :Diagnosis
 ].
 :MotivatedBy rdfs:subPropertyOf gufo:mediates.
-:kvknumber rdf:type owl:DatatypeProperty;
-    rdfs:subPropertyOf gufo:hasQualityValue;
-    rdfs:domain :Organization_PgJFHaGAqAe8BSn;
-    rdfs:label \\"kvk number\\".
+:SeparatedFromRp rdf:type gufo:Role.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:InactiveByFulfillment :InactiveByDeath :InactiveByReplacement :PendingIndication).
 :InTheResponsibilityOf rdf:type owl:ObjectProperty;
     rdfs:domain :LtcIndication;
@@ -2720,6 +2915,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :HealthcareOffice
 ].
 :InTheResponsibilityOf rdfs:subPropertyOf gufo:mediates.
+:Separated rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Separated\\".
 :InactiveLtcIndication owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:InactiveByFulfillment :InactiveByDeath :InactiveByReplacement :PendingIndication)
@@ -2735,6 +2932,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :LongTermHealthcareProvider
 ].
 :MadeTo_OEmtiXaDAAAARar rdfs:subPropertyOf gufo:mediates.
+:Separated rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:AdministrativeLtcAllocation :RegularLtcAllocation :TransitionalLtcAllocation).
 :ConformsTo rdf:type owl:ObjectProperty;
     rdfs:domain :LtcAllocation;
@@ -2747,6 +2945,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :LtcIndication
 ].
 :ConformsTo rdfs:subPropertyOf gufo:mediates.
+:Separated rdf:type gufo:Role.
 :LtcAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:AdministrativeLtcAllocation :RegularLtcAllocation :TransitionalLtcAllocation)
@@ -2762,8 +2961,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :LtcAllocation
 ].
 :ConformsTo_FvtTiXaDAAAARl rdfs:subPropertyOf gufo:mediates.
-:MultipersonHousehold rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Multi-person Household\\".
+:RegisteredPartner rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Registered Partner\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:AcceptedAllocation :DeclinedAllocation :RequestedAllocation :RevokedAllocation).
 :mediatesBsnHolder rdf:type owl:ObjectProperty;
     rdfs:domain :CivilRegistration;
@@ -2782,7 +2981,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :CivilRegistration
 ].
 :mediatesBsnHolder rdfs:subPropertyOf gufo:mediates.
-:MultipersonHousehold rdfs:subClassOf :Household.
+:RegisteredPartner rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
 :LtcAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:AcceptedAllocation :DeclinedAllocation :RequestedAllocation :RevokedAllocation)
@@ -2798,7 +2997,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :CivilStatus
 ].
 :mediatesCivilStatus rdfs:subPropertyOf gufo:mediates.
-:MultipersonHousehold rdf:type gufo:Phase.
+:RegisteredPartner rdf:type gufo:Role.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DirectStartAllocation :PendingAllocation).
 :mediatesLegalRepresentative rdf:type owl:ObjectProperty;
     rdfs:domain :LegalRepresentation;
@@ -2816,8 +3015,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :LegalRepresentation
 ].
 :mediatesLegalRepresentative rdfs:subPropertyOf gufo:mediates.
-:Spouse rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Spouse\\".
+:Organization_PgJFHaGAqAe8BSn rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Organization\\".
 :AcceptedAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:DirectStartAllocation :PendingAllocation)
@@ -2833,10 +3032,11 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :Person_QFOaFHaGAqAe8AX
 ].
 :mediatesPerson_mYV443aAUBAysY9q rdfs:subPropertyOf gufo:mediates.
-:Spouse rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
+:Organization_PgJFHaGAqAe8BSn rdfs:subClassOf :Agent_VvxaFHaGAqAe8BAf.
 [ rdf:type owl:AllDisjointClasses ] owl:members (:DeclinedByClient :DeclinedByProvider).
 :LegalRepresentation gufo:categorizes :LegalRepresentationType.
-:Spouse rdf:type gufo:Role.
+:Organization_PgJFHaGAqAe8BSn rdfs:subClassOf gufo:FunctionalComplex;
+    rdf:type gufo:Kind.
 :DeclinedAllocation owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:DeclinedByClient :DeclinedByProvider)
@@ -2858,11 +3058,12 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :CourtDecision
 ].
 :mediatesLegalRepresentation rdfs:subPropertyOf gufo:mediates.
-:Man rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Man\\".
+:kvknumber rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Organization_PgJFHaGAqAe8BSn;
+    rdfs:label \\"kvk number\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:CareAtHomeAgreement :CareAtHealthcareOrganisationAgreement).
 :CourtDecisionType gufo:categorizes :CourtDecision.
-:Man rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
 :LtcServiceAgreement owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:CareAtHomeAgreement :CareAtHealthcareOrganisationAgreement)
@@ -2878,7 +3079,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :EligibleLthClient
 ].
 :RefersTo rdfs:subPropertyOf gufo:mediates.
-:Man rdf:type gufo:Role.
 :CareLocationType owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:StayAtHealthcareProvider :CareAtHome)
@@ -2894,8 +3094,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :Svb
 ].
 :CreatedBy rdfs:subPropertyOf gufo:mediates.
-:DivorcedFromRp rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Divorced from RP\\".
 :FinancingType owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:HealthcareinNatura :PersonalBudget)
@@ -2905,7 +3103,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdfs:range :Svb;
     rdfs:label \\"declared eligible by\\";
     rdf:type gufo:MaterialRelationshipType.
-:DivorcedFromRp rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
+:MultipersonHousehold rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Multi-person Household\\".
 [ rdf:type owl:AllDisjointClasses ] owl:members (:FullCarevpt :ModularCarempt).
 :MadeBy_94fk03aFYFAUAnTG rdf:type owl:ObjectProperty;
     rdfs:domain :LtcAllocation;
@@ -2918,7 +3117,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :HealthcareOffice
 ].
 :MadeBy_94fk03aFYFAUAnTG rdfs:subPropertyOf gufo:mediates.
-:DivorcedFromRp rdf:type gufo:Role.
+:MultipersonHousehold rdfs:subClassOf :Household.
 :CareAtHome owl:equivalentClass [
   rdf:type owl:Class;
   owl:unionOf (:FullCarevpt :ModularCarempt)
@@ -2933,8 +3132,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :HealthcareServiceDeliveryType
 ].
 :mediatesHealthcareServiceDeliveryType rdfs:subPropertyOf gufo:mediates.
-:Divorced rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Divorced\\".
+:MultipersonHousehold rdf:type gufo:Phase.
 :Benefits_iopS03aFYFAUAqvX rdf:type owl:ObjectProperty;
     rdfs:domain :LtcAllocation;
     rdfs:range :AllocatedLthClient;
@@ -2951,7 +3149,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :LtcAllocation
 ].
 :Benefits_iopS03aFYFAUAqvX rdfs:subPropertyOf gufo:mediates.
-:Divorced rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
+:Spouse rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Spouse\\".
 :mediatesMedicalConditionType_XgLS03aFYFAUArJ9 rdf:type owl:ObjectProperty;
     rdfs:domain :CareProfile;
     rdfs:range :MedicalConditionType;
@@ -2963,7 +3162,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :MedicalConditionType
 ].
 :mediatesMedicalConditionType_XgLS03aFYFAUArJ9 rdfs:subPropertyOf gufo:mediates.
-:Divorced rdf:type gufo:Role.
+:Spouse rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
 :TemporaryReplaces rdf:type owl:ObjectProperty;
     rdfs:domain :TransitionalLtcAllocation;
     rdfs:range :RegularLtcAllocation;
@@ -2975,8 +3174,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :RegularLtcAllocation
 ].
 :TemporaryReplaces rdfs:subPropertyOf gufo:mediates.
-:ContactInfo rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Contact Info\\".
+:Spouse rdf:type gufo:Role.
 :mediatesRegularLtcAllocation rdf:type owl:ObjectProperty;
     rdfs:domain :AdministrativeLtcAllocation;
     rdfs:range :RegularLtcAllocation;
@@ -2988,8 +3186,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :RegularLtcAllocation
 ].
 :mediatesRegularLtcAllocation rdfs:subPropertyOf gufo:mediates.
-:ContactInfo rdfs:subClassOf gufo:Quality;
-    rdf:type gufo:Kind.
+:Man rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Man\\".
 :Benefits_gvb4APaAUAACnkCU rdf:type owl:ObjectProperty;
     rdfs:domain :LtcServiceAgreement;
     rdfs:range :LthClient;
@@ -3001,14 +3199,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :LthClient
 ].
 :Benefits_gvb4APaAUAACnkCU rdfs:subPropertyOf gufo:mediates.
-:telephone rdf:type owl:DatatypeProperty;
-    rdfs:subPropertyOf gufo:hasQualityValue;
-    rdfs:domain :ContactInfo;
-    rdfs:label \\"telephone\\".
-:email rdf:type owl:DatatypeProperty;
-    rdfs:subPropertyOf gufo:hasQualityValue;
-    rdfs:domain :ContactInfo;
-    rdfs:label \\"email\\".
+:Man rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
 :DeliveredBy rdf:type owl:ObjectProperty;
     rdfs:domain :LongTermHealthcareProvider;
     rdfs:range :LtcServiceAgreement;
@@ -3025,6 +3216,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :LongTermHealthcareProvider
 ].
 :DeliveredBy rdfs:subPropertyOf gufo:mediates.
+:Man rdf:type gufo:Role.
 :participatedInStayAgreement rdf:type owl:ObjectProperty;
     rdfs:range :StayAgreement;
     rdfs:domain :Stay_NK8LuPaAUAACnkbx;
@@ -3042,6 +3234,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :Stay_NK8LuPaAUAACnkbx
 ].
 :participatedInStayAgreement rdfs:subPropertyOf gufo:participatedIn.
+:DivorcedFromRp rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Divorced from RP\\".
 :inheresInLtcIndicationBudget rdf:type owl:ObjectProperty;
     rdfs:domain :LtcIndication;
     rdfs:range :LtcIndicationBudget;
@@ -3059,6 +3253,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :LtcIndication
 ].
 :inheresInLtcIndicationBudget rdfs:subPropertyOf gufo:inheresIn.
+:DivorcedFromRp rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
 :inheresInLtcAllocation rdf:type owl:ObjectProperty;
     rdfs:domain :LtcAllocationBudget;
     rdfs:range :LtcAllocation;
@@ -3076,8 +3271,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :LtcAllocationBudget
 ].
 :inheresInLtcAllocation rdfs:subPropertyOf gufo:inheresIn.
-:Stay rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Stay\\".
+:DivorcedFromRp rdf:type gufo:Role.
 :PartOf rdf:type owl:ObjectProperty;
     rdfs:domain :LtcIndicationBudget;
     rdfs:range :LtcAllocationBudget;
@@ -3089,8 +3283,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :LtcIndicationBudget
 ].
 :PartOf rdf:type gufo:MaterialRelationshipType.
-:Stay rdfs:subClassOf gufo:Relator;
-    rdf:type gufo:Kind.
+:Divorced rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Divorced\\".
 :mediatesLtcAllocation rdf:type owl:ObjectProperty;
     rdfs:domain :DeliveryForm;
     rdfs:range :LtcAllocation;
@@ -3107,19 +3301,13 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :DeliveryForm
 ].
 :mediatesLtcAllocation rdfs:subPropertyOf gufo:mediates.
-:endDate_aBOMzHaGAqAe8Cz4 rdf:type owl:DatatypeProperty;
-    rdfs:subPropertyOf gufo:hasQualityValue;
-    rdfs:domain :Stay;
-    rdfs:label \\"endDate\\".
-:startDate_Te2MzHaGAqAe8Cz1 rdf:type owl:DatatypeProperty;
-    rdfs:subPropertyOf gufo:hasQualityValue;
-    rdfs:domain :Stay;
-    rdfs:label \\"startDate\\".
+:Divorced rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
 :Abc rdf:type owl:ObjectProperty;
     rdfs:domain :LtcAllocation;
     rdfs:range :LongTermHealthcareProvider;
     rdfs:label \\"abc\\";
     rdfs:subPropertyOf gufo:mediates.
+:Divorced rdf:type gufo:Role.
 :mediatesLthClient rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareOfficeClientDossier;
     rdfs:range :LthClient;
@@ -3131,6 +3319,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :LthClient
 ].
 :mediatesLthClient rdfs:subPropertyOf gufo:mediates.
+:ContactInfo rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Contact Info\\".
 :mediatesHealthcareOffice_EZoMr3aFYEGUExx6 rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareOfficeClientDossier;
     rdfs:range :HealthcareOffice;
@@ -3142,6 +3332,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :HealthcareOffice
 ].
 :mediatesHealthcareOffice_EZoMr3aFYEGUExx6 rdfs:subPropertyOf gufo:mediates.
+:ContactInfo rdfs:subClassOf gufo:Quality;
+    rdf:type gufo:Kind.
 :Creates_PBzKr3aFYEGUEx0V rdf:type owl:ObjectProperty;
     rdfs:domain :Agent_VvxaFHaGAqAe8BAf;
     rdfs:range :Dossier;
@@ -3153,14 +3345,19 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :Agent_VvxaFHaGAqAe8BAf
 ].
 :Creates_PBzKr3aFYEGUEx0V rdfs:subPropertyOf gufo:mediates.
-:ResidentInHealthcareInstitution rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Resident in Healthcare Institution\\".
+:telephone_UH5UzHaGAqAe8CqF rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :ContactInfo;
+    rdfs:label \\"telephone\\".
+:email_luFUzHaGAqAe8CqI rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :ContactInfo;
+    rdfs:label \\"email\\".
 :IsSubjectOf rdf:type owl:ObjectProperty;
     rdfs:domain :Person_QFOaFHaGAqAe8AX;
     rdfs:range :Dossier;
     rdfs:label \\"is subject of\\";
     rdfs:subPropertyOf gufo:mediates.
-:ResidentInHealthcareInstitution rdfs:subClassOf :LthClient.
 :mediatesLthClient_oBfeePaAUAACnmAV rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareProviderClientDossier;
     rdfs:range :LthClient;
@@ -3178,7 +3375,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :HealthcareProviderClientDossier
 ].
 :mediatesLthClient_oBfeePaAUAACnmAV rdfs:subPropertyOf gufo:mediates.
-:ResidentInHealthcareInstitution rdf:type gufo:Role.
 :mediatesHealthcareProvider_ZIgePaAUAACnmAu rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareProviderClientDossier;
     rdfs:range :HealthcareProvider;
@@ -3190,8 +3386,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :HealthcareProvider
 ].
 :mediatesHealthcareProvider_ZIgePaAUAACnmAu rdfs:subPropertyOf gufo:mediates.
-:CourtDecision rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Court Decision\\".
 :Represents rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareContactAssigment;
     rdfs:range :EligibleHealthcareClient;
@@ -3203,8 +3397,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :EligibleHealthcareClient
 ].
 :Represents rdfs:subPropertyOf gufo:mediates.
-:CourtDecision rdfs:subClassOf gufo:Relator;
-    rdf:type gufo:Kind.
+:Stay rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Stay\\".
 :Assignes rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareContactAssigment;
     rdfs:range :HealthcareContact;
@@ -3221,8 +3415,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :HealthcareContactAssigment
 ].
 :Assignes rdfs:subPropertyOf gufo:mediates.
-:CivilStatus rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Civil Status\\".
+:Stay rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
 :Assignes_yJiSvaFYFAUAikn rdf:type owl:ObjectProperty;
     rdfs:domain :LtcContactAssignment;
     rdfs:range :IndicationContact;
@@ -3239,7 +3433,14 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :LtcContactAssignment
 ].
 :Assignes_yJiSvaFYFAUAikn rdfs:subPropertyOf gufo:mediates.
-:CivilStatus rdfs:subClassOf gufo:ConcreteIndividualType.
+:endDate_aBOMzHaGAqAe8Cz4 rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Stay;
+    rdfs:label \\"endDate\\".
+:startDate_Te2MzHaGAqAe8Cz1 rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Stay;
+    rdfs:label \\"startDate\\".
 :Replaces rdf:type owl:ObjectProperty;
     rdfs:domain :LtcIndication;
     rdfs:range :InactiveByReplacement;
@@ -3257,10 +3458,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :LtcIndication
 ].
 :Replaces rdfs:subPropertyOf gufo:mediates.
-:LegalGender rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Legal Gender\\".
 :HealthcareOffice gufo:categorizes :HealthcareOfficeCode.
-:LegalGender rdfs:subClassOf gufo:ConcreteIndividualType.
 :Prefers rdf:type owl:ObjectProperty;
     rdfs:domain :EligibleLthClient;
     rdfs:range :ClientPreference;
@@ -3272,8 +3470,6 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :EligibleLthClient
 ].
 :Prefers rdfs:subPropertyOf gufo:mediates.
-:SocialRelationship rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Social Relationship\\".
 :mediatesPreferredHealthcareProvider rdf:type owl:ObjectProperty;
     rdfs:domain :ClientPreference;
     rdfs:range :PreferredHealthcareProvider;
@@ -3285,15 +3481,14 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :PreferredHealthcareProvider
 ].
 :mediatesPreferredHealthcareProvider rdfs:subPropertyOf gufo:mediates.
-:SocialRelationship rdfs:subClassOf gufo:Relator;
-    rdf:type gufo:Kind.
+:ResidentInHealthcareInstitution rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Resident in Healthcare Institution\\".
 :mediatesPreferredFinancingType rdf:type owl:ObjectProperty;
     rdfs:domain :ClientPreference;
     rdfs:range :PreferredFinancingType;
     rdfs:comment \\"Relation URI was automatically generated.\\";
     rdfs:subPropertyOf gufo:mediates.
-:SocialRelationshipType rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Social Relationship Type\\".
+:ResidentInHealthcareInstitution rdfs:subClassOf :LthClient.
 :mediatesPreferredCareLocationType rdf:type owl:ObjectProperty;
     rdfs:domain :ClientPreference;
     rdfs:range :PreferredCareLocationType;
@@ -3310,7 +3505,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :ClientPreference
 ].
 :mediatesPreferredCareLocationType rdfs:subPropertyOf gufo:mediates.
-:SocialRelationshipType rdfs:subClassOf gufo:ConcreteIndividualType.
+:ResidentInHealthcareInstitution rdf:type gufo:Role.
 :ClassifiesPatientIn rdf:type owl:ObjectProperty;
     rdfs:domain :Diagnosis;
     rdfs:range :CareProfile;
@@ -3322,8 +3517,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :CareProfile
 ].
 :ClassifiesPatientIn rdfs:subPropertyOf gufo:mediates.
-:Marriage rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Marriage\\".
+:CourtDecision rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Court Decision\\".
 :mediatesCareProfile rdf:type owl:ObjectProperty;
     rdfs:domain :HealthcareServicePackageType;
     rdfs:range :CareProfile;
@@ -3341,7 +3536,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :HealthcareServicePackageType
 ].
 :mediatesCareProfile rdfs:subPropertyOf gufo:mediates.
-:Marriage rdfs:subClassOf gufo:Relator;
+:CourtDecision rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
 :Requests rdf:type owl:ObjectProperty;
     rdfs:domain :LtcRequest;
@@ -3353,8 +3548,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:someValuesFrom :HealthcareServiceDeliveryType
 ].
 :Requests rdfs:subPropertyOf gufo:mediates.
-:LegalParent rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Legal Parent\\".
+:CivilStatus rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Civil Status\\".
 :mediatesLtcServiceAgreement rdf:type owl:ObjectProperty;
     rdfs:domain :ClientPreference;
     rdfs:range :LtcServiceAgreement;
@@ -3366,14 +3561,15 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :LtcServiceAgreement
 ].
 :mediatesLtcServiceAgreement rdfs:subPropertyOf gufo:mediates.
-:LegalParent rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
+:CivilStatus rdfs:subClassOf gufo:ConcreteIndividualType.
 :CareLocation gufo:categorizes :CareLocationType.
-:LegalParent rdf:type gufo:Role.
+:LegalGender rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Legal Gender\\".
 :HealthcareServicePackage gufo:categorizes :HealthcareServicePackageType.
-:Single rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"Single\\".
+:LegalGender rdfs:subClassOf gufo:ConcreteIndividualType.
 :CareProfile gufo:categorizes :EligibleLthClient.
-:Single rdfs:subClassOf :Person_QFOaFHaGAqAe8AX.
+:SocialRelationship rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Social Relationship\\".
 :GrantedBy rdf:type owl:ObjectProperty;
     rdfs:domain :LtcIndication;
     rdfs:range :Ciz;
@@ -3385,7 +3581,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :Ciz
 ].
 :GrantedBy rdfs:subPropertyOf gufo:mediates.
-:Single rdf:type gufo:Role.
+:SocialRelationship rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
 :Represents_5l3EbaFYFAUBgbf rdf:type owl:ObjectProperty;
     rdfs:domain :LtcContactAssignment;
     rdfs:range :EligibleLthClient;
@@ -3397,8 +3594,8 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :EligibleLthClient
 ].
 :Represents_5l3EbaFYFAUBgbf rdfs:subPropertyOf gufo:mediates.
-:GeneralPractitioner rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"General Practitioner\\".
+:SocialRelationshipType rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Social Relationship Type\\".
 :inheresInPerson_cezG9A6AUB1UpDJE rdf:type owl:ObjectProperty;
     rdfs:domain :Name;
     rdfs:range :Person_QFOaFHaGAqAe8AX;
@@ -3416,17 +3613,50 @@ exports[`should transform iStandard model to gUFO 1`] = `
   owl:onClass :Name
 ].
 :inheresInPerson_cezG9A6AUB1UpDJE rdfs:subPropertyOf gufo:inheresIn.
-:GeneralPractitioner rdfs:subClassOf :MedicalDoctor.
+:SocialRelationshipType rdfs:subClassOf gufo:ConcreteIndividualType.
 :isDerivedFromNergvnagaqaedisp rdf:type owl:ObjectProperty;
     rdfs:comment \\"Relation URI was automatically generated.\\".
-:GeneralPractitioner rdf:type gufo:Role.
+:Address_QL5uZnaGAqAeDhUD rdf:type owl:Class;
+    rdfs:subClassOf gufo:QualityValue.
 :isDerivedFromGgduvnagaqaeditx rdf:type owl:ObjectProperty;
     rdfs:comment \\"Relation URI was automatically generated.\\".
-:GpRegistration rdf:type owl:Class, owl:NamedIndividual;
-    rdfs:label \\"GP Registration\\".
+:postalCode rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Address_QL5uZnaGAqAeDhUD;
+    rdfs:label \\"postalCode\\".
+:countryCode rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Address_QL5uZnaGAqAeDhUD;
+    rdfs:label \\"countryCode\\".
+:streetName rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Address_QL5uZnaGAqAeDhUD;
+    rdfs:label \\"streetName\\".
+:houseNumber rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :Address_QL5uZnaGAqAeDhUD;
+    rdfs:label \\"houseNumber\\".
 :isDerivedFromEwis43aaubayscyz rdf:type owl:ObjectProperty;
     rdfs:comment \\"Relation URI was automatically generated.\\".
-:GpRegistration rdfs:subClassOf gufo:Relator;
+:Marriage rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Marriage\\";
+    rdfs:subClassOf gufo:Relator;
+    rdf:type gufo:Kind.
+:LegalParent rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Legal Parent\\";
+    rdfs:subClassOf :Person_QFOaFHaGAqAe8AX;
+    rdf:type gufo:Role.
+:Single rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"Single\\";
+    rdfs:subClassOf :Person_QFOaFHaGAqAe8AX;
+    rdf:type gufo:Role.
+:GeneralPractitioner rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"General Practitioner\\";
+    rdfs:subClassOf :MedicalDoctor;
+    rdf:type gufo:Role.
+:GpRegistration rdf:type owl:Class, owl:NamedIndividual;
+    rdfs:label \\"GP Registration\\";
+    rdfs:subClassOf gufo:Relator;
     rdf:type gufo:Kind.
 :LanguageCapability rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\"Language Capability\\";
@@ -3663,6 +3893,50 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdfs:label \\"Name\\";
     rdfs:subClassOf gufo:Quality;
     rdf:type gufo:Kind.
+:FullName rdf:type owl:Class;
+    rdfs:subClassOf gufo:QualityValue.
+:initials rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :FullName;
+    rdfs:range xsd:string;
+    rdfs:label \\"initials\\".
+:familyname rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :FullName;
+    rdfs:range xsd:string;
+    rdfs:label \\"family name\\".
+:partnername rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :FullName;
+    rdfs:range xsd:string;
+    rdfs:label \\"partner name\\".
+:firstname rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :FullName;
+    rdfs:range xsd:string;
+    rdfs:label \\"first name\\".
+:preferredname rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :FullName;
+    rdfs:range xsd:string;
+    rdfs:label \\"preferred name\\".
+:ShortName rdf:type owl:Class;
+    rdfs:subClassOf gufo:QualityValue.
+:firstname_0NF29A6AUB1UpDmk rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :ShortName;
+    rdfs:range xsd:string;
+    rdfs:label \\"first name\\".
+:familyname_qD529A6AUB1UpDmf rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :ShortName;
+    rdfs:range xsd:string;
+    rdfs:label \\"family name\\".
+:initials_hrl29A6AUB1UpDmp rdf:type owl:DatatypeProperty;
+    rdfs:subPropertyOf gufo:hasQualityValue;
+    rdfs:domain :ShortName;
+    rdfs:range xsd:string;
+    rdfs:label \\"initials\\".
 :AdultLivingAlone rdf:type owl:Class, owl:NamedIndividual;
     rdfs:label \\" Adult Living Alone\\";
     rdfs:subClassOf :Person_QFOaFHaGAqAe8AX;
@@ -3803,7 +4077,7 @@ exports[`should transform iStandard model to gUFO 1`] = `
     rdfs:range :TimeInstant_KN80vaFYFAUAhra;
     rdfs:subClassOf gufo:hasReifiedQualityValue;
     rdfs:label \\"valid until\\".
-:validfrom rdf:type owl:ObjectProperty;
+:validfrom_21oKzHaGAqAe8Cp rdf:type owl:ObjectProperty;
     rdfs:domain :LtcIndication;
     rdfs:range :TimeInstant_KN80vaFYFAUAhra;
     rdfs:subClassOf gufo:hasReifiedQualityValue;

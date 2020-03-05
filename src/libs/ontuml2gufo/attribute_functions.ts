@@ -155,7 +155,7 @@ export async function transformAttributes(
         quads.push(
           quad(
             namedNode(`:${uri}`),
-            namedNode('rdfs:subClassOf'),
+            namedNode('rdfs:subPropertyOf'),
             namedNode('gufo:hasReifiedQualityValue'),
           ),
         );
