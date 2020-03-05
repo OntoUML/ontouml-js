@@ -2,11 +2,11 @@ import {
   IPackage,
   IElement,
   IClass,
-  IRelation,
-  IGeneralization,
-  IGeneralizationSet,
-  IProperty,
-  ILiteral,
+  // IRelation,
+  // IGeneralization,
+  // IGeneralizationSet,
+  // IProperty,
+  // ILiteral,
 } from '@types';
 import { OntoUMLType } from '@constants/.';
 import { ClassVerification } from './class.verification';
@@ -33,7 +33,7 @@ export class OntoUML2Verification {
     allElements.forEach((element: IElement) => {
       switch (element.type) {
         case OntoUMLType.PACKAGE_TYPE:
-          const _package = element as IPackage;
+          // const _package = element as IPackage;
           break;
         case OntoUMLType.CLASS_TYPE:
           const _class: IClass = element as IClass;
@@ -55,19 +55,19 @@ export class OntoUML2Verification {
           }
           break;
         case OntoUMLType.RELATION_TYPE:
-          const relation = element as IRelation;
+          // const relation = element as IRelation;
           break;
         case OntoUMLType.GENERALIZATION_TYPE:
-          const generalization = element as IGeneralization;
+          // const generalization = element as IGeneralization;
           break;
         case OntoUMLType.GENERALIZATION_SET_TYPE:
-          const generalizationSet = element as IGeneralizationSet;
+          // const generalizationSet = element as IGeneralizationSet;
           break;
         case OntoUMLType.PROPERTY_TYPE:
-          const property = element as IProperty;
+          // const property = element as IProperty;
           break;
         case OntoUMLType.LITERAL_TYPE:
-          const literal = element as ILiteral;
+          // const literal = element as ILiteral;
           break;
         default:
           throw { title: 'Unable to verify element', element: element };

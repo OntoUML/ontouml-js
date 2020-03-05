@@ -13,7 +13,7 @@ import {
   IClassifier,
   IGeneralizationSet,
 } from '@types';
-import { inject, eject } from '@libs/model/functions';
+import { inject } from '@libs/model/functions';
 import schemas from 'ontouml-schema';
 
 /**
@@ -167,7 +167,9 @@ export class ModelManager {
 
   updateReadOnlyReferencesToIClass(_class: IClass): void {}
 
-  updateReadOnlyReferencesToIRelation(relation: IRelation): void {}
+  updateReadOnlyReferencesToIRelation(relation: IRelation): void {
+    console.log(relation);
+  }
 
   updateReadOnlyReferencesToIGeneralization(
     generalization: IGeneralization,
@@ -220,7 +222,9 @@ export class ModelManager {
     // _redefinedPropertyOfProperties
   }
 
-  updateReadOnlyReferencesToILiteral(literal: ILiteral): void {}
+  updateReadOnlyReferencesToILiteral(literal: ILiteral): void {
+    console.log(literal);
+  }
 
   resolveReference(reference: IReference | IReference[]): any {
     if (Array.isArray(reference)) {
