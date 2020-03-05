@@ -190,13 +190,15 @@ export class ModelManager {
   updateReadOnlyReferencesToIGeneralizationSet(
     generalizationSet: IGeneralizationSet,
   ): void {
-    generalizationSet.generalizations.forEach(
-      (generalization: IGeneralization) => {
-        generalization._memberOfGeneralizationSets = !generalization._memberOfGeneralizationSets
-          ? []
-          : [...generalization._memberOfGeneralizationSets, generalizationSet];
-      },
-    );
+    if(generalizationSet.generalizations) {
+      generalizationSet.generalizations.forEach(
+        (generalization: IGeneralization) => {
+          generalization._memberOfGeneralizationSets = !generalization._memberOfGeneralizationSets
+            ? []
+            : [...generalization._memberOfGeneralizationSets, generalizationSet];
+        },
+      );
+    }
 
     if (generalizationSet.categorizer) {
       const categorizer = generalizationSet.categorizer as IClass;
