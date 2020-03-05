@@ -20,6 +20,5 @@ describe('Model deserializing', () => {
   it('Run verification', async () => {
     verification = new OntoUML2Verification(modelManager);
     issues = await verification.run();
-    console.log(issues);
   });
 });
