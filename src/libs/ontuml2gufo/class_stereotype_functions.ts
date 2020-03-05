@@ -1,18 +1,17 @@
-import { Quad } from 'n3';
-import { IClass, IOntoUML2GUFOOptions, IRelation } from '@types';
+import { Quad, N3Writer } from 'n3';
+import { IClass, ILiteral, IOntoUML2GUFOOptions, IRelation } from '@types';
 import { RelationStereotype } from '@constants/.';
 import { getURI } from './helper_functions';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
-const { namedNode, quad } = DataFactory;
+const { namedNode, quad, literal } = DataFactory;
 
 export function transformKind(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name } = classElement;
-  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+  const uri = getURI({ element: classElement, options });
 
   return [
     quad(
@@ -28,8 +27,7 @@ export function transformSubkind(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name } = classElement;
-  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+  const uri = getURI({ element: classElement, options });
 
   return [
     quad(
@@ -44,8 +42,7 @@ export function transformRole(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name } = classElement;
-  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+  const uri = getURI({ element: classElement, options });
 
   return [
     quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Role')),
@@ -56,8 +53,7 @@ export function transformPhase(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name } = classElement;
-  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+  const uri = getURI({ element: classElement, options });
 
   return [
     quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Phase')),
@@ -68,8 +64,7 @@ export function transformCategory(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name } = classElement;
-  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+  const uri = getURI({ element: classElement, options });
 
   return [
     quad(
@@ -89,8 +84,7 @@ export function transformMixin(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name } = classElement;
-  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+  const uri = getURI({ element: classElement, options });
 
   return [
     quad(
@@ -106,8 +100,7 @@ export function transformRoleMixin(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name } = classElement;
-  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+  const uri = getURI({ element: classElement, options });
 
   return [
     quad(
@@ -127,8 +120,7 @@ export function transformPhaseMixin(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name } = classElement;
-  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+  const uri = getURI({ element: classElement, options });
 
   return [
     quad(
@@ -148,8 +140,7 @@ export function transformRelator(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name } = classElement;
-  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+  const uri = getURI({ element: classElement, options });
 
   return [
     quad(
@@ -165,32 +156,32 @@ export function transformMode(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name } = classElement;
-  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+  const uri = getURI({ element: classElement, options });
   const relations = classElement.getRelations();
   const relationStereotypes = relations
     .filter((relation: IRelation) => relation.stereotypes !== null)
     .map((relation: IRelation) => relation.stereotypes[0]);
   const quads = [];
 
-  if (relationStereotypes.includes(RelationStereotype.CHARACTERIZATION)) {
-    if (relationStereotypes.includes(RelationStereotype.EXTERNAL_DEPENDENCE)) {
-      quads.push(
-        quad(
-          namedNode(`:${uri}`),
-          namedNode('rdfs:subClassOf'),
-          namedNode('gufo:ExtrinsicMode'),
-        ),
-      );
-    } else {
-      quads.push(
-        quad(
-          namedNode(`:${uri}`),
-          namedNode('rdfs:subClassOf'),
-          namedNode('gufo:IntrinsicMode'),
-        ),
-      );
-    }
+  if (
+    relationStereotypes.includes(RelationStereotype.CHARACTERIZATION) &&
+    relationStereotypes.includes(RelationStereotype.EXTERNAL_DEPENDENCE)
+  ) {
+    quads.push(
+      quad(
+        namedNode(`:${uri}`),
+        namedNode('rdfs:subClassOf'),
+        namedNode('gufo:ExtrinsicMode'),
+      ),
+    );
+  } else {
+    quads.push(
+      quad(
+        namedNode(`:${uri}`),
+        namedNode('rdfs:subClassOf'),
+        namedNode('gufo:IntrinsicMode'),
+      ),
+    );
   }
 
   quads.push(
@@ -204,8 +195,7 @@ export function transformQuality(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name } = classElement;
-  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+  const uri = getURI({ element: classElement, options });
 
   return [
     quad(
@@ -221,8 +211,7 @@ export function transformQuantity(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name } = classElement;
-  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+  const uri = getURI({ element: classElement, options });
 
   return [
     quad(
@@ -238,8 +227,7 @@ export function transformCollective(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name } = classElement;
-  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+  const uri = getURI({ element: classElement, options });
 
   return [
     quad(
@@ -255,8 +243,7 @@ export function transformEvent(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name } = classElement;
-  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+  const uri = getURI({ element: classElement, options });
 
   return [
     quad(
@@ -271,8 +258,7 @@ export function transformType(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name } = classElement;
-  const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+  const uri = getURI({ element: classElement, options });
 
   return [
     quad(
@@ -281,4 +267,80 @@ export function transformType(
       namedNode('gufo:ConcreteIndividualType'),
     ),
   ];
+}
+
+export function transformDatatype(
+  classElement: IClass,
+  options: IOntoUML2GUFOOptions,
+): Quad[] {
+  const { properties } = classElement;
+  const uri = getURI({ element: classElement, options });
+  const isComplexDatatype = !!properties;
+
+  if (isComplexDatatype) {
+    return [
+      quad(
+        namedNode(`:${uri}`),
+        namedNode('rdfs:subClassOf'),
+        namedNode('gufo:QualityValue'),
+      ),
+    ];
+  }
+
+  return [];
+}
+
+export function transformEnumeration(
+  classElement: IClass,
+  options: IOntoUML2GUFOOptions,
+  writer?: N3Writer,
+): Quad[] {
+  const { literals } = classElement;
+
+  if (!literals) {
+    return [];
+  }
+
+  const uri = getURI({ element: classElement, options });
+  const literalUris = literals.map((literal: ILiteral) =>
+    namedNode(
+      `:${getURI({
+        element: literal,
+        options,
+      })}`,
+    ),
+  );
+
+  const quads = [
+    quad(
+      namedNode(`:${uri}`),
+      namedNode('rdfs:subClassOf'),
+      namedNode('gufo:QualityValue'),
+    ),
+    quad(
+      namedNode(`:${uri}`),
+      namedNode('owl:equivalentClass'),
+      writer.blank([
+        {
+          predicate: namedNode('rdf:type'),
+          object: namedNode('owl:Class'),
+        },
+        {
+          predicate: namedNode('owl:oneOf'),
+          object: writer.list(literalUris),
+        },
+      ]),
+    ),
+  ];
+
+  for (let i = 0; i < literalUris.length; i += 1) {
+    const literalUri = literalUris[i];
+
+    quads.push(quad(literalUri, namedNode('rdf:type'), namedNode(`:${uri}`)));
+    quads.push(
+      quad(literalUri, namedNode('rdf:label'), literal(literals[i].name)),
+    );
+  }
+
+  return quads;
 }

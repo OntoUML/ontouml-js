@@ -8,6 +8,7 @@ const roleMixinExample1 = require('./roleMixin1.json');
 const subkindExample1 = require('./subkind1.json');
 const alpinebits = require('./alpinebits.json');
 const istandard = require('./istandard.json');
+const person = require('./person.json');
 
 export {
   genericExample1,
@@ -20,4 +21,5 @@ export {
   subkindExample1,
   alpinebits,
   istandard,
+  person,
 };

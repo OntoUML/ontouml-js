@@ -1,9 +1,6 @@
 {
   "rulesDirectory": ["node_modules/tslint-microsoft-contrib"],
-  "extends": [
-    "tslint-microsoft-contrib/recommended",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint-microsoft-contrib/recommended", "tslint-config-prettier"],
   "rules": {
     "no-unused-variable": true,
     "import-name": false,
@@ -15,6 +12,7 @@
     "no-void-expression": false,
     "no-redundant-jsdoc": false,
     "prefer-type-cast": false,
+    "max-func-body-length": false,
     "typedef": [
       true,
       "parameter",

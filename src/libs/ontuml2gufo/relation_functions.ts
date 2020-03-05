@@ -1,7 +1,11 @@
 import { N3Writer, Quad, BlankNode } from 'n3';
 import memoizee from 'memoizee';
 import { IRelation, IOntoUML2GUFOOptions } from '@types';
-import { RelationStereotype, RelationsInvertedInGUFO } from '@constants/.';
+import {
+  RelationStereotype,
+  RelationsInvertedInGUFO,
+  RelationsAsPredicateInGUFO,
+} from '@constants/.';
 import { getURI } from './helper_functions';
 import {
   transformCharacterization,
@@ -67,14 +71,21 @@ export async function transformRelations(
       stereotype &&
       Object.keys(transformStereotypeFunction).includes(stereotype)
     ) {
-      // Get base quads (type, domain, range) from relation
-      const baseQuads = transformRelationBase(relation, options);
-      // Get cardinalities quads from relation
-      const cardinalityQuads = transformRelationCardinalities(
-        writer,
-        relation,
-        options,
-      );
+      let baseQuads = [];
+      let cardinalityQuads = [];
+
+      // ignore predicate relations like instantiation
+      if (!RelationsAsPredicateInGUFO.includes(stereotype)) {
+        // Get base quads (type, domain, range) from relation
+        baseQuads = transformRelationBase(relation, options);
+        // Get cardinalities quads from relation
+        cardinalityQuads = transformRelationCardinalities(
+          writer,
+          relation,
+          options,
+        );
+      }
+
       // Get stereotype quads from relation
       const stereotypeQuads = transformStereotypeFunction[stereotype](
         relation,
@@ -99,28 +110,15 @@ function transformRelationBase(
   relation: IRelation,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { id, name, stereotypes } = relation;
-  const uri = getURI({
-    id,
-    name,
-    uriFormatBy: options.uriFormatBy,
-    relation,
-  });
+  const { name, stereotypes } = relation;
+  const uri = getURI({ element: relation, options });
   const isInvertedRelation = RelationsInvertedInGUFO.includes(stereotypes[0]);
 
   const sourceClass = relation.getSource();
   const targetClass = relation.getTarget();
 
-  const domainClassUri = getURI({
-    id: sourceClass.id,
-    name: sourceClass.name,
-    uriFormatBy: options.uriFormatBy,
-  });
-  const rangeClassUri = getURI({
-    id: targetClass.id,
-    name: targetClass.name,
-    uriFormatBy: options.uriFormatBy,
-  });
+  const domainClassUri = getURI({ element: sourceClass, options });
+  const rangeClassUri = getURI({ element: targetClass, options });
 
   const quads = [
     quad(
@@ -222,11 +220,7 @@ function transformRelationCardinality({
 }): Quad[] {
   // get domain
   const classElement = isDomain ? relation.getSource() : relation.getTarget();
-  const classUri = getURI({
-    id: classElement.id,
-    name: classElement.name,
-    uriFormatBy: options.uriFormatBy,
-  });
+  const classUri = getURI({ element: classElement, options });
 
   const quads = [];
 
@@ -331,11 +325,7 @@ function generateRelationCardinalityQuad({
 }): Quad {
   // get domain
   const classElement = isDomain ? relation.getSource() : relation.getTarget();
-  const classUri = getURI({
-    id: classElement.id,
-    name: classElement.name,
-    uriFormatBy: options.uriFormatBy,
-  });
+  const classUri = getURI({ element: classElement, options });
 
   return quad(
     namedNode(`:${classUri}`),
@@ -366,20 +356,13 @@ function generateRelationBlankQuad({
   cardinality?: number;
   options: IOntoUML2GUFOOptions;
 }): BlankNode {
-  const { id, name } = relation;
-  const uri = getURI({
-    id,
-    name,
-    uriFormatBy: options.uriFormatBy,
-    relation,
-  });
+  const { stereotypes } = relation;
+  const uri = getURI({ element: relation, options });
+  const isInvertedRelation = RelationsInvertedInGUFO.includes(stereotypes[0]);
   // get range
   const classElement = isDomain ? relation.getTarget() : relation.getSource();
-  const classUri = getURI({
-    id: classElement.id,
-    name: classElement.name,
-    uriFormatBy: options.uriFormatBy,
-  });
+  const classUri = getURI({ element: classElement, options });
+  const isRelationDomain = isInvertedRelation ? !isDomain : isDomain;
 
   const blankTriples = [
     {
@@ -388,7 +371,7 @@ function generateRelationBlankQuad({
     },
     {
       predicate: namedNode('owl:onProperty'),
-      object: isDomain
+      object: isRelationDomain
         ? namedNode(`:${uri}`)
         : writer.blank(namedNode('owl:inverseOf'), namedNode(`:${uri}`)),
     },

@@ -18,7 +18,10 @@ import {
   transformQuality,
   transformEvent,
   transformType,
+  transformDatatype,
+  transformEnumeration,
 } from './class_stereotype_functions';
+import { transformAttributes } from './attribute_functions';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -48,8 +51,8 @@ export async function transformDisjointClasses(
         ({ stereotypes }: IClass) =>
           stereotypes && stereotypes[0] === stereotype,
       )
-      .map(({ id, name }: IClass) => {
-        const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+      .map((classElement: IClass) => {
+        const uri = getURI({ element: classElement, options });
 
         return namedNode(`:${uri}`);
       });
@@ -94,44 +97,47 @@ export async function transformClassesByStereotype(
     [ClassStereotype.QUALITY]: transformQuality,
     [ClassStereotype.EVENT]: transformEvent,
     [ClassStereotype.TYPE]: transformType,
+    [ClassStereotype.DATATYPE]: transformDatatype,
+    [ClassStereotype.ENUMERATION]: transformEnumeration,
   };
 
   for (let i = 0; i < classes.length; i += 1) {
     const classElement = classes[i];
-    const { id, name, stereotypes } = classElement;
-    const uri = getURI({ id, name, uriFormatBy: options.uriFormatBy });
+    const { name, stereotypes, properties } = classElement;
+    const uri = getURI({ element: classElement, options });
 
     if (!stereotypes || stereotypes.length !== 1) continue;
 
     const stereotype = stereotypes[0];
     const parents = classElement.getParents();
-
-    if (
+    const hasStereotypeFunction =
       stereotype &&
-      Object.keys(transformStereotypeFunction).includes(stereotype)
-    ) {
-      await writer.addQuads([
-        quad(
-          namedNode(`:${uri}`),
-          namedNode('rdf:type'),
-          namedNode('owl:Class'),
-        ),
-        quad(
-          namedNode(`:${uri}`),
-          namedNode('rdf:type'),
-          namedNode('owl:NamedIndividual'),
-        ),
-        quad(namedNode(`:${uri}`), namedNode('rdfs:label'), literal(name)),
-      ]);
+      Object.keys(transformStereotypeFunction).includes(stereotype);
+
+    if (hasStereotypeFunction) {
+      const isPrimitiveDatatype =
+        stereotype === ClassStereotype.DATATYPE && !properties;
+
+      if (!isPrimitiveDatatype) {
+        await writer.addQuads([
+          quad(
+            namedNode(`:${uri}`),
+            namedNode('rdf:type'),
+            namedNode('owl:Class'),
+          ),
+          quad(
+            namedNode(`:${uri}`),
+            namedNode('rdf:type'),
+            namedNode('owl:NamedIndividual'),
+          ),
+          quad(namedNode(`:${uri}`), namedNode('rdfs:label'), literal(name)),
+        ]);
+      }
 
       // Add subClassOf for all parents
       if (parents) {
         for (let i = 0; i < parents.length; i += 1) {
-          const parentUri = getURI({
-            id: parents[i].id,
-            name: parents[i].name,
-            uriFormatBy: options.uriFormatBy,
-          });
+          const parentUri = getURI({ element: parents[i], options });
 
           await writer.addQuad(
             namedNode(`:${uri}`),
@@ -145,9 +151,15 @@ export async function transformClassesByStereotype(
       const quads = transformStereotypeFunction[stereotype](
         classElement,
         options,
+        writer,
       );
 
       await writer.addQuads(quads);
+
+      // transform class attributes
+      if (classElement.properties) {
+        await transformAttributes(writer, classElement, options);
+      }
     }
   }
 
