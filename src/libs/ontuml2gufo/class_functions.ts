@@ -97,6 +97,7 @@ export async function transformClassesByStereotype(
     [ClassStereotype.QUALITY]: transformQuality,
     [ClassStereotype.EVENT]: transformEvent,
     [ClassStereotype.TYPE]: transformType,
+    [ClassStereotype.HISTORICAL_ROLE]: transformRole,
     [ClassStereotype.DATATYPE]: transformDatatype,
     [ClassStereotype.ENUMERATION]: transformEnumeration,
   };
