@@ -8,6 +8,7 @@ import {
   transformCollective,
   transformSubkind,
   transformRole,
+  transformHistoricalRole,
   transformPhase,
   transformCategory,
   transformMixin,
@@ -97,7 +98,7 @@ export async function transformClassesByStereotype(
     [ClassStereotype.QUALITY]: transformQuality,
     [ClassStereotype.EVENT]: transformEvent,
     [ClassStereotype.TYPE]: transformType,
-    [ClassStereotype.HISTORICAL_ROLE]: transformRole,
+    [ClassStereotype.HISTORICAL_ROLE]: transformHistoricalRole,
     [ClassStereotype.DATATYPE]: transformDatatype,
     [ClassStereotype.ENUMERATION]: transformEnumeration,
   };
