@@ -49,6 +49,22 @@ export function transformRole(
   ];
 }
 
+export function transformHistoricalRole(
+  classElement: IClass,
+  options: IOntoUML2GUFOOptions,
+): Quad[] {
+  const uri = getURI({ element: classElement, options });
+
+  return [
+    quad(
+      namedNode(`:${uri}`),
+      namedNode('rdfs:subClassOf'),
+      namedNode('gufo:Endurant'),
+    ),
+    quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Role')),
+  ];
+}
+
 export function transformPhase(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,

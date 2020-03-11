@@ -34,5 +34,4 @@ bundle/
 catalog-v001.xml
 
 # Ontology output test files
-alpinebits.ttl
-istandard.ttl
+*.ttl
