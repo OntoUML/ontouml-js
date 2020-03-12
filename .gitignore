@@ -35,3 +35,5 @@ catalog-v001.xml
 
 # Ontology output test files
 *.ttl
+*.n3
+*.nt

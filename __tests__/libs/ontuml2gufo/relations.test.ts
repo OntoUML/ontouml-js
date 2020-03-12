@@ -89,4 +89,13 @@ describe('Relations', () => {
       ] .`.replace(/ {6}/gm, ''),
     );
   });
+
+  it('should generate part-whole relation with inverse domain/range', () => {
+    expect(result).toContain('<:place> <rdf:type> <owl:ObjectProperty>');
+    expect(result).toContain('<:place> <rdfs:domain> <:HoursSpecification>');
+    expect(result).toContain('<:place> <rdfs:range> <:Place>');
+    expect(result).toContain(
+      '<:place> <rdfs:subClassOf> <gufo:isProperPartOf>',
+    );
+  });
 });

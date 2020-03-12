@@ -20,9 +20,9 @@ export enum OntoUMLType {
 }
 
 export enum AggregationKind {
-  AGGREGATIONKIND_NONE = 'NONE',
-  AGGREGATIONKIND_SHARED = 'SHARED',
-  AGGREGATIONKIND_COMPOSITE = 'COMPOSITE',
+  NONE = 'NONE',
+  SHARED = 'SHARED',
+  COMPOSITE = 'COMPOSITE',
 }
 
 export enum ClassStereotype {
