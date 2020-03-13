@@ -165,7 +165,7 @@ function transformRelationBase(
     quads.push(
       quad(
         namedNode(`:${uri}`),
-        namedNode('rdfs:subClassOf'),
+        namedNode('rdfs:subPropertyOf'),
         namedNode('gufo:isEventProperPartOf'),
       ),
     );
@@ -173,7 +173,7 @@ function transformRelationBase(
     quads.push(
       quad(
         namedNode(`:${uri}`),
-        namedNode('rdfs:subClassOf'),
+        namedNode('rdfs:subPropertyOf'),
         namedNode('gufo:isProperPartOf'),
       ),
     );
