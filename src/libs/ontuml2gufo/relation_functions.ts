@@ -117,8 +117,11 @@ function transformRelationBase(
   const isPartWhole =
     partWholeKinds.includes(properties[0].aggregationKind) ||
     partWholeKinds.includes(properties[1].aggregationKind);
+  const isPartWholeInverted = partWholeKinds.includes(
+    properties[0].aggregationKind,
+  );
   const isInvertedRelation =
-    isPartWhole || RelationsInvertedInGUFO.includes(stereotype);
+    isPartWholeInverted || RelationsInvertedInGUFO.includes(stereotype);
 
   const sourceClass = relation.getSource();
   const targetClass = relation.getTarget();
@@ -158,25 +161,33 @@ function transformRelationBase(
     );
   }
 
-  if (
-    sourceStereotype === ClassStereotype.EVENT &&
-    targetStereotype === ClassStereotype.EVENT
-  ) {
-    quads.push(
-      quad(
-        namedNode(`:${uri}`),
-        namedNode('rdfs:subPropertyOf'),
-        namedNode('gufo:isEventProperPartOf'),
-      ),
-    );
-  } else if (!stereotype) {
-    quads.push(
-      quad(
-        namedNode(`:${uri}`),
-        namedNode('rdfs:subPropertyOf'),
-        namedNode('gufo:isProperPartOf'),
-      ),
-    );
+  // transform part-whole relations
+  if (isPartWhole) {
+    const isPartWholeRelationBetweenEvents =
+      sourceStereotype === ClassStereotype.EVENT &&
+      targetStereotype === ClassStereotype.EVENT;
+    const isRelationWithoutStereotype = !stereotype;
+
+    // relation between events
+    if (isPartWholeRelationBetweenEvents) {
+      quads.push(
+        quad(
+          namedNode(`:${uri}`),
+          namedNode('rdfs:subPropertyOf'),
+          namedNode('gufo:isEventProperPartOf'),
+        ),
+      );
+    }
+    // relations without stereotypes
+    else if (isRelationWithoutStereotype) {
+      quads.push(
+        quad(
+          namedNode(`:${uri}`),
+          namedNode('rdfs:subPropertyOf'),
+          namedNode('gufo:isProperPartOf'),
+        ),
+      );
+    }
   }
 
   // add label

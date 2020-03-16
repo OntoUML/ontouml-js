@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import { ModelManager } from '@libs/model';
 import { OntoUML2GUFO } from '@libs/ontuml2gufo';
 import {
@@ -11,8 +12,6 @@ import {
   person,
 } from '@test-models/valids';
 import { IPackage, IOntoUML2GUFOOptions } from '@types';
-
-import * as fs from 'fs';
 
 async function transformOntoUML2GUFO(
   model: IPackage,

@@ -11,12 +11,12 @@ type GetURI = {
   element: IElement;
   options?: {
     uriFormatBy?: string;
+    uriManager: URIManager;
   };
 };
 
-const uriManager = new URIManager();
-
 export const getURI = memoizee(({ element, options }: GetURI): string => {
+  const { uriManager } = options;
   const uriFormatBy = options ? options.uriFormatBy || 'name' : 'name';
   const { id, name } = element;
   const isRelation = element.type === OntoUMLType.RELATION_TYPE;

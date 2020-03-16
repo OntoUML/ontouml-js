@@ -9,6 +9,7 @@ const subkindExample1 = require('./subkind1.json');
 const alpinebits = require('./alpinebits.json');
 const istandard = require('./istandard.json');
 const person = require('./person.json');
+const partWhole = require('./partWhole.json');
 
 export {
   genericExample1,
@@ -22,4 +23,5 @@ export {
   alpinebits,
   istandard,
   person,
+  partWhole,
 };
