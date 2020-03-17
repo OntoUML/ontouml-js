@@ -93,3 +93,5 @@ export const RelationStereotypeToGUFOMapping = {
   subQuantityOf: 'isSubQuantityOf',
   termination: 'wasTerminatedIn',
 };
+
+export const AvailableLanguages = ['en', 'pt', 'it', 'de', 'nl'];

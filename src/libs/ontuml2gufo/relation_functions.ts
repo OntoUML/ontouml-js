@@ -28,6 +28,7 @@ import {
   transformSubQuantityOf,
   transformTermination,
 } from './relation_stereotype_functions';
+import { transformAnnotations } from './annotation_function';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -98,6 +99,9 @@ export async function transformRelations(
       ...cardinalityQuads,
       ...stereotypeQuads,
     ]);
+
+    // transform annotations
+    await transformAnnotations(writer, relation, options);
   }
 
   return true;

@@ -14,6 +14,7 @@
   "scripts": {
     "start": "npm-run-all -p format:watch start:watch",
     "start:watch": "TS_NODE_FILES=true nodemon index.ts",
+    "format": "prettier --write '**/*.ts' '**/*.json'",
     "format:watch": "onchange '**/*.ts' '**/*.json' -- prettier --write {{changed}}",
     "clean": "rimraf coverage dist tmp",
     "build": "rm -rf ./dist && npm run build:js",
@@ -28,7 +29,7 @@
   "husky": {
     "hooks": {
       "prepublish": "npm run build",
-      "pre-push": "npm test"
+      "pre-push": "npm run format && npm run test"
     }
   },
   "_moduleAliases": {

@@ -1,0 +1,48 @@
+import { N3Writer } from 'n3';
+import { IElement, IOntoUML2GUFOOptions } from '@types';
+import { AvailableLanguages } from '@constants/.';
+import { getURI } from './helper_functions';
+
+const N3 = require('n3');
+const { DataFactory } = N3;
+const { namedNode, literal, quad } = DataFactory;
+
+export async function transformAnnotations(
+  writer: N3Writer,
+  element: IElement,
+  options: IOntoUML2GUFOOptions,
+): Promise<boolean> {
+  const { propertyAssignments, description } = element;
+  const uri = getURI({ element, options });
+  const quads = [];
+
+  if (propertyAssignments) {
+    for (const language of Object.keys(propertyAssignments)) {
+      if (AvailableLanguages.includes(language)) {
+        quads.push(
+          quad(
+            namedNode(`:${uri}`),
+            namedNode('rdfs:label'),
+            literal(propertyAssignments[language], language),
+          ),
+        );
+      }
+    }
+  }
+
+  if (description) {
+    quads.push(
+      quad(
+        namedNode(`:${uri}`),
+        namedNode('rdfs:comment'),
+        literal(description),
+      ),
+    );
+  }
+
+  if (quads.length > 0) {
+    await writer.addQuads(quads);
+  }
+
+  return true;
+}
