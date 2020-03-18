@@ -109,8 +109,8 @@ describe('Relations', () => {
   });
 
   it('should generate part-whole relation with without stereotype', () => {
-    expect(partWholeResult).toContain('<:heart> <rdfs:domain> <:Person>');
-    expect(partWholeResult).toContain('<:heart> <rdfs:range> <:Heart>');
+    expect(partWholeResult).toContain('<:heart> <rdfs:domain> <:Heart>');
+    expect(partWholeResult).toContain('<:heart> <rdfs:range> <:Person>');
     expect(partWholeResult).toContain(
       '<:heart> <rdfs:subPropertyOf> <gufo:isProperPartOf>',
     );
