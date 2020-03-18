@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { ModelManager } from '@libs/model';
 import { OntoUML2GUFO } from '@libs/ontuml2gufo';
 import { istandard } from '@test-models/valids';
@@ -5,10 +6,7 @@ import { IPackage, IOntoUML2GUFOOptions } from '@types';
 
 async function transformOntoUML2GUFO(
   model: IPackage,
-  options?: {
-    format?: IOntoUML2GUFOOptions['format'];
-    uriFormatBy?: IOntoUML2GUFOOptions['uriFormatBy'];
-  },
+  options?: Partial<IOntoUML2GUFOOptions>,
 ): Promise<string> {
   const modelCopy = JSON.parse(JSON.stringify(model));
   const modelManager = new ModelManager(modelCopy);
@@ -25,16 +23,16 @@ describe('Relations', () => {
   let result;
 
   beforeAll(async () => {
-    result = await transformOntoUML2GUFO(istandard);
+    result = await transformOntoUML2GUFO(istandard, { packagesAsUri: true });
   });
 
   it('should generate "nl" label', async () => {
-    expect(result).toContain('<:LegalGender> <rdfs:label> "Geslacht"@nl');
+    expect(result).toContain('<Core:LegalGender> <rdfs:label> "Geslacht"@nl');
   });
 
   it('should generate "description" as a rdfs:comment', async () => {
     expect(result).toContain(
-      '<:LegalGender> <rdfs:comment> "Gender of a person as registered in the civil registration."',
+      '<Core:LegalGender> <rdfs:comment> "Gender of a person as registered in the civil registration."',
     );
   });
 });

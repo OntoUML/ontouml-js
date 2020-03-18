@@ -21,7 +21,7 @@ export async function transformAnnotations(
       if (AvailableLanguages.includes(language)) {
         quads.push(
           quad(
-            namedNode(`:${uri}`),
+            namedNode(uri),
             namedNode('rdfs:label'),
             literal(propertyAssignments[language], language),
           ),
@@ -32,11 +32,7 @@ export async function transformAnnotations(
 
   if (description) {
     quads.push(
-      quad(
-        namedNode(`:${uri}`),
-        namedNode('rdfs:comment'),
-        literal(description),
-      ),
+      quad(namedNode(uri), namedNode('rdfs:comment'), literal(description)),
     );
   }
 

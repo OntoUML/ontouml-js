@@ -56,7 +56,7 @@ export async function transformDisjointClasses(
       .map((classElement: IClass) => {
         const uri = getURI({ element: classElement, options });
 
-        return namedNode(`:${uri}`);
+        return namedNode(uri);
       });
 
     // check if has at least 2 classes to avoid insconsistence
@@ -123,17 +123,13 @@ export async function transformClassesByStereotype(
 
       if (!isPrimitiveDatatype) {
         await writer.addQuads([
+          quad(namedNode(uri), namedNode('rdf:type'), namedNode('owl:Class')),
           quad(
-            namedNode(`:${uri}`),
-            namedNode('rdf:type'),
-            namedNode('owl:Class'),
-          ),
-          quad(
-            namedNode(`:${uri}`),
+            namedNode(uri),
             namedNode('rdf:type'),
             namedNode('owl:NamedIndividual'),
           ),
-          quad(namedNode(`:${uri}`), namedNode('rdfs:label'), literal(name)),
+          quad(namedNode(uri), namedNode('rdfs:label'), literal(name)),
         ]);
       }
 
@@ -143,9 +139,9 @@ export async function transformClassesByStereotype(
           const parentUri = getURI({ element: parents[i], options });
 
           await writer.addQuad(
-            namedNode(`:${uri}`),
+            namedNode(uri),
             namedNode('rdfs:subClassOf'),
-            namedNode(`:${parentUri}`),
+            namedNode(parentUri),
           );
         }
       }

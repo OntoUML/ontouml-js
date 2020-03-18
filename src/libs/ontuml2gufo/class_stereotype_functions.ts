@@ -15,11 +15,11 @@ export function transformKind(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subClassOf'),
       namedNode('gufo:FunctionalComplex'),
     ),
-    quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Kind')),
+    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Kind')),
   ];
 }
 
@@ -30,11 +30,7 @@ export function transformSubkind(
   const uri = getURI({ element: classElement, options });
 
   return [
-    quad(
-      namedNode(`:${uri}`),
-      namedNode('rdf:type'),
-      namedNode('gufo:SubKind'),
-    ),
+    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:SubKind')),
   ];
 }
 
@@ -44,9 +40,7 @@ export function transformRole(
 ): Quad[] {
   const uri = getURI({ element: classElement, options });
 
-  return [
-    quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Role')),
-  ];
+  return [quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Role'))];
 }
 
 export function transformHistoricalRole(
@@ -57,11 +51,11 @@ export function transformHistoricalRole(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subClassOf'),
       namedNode('gufo:Endurant'),
     ),
-    quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Role')),
+    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Role')),
   ];
 }
 
@@ -71,9 +65,7 @@ export function transformPhase(
 ): Quad[] {
   const uri = getURI({ element: classElement, options });
 
-  return [
-    quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Phase')),
-  ];
+  return [quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Phase'))];
 }
 
 export function transformCategory(
@@ -84,15 +76,11 @@ export function transformCategory(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subClassOf'),
       namedNode('gufo:Endurant'),
     ),
-    quad(
-      namedNode(`:${uri}`),
-      namedNode('rdf:type'),
-      namedNode('gufo:Category'),
-    ),
+    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Category')),
   ];
 }
 
@@ -104,11 +92,11 @@ export function transformMixin(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subClassOf'),
       namedNode('gufo:Endurant'),
     ),
-    quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Mixin')),
+    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Mixin')),
   ];
 }
 
@@ -120,15 +108,11 @@ export function transformRoleMixin(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subClassOf'),
       namedNode('gufo:Endurant'),
     ),
-    quad(
-      namedNode(`:${uri}`),
-      namedNode('rdf:type'),
-      namedNode('gufo:RoleMixin'),
-    ),
+    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:RoleMixin')),
   ];
 }
 
@@ -140,15 +124,11 @@ export function transformPhaseMixin(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subClassOf'),
       namedNode('gufo:Endurant'),
     ),
-    quad(
-      namedNode(`:${uri}`),
-      namedNode('rdf:type'),
-      namedNode('gufo:PhaseMixin'),
-    ),
+    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:PhaseMixin')),
   ];
 }
 
@@ -160,11 +140,11 @@ export function transformRelator(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subClassOf'),
       namedNode('gufo:Relator'),
     ),
-    quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Kind')),
+    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Kind')),
   ];
 }
 
@@ -185,7 +165,7 @@ export function transformMode(
   ) {
     quads.push(
       quad(
-        namedNode(`:${uri}`),
+        namedNode(uri),
         namedNode('rdfs:subClassOf'),
         namedNode('gufo:ExtrinsicMode'),
       ),
@@ -193,7 +173,7 @@ export function transformMode(
   } else {
     quads.push(
       quad(
-        namedNode(`:${uri}`),
+        namedNode(uri),
         namedNode('rdfs:subClassOf'),
         namedNode('gufo:IntrinsicMode'),
       ),
@@ -201,7 +181,7 @@ export function transformMode(
   }
 
   quads.push(
-    quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Kind')),
+    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Kind')),
   );
 
   return quads;
@@ -215,11 +195,11 @@ export function transformQuality(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subClassOf'),
       namedNode('gufo:Quality'),
     ),
-    quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Kind')),
+    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Kind')),
   ];
 }
 
@@ -231,11 +211,11 @@ export function transformQuantity(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subClassOf'),
       namedNode('gufo:Quantity'),
     ),
-    quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Kind')),
+    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Kind')),
   ];
 }
 
@@ -247,11 +227,11 @@ export function transformCollective(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subClassOf'),
       namedNode('gufo:Collection'),
     ),
-    quad(namedNode(`:${uri}`), namedNode('rdf:type'), namedNode('gufo:Kind')),
+    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Kind')),
   ];
 }
 
@@ -262,11 +242,7 @@ export function transformEvent(
   const uri = getURI({ element: classElement, options });
 
   return [
-    quad(
-      namedNode(`:${uri}`),
-      namedNode('rdfs:subClassOf'),
-      namedNode('gufo:Event'),
-    ),
+    quad(namedNode(uri), namedNode('rdfs:subClassOf'), namedNode('gufo:Event')),
   ];
 }
 
@@ -278,7 +254,7 @@ export function transformType(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subClassOf'),
       namedNode('gufo:ConcreteIndividualType'),
     ),
@@ -296,7 +272,7 @@ export function transformDatatype(
   if (isComplexDatatype) {
     return [
       quad(
-        namedNode(`:${uri}`),
+        namedNode(uri),
         namedNode('rdfs:subClassOf'),
         namedNode('gufo:QualityValue'),
       ),
@@ -320,21 +296,21 @@ export function transformEnumeration(
   const uri = getURI({ element: classElement, options });
   const literalUris = literals.map((literal: ILiteral) =>
     namedNode(
-      `:${getURI({
+      getURI({
         element: literal,
         options,
-      })}`,
+      }),
     ),
   );
 
   const quads = [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subClassOf'),
       namedNode('gufo:QualityValue'),
     ),
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('owl:equivalentClass'),
       writer.blank([
         {
@@ -352,7 +328,7 @@ export function transformEnumeration(
   for (let i = 0; i < literalUris.length; i += 1) {
     const literalUri = literalUris[i];
 
-    quads.push(quad(literalUri, namedNode('rdf:type'), namedNode(`:${uri}`)));
+    quads.push(quad(literalUri, namedNode('rdf:type'), namedNode(uri)));
     quads.push(
       quad(literalUri, namedNode('rdf:label'), literal(literals[i].name)),
     );

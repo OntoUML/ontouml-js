@@ -141,7 +141,7 @@ function transformRelationBase(
 
   const quads = [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdf:type'),
       namedNode('owl:ObjectProperty'),
     ),
@@ -150,17 +150,17 @@ function transformRelationBase(
   if (domainClassUri && rangeClassUri) {
     quads.push(
       quad(
-        namedNode(`:${uri}`),
+        namedNode(uri),
         namedNode(isInvertedRelation ? 'rdfs:range' : 'rdfs:domain'),
-        namedNode(`:${domainClassUri}`),
+        namedNode(domainClassUri),
       ),
     );
 
     quads.push(
       quad(
-        namedNode(`:${uri}`),
+        namedNode(uri),
         namedNode(isInvertedRelation ? 'rdfs:domain' : 'rdfs:range'),
-        namedNode(`:${rangeClassUri}`),
+        namedNode(rangeClassUri),
       ),
     );
   }
@@ -176,7 +176,7 @@ function transformRelationBase(
     if (isPartWholeRelationBetweenEvents) {
       quads.push(
         quad(
-          namedNode(`:${uri}`),
+          namedNode(uri),
           namedNode('rdfs:subPropertyOf'),
           namedNode('gufo:isEventProperPartOf'),
         ),
@@ -186,7 +186,7 @@ function transformRelationBase(
     else if (isRelationWithoutStereotype) {
       quads.push(
         quad(
-          namedNode(`:${uri}`),
+          namedNode(uri),
           namedNode('rdfs:subPropertyOf'),
           namedNode('gufo:isProperPartOf'),
         ),
@@ -196,13 +196,11 @@ function transformRelationBase(
 
   // add label
   if (name) {
-    quads.push(
-      quad(namedNode(`:${uri}`), namedNode('rdfs:label'), literal(name)),
-    );
+    quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(name)));
   } else {
     quads.push(
       quad(
-        namedNode(`:${uri}`),
+        namedNode(uri),
         namedNode('rdfs:comment'),
         literal('Relation URI was automatically generated.'),
       ),
@@ -323,7 +321,7 @@ function transformRelationCardinality({
   else if (lowerboundDomainCardinality > 0 && !hasInfiniteCardinality) {
     quads.push(
       quad(
-        namedNode(`:${classUri}`),
+        namedNode(classUri),
         namedNode('rdfs:subClassOf'),
         writer.blank([
           {
@@ -376,7 +374,7 @@ function generateRelationCardinalityQuad({
   const classUri = getURI({ element: classElement, options });
 
   return quad(
-    namedNode(`:${classUri}`),
+    namedNode(classUri),
     namedNode('rdfs:subClassOf'),
     generateRelationBlankQuad({
       writer,
@@ -421,8 +419,8 @@ function generateRelationBlankQuad({
     {
       predicate: namedNode('owl:onProperty'),
       object: isRelationDomain
-        ? namedNode(`:${uri}`)
-        : writer.blank(namedNode('owl:inverseOf'), namedNode(`:${uri}`)),
+        ? namedNode(uri)
+        : writer.blank(namedNode('owl:inverseOf'), namedNode(uri)),
     },
   ];
 
@@ -437,12 +435,12 @@ function generateRelationBlankQuad({
 
     blankTriples.push({
       predicate: namedNode('owl:onClass'),
-      object: namedNode(`:${classUri}`),
+      object: namedNode(classUri),
     });
   } else {
     blankTriples.push({
       predicate: namedNode('owl:someValuesFrom'),
-      object: namedNode(`:${classUri}`),
+      object: namedNode(classUri),
     });
   }
 

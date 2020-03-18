@@ -1,22 +1,44 @@
 import memoizee from 'memoizee';
-import { IElement, IRelation } from '@types';
+import { IElement, IRelation, IPackage, IOntoUML2GUFOOptions } from '@types';
 import {
   RelationStereotypeToGUFOMapping,
   RelationsInvertedInGUFO,
   OntoUMLType,
 } from '@constants/.';
-import URIManager from './uri_manager';
 
 type GetURI = {
   element: IElement;
-  options?: {
-    uriFormatBy?: string;
-    uriManager: URIManager;
-  };
+  options?: IOntoUML2GUFOOptions;
 };
 
+export const getPrefixes = memoizee(
+  async (packages: IPackage[], options: IOntoUML2GUFOOptions) => {
+    const { baseIRI, packagesAsUri, uriManager } = options;
+    const prefixes = {};
+
+    if (packagesAsUri) {
+      prefixes[''] = `${baseIRI}#`;
+
+      for (let i = 0; i < packages.length; i += 1) {
+        const { id, name } = packages[i];
+        const packageUri = uriManager.generateUniqueURI({
+          id: id,
+          name: name,
+        });
+        const uri = cleanSpecialCharacters(packageUri);
+
+        prefixes[uri] = `${baseIRI}/${uri}#`;
+      }
+    } else {
+      prefixes[''] = `${baseIRI}#`;
+    }
+
+    return prefixes;
+  },
+);
+
 export const getURI = memoizee(({ element, options }: GetURI): string => {
-  const { uriManager } = options;
+  const { uriManager, packagesAsUri } = options;
   const uriFormatBy = options ? options.uriFormatBy || 'name' : 'name';
   const { id, name } = element;
   const isRelation = element.type === OntoUMLType.RELATION_TYPE;
@@ -47,16 +69,14 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
       formatName(id);
     let formattedElementName = isInvertedRelation ? sourceName : targetName;
 
-    if (!stereotype) {
-      formattedElementName =
-        formattedElementName.charAt(0).toLocaleLowerCase() +
-        formattedElementName.substring(1);
-    }
-
     const stereotypeName = RelationStereotypeToGUFOMapping[stereotype];
     const associationName =
       formattedElementName.charAt(0).toLocaleLowerCase() +
       formattedElementName.substring(1);
+
+    if (!stereotype) {
+      formattedElementName = associationName;
+    }
 
     suggestedName = hasAssociationName
       ? associationName
@@ -80,16 +100,34 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
 
   const formattedId = id ? cleanSpecialCharacters(id) : null;
 
-  const uri = uriManager.generateUniqueURI({
+  const elementUri = uriManager.generateUniqueURI({
     id: formattedId,
     name: formattedName,
   });
 
-  if (uriFormatBy === 'id') {
-    return formattedId || uri;
+  const uri =
+    uriFormatBy === 'id'
+      ? formattedId || elementUri
+      : elementUri || formattedId;
+
+  if (packagesAsUri) {
+    const packageEl = element._container as IPackage;
+
+    if (packageEl && packageEl.id && packageEl.name) {
+      const packageUri = uriManager.generateUniqueURI({
+        id: packageEl.id,
+        name: packageEl.name,
+      });
+
+      const formattedPackageUri = cleanSpecialCharacters(packageUri);
+
+      return `${formattedPackageUri}:${uri}`;
+    }
+
+    return `:${uri}`;
   }
 
-  return uri || formattedId;
+  return `:${uri}`;
 });
 
 const cleanSpecialCharacters = memoizee((str: string) =>

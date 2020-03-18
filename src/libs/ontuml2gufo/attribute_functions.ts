@@ -90,30 +90,26 @@ export async function transformAttributes(
     ) {
       quads.push(
         quad(
-          namedNode(`:${uri}`),
+          namedNode(uri),
           namedNode('rdf:type'),
           namedNode('owl:DatatypeProperty'),
         ),
       );
       quads.push(
         quad(
-          namedNode(`:${uri}`),
+          namedNode(uri),
           namedNode('rdfs:subPropertyOf'),
           namedNode('gufo:hasQualityValue'),
         ),
       );
       quads.push(
-        quad(
-          namedNode(`:${uri}`),
-          namedNode('rdfs:domain'),
-          namedNode(`:${classUri}`),
-        ),
+        quad(namedNode(uri), namedNode('rdfs:domain'), namedNode(classUri)),
       );
 
       if (datatypeName && XSDDatatypes.includes(datatypeName)) {
         quads.push(
           quad(
-            namedNode(`:${uri}`),
+            namedNode(uri),
             namedNode('rdfs:range'),
             namedNode(`xsd:${datatypeName}`),
           ),
@@ -131,30 +127,22 @@ export async function transformAttributes(
 
       quads.push(
         quad(
-          namedNode(`:${uri}`),
+          namedNode(uri),
           namedNode('rdf:type'),
           namedNode('owl:ObjectProperty'),
         ),
       );
       quads.push(
-        quad(
-          namedNode(`:${uri}`),
-          namedNode('rdfs:domain'),
-          namedNode(`:${classUri}`),
-        ),
+        quad(namedNode(uri), namedNode('rdfs:domain'), namedNode(classUri)),
       );
       quads.push(
-        quad(
-          namedNode(`:${uri}`),
-          namedNode('rdfs:range'),
-          namedNode(`:${rangeUri}`),
-        ),
+        quad(namedNode(uri), namedNode('rdfs:range'), namedNode(rangeUri)),
       );
 
       if (!isComplexAttribute) {
         quads.push(
           quad(
-            namedNode(`:${uri}`),
+            namedNode(uri),
             namedNode('rdfs:subPropertyOf'),
             namedNode('gufo:hasReifiedQualityValue'),
           ),
@@ -163,9 +151,7 @@ export async function transformAttributes(
     }
 
     if (name) {
-      quads.push(
-        quad(namedNode(`:${uri}`), namedNode('rdfs:label'), literal(name)),
-      );
+      quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(name)));
     }
   }
 

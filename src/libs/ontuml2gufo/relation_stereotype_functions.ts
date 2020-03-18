@@ -14,7 +14,7 @@ export function transformCharacterization(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:inheresIn'),
     ),
@@ -29,7 +29,7 @@ export function transformComparative(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdf:type'),
       namedNode('gufo:ComparativeRelationshipType'),
     ),
@@ -44,7 +44,7 @@ export function transformComponentOf(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:isComponentOf'),
     ),
@@ -59,7 +59,7 @@ export function transformCreation(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:wasCreatedIn'),
     ),
@@ -79,9 +79,9 @@ export function transformDerivation(
   if (domainUri && rangeUri) {
     return [
       quad(
-        namedNode(`:${domainUri}`),
+        namedNode(domainUri),
         namedNode('gufo:isDerivedFrom'),
-        namedNode(`:${rangeUri}`),
+        namedNode(rangeUri),
       ),
     ];
   }
@@ -97,7 +97,7 @@ export function transformExternalDependence(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:externallyDependsOn'),
     ),
@@ -112,7 +112,7 @@ export function transformHistoricalDependence(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:historicallyDependsOn'),
     ),
@@ -131,9 +131,9 @@ export function transformInstantiation(
 
   return [
     quad(
-      namedNode(`:${domainUri}`),
+      namedNode(domainUri),
       namedNode('gufo:categorizes'),
-      namedNode(`:${rangeUri}`),
+      namedNode(rangeUri),
     ),
   ];
 }
@@ -146,7 +146,7 @@ export function transformManifestation(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:manifestedIn'),
     ),
@@ -161,7 +161,7 @@ export function transformMaterial(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdf:type'),
       namedNode('gufo:MaterialRelationshipType'),
     ),
@@ -176,7 +176,7 @@ export function transformMediation(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:mediates'),
     ),
@@ -191,7 +191,7 @@ export function transformMemberOf(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:isCollectionMemberOf'),
     ),
@@ -206,7 +206,7 @@ export function transformParticipation(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:participatedIn'),
     ),
@@ -221,7 +221,7 @@ export function transformParticipational(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:isEventProperPartOf'),
     ),
@@ -236,7 +236,7 @@ export function transformSubCollectionOf(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:isSubCollectionOf'),
     ),
@@ -251,7 +251,7 @@ export function transformSubQuantityOf(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:isSubQuantityOf'),
     ),
@@ -266,7 +266,7 @@ export function transformTermination(
 
   return [
     quad(
-      namedNode(`:${uri}`),
+      namedNode(uri),
       namedNode('rdfs:subPropertyOf'),
       namedNode('gufo:wasTerminatedIn'),
     ),
