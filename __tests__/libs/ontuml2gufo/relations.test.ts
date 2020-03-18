@@ -80,7 +80,7 @@ describe('Relations', () => {
     expect(alpinebitsResult).toContain(
       `<:CompositeArea> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
-        <owl:onProperty> <:subareas>;
+        <owl:onProperty> [ <owl:inverseOf> <:isComponentOfCompositeArea> ];
         <owl:minQualifiedCardinality> "2"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:MountainArea>
       ] .`.replace(/ {6}/gm, ''),
@@ -109,22 +109,26 @@ describe('Relations', () => {
   });
 
   it('should generate part-whole relation with without stereotype', () => {
-    expect(partWholeResult).toContain('<:heart> <rdfs:domain> <:Heart>');
-    expect(partWholeResult).toContain('<:heart> <rdfs:range> <:Person>');
     expect(partWholeResult).toContain(
-      '<:heart> <rdfs:subPropertyOf> <gufo:isProperPartOf>',
+      '<:isProperPartOfPerson> <rdfs:domain> <:Heart>',
+    );
+    expect(partWholeResult).toContain(
+      '<:isProperPartOfPerson> <rdfs:range> <:Person>',
+    );
+    expect(partWholeResult).toContain(
+      '<:isProperPartOfPerson> <rdfs:subPropertyOf> <gufo:isProperPartOf>',
     );
   });
 
   it('should generate a part-whole relation between events', () => {
     expect(partWholeResult).toContain(
-      '<:conference> <rdfs:domain> <:KeynoteSpeech>',
+      '<:isProperPartOfConference> <rdfs:domain> <:KeynoteSpeech>',
     );
     expect(partWholeResult).toContain(
-      '<:conference> <rdfs:range> <:Conference>',
+      '<:isProperPartOfConference> <rdfs:range> <:Conference>',
     );
     expect(partWholeResult).toContain(
-      '<:conference> <rdfs:subPropertyOf> <gufo:isEventProperPartOf>',
+      '<:isProperPartOfConference> <rdfs:subPropertyOf> <gufo:isEventProperPartOf>',
     );
   });
 });

@@ -54,13 +54,14 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
 
     let prefixName = stereotypeName;
 
-    if (isPartWholeRelation) {
+    if (isPartWholeRelation && !stereotypeName) {
       prefixName = 'isProperPartOf';
     }
 
-    suggestedName = hasAssociationName
-      ? associationName
-      : `${prefixName}${formattedElementName}`;
+    suggestedName =
+      hasAssociationName || !prefixName
+        ? associationName
+        : `${prefixName}${formattedElementName}`;
   }
 
   let formattedName;
