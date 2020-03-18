@@ -25,9 +25,9 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
 
   if (isRelation && !name && uriFormatBy === 'name') {
     const relation = element as IRelation;
-    const { stereotypes, properties } = relation;
+    const { stereotypes, properties, propertyAssignments = {} } = relation;
     const stereotype = stereotypes ? stereotypes[0] : null;
-    const isInvertedRelation = RelationsInvertedInGUFO.includes(stereotype);
+    const { isInvertedRelation, isPartWholeRelation } = propertyAssignments;
 
     const source = relation.getSource();
     const target = relation.getTarget();
@@ -47,20 +47,20 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
       formatName(id);
     let formattedElementName = isInvertedRelation ? sourceName : targetName;
 
-    if (!stereotype) {
-      formattedElementName =
-        formattedElementName.charAt(0).toLocaleLowerCase() +
-        formattedElementName.substring(1);
-    }
-
     const stereotypeName = RelationStereotypeToGUFOMapping[stereotype];
     const associationName =
       formattedElementName.charAt(0).toLocaleLowerCase() +
       formattedElementName.substring(1);
 
+    let prefixName = stereotypeName;
+
+    if (isPartWholeRelation) {
+      prefixName = 'isProperPartOf';
+    }
+
     suggestedName = hasAssociationName
       ? associationName
-      : `${stereotypeName || ''}${formattedElementName}`;
+      : `${prefixName}${formattedElementName}`;
   }
 
   let formattedName;
