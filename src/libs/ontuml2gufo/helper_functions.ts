@@ -1,10 +1,6 @@
 import memoizee from 'memoizee';
 import { IElement, IRelation } from '@types';
-import {
-  RelationStereotypeToGUFOMapping,
-  RelationsInvertedInGUFO,
-  OntoUMLType,
-} from '@constants/.';
+import { RelationStereotypeToGUFOMapping, OntoUMLType } from '@constants/.';
 import URIManager from './uri_manager';
 
 type GetURI = {
