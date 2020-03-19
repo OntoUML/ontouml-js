@@ -1,6 +1,7 @@
+import * as fs from 'fs';
 import { ModelManager } from '@libs/model';
 import { OntoUML2GUFO } from '@libs/ontuml2gufo';
-import { alpinebits } from '@test-models/valids';
+import { alpinebits, partWhole } from '@test-models/valids';
 import { IPackage, IOntoUML2GUFOOptions } from '@types';
 
 async function transformOntoUML2GUFO(
@@ -22,47 +23,69 @@ async function transformOntoUML2GUFO(
 }
 
 describe('Relations', () => {
-  let result;
+  let alpinebitsResult;
+  let partWholeResult;
 
   beforeAll(async () => {
-    result = await transformOntoUML2GUFO(alpinebits);
+    alpinebitsResult = await transformOntoUML2GUFO(alpinebits);
+    partWholeResult = await transformOntoUML2GUFO(partWhole);
+
+    const partWholeResultTTL = await transformOntoUML2GUFO(partWhole, {
+      format: 'Turtle',
+    });
+
+    fs.writeFileSync(
+      '__tests__/libs/ontuml2gufo/examples/partWhole.nt',
+      partWholeResult,
+    );
+
+    fs.writeFileSync(
+      '__tests__/libs/ontuml2gufo/examples/partWhole.ttl',
+      partWholeResultTTL,
+    );
   });
 
   it('should generate an uri automatically using association end', async () => {
-    expect(result).toContain(
+    expect(alpinebitsResult).toContain(
       '<:isComponentOfSnowpark> <rdf:type> <owl:ObjectProperty>',
     );
   });
 
   it('should generate an uri automatically using stereotype', async () => {
-    expect(result).toContain('<:organizers> <rdf:type> <owl:ObjectProperty>');
+    expect(alpinebitsResult).toContain(
+      '<:organizers> <rdf:type> <owl:ObjectProperty>',
+    );
   });
 
   it('should generate a domain and range to relation', async () => {
-    expect(result).toContain('<:organizers> <rdfs:domain> <:EventPlan>');
-    expect(result).toContain('<:organizers> <rdfs:range> <:Organizer>');
+    expect(alpinebitsResult).toContain(
+      '<:organizers> <rdfs:domain> <:EventPlan>',
+    );
+    expect(alpinebitsResult).toContain(
+      '<:organizers> <rdfs:range> <:Organizer>',
+    );
   });
 
   it('should connect a relation to gUFO stereotype', async () => {
-    expect(result).toContain(
+    expect(alpinebitsResult).toContain(
       '<:organizers> <rdfs:subPropertyOf> <gufo:mediates>',
     );
-    expect(result).toContain(
+    expect(alpinebitsResult).toContain(
       '<:described> <rdfs:subPropertyOf> <gufo:historicallyDependsOn>',
     );
-    expect(result).toContain(
+    expect(alpinebitsResult).toContain(
       '<:isComponentOfSnowpark> <rdfs:subPropertyOf> <gufo:isComponentOf>',
     );
-    expect(result).toContain(
+    expect(alpinebitsResult).toContain(
       '<:inheresInGeospatialFeature> <rdfs:subPropertyOf> <gufo:inheresIn>',
     );
   });
 
   it('should generate a cardinality restriction of 2..*', async () => {
-    expect(result).toContain(
+    expect(alpinebitsResult).toContain(
       `<:CompositeArea> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
-        <owl:onProperty> <:subareas>;
+        <owl:onProperty> [ <owl:inverseOf> <:isComponentOfCompositeArea> ];
         <owl:minQualifiedCardinality> "2"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:MountainArea>
       ] .`.replace(/ {6}/gm, ''),
@@ -70,7 +93,7 @@ describe('Relations', () => {
   });
 
   it('should generate a cardinality restriction of 1..*', async () => {
-    expect(result).toContain(
+    expect(alpinebitsResult).toContain(
       `<:MountainArea> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
         <owl:onProperty> <:areaowner>;
@@ -80,7 +103,7 @@ describe('Relations', () => {
   });
 
   it('should generate a cardinality restriction of 0..1', () => {
-    expect(result).toContain(
+    expect(alpinebitsResult).toContain(
       `<:EventPlan> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
         <owl:onProperty> <:eventseries>;
@@ -88,5 +111,80 @@ describe('Relations', () => {
         <owl:onClass> <:EventSeries>
       ] .`.replace(/ {6}/gm, ''),
     );
+  });
+
+  it('should generate normal relation without stereotype', () => {
+    const data = [
+      '<:keynoteSpeaker> <rdf:type> <owl:ObjectProperty> .',
+      '<:keynoteSpeaker> <rdfs:domain> <:KeynoteSpeech> .',
+      '<:keynoteSpeaker> <rdfs:range> <:KeynoteSpeaker> .',
+      '<:keynoteSpeaker> <rdfs:comment> "Relation URI was automatically generated." .',
+      '<:KeynoteSpeech> <rdfs:subClassOf> [',
+      '<rdf:type> <owl:Restriction>;',
+      '<owl:onProperty> <:keynoteSpeaker>;',
+      '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
+      '<owl:onClass> <:KeynoteSpeaker>',
+      '] .',
+      '<:KeynoteSpeaker> <rdfs:subClassOf> [',
+      '<rdf:type> <owl:Restriction>;',
+      '<owl:onProperty> [ <owl:inverseOf> <:keynoteSpeaker> ];',
+      '<owl:someValuesFrom> <:KeynoteSpeech>',
+      '] .',
+    ];
+
+    for (const value of data) {
+      expect(partWholeResult).toContain(value);
+    }
+  });
+
+  it('should generate part-whole relation without stereotype', () => {
+    const data = [
+      '<:isProperPartOfPerson> <rdf:type> <owl:ObjectProperty> .',
+      '<:isProperPartOfPerson> <rdfs:range> <:Person> .',
+      '<:isProperPartOfPerson> <rdfs:domain> <:Heart> .',
+      '<:isProperPartOfPerson> <rdfs:subPropertyOf> <gufo:isProperPartOf> .',
+      '<:isProperPartOfPerson> <rdfs:comment> "Relation URI was automatically generated." .',
+      '<:Person> <rdfs:subClassOf> [',
+      '<rdf:type> <owl:Restriction>;',
+      '<owl:onProperty> [ <owl:inverseOf> <:isProperPartOfPerson> ];',
+      '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
+      '<owl:onClass> <:Heart>',
+      '] .',
+      '<:Heart> <rdfs:subClassOf> [',
+      '<rdf:type> <owl:Restriction>;',
+      '<owl:onProperty> <:isProperPartOfPerson>;',
+      '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
+      '<owl:onClass> <:Person>',
+      '] .',
+    ];
+
+    for (const value of data) {
+      expect(partWholeResult).toContain(value);
+    }
+  });
+
+  it('should generate a part-whole relation between events', () => {
+    const data = [
+      '<:isProperPartOfConference> <rdf:type> <owl:ObjectProperty> .',
+      '<:isProperPartOfConference> <rdfs:domain> <:KeynoteSpeech> .',
+      '<:isProperPartOfConference> <rdfs:range> <:Conference> .',
+      '<:isProperPartOfConference> <rdfs:subPropertyOf> <gufo:isEventProperPartOf> .',
+      '<:isProperPartOfConference> <rdfs:comment> "Relation URI was automatically generated." .',
+      '<:KeynoteSpeech> <rdfs:subClassOf> [',
+      '<rdf:type> <owl:Restriction>;',
+      '<owl:onProperty> <:isProperPartOfConference>;',
+      '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
+      '<owl:onClass> <:Conference>',
+      '] .',
+      '<:Conference> <rdfs:subClassOf> [',
+      '<rdf:type> <owl:Restriction>;',
+      '<owl:onProperty> [ <owl:inverseOf> <:isProperPartOfConference> ];',
+      '<owl:someValuesFrom> <:KeynoteSpeech>',
+      '] .',
+    ];
+
+    for (const value of data) {
+      expect(partWholeResult).toContain(value);
+    }
   });
 });

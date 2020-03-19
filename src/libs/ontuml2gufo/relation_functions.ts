@@ -2,9 +2,11 @@ import { N3Writer, Quad, BlankNode } from 'n3';
 import memoizee from 'memoizee';
 import { IRelation, IOntoUML2GUFOOptions } from '@types';
 import {
+  AggregationKind,
   RelationStereotype,
   RelationsInvertedInGUFO,
   RelationsAsPredicateInGUFO,
+  ClassStereotype,
 } from '@constants/.';
 import { getURI } from './helper_functions';
 import {
@@ -61,43 +63,57 @@ export async function transformRelations(
 
   for (let i = 0; i < relations.length; i += 1) {
     const relation = relations[i];
-    const { stereotypes } = relation;
+    const { stereotypes, properties } = relation;
+    const stereotype = stereotypes ? stereotypes[0] : null;
+    const partWholeKinds = [AggregationKind.SHARED, AggregationKind.COMPOSITE];
+    const isPartWholeRelation =
+      partWholeKinds.includes(properties[0].aggregationKind) ||
+      partWholeKinds.includes(properties[1].aggregationKind);
+    const isPartWholeInverted = partWholeKinds.includes(
+      properties[0].aggregationKind,
+    );
+    const isInvertedRelation =
+      isPartWholeInverted || RelationsInvertedInGUFO.includes(stereotype);
 
-    if (!stereotypes || stereotypes.length !== 1) continue;
+    // add extra properties
+    relation.propertyAssignments = {
+      ...(relation.propertyAssignments || {}),
+      isPartWholeRelation,
+      isInvertedRelation,
+    };
 
-    const stereotype = stereotypes[0];
+    let baseQuads = [];
+    let cardinalityQuads = [];
+    let stereotypeQuads = [];
 
+    // ignore predicate relations like instantiation
+    if (!RelationsAsPredicateInGUFO.includes(stereotype)) {
+      // Get base quads (type, domain, range) from relation
+      baseQuads = transformRelationBase(relation, options);
+      // Get cardinalities quads from relation
+      cardinalityQuads = transformRelationCardinalities(
+        writer,
+        relation,
+        options,
+      );
+    }
+
+    // Get stereotype quads from relation
     if (
       stereotype &&
       Object.keys(transformStereotypeFunction).includes(stereotype)
     ) {
-      let baseQuads = [];
-      let cardinalityQuads = [];
-
-      // ignore predicate relations like instantiation
-      if (!RelationsAsPredicateInGUFO.includes(stereotype)) {
-        // Get base quads (type, domain, range) from relation
-        baseQuads = transformRelationBase(relation, options);
-        // Get cardinalities quads from relation
-        cardinalityQuads = transformRelationCardinalities(
-          writer,
-          relation,
-          options,
-        );
-      }
-
-      // Get stereotype quads from relation
-      const stereotypeQuads = transformStereotypeFunction[stereotype](
+      stereotypeQuads = transformStereotypeFunction[stereotype](
         relation,
         options,
       );
-
-      await writer.addQuads([
-        ...baseQuads,
-        ...cardinalityQuads,
-        ...stereotypeQuads,
-      ]);
     }
+
+    await writer.addQuads([
+      ...baseQuads,
+      ...cardinalityQuads,
+      ...stereotypeQuads,
+    ]);
   }
 
   return true;
@@ -110,12 +126,18 @@ function transformRelationBase(
   relation: IRelation,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { name, stereotypes } = relation;
+  const { name, stereotypes, propertyAssignments } = relation;
+  const stereotype = stereotypes ? stereotypes[0] : null;
   const uri = getURI({ element: relation, options });
-  const isInvertedRelation = RelationsInvertedInGUFO.includes(stereotypes[0]);
-
+  const { isPartWholeRelation, isInvertedRelation } = propertyAssignments;
   const sourceClass = relation.getSource();
   const targetClass = relation.getTarget();
+  const sourceStereotype = sourceClass.stereotypes
+    ? sourceClass.stereotypes[0]
+    : null;
+  const targetStereotype = targetClass.stereotypes
+    ? targetClass.stereotypes[0]
+    : null;
 
   const domainClassUri = getURI({ element: sourceClass, options });
   const rangeClassUri = getURI({ element: targetClass, options });
@@ -144,6 +166,35 @@ function transformRelationBase(
         namedNode(`:${rangeClassUri}`),
       ),
     );
+  }
+
+  // transform part-whole relations
+  if (isPartWholeRelation) {
+    const isPartWholeRelationBetweenEvents =
+      sourceStereotype === ClassStereotype.EVENT &&
+      targetStereotype === ClassStereotype.EVENT;
+    const isRelationWithoutStereotype = !stereotype;
+
+    // relation between events
+    if (isPartWholeRelationBetweenEvents) {
+      quads.push(
+        quad(
+          namedNode(`:${uri}`),
+          namedNode('rdfs:subPropertyOf'),
+          namedNode('gufo:isEventProperPartOf'),
+        ),
+      );
+    }
+    // relations without stereotypes
+    else if (isRelationWithoutStereotype) {
+      quads.push(
+        quad(
+          namedNode(`:${uri}`),
+          namedNode('rdfs:subPropertyOf'),
+          namedNode('gufo:isProperPartOf'),
+        ),
+      );
+    }
   }
 
   // add label
@@ -356,9 +407,8 @@ function generateRelationBlankQuad({
   cardinality?: number;
   options: IOntoUML2GUFOOptions;
 }): BlankNode {
-  const { stereotypes } = relation;
+  const { isInvertedRelation } = relation.propertyAssignments;
   const uri = getURI({ element: relation, options });
-  const isInvertedRelation = RelationsInvertedInGUFO.includes(stereotypes[0]);
   // get range
   const classElement = isDomain ? relation.getTarget() : relation.getSource();
   const classUri = getURI({ element: classElement, options });

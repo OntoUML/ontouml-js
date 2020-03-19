@@ -1,22 +1,18 @@
 import memoizee from 'memoizee';
 import { IElement, IRelation } from '@types';
-import {
-  RelationStereotypeToGUFOMapping,
-  RelationsInvertedInGUFO,
-  OntoUMLType,
-} from '@constants/.';
+import { RelationStereotypeToGUFOMapping, OntoUMLType } from '@constants/.';
 import URIManager from './uri_manager';
 
 type GetURI = {
   element: IElement;
   options?: {
     uriFormatBy?: string;
+    uriManager: URIManager;
   };
 };
 
-const uriManager = new URIManager();
-
 export const getURI = memoizee(({ element, options }: GetURI): string => {
+  const { uriManager } = options;
   const uriFormatBy = options ? options.uriFormatBy || 'name' : 'name';
   const { id, name } = element;
   const isRelation = element.type === OntoUMLType.RELATION_TYPE;
@@ -25,8 +21,9 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
 
   if (isRelation && !name && uriFormatBy === 'name') {
     const relation = element as IRelation;
-    const { stereotypes, properties } = relation;
-    const isInvertedRelation = RelationsInvertedInGUFO.includes(stereotypes[0]);
+    const { stereotypes, properties, propertyAssignments = {} } = relation;
+    const stereotype = stereotypes ? stereotypes[0] : null;
+    const { isInvertedRelation, isPartWholeRelation } = propertyAssignments;
 
     const source = relation.getSource();
     const target = relation.getTarget();
@@ -44,16 +41,23 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
       formatName(targetAssociationname) ||
       formatName(target.name) ||
       formatName(id);
-    const formattedElementName = isInvertedRelation ? sourceName : targetName;
+    let formattedElementName = isInvertedRelation ? sourceName : targetName;
 
-    const stereotypeName = RelationStereotypeToGUFOMapping[stereotypes[0]];
+    const stereotypeName = RelationStereotypeToGUFOMapping[stereotype];
     const associationName =
       formattedElementName.charAt(0).toLocaleLowerCase() +
       formattedElementName.substring(1);
 
-    suggestedName = hasAssociationName
-      ? associationName
-      : `${stereotypeName}${formattedElementName}`;
+    let prefixName = stereotypeName;
+
+    if (isPartWholeRelation && !stereotypeName) {
+      prefixName = 'isProperPartOf';
+    }
+
+    suggestedName =
+      hasAssociationName || !prefixName
+        ? associationName
+        : `${prefixName}${formattedElementName}`;
   }
 
   let formattedName;

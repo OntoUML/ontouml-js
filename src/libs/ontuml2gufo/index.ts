@@ -15,6 +15,7 @@ import {
 } from './class_functions';
 import { transformRelations } from './relation_functions';
 import { getURI } from './helper_functions';
+import URIManager from './uri_manager';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -35,6 +36,8 @@ export class OntoUML2GUFO {
 
   async transformOntoUML2GUFO(options: IOntoUML2GUFOOptions): Promise<string> {
     const { baseIRI, format } = options;
+
+    options.uriManager = new URIManager();
 
     const writer = new N3.Writer({
       format: format || 'Turtle',
