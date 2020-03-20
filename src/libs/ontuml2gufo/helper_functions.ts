@@ -1,10 +1,6 @@
 import memoizee from 'memoizee';
 import { IElement, IRelation } from '@types';
-import {
-  RelationStereotypeToGUFOMapping,
-  RelationsInvertedInGUFO,
-  OntoUMLType,
-} from '@constants/.';
+import { RelationStereotypeToGUFOMapping, OntoUMLType } from '@constants/.';
 import URIManager from './uri_manager';
 
 type GetURI = {
@@ -25,9 +21,9 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
 
   if (isRelation && !name && uriFormatBy === 'name') {
     const relation = element as IRelation;
-    const { stereotypes, properties } = relation;
+    const { stereotypes, properties, propertyAssignments = {} } = relation;
     const stereotype = stereotypes ? stereotypes[0] : null;
-    const isInvertedRelation = RelationsInvertedInGUFO.includes(stereotype);
+    const { isInvertedRelation, isPartWholeRelation } = propertyAssignments;
 
     const source = relation.getSource();
     const target = relation.getTarget();
@@ -47,20 +43,21 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
       formatName(id);
     let formattedElementName = isInvertedRelation ? sourceName : targetName;
 
-    if (!stereotype) {
-      formattedElementName =
-        formattedElementName.charAt(0).toLocaleLowerCase() +
-        formattedElementName.substring(1);
-    }
-
     const stereotypeName = RelationStereotypeToGUFOMapping[stereotype];
     const associationName =
       formattedElementName.charAt(0).toLocaleLowerCase() +
       formattedElementName.substring(1);
 
-    suggestedName = hasAssociationName
-      ? associationName
-      : `${stereotypeName || ''}${formattedElementName}`;
+    let prefixName = stereotypeName;
+
+    if (isPartWholeRelation && !stereotypeName) {
+      prefixName = 'isProperPartOf';
+    }
+
+    suggestedName =
+      hasAssociationName || !prefixName
+        ? associationName
+        : `${prefixName}${formattedElementName}`;
   }
 
   let formattedName;
