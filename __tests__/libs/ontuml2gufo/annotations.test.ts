@@ -43,10 +43,18 @@ describe('Relations', () => {
   // });
 
   it('should generate language labels on classess (testing with nl, pt, en, and it)', async () => {
-    expect(result).toContain('<:RegardsEmployee> <rdfs:label> "betreft werknemer"@nl');
-    expect(result).toContain('<:RegardsEmployee> <rdfs:label> "de empregado"@pt');
-    expect(result).toContain('<:RegardsEmployee> <rdfs:label> "regards employee"@en');
-    expect(result).toContain('<:RegardsEmployee> <rdfs:label> "di dipendente"@it');
+    expect(result).toContain(
+      '<:RegardsEmployee> <rdfs:label> "betreft werknemer"@nl',
+    );
+    expect(result).toContain(
+      '<:RegardsEmployee> <rdfs:label> "de empregado"@pt',
+    );
+    expect(result).toContain(
+      '<:RegardsEmployee> <rdfs:label> "regards employee"@en',
+    );
+    expect(result).toContain(
+      '<:RegardsEmployee> <rdfs:label> "di dipendente"@it',
+    );
   });
 
   it('should generate class "description" as a rdfs:comment', async () => {
