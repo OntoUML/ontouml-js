@@ -21,7 +21,7 @@ async function transformOntoUML2GUFO(
   });
 }
 
-describe('Relations', () => {
+describe('Attributes', () => {
   let result;
 
   beforeAll(async () => {

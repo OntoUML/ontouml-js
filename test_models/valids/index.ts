@@ -10,6 +10,7 @@ const alpinebits = require('./alpinebits.json');
 const istandard = require('./istandard.json');
 const person = require('./person.json');
 const partWhole = require('./partWhole.json');
+const annotations = require('./annotations.json');
 
 export {
   genericExample1,
@@ -24,4 +25,5 @@ export {
   istandard,
   person,
   partWhole,
+  annotations,
 };

@@ -23,6 +23,7 @@ import {
   transformEnumeration,
 } from './class_stereotype_functions';
 import { transformAttributes } from './attribute_functions';
+import { transformAnnotations } from './annotation_function';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -162,6 +163,9 @@ export async function transformClassesByStereotype(
       if (classElement.properties) {
         await transformAttributes(writer, classElement, options);
       }
+
+      // transform annotations
+      await transformAnnotations(writer, classElement, options);
     }
   }
 
