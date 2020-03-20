@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import { ModelManager } from '@libs/model';
 import { OntoUML2GUFO } from '@libs/ontuml2gufo';
 import { annotations } from '@test-models/valids';
@@ -21,11 +22,20 @@ async function transformOntoUML2GUFO(
   });
 }
 
-describe('Relations', () => {
+describe('Annotations', () => {
   let result;
 
   beforeAll(async () => {
     result = await transformOntoUML2GUFO(annotations);
+    
+    const resultTurtle = await transformOntoUML2GUFO(annotations, {
+      format: 'Turtle',
+    });
+
+    fs.writeFileSync(
+      '__tests__/libs/ontuml2gufo/examples/annotations.ttl',
+      resultTurtle,
+    );
   });
 
   it('should generate language labels on classess (testing with nl, pt, en, and it)', async () => {
