@@ -35,12 +35,12 @@ describe('Relations', () => {
     expect(result).toContain('<:Person> <rdfs:label> "Persona"@it');
   });
 
-  // it('should generate language labels on attributes (testing with nl, pt, en, and it)', async () => {
-  //   expect(result).toContain('<:name> <rdfs:label> "naam"@nl');
-  //   expect(result).toContain('<:name> <rdfs:label> "nome"@pt');
-  //   expect(result).toContain('<:name> <rdfs:label> "name"@en');
-  //   expect(result).toContain('<:name> <rdfs:label> "nome"@it');
-  // });
+  it('should generate language labels on attributes (testing with nl, pt, en, and it)', async () => {
+    expect(result).toContain('<:name> <rdfs:label> "naam"@nl');
+    expect(result).toContain('<:name> <rdfs:label> "nome"@pt');
+    expect(result).toContain('<:name> <rdfs:label> "name"@en');
+    expect(result).toContain('<:name> <rdfs:label> "nome"@it');
+  });
 
   it('should generate language labels on classess (testing with nl, pt, en, and it)', async () => {
     expect(result).toContain(
@@ -63,11 +63,11 @@ describe('Relations', () => {
     );
   });
 
-  // it('should generate attribute "description" as a rdfs:comment', async () => {
-  //   expect(result).toContain(
-  //     '<:name> <rdfs:comment> "This is the description of the attribute name in of the person class."',
-  //   );
-  // });
+  it('should generate attribute "description" as a rdfs:comment', async () => {
+    expect(result).toContain(
+      '<:name> <rdfs:comment> "This is the description of the attribute name in of the person class."',
+    );
+  });
 
   it('should generate association "description" as a rdfs:comment', async () => {
     expect(result).toContain(

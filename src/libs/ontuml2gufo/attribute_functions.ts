@@ -2,6 +2,7 @@ import { N3Writer } from 'n3';
 import { IClass, IOntoUML2GUFOOptions } from '@types';
 import { ClassStereotype } from '@constants/.';
 import { getURI } from './helper_functions';
+import { transformAnnotations } from './annotation_function';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -167,6 +168,9 @@ export async function transformAttributes(
         quad(namedNode(`:${uri}`), namedNode('rdfs:label'), literal(name)),
       );
     }
+
+    // transform annotations
+    await transformAnnotations(writer, attributes[i], options);
   }
 
   await writer.addQuads(quads);
