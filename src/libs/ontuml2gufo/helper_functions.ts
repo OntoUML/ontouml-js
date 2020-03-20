@@ -1,10 +1,6 @@
 import memoizee from 'memoizee';
 import { IElement, IRelation, IPackage, IOntoUML2GUFOOptions } from '@types';
-import {
-  RelationStereotypeToGUFOMapping,
-  RelationsInvertedInGUFO,
-  OntoUMLType,
-} from '@constants/.';
+import { RelationStereotypeToGUFOMapping, OntoUMLType } from '@constants/.';
 
 type GetURI = {
   element: IElement;
@@ -47,9 +43,9 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
 
   if (isRelation && !name && uriFormatBy === 'name') {
     const relation = element as IRelation;
-    const { stereotypes, properties } = relation;
+    const { stereotypes, properties, propertyAssignments = {} } = relation;
     const stereotype = stereotypes ? stereotypes[0] : null;
-    const isInvertedRelation = RelationsInvertedInGUFO.includes(stereotype);
+    const { isInvertedRelation, isPartWholeRelation } = propertyAssignments;
 
     const source = relation.getSource();
     const target = relation.getTarget();
@@ -74,13 +70,16 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
       formattedElementName.charAt(0).toLocaleLowerCase() +
       formattedElementName.substring(1);
 
-    if (!stereotype) {
-      formattedElementName = associationName;
+    let prefixName = stereotypeName;
+
+    if (isPartWholeRelation && !stereotypeName) {
+      prefixName = 'isProperPartOf';
     }
 
-    suggestedName = hasAssociationName
-      ? associationName
-      : `${stereotypeName || ''}${formattedElementName}`;
+    suggestedName =
+      hasAssociationName || !prefixName
+        ? associationName
+        : `${prefixName}${formattedElementName}`;
   }
 
   let formattedName;

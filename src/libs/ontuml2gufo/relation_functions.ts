@@ -64,9 +64,25 @@ export async function transformRelations(
 
   for (let i = 0; i < relations.length; i += 1) {
     const relation = relations[i];
-    const { stereotypes } = relation;
-
+    const { stereotypes, properties } = relation;
     const stereotype = stereotypes ? stereotypes[0] : null;
+    const partWholeKinds = [AggregationKind.SHARED, AggregationKind.COMPOSITE];
+    const isPartWholeRelation =
+      partWholeKinds.includes(properties[0].aggregationKind) ||
+      partWholeKinds.includes(properties[1].aggregationKind);
+    const isPartWholeInverted = partWholeKinds.includes(
+      properties[0].aggregationKind,
+    );
+    const isInvertedRelation =
+      isPartWholeInverted || RelationsInvertedInGUFO.includes(stereotype);
+
+    // add extra properties
+    relation.propertyAssignments = {
+      ...(relation.propertyAssignments || {}),
+      isPartWholeRelation,
+      isInvertedRelation,
+    };
+
     let baseQuads = [];
     let cardinalityQuads = [];
     let stereotypeQuads = [];
@@ -114,19 +130,10 @@ function transformRelationBase(
   relation: IRelation,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const { name, stereotypes, properties } = relation;
+  const { name, stereotypes, propertyAssignments } = relation;
   const stereotype = stereotypes ? stereotypes[0] : null;
   const uri = getURI({ element: relation, options });
-  const partWholeKinds = [AggregationKind.SHARED, AggregationKind.COMPOSITE];
-  const isPartWhole =
-    partWholeKinds.includes(properties[0].aggregationKind) ||
-    partWholeKinds.includes(properties[1].aggregationKind);
-  const isPartWholeInverted = partWholeKinds.includes(
-    properties[0].aggregationKind,
-  );
-  const isInvertedRelation =
-    isPartWholeInverted || RelationsInvertedInGUFO.includes(stereotype);
-
+  const { isPartWholeRelation, isInvertedRelation } = propertyAssignments;
   const sourceClass = relation.getSource();
   const targetClass = relation.getTarget();
   const sourceStereotype = sourceClass.stereotypes
@@ -166,7 +173,7 @@ function transformRelationBase(
   }
 
   // transform part-whole relations
-  if (isPartWhole) {
+  if (isPartWholeRelation) {
     const isPartWholeRelationBetweenEvents =
       sourceStereotype === ClassStereotype.EVENT &&
       targetStereotype === ClassStereotype.EVENT;
@@ -402,10 +409,8 @@ function generateRelationBlankQuad({
   cardinality?: number;
   options: IOntoUML2GUFOOptions;
 }): BlankNode {
-  const { stereotypes } = relation;
-  const stereotype = stereotypes ? stereotypes[0] : null;
+  const { isInvertedRelation } = relation.propertyAssignments;
   const uri = getURI({ element: relation, options });
-  const isInvertedRelation = RelationsInvertedInGUFO.includes(stereotype);
   // get range
   const classElement = isDomain ? relation.getTarget() : relation.getSource();
   const classUri = getURI({ element: classElement, options });

@@ -35,6 +35,11 @@ describe('Relations', () => {
     });
 
     fs.writeFileSync(
+      '__tests__/libs/ontuml2gufo/examples/partWhole.nt',
+      partWholeResult,
+    );
+
+    fs.writeFileSync(
       '__tests__/libs/ontuml2gufo/examples/partWhole.ttl',
       partWholeResultTTL,
     );
@@ -80,7 +85,7 @@ describe('Relations', () => {
     expect(alpinebitsResult).toContain(
       `<:CompositeArea> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
-        <owl:onProperty> <:subareas>;
+        <owl:onProperty> [ <owl:inverseOf> <:isComponentOfCompositeArea> ];
         <owl:minQualifiedCardinality> "2"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:MountainArea>
       ] .`.replace(/ {6}/gm, ''),
@@ -108,23 +113,78 @@ describe('Relations', () => {
     );
   });
 
-  it('should generate part-whole relation with without stereotype', () => {
-    expect(partWholeResult).toContain('<:heart> <rdfs:domain> <:Person>');
-    expect(partWholeResult).toContain('<:heart> <rdfs:range> <:Heart>');
-    expect(partWholeResult).toContain(
-      '<:heart> <rdfs:subPropertyOf> <gufo:isProperPartOf>',
-    );
+  it('should generate normal relation without stereotype', () => {
+    const data = [
+      '<:keynoteSpeaker> <rdf:type> <owl:ObjectProperty> .',
+      '<:keynoteSpeaker> <rdfs:domain> <:KeynoteSpeech> .',
+      '<:keynoteSpeaker> <rdfs:range> <:KeynoteSpeaker> .',
+      '<:keynoteSpeaker> <rdfs:comment> "Relation URI was automatically generated." .',
+      '<:KeynoteSpeech> <rdfs:subClassOf> [',
+      '<rdf:type> <owl:Restriction>;',
+      '<owl:onProperty> <:keynoteSpeaker>;',
+      '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
+      '<owl:onClass> <:KeynoteSpeaker>',
+      '] .',
+      '<:KeynoteSpeaker> <rdfs:subClassOf> [',
+      '<rdf:type> <owl:Restriction>;',
+      '<owl:onProperty> [ <owl:inverseOf> <:keynoteSpeaker> ];',
+      '<owl:someValuesFrom> <:KeynoteSpeech>',
+      '] .',
+    ];
+
+    for (const value of data) {
+      expect(partWholeResult).toContain(value);
+    }
+  });
+
+  it('should generate part-whole relation without stereotype', () => {
+    const data = [
+      '<:isProperPartOfPerson> <rdf:type> <owl:ObjectProperty> .',
+      '<:isProperPartOfPerson> <rdfs:range> <:Person> .',
+      '<:isProperPartOfPerson> <rdfs:domain> <:Heart> .',
+      '<:isProperPartOfPerson> <rdfs:subPropertyOf> <gufo:isProperPartOf> .',
+      '<:isProperPartOfPerson> <rdfs:comment> "Relation URI was automatically generated." .',
+      '<:Person> <rdfs:subClassOf> [',
+      '<rdf:type> <owl:Restriction>;',
+      '<owl:onProperty> [ <owl:inverseOf> <:isProperPartOfPerson> ];',
+      '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
+      '<owl:onClass> <:Heart>',
+      '] .',
+      '<:Heart> <rdfs:subClassOf> [',
+      '<rdf:type> <owl:Restriction>;',
+      '<owl:onProperty> <:isProperPartOfPerson>;',
+      '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
+      '<owl:onClass> <:Person>',
+      '] .',
+    ];
+
+    for (const value of data) {
+      expect(partWholeResult).toContain(value);
+    }
   });
 
   it('should generate a part-whole relation between events', () => {
-    expect(partWholeResult).toContain(
-      '<:conference> <rdfs:domain> <:KeynoteSpeech>',
-    );
-    expect(partWholeResult).toContain(
-      '<:conference> <rdfs:range> <:Conference>',
-    );
-    expect(partWholeResult).toContain(
-      '<:conference> <rdfs:subPropertyOf> <gufo:isEventProperPartOf>',
-    );
+    const data = [
+      '<:isProperPartOfConference> <rdf:type> <owl:ObjectProperty> .',
+      '<:isProperPartOfConference> <rdfs:domain> <:KeynoteSpeech> .',
+      '<:isProperPartOfConference> <rdfs:range> <:Conference> .',
+      '<:isProperPartOfConference> <rdfs:subPropertyOf> <gufo:isEventProperPartOf> .',
+      '<:isProperPartOfConference> <rdfs:comment> "Relation URI was automatically generated." .',
+      '<:KeynoteSpeech> <rdfs:subClassOf> [',
+      '<rdf:type> <owl:Restriction>;',
+      '<owl:onProperty> <:isProperPartOfConference>;',
+      '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
+      '<owl:onClass> <:Conference>',
+      '] .',
+      '<:Conference> <rdfs:subClassOf> [',
+      '<rdf:type> <owl:Restriction>;',
+      '<owl:onProperty> [ <owl:inverseOf> <:isProperPartOfConference> ];',
+      '<owl:someValuesFrom> <:KeynoteSpeech>',
+      '] .',
+    ];
+
+    for (const value of data) {
+      expect(partWholeResult).toContain(value);
+    }
   });
 });
