@@ -9,10 +9,10 @@ type GetURI = {
 
 export const getPrefixes = memoizee(
   async (packages: IPackage[], options: IOntoUML2GUFOOptions) => {
-    const { baseIRI, packagesAsUri, uriManager } = options;
+    const { baseIRI, prefixPackages, uriManager } = options;
     const prefixes = {};
 
-    if (packagesAsUri) {
+    if (prefixPackages) {
       prefixes[''] = `${baseIRI}#`;
 
       for (let i = 0; i < packages.length; i += 1) {
@@ -34,7 +34,7 @@ export const getPrefixes = memoizee(
 );
 
 export const getURI = memoizee(({ element, options }: GetURI): string => {
-  const { uriManager, packagesAsUri } = options;
+  const { uriManager, prefixPackages } = options;
   const uriFormatBy = options ? options.uriFormatBy || 'name' : 'name';
   const { id, name } = element;
   const isRelation = element.type === OntoUMLType.RELATION_TYPE;
@@ -109,7 +109,7 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
       ? formattedId || elementUri
       : elementUri || formattedId;
 
-  if (packagesAsUri) {
+  if (prefixPackages) {
     const packageEl = element._container as IPackage;
 
     if (packageEl && packageEl.id && packageEl.name) {

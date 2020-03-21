@@ -7,7 +7,7 @@ describe('Subpackages', () => {
   beforeAll(async () => {
     istandardResult = await transformOntoUML2GUFO(istandard, {
       format: 'Turtle',
-      packagesAsUri: true,
+      prefixPackages: true,
     });
   });
 

@@ -26,12 +26,12 @@ describe('Examples', () => {
       {
         name: 'alpinebitsWithPackages.ttl',
         model: alpinebits,
-        options: { format: 'Turtle', packagesAsUri: true },
+        options: { format: 'Turtle', prefixPackages: true },
       },
       {
         name: 'alpinebitsWithPackages.nt',
         model: alpinebits,
-        options: { packagesAsUri: true },
+        options: { prefixPackages: true },
       },
       { name: 'alpinebits.nt', model: alpinebits },
       {
@@ -42,7 +42,7 @@ describe('Examples', () => {
       {
         name: 'istandardWithPackages.ttl',
         model: istandard,
-        options: { format: 'Turtle', packagesAsUri: true },
+        options: { format: 'Turtle', prefixPackages: true },
       },
       {
         name: 'person.ttl',
