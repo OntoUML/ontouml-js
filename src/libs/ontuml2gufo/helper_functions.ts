@@ -21,7 +21,7 @@ export const getPrefixes = memoizee(
           id: id,
           name: name,
         });
-        const uri = cleanSpecialCharacters(packageUri);
+        const uri = formatPackageName(packageUri);
 
         prefixes[uri] = `${baseIRI}/${uri}#`;
       }
@@ -118,7 +118,7 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
         name: packageEl.name,
       });
 
-      const formattedPackageUri = cleanSpecialCharacters(packageUri);
+      const formattedPackageUri = formatPackageName(packageUri);
 
       return `${formattedPackageUri}:${uri}`;
     }
@@ -159,4 +159,16 @@ const formatName = memoizee(
     name
       ? cleanSpecialCharacters(transformToCamelCase(name, mapFunction))
       : null,
+);
+
+const formatPackageName = memoizee((name: string): string =>
+  name
+    ? cleanSpecialCharacters(
+        transformToCamelCase(name, (s: string, index: number) =>
+          index === 0
+            ? s.charAt(0).toLowerCase() + s.substring(1)
+            : s.charAt(0).toUpperCase() + s.substring(1),
+        ),
+      )
+    : null,
 );
