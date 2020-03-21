@@ -1,0 +1,261 @@
+{
+  "type": "Package",
+  "id": "6vpc7w6GAqACBAj5",
+  "name": "annotations",
+  "description": null,
+  "contents": [
+    {
+      "type": "Class",
+      "id": "6vpc7w6GAqACBAj6",
+      "name": "boolean",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "Ovpc7w6GAqACBAj7",
+      "name": "byte",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "uvpc7w6GAqACBAj8",
+      "name": "char",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "uvpc7w6GAqACBAj9",
+      "name": "double",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "uvpc7w6GAqACBAj.",
+      "name": "float",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "evpc7w6GAqACBAj_",
+      "name": "int",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "evpc7w6GAqACBAkA",
+      "name": "long",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": ".vpc7w6GAqACBAkB",
+      "name": "short",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": ".vpc7w6GAqACBAkC",
+      "name": "void",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": ".vpc7w6GAqACBAkD",
+      "name": "string",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "i9lc7w6GAqACBAyA",
+      "name": "Person",
+      "description": "This is a description of the person class.",
+      "properties": [
+        {
+          "type": "Property",
+          "id": "zVg87w6GAqACBA00",
+          "name": "name",
+          "description": "This is the description of the attribute name in of the person class.",
+          "propertyType": {
+            "type": "Class",
+            "id": ".vpc7w6GAqACBAkD"
+          },
+          "cardinality": null,
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": {
+            "nl": "naam",
+            "it": "nome",
+            "pt": "nome",
+            "en": "name"
+          },
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        }
+      ],
+      "literals": null,
+      "propertyAssignments": {
+        "pt": "Pessoa",
+        "it": "Persona",
+        "en": "Person",
+        "nl": "Persoon",
+        "myTaggedValue": "This should not be transformed as a label."
+      },
+      "stereotypes": ["kind"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "3KVc7w6GAqACBAyJ",
+      "name": "Employment",
+      "description": null,
+      "properties": [
+        {
+          "type": "Property",
+          "id": "AoJ27w6GAqACBA6G",
+          "name": "salary",
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "evpc7w6GAqACBAj_"
+          },
+          "cardinality": null,
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        }
+      ],
+      "literals": null,
+      "propertyAssignments": {
+        "myCustomTaggedValue": "My custom value"
+      },
+      "stereotypes": ["relator"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Relation",
+      "id": "3o9c7w6GAqACBAy7",
+      "name": "regards employee",
+      "description": "This is the description of the \u003c\u003cmediation\u003e\u003e association between the classes employment and person.",
+      "properties": [
+        {
+          "type": "Property",
+          "id": "3o9c7w6GAqACBAy8",
+          "name": null,
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "3KVc7w6GAqACBAyJ"
+          },
+          "cardinality": "0..*",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        },
+        {
+          "type": "Property",
+          "id": "3o9c7w6GAqACBAy.",
+          "name": null,
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "i9lc7w6GAqACBAyA"
+          },
+          "cardinality": "1",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": true,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        }
+      ],
+      "propertyAssignments": {
+        "en": "regards employee",
+        "it": "di dipendente",
+        "pt": "de empregado",
+        "nl": "betreft werknemer"
+      },
+      "stereotypes": ["mediation"],
+      "isAbstract": false,
+      "isDerived": false
+    }
+  ],
+  "propertyAssignments": null
+}
