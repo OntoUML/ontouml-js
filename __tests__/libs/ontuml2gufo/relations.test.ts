@@ -1,26 +1,5 @@
-import * as fs from 'fs';
-import { ModelManager } from '@libs/model';
-import { OntoUML2GUFO } from '@libs/ontuml2gufo';
 import { alpinebits, partWhole } from '@test-models/valids';
-import { IPackage, IOntoUML2GUFOOptions } from '@types';
-
-async function transformOntoUML2GUFO(
-  model: IPackage,
-  options?: {
-    format?: IOntoUML2GUFOOptions['format'];
-    uriFormatBy?: IOntoUML2GUFOOptions['uriFormatBy'];
-  },
-): Promise<string> {
-  const modelCopy = JSON.parse(JSON.stringify(model));
-  const modelManager = new ModelManager(modelCopy);
-  const service = new OntoUML2GUFO(modelManager);
-
-  return await service.transformOntoUML2GUFO({
-    baseIRI: 'https://example.com',
-    format: 'N-Triple',
-    ...options,
-  });
-}
+import { transformOntoUML2GUFO } from './helpers';
 
 describe('Relations', () => {
   let alpinebitsResult;
@@ -29,20 +8,6 @@ describe('Relations', () => {
   beforeAll(async () => {
     alpinebitsResult = await transformOntoUML2GUFO(alpinebits);
     partWholeResult = await transformOntoUML2GUFO(partWhole);
-
-    const partWholeResultTTL = await transformOntoUML2GUFO(partWhole, {
-      format: 'Turtle',
-    });
-
-    fs.writeFileSync(
-      '__tests__/libs/ontuml2gufo/examples/partWhole.nt',
-      partWholeResult,
-    );
-
-    fs.writeFileSync(
-      '__tests__/libs/ontuml2gufo/examples/partWhole.ttl',
-      partWholeResultTTL,
-    );
   });
 
   it('should generate an uri automatically using association end', async () => {

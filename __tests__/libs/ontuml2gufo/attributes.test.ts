@@ -1,25 +1,5 @@
-import { ModelManager } from '@libs/model';
-import { OntoUML2GUFO } from '@libs/ontuml2gufo';
 import { alpinebits } from '@test-models/valids';
-import { IPackage, IOntoUML2GUFOOptions } from '@types';
-
-async function transformOntoUML2GUFO(
-  model: IPackage,
-  options?: {
-    format?: IOntoUML2GUFOOptions['format'];
-    uriFormatBy?: IOntoUML2GUFOOptions['uriFormatBy'];
-  },
-): Promise<string> {
-  const modelCopy = JSON.parse(JSON.stringify(model));
-  const modelManager = new ModelManager(modelCopy);
-  const service = new OntoUML2GUFO(modelManager);
-
-  return await service.transformOntoUML2GUFO({
-    baseIRI: 'https://example.com',
-    format: 'N-Triple',
-    ...options,
-  });
-}
+import { transformOntoUML2GUFO } from './helpers';
 
 describe('Attributes', () => {
   let result;
