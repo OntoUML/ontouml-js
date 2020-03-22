@@ -1,11 +1,11 @@
-import { istandard } from '@test-models/valids';
+import { packages } from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 
 describe('Subpackages', () => {
-  let istandardResult;
+  let owlContent;
 
   beforeAll(async () => {
-    istandardResult = await transformOntoUML2GUFO(istandard, {
+    owlContent = await transformOntoUML2GUFO(packages, {
       format: 'Turtle',
       prefixPackages: true,
     });
@@ -13,38 +13,32 @@ describe('Subpackages', () => {
 
   it('should generate subpackages prefixes', () => {
     const data = [
-      '@prefix processModel: <https://example.com/processModel#>.',
-      '@prefix ontology: <https://example.com/ontology#>.',
-      '@prefix core: <https://example.com/core#>.',
-      '@prefix wlzLongTermCare: <https://example.com/wlzLongTermCare#>.',
-      '@prefix package: <https://example.com/package#>.',
-      '@prefix 1Request: <https://example.com/1Request#>.',
-      '@prefix 2Indication: <https://example.com/2Indication#>.',
-      '@prefix 3Allocation: <https://example.com/3Allocation#>.',
-      '@prefix 4ServiceAgreement: <https://example.com/4ServiceAgreement#>.',
-      '@prefix 6TransferMoving: <https://example.com/6TransferMoving#>.',
-      '@prefix 0WlzRight: <https://example.com/0WlzRight#>.',
-      '@prefix preference: <https://example.com/preference#>.',
-      '@prefix 0LthClient: <https://example.com/0LthClient#>.',
-      '@prefix 5ServiceDelivery: <https://example.com/5ServiceDelivery#>.',
-      '@prefix 7HealthcareServicePackage: <https://example.com/7HealthcareServicePackage#>.',
+      '@prefix person: <https://example.com/person#>.',
+      '@prefix school: <https://example.com/school#>.',
+      '@prefix job: <https://example.com/job#>.',
+      '@prefix emptyPackage: <https://example.com/emptyPackage#>.',
+      '@prefix duplicateNamePackage: <https://example.com/duplicateNamePackage#>.',
+      '@prefix duplicateNamePackagezr3gi6gaqaccrgt: <https://example.com/duplicateNamePackagezr3gi6gaqaccrgt#>.',
+      '@prefix universityJob: <https://example.com/universityJob#>.'
     ];
 
     for (const value of data) {
-      expect(istandardResult).toContain(value);
+      expect(owlContent).toContain(value);
     }
   });
 
   it('should have elements with subpackage prefixes', () => {
     const data = [
-      'core:Person rdf:type owl:Class,',
-      '1Request:LtcRequest rdf:type owl:Class',
-      'preference:CareLocationType rdf:type owl:Class',
-      '7HealthcareServicePackage:AllocatedHealthcareServicePackage rdf:type owl:Class',
+      'person:Father rdf:type owl:Class',
+      'school:Student rdf:type owl:Class',
+      'job:Employee rdf:type owl:Class',
+      'universityJob:Professor rdf:type owl:Class',
+      'duplicateNamePackage:MyClass rdf:type owl:Class',
+      'duplicateNamePackagezr3gi6gaqaccrgt:MyOtherClass rdf:type owl:Class',
     ];
 
     for (const value of data) {
-      expect(istandardResult).toContain(value);
+      expect(owlContent).toContain(value);
     }
   });
 });

@@ -5,6 +5,7 @@ import {
   istandard,
   person,
   partWhole,
+  packages
 } from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 import { IPackage, IOntoUML2GUFOOptions } from '@types';
@@ -23,24 +24,17 @@ describe('Examples', () => {
         model: alpinebits,
         options: { format: 'Turtle' },
       },
-      {
-        name: 'alpinebitsWithPackages.ttl',
-        model: alpinebits,
-        options: { format: 'Turtle', prefixPackages: true },
+      { 
+        name: 'alpinebits.nt', 
+        model: alpinebits 
       },
-      {
-        name: 'alpinebitsWithPackages.nt',
-        model: alpinebits,
-        options: { prefixPackages: true },
-      },
-      { name: 'alpinebits.nt', model: alpinebits },
       {
         name: 'istandard.ttl',
         model: istandard,
         options: { format: 'Turtle' },
       },
       {
-        name: 'istandardWithPackages.ttl',
+        name: 'istandardMultiplePackages.ttl',
         model: istandard,
         options: { format: 'Turtle', prefixPackages: true },
       },
@@ -68,6 +62,16 @@ describe('Examples', () => {
         model: annotations,
         options: { format: 'Turtle' },
       },
+      {
+        name: 'packagesMultiple.ttl',
+        model: packages,
+        options: { format: 'Turtle', prefixPackages: true },
+      },
+      {
+        name: 'packagesSingle.ttl',
+        model: packages,
+        options: { format: 'Turtle' },
+      }
     ];
 
     for (let file of files) {
