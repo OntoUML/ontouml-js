@@ -110,9 +110,11 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
       : elementUri || formattedId;
 
   if (prefixPackages) {
+    const root = element.getRootPackage ? element.getRootPackage() : null;
     const packageEl = element._container as IPackage;
 
     if (packageEl && packageEl.id && packageEl.name) {
+      const isRoot = root && root.id === packageEl.id;
       const packageUri = uriManager.generateUniqueURI({
         id: packageEl.id,
         name: packageEl.name,
@@ -120,7 +122,7 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
 
       const formattedPackageUri = formatPackageName(packageUri);
 
-      return `${formattedPackageUri}:${uri}`;
+      return isRoot ? `:${uri}` : `${formattedPackageUri}:${uri}`;
     }
 
     return `:${uri}`;
