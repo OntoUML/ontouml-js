@@ -19,7 +19,7 @@ describe('Subpackages', () => {
       '@prefix emptyPackage: <https://example.com/emptyPackage#>.',
       '@prefix duplicateNamePackage: <https://example.com/duplicateNamePackage#>.',
       '@prefix duplicateNamePackagezr3gi6gaqaccrgt: <https://example.com/duplicateNamePackagezr3gi6gaqaccrgt#>.',
-      '@prefix universityJob: <https://example.com/universityJob#>.'
+      '@prefix universityJob: <https://example.com/universityJob#>.',
     ];
 
     for (const value of data) {
