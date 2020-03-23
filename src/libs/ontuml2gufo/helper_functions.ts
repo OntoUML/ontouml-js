@@ -109,6 +109,10 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
       ? formattedId || elementUri
       : elementUri || formattedId;
 
+  if (!uri) {
+    return null;
+  }
+
   if (prefixPackages) {
     const root = element.getRootPackage ? element.getRootPackage() : null;
     const packageEl = element._container as IPackage;
