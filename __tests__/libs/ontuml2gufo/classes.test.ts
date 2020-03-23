@@ -1,6 +1,3 @@
-import * as fs from 'fs';
-import { ModelManager } from '@libs/model';
-import { OntoUML2GUFO } from '@libs/ontuml2gufo';
 import {
   mixinExample1,
   modeExample1,
@@ -8,62 +5,8 @@ import {
   relatorExample1,
   roleExample1,
   alpinebits,
-  istandard,
-  person,
 } from '@test-models/valids';
-import { IPackage, IOntoUML2GUFOOptions } from '@types';
-
-async function transformOntoUML2GUFO(
-  model: IPackage,
-  options?: {
-    format?: IOntoUML2GUFOOptions['format'];
-    uriFormatBy?: IOntoUML2GUFOOptions['uriFormatBy'];
-  },
-): Promise<string> {
-  const modelCopy = JSON.parse(JSON.stringify(model));
-  const modelManager = new ModelManager(modelCopy);
-  const service = new OntoUML2GUFO(modelManager);
-
-  return await service.transformOntoUML2GUFO({
-    baseIRI: 'https://example.com',
-    format: 'N-Triple',
-    ...options,
-  });
-}
-
-it('should transform AlpineBits model to gUFO', async () => {
-  const resultTurtle = await transformOntoUML2GUFO(alpinebits, {
-    format: 'Turtle',
-  });
-  const resultNT = await transformOntoUML2GUFO(alpinebits);
-
-  fs.writeFileSync(
-    '__tests__/libs/ontuml2gufo/examples/alpinebits.ttl',
-    resultTurtle,
-  );
-
-  fs.writeFileSync(
-    '__tests__/libs/ontuml2gufo/examples/alpinebits.nt',
-    resultNT,
-  );
-
-  expect(resultTurtle).not.toBe(null);
-  expect(resultNT).not.toBe(null);
-});
-
-it('should transform iStandard model to gUFO', async () => {
-  const result = await transformOntoUML2GUFO(istandard, { format: 'Turtle' });
-  fs.writeFileSync('__tests__/libs/ontuml2gufo/examples/istandard.ttl', result);
-
-  expect(result).not.toBe(null);
-});
-
-it('should transform iStandard model to gUFO', async () => {
-  const result = await transformOntoUML2GUFO(person, { format: 'Turtle' });
-  fs.writeFileSync('__tests__/libs/ontuml2gufo/examples/person.ttl', result);
-
-  expect(result).not.toBe(null);
-});
+import { transformOntoUML2GUFO } from './helpers';
 
 it('should transform OntoUML <<mixin>> class', async () => {
   const result = await transformOntoUML2GUFO(mixinExample1, {

@@ -1,41 +1,11 @@
-import * as fs from 'fs';
-import { ModelManager } from '@libs/model';
-import { OntoUML2GUFO } from '@libs/ontuml2gufo';
 import { annotations } from '@test-models/valids';
-import { IPackage, IOntoUML2GUFOOptions } from '@types';
-
-async function transformOntoUML2GUFO(
-  model: IPackage,
-  options?: {
-    format?: IOntoUML2GUFOOptions['format'];
-    uriFormatBy?: IOntoUML2GUFOOptions['uriFormatBy'];
-  },
-): Promise<string> {
-  const modelCopy = JSON.parse(JSON.stringify(model));
-  const modelManager = new ModelManager(modelCopy);
-  const service = new OntoUML2GUFO(modelManager);
-
-  return await service.transformOntoUML2GUFO({
-    baseIRI: 'https://example.com',
-    format: 'N-Triple',
-    ...options,
-  });
-}
+import { transformOntoUML2GUFO } from './helpers';
 
 describe('Annotations', () => {
   let result;
 
   beforeAll(async () => {
     result = await transformOntoUML2GUFO(annotations);
-    
-    const resultTurtle = await transformOntoUML2GUFO(annotations, {
-      format: 'Turtle',
-    });
-
-    fs.writeFileSync(
-      '__tests__/libs/ontuml2gufo/examples/annotations.ttl',
-      resultTurtle,
-    );
   });
 
   it('should generate language labels on classess (testing with nl, pt, en, and it)', async () => {

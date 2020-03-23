@@ -28,8 +28,9 @@
   },
   "husky": {
     "hooks": {
-      "prepublish": "npm run build",
-      "pre-push": "npm run format && npm run test"
+      "pre-commit": "npm run format",
+      "pre-push": "npm run test",
+      "prepublish": "npm run build"
     }
   },
   "_moduleAliases": {

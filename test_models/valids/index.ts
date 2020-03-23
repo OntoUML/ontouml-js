@@ -11,6 +11,7 @@ const istandard = require('./istandard.json');
 const person = require('./person.json');
 const partWhole = require('./partWhole.json');
 const annotations = require('./annotations.json');
+const packages = require('./packages.json');
 
 export {
   genericExample1,
@@ -26,4 +27,5 @@ export {
   person,
   partWhole,
   annotations,
+  packages,
 };

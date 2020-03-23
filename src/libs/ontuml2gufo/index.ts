@@ -14,7 +14,7 @@ import {
   transformClassesByStereotype,
 } from './class_functions';
 import { transformRelations } from './relation_functions';
-import { getURI } from './helper_functions';
+import { getURI, getPrefixes } from './helper_functions';
 import URIManager from './uri_manager';
 
 const N3 = require('n3');
@@ -39,10 +39,15 @@ export class OntoUML2GUFO {
 
     options.uriManager = new URIManager();
 
+    const packages = this.model.getAllContentsByType([
+      OntoUMLType.PACKAGE_TYPE,
+    ]) as IPackage[];
+    const prefixes = await getPrefixes(packages, options);
+
     const writer = new N3.Writer({
       format: format || 'Turtle',
       prefixes: {
-        ['']: `${baseIRI}#`,
+        ...prefixes,
         gufo: 'http://purl.org/nemo/gufo#',
         rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
@@ -141,7 +146,7 @@ export class OntoUML2GUFO {
       const classNodes = classes.map((classElement: IClass) => {
         const uri = getURI({ element: classElement, options });
 
-        return namedNode(`:${uri}`);
+        return namedNode(uri);
       });
 
       // check if has at least 2 classes to avoid insconsistence
@@ -163,7 +168,7 @@ export class OntoUML2GUFO {
           const parentUri = getURI({ element: parent, options });
 
           await writer.addQuad(
-            namedNode(`:${parentUri}`),
+            namedNode(parentUri),
             namedNode('owl:equivalentClass'),
             writer.blank([
               {

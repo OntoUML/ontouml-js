@@ -1,18 +1,40 @@
 import memoizee from 'memoizee';
-import { IElement, IRelation } from '@types';
+import { IElement, IRelation, IPackage, IOntoUML2GUFOOptions } from '@types';
 import { RelationStereotypeToGUFOMapping, OntoUMLType } from '@constants/.';
-import URIManager from './uri_manager';
 
 type GetURI = {
   element: IElement;
-  options?: {
-    uriFormatBy?: string;
-    uriManager: URIManager;
-  };
+  options?: IOntoUML2GUFOOptions;
 };
 
+export const getPrefixes = memoizee(
+  async (packages: IPackage[], options: IOntoUML2GUFOOptions) => {
+    const { baseIRI, prefixPackages, uriManager } = options;
+    const prefixes = {};
+
+    if (prefixPackages) {
+      prefixes[''] = `${baseIRI}#`;
+
+      for (let i = 0; i < packages.length; i += 1) {
+        const { id, name } = packages[i];
+        const packageUri = uriManager.generateUniqueURI({
+          id: id,
+          name: name,
+        });
+        const uri = formatPackageName(packageUri);
+
+        prefixes[uri] = `${baseIRI}/${uri}#`;
+      }
+    } else {
+      prefixes[''] = `${baseIRI}#`;
+    }
+
+    return prefixes;
+  },
+);
+
 export const getURI = memoizee(({ element, options }: GetURI): string => {
-  const { uriManager } = options;
+  const { uriManager, prefixPackages } = options;
   const uriFormatBy = options ? options.uriFormatBy || 'name' : 'name';
   const { id, name } = element;
   const isRelation = element.type === OntoUMLType.RELATION_TYPE;
@@ -77,16 +99,40 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
 
   const formattedId = id ? cleanSpecialCharacters(id) : null;
 
-  const uri = uriManager.generateUniqueURI({
+  const elementUri = uriManager.generateUniqueURI({
     id: formattedId,
     name: formattedName,
   });
 
-  if (uriFormatBy === 'id') {
-    return formattedId || uri;
+  const uri =
+    uriFormatBy === 'id'
+      ? formattedId || elementUri
+      : elementUri || formattedId;
+
+  if (!uri) {
+    return null;
   }
 
-  return uri || formattedId;
+  if (prefixPackages) {
+    const root = element.getRootPackage ? element.getRootPackage() : null;
+    const packageEl = element._container as IPackage;
+
+    if (packageEl && packageEl.id && packageEl.name) {
+      const isRoot = root && root.id === packageEl.id;
+      const packageUri = uriManager.generateUniqueURI({
+        id: packageEl.id,
+        name: packageEl.name,
+      });
+
+      const formattedPackageUri = formatPackageName(packageUri);
+
+      return isRoot ? `:${uri}` : `${formattedPackageUri}:${uri}`;
+    }
+
+    return `:${uri}`;
+  }
+
+  return `:${uri}`;
 });
 
 const cleanSpecialCharacters = memoizee((str: string) =>
@@ -119,4 +165,16 @@ const formatName = memoizee(
     name
       ? cleanSpecialCharacters(transformToCamelCase(name, mapFunction))
       : null,
+);
+
+const formatPackageName = memoizee((name: string): string =>
+  name
+    ? cleanSpecialCharacters(
+        transformToCamelCase(name, (s: string, index: number) =>
+          index === 0
+            ? s.charAt(0).toLowerCase() + s.substring(1)
+            : s.charAt(0).toUpperCase() + s.substring(1),
+        ),
+      )
+    : null,
 );
