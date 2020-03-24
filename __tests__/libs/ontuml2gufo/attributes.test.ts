@@ -29,4 +29,21 @@ describe('Attributes', () => {
     expect(result).toContain('<:description> <rdfs:range> <xsd:string>');
     expect(result).toContain('<:description> <rdfs:label> "description"');
   });
+
+  it('should generate attributes of datatypes classes without rdfs:subPropertyOf gufo:hasQualityValue', async () => {
+    expect(result).toContain('<:lower> <rdf:type> <owl:DatatypeProperty>');
+    expect(result).not.toContain(
+      '<:lower> <rdfs:subPropertyOf> <gufo:hasQualityValue>',
+    );
+  });
+
+  it('should generate attributes of stereotype classes with rdfs:subPropertyOf gufo:hasQualityValue', async () => {
+    expect(result).toContain('<:area> <rdf:type> <owl:DatatypeProperty>');
+    expect(result).toContain(
+      '<:area> <rdfs:subPropertyOf> <gufo:hasQualityValue>',
+    );
+    expect(result).toContain('<:area> <rdfs:domain> <:GeospatialFeature>');
+    expect(result).toContain('<:area> <rdfs:range> <xsd:int>');
+    expect(result).toContain('<:area> <rdfs:label> "area"');
+  });
 });
