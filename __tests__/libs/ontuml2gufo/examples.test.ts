@@ -22,34 +22,34 @@ describe('Examples', () => {
       {
         name: 'alpinebits.ttl',
         model: alpinebits,
-        options: { 
+        options: {
           format: 'Turtle',
-          baseIRI: 'https://alpinebits.org'
-
+          baseIRI: 'https://alpinebits.org',
         },
       },
       {
         name: 'alpinebits.nt',
         model: alpinebits,
-        options: { 
-          baseIRI: 'https://alpinebits.org'
-        }
+        options: {
+          baseIRI: 'https://alpinebits.org',
+        },
       },
       {
         name: 'istandard.ttl',
         model: istandard,
-        options: { 
+        options: {
           format: 'Turtle',
-          baseIRI: 'https://istandaarden.nl'
+          baseIRI: 'https://istandaarden.nl',
         },
       },
       {
         name: 'istandardMultiplePackages.ttl',
         model: istandard,
-        options: { 
+        options: {
           format: 'Turtle',
-          baseIRI: 'https://istandaarden.nl', 
-          prefixPackages: true },
+          baseIRI: 'https://istandaarden.nl',
+          prefixPackages: true,
+        },
       },
       {
         name: 'person.ttl',
