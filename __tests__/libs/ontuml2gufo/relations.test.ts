@@ -1,14 +1,14 @@
-import { alpinebits, partWhole, istandard } from '@test-models/valids';
+import { alpinebits, partWhole, derivation } from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 
 describe('Relations', () => {
   let alpinebitsResult;
-  let istandardResult;
+  let derivationResult;
   let partWholeResult;
 
   beforeAll(async () => {
     alpinebitsResult = await transformOntoUML2GUFO(alpinebits);
-    istandardResult = await transformOntoUML2GUFO(istandard);
+    derivationResult = await transformOntoUML2GUFO(derivation);
     partWholeResult = await transformOntoUML2GUFO(partWhole);
   });
 
@@ -155,9 +155,15 @@ describe('Relations', () => {
     }
   });
 
-  it('should generate derivation relation', async () => {
-    expect(istandardResult).toContain(
-      '<:LivesIn> <gufo:isDerivedFrom> <:Stay>',
-    );
-  });
+  // it('should generate derivation relation', async () => {
+  //   const data = [
+  //     '<:Loves> <gufo:isDerivedFrom> <:Love>',
+  //     '<:HeavierThan> <gufo:isDerivedFrom> <:Weight>',
+  //     '<:WorksAt> <gufo:isDerivedFrom> <:EmploymentContract>',
+  //   ];
+
+  //   for (const value of data) {
+  //     expect(derivationResult).toContain(value);
+  //   }
+  // });
 });

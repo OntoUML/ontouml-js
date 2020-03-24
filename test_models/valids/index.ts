@@ -12,6 +12,7 @@ const person = require('./person.json');
 const partWhole = require('./partWhole.json');
 const annotations = require('./annotations.json');
 const packages = require('./packages.json');
+const derivation = require('./derivation.json');
 
 export {
   genericExample1,
@@ -28,4 +29,5 @@ export {
   partWhole,
   annotations,
   packages,
+  derivation,
 };

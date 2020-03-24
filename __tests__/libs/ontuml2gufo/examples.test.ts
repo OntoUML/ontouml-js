@@ -6,6 +6,7 @@ import {
   person,
   partWhole,
   packages,
+  derivation,
 } from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 import { IPackage, IOntoUML2GUFOOptions } from '@types';
@@ -87,6 +88,11 @@ describe('Examples', () => {
       {
         name: 'packagesSingle.ttl',
         model: packages,
+        options: { format: 'Turtle' },
+      },
+      {
+        name: 'derivation.ttl',
+        model: derivation,
         options: { format: 'Turtle' },
       },
     ];
