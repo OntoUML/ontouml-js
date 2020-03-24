@@ -34,6 +34,10 @@ describe('Examples', () => {
         options: { format: 'Turtle' },
       },
       {
+        name: 'istandard.nt',
+        model: istandard,
+      },
+      {
         name: 'istandardMultiplePackages.ttl',
         model: istandard,
         options: { format: 'Turtle', prefixPackages: true },

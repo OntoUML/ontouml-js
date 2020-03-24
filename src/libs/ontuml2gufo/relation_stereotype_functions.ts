@@ -70,13 +70,13 @@ export function transformDerivation(
   relation: IRelation,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const source = relation.getSource();
-  const target = relation.getTarget();
+  const source = relation.getDerivingRelation();
+  const target = relation.getDerivedClass();
 
-  const domainUri = getURI({ element: source, options });
-  const rangeUri = getURI({ element: target, options });
+  if (source && source.id && target && target.id) {
+    const domainUri = getURI({ element: source, options });
+    const rangeUri = getURI({ element: target, options });
 
-  if (domainUri && rangeUri) {
     return [
       quad(
         namedNode(domainUri),
