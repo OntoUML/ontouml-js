@@ -499,12 +499,12 @@
       "properties": [
         {
           "type": "Property",
-          "id": "kG9rEI6GAqACCWiCsQmrEI6GAqACCWf7",
+          "id": "kG9rEI6GAqACCWiCxHarEI6GAqACCWfT",
           "name": null,
           "description": null,
           "propertyType": {
-            "type": "Class",
-            "id": "sQmrEI6GAqACCWf7"
+            "type": "Relation",
+            "id": "xHarEI6GAqACCWfT"
           },
           "cardinality": "0..*",
           "isDerived": false,
@@ -518,12 +518,12 @@
         },
         {
           "type": "Property",
-          "id": "kG9rEI6GAqACCWiCxHarEI6GAqACCWfT",
+          "id": "kG9rEI6GAqACCWiCsQmrEI6GAqACCWf7",
           "name": null,
           "description": null,
           "propertyType": {
-            "type": "Relation",
-            "id": "xHarEI6GAqACCWfT"
+            "type": "Class",
+            "id": "sQmrEI6GAqACCWf7"
           },
           "cardinality": "0..*",
           "isDerived": false,
@@ -549,12 +549,12 @@
       "properties": [
         {
           "type": "Property",
-          "id": "mOTbEI6GAqACCWn2mrIbEI6GAqACCWjt",
+          "id": "mOTbEI6GAqACCWn2NLJbEI6GAqACCWm5",
           "name": null,
           "description": null,
           "propertyType": {
-            "type": "Class",
-            "id": "mrIbEI6GAqACCWjt"
+            "type": "Relation",
+            "id": "NLJbEI6GAqACCWm5"
           },
           "cardinality": "0..*",
           "isDerived": false,
@@ -568,12 +568,12 @@
         },
         {
           "type": "Property",
-          "id": "mOTbEI6GAqACCWn2NLJbEI6GAqACCWm5",
+          "id": "mOTbEI6GAqACCWn2mrIbEI6GAqACCWjt",
           "name": null,
           "description": null,
           "propertyType": {
-            "type": "Relation",
-            "id": "NLJbEI6GAqACCWm5"
+            "type": "Class",
+            "id": "mrIbEI6GAqACCWjt"
           },
           "cardinality": "0..*",
           "isDerived": false,

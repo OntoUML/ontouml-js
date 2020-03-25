@@ -155,15 +155,15 @@ describe('Relations', () => {
     }
   });
 
-  // it('should generate derivation relation', async () => {
-  //   const data = [
-  //     '<:Loves> <gufo:isDerivedFrom> <:Love>',
-  //     '<:HeavierThan> <gufo:isDerivedFrom> <:Weight>',
-  //     '<:WorksAt> <gufo:isDerivedFrom> <:EmploymentContract>',
-  //   ];
+  it('should generate derivation relation', async () => {
+    const data = [
+      '<:Loves> <gufo:isDerivedFrom> <:Love>',
+      '<:HeavierThan> <gufo:isDerivedFrom> <:Weight>',
+      '<:WorksAt> <gufo:isDerivedFrom> <:EmploymentContract>',
+    ];
 
-  //   for (const value of data) {
-  //     expect(derivationResult).toContain(value);
-  //   }
-  // });
+    for (const value of data) {
+      expect(derivationResult).toContain(value);
+    }
+  });
 });
