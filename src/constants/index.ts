@@ -66,7 +66,7 @@ export enum RelationStereotype {
   TERMINATION = 'termination',
 }
 
-export const RelationsAsPredicateInGUFO = ['instantiation'];
+export const RelationsAsPredicateInGUFO = ['instantiation', 'derivation'];
 
 export const RelationsInvertedInGUFO = [
   'creation',
