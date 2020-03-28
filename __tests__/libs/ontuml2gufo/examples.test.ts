@@ -67,6 +67,11 @@ describe('Examples', () => {
         options: { format: 'Turtle' },
       },
       {
+        name: 'partWholeHideRelations.ttl',
+        model: partWhole,
+        options: { format: 'Turtle', hideObjectPropertyCreation: true },
+      },
+      {
         name: 'partWhole.nt',
         model: partWhole,
       },

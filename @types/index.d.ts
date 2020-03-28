@@ -331,6 +331,7 @@ interface IOntoUMLError {
 interface IOntoUML2GUFOOptions {
   baseIRI: string;
   format?: string;
+  hideObjectPropertyCreation?: boolean;
   prefixPackages?: boolean;
   uriFormatBy?: 'name' | 'id';
   uriManager?: URIManager;

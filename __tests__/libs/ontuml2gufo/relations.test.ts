@@ -5,11 +5,15 @@ describe('Relations', () => {
   let alpinebitsResult;
   let derivationResult;
   let partWholeResult;
+  let partWholeHideRelationResult;
 
   beforeAll(async () => {
     alpinebitsResult = await transformOntoUML2GUFO(alpinebits);
     derivationResult = await transformOntoUML2GUFO(derivation);
     partWholeResult = await transformOntoUML2GUFO(partWhole);
+    partWholeHideRelationResult = await transformOntoUML2GUFO(partWhole, {
+      hideObjectPropertyCreation: true,
+    });
   });
 
   it('should generate an uri automatically using association end', async () => {
@@ -164,6 +168,22 @@ describe('Relations', () => {
 
     for (const value of data) {
       expect(derivationResult).toContain(value);
+    }
+  });
+
+  it('should hide object property creation', async () => {
+    const data = [
+      '<:inheresInKeynoteSpeaker> <rdf:type> <owl:ObjectProperty>',
+      '<owl:onProperty> <:inheresInKeynoteSpeaker>',
+      '<:mediatesKeynoteSpeaker> <rdf:type> <owl:ObjectProperty>',
+      '<owl:onProperty> <:mediatesKeynoteSpeaker>',
+      '<:historicallyDependsOnKeynoteInvitation> <rdf:type> <owl:ObjectProperty>',
+      '<owl:onProperty> <:historicallyDependsOnKeynoteInvitation>',
+    ];
+
+    for (const value of data) {
+      expect(partWholeResult).toContain(value);
+      expect(partWholeHideRelationResult).not.toContain(value);
     }
   });
 });

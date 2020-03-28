@@ -68,6 +68,33 @@ export enum RelationStereotype {
 
 export const RelationsAsPredicateInGUFO = ['instantiation', 'derivation'];
 
+export const HideObjectPropertyCreationList = [
+  'characterization',
+  'comparative',
+  'componentOf',
+  'creation',
+  'derivation',
+  'externalDependence',
+  'historicalDependence',
+  'instantiation',
+  'manifestation',
+  'material',
+  'mediation',
+  'memberOf',
+  'participation',
+  'participational',
+  'subCollectionOf',
+  'subQuantityOf',
+  'termination',
+];
+
+export const HideReadOnlyObjectPropertyCreationList = [
+  'componentOf',
+  'memberOf',
+  'subCollectionOf',
+  'subQuantityOf',
+];
+
 export const RelationsInvertedInGUFO = [
   'creation',
   'termination',
