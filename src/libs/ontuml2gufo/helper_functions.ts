@@ -1,6 +1,7 @@
 import memoizee from 'memoizee';
 import { IElement, IRelation, IPackage, IOntoUML2GUFOOptions } from '@types';
-import { RelationStereotypeToGUFOMapping, OntoUMLType } from '@constants/.';
+import { OntoUMLType } from '@constants/.';
+import { RelationStereotypeMapping } from './constants';
 
 type GetURI = {
   element: IElement;
@@ -65,7 +66,7 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
       formatName(id);
     let formattedElementName = isInvertedRelation ? sourceName : targetName;
 
-    const stereotypeName = RelationStereotypeToGUFOMapping[stereotype];
+    const stereotypeName = RelationStereotypeMapping[stereotype];
     const associationName =
       formattedElementName.charAt(0).toLocaleLowerCase() +
       formattedElementName.substring(1);

@@ -186,4 +186,18 @@ describe('Relations', () => {
       expect(partWholeHideRelationResult).not.toContain(value);
     }
   });
+
+  it('should create cardinality restriction with gufo property', async () => {
+    const data = [
+      '<owl:onProperty> <gufo:inheresIn>',
+      '<owl:inverseOf> <gufo:inheresIn>',
+      '<owl:onProperty> <gufo:mediates>',
+      '<owl:inverseOf> <gufo:mediates>',
+      '<owl:onProperty> <gufo:historicallyDependsOn>',
+    ];
+
+    for (const value of data) {
+      expect(partWholeHideRelationResult).toContain(value);
+    }
+  });
 });
