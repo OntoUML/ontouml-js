@@ -29,6 +29,15 @@ describe('Examples', () => {
         },
       },
       {
+        name: 'alpinebitsHideRelations.ttl',
+        model: alpinebits,
+        options: {
+          format: 'Turtle',
+          baseIRI: 'https://alpinebits.org',
+          hideObjectPropertyCreation: true,
+        },
+      },
+      {
         name: 'alpinebits.nt',
         model: alpinebits,
         options: {
