@@ -36,6 +36,7 @@ import {
   transformTermination,
 } from './relation_stereotype_functions';
 import { transformAnnotations } from './annotation_function';
+import { transformGUFOInverses } from './relation_gufo_inverse';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -69,6 +70,12 @@ export async function transformRelations(
   relations: IRelation[],
   options: IOntoUML2GUFOOptions,
 ): Promise<boolean> {
+  const { createInverses } = options;
+
+  if (createInverses) {
+    await transformGUFOInverses(writer);
+  }
+
   for (let i = 0; i < relations.length; i += 1) {
     const relation = relations[i];
     const { stereotypes } = relation;
@@ -85,9 +92,14 @@ export async function transformRelations(
       },
     } as IRelation;
 
+    const extraPropertyAssigments = generateExtraPropertyAssignments(
+      relation,
+      options,
+    );
+
     relation.propertyAssignments = {
       ...(relation.propertyAssignments || {}),
-      ...generateExtraPropertyAssignments(relation, options),
+      ...extraPropertyAssigments,
       isInverseRelation: false,
     };
 
@@ -95,15 +107,14 @@ export async function transformRelations(
 
     inverseRelation.propertyAssignments = {
       ...(inverseRelation.propertyAssignments || {}),
-      ...generateExtraPropertyAssignments(inverseRelation, options),
+      ...extraPropertyAssigments,
       isInverseRelation: true,
       relationUri: uri,
     };
 
     const { hideBaseCreation } = relation.propertyAssignments;
-    const isInverseTransformationEnabled = !IgonoredInverseRelations.includes(
-      stereotype,
-    );
+    const isInverseTransformationEnabled =
+      createInverses && !IgonoredInverseRelations.includes(stereotype);
 
     let baseQuads = [];
     let cardinalityQuads = [];
@@ -151,12 +162,12 @@ export async function transformRelations(
         options,
       );
 
-      // if (isInverseTransformationEnabled) {
-      //   inverseStereotypeQuads = transformStereotypeFunction[stereotype](
-      //     inverseRelation,
-      //     options,
-      //   );
-      // }
+      if (isInverseTransformationEnabled) {
+        inverseStereotypeQuads = transformStereotypeFunction[stereotype](
+          inverseRelation,
+          options,
+        );
+      }
     }
 
     await writer.addQuads([
@@ -302,7 +313,7 @@ function transformRelationBase(
         quad(
           namedNode(uri),
           namedNode('rdfs:subPropertyOf'),
-          namedNode(`gufo:${RelationStereotypeMapping['isEventProperPartOf']}`),
+          namedNode(`gufo:${RelationStereotypeMapping['participational']}`),
         ),
       );
     }

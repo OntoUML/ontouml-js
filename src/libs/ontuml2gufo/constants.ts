@@ -48,7 +48,6 @@ export const NormalRelationStereotypeMapping = {
   subQuantityOf: 'isSubQuantityOf',
   termination: 'wasTerminatedIn',
   isProperPartOf: 'isProperPartOf',
-  isEventProperPartOf: 'isEventProperPartOf',
 };
 
 export const IgonoredInverseRelations = ['derivation', 'instantiation'];
@@ -71,8 +70,7 @@ export const InverseRelationStereotypeMapping = {
   subCollectionOf: 'hasSubCollection',
   subQuantityOf: 'hasSubQuantity',
   termination: 'terminated',
-  isProperPartOf: 'hasProperPartOf',
-  isEventProperPartOf: 'hasEventProperPartOf',
+  isProperPartOf: 'hasProperPart',
 };
 
 export const AvailableLanguages = ['en', 'pt', 'it', 'de', 'nl'];
