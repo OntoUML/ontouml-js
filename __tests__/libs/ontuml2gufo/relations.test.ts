@@ -17,39 +17,51 @@ describe('Relations', () => {
   });
 
   it('should generate an uri automatically using association end', async () => {
-    expect(alpinebitsResult).toContain(
+    const data = [
       '<:isComponentOfSnowpark> <rdf:type> <owl:ObjectProperty>',
-    );
+      '<:hasComponentSnowpark> <owl:inverseOf> <:isComponentOfSnowpark>',
+    ];
+
+    for (const value of data) {
+      expect(alpinebitsResult).toContain(value);
+    }
   });
 
   it('should generate an uri automatically using stereotype', async () => {
-    expect(alpinebitsResult).toContain(
+    const data = [
       '<:organizers> <rdf:type> <owl:ObjectProperty>',
-    );
+      '<:isMediatedByEventPlan> <owl:inverseOf> <:organizers>',
+    ];
+
+    for (const value of data) {
+      expect(alpinebitsResult).toContain(value);
+    }
   });
 
   it('should generate a domain and range to relation', async () => {
-    expect(alpinebitsResult).toContain(
+    const data = [
       '<:organizers> <rdfs:domain> <:EventPlan>',
-    );
-    expect(alpinebitsResult).toContain(
       '<:organizers> <rdfs:range> <:Organizer>',
-    );
+      '<:isMediatedByEventPlan> <rdfs:domain> <:Organizer>',
+      '<:isMediatedByEventPlan> <rdfs:range> <:EventPlan>',
+    ];
+
+    for (const value of data) {
+      expect(alpinebitsResult).toContain(value);
+    }
   });
 
   it('should connect a relation to gUFO stereotype', async () => {
-    expect(alpinebitsResult).toContain(
+    const data = [
       '<:organizers> <rdfs:subPropertyOf> <gufo:mediates>',
-    );
-    expect(alpinebitsResult).toContain(
       '<:described> <rdfs:subPropertyOf> <gufo:historicallyDependsOn>',
-    );
-    expect(alpinebitsResult).toContain(
       '<:isComponentOfSnowpark> <rdfs:subPropertyOf> <gufo:isComponentOf>',
-    );
-    expect(alpinebitsResult).toContain(
       '<:inheresInGeospatialFeature> <rdfs:subPropertyOf> <gufo:inheresIn>',
-    );
+    ];
+
+    for (const value of data) {
+      expect(alpinebitsResult).toContain(value);
+    }
   });
 
   it('should generate a cardinality restriction of 2..*', async () => {

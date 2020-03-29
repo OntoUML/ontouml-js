@@ -1,7 +1,10 @@
 import memoizee from 'memoizee';
 import { IElement, IRelation, IPackage, IOntoUML2GUFOOptions } from '@types';
 import { OntoUMLType } from '@constants/.';
-import { RelationStereotypeMapping } from './constants';
+import {
+  NormalRelationStereotypeMapping,
+  InverseRelationStereotypeMapping,
+} from './constants';
 
 type GetURI = {
   element: IElement;
@@ -37,16 +40,20 @@ export const getPrefixes = memoizee(
 export const getURI = memoizee(({ element, options }: GetURI): string => {
   const { uriManager, prefixPackages } = options;
   const uriFormatBy = options ? options.uriFormatBy || 'name' : 'name';
-  const { id, name } = element;
+  const { id, name, propertyAssignments } = element;
   const isRelation = element.type === OntoUMLType.RELATION_TYPE;
   const isClass = element.type === OntoUMLType.CLASS_TYPE;
+  const isInverseRelation = isRelation && propertyAssignments.isInverseRelation;
   let suggestedName = name;
 
   if (isRelation && !name && uriFormatBy === 'name') {
     const relation = element as IRelation;
-    const { stereotypes, properties, propertyAssignments = {} } = relation;
+    const { stereotypes, properties, propertyAssignments } = relation;
     const stereotype = stereotypes ? stereotypes[0] : null;
     const { isInvertedRelation, isPartWholeRelation } = propertyAssignments;
+    const RelationStereotypeMapping = isInverseRelation
+      ? InverseRelationStereotypeMapping
+      : NormalRelationStereotypeMapping;
 
     const source = relation.getSource();
     const target = relation.getTarget();
@@ -74,7 +81,7 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
     let prefixName = stereotypeName;
 
     if (isPartWholeRelation && !stereotypeName) {
-      prefixName = 'isProperPartOf';
+      prefixName = RelationStereotypeMapping['isProperPartOf'];
     }
 
     suggestedName =
@@ -98,7 +105,9 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
     formattedName = name ? cleanSpecialCharacters(name) : null;
   }
 
-  const formattedId = id ? cleanSpecialCharacters(id) : null;
+  const formattedId = id
+    ? `${isInverseRelation ? 'inverse_' : ''}${cleanSpecialCharacters(id)}`
+    : null;
 
   const elementUri = uriManager.generateUniqueURI({
     id: formattedId,
