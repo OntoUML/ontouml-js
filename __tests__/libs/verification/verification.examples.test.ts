@@ -5,7 +5,7 @@ import {
   VerificationIssue,
   VerificationIssueCode,
 } from '@libs/verification/issues';
-import { OntoUML2GUFO } from '@libs/ontuml2gufo';
+import { OntoUML2GUFO } from '@libs/ontouml2gufo';
 import { IGeneralizationSet } from '@types';
 
 describe('Model deserializing', () => {
