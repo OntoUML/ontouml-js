@@ -5,11 +5,15 @@ describe('Relations', () => {
   let alpinebitsResult;
   let derivationResult;
   let partWholeResult;
+  let partWholeHideRelationResult;
 
   beforeAll(async () => {
     alpinebitsResult = await transformOntoUML2GUFO(alpinebits);
     derivationResult = await transformOntoUML2GUFO(derivation);
     partWholeResult = await transformOntoUML2GUFO(partWhole);
+    partWholeHideRelationResult = await transformOntoUML2GUFO(partWhole, {
+      hideObjectPropertyCreation: true,
+    });
   });
 
   it('should generate an uri automatically using association end', async () => {
@@ -61,10 +65,10 @@ describe('Relations', () => {
 
   it('should generate a cardinality restriction of 1..*', async () => {
     expect(alpinebitsResult).toContain(
-      `<:MountainArea> <rdfs:subClassOf> [
+      `<:EventPlan> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
-        <owl:onProperty> <:areaowner>;
-        <owl:someValuesFrom> <:AreaOwner>
+        <owl:onProperty> <:organizers>;
+        <owl:someValuesFrom> <:Organizer>
       ] .`.replace(/ {6}/gm, ''),
     );
   });
@@ -109,7 +113,7 @@ describe('Relations', () => {
       '<:isProperPartOfPerson> <rdf:type> <owl:ObjectProperty> .',
       '<:isProperPartOfPerson> <rdfs:range> <:Person> .',
       '<:isProperPartOfPerson> <rdfs:domain> <:Heart> .',
-      '<:isProperPartOfPerson> <rdfs:subPropertyOf> <gufo:isProperPartOf> .',
+      '<:isProperPartOfPerson> <rdfs:subPropertyOf> <gufo:isObjectProperPartOf> .',
       '<:isProperPartOfPerson> <rdfs:comment> "Relation URI was automatically generated." .',
       '<:Person> <rdfs:subClassOf> [',
       '<rdf:type> <owl:Restriction>;',
@@ -122,6 +126,30 @@ describe('Relations', () => {
       '<owl:onProperty> <:isProperPartOfPerson>;',
       '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
       '<owl:onClass> <:Person>',
+      '] .',
+    ];
+
+    for (const value of data) {
+      expect(partWholeResult).toContain(value);
+    }
+  });
+
+  it('should generate a part-whole relation between aspects', () => {
+    const data = [
+      '<:isProperPartOfKeynoteAgreement> <rdf:type> <owl:ObjectProperty> .',
+      '<:isProperPartOfKeynoteAgreement> <rdfs:domain> <:KeynoteSpeakerCommitment> .',
+      '<:isProperPartOfKeynoteAgreement> <rdfs:range> <:KeynoteAgreement> .',
+      '<:isProperPartOfKeynoteAgreement> <rdfs:subPropertyOf> <gufo:isAspectProperPartOf> .',
+      '<:KeynoteSpeakerCommitment> <rdfs:subClassOf> [',
+      '<rdf:type> <owl:Restriction>;',
+      '<owl:onProperty> <:isProperPartOfKeynoteAgreement>;',
+      '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
+      '<owl:onClass> <:KeynoteAgreement>',
+      '] .',
+      '<:KeynoteAgreement> <rdfs:subClassOf> [',
+      '<rdf:type> <owl:Restriction>;',
+      '<owl:onProperty> [ <owl:inverseOf> <:isProperPartOfKeynoteAgreement> ];',
+      '<owl:someValuesFrom> <:KeynoteSpeakerCommitment>',
       '] .',
     ];
 
@@ -164,6 +192,36 @@ describe('Relations', () => {
 
     for (const value of data) {
       expect(derivationResult).toContain(value);
+    }
+  });
+
+  it('should hide object property creation', async () => {
+    const data = [
+      '<:inheresInKeynoteSpeaker> <rdf:type> <owl:ObjectProperty>',
+      '<owl:onProperty> <:inheresInKeynoteSpeaker>',
+      '<:mediatesKeynoteSpeaker> <rdf:type> <owl:ObjectProperty>',
+      '<owl:onProperty> <:mediatesKeynoteSpeaker>',
+      '<:historicallyDependsOnKeynoteInvitation> <rdf:type> <owl:ObjectProperty>',
+      '<owl:onProperty> <:historicallyDependsOnKeynoteInvitation>',
+    ];
+
+    for (const value of data) {
+      expect(partWholeResult).toContain(value);
+      expect(partWholeHideRelationResult).not.toContain(value);
+    }
+  });
+
+  it('should create cardinality restriction with gufo property', async () => {
+    const data = [
+      '<owl:onProperty> <gufo:inheresIn>',
+      '<owl:inverseOf> <gufo:inheresIn>',
+      '<owl:onProperty> <gufo:mediates>',
+      '<owl:inverseOf> <gufo:mediates>',
+      '<owl:onProperty> <gufo:historicallyDependsOn>',
+    ];
+
+    for (const value of data) {
+      expect(partWholeHideRelationResult).toContain(value);
     }
   });
 });

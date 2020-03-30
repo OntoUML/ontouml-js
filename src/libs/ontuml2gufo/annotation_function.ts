@@ -1,6 +1,6 @@
 import { N3Writer } from 'n3';
 import { IElement, IOntoUML2GUFOOptions } from '@types';
-import { AvailableLanguages } from '@constants/.';
+import { AvailableLanguages } from './constants';
 import { getURI } from './helper_functions';
 
 const N3 = require('n3');
