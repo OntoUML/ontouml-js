@@ -4024,14 +4024,14 @@
       "properties": [
         {
           "type": "Property",
-          "id": "5ALZWRaGAqCsIDCK",
-          "name": "openingHours",
+          "id": "5ALZWRaGAqCsIDCM",
+          "name": null,
           "description": null,
           "propertyType": {
             "type": "Class",
-            "id": "VaUC0.aGAqAovQ3q"
+            "id": "5LxsNeaGAqACBzHc"
           },
-          "cardinality": "*",
+          "cardinality": "1",
           "isDerived": false,
           "isOrdered": false,
           "isReadOnly": false,
@@ -4043,14 +4043,14 @@
         },
         {
           "type": "Property",
-          "id": "5ALZWRaGAqCsIDCM",
-          "name": null,
+          "id": "5ALZWRaGAqCsIDCK",
+          "name": "openingHours",
           "description": null,
           "propertyType": {
             "type": "Class",
-            "id": "5LxsNeaGAqACBzHc"
+            "id": "VaUC0.aGAqAovQ3q"
           },
-          "cardinality": "1",
+          "cardinality": "*",
           "isDerived": false,
           "isOrdered": false,
           "isReadOnly": false,

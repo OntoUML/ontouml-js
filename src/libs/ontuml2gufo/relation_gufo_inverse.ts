@@ -11,24 +11,18 @@ const { namedNode, quad } = DataFactory;
 export async function transformGUFOInverses(
   writer: N3Writer,
 ): Promise<boolean> {
-  const objectProperPartInverserList = [
+  const properPartInverseList = [
+    'hasEventProperPart',
+    'hasAspectProperPart',
+    'hasObjectProperPart',
+  ];
+  const objectProperPartInverseList = [
     'hasCollectionMember',
     'hasComponent',
     'hasSubCollection',
     'hasSubQuantity',
   ];
-  const quads = [
-    quad(
-      namedNode('gufo:hasObjectProperPart'),
-      namedNode('rdfs:subPropertyOf'),
-      namedNode('gufo:hasProperPart'),
-    ),
-    quad(
-      namedNode('gufo:hasObjectProperPart'),
-      namedNode('owl:inverseOf'),
-      namedNode('gufo:isObjectProperPartOf'),
-    ),
-  ];
+  const quads = [];
 
   for (const stereotype of Object.keys(InverseRelationStereotypeMapping)) {
     const property = NormalRelationStereotypeMapping[stereotype];
@@ -37,7 +31,7 @@ export async function transformGUFOInverses(
     if (inverseProperty) {
       quads.push(
         quad(
-          namedNode(`gufo:${inverseProperty}`),
+          namedNode(`:${inverseProperty}`),
           namedNode('rdf:type'),
           namedNode('owl:ObjectProperty'),
         ),
@@ -45,28 +39,28 @@ export async function transformGUFOInverses(
 
       quads.push(
         quad(
-          namedNode(`gufo:${inverseProperty}`),
+          namedNode(`:${inverseProperty}`),
           namedNode('owl:inverseOf'),
           namedNode(`gufo:${property}`),
         ),
       );
 
-      if (inverseProperty === 'hasEventProperPart') {
+      if (properPartInverseList.includes(inverseProperty)) {
         quads.push(
           quad(
-            namedNode(`gufo:${inverseProperty}`),
+            namedNode(`:${inverseProperty}`),
             namedNode('rdfs:subPropertyOf'),
-            namedNode('gufo:hasProperPart'),
+            namedNode(':hasProperPart'),
           ),
         );
       }
 
-      if (objectProperPartInverserList.includes(inverseProperty)) {
+      if (objectProperPartInverseList.includes(inverseProperty)) {
         quads.push(
           quad(
-            namedNode(`gufo:${inverseProperty}`),
+            namedNode(`:${inverseProperty}`),
             namedNode('rdfs:subPropertyOf'),
-            namedNode('gufo:hasObjectProperPart'),
+            namedNode(':hasObjectProperPart'),
           ),
         );
       }

@@ -23,12 +23,15 @@ export function transformSubPropertyOf(
     ? InverseRelationStereotypeMapping
     : NormalRelationStereotypeMapping;
   const stereotype = stereotypes[0];
+  const propertyUri = isInverseRelation
+    ? `:${RelationStereotypeMapping[stereotype]}`
+    : `gufo:${RelationStereotypeMapping[stereotype]}`;
 
   return [
     quad(
       namedNode(uri),
       namedNode('rdfs:subPropertyOf'),
-      namedNode(`gufo:${RelationStereotypeMapping[stereotype]}`),
+      namedNode(propertyUri),
     ),
   ];
 }

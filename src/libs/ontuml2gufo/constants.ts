@@ -2,21 +2,13 @@ export const RelationsAsPredicate = ['instantiation', 'derivation'];
 
 export const HideObjectPropertyCreationList = [
   'characterization',
-  'comparative',
-  'componentOf',
   'creation',
-  'derivation',
   'externalDependence',
   'historicalDependence',
-  'instantiation',
   'manifestation',
-  'material',
   'mediation',
-  'memberOf',
   'participation',
   'participational',
-  'subCollectionOf',
-  'subQuantityOf',
   'termination',
 ];
 
@@ -28,6 +20,20 @@ export const HideReadOnlyObjectPropertyCreationList = [
 ];
 
 export const RelationsInverted = ['creation', 'termination', 'participation'];
+
+export const AspectProperPartClassStereotypeList = [
+  'relator',
+  'mode',
+  'quality',
+];
+
+export const ObjectProperPartClassStereotypeList = [
+  'kind',
+  'collective',
+  'quantity',
+];
+
+export const IgnoreCardinalityCreationList = ['comparative', 'material'];
 
 export const NormalRelationStereotypeMapping = {
   characterization: 'inheresIn',
@@ -48,6 +54,9 @@ export const NormalRelationStereotypeMapping = {
   subQuantityOf: 'isSubQuantityOf',
   termination: 'wasTerminatedIn',
   isProperPartOf: 'isProperPartOf',
+  isEventProperPartOf: 'isEventProperPartOf',
+  isAspectProperPartOf: 'isAspectProperPartOf',
+  isObjectProperPartOf: 'isObjectProperPartOf',
 };
 
 export const IgonoredInverseRelations = ['derivation', 'instantiation'];
@@ -71,6 +80,9 @@ export const InverseRelationStereotypeMapping = {
   subQuantityOf: 'hasSubQuantity',
   termination: 'terminated',
   isProperPartOf: 'hasProperPart',
+  isEventProperPartOf: 'hasEventProperPart',
+  isAspectProperPartOf: 'hasAspectProperPart',
+  isObjectProperPartOf: 'hasObjectProperPart',
 };
 
 export const AvailableLanguages = ['en', 'pt', 'it', 'de', 'nl'];

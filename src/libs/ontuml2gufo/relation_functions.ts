@@ -11,9 +11,12 @@ import {
   RelationsAsPredicate,
   NormalRelationStereotypeMapping,
   InverseRelationStereotypeMapping,
+  IgonoredInverseRelations,
   HideObjectPropertyCreationList,
   HideReadOnlyObjectPropertyCreationList,
-  IgonoredInverseRelations,
+  IgnoreCardinalityCreationList,
+  AspectProperPartClassStereotypeList,
+  ObjectProperPartClassStereotypeList,
 } from './constants';
 import { getURI } from './helper_functions';
 import {
@@ -134,19 +137,22 @@ export async function transformRelations(
           inverseBaseQuads = transformRelationBase(inverseRelation, options);
         }
       }
-      // Get cardinalities quads from relation
-      cardinalityQuads = transformRelationCardinalities(
-        writer,
-        relation,
-        options,
-      );
 
-      if (isInverseTransformationEnabled) {
-        inverseCardinalityQuads = transformRelationCardinalities(
+      if (!IgnoreCardinalityCreationList.includes(stereotype)) {
+        // Get cardinalities quads from relation
+        cardinalityQuads = transformRelationCardinalities(
           writer,
-          inverseRelation,
+          relation,
           options,
         );
+
+        if (isInverseTransformationEnabled) {
+          inverseCardinalityQuads = transformRelationCardinalities(
+            writer,
+            inverseRelation,
+            options,
+          );
+        }
       }
     }
 
@@ -215,6 +221,14 @@ function generateExtraPropertyAssignments(
     isPartWholeRelation &&
     sourceStereotype === ClassStereotype.EVENT &&
     targetStereotype === ClassStereotype.EVENT;
+  const isPartWholeRelationBetweenAspects =
+    isPartWholeRelation &&
+    AspectProperPartClassStereotypeList.includes(sourceStereotype) &&
+    AspectProperPartClassStereotypeList.includes(targetStereotype);
+  const isPartWholeRelationBetweenObjects =
+    isPartWholeRelation &&
+    ObjectProperPartClassStereotypeList.includes(sourceStereotype) &&
+    ObjectProperPartClassStereotypeList.includes(targetStereotype);
   const isPartWholeRelationWithoutStereotype =
     isPartWholeRelation && !stereotype;
   const isPartWholeRelationBetweenEventsWithoutStereotype =
@@ -232,18 +246,20 @@ function generateExtraPropertyAssignments(
   // hideObjectPropertyCreation checking
   const hideNormalBaseCreation =
     hideObjectPropertyCreation &&
-    HideObjectPropertyCreationList.includes(stereotype);
+    (HideObjectPropertyCreationList.includes(stereotype) ||
+      isPartWholeRelationWithoutStereotype);
   const hideReadOnlyBaseCreation =
     hideObjectPropertyCreation &&
     isReadOnlyRelation &&
-    (HideReadOnlyObjectPropertyCreationList.includes(stereotype) ||
-      isPartWholeRelationBetweenEventsWithoutStereotype);
+    HideReadOnlyObjectPropertyCreationList.includes(stereotype);
   const hideBaseCreation = hideNormalBaseCreation || hideReadOnlyBaseCreation;
 
   // add extra properties
   return {
     isPartWholeRelation,
     isPartWholeRelationBetweenEvents,
+    isPartWholeRelationBetweenAspects,
+    isPartWholeRelationBetweenObjects,
     isPartWholeRelationWithoutStereotype,
     isPartWholeRelationBetweenEventsWithoutStereotype,
     isInvertedRelation,
@@ -265,6 +281,8 @@ function transformRelationBase(
     isInvertedRelation,
     isInverseRelation,
     isPartWholeRelationBetweenEvents,
+    isPartWholeRelationBetweenAspects,
+    isPartWholeRelationBetweenObjects,
     isPartWholeRelationWithoutStereotype,
   } = propertyAssignments;
   const RelationStereotypeMapping = isInverseRelation
@@ -313,7 +331,31 @@ function transformRelationBase(
         quad(
           namedNode(uri),
           namedNode('rdfs:subPropertyOf'),
-          namedNode(`gufo:${RelationStereotypeMapping['participational']}`),
+          namedNode(`gufo:${RelationStereotypeMapping['isEventProperPartOf']}`),
+        ),
+      );
+    }
+    // relation between aspects
+    else if (isPartWholeRelationBetweenAspects) {
+      quads.push(
+        quad(
+          namedNode(uri),
+          namedNode('rdfs:subPropertyOf'),
+          namedNode(
+            `gufo:${RelationStereotypeMapping['isAspectProperPartOf']}`,
+          ),
+        ),
+      );
+    }
+    // relation between objects
+    else if (isPartWholeRelationBetweenObjects) {
+      quads.push(
+        quad(
+          namedNode(uri),
+          namedNode('rdfs:subPropertyOf'),
+          namedNode(
+            `gufo:${RelationStereotypeMapping['isObjectProperPartOf']}`,
+          ),
         ),
       );
     }
@@ -543,6 +585,9 @@ function generateRelationBlankQuad({
     isInvertedRelation,
     hideBaseCreation,
     isPartWholeRelationWithoutStereotype,
+    isPartWholeRelationBetweenEvents,
+    isPartWholeRelationBetweenAspects,
+    isPartWholeRelationBetweenObjects,
     isInverseRelation,
   } = relation.propertyAssignments;
   const RelationStereotypeMapping = isInverseRelation
@@ -559,6 +604,12 @@ function generateRelationBlankQuad({
   if (hideBaseCreation) {
     if (stereotype) {
       propertyUri = `gufo:${RelationStereotypeMapping[stereotype]}`;
+    } else if (isPartWholeRelationBetweenEvents) {
+      propertyUri = `gufo:${RelationStereotypeMapping['isEventProperPartOf']}`;
+    } else if (isPartWholeRelationBetweenAspects) {
+      propertyUri = `gufo:${RelationStereotypeMapping['isAspectProperPartOf']}`;
+    } else if (isPartWholeRelationBetweenObjects) {
+      propertyUri = `gufo:${RelationStereotypeMapping['isObjectProperPartOf']}`;
     } else if (isPartWholeRelationWithoutStereotype) {
       propertyUri = `gufo:${RelationStereotypeMapping['isProperPartOf']}`;
     }
