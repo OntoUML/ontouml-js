@@ -497,6 +497,8 @@ function generateRelationBlankQuad({
     hideBaseCreation,
     isPartWholeRelationWithoutStereotype,
     isPartWholeRelationBetweenEvents,
+    isPartWholeRelationBetweenAspects,
+    isPartWholeRelationBetweenObjects,
   } = relation.propertyAssignments;
   const uri = getURI({ element: relation, options });
   // get range
@@ -511,6 +513,10 @@ function generateRelationBlankQuad({
       propertyUri = `gufo:${RelationStereotypeMapping[stereotype]}`;
     } else if (isPartWholeRelationBetweenEvents) {
       propertyUri = 'gufo:isEventProperPartOf';
+    } else if (isPartWholeRelationBetweenAspects) {
+      propertyUri = 'gufo:isAspectProperPartOf';
+    } else if (isPartWholeRelationBetweenObjects) {
+      propertyUri = 'gufo:isObjectProperPartOf';
     } else if (isPartWholeRelationWithoutStereotype) {
       propertyUri = 'gufo:isProperPartOf';
     }
