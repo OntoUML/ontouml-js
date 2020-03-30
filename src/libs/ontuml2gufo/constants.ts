@@ -20,6 +20,20 @@ export const HideObjectPropertyCreationList = [
   'termination',
 ];
 
+export const AspectProperPartClassStereotypeList = [
+  'relator',
+  'mode',
+  'quality',
+];
+
+export const ObjectProperPartClassStereotypeList = [
+  'kind',
+  'collective',
+  'quantity',
+];
+
+export const IgnoreCardinalityCreationList = ['comparative', 'material'];
+
 export const HideReadOnlyObjectPropertyCreationList = [
   'componentOf',
   'memberOf',

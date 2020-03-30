@@ -12,6 +12,9 @@ import {
   RelationStereotypeMapping,
   HideObjectPropertyCreationList,
   HideReadOnlyObjectPropertyCreationList,
+  IgnoreCardinalityCreationList,
+  AspectProperPartClassStereotypeList,
+  ObjectProperPartClassStereotypeList,
 } from './constants';
 import { getURI } from './helper_functions';
 import {
@@ -93,6 +96,14 @@ export async function transformRelations(
       isPartWholeRelation &&
       sourceStereotype === ClassStereotype.EVENT &&
       targetStereotype === ClassStereotype.EVENT;
+    const isPartWholeRelationBetweenAspects =
+      isPartWholeRelation &&
+      AspectProperPartClassStereotypeList.includes(sourceStereotype) &&
+      AspectProperPartClassStereotypeList.includes(targetStereotype);
+    const isPartWholeRelationBetweenObjects =
+      isPartWholeRelation &&
+      ObjectProperPartClassStereotypeList.includes(sourceStereotype) &&
+      ObjectProperPartClassStereotypeList.includes(targetStereotype);
     const isPartWholeRelationWithoutStereotype =
       isPartWholeRelation && !stereotype;
     const isPartWholeRelationBetweenEventsWithoutStereotype =
@@ -110,12 +121,12 @@ export async function transformRelations(
     // hideObjectPropertyCreation checking
     const hideNormalBaseCreation =
       hideObjectPropertyCreation &&
-      HideObjectPropertyCreationList.includes(stereotype);
+      (HideObjectPropertyCreationList.includes(stereotype) ||
+        isPartWholeRelationWithoutStereotype);
     const hideReadOnlyBaseCreation =
       hideObjectPropertyCreation &&
       isReadOnlyRelation &&
-      (HideReadOnlyObjectPropertyCreationList.includes(stereotype) ||
-        isPartWholeRelationBetweenEventsWithoutStereotype);
+      HideReadOnlyObjectPropertyCreationList.includes(stereotype);
     const hideBaseCreation = hideNormalBaseCreation || hideReadOnlyBaseCreation;
 
     // add extra properties
@@ -123,6 +134,8 @@ export async function transformRelations(
       ...(relation.propertyAssignments || {}),
       isPartWholeRelation,
       isPartWholeRelationBetweenEvents,
+      isPartWholeRelationBetweenAspects,
+      isPartWholeRelationBetweenObjects,
       isPartWholeRelationWithoutStereotype,
       isPartWholeRelationBetweenEventsWithoutStereotype,
       isInvertedRelation,
@@ -139,12 +152,15 @@ export async function transformRelations(
         // Get base quads (type, domain, range) from relation
         baseQuads = transformRelationBase(relation, options);
       }
-      // Get cardinalities quads from relation
-      cardinalityQuads = transformRelationCardinalities(
-        writer,
-        relation,
-        options,
-      );
+
+      if (!IgnoreCardinalityCreationList.includes(stereotype)) {
+        // Get cardinalities quads from relation
+        cardinalityQuads = transformRelationCardinalities(
+          writer,
+          relation,
+          options,
+        );
+      }
     }
 
     // stereotype checking
@@ -186,6 +202,8 @@ function transformRelationBase(
     isPartWholeRelation,
     isInvertedRelation,
     isPartWholeRelationBetweenEvents,
+    isPartWholeRelationBetweenAspects,
+    isPartWholeRelationBetweenObjects,
     isPartWholeRelationWithoutStereotype,
   } = propertyAssignments;
   const sourceClass = relation.getSource();
@@ -229,6 +247,26 @@ function transformRelationBase(
           namedNode(uri),
           namedNode('rdfs:subPropertyOf'),
           namedNode('gufo:isEventProperPartOf'),
+        ),
+      );
+    }
+    // relation between aspects
+    else if (isPartWholeRelationBetweenAspects) {
+      quads.push(
+        quad(
+          namedNode(uri),
+          namedNode('rdfs:subPropertyOf'),
+          namedNode('gufo:isAspectProperPartOf'),
+        ),
+      );
+    }
+    // relation between objects
+    else if (isPartWholeRelationBetweenObjects) {
+      quads.push(
+        quad(
+          namedNode(uri),
+          namedNode('rdfs:subPropertyOf'),
+          namedNode('gufo:isObjectProperPartOf'),
         ),
       );
     }
@@ -458,6 +496,7 @@ function generateRelationBlankQuad({
     isInvertedRelation,
     hideBaseCreation,
     isPartWholeRelationWithoutStereotype,
+    isPartWholeRelationBetweenEvents,
   } = relation.propertyAssignments;
   const uri = getURI({ element: relation, options });
   // get range
@@ -470,6 +509,8 @@ function generateRelationBlankQuad({
   if (hideBaseCreation) {
     if (stereotype) {
       propertyUri = `gufo:${RelationStereotypeMapping[stereotype]}`;
+    } else if (isPartWholeRelationBetweenEvents) {
+      propertyUri = 'gufo:isEventProperPartOf';
     } else if (isPartWholeRelationWithoutStereotype) {
       propertyUri = 'gufo:isProperPartOf';
     }
