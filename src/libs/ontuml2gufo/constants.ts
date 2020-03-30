@@ -2,22 +2,21 @@ export const RelationsAsPredicate = ['instantiation', 'derivation'];
 
 export const HideObjectPropertyCreationList = [
   'characterization',
-  'comparative',
-  'componentOf',
   'creation',
-  'derivation',
   'externalDependence',
   'historicalDependence',
-  'instantiation',
   'manifestation',
-  'material',
   'mediation',
-  'memberOf',
   'participation',
   'participational',
+  'termination',
+];
+
+export const HideReadOnlyObjectPropertyCreationList = [
+  'componentOf',
+  'memberOf',
   'subCollectionOf',
   'subQuantityOf',
-  'termination',
 ];
 
 export const AspectProperPartClassStereotypeList = [
@@ -33,13 +32,6 @@ export const ObjectProperPartClassStereotypeList = [
 ];
 
 export const IgnoreCardinalityCreationList = ['comparative', 'material'];
-
-export const HideReadOnlyObjectPropertyCreationList = [
-  'componentOf',
-  'memberOf',
-  'subCollectionOf',
-  'subQuantityOf',
-];
 
 export const RelationsInverted = ['creation', 'termination', 'participation'];
 
