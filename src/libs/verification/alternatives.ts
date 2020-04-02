@@ -33,16 +33,14 @@ export class VerificationAlternative {
       case VerificationAlternativeCode.REPLACE_ONTOUML_CLASS_STEREOTYPE:
         this.title = "Replace element's stereotypes.";
         this.description = `Apply to ${source.name ||
-          source.id} a unique stereotype from the set {${getElementStereotypes(
-          source,
-        ).join(', ')}}.`;
+          source.id} a unique stereotype from the set {${getElementStereotypes(source).join(
+          ', ',
+        )}}.`;
         this.elements = null;
         break;
       case VerificationAlternativeCode.ONTOUML_CLASS_NAME_TO_PLURAL:
         this.title = 'Change name to singular form.';
-        this.description = `Change name from ${
-          source.name
-        } to ${pluralize.singular(source.name)}.`;
+        this.description = `Change name from ${source.name} to ${pluralize.singular(source.name)}.`;
         this.elements = null;
         break;
       case VerificationAlternativeCode.REMOVE_LITERALS:

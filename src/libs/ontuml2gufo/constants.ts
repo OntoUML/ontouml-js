@@ -19,17 +19,9 @@ export const HideReadOnlyObjectPropertyCreationList = [
   'subQuantityOf',
 ];
 
-export const AspectProperPartClassStereotypeList = [
-  'relator',
-  'mode',
-  'quality',
-];
+export const AspectProperPartClassStereotypeList = ['relator', 'mode', 'quality'];
 
-export const ObjectProperPartClassStereotypeList = [
-  'kind',
-  'collective',
-  'quantity',
-];
+export const ObjectProperPartClassStereotypeList = ['kind', 'collective', 'quantity'];
 
 export const IgnoreCardinalityCreationList = ['comparative', 'material'];
 

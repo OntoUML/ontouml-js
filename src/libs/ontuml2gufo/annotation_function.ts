@@ -31,9 +31,7 @@ export async function transformAnnotations(
   }
 
   if (description) {
-    quads.push(
-      quad(namedNode(uri), namedNode('rdfs:comment'), literal(description)),
-    );
+    quads.push(quad(namedNode(uri), namedNode('rdfs:comment'), literal(description)));
   }
 
   if (quads.length > 0) {

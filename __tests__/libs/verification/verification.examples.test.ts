@@ -1,10 +1,7 @@
 import { ModelManager } from '@libs/model';
 import { alpinebits } from '@test-models/valids';
 import { OntoUML2Verification } from '@libs/verification';
-import {
-  VerificationIssue,
-  VerificationIssueCode,
-} from '@libs/verification/issues';
+import { VerificationIssue, VerificationIssueCode } from '@libs/verification/issues';
 import { OntoUML2GUFO } from '@libs/ontuml2gufo';
 import { IGeneralizationSet } from '@types';
 

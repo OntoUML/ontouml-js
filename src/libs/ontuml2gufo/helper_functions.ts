@@ -8,31 +8,29 @@ type GetURI = {
   options?: IOntoUML2GUFOOptions;
 };
 
-export const getPrefixes = memoizee(
-  async (packages: IPackage[], options: IOntoUML2GUFOOptions) => {
-    const { baseIRI, prefixPackages, uriManager } = options;
-    const prefixes = {};
+export const getPrefixes = memoizee(async (packages: IPackage[], options: IOntoUML2GUFOOptions) => {
+  const { baseIRI, prefixPackages, uriManager } = options;
+  const prefixes = {};
 
-    if (prefixPackages) {
-      prefixes[''] = `${baseIRI}#`;
+  if (prefixPackages) {
+    prefixes[''] = `${baseIRI}#`;
 
-      for (let i = 0; i < packages.length; i += 1) {
-        const { id, name } = packages[i];
-        const packageUri = uriManager.generateUniqueURI({
-          id: id,
-          name: name,
-        });
-        const uri = formatPackageName(packageUri);
+    for (let i = 0; i < packages.length; i += 1) {
+      const { id, name } = packages[i];
+      const packageUri = uriManager.generateUniqueURI({
+        id: id,
+        name: name,
+      });
+      const uri = formatPackageName(packageUri);
 
-        prefixes[uri] = `${baseIRI}/${uri}#`;
-      }
-    } else {
-      prefixes[''] = `${baseIRI}#`;
+      prefixes[uri] = `${baseIRI}/${uri}#`;
     }
+  } else {
+    prefixes[''] = `${baseIRI}#`;
+  }
 
-    return prefixes;
-  },
-);
+  return prefixes;
+});
 
 export const getURI = memoizee(({ element, options }: GetURI): string => {
   const { uriManager, prefixPackages } = options;
@@ -57,19 +55,14 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
       : !!targetAssociationname;
 
     const sourceName =
-      formatName(sourceAssociatioName) ||
-      formatName(source.name) ||
-      formatName(id);
+      formatName(sourceAssociatioName) || formatName(source.name) || formatName(id);
     const targetName =
-      formatName(targetAssociationname) ||
-      formatName(target.name) ||
-      formatName(id);
+      formatName(targetAssociationname) || formatName(target.name) || formatName(id);
     let formattedElementName = isInvertedRelation ? sourceName : targetName;
 
     const stereotypeName = RelationStereotypeMapping[stereotype];
     const associationName =
-      formattedElementName.charAt(0).toLocaleLowerCase() +
-      formattedElementName.substring(1);
+      formattedElementName.charAt(0).toLocaleLowerCase() + formattedElementName.substring(1);
 
     let prefixName = stereotypeName;
 
@@ -78,19 +71,14 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
     }
 
     suggestedName =
-      hasAssociationName || !prefixName
-        ? associationName
-        : `${prefixName}${formattedElementName}`;
+      hasAssociationName || !prefixName ? associationName : `${prefixName}${formattedElementName}`;
   }
 
   let formattedName;
 
   if (isRelation) {
     formattedName = name
-      ? formatName(
-          name,
-          (s: string) => s.charAt(0).toUpperCase() + s.substring(1),
-        )
+      ? formatName(name, (s: string) => s.charAt(0).toUpperCase() + s.substring(1))
       : suggestedName;
   } else if (isClass) {
     formattedName = name ? formatName(name) : null;
@@ -105,10 +93,7 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
     name: formattedName,
   });
 
-  const uri =
-    uriFormatBy === 'id'
-      ? formattedId || elementUri
-      : elementUri || formattedId;
+  const uri = uriFormatBy === 'id' ? formattedId || elementUri : elementUri || formattedId;
 
   if (!uri) {
     return null;
@@ -153,9 +138,7 @@ const transformToCamelCase = memoizee(
           .toLowerCase()
           .split(' ')
           .map((s: string, index: number) =>
-            mapFunction
-              ? mapFunction(s, index)
-              : s.charAt(0).toUpperCase() + s.substring(1),
+            mapFunction ? mapFunction(s, index) : s.charAt(0).toUpperCase() + s.substring(1),
           )
           .join(' ')
       : null,
@@ -163,9 +146,7 @@ const transformToCamelCase = memoizee(
 
 const formatName = memoizee(
   (name: string, mapFunction?: (s: string, index: number) => string): string =>
-    name
-      ? cleanSpecialCharacters(transformToCamelCase(name, mapFunction))
-      : null,
+    name ? cleanSpecialCharacters(transformToCamelCase(name, mapFunction)) : null,
 );
 
 const formatPackageName = memoizee((name: string): string =>

@@ -12,64 +12,30 @@ export function transformCharacterization(
 ): Quad[] {
   const uri = getURI({ element: relation, options });
 
-  return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subPropertyOf'),
-      namedNode('gufo:inheresIn'),
-    ),
-  ];
+  return [quad(namedNode(uri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:inheresIn'))];
 }
 
-export function transformComparative(
-  relation: IRelation,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformComparative(relation: IRelation, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: relation, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdf:type'),
-      namedNode('gufo:ComparativeRelationshipType'),
-    ),
+    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:ComparativeRelationshipType')),
   ];
 }
 
-export function transformComponentOf(
-  relation: IRelation,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformComponentOf(relation: IRelation, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: relation, options });
 
-  return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subPropertyOf'),
-      namedNode('gufo:isComponentOf'),
-    ),
-  ];
+  return [quad(namedNode(uri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:isComponentOf'))];
 }
 
-export function transformCreation(
-  relation: IRelation,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformCreation(relation: IRelation, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: relation, options });
 
-  return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subPropertyOf'),
-      namedNode('gufo:wasCreatedIn'),
-    ),
-  ];
+  return [quad(namedNode(uri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:wasCreatedIn'))];
 }
 
-export function transformDerivation(
-  relation: IRelation,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformDerivation(relation: IRelation, options: IOntoUML2GUFOOptions): Quad[] {
   const source = relation.getDerivingRelation();
   const target = relation.getDerivedClass();
 
@@ -77,13 +43,7 @@ export function transformDerivation(
     const domainUri = getURI({ element: source, options });
     const rangeUri = getURI({ element: target, options });
 
-    return [
-      quad(
-        namedNode(domainUri),
-        namedNode('gufo:isDerivedFrom'),
-        namedNode(rangeUri),
-      ),
-    ];
+    return [quad(namedNode(domainUri), namedNode('gufo:isDerivedFrom'), namedNode(rangeUri))];
   }
 
   return [];
@@ -96,11 +56,7 @@ export function transformExternalDependence(
   const uri = getURI({ element: relation, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subPropertyOf'),
-      namedNode('gufo:externallyDependsOn'),
-    ),
+    quad(namedNode(uri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:externallyDependsOn')),
   ];
 }
 
@@ -111,106 +67,50 @@ export function transformHistoricalDependence(
   const uri = getURI({ element: relation, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subPropertyOf'),
-      namedNode('gufo:historicallyDependsOn'),
-    ),
+    quad(namedNode(uri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:historicallyDependsOn')),
   ];
 }
 
-export function transformInstantiation(
-  relation: IRelation,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformInstantiation(relation: IRelation, options: IOntoUML2GUFOOptions): Quad[] {
   const source = relation.getSource();
   const target = relation.getTarget();
 
   const domainUri = getURI({ element: target, options });
   const rangeUri = getURI({ element: source, options });
 
-  return [
-    quad(
-      namedNode(domainUri),
-      namedNode('gufo:categorizes'),
-      namedNode(rangeUri),
-    ),
-  ];
+  return [quad(namedNode(domainUri), namedNode('gufo:categorizes'), namedNode(rangeUri))];
 }
 
-export function transformManifestation(
-  relation: IRelation,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformManifestation(relation: IRelation, options: IOntoUML2GUFOOptions): Quad[] {
+  const uri = getURI({ element: relation, options });
+
+  return [quad(namedNode(uri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:manifestedIn'))];
+}
+
+export function transformMaterial(relation: IRelation, options: IOntoUML2GUFOOptions): Quad[] {
+  const uri = getURI({ element: relation, options });
+
+  return [quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:MaterialRelationshipType'))];
+}
+
+export function transformMediation(relation: IRelation, options: IOntoUML2GUFOOptions): Quad[] {
+  const uri = getURI({ element: relation, options });
+
+  return [quad(namedNode(uri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:mediates'))];
+}
+
+export function transformMemberOf(relation: IRelation, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: relation, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subPropertyOf'),
-      namedNode('gufo:manifestedIn'),
-    ),
+    quad(namedNode(uri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:isCollectionMemberOf')),
   ];
 }
 
-export function transformMaterial(
-  relation: IRelation,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformParticipation(relation: IRelation, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: relation, options });
 
-  return [
-    quad(
-      namedNode(uri),
-      namedNode('rdf:type'),
-      namedNode('gufo:MaterialRelationshipType'),
-    ),
-  ];
-}
-
-export function transformMediation(
-  relation: IRelation,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
-  const uri = getURI({ element: relation, options });
-
-  return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subPropertyOf'),
-      namedNode('gufo:mediates'),
-    ),
-  ];
-}
-
-export function transformMemberOf(
-  relation: IRelation,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
-  const uri = getURI({ element: relation, options });
-
-  return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subPropertyOf'),
-      namedNode('gufo:isCollectionMemberOf'),
-    ),
-  ];
-}
-
-export function transformParticipation(
-  relation: IRelation,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
-  const uri = getURI({ element: relation, options });
-
-  return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subPropertyOf'),
-      namedNode('gufo:participatedIn'),
-    ),
-  ];
+  return [quad(namedNode(uri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:participatedIn'))];
 }
 
 export function transformParticipational(
@@ -220,11 +120,7 @@ export function transformParticipational(
   const uri = getURI({ element: relation, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subPropertyOf'),
-      namedNode('gufo:isEventProperPartOf'),
-    ),
+    quad(namedNode(uri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:isEventProperPartOf')),
   ];
 }
 
@@ -235,40 +131,18 @@ export function transformSubCollectionOf(
   const uri = getURI({ element: relation, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subPropertyOf'),
-      namedNode('gufo:isSubCollectionOf'),
-    ),
+    quad(namedNode(uri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:isSubCollectionOf')),
   ];
 }
 
-export function transformSubQuantityOf(
-  relation: IRelation,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformSubQuantityOf(relation: IRelation, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: relation, options });
 
-  return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subPropertyOf'),
-      namedNode('gufo:isSubQuantityOf'),
-    ),
-  ];
+  return [quad(namedNode(uri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:isSubQuantityOf'))];
 }
 
-export function transformTermination(
-  relation: IRelation,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformTermination(relation: IRelation, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: relation, options });
 
-  return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subPropertyOf'),
-      namedNode('gufo:wasTerminatedIn'),
-    ),
-  ];
+  return [quad(namedNode(uri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:wasTerminatedIn'))];
 }

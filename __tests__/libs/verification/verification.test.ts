@@ -1,10 +1,7 @@
 import { ModelManager } from '@libs/model';
 import { minimalConsistency } from '@test-models/verification';
 import { OntoUML2Verification } from '@libs/verification';
-import {
-  VerificationIssue,
-  VerificationIssueCode,
-} from '@libs/verification/issues';
+import { VerificationIssue, VerificationIssueCode } from '@libs/verification/issues';
 
 describe('Model deserializing', () => {
   const inputModel = minimalConsistency;
@@ -27,8 +24,7 @@ describe('Model deserializing', () => {
       (issue: VerificationIssue) => issue.source.name === 'Person',
     );
     const diseaseIssues = issues.filter(
-      (issue: VerificationIssue) =>
-        issue.source.name === 'Disease Severity Level',
+      (issue: VerificationIssue) => issue.source.name === 'Disease Severity Level',
     );
 
     expect(personIssues.length === 0).toBeTruthy();
@@ -36,9 +32,7 @@ describe('Model deserializing', () => {
   });
 
   it('Check unique valid stereotype', () => {
-    const agentIssues = issues.filter(
-      (issue: VerificationIssue) => issue.source.name === 'Agent',
-    );
+    const agentIssues = issues.filter((issue: VerificationIssue) => issue.source.name === 'Agent');
     const contractIssues = issues.filter(
       (issue: VerificationIssue) => issue.source.name === 'Contract',
     );
@@ -64,16 +58,14 @@ describe('Model deserializing', () => {
       enumerationIssues.length === 1 &&
         enumerationIssues.filter(
           (issue: VerificationIssue) =>
-            issue.code ===
-            VerificationIssueCode.CLASS_INVALID_ONTOUML_STEREOTYPE,
+            issue.code === VerificationIssueCode.CLASS_INVALID_ONTOUML_STEREOTYPE,
         ),
     ).toBeTruthy();
   });
 
   it('Check enumeration and classes with either literals or properties.', () => {
     const bedroomASIssues = issues.filter(
-      (issue: VerificationIssue) =>
-        issue.source.name === 'Bedroom Availability Status',
+      (issue: VerificationIssue) => issue.source.name === 'Bedroom Availability Status',
     );
     // const officeASIssues = issues.filter(
     //   (issue: VerificationIssue) =>
@@ -84,8 +76,7 @@ describe('Model deserializing', () => {
       bedroomASIssues.length === 1 &&
         bedroomASIssues.filter(
           (issue: VerificationIssue) =>
-            issue.code ===
-            VerificationIssueCode.CLASS_ENUMERATION_WITH_PROPERTIES,
+            issue.code === VerificationIssueCode.CLASS_ENUMERATION_WITH_PROPERTIES,
         ),
     ).toBeTruthy();
 
@@ -108,8 +99,7 @@ describe('Model deserializing', () => {
     expect(
       peopleIssues.length === 1 &&
         peopleIssues.filter(
-          (issue: VerificationIssue) =>
-            issue.code === VerificationIssueCode.CLASS_PLURAL_NAME,
+          (issue: VerificationIssue) => issue.code === VerificationIssueCode.CLASS_PLURAL_NAME,
         ),
     ).toBeTruthy();
   });

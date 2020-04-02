@@ -49,10 +49,7 @@ export async function transformDisjointClasses(
   for (let i = 0; i < disjointStereotypes.length; i += 1) {
     const stereotype = disjointStereotypes[i];
     const stereotypeClasses = classes
-      .filter(
-        ({ stereotypes }: IClass) =>
-          stereotypes && stereotypes[0] === stereotype,
-      )
+      .filter(({ stereotypes }: IClass) => stereotypes && stereotypes[0] === stereotype)
       .map((classElement: IClass) => {
         const uri = getURI({ element: classElement, options });
 
@@ -62,10 +59,7 @@ export async function transformDisjointClasses(
     // check if has at least 2 classes to avoid insconsistence
     if (stereotypeClasses.length > 1) {
       await writer.addQuad(
-        writer.blank(
-          namedNode('rdf:type'),
-          namedNode('owl:AllDisjointClasses'),
-        ),
+        writer.blank(namedNode('rdf:type'), namedNode('owl:AllDisjointClasses')),
         namedNode('owl:members'),
         writer.list(stereotypeClasses),
       );
@@ -114,21 +108,15 @@ export async function transformClassesByStereotype(
     const stereotype = stereotypes[0];
     const parents = classElement.getParents();
     const hasStereotypeFunction =
-      stereotype &&
-      Object.keys(transformStereotypeFunction).includes(stereotype);
+      stereotype && Object.keys(transformStereotypeFunction).includes(stereotype);
 
     if (hasStereotypeFunction) {
-      const isPrimitiveDatatype =
-        stereotype === ClassStereotype.DATATYPE && !properties;
+      const isPrimitiveDatatype = stereotype === ClassStereotype.DATATYPE && !properties;
 
       if (!isPrimitiveDatatype) {
         await writer.addQuads([
           quad(namedNode(uri), namedNode('rdf:type'), namedNode('owl:Class')),
-          quad(
-            namedNode(uri),
-            namedNode('rdf:type'),
-            namedNode('owl:NamedIndividual'),
-          ),
+          quad(namedNode(uri), namedNode('rdf:type'), namedNode('owl:NamedIndividual')),
           quad(namedNode(uri), namedNode('rdfs:label'), literal(name)),
         ]);
       }
@@ -138,20 +126,12 @@ export async function transformClassesByStereotype(
         for (let i = 0; i < parents.length; i += 1) {
           const parentUri = getURI({ element: parents[i], options });
 
-          await writer.addQuad(
-            namedNode(uri),
-            namedNode('rdfs:subClassOf'),
-            namedNode(parentUri),
-          );
+          await writer.addQuad(namedNode(uri), namedNode('rdfs:subClassOf'), namedNode(parentUri));
         }
       }
 
       // Get quads from class stereotype function
-      const quads = transformStereotypeFunction[stereotype](
-        classElement,
-        options,
-        writer,
-      );
+      const quads = transformStereotypeFunction[stereotype](classElement, options, writer);
 
       await writer.addQuads(quads);
 

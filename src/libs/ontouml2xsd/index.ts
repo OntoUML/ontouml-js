@@ -33,11 +33,10 @@ export class OntoUML2XSD {
     imports: Object[];
     schemaAnnotations: Object;
     rootName: string;
-    rootModelClass: string;
     wrapRootModelClass: string;
     prefix: string;
     customDatatypeMap: Object;
-    message: Object;
+    message: Object[];
   };
 
   constructor(model: ModelManager) {
@@ -74,7 +73,6 @@ export class OntoUML2XSD {
       },
       prefix: 'io31',
       rootName: 'Root',
-      rootModelClass: 'Event Plan',
       wrapRootModelClass: 'sequence',
       customDatatypeMap: {
         int: 'xs:positiveInteger',
@@ -83,23 +81,37 @@ export class OntoUML2XSD {
       },
       message: [
         {
-          id: 'Event Plan',
-          label: 'targetLabel',
+          id: 'u0X6ZeaGAqACBxFU',
+          name: 'Event Plan',
+          label: 'MyEvent',
           properties: {
             name: { label: null, type: null },
-            startDate: { label: 'superName', type: null },
+            startDate: { label: 'MyStartDate', type: null },
             endDate: { label: null, type: 'xs:date' },
-            organizers: { label: null, type: null },
+            organizers: { label: 'OrganizersList', type: null },
           },
         },
         {
-          id: 'Organizer',
+          id: 'kJXWZeaGAqACBxRJ',
+          name: 'Organizer',
           label: null,
           properties: {
             name: { label: null, type: null },
             abstract: { label: null, type: null },
             shortName: { label: null, type: null },
             url: { label: null, type: 'xs:anyURI' },
+            multimediaDescriptions: { label: null, type: null },
+          },
+        },
+        {
+          id: 'xh2EFeaGAqACByIW',
+          name: 'Media Object',
+          label: null,
+          properties: {
+            name: { label: null, type: null },
+            contentType: { label: null, type: null },
+            url: { label: null, type: 'xs:anyURI' },
+            license: { label: null, type: 'xs:string' },
           },
         },
       ],
@@ -111,7 +123,9 @@ export class OntoUML2XSD {
     let bodyRootName: string;
     let bodyRootType: string;
 
-    let rootModelClassName = this.getXSDName(this.opts.rootModelClass);
+    let rootModelClass = this.opts.message[0].label || this.opts.message[0].name;
+
+    let rootModelClassName = this.getXSDName(rootModelClass);
     if (!this.opts.wrapRootModelClass) {
       bodyRootName = rootModelClassName;
       bodyRootType = rootModelClassName;
@@ -201,9 +215,9 @@ export class OntoUML2XSD {
 
     const doc = create({ version: '1.0', encoding: 'UTF-8' }, basicStructure);
 
-    const classes = this.model.getAllContentsByType([OntoUMLType.CLASS_TYPE]) as IClass[];
-    classes.forEach(_class => {
-      this.transformClass(_class, doc);
+    // const classes = this.model.getAllContentsByType([OntoUMLType.CLASS_TYPE]) as IClass[];
+    this.opts.message.forEach(element => {
+      this.transformClass(element, doc);
     });
 
     // convert the XML tree to string
@@ -212,20 +226,24 @@ export class OntoUML2XSD {
     return xml;
   }
 
-  transformClass(_class: IClass, builder: XMLBuilder) {
-    if (!_class.name || !_class.stereotypes || _class.stereotypes.length !== 1) return;
+  transformClass(options, builder: XMLBuilder) {
+    let _class = <IClass>this.model.getContentById(options.id);
+
+    if ((!options.label && !_class.name) || !_class.stereotypes || _class.stereotypes.length !== 1)
+      return;
 
     if (this.isPrimitiveDatatype(_class)) return;
 
-    const name = this.getXSDName(_class.name);
+    const name = options.label || this.getXSDName(_class.name);
     const classNode = builder.last().ele('xs:complexType', { name });
 
     this.transformDescription(_class, classNode);
-    this.transformClassProperties(_class, classNode);
+    this.transformClassProperties(options, _class, classNode);
   }
 
-  transformClassProperties(_class: IClass, classNode: XMLBuilder) {
-    // TODO: Create function on ModelManager to get all inherited attributes, relations, and both;
+  // TODO: Create function on ModelManager to get all inherited attributes, relations, and both;
+
+  transformClassProperties(options, _class: IClass, classNode: XMLBuilder) {
     let properties = _class.properties || [];
     _class
       .getRelations()
@@ -240,15 +258,28 @@ export class OntoUML2XSD {
       properties = _.concat(properties, attributes, relationalProperties);
     });
 
-    if (properties.length > 0) {
+    let selectedProperties = Object.keys(options.properties);
+
+    if (selectedProperties.length <= properties.length && properties.length > 0) {
       let sequenceNode = classNode.ele('xs:sequence');
-      properties.forEach(attribute => this.transformProperty(attribute, sequenceNode));
+
+      properties.forEach(prop => {
+        if (selectedProperties.length === 0 || selectedProperties.includes(prop.name))
+          this.transformProperty(options.properties[prop.name], prop, sequenceNode);
+      });
     }
   }
 
-  transformProperty(property: IProperty, builder: XMLBuilder) {
-    const name =
-      this.getXSDName(property.name) || this.getXSDName((<IClassifier>property.propertyType).name);
+  transformProperty(options, property: IProperty, builder: XMLBuilder) {
+    let name: string;
+
+    if (options) name = options.label;
+
+    if (!name)
+      name =
+        this.getXSDName(property.name) ||
+        this.getXSDName((<IClassifier>property.propertyType).name);
+
     const attrNode = builder.ele('xs:element', { name });
 
     this.transformDescription(property, attrNode);
@@ -260,10 +291,14 @@ export class OntoUML2XSD {
     let stereotypes = type.stereotypes;
     if (stereotypes || stereotypes.length === 1) {
       const stereotype = stereotypes[0];
-      let typeName = null;
+      let typeName: string;
 
-      if (stereotype === 'datatype') typeName = this.getXSDDatatype(type.name);
-      else typeName = this.getXSDName(type.name);
+      if (options) typeName = options.type;
+
+      if (!typeName) {
+        if (stereotype === 'datatype') typeName = this.getXSDDatatype(type.name);
+        else typeName = this.getXSDName(type.name);
+      }
 
       if (typeName) attrNode.att('type', typeName);
     }

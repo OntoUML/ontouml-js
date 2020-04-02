@@ -1,8 +1,5 @@
 import { IElement } from '@types';
-import {
-  VerificationAlternative,
-  VerificationAlternativeCode,
-} from './alternatives';
+import { VerificationAlternative, VerificationAlternativeCode } from './alternatives';
 import pluralize from 'pluralize';
 import { ClassStereotype } from '@constants/.';
 
@@ -34,11 +31,7 @@ export class VerificationIssue {
   severity: IssueSeverity;
   alternatives: VerificationAlternative[] | null;
 
-  constructor(
-    code: VerificationIssueCode,
-    source: IElement,
-    context?: IElement[],
-  ) {
+  constructor(code: VerificationIssueCode, source: IElement, context?: IElement[]) {
     this.code = code;
     this.title = null;
     this.description = null;
@@ -74,9 +67,7 @@ export class VerificationIssue {
         this.title = 'Classes should not have plural names.';
         this.description = `The class ${
           source.name
-        } should have its name in the singular form (${pluralize.singular(
-          source.name,
-        )}).`;
+        } should have its name in the singular form (${pluralize.singular(source.name)}).`;
         this.severity = IssueSeverity.WARNING;
         this.alternatives = [
           new VerificationAlternative(
@@ -94,10 +85,7 @@ export class VerificationIssue {
             VerificationAlternativeCode.REPLACE_ONTOUML_CLASS_STEREOTYPE,
             source,
           ),
-          new VerificationAlternative(
-            VerificationAlternativeCode.REMOVE_LITERALS,
-            source,
-          ),
+          new VerificationAlternative(VerificationAlternativeCode.REMOVE_LITERALS, source),
         ];
         break;
       case VerificationIssueCode.CLASS_ENUMERATION_WITH_PROPERTIES:
@@ -109,10 +97,7 @@ export class VerificationIssue {
             VerificationAlternativeCode.REPLACE_ONTOUML_CLASS_STEREOTYPE,
             source,
           ),
-          new VerificationAlternative(
-            VerificationAlternativeCode.REMOVE_PROPERTIES,
-            source,
-          ),
+          new VerificationAlternative(VerificationAlternativeCode.REMOVE_PROPERTIES, source),
         ];
         break;
       default:

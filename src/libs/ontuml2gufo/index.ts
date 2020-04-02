@@ -9,10 +9,7 @@ import {
   IOntoUML2GUFOOptions,
 } from '@types';
 import { OntoUMLType } from '@constants/.';
-import {
-  transformDisjointClasses,
-  transformClassesByStereotype,
-} from './class_functions';
+import { transformDisjointClasses, transformClassesByStereotype } from './class_functions';
 import { transformRelations } from './relation_functions';
 import { getURI, getPrefixes } from './helper_functions';
 import URIManager from './uri_manager';
@@ -39,9 +36,7 @@ export class OntoUML2GUFO {
 
     options.uriManager = new URIManager();
 
-    const packages = this.model.getAllContentsByType([
-      OntoUMLType.PACKAGE_TYPE,
-    ]) as IPackage[];
+    const packages = this.model.getAllContentsByType([OntoUMLType.PACKAGE_TYPE]) as IPackage[];
     const prefixes = await getPrefixes(packages, options);
 
     const writer = new N3.Writer({
@@ -57,11 +52,7 @@ export class OntoUML2GUFO {
     });
 
     writer.addQuads([
-      quad(
-        namedNode(baseIRI),
-        namedNode('rdf:type'),
-        namedNode('owl:Ontology'),
-      ),
+      quad(namedNode(baseIRI), namedNode('rdf:type'), namedNode('owl:Ontology')),
       quad(namedNode(baseIRI), namedNode('owl:imports'), namedNode('gufo:')),
     ]);
 
@@ -85,13 +76,8 @@ export class OntoUML2GUFO {
   /**
    * Main method to transform OntoUML classes in gUFO. The method will be responsable to run different class transformations.
    */
-  async transformOntoUMLClasses2GUFO(
-    writer: N3Writer,
-    options: IOntoUML2GUFOOptions,
-  ) {
-    const classes = this.model.getAllContentsByType([
-      OntoUMLType.CLASS_TYPE,
-    ]) as IClass[];
+  async transformOntoUMLClasses2GUFO(writer: N3Writer, options: IOntoUML2GUFOOptions) {
+    const classes = this.model.getAllContentsByType([OntoUMLType.CLASS_TYPE]) as IClass[];
 
     await Promise.all([
       transformDisjointClasses(writer, classes, options),
@@ -104,13 +90,8 @@ export class OntoUML2GUFO {
   /**
    * Main method to transform OntoUML relations in gUFO. The method will be responsable to run different relations transformations.
    */
-  async transformOntoUMLRelations2GUFO(
-    writer: N3Writer,
-    options: IOntoUML2GUFOOptions,
-  ) {
-    const relations = this.model.getAllContentsByType([
-      OntoUMLType.RELATION_TYPE,
-    ]) as IRelation[];
+  async transformOntoUMLRelations2GUFO(writer: N3Writer, options: IOntoUML2GUFOOptions) {
+    const relations = this.model.getAllContentsByType([OntoUMLType.RELATION_TYPE]) as IRelation[];
 
     await transformRelations(writer, relations, options);
 
@@ -120,10 +101,7 @@ export class OntoUML2GUFO {
   /**
    * The method will be responsable to parse all properties (disjoint, complete) of generalization sets.
    */
-  async transformGeneralizationSets(
-    writer: N3Writer,
-    options: IOntoUML2GUFOOptions,
-  ) {
+  async transformGeneralizationSets(writer: N3Writer, options: IOntoUML2GUFOOptions) {
     const generalizationSets = this.model.getAllContentsByType([
       OntoUMLType.GENERALIZATION_SET_TYPE,
     ]) as IGeneralizationSet[];
@@ -133,9 +111,7 @@ export class OntoUML2GUFO {
 
       if (!generalizationSet.generalizations) continue;
 
-      const classGeneralizations = (<IGeneralization[]>(
-        generalizationSet.generalizations
-      )).filter(
+      const classGeneralizations = (<IGeneralization[]>generalizationSet.generalizations).filter(
         (generalization: IGeneralization) =>
           generalization.specific.type === OntoUMLType.CLASS_TYPE,
       );
@@ -154,10 +130,7 @@ export class OntoUML2GUFO {
         // add disjoint
         if (generalizationSet.isDisjoint) {
           await writer.addQuad(
-            writer.blank(
-              namedNode('rdf:type'),
-              namedNode('owl:AllDisjointClasses'),
-            ),
+            writer.blank(namedNode('rdf:type'), namedNode('owl:AllDisjointClasses')),
             namedNode('owl:members'),
             writer.list(classNodes),
           );

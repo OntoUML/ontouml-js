@@ -17,30 +17,20 @@ describe('Relations', () => {
   });
 
   it('should generate an uri automatically using association end', async () => {
-    expect(alpinebitsResult).toContain(
-      '<:isComponentOfSnowpark> <rdf:type> <owl:ObjectProperty>',
-    );
+    expect(alpinebitsResult).toContain('<:isComponentOfSnowpark> <rdf:type> <owl:ObjectProperty>');
   });
 
   it('should generate an uri automatically using stereotype', async () => {
-    expect(alpinebitsResult).toContain(
-      '<:organizers> <rdf:type> <owl:ObjectProperty>',
-    );
+    expect(alpinebitsResult).toContain('<:organizers> <rdf:type> <owl:ObjectProperty>');
   });
 
   it('should generate a domain and range to relation', async () => {
-    expect(alpinebitsResult).toContain(
-      '<:organizers> <rdfs:domain> <:EventPlan>',
-    );
-    expect(alpinebitsResult).toContain(
-      '<:organizers> <rdfs:range> <:Organizer>',
-    );
+    expect(alpinebitsResult).toContain('<:organizers> <rdfs:domain> <:EventPlan>');
+    expect(alpinebitsResult).toContain('<:organizers> <rdfs:range> <:Organizer>');
   });
 
   it('should connect a relation to gUFO stereotype', async () => {
-    expect(alpinebitsResult).toContain(
-      '<:organizers> <rdfs:subPropertyOf> <gufo:mediates>',
-    );
+    expect(alpinebitsResult).toContain('<:organizers> <rdfs:subPropertyOf> <gufo:mediates>');
     expect(alpinebitsResult).toContain(
       '<:described> <rdfs:subPropertyOf> <gufo:historicallyDependsOn>',
     );

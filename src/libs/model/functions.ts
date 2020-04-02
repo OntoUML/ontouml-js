@@ -12,10 +12,7 @@ import {
 import { OntoUMLType } from '@constants/.';
 import memoizee from 'memoizee';
 
-export function inject(
-  element: IElement,
-  enableMemoization: boolean = true,
-): void {
+export function inject(element: IElement, enableMemoization: boolean = true): void {
   injectFunctions(element, functions._IElement, enableMemoization);
 
   if (element.hasIContainerType()) {
@@ -44,11 +41,7 @@ export function inject(
       injectFunctions(element, functions._IGeneralization, enableMemoization);
       break;
     case OntoUMLType.GENERALIZATION_SET_TYPE:
-      injectFunctions(
-        element,
-        functions._IGeneralizationSet,
-        enableMemoization,
-      );
+      injectFunctions(element, functions._IGeneralizationSet, enableMemoization);
       break;
     case OntoUMLType.PROPERTY_TYPE:
       injectFunctions(element, functions._IProperty, enableMemoization);
@@ -139,25 +132,19 @@ function getRootPackage(): IPackage {
 }
 
 function hasIContainerType(): boolean {
-  return [
-    OntoUMLType.PACKAGE_TYPE,
-    OntoUMLType.CLASS_TYPE,
-    OntoUMLType.RELATION_TYPE,
-  ].includes((this as IElement).type);
+  return [OntoUMLType.PACKAGE_TYPE, OntoUMLType.CLASS_TYPE, OntoUMLType.RELATION_TYPE].includes(
+    (this as IElement).type,
+  );
 }
 
 function hasIDecoratableType(): boolean {
-  return [
-    OntoUMLType.PROPERTY_TYPE,
-    OntoUMLType.CLASS_TYPE,
-    OntoUMLType.RELATION_TYPE,
-  ].includes((this as IElement).type);
+  return [OntoUMLType.PROPERTY_TYPE, OntoUMLType.CLASS_TYPE, OntoUMLType.RELATION_TYPE].includes(
+    (this as IElement).type,
+  );
 }
 
 function hasIClassifierType(): boolean {
-  return [OntoUMLType.CLASS_TYPE, OntoUMLType.RELATION_TYPE].includes(
-    (this as IElement).type,
-  );
+  return [OntoUMLType.CLASS_TYPE, OntoUMLType.RELATION_TYPE].includes((this as IElement).type);
 }
 
 function getAllContents(): IElement[] {
@@ -185,18 +172,13 @@ function getAllContents(): IElement[] {
       ) {
         allElements = [
           ...allElements,
-          ...((content as IClassifier).properties
-            ? (content as IClassifier).properties
-            : []),
+          ...((content as IClassifier).properties ? (content as IClassifier).properties : []),
         ];
       }
     });
 
     return allElements;
-  } else if (
-    this.type === OntoUMLType.CLASS_TYPE ||
-    this.type === OntoUMLType.RELATION_TYPE
-  ) {
+  } else if (this.type === OntoUMLType.CLASS_TYPE || this.type === OntoUMLType.RELATION_TYPE) {
     return (this as IClassifier).properties;
   }
 
@@ -206,9 +188,7 @@ function getAllContents(): IElement[] {
 function getAllContentsByType(types: OntoUMLType[]): IElement[] {
   const self = this as IContainer;
 
-  return self
-    .getAllContents()
-    .filter((element: IElement) => types.includes(element.type));
+  return self.getAllContents().filter((element: IElement) => types.includes(element.type));
 }
 
 function getContentById(id: string): IElement {
@@ -222,8 +202,7 @@ function getParents(): IClassifier[] {
 
   return self._generalOfGeneralizations
     ? self._generalOfGeneralizations.map(
-        (generalization: IGeneralization) =>
-          generalization.general as IClassifier,
+        (generalization: IGeneralization) => generalization.general as IClassifier,
       )
     : [];
 }
@@ -233,8 +212,7 @@ function getChildren(): IClassifier[] {
 
   return self._specificOfGeneralizations
     ? self._specificOfGeneralizations.map(
-        (specialization: IGeneralization) =>
-          specialization.specific as IClassifier,
+        (specialization: IGeneralization) => specialization.specific as IClassifier,
       )
     : [];
 }

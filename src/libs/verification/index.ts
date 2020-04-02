@@ -45,8 +45,7 @@ export class OntoUML2Verification {
           if (
             consistencyIssues &&
             consistencyIssues.find(
-              (issue: VerificationIssue) =>
-                issue.severity === IssueSeverity.ERROR,
+              (issue: VerificationIssue) => issue.severity === IssueSeverity.ERROR,
             )
           ) {
             break;

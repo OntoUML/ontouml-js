@@ -16,17 +16,11 @@ export const ClassVerification = {
 
     if (!_class.stereotypes || _class.stereotypes.length !== 1) {
       consistencyIssues.push(
-        new VerificationIssue(
-          VerificationIssueCode.CLASS_NOT_UNIQUE_STEREOTYPE,
-          _class,
-        ),
+        new VerificationIssue(VerificationIssueCode.CLASS_NOT_UNIQUE_STEREOTYPE, _class),
       );
     } else if (!classStereotypes.includes(_class.stereotypes[0])) {
       consistencyIssues.push(
-        new VerificationIssue(
-          VerificationIssueCode.CLASS_INVALID_ONTOUML_STEREOTYPE,
-          _class,
-        ),
+        new VerificationIssue(VerificationIssueCode.CLASS_INVALID_ONTOUML_STEREOTYPE, _class),
       );
     }
 
@@ -42,10 +36,7 @@ export const ClassVerification = {
       _class.properties
     ) {
       consistencyIssues.push(
-        new VerificationIssue(
-          VerificationIssueCode.CLASS_ENUMERATION_WITH_PROPERTIES,
-          _class,
-        ),
+        new VerificationIssue(VerificationIssueCode.CLASS_ENUMERATION_WITH_PROPERTIES, _class),
       );
     } else if (
       _class.stereotypes &&
@@ -53,10 +44,7 @@ export const ClassVerification = {
       _class.literals
     ) {
       consistencyIssues.push(
-        new VerificationIssue(
-          VerificationIssueCode.CLASS_NON_ENUMERATION_WITH_LITERALS,
-          _class,
-        ),
+        new VerificationIssue(VerificationIssueCode.CLASS_NON_ENUMERATION_WITH_LITERALS, _class),
       );
     }
 
