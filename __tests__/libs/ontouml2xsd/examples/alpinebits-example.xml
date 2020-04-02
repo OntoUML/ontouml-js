@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Message xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./alpinebits.xsd">
+  <Header>
+    <BerichtCode>io31</BerichtCode>
+    <BerichtVersie>2.1</BerichtVersie>
+    <BerichtSubversie>2.1.1</BerichtSubversie>
+    <XsdVersie>1.0</XsdVersie>
+  </Header>
+  <EventPlan>
+    <Capacity>10</Capacity>
+    <EndDate></EndDate>
+  </EventPlan>
+
+</Message>

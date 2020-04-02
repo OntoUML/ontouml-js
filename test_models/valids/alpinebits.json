@@ -18,42 +18,6 @@
     },
     {
       "type": "Class",
-      "id": "NLpkJeaGAqACBwhb",
-      "name": "byte",
-      "description": null,
-      "properties": null,
-      "literals": null,
-      "propertyAssignments": null,
-      "stereotypes": ["datatype"],
-      "isAbstract": false,
-      "isDerived": false
-    },
-    {
-      "type": "Class",
-      "id": "NLpkJeaGAqACBwhc",
-      "name": "char",
-      "description": null,
-      "properties": null,
-      "literals": null,
-      "propertyAssignments": null,
-      "stereotypes": ["datatype"],
-      "isAbstract": false,
-      "isDerived": false
-    },
-    {
-      "type": "Class",
-      "id": "tLpkJeaGAqACBwhd",
-      "name": "double",
-      "description": null,
-      "properties": null,
-      "literals": null,
-      "propertyAssignments": null,
-      "stereotypes": ["datatype"],
-      "isAbstract": false,
-      "isDerived": false
-    },
-    {
-      "type": "Class",
       "id": "dLpkJeaGAqACBwhe",
       "name": "float",
       "description": null,
@@ -68,42 +32,6 @@
       "type": "Class",
       "id": "dLpkJeaGAqACBwhf",
       "name": "int",
-      "description": null,
-      "properties": null,
-      "literals": null,
-      "propertyAssignments": null,
-      "stereotypes": ["datatype"],
-      "isAbstract": false,
-      "isDerived": false
-    },
-    {
-      "type": "Class",
-      "id": "9LpkJeaGAqACBwhg",
-      "name": "long",
-      "description": null,
-      "properties": null,
-      "literals": null,
-      "propertyAssignments": null,
-      "stereotypes": ["datatype"],
-      "isAbstract": false,
-      "isDerived": false
-    },
-    {
-      "type": "Class",
-      "id": "DLpkJeaGAqACBwhh",
-      "name": "short",
-      "description": null,
-      "properties": null,
-      "literals": null,
-      "propertyAssignments": null,
-      "stereotypes": ["datatype"],
-      "isAbstract": false,
-      "isDerived": false
-    },
-    {
-      "type": "Class",
-      "id": "DLpkJeaGAqACBwhi",
-      "name": "void",
       "description": null,
       "properties": null,
       "literals": null,
@@ -311,7 +239,7 @@
                 "type": "Class",
                 "id": "DLpkJeaGAqACBwhj"
               },
-              "cardinality": null,
+              "cardinality": "0..*",
               "isDerived": false,
               "isOrdered": false,
               "isReadOnly": false,
@@ -416,18 +344,18 @@
           "type": "Class",
           "id": "u0X6ZeaGAqACBxFU",
           "name": "Event Plan",
-          "description": null,
+          "description": "This is my description of the event plan class.",
           "properties": [
             {
               "type": "Property",
               "id": "sN8UFeaGAqACByQW",
               "name": "startDate",
-              "description": null,
+              "description": "This is a description of the start date.",
               "propertyType": {
                 "type": "Class",
                 "id": "FhhSeg6AUB20txj9"
               },
-              "cardinality": null,
+              "cardinality": "0..1",
               "isDerived": false,
               "isOrdered": false,
               "isReadOnly": false,
@@ -446,7 +374,7 @@
                 "type": "Class",
                 "id": "dLpkJeaGAqACBwhf"
               },
-              "cardinality": null,
+              "cardinality": "0..1",
               "isDerived": false,
               "isOrdered": false,
               "isReadOnly": false,
@@ -662,7 +590,7 @@
                 "type": "Class",
                 "id": "DLpkJeaGAqACBwhj"
               },
-              "cardinality": null,
+              "cardinality": "3",
               "isDerived": false,
               "isOrdered": false,
               "isReadOnly": false,
@@ -3395,7 +3323,7 @@
           "type": "Property",
           "id": "rI7OZeaGAqACBxaQ",
           "name": "sponsors",
-          "description": null,
+          "description": "This is a description of the association end sponsors.",
           "propertyType": {
             "type": "Class",
             "id": "Hqt2ZeaGAqACBxVQ"
