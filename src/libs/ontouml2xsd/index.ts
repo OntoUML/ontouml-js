@@ -28,15 +28,20 @@ const primitiveDatatypeMap = {
 export class OntoUML2XSD {
   model: IPackage;
   opts: {
-    namespaces: Object;
-    schemaAttributes: Object;
+    namespaces: object;
+    schemaAttributes: object;
     imports: Object[];
-    schemaAnnotations: Object;
+    schemaAnnotations: object;
     rootName: string;
     wrapRootModelClass: string;
     prefix: string;
-    customDatatypeMap: Object;
-    message: Object[];
+    customDatatypeMap: object;
+    message: {
+      id: string;
+      name: string;
+      label: string;
+      properties: object;
+    }[];
   };
 
   constructor(model: ModelManager) {
