@@ -20,9 +20,9 @@ export enum OntoUMLType {
 }
 
 export enum AggregationKind {
-  AGGREGATIONKIND_NONE = 'NONE',
-  AGGREGATIONKIND_SHARED = 'SHARED',
-  AGGREGATIONKIND_COMPOSITE = 'COMPOSITE',
+  NONE = 'NONE',
+  SHARED = 'SHARED',
+  COMPOSITE = 'COMPOSITE',
 }
 
 export enum ClassStereotype {
@@ -65,25 +65,3 @@ export enum RelationStereotype {
   SUBQUANTITY_OF = 'subQuantityOf',
   TERMINATION = 'termination',
 }
-
-export const RelationsInvertedInGUFO = ['instantiation'];
-
-export const RelationStereotypeToGUFOMapping = {
-  characterization: 'inheresIn',
-  comparative: 'comparativeRelationshipType',
-  componentOf: 'isComponentOf',
-  creation: 'wasCreatedIn',
-  derivation: 'isDerivedFrom',
-  externalDependence: 'externallyDependsOn',
-  historicalDependence: 'historicallyDependsOn',
-  instantiation: 'categorizes',
-  manifestation: 'manifestedIn',
-  material: 'materialRelationshipType',
-  mediation: 'mediates',
-  memberOf: 'isCollectionMemberOf',
-  participation: 'participatedIn',
-  participational: 'isEventProperPartOf',
-  subCollectionOf: 'isSubCollectionOf',
-  subQuantityOf: 'isSubQuantityOf',
-  termination: 'wasTerminatedIn',
-};

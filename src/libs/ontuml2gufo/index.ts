@@ -14,7 +14,8 @@ import {
   transformClassesByStereotype,
 } from './class_functions';
 import { transformRelations } from './relation_functions';
-import { getURI } from './helper_functions';
+import { getURI, getPrefixes } from './helper_functions';
+import URIManager from './uri_manager';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -36,10 +37,17 @@ export class OntoUML2GUFO {
   async transformOntoUML2GUFO(options: IOntoUML2GUFOOptions): Promise<string> {
     const { baseIRI, format } = options;
 
+    options.uriManager = new URIManager();
+
+    const packages = this.model.getAllContentsByType([
+      OntoUMLType.PACKAGE_TYPE,
+    ]) as IPackage[];
+    const prefixes = await getPrefixes(packages, options);
+
     const writer = new N3.Writer({
       format: format || 'Turtle',
       prefixes: {
-        ['']: `${baseIRI}#`,
+        ...prefixes,
         gufo: 'http://purl.org/nemo/gufo#',
         rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
@@ -122,6 +130,9 @@ export class OntoUML2GUFO {
 
     for (let i = 0; i < generalizationSets.length; i += 1) {
       const generalizationSet = generalizationSets[i];
+
+      if (!generalizationSet.generalizations) continue;
+
       const classGeneralizations = (<IGeneralization[]>(
         generalizationSet.generalizations
       )).filter(
@@ -133,13 +144,9 @@ export class OntoUML2GUFO {
         (generalization: IGeneralization) => generalization.specific,
       );
       const classNodes = classes.map((classElement: IClass) => {
-        const uri = getURI({
-          id: classElement.id,
-          name: classElement.name,
-          uriFormatBy: options.uriFormatBy,
-        });
+        const uri = getURI({ element: classElement, options });
 
-        return namedNode(`:${uri}`);
+        return namedNode(uri);
       });
 
       // check if has at least 2 classes to avoid insconsistence
@@ -158,14 +165,10 @@ export class OntoUML2GUFO {
 
         // add complete
         if (generalizationSet.isComplete) {
-          const parentUri = getURI({
-            id: parent.id,
-            name: parent.name,
-            uriFormatBy: options.uriFormatBy,
-          });
+          const parentUri = getURI({ element: parent, options });
 
           await writer.addQuad(
-            namedNode(`:${parentUri}`),
+            namedNode(parentUri),
             namedNode('owl:equivalentClass'),
             writer.blank([
               {

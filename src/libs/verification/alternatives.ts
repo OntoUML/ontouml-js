@@ -22,7 +22,8 @@ export class VerificationAlternative {
   description: string;
   elements: string;
 
-  constructor(code: string, source: IElement, context?: IElement[]) {
+  constructor(code: string, source: IElement) {
+    // add context?: IElement[] to params when necessary
     this.code = code;
     this.title = null;
     this.description = null;

@@ -13,7 +13,7 @@ import {
   IClassifier,
   IGeneralizationSet,
 } from '@types';
-import { inject, eject } from '@libs/model/functions';
+import { inject } from '@libs/model/functions';
 import schemas from 'ontouml-schema';
 
 /**
@@ -167,7 +167,10 @@ export class ModelManager {
 
   updateReadOnlyReferencesToIClass(_class: IClass): void {}
 
-  updateReadOnlyReferencesToIRelation(relation: IRelation): void {}
+  updateReadOnlyReferencesToIRelation(relation: IRelation): void {
+    if (relation) {
+    }
+  }
 
   updateReadOnlyReferencesToIGeneralization(
     generalization: IGeneralization,
@@ -188,13 +191,18 @@ export class ModelManager {
   updateReadOnlyReferencesToIGeneralizationSet(
     generalizationSet: IGeneralizationSet,
   ): void {
-    generalizationSet.generalizations.forEach(
-      (generalization: IGeneralization) => {
-        generalization._memberOfGeneralizationSets = !generalization._memberOfGeneralizationSets
-          ? []
-          : [...generalization._memberOfGeneralizationSets, generalizationSet];
-      },
-    );
+    if (generalizationSet.generalizations) {
+      generalizationSet.generalizations.forEach(
+        (generalization: IGeneralization) => {
+          generalization._memberOfGeneralizationSets = !generalization._memberOfGeneralizationSets
+            ? []
+            : [
+                ...generalization._memberOfGeneralizationSets,
+                generalizationSet,
+              ];
+        },
+      );
+    }
 
     if (generalizationSet.categorizer) {
       const categorizer = generalizationSet.categorizer as IClass;
@@ -220,7 +228,10 @@ export class ModelManager {
     // _redefinedPropertyOfProperties
   }
 
-  updateReadOnlyReferencesToILiteral(literal: ILiteral): void {}
+  updateReadOnlyReferencesToILiteral(literal: ILiteral): void {
+    if (literal) {
+    }
+  }
 
   resolveReference(reference: IReference | IReference[]): any {
     if (Array.isArray(reference)) {

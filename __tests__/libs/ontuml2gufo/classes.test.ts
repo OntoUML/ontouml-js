@@ -1,69 +1,17 @@
-import { ModelManager } from '@libs/model';
-import { OntoUML2GUFO } from '@libs/ontuml2gufo';
 import {
-  genericExample1,
   mixinExample1,
   modeExample1,
   modeExample2,
   relatorExample1,
   roleExample1,
   alpinebits,
-  istandard,
 } from '@test-models/valids';
-import { IPackage, IOntoUML2GUFOOptions } from '@types';
-
-import * as fs from 'fs';
-
-async function transformOntoUML2GUFO(
-  model: IPackage,
-  options?: {
-    format?: IOntoUML2GUFOOptions['format'];
-    uriFormatBy?: IOntoUML2GUFOOptions['uriFormatBy'];
-  },
-): Promise<string> {
-  const modelCopy = JSON.parse(JSON.stringify(model));
-  const modelManager = new ModelManager(modelCopy);
-  const service = new OntoUML2GUFO(modelManager);
-
-  return await service.transformOntoUML2GUFO({
-    baseIRI: 'https://example.com',
-    format: 'N-Triple',
-    ...options,
-  });
-}
-
-it('should transform AlpineBits model to gUFO', async () => {
-  const result = await transformOntoUML2GUFO(alpinebits, { format: 'Turtle' });
-  fs.writeFileSync('__tests__/libs/ontuml2gufo/alpinebits.ttl', result);
-  expect(result).toMatchSnapshot();
-});
-
-it('should transform AlpineBits model to gUFO - N-Triple', async () => {
-  const result = await transformOntoUML2GUFO(alpinebits);
-
-  expect(result).toMatchSnapshot();
-});
-
-it('should transform iStandard model to gUFO', async () => {
-  const result = await transformOntoUML2GUFO(istandard, { format: 'Turtle' });
-  fs.writeFileSync('__tests__/libs/ontuml2gufo/istandard.ttl', result);
-  expect(result).toMatchSnapshot();
-});
-
-it('should transform OntoUML generic model to gUFO', async () => {
-  const result = await transformOntoUML2GUFO(genericExample1, {
-    format: 'Turtle',
-  });
-
-  expect(result).toMatchSnapshot();
-});
+import { transformOntoUML2GUFO } from './helpers';
 
 it('should transform OntoUML <<mixin>> class', async () => {
   const result = await transformOntoUML2GUFO(mixinExample1, {
     uriFormatBy: 'id',
   });
-
-  expect(result).toMatchSnapshot();
 
   expect(result).toContain('<:yhVoWg6DAAAARSb> <rdf:type> <owl:Class>');
   expect(result).toContain(
@@ -88,8 +36,6 @@ it('should transform OntoUML <<mode>> class as IntrinsicMode', async () => {
     uriFormatBy: 'id',
   });
 
-  expect(result).toMatchSnapshot();
-
   expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:Class>');
   expect(result).toContain(
     '<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:NamedIndividual>',
@@ -105,8 +51,6 @@ it('should transform OntoUML <<mode>> class as ExtrinsicMode', async () => {
   const result = await transformOntoUML2GUFO(modeExample2, {
     uriFormatBy: 'id',
   });
-
-  expect(result).toMatchSnapshot();
 
   expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:Class>');
   expect(result).toContain(
@@ -124,8 +68,6 @@ it('should transform OntoUML <<relator>> class', async () => {
     uriFormatBy: 'id',
   });
 
-  expect(result).toMatchSnapshot();
-
   expect(result).toContain('<:SzOFmg6DAAAAQuF> <rdf:type> <owl:Class>');
   expect(result).toContain(
     '<:SzOFmg6DAAAAQuF> <rdf:type> <owl:NamedIndividual>',
@@ -141,8 +83,6 @@ it('should transform OntoUML <<role>> class', async () => {
   const result = await transformOntoUML2GUFO(roleExample1, {
     uriFormatBy: 'id',
   });
-
-  expect(result).toMatchSnapshot();
 
   // it's Husband a <<role>>
   expect(result).toContain('<:zT5mg6DAAAAQsY> <rdf:type> <owl:Class>');
@@ -168,4 +108,15 @@ it('should transform OntoUML <<role>> class', async () => {
     '<:IsW5mg6DAAAAQqE> <rdfs:subClassOf> <gufo:FunctionalComplex>',
   );
   expect(result).toContain('<:IsW5mg6DAAAAQqE> <rdfs:label> "Person"');
+});
+
+it('should transform <<enumeration>> class', async () => {
+  const result = await transformOntoUML2GUFO(alpinebits);
+
+  expect(result).toContain(
+    `<:SnowparkDifficulty> <owl:equivalentClass> [
+      <rdf:type> <owl:Class>;
+      <owl:oneOf> (<:S> <:M> <:L> <:XL>)
+    ] .`.replace(/ {4}/gm, ''),
+  );
 });
