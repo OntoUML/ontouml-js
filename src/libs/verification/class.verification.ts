@@ -70,4 +70,8 @@ export const ClassVerification = {
 
     return potentialIssues;
   },
+
+  async checkKindSpecialization(_class: IClass): Promise<VerificationIssue> {
+    return null;
+  },
 };
