@@ -21,7 +21,7 @@ describe('Relations', () => {
   it('should generate an uri automatically using association end', async () => {
     const data = [
       '<:isComponentOfSnowpark> <rdf:type> <owl:ObjectProperty>',
-      '<:features> <owl:inverseOf> <:isComponentOfSnowpark>',
+      '<:snowparkFeature> <owl:inverseOf> <:isComponentOfSnowpark>',
     ];
 
     for (const value of data) {
@@ -31,8 +31,8 @@ describe('Relations', () => {
 
   it('should generate an uri automatically using stereotype', async () => {
     const data = [
-      '<:organizers> <rdf:type> <owl:ObjectProperty>',
-      '<:isMediatedByEventPlan> <owl:inverseOf> <:organizers>',
+      '<:organizer> <rdf:type> <owl:ObjectProperty>',
+      '<:organizedEvent> <owl:inverseOf> <:organizer>',
     ];
 
     for (const value of data) {
@@ -42,10 +42,10 @@ describe('Relations', () => {
 
   it('should generate a domain and range to relation', async () => {
     const data = [
-      '<:organizers> <rdfs:domain> <:EventPlan>',
-      '<:organizers> <rdfs:range> <:Organizer>',
-      '<:isMediatedByEventPlan> <rdfs:domain> <:Organizer>',
-      '<:isMediatedByEventPlan> <rdfs:range> <:EventPlan>',
+      '<:organizer> <rdfs:domain> <:EventPlan>',
+      '<:organizer> <rdfs:range> <:Organizer>',
+      '<:organizedEvent> <rdfs:domain> <:Organizer>',
+      '<:organizedEvent> <rdfs:range> <:EventPlan>',
     ];
 
     for (const value of data) {
@@ -55,10 +55,10 @@ describe('Relations', () => {
 
   it('should connect a relation to gUFO stereotype', async () => {
     const data = [
-      '<:organizers> <rdfs:subPropertyOf> <gufo:mediates>',
+      '<:organizer> <rdfs:subPropertyOf> <gufo:mediates>',
       '<:described> <rdfs:subPropertyOf> <gufo:historicallyDependsOn>',
       '<:isComponentOfSnowpark> <rdfs:subPropertyOf> <gufo:isComponentOf>',
-      '<:inheresInGeospatialFeature> <rdfs:subPropertyOf> <gufo:inheresIn>',
+      '<:geospatialFeature> <rdfs:subPropertyOf> <gufo:inheresIn>',
     ];
 
     for (const value of data) {
@@ -81,7 +81,7 @@ describe('Relations', () => {
     expect(alpinebitsResult).toContain(
       `<:EventPlan> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
-        <owl:onProperty> <:organizers>;
+        <owl:onProperty> <:organizer>;
         <owl:someValuesFrom> <:Organizer>
       ] .`.replace(/ {6}/gm, ''),
     );
@@ -91,7 +91,7 @@ describe('Relations', () => {
     expect(alpinebitsResult).toContain(
       `<:EventPlan> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
-        <owl:onProperty> <:eventseries>;
+        <owl:onProperty> <:eventSeries>;
         <owl:maxQualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:EventSeries>
       ] .`.replace(/ {6}/gm, ''),
