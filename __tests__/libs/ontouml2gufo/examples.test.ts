@@ -30,6 +30,20 @@ describe('Examples', () => {
         },
       },
       {
+        name: 'alpinebitsCustomlabel.ttl',
+        model: alpinebits,
+        options: {
+          format: 'Turtle',
+          baseIRI: 'https://alpinebits.org',
+          createInverses: true,
+          customLabels: {
+            JoK2ZeaGAqACBxS5: 'OWLPerson',
+            Organization: 'OWLOrganization',
+            'Event Plan': 'OWLEventPlan',
+          },
+        },
+      },
+      {
         name: 'alpinebitsHideRelations.ttl',
         model: alpinebits,
         options: {

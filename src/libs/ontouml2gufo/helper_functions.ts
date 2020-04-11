@@ -13,7 +13,7 @@ type GetURI = {
 
 export const getPrefixes = memoizee(
   async (packages: IPackage[], options: IOntoUML2GUFOOptions) => {
-    const { baseIRI, prefixPackages, uriManager } = options;
+    const { baseIRI, prefixPackages, uriManager, customLabels = {} } = options;
     const prefixes = {};
 
     if (prefixPackages) {
@@ -22,8 +22,8 @@ export const getPrefixes = memoizee(
       for (let i = 0; i < packages.length; i += 1) {
         const { id, name } = packages[i];
         const packageUri = uriManager.generateUniqueURI({
-          id: id,
-          name: name,
+          id,
+          name: customLabels[id] || customLabels[name] || name,
         });
         const uri = formatPackageName(packageUri);
 
@@ -38,7 +38,7 @@ export const getPrefixes = memoizee(
 );
 
 export const getURI = memoizee(({ element, options }: GetURI): string => {
-  const { uriManager, prefixPackages } = options;
+  const { uriManager, prefixPackages, customLabels = {} } = options;
   const uriFormatBy = options ? options.uriFormatBy || 'name' : 'name';
   const { id, name, propertyAssignments } = element;
   const isRelation = element.type === OntoUMLType.RELATION_TYPE;
@@ -111,10 +111,10 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
 
   const elementUri = uriManager.generateUniqueURI({
     id: formattedId,
-    name: formattedName,
+    name: customLabels[id] || customLabels[name] || formattedName,
   });
 
-  const uri =
+  let uri =
     uriFormatBy === 'id'
       ? formattedId || elementUri
       : elementUri || formattedId;
@@ -131,7 +131,10 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
       const isRoot = root && root.id === packageEl.id;
       const packageUri = uriManager.generateUniqueURI({
         id: packageEl.id,
-        name: packageEl.name,
+        name:
+          customLabels[packageEl.id] ||
+          customLabels[packageEl.name] ||
+          packageEl.name,
       });
 
       const formattedPackageUri = formatPackageName(packageUri);

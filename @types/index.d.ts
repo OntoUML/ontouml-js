@@ -331,6 +331,9 @@ interface IOntoUMLError {
 interface IOntoUML2GUFOOptions {
   baseIRI: string;
   createInverses?: boolean;
+  customLabels?: {
+    [key: string]: string;
+  };
   format?: string;
   hideObjectPropertyCreation?: boolean;
   prefixPackages?: boolean;
