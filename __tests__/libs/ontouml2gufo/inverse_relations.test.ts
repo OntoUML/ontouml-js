@@ -1,11 +1,11 @@
-import { alpinebits } from '@test-models/valids';
+import { alpinebits as alpinebitsModel } from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 
 describe('InverseRelations', () => {
-  let alpinebitsResult;
+  let alpinebits;
 
   beforeAll(async () => {
-    alpinebitsResult = await transformOntoUML2GUFO(alpinebits, {
+    alpinebits = await transformOntoUML2GUFO(alpinebitsModel, {
       createInverses: true,
     });
   });
@@ -17,7 +17,7 @@ describe('InverseRelations', () => {
     ];
 
     for (const value of data) {
-      expect(alpinebitsResult).toContain(value);
+      expect(alpinebits).toContain(value);
     }
   });
 
@@ -28,7 +28,7 @@ describe('InverseRelations', () => {
     ];
 
     for (const value of data) {
-      expect(alpinebitsResult).toContain(value);
+      expect(alpinebits).toContain(value);
     }
   });
 
@@ -41,7 +41,7 @@ describe('InverseRelations', () => {
     ];
 
     for (const value of data) {
-      expect(alpinebitsResult).toContain(value);
+      expect(alpinebits).toContain(value);
     }
   });
 });
