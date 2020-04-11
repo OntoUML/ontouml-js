@@ -8,9 +8,7 @@ describe('Relations', () => {
   let partWholeHideRelationResult;
 
   beforeAll(async () => {
-    alpinebitsResult = await transformOntoUML2GUFO(alpinebits, {
-      createInverses: true,
-    });
+    alpinebitsResult = await transformOntoUML2GUFO(alpinebits);
     derivationResult = await transformOntoUML2GUFO(derivation);
     partWholeResult = await transformOntoUML2GUFO(partWhole);
     partWholeHideRelationResult = await transformOntoUML2GUFO(partWhole, {
@@ -19,10 +17,7 @@ describe('Relations', () => {
   });
 
   it('should generate an uri automatically using association end', async () => {
-    const data = [
-      '<:isComponentOfSnowpark> <rdf:type> <owl:ObjectProperty>',
-      '<:features> <owl:inverseOf> <:isComponentOfSnowpark>',
-    ];
+    const data = ['<:isComponentOfSnowpark> <rdf:type> <owl:ObjectProperty>'];
 
     for (const value of data) {
       expect(alpinebitsResult).toContain(value);
@@ -30,10 +25,7 @@ describe('Relations', () => {
   });
 
   it('should generate an uri automatically using stereotype', async () => {
-    const data = [
-      '<:organizers> <rdf:type> <owl:ObjectProperty>',
-      '<:isMediatedByEventPlan> <owl:inverseOf> <:organizers>',
-    ];
+    const data = ['<:organizers> <rdf:type> <owl:ObjectProperty>'];
 
     for (const value of data) {
       expect(alpinebitsResult).toContain(value);
@@ -44,8 +36,6 @@ describe('Relations', () => {
     const data = [
       '<:organizers> <rdfs:domain> <:EventPlan>',
       '<:organizers> <rdfs:range> <:Organizer>',
-      '<:isMediatedByEventPlan> <rdfs:domain> <:Organizer>',
-      '<:isMediatedByEventPlan> <rdfs:range> <:EventPlan>',
     ];
 
     for (const value of data) {
