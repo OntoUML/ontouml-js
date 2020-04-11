@@ -36,6 +36,7 @@ export class OntoUML2XSD {
     wrapRootModelClass: string;
     prefix: string;
     customDatatypeMap: object;
+    language: string;
     message: {
       id: string;
       name: string;
@@ -79,44 +80,18 @@ export class OntoUML2XSD {
       prefix: 'io31',
       rootName: 'Root',
       wrapRootModelClass: 'sequence',
+      language: 'nl',
       customDatatypeMap: {
-        int: 'xs:positiveInteger',
-        'time instant': 'xs:dateTime',
-        'time interval': 'xs:duration',
+        'time instant': 'LDT_Datum'
       },
       message: [
         {
-          id: 'u0X6ZeaGAqACBxFU',
-          name: 'Event Plan',
-          label: 'MyEvent',
+          id: 'KqqJFHaGAqAe8BR_',
+          name: 'LTH Client',
+          label: 'Client',
           properties: {
-            name: { label: null, type: null },
-            startDate: { label: 'MyStartDate', type: null },
-            endDate: { label: null, type: 'xs:date' },
-            organizers: { label: 'OrganizersList', type: null },
-          },
-        },
-        {
-          id: 'kJXWZeaGAqACBxRJ',
-          name: 'Organizer',
-          label: null,
-          properties: {
-            name: { label: null, type: null },
-            abstract: { label: null, type: null },
-            shortName: { label: null, type: null },
-            url: { label: null, type: 'xs:anyURI' },
-            multimediaDescriptions: { label: null, type: null },
-          },
-        },
-        {
-          id: 'xh2EFeaGAqACByIW',
-          name: 'Media Object',
-          label: null,
-          properties: {
-            name: { label: null, type: null },
-            contentType: { label: null, type: null },
-            url: { label: null, type: 'xs:anyURI' },
-            license: { label: null, type: 'xs:string' },
+            'date of birth': { label: 'Geboortedatum', type: 'CDT_Geboortedatum' },
+            'name': { label: null, type: null }
           },
         },
       ],
@@ -294,7 +269,7 @@ export class OntoUML2XSD {
 
     const type = <IClass>propertyType;
     let stereotypes = type.stereotypes;
-    if (stereotypes || stereotypes.length === 1) {
+    if (stereotypes && stereotypes.length === 1) {
       const stereotype = stereotypes[0];
       let typeName: string;
 

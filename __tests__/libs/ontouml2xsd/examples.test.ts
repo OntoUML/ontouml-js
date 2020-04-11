@@ -14,19 +14,59 @@ import { IPackage } from '@types';
 type File = {
   name: string;
   model: IPackage;
+  opts: object;
 };
 
 describe('Examples', () => {
   beforeAll(async () => {
     const files: File[] = [
-      {
-        name: 'alpinebits.xsd',
-        model: alpinebits,
-      },
       // {
-      //   name: 'istandard.xsd',
-      //   model: istandard,
+      //   name: 'alpinebits.xsd',
+      //   model: alpinebits,
+      //   opts: {
+      //     message: [
+      //       {
+      //         id: 'u0X6ZeaGAqACBxFU',
+      //         name: 'Event Plan',
+      //         label: null,
+      //         properties: {
+      //           name: { label: null, type: null },
+      //           startDate: { label: 'SuperStartDate', type: null },
+      //           endDate: { label: null, type: null },
+      //           organizers: { label: 'OrganizersList', type: null },
+      //         },
+      //       },
+      //       {
+      //         id: 'kJXWZeaGAqACBxRJ',
+      //         name: 'Organizer',
+      //         label: null,
+      //         properties: {
+      //           name: { label: null, type: null },
+      //           abstract: { label: null, type: null },
+      //           shortName: { label: null, type: null },
+      //           url: { label: null, type: 'xs:anyURI' },
+      //           multimediaDescriptions: { label: null, type: null },
+      //         },
+      //       },
+      //       {
+      //         id: 'xh2EFeaGAqACByIW',
+      //         name: 'Media Object',
+      //         label: null,
+      //         properties: {
+      //           name: { label: null, type: null },
+      //           contentType: { label: null, type: null },
+      //           url: { label: null, type: 'xs:anyURI' },
+      //           license: { label: null, type: 'xs:string' },
+      //         },
+      //       },
+      //     ]
+      //   }
       // },
+      {
+        name: 'IO31.xsd',
+        model: istandard,
+        opts: {}
+      },
       // {
       //   name: 'person.xsd',
       //   model: person,

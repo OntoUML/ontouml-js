@@ -6,10 +6,15 @@
     <BerichtSubversie>2.1.1</BerichtSubversie>
     <XsdVersie>1.0</XsdVersie>
   </Header>
-  <EventPlan>
-    <Capacity>10</Capacity>
-    <EndDate>2002-05-30T09:30:00</EndDate>
-    <Organizers></Organizers>
-  </EventPlan>
-
+  <EventPlanList>
+    <EventPlan>
+      <EndDate></EndDate>
+      <OrganizersList>
+        <Abstract></Abstract>
+        <Url></Url>
+        <Name></Name>
+      </OrganizersList>
+      <Name></Name>
+    </EventPlan>
+  </EventPlanList>
 </Message>
