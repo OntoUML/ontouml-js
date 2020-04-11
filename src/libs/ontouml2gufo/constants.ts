@@ -61,6 +61,8 @@ export const NormalRelationStereotypeMapping = {
 
 export const IgonoredInverseRelations = ['derivation', 'instantiation'];
 
+export const IgnoredGUFOInverseRelations = ['comparative', 'material'];
+
 export const InverseRelationStereotypeMapping = {
   characterization: 'bears',
   comparative: 'comparativeRelationshipType',
