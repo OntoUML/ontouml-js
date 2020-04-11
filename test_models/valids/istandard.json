@@ -12,9 +12,7 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
+      "stereotypes": ["datatype"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -26,9 +24,7 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
+      "stereotypes": ["datatype"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -40,9 +36,7 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
+      "stereotypes": ["datatype"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -54,9 +48,7 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
+      "stereotypes": ["datatype"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -68,9 +60,7 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
+      "stereotypes": ["datatype"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -82,9 +72,7 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
+      "stereotypes": ["datatype"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -96,9 +84,7 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
+      "stereotypes": ["datatype"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -110,9 +96,7 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
+      "stereotypes": ["datatype"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -124,9 +108,7 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
+      "stereotypes": ["datatype"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -138,9 +120,7 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
+      "stereotypes": ["datatype"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -172,9 +152,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "category"
-              ],
+              "stereotypes": ["category"],
               "isAbstract": true,
               "isDerived": false
             },
@@ -186,9 +164,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "collective"
-              ],
+              "stereotypes": ["collective"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -200,9 +176,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -238,9 +212,7 @@
               "propertyAssignments": {
                 "nl": "Persoon"
               },
-              "stereotypes": [
-                "kind"
-              ],
+              "stereotypes": ["kind"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -252,9 +224,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -268,9 +238,7 @@
               "propertyAssignments": {
                 "nl": "Weduwe/weduwnaar"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -284,9 +252,7 @@
               "propertyAssignments": {
                 "nl": "Onbekend"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -298,9 +264,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "phase"
-              ],
+              "stereotypes": ["phase"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -314,9 +278,7 @@
               "propertyAssignments": {
                 "Tag": "Achtergebleven geregistreerd partner"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -330,9 +292,7 @@
               "propertyAssignments": {
                 "nl": "Gescheiden geregistreerd partner"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -346,9 +306,7 @@
               "propertyAssignments": {
                 "nl": "Geregistreerd partner"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -379,9 +337,7 @@
               "propertyAssignments": {
                 "nl": "Organisatie"
               },
-              "stereotypes": [
-                "kind"
-              ],
+              "stereotypes": ["kind"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -393,9 +349,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "phase"
-              ],
+              "stereotypes": ["phase"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -409,9 +363,7 @@
               "propertyAssignments": {
                 "nl": "Gehuwd"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -425,9 +377,7 @@
               "propertyAssignments": {
                 "nl": "Mannelijk"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -441,9 +391,7 @@
               "propertyAssignments": {
                 "nl": "Gescheiden van geregistreerd partner"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -457,9 +405,7 @@
               "propertyAssignments": {
                 "nl": "Gescheiden"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -504,9 +450,7 @@
               ],
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "quality"
-              ],
+              "stereotypes": ["quality"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -551,9 +495,7 @@
               ],
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "relator"
-              ],
+              "stereotypes": ["relator"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -565,9 +507,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -579,9 +519,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "relator"
-              ],
+              "stereotypes": ["relator"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -596,9 +534,7 @@
                 "nl": "Burgerlijke staat",
                 "datatype": "LDT_BurgerlijkeStaat"
               },
-              "stereotypes": [
-                "type"
-              ],
+              "stereotypes": ["type"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -613,9 +549,7 @@
                 "nl": "Geslacht",
                 "datatype": "LDT_Geslacht"
               },
-              "stereotypes": [
-                "type"
-              ],
+              "stereotypes": ["type"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -671,9 +605,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "relator"
-              ],
+              "stereotypes": ["relator"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -687,9 +619,7 @@
               "propertyAssignments": {
                 "nl": "soort sociale relatie (COD472)"
               },
-              "stereotypes": [
-                "type"
-              ],
+              "stereotypes": ["type"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -766,9 +696,7 @@
               ],
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "datatype"
-              ],
+              "stereotypes": ["datatype"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -806,9 +734,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "relator"
-              ],
+              "stereotypes": ["relator"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -820,9 +746,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -834,9 +758,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": true
             },
@@ -850,9 +772,7 @@
               "propertyAssignments": {
                 "nl": "Huisarts"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -866,9 +786,7 @@
               "propertyAssignments": {
                 "nl": "Huisarts inschrijving"
               },
-              "stereotypes": [
-                "relator"
-              ],
+              "stereotypes": ["relator"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -880,9 +798,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "mode"
-              ],
+              "stereotypes": ["mode"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -894,9 +810,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "kind"
-              ],
+              "stereotypes": ["kind"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -908,9 +822,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -922,9 +834,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "subkind"
-              ],
+              "stereotypes": ["subkind"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -938,9 +848,7 @@
               "propertyAssignments": {
                 "nl": "Zorgkantoor Regionaal"
               },
-              "stereotypes": [
-                "subkind"
-              ],
+              "stereotypes": ["subkind"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -952,9 +860,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -966,9 +872,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "relator"
-              ],
+              "stereotypes": ["relator"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -980,9 +884,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "mode"
-              ],
+              "stereotypes": ["mode"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -994,9 +896,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "type"
-              ],
+              "stereotypes": ["type"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1008,9 +908,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "type"
-              ],
+              "stereotypes": ["type"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1022,9 +920,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "mode"
-              ],
+              "stereotypes": ["mode"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1036,9 +932,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "mode"
-              ],
+              "stereotypes": ["mode"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1050,9 +944,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "type"
-              ],
+              "stereotypes": ["type"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1064,9 +956,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "category"
-              ],
+              "stereotypes": ["category"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1111,9 +1001,7 @@
               ],
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "mode"
-              ],
+              "stereotypes": ["mode"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1158,9 +1046,7 @@
               ],
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "kind"
-              ],
+              "stereotypes": ["kind"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1172,9 +1058,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "relator"
-              ],
+              "stereotypes": ["relator"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1186,9 +1070,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "type"
-              ],
+              "stereotypes": ["type"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1200,9 +1082,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "mode"
-              ],
+              "stereotypes": ["mode"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1231,9 +1111,7 @@
               ],
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "relator"
-              ],
+              "stereotypes": ["relator"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1245,9 +1123,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "relator"
-              ],
+              "stereotypes": ["relator"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1259,9 +1135,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "relator"
-              ],
+              "stereotypes": ["relator"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1306,9 +1180,7 @@
               ],
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "kind"
-              ],
+              "stereotypes": ["kind"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1320,9 +1192,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "subkind"
-              ],
+              "stereotypes": ["subkind"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1334,9 +1204,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "subkind"
-              ],
+              "stereotypes": ["subkind"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1348,9 +1216,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "kind"
-              ],
+              "stereotypes": ["kind"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1362,9 +1228,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "relator"
-              ],
+              "stereotypes": ["relator"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1376,9 +1240,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "subkind"
-              ],
+              "stereotypes": ["subkind"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1390,9 +1252,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "subkind"
-              ],
+              "stereotypes": ["subkind"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1404,9 +1264,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1418,9 +1276,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1432,9 +1288,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1465,9 +1319,7 @@
               "propertyAssignments": {
                 "nl": "Bsn houder"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1479,9 +1331,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1495,9 +1345,7 @@
               "propertyAssignments": {
                 "nl": "Gemeentelijke basisregistratie"
               },
-              "stereotypes": [
-                "relator"
-              ],
+              "stereotypes": ["relator"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1509,9 +1357,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "roleMixin"
-              ],
+              "stereotypes": ["roleMixin"],
               "isAbstract": true,
               "isDerived": false
             },
@@ -1523,9 +1369,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "relator"
-              ],
+              "stereotypes": ["relator"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1537,9 +1381,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "type"
-              ],
+              "stereotypes": ["type"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1551,9 +1393,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "type"
-              ],
+              "stereotypes": ["type"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1565,9 +1405,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "phase"
-              ],
+              "stereotypes": ["phase"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1579,9 +1417,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "phase"
-              ],
+              "stereotypes": ["phase"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1593,9 +1429,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "phase"
-              ],
+              "stereotypes": ["phase"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1631,9 +1465,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "phase"
-              ],
+              "stereotypes": ["phase"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1652,9 +1484,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "datatype"
-                  ],
+                  "stereotypes": ["datatype"],
                   "isAbstract": false,
                   "isDerived": false
                 }
@@ -1668,9 +1498,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1682,9 +1510,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "relator"
-              ],
+              "stereotypes": ["relator"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1696,9 +1522,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": true,
               "isDerived": false
             },
@@ -1710,9 +1534,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "type"
-              ],
+              "stereotypes": ["type"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1724,9 +1546,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "mode"
-              ],
+              "stereotypes": ["mode"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1738,9 +1558,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1752,9 +1570,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "relator"
-              ],
+              "stereotypes": ["relator"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1783,9 +1599,7 @@
               ],
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1797,9 +1611,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "event"
-              ],
+              "stereotypes": ["event"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1811,9 +1623,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "quality"
-              ],
+              "stereotypes": ["quality"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1921,9 +1731,7 @@
               ],
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "datatype"
-              ],
+              "stereotypes": ["datatype"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -1995,9 +1803,7 @@
               "propertyAssignments": {
                 "nl": "Verkorte Naam"
               },
-              "stereotypes": [
-                "datatype"
-              ],
+              "stereotypes": ["datatype"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -2011,9 +1817,7 @@
               "propertyAssignments": {
                 "nl": "Woont alleen en zelfstandig (eenpersoonshuishouden)"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": true
             },
@@ -2027,9 +1831,7 @@
               "propertyAssignments": {
                 "nl": "Woont als kind samen met ouder(s) in ouderlijk huis"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": true
             },
@@ -2043,9 +1845,7 @@
               "propertyAssignments": {
                 "nl": "Heeft een zelfstandig huishouden met uitsluitend partner"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": true
             },
@@ -2059,9 +1859,7 @@
               "propertyAssignments": {
                 "nl": "Heeft een huishouden met partner en thuiswonende kinderen"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": true
             },
@@ -2075,9 +1873,7 @@
               "propertyAssignments": {
                 "nl": "Heeft een huishouden van volwassene met 1 of meer kinderen"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": true
             },
@@ -2091,9 +1887,7 @@
               "propertyAssignments": {
                 "nl": "een ander meerpersoonshuishouden"
               },
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": true
             },
@@ -2105,9 +1899,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "phase"
-              ],
+              "stereotypes": ["phase"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -2119,9 +1911,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "phase"
-              ],
+              "stereotypes": ["phase"],
               "isAbstract": false,
               "isDerived": false
             },
@@ -2153,9 +1943,7 @@
               "properties": null,
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "datatype"
-              ],
+              "stereotypes": ["datatype"],
               "isAbstract": false,
               "isDerived": false
             }
@@ -2184,9 +1972,7 @@
                   "propertyAssignments": {
                     "Nl": "negatief besluit"
                   },
-                  "stereotypes": [
-                    "subkind"
-                  ],
+                  "stereotypes": ["subkind"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2200,9 +1986,7 @@
                   "propertyAssignments": {
                     "Nl": "Positief besluit"
                   },
-                  "stereotypes": [
-                    "subkind"
-                  ],
+                  "stereotypes": ["subkind"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2214,9 +1998,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "role"
-                  ],
+                  "stereotypes": ["role"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2269,9 +2051,7 @@
                   "propertyAssignments": {
                     "Nl": "Besluit"
                   },
-                  "stereotypes": [
-                    "relator"
-                  ],
+                  "stereotypes": ["relator"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2283,9 +2063,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "role"
-                  ],
+                  "stereotypes": ["role"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2299,9 +2077,7 @@
                   "propertyAssignments": {
                     "nl": "Wlz aanvraag"
                   },
-                  "stereotypes": [
-                    "relator"
-                  ],
+                  "stereotypes": ["relator"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2313,9 +2089,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "role"
-                  ],
+                  "stereotypes": ["role"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2356,9 +2130,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "phase"
-                  ],
+                  "stereotypes": ["phase"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2370,9 +2142,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "subkind"
-                  ],
+                  "stereotypes": ["subkind"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2384,9 +2154,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "subkind"
-                  ],
+                  "stereotypes": ["subkind"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2398,9 +2166,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "subkind"
-                  ],
+                  "stereotypes": ["subkind"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2412,9 +2178,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "subkind"
-                  ],
+                  "stereotypes": ["subkind"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2428,9 +2192,7 @@
                   "propertyAssignments": {
                     "nl": "Contactpersoon voor de indicatie"
                   },
-                  "stereotypes": [
-                    "role"
-                  ],
+                  "stereotypes": ["role"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2466,9 +2228,7 @@
                   "propertyAssignments": {
                     "nl": "Aanwijzing contactpersoon"
                   },
-                  "stereotypes": [
-                    "subkind"
-                  ],
+                  "stereotypes": ["subkind"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2480,9 +2240,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "phase"
-                  ],
+                  "stereotypes": ["phase"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2514,9 +2272,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "phase"
-                  ],
+                  "stereotypes": ["phase"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2528,9 +2284,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "phase"
-                  ],
+                  "stereotypes": ["phase"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2542,9 +2296,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "phase"
-                  ],
+                  "stereotypes": ["phase"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2584,9 +2336,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "phase"
-                  ],
+                  "stereotypes": ["phase"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2639,9 +2389,7 @@
                   "propertyAssignments": {
                     "nl": "Wlz indicatie"
                   },
-                  "stereotypes": [
-                    "relator"
-                  ],
+                  "stereotypes": ["relator"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2653,9 +2401,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "quality"
-                  ],
+                  "stereotypes": ["quality"],
                   "isAbstract": false,
                   "isDerived": false
                 }
@@ -2678,9 +2424,7 @@
                   "propertyAssignments": {
                     "nl": "Leveringsvorm"
                   },
-                  "stereotypes": [
-                    "type"
-                  ],
+                  "stereotypes": ["type"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2694,9 +2438,7 @@
                   "propertyAssignments": {
                     "nl": "Reden intrekking zorgtoewijzing (COD172)"
                   },
-                  "stereotypes": [
-                    "type"
-                  ],
+                  "stereotypes": ["type"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2725,9 +2467,7 @@
                   ],
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "quality"
-                  ],
+                  "stereotypes": ["quality"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2772,9 +2512,7 @@
                   ],
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "category"
-                  ],
+                  "stereotypes": ["category"],
                   "isAbstract": true,
                   "isDerived": false
                 },
@@ -2786,9 +2524,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "phase"
-                  ],
+                  "stereotypes": ["phase"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2800,9 +2536,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "phase"
-                  ],
+                  "stereotypes": ["phase"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2816,9 +2550,7 @@
                   "propertyAssignments": {
                     "nl": "Voorkeursaanbieder"
                   },
-                  "stereotypes": [
-                    "role"
-                  ],
+                  "stereotypes": ["role"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2856,9 +2588,7 @@
                   "propertyAssignments": {
                     "nl": "Administratieve zorgtoewijzing"
                   },
-                  "stereotypes": [
-                    "subkind"
-                  ],
+                  "stereotypes": ["subkind"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2872,9 +2602,7 @@
                   "propertyAssignments": {
                     "nl": "Overbrugging"
                   },
-                  "stereotypes": [
-                    "subkind"
-                  ],
+                  "stereotypes": ["subkind"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2888,9 +2616,7 @@
                   "propertyAssignments": {
                     "nl": "Reguliere zorgtoewijzing"
                   },
-                  "stereotypes": [
-                    "subkind"
-                  ],
+                  "stereotypes": ["subkind"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2902,9 +2628,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "role"
-                  ],
+                  "stereotypes": ["role"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2918,9 +2642,7 @@
                   "propertyAssignments": {
                     "nl": "afgewezen zorgtoewijzing"
                   },
-                  "stereotypes": [
-                    "phase"
-                  ],
+                  "stereotypes": ["phase"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2934,9 +2656,7 @@
                   "propertyAssignments": {
                     "nl": "ingetrokken zorgtoewijzing"
                   },
-                  "stereotypes": [
-                    "phase"
-                  ],
+                  "stereotypes": ["phase"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2950,9 +2670,7 @@
                   "propertyAssignments": {
                     "nl": "geaccepteerde zorgtoewijzing"
                   },
-                  "stereotypes": [
-                    "phase"
-                  ],
+                  "stereotypes": ["phase"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -2994,9 +2712,7 @@
                   "propertyAssignments": {
                     "nl": "aangevraagde zorgtoewijzing"
                   },
-                  "stereotypes": [
-                    "phase"
-                  ],
+                  "stereotypes": ["phase"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3010,9 +2726,7 @@
                   "propertyAssignments": {
                     "nl": "Zorgaanbieder"
                   },
-                  "stereotypes": [
-                    "role"
-                  ],
+                  "stereotypes": ["role"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3024,9 +2738,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "phase"
-                  ],
+                  "stereotypes": ["phase"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3038,9 +2750,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "phase"
-                  ],
+                  "stereotypes": ["phase"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3101,9 +2811,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "subkind"
-                  ],
+                  "stereotypes": ["subkind"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3117,9 +2825,7 @@
                   "propertyAssignments": {
                     "nl": "Overeenkomst tussen client en zorgaanbieder voor het leveren van zorg bij de client thuis."
                   },
-                  "stereotypes": [
-                    "subkind"
-                  ],
+                  "stereotypes": ["subkind"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3131,9 +2837,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "event"
-                  ],
+                  "stereotypes": ["event"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3162,9 +2866,7 @@
                   ],
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "event"
-                  ],
+                  "stereotypes": ["event"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3196,9 +2898,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "subkind"
-                  ],
+                  "stereotypes": ["subkind"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3210,9 +2910,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "subkind"
-                  ],
+                  "stereotypes": ["subkind"],
                   "isAbstract": false,
                   "isDerived": false
                 }
@@ -3233,9 +2931,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "subkind"
-                  ],
+                  "stereotypes": ["subkind"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3247,9 +2943,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "relator"
-                  ],
+                  "stereotypes": ["relator"],
                   "isAbstract": true,
                   "isDerived": false
                 },
@@ -3261,9 +2955,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "subkind"
-                  ],
+                  "stereotypes": ["subkind"],
                   "isAbstract": false,
                   "isDerived": false
                 }
@@ -3284,9 +2976,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "category"
-                  ],
+                  "stereotypes": ["category"],
                   "isAbstract": true,
                   "isDerived": false
                 },
@@ -3300,9 +2990,7 @@
                   "propertyAssignments": {
                     "nl": "Type financiering (pgb, zorg in natura, of een combinatie van die twee)"
                   },
-                  "stereotypes": [
-                    "type"
-                  ],
+                  "stereotypes": ["type"],
                   "isAbstract": true,
                   "isDerived": false
                 },
@@ -3336,9 +3024,7 @@
                   "propertyAssignments": {
                     "nl": "Persoonsgebonden budget (pgb)"
                   },
-                  "stereotypes": [
-                    "type"
-                  ],
+                  "stereotypes": ["type"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3352,9 +3038,7 @@
                   "propertyAssignments": {
                     "nl": "Zorg in natura (ZIN)"
                   },
-                  "stereotypes": [
-                    "type"
-                  ],
+                  "stereotypes": ["type"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3417,9 +3101,7 @@
                   "propertyAssignments": {
                     "nl": "Instelling voorkeur"
                   },
-                  "stereotypes": [
-                    "role"
-                  ],
+                  "stereotypes": ["role"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3431,9 +3113,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "category"
-                  ],
+                  "stereotypes": ["category"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3447,9 +3127,7 @@
                   "propertyAssignments": {
                     "nl": "Voorkeur voor financieringstype"
                   },
-                  "stereotypes": [
-                    "category"
-                  ],
+                  "stereotypes": ["category"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3463,9 +3141,7 @@
                   "propertyAssignments": {
                     "nl": "Zorg thuis"
                   },
-                  "stereotypes": [
-                    "type"
-                  ],
+                  "stereotypes": ["type"],
                   "isAbstract": true,
                   "isDerived": false
                 },
@@ -3479,9 +3155,7 @@
                   "propertyAssignments": {
                     "nl": "Type plaats waar de zorg geleverd wordt"
                   },
-                  "stereotypes": [
-                    "type"
-                  ],
+                  "stereotypes": ["type"],
                   "isAbstract": true,
                   "isDerived": false
                 },
@@ -3495,9 +3169,7 @@
                   "propertyAssignments": {
                     "nl": "Volledig pakket thuis"
                   },
-                  "stereotypes": [
-                    "type"
-                  ],
+                  "stereotypes": ["type"],
                   "isAbstract": true,
                   "isDerived": false
                 },
@@ -3511,9 +3183,7 @@
                   "propertyAssignments": {
                     "nl": "Modulair pakket thuis"
                   },
-                  "stereotypes": [
-                    "type"
-                  ],
+                  "stereotypes": ["type"],
                   "isAbstract": true,
                   "isDerived": false
                 },
@@ -3527,9 +3197,7 @@
                   "propertyAssignments": {
                     "nl": "Verblijf in een instelling voor Wlz zorg"
                   },
-                  "stereotypes": [
-                    "type"
-                  ],
+                  "stereotypes": ["type"],
                   "isAbstract": true,
                   "isDerived": false
                 },
@@ -3541,9 +3209,7 @@
                   "properties": null,
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "type"
-                  ],
+                  "stereotypes": ["type"],
                   "isAbstract": false,
                   "isDerived": false
                 }
@@ -3566,9 +3232,7 @@
                   "propertyAssignments": {
                     "nl": "Persoon die, op basis van wettelijke gronden, los van eventuele problemen, in aanmerking komt voor zorg vanuit de Wlz"
                   },
-                  "stereotypes": [
-                    "role"
-                  ],
+                  "stereotypes": ["role"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3582,9 +3246,7 @@
                   "propertyAssignments": {
                     "nl": "Verklaring dat een persoon in aanmerking komt voor Wlz zorg"
                   },
-                  "stereotypes": [
-                    "relator"
-                  ],
+                  "stereotypes": ["relator"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3598,9 +3260,7 @@
                   "propertyAssignments": {
                     "Nl": "Wlz Client"
                   },
-                  "stereotypes": [
-                    "role"
-                  ],
+                  "stereotypes": ["role"],
                   "isAbstract": false,
                   "isDerived": false
                 }
@@ -3652,9 +3312,7 @@
                   "propertyAssignments": {
                     "nl": "Toegewezen zorgzwaartepakket"
                   },
-                  "stereotypes": [
-                    "relator"
-                  ],
+                  "stereotypes": ["relator"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3668,9 +3326,7 @@
                   "propertyAssignments": {
                     "nl": "Geleverd zorgzwaartepakket"
                   },
-                  "stereotypes": [
-                    "relator"
-                  ],
+                  "stereotypes": ["relator"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3684,9 +3340,7 @@
                   "propertyAssignments": {
                     "nl": "Voorkeuren client"
                   },
-                  "stereotypes": [
-                    "relator"
-                  ],
+                  "stereotypes": ["relator"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3739,9 +3393,7 @@
                   "propertyAssignments": {
                     "nl": "Zorgtoewijzing voor Wlz-zorg"
                   },
-                  "stereotypes": [
-                    "relator"
-                  ],
+                  "stereotypes": ["relator"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3755,9 +3407,7 @@
                   "propertyAssignments": {
                     "nl": "Zorgprofiel (zoals bedoeld in de Wet langdurige zorg)"
                   },
-                  "stereotypes": [
-                    "type"
-                  ],
+                  "stereotypes": ["type"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3805,9 +3455,7 @@
                     "nl": "Leveringsovereenkomst langdurige zorg",
                     "nl desc": "Overeenkomst tussen zorgaanbieder en client m.b.t. de levering van langdurige zorg."
                   },
-                  "stereotypes": [
-                    "relator"
-                  ],
+                  "stereotypes": ["relator"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3868,9 +3516,7 @@
                   ],
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "type"
-                  ],
+                  "stereotypes": ["type"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3899,9 +3545,7 @@
                   ],
                   "literals": null,
                   "propertyAssignments": null,
-                  "stereotypes": [
-                    "type"
-                  ],
+                  "stereotypes": ["type"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3915,9 +3559,7 @@
                   "propertyAssignments": {
                     "nl": "Zorgzwaartepakket type (ZZPcode van COD163)"
                   },
-                  "stereotypes": [
-                    "type"
-                  ],
+                  "stereotypes": ["type"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3931,9 +3573,7 @@
                   "propertyAssignments": {
                     "nl": "Geindiceerd zorgzwaartepakket"
                   },
-                  "stereotypes": [
-                    "relator"
-                  ],
+                  "stereotypes": ["relator"],
                   "isAbstract": false,
                   "isDerived": false
                 },
@@ -3986,9 +3626,7 @@
                   "propertyAssignments": {
                     "nl": "Zorgzwaartepakket"
                   },
-                  "stereotypes": [
-                    "category"
-                  ],
+                  "stereotypes": ["category"],
                   "isAbstract": true,
                   "isDerived": false
                 },
@@ -4031,9 +3669,7 @@
               ],
               "literals": null,
               "propertyAssignments": null,
-              "stereotypes": [
-                "role"
-              ],
+              "stereotypes": ["role"],
               "isAbstract": false,
               "isDerived": false
             }
@@ -6138,9 +5774,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -6190,9 +5824,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -6242,9 +5874,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -6294,9 +5924,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "memberOf"
-      ],
+      "stereotypes": ["memberOf"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -6346,9 +5974,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -6398,9 +6024,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -6450,9 +6074,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "characterization"
-      ],
+      "stereotypes": ["characterization"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -6502,9 +6124,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -6554,9 +6174,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -6606,9 +6224,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -6658,9 +6274,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -6710,9 +6324,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -6762,9 +6374,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -6814,9 +6424,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -6866,9 +6474,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -6918,9 +6524,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "instantiation"
-      ],
+      "stereotypes": ["instantiation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -7020,9 +6624,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -7072,9 +6674,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "material"
-      ],
+      "stereotypes": ["material"],
       "isAbstract": false,
       "isDerived": true
     },
@@ -7124,9 +6724,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "material"
-      ],
+      "stereotypes": ["material"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -7176,9 +6774,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "material"
-      ],
+      "stereotypes": ["material"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -7228,9 +6824,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "material"
-      ],
+      "stereotypes": ["material"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -7280,9 +6874,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -7332,9 +6924,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -7384,9 +6974,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "material"
-      ],
+      "stereotypes": ["material"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -7436,9 +7024,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "characterization"
-      ],
+      "stereotypes": ["characterization"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -7488,9 +7074,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "externalDependence"
-      ],
+      "stereotypes": ["externalDependence"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -7540,9 +7124,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "characterization"
-      ],
+      "stereotypes": ["characterization"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -7592,9 +7174,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -7644,9 +7224,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -7696,9 +7274,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -7798,9 +7374,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -7900,9 +7474,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8102,9 +7674,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8154,9 +7724,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "material"
-      ],
+      "stereotypes": ["material"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8206,9 +7774,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8258,9 +7824,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8310,9 +7874,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8362,9 +7924,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8414,9 +7974,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8466,9 +8024,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8518,9 +8074,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8570,9 +8124,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8622,9 +8174,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8674,9 +8224,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8726,9 +8274,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8778,9 +8324,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8830,9 +8374,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "instantiation"
-      ],
+      "stereotypes": ["instantiation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8882,9 +8424,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8934,9 +8474,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "instantiation"
-      ],
+      "stereotypes": ["instantiation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -8986,9 +8524,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -9038,9 +8574,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -9090,9 +8624,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "material"
-      ],
+      "stereotypes": ["material"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -9142,9 +8674,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -9194,9 +8724,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -9296,9 +8824,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -9348,9 +8874,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -9400,9 +8924,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -9452,9 +8974,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -9504,9 +9024,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -9556,9 +9074,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -9708,9 +9224,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "participation"
-      ],
+      "stereotypes": ["participation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -9760,9 +9274,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "characterization"
-      ],
+      "stereotypes": ["characterization"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -9812,9 +9324,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "characterization"
-      ],
+      "stereotypes": ["characterization"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -9864,9 +9374,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "material"
-      ],
+      "stereotypes": ["material"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -9966,9 +9474,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -10018,9 +9524,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -10075,9 +9579,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -10132,9 +9634,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -10184,9 +9684,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -10236,9 +9734,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -10293,9 +9789,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -10350,9 +9844,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -10402,9 +9894,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -10454,9 +9944,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -10561,9 +10049,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -10613,9 +10099,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -10665,9 +10149,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "instantiation"
-      ],
+      "stereotypes": ["instantiation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -10967,9 +10449,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -11019,9 +10499,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -11071,9 +10549,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -11123,9 +10599,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -11175,9 +10649,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -11227,9 +10699,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -11279,9 +10749,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -11331,9 +10799,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -11433,9 +10899,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "instantiation"
-      ],
+      "stereotypes": ["instantiation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -11485,9 +10949,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "instantiation"
-      ],
+      "stereotypes": ["instantiation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -11537,9 +10999,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -11589,9 +11049,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -11641,9 +11099,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "characterization"
-      ],
+      "stereotypes": ["characterization"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -11893,9 +11349,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "derivation"
-      ],
+      "stereotypes": ["derivation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -11945,9 +11399,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "derivation"
-      ],
+      "stereotypes": ["derivation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -11997,9 +11449,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "derivation"
-      ],
+      "stereotypes": ["derivation"],
       "isAbstract": false,
       "isDerived": false
     }

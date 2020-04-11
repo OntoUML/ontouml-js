@@ -65,7 +65,7 @@ describe('Examples', () => {
       {
         name: 'IO31.xsd',
         model: istandard,
-        opts: {}
+        opts: {},
       },
       // {
       //   name: 'person.xsd',

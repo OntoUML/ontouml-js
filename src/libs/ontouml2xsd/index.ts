@@ -82,7 +82,7 @@ export class OntoUML2XSD {
       wrapRootModelClass: 'sequence',
       language: 'nl',
       customDatatypeMap: {
-        'time instant': 'LDT_Datum'
+        'time instant': 'LDT_Datum',
       },
       message: [
         {
@@ -91,7 +91,7 @@ export class OntoUML2XSD {
           label: 'Client',
           properties: {
             'date of birth': { label: 'Geboortedatum', type: 'CDT_Geboortedatum' },
-            'name': { label: null, type: null }
+            name: { label: null, type: null },
           },
         },
       ],
