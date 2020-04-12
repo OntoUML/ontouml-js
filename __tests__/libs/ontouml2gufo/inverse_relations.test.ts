@@ -12,7 +12,7 @@ describe('InverseRelations', () => {
 
   it('should generate an uri automatically using association end', async () => {
     const data = [
-      '<:features> <owl:inverseOf> <:isComponentOfSnowpark>',
+      '<:snowparkFeature> <owl:inverseOf> <:isComponentOfSnowpark>',
       '<:isComponentOfSnowpark> <rdf:type> <owl:ObjectProperty>',
     ];
 
@@ -23,8 +23,8 @@ describe('InverseRelations', () => {
 
   it('should generate an uri automatically using stereotype', async () => {
     const data = [
-      '<:isMediatedByEventPlan> <owl:inverseOf> <:organizers>',
-      '<:organizers> <rdf:type> <owl:ObjectProperty>',
+      '<:organizedEvent> <owl:inverseOf> <:organizer>',
+      '<:organizer> <rdf:type> <owl:ObjectProperty>',
     ];
 
     for (const value of data) {
@@ -34,10 +34,10 @@ describe('InverseRelations', () => {
 
   it('should generate a domain and range to inverse relation', async () => {
     const data = [
-      '<:organizers> <rdfs:domain> <:EventPlan>',
-      '<:organizers> <rdfs:range> <:Organizer>',
-      '<:isMediatedByEventPlan> <rdfs:domain> <:Organizer>',
-      '<:isMediatedByEventPlan> <rdfs:range> <:EventPlan>',
+      '<:organizer> <rdfs:domain> <:EventPlan>',
+      '<:organizer> <rdfs:range> <:Organizer>',
+      '<:organizedEvent> <rdfs:domain> <:Organizer>',
+      '<:organizedEvent> <rdfs:range> <:EventPlan>',
     ];
 
     for (const value of data) {
