@@ -7,6 +7,7 @@ import {
   partWhole,
   packages,
   derivation,
+  inverseRelations,
 } from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 import { IPackage, IOntoUML2GUFOOptions } from '@types';
@@ -39,20 +40,29 @@ describe('Examples', () => {
         },
       },
       {
-        name: 'alpinebitsHideRelationsCreateInverses.ttl',
-        model: alpinebits,
-        options: {
-          format: 'Turtle',
-          baseIRI: 'https://alpinebits.org',
-          createObjectProperty: false,
-          createInverses: true,
-        },
-      },
-      {
         name: 'alpinebits.nt',
         model: alpinebits,
         options: {
           baseIRI: 'https://alpinebits.org',
+        },
+      },
+      {
+        name: 'inverseRelations.ttl',
+        model: inverseRelations,
+        options: {
+          format: 'Turtle',
+          baseIRI: 'https://relations.org',
+          createInverses: true,
+        },
+      },
+      {
+        name: 'inverseRelationsHideObjectProperty.ttl',
+        model: inverseRelations,
+        options: {
+          format: 'Turtle',
+          baseIRI: 'https://relations.org',
+          createInverses: true,
+          createObjectProperty: false,
         },
       },
       {
