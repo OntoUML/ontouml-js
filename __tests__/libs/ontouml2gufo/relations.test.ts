@@ -16,7 +16,7 @@ describe('Relations', () => {
     alpinebits = await transformOntoUML2GUFO(alpinebitsModel);
     derivation = await transformOntoUML2GUFO(derivationModel);
     partWhole = await transformOntoUML2GUFO(partWholeModel);
-    partWholeHideRelation = await transformOntoUML2GUFO(partWhole, {
+    partWholeHideRelation = await transformOntoUML2GUFO(partWholeModel, {
       createObjectProperty: false,
     });
     partWholeCustomLabel = await transformOntoUML2GUFO(partWholeModel, {
