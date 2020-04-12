@@ -2,6 +2,7 @@ import { N3Writer } from 'n3';
 import {
   NormalRelationStereotypeMapping,
   InverseRelationStereotypeMapping,
+  IgnoredGUFOInverseRelations,
 } from './constants';
 
 const N3 = require('n3');
@@ -27,8 +28,9 @@ export async function transformGUFOInverses(
   for (const stereotype of Object.keys(InverseRelationStereotypeMapping)) {
     const property = NormalRelationStereotypeMapping[stereotype];
     const inverseProperty = InverseRelationStereotypeMapping[stereotype];
+    const isInverseEnabled = !IgnoredGUFOInverseRelations.includes(stereotype);
 
-    if (inverseProperty) {
+    if (inverseProperty && isInverseEnabled) {
       quads.push(
         quad(
           namedNode(`:${inverseProperty}`),
