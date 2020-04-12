@@ -196,7 +196,7 @@ function generateExtraPropertyAssignments(
   relation: IRelation,
   options: IOntoUML2GUFOOptions,
 ) {
-  const { hideObjectPropertyCreation } = options;
+  const { createObjectProperty } = options;
   const { stereotypes } = relation;
   const stereotype = stereotypes ? stereotypes[0] : null;
 
@@ -245,11 +245,11 @@ function generateExtraPropertyAssignments(
 
   // hideObjectPropertyCreation checking
   const hideNormalBaseCreation =
-    hideObjectPropertyCreation &&
+    !createObjectProperty &&
     (HideObjectPropertyCreationList.includes(stereotype) ||
       isPartWholeRelationWithoutStereotype);
   const hideReadOnlyBaseCreation =
-    hideObjectPropertyCreation &&
+    !createObjectProperty &&
     isReadOnlyRelation &&
     HideReadOnlyObjectPropertyCreationList.includes(stereotype);
   const hideBaseCreation = hideNormalBaseCreation || hideReadOnlyBaseCreation;

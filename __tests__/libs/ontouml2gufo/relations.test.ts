@@ -12,7 +12,7 @@ describe('Relations', () => {
     derivationResult = await transformOntoUML2GUFO(derivation);
     partWholeResult = await transformOntoUML2GUFO(partWhole);
     partWholeHideRelationResult = await transformOntoUML2GUFO(partWhole, {
-      hideObjectPropertyCreation: true,
+      createObjectProperty: false,
     });
   });
 

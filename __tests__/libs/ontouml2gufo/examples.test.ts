@@ -35,7 +35,7 @@ describe('Examples', () => {
         options: {
           format: 'Turtle',
           baseIRI: 'https://alpinebits.org',
-          hideObjectPropertyCreation: true,
+          createObjectProperty: false,
         },
       },
       {
@@ -79,7 +79,7 @@ describe('Examples', () => {
       {
         name: 'partWholeHideRelations.ttl',
         model: partWhole,
-        options: { format: 'Turtle', hideObjectPropertyCreation: true },
+        options: { format: 'Turtle', createObjectProperty: false },
       },
       {
         name: 'partWhole.nt',

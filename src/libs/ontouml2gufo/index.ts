@@ -34,10 +34,23 @@ export class OntoUML2GUFO {
     this.model = model.rootPackage;
   }
 
-  async transformOntoUML2GUFO(options: IOntoUML2GUFOOptions): Promise<string> {
-    const { baseIRI, format } = options;
-
-    options.uriManager = new URIManager();
+  async transformOntoUML2GUFO({
+    baseIRI,
+    createInverses = false,
+    format = 'Turtle',
+    createObjectProperty = true,
+    prefixPackages,
+    uriFormatBy = 'name',
+  }: IOntoUML2GUFOOptions): Promise<string> {
+    const options = {
+      baseIRI,
+      createInverses,
+      format,
+      createObjectProperty,
+      prefixPackages,
+      uriFormatBy,
+      uriManager: new URIManager(),
+    };
 
     const packages = this.model.getAllContentsByType([
       OntoUMLType.PACKAGE_TYPE,
@@ -45,7 +58,7 @@ export class OntoUML2GUFO {
     const prefixes = await getPrefixes(packages, options);
 
     const writer = new N3.Writer({
-      format: format || 'Turtle',
+      format,
       prefixes: {
         ...prefixes,
         gufo: 'http://purl.org/nemo/gufo#',
