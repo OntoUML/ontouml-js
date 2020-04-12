@@ -335,7 +335,7 @@ interface IOntoUML2GUFOOptions {
     [key: string]: string;
   };
   format?: string;
-  hideObjectPropertyCreation?: boolean;
+  createObjectProperty?: boolean;
   prefixPackages?: boolean;
   uriFormatBy?: 'name' | 'id';
   uriManager?: URIManager;

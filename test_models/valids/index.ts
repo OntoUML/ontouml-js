@@ -13,6 +13,7 @@ const partWhole = require('./partWhole.json');
 const annotations = require('./annotations.json');
 const packages = require('./packages.json');
 const derivation = require('./derivation.json');
+const inverseRelations = require('./inverseRelations.json');
 
 export {
   genericExample1,
@@ -30,4 +31,5 @@ export {
   annotations,
   packages,
   derivation,
+  inverseRelations,
 };
