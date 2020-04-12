@@ -590,9 +590,6 @@ function generateRelationBlankQuad({
     isPartWholeRelationBetweenObjects,
     isInverseRelation,
   } = relation.propertyAssignments;
-  const RelationStereotypeMapping = isInverseRelation
-    ? InverseRelationStereotypeMapping
-    : NormalRelationStereotypeMapping;
   const uri = getURI({ element: relation, options });
   // get range
   const classElement = isDomain ? relation.getTarget() : relation.getSource();
@@ -600,18 +597,23 @@ function generateRelationBlankQuad({
   const isRelationDomain = isInvertedRelation ? !isDomain : isDomain;
   let propertyUri = uri;
 
-  // add gufo props when hide object property creation is true
+  // add gufo props when hide object property creation
   if (hideBaseCreation) {
+    const RelationStereotypeMapping = isInverseRelation
+      ? InverseRelationStereotypeMapping
+      : NormalRelationStereotypeMapping;
+    const prefix = isInverseRelation ? '' : 'gufo';
+
     if (stereotype) {
-      propertyUri = `gufo:${RelationStereotypeMapping[stereotype]}`;
+      propertyUri = `${prefix}:${RelationStereotypeMapping[stereotype]}`;
     } else if (isPartWholeRelationBetweenEvents) {
-      propertyUri = `gufo:${RelationStereotypeMapping['isEventProperPartOf']}`;
+      propertyUri = `${prefix}:${RelationStereotypeMapping['isEventProperPartOf']}`;
     } else if (isPartWholeRelationBetweenAspects) {
-      propertyUri = `gufo:${RelationStereotypeMapping['isAspectProperPartOf']}`;
+      propertyUri = `${prefix}:${RelationStereotypeMapping['isAspectProperPartOf']}`;
     } else if (isPartWholeRelationBetweenObjects) {
-      propertyUri = `gufo:${RelationStereotypeMapping['isObjectProperPartOf']}`;
+      propertyUri = `${prefix}:${RelationStereotypeMapping['isObjectProperPartOf']}`;
     } else if (isPartWholeRelationWithoutStereotype) {
-      propertyUri = `gufo:${RelationStereotypeMapping['isProperPartOf']}`;
+      propertyUri = `${prefix}:${RelationStereotypeMapping['isProperPartOf']}`;
     }
   }
 
