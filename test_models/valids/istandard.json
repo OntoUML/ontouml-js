@@ -193,7 +193,7 @@
                   "description": "Transformation note: this time instant should be transformed in a \u0027special way\u0027; part of the date of birth can be unknown, this can now be marked in the messages as an extra attribute, indicating what part of the date is unknown (a (partly) dummy date will be used in the messages).",
                   "propertyType": {
                     "type": "Class",
-                    "id": "KN80_vaFYFAUAhra"
+                    "id": "rWVQow6FYEGQTyAX"
                   },
                   "cardinality": null,
                   "isDerived": false,
@@ -1470,27 +1470,6 @@
               "isDerived": false
             },
             {
-              "type": "Package",
-              "id": "K5s0_vaFYFAUAhrI",
-              "name": "Package",
-              "description": null,
-              "propertyAssignments": null,
-              "contents": [
-                {
-                  "type": "Class",
-                  "id": "KN80_vaFYFAUAhra",
-                  "name": "Time Instant",
-                  "description": null,
-                  "properties": null,
-                  "literals": null,
-                  "propertyAssignments": null,
-                  "stereotypes": ["datatype"],
-                  "isAbstract": false,
-                  "isDerived": false
-                }
-              ]
-            },
-            {
               "type": "Class",
               "id": "zrCs_vaFYFAUAhzW",
               "name": "Healthcare Contact",
@@ -2034,7 +2013,7 @@
                       "description": null,
                       "propertyType": {
                         "type": "Class",
-                        "id": "KN80_vaFYFAUAhra"
+                        "id": "rWVQow6FYEGQTyAX"
                       },
                       "cardinality": null,
                       "isDerived": false,
@@ -2353,9 +2332,9 @@
                       "description": null,
                       "propertyType": {
                         "type": "Class",
-                        "id": "KN80_vaFYFAUAhra"
+                        "id": "rWVQow6FYEGQTyAX"
                       },
-                      "cardinality": null,
+                      "cardinality": "0..1",
                       "isDerived": false,
                       "isOrdered": false,
                       "isReadOnly": false,
@@ -2372,7 +2351,7 @@
                       "description": null,
                       "propertyType": {
                         "type": "Class",
-                        "id": "KN80_vaFYFAUAhra"
+                        "id": "rWVQow6FYEGQTyAX"
                       },
                       "cardinality": null,
                       "isDerived": false,
@@ -3295,7 +3274,7 @@
                       "description": "The time instant that the HSP has been allocated, from an administrative point of view.",
                       "propertyType": {
                         "type": "Class",
-                        "id": "KN80_vaFYFAUAhra"
+                        "id": "rWVQow6FYEGQTyAX"
                       },
                       "cardinality": null,
                       "isDerived": false,
@@ -3357,7 +3336,7 @@
                       "description": null,
                       "propertyType": {
                         "type": "Class",
-                        "id": "KN80_vaFYFAUAhra"
+                        "id": "rWVQow6FYEGQTyAX"
                       },
                       "cardinality": null,
                       "isDerived": false,
@@ -3376,7 +3355,7 @@
                       "description": null,
                       "propertyType": {
                         "type": "Class",
-                        "id": "KN80_vaFYFAUAhra"
+                        "id": "rWVQow6FYEGQTyAX"
                       },
                       "cardinality": null,
                       "isDerived": false,
@@ -3590,7 +3569,7 @@
                       "description": "The time instant in which the client has the right to start receiving the Heatlhcare Service Package, or in which the client has started to receive the HSP. (It can be either the right or the execution of the right)",
                       "propertyType": {
                         "type": "Class",
-                        "id": "KN80_vaFYFAUAhra"
+                        "id": "rWVQow6FYEGQTyAX"
                       },
                       "cardinality": null,
                       "isDerived": false,
@@ -3609,7 +3588,7 @@
                       "description": "The time instant in which the client stops having the right to receive the Heatlhcare Service Package, or in which the client has stopped receiving the HSP. (It can be either the right or the execution of the right)",
                       "propertyType": {
                         "type": "Class",
-                        "id": "KN80_vaFYFAUAhra"
+                        "id": "rWVQow6FYEGQTyAX"
                       },
                       "cardinality": "0..1",
                       "isDerived": false,

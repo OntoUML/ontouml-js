@@ -1,9 +1,41 @@
 import { ModelManager } from '@libs/model';
-import { IClass, IPackage, IRelation, IProperty, IElement, IClassifier } from '@types';
+import { IClass, IRelation, IProperty, IElement, IClassifier } from '@types';
 import { OntoUMLType } from '@constants/.';
-import { create } from 'xmlbuilder2';
+
 import _ from 'lodash';
+import { create } from 'xmlbuilder2';
 import { XMLBuilder } from 'xmlbuilder2/lib/interfaces';
+
+export interface XSDImport {
+  prefix: string;
+  namespace: string;
+  schemaLocation: string;
+}
+
+export interface IOntoUML2XSDOptions {
+  namespace?: string;
+  prefix?: string;
+  customDatatypeMap?: object;
+  language?: string;
+  imports: XSDImport[];
+  message: MessageEntry[];
+}
+
+export interface MessageEntry {
+  id?: string;
+  label?: string;
+  documentation?: string;
+  properties?: EntryProperty[];
+}
+
+export interface EntryProperty {
+  id?: string;
+  label?: string;
+  documentation?: string;
+  type?: string;
+  min?: string;
+  max?: string;
+}
 
 const primitiveDatatypeMap = {
   number: 'xs:decimal',
@@ -21,302 +53,257 @@ const primitiveDatatypeMap = {
 };
 
 /**
- * Utility class to transform OntoUML models into XSD files
+ * A class to transform OntoUML models into XML Schemas (XSD files).
  *
  * @author Tiago Prince Sales
  */
 export class OntoUML2XSD {
-  model: IPackage;
-  opts: {
-    namespaces: object;
-    schemaAttributes: object;
-    imports: Object[];
-    schemaAnnotations: object;
-    rootName: string;
-    wrapRootModelClass: string;
-    prefix: string;
-    customDatatypeMap: object;
-    language: string;
-    message: {
-      id: string;
-      name: string;
-      label: string;
-      properties: object;
-    }[];
-  };
+  model: ModelManager;
+  opts: IOntoUML2XSDOptions;
 
-  constructor(model: ModelManager) {
-    this.model = model.rootPackage;
-
-    // Transformation parameters
-    this.opts = {
-      namespaces: {
-        iwlz: 'http://www.istandaarden.nl/iwlz/2_1/basisschema/schema',
-        io31: 'http://www.istandaarden.nl/iwlz/2_1/io31/schema',
-      },
-      schemaAttributes: {
-        targetNamespace: 'http://www.istandaarden.nl/iwlz/2_1/io31/schema',
-        elementFormDefault: 'qualified',
-      },
-      imports: [
-        {
-          namespace: 'http://www.istandaarden.nl/iwlz/2_1/basisschema/schema',
-          schemaLocation: 'basisschema.xsd',
-        },
-      ],
-      schemaAnnotations: {
-        'xs:appinfo': {
-          // 'iwlz:standaard': 'iwlz',
-          // 'iwlz:bericht': 'io31',
-          // 'iwlz:release': '2.1',
-          // 'iwlz:BerichtXsdVersie': '1.0.1',
-          // 'iwlz:BerichtXsdMinVersie': '1.0.0',
-          // 'iwlz:BerichtXsdMaxVersie': '1.0.1',
-          // 'iwlz:BasisschemaXsdVersie': '1.1.0',
-          // 'iwlz:BasisschemaXsdMinVersie': '1.0.0',
-          // 'iwlz:BasisschemaXsdMaxVersie': '1.1.0',
-        },
-      },
-      prefix: 'io31',
-      rootName: 'Root',
-      wrapRootModelClass: 'sequence',
-      language: 'nl',
-      customDatatypeMap: {
-        'time instant': 'LDT_Datum',
-      },
-      message: [
-        {
-          id: 'KqqJFHaGAqAe8BR_',
-          name: 'LTH Client',
-          label: 'Client',
-          properties: {
-            'date of birth': { label: 'Geboortedatum', type: 'CDT_Geboortedatum' },
-            name: { label: null, type: null },
-          },
-        },
-      ],
-    };
+  constructor(model: ModelManager, opts: IOntoUML2XSDOptions) {
+    this.model = model;
+    this.opts = opts;
   }
 
-  transformOntoUML2XSD(): string {
-    let bodyNode = undefined;
-    let bodyRootName: string;
-    let bodyRootType: string;
+  transform(): string {
+    const doc = create({ version: '1.0', encoding: 'UTF-8' }, this.createBasicStructure());
 
-    let rootModelClass = this.opts.message[0].label || this.opts.message[0].name;
-
-    let rootModelClassName = this.getXSDName(rootModelClass);
-    if (!this.opts.wrapRootModelClass) {
-      bodyRootName = rootModelClassName;
-      bodyRootType = rootModelClassName;
-    } else if (this.opts.wrapRootModelClass === 'sequence') {
-      bodyRootName = rootModelClassName + 'List';
-      bodyRootType = rootModelClassName + 'List';
-
-      bodyNode = {
-        '@name': bodyRootType,
-        'xs:sequence': {
-          'xs:element': [
-            {
-              '@name': rootModelClassName,
-              '@type': rootModelClassName,
-              '@maxOccurs': 'unbounded',
-            },
-          ],
-        },
-      };
-    }
-
-    let basicStructure = {
-      'xs:schema': {
-        '@xmlns:xs': 'http://www.w3.org/2001/XMLSchema',
-        // '@xmlns:iwlz': 'http://www.istandaarden.nl/iwlz/2_1/basisschema/schema',
-        // '@xmlns:io31': 'http://www.istandaarden.nl/iwlz/2_1/io31/schema',
-        // '@targetNamespace': 'http://www.istandaarden.nl/iwlz/2_1/io31/schema',
-        // '@elementFormDefault': 'qualified',
-        // 'xs:import': {
-        //   '@namespace': 'http://www.istandaarden.nl/iwlz/2_1/basisschema/schema',
-        //   '@schemaLocation': 'basisschema.xsd',
-        // },
-        'xs:annotation': {
-          ...this.opts.schemaAnnotations,
-        },
-        'xs:element': {
-          '@name': 'Message',
-          '@type': this.opts.rootName,
-        },
-        'xs:complexType': [
-          {
-            '@name': this.opts.rootName,
-            'xs:annotation': {
-              'xs:documentation':
-                'Message with information about the classified Wlz care (CIZ to care office).',
-            },
-            'xs:sequence': {
-              'xs:element': [
-                {
-                  '@name': 'Header',
-                  '@type': `Header`,
-                },
-                {
-                  '@name': bodyRootName,
-                  '@type': bodyRootType,
-                },
-              ],
-            },
-          },
-          {
-            '@name': 'Header',
-            'xs:annotation': {
-              'xs:documentation':
-                'Message with information about the classified Wlz care (CIZ to care office).',
-            },
-            'xs:sequence': {
-              'xs:element': [
-                {
-                  '@name': 'BerichtCode',
-                },
-                {
-                  '@name': 'BerichtVersie',
-                },
-                {
-                  '@name': 'BerichtSubversie',
-                },
-                {
-                  '@name': 'XsdVersie',
-                },
-              ],
-            },
-          },
-          bodyNode,
-        ],
-      },
-    };
-
-    const doc = create({ version: '1.0', encoding: 'UTF-8' }, basicStructure);
-
-    // const classes = this.model.getAllContentsByType([OntoUMLType.CLASS_TYPE]) as IClass[];
-    this.opts.message.forEach(element => {
-      this.transformClass(element, doc);
+    (this.opts.imports || []).forEach(i => {
+      this.addImport(i, doc);
     });
 
-    // convert the XML tree to string
+    this.opts.message.forEach(e => {
+      this.addEntry(e, doc);
+    });
+
     const xml = doc.end({ prettyPrint: true });
 
     return xml;
   }
 
-  transformClass(options, builder: XMLBuilder) {
-    let _class = <IClass>this.model.getContentById(options.id);
+  createBasicStructure() {
+    const baseNamespace = this.opts.namespace || 'http://example.com/example-schema';
+    const basePrefix = this.opts.prefix || 'example';
 
-    if ((!options.label && !_class.name) || !_class.stereotypes || _class.stereotypes.length !== 1)
-      return;
+    let basicStructure = {
+      'xs:schema': {
+        '@xmlns:xs': 'http://www.w3.org/2001/XMLSchema',
+        '@targetNamespace': baseNamespace,
+        ['@xmlns:' + basePrefix]: baseNamespace,
+      },
+    };
 
-    if (this.isPrimitiveDatatype(_class)) return;
+    (this.opts.imports || []).forEach(
+      i => (basicStructure['xs:schema']['@xmlns:' + i.prefix] = i.namespace),
+    );
 
-    const name = options.label || this.getXSDName(_class.name);
-    const classNode = builder.last().ele('xs:complexType', { name });
-
-    this.transformDescription(_class, classNode);
-    this.transformClassProperties(options, _class, classNode);
+    return basicStructure;
   }
 
-  // TODO: Create function on ModelManager to get all inherited attributes, relations, and both;
-
-  transformClassProperties(options, _class: IClass, classNode: XMLBuilder) {
-    let properties = _class.properties || [];
-    _class
-      .getRelations()
-      .forEach(relation => properties.push(this.getOpposingProperty(_class, relation)));
-
-    _class.getAncestors().forEach(ancestor => {
-      let attributes = ancestor.properties || [];
-      let relationalProperties = ancestor
-        .getRelations()
-        .map(relation => this.getOpposingProperty(<IClass>ancestor, relation));
-
-      properties = _.concat(properties, attributes, relationalProperties);
-    });
-
-    let selectedProperties = Object.keys(options.properties);
-
-    if (selectedProperties.length <= properties.length && properties.length > 0) {
-      let sequenceNode = classNode.ele('xs:sequence');
-
-      properties.forEach(prop => {
-        if (selectedProperties.length === 0 || selectedProperties.includes(prop.name))
-          this.transformProperty(options.properties[prop.name], prop, sequenceNode);
-      });
-    }
+  addImport(i: XSDImport, builder: XMLBuilder) {
+    if (!i.namespace) throw new Error('No namespace defined in import entry');
+    if (!i.schemaLocation) throw new Error('No schemaLocation value defined in import entry');
+    builder.last().ele('xs:import', { namespace: i.namespace, schemaLocation: i.schemaLocation });
   }
 
-  transformProperty(options, property: IProperty, builder: XMLBuilder) {
-    let name: string;
+  addEntry(entry: MessageEntry, builder: XMLBuilder) {
+    let typeName: String;
+    let sourceClass: IClass;
 
-    if (options) name = options.label;
+    // Entry refers to an existing class in the input model
+    if (entry.id) {
+      let sourceElement: IElement = this.model.getElementById(entry.id);
 
-    if (!name)
-      name =
-        this.getXSDName(property.name) ||
-        this.getXSDName((<IClassifier>property.propertyType).name);
+      if (!sourceElement)
+        throw new Error('The element <' + entry.id + '> does not exist in the model!');
 
-    const attrNode = builder.ele('xs:element', { name });
+      if (!entry.label && !sourceElement.name)
+        throw new Error(
+          'The element <' + entry.id + '> has no name and no label has been provided!',
+        );
 
-    this.transformDescription(property, attrNode);
+      if (sourceElement.type !== OntoUMLType.CLASS_TYPE)
+        throw new Error('The element <' + entry.id + '> is not a class!');
 
-    const propertyType = property.propertyType;
-    if (!propertyType || propertyType.type != OntoUMLType.CLASS_TYPE) return;
+      // if (this.isPrimitiveDatatype(sourceClass)) return;
 
-    const type = <IClass>propertyType;
-    let stereotypes = type.stereotypes;
-    if (stereotypes && stereotypes.length === 1) {
-      const stereotype = stereotypes[0];
-      let typeName: string;
-
-      if (options) typeName = options.type;
-
-      if (!typeName) {
-        if (stereotype === 'datatype') typeName = this.getXSDDatatype(type.name);
-        else typeName = this.getXSDName(type.name);
-      }
-
-      if (typeName) attrNode.att('type', typeName);
+      typeName = entry.label || this.getXSDName(sourceElement.name) || '';
+      sourceClass = <IClass>sourceElement;
     }
 
-    if (!property.cardinality) return;
+    // Entry DOES NOT refer to a class in the input model
+    else {
+      if (!entry.label) throw new Error('Custom elements must have a label.');
 
-    // TODO: Create function on ModelManager to update these values
-    let lower: string = '1';
-    let upper: string = '1';
-    try {
-      let cardinality = property.cardinality;
+      typeName = entry.label;
+    }
 
-      // 0..1, 1..*, 0..*, 10..2
-      if (cardinality.includes('..')) {
-        [lower, upper] = cardinality.split('..');
-      } else if (cardinality === '*') {
-        lower = '0';
-        upper = '*';
+    const typeNode = builder.last().ele('xs:complexType', { name: typeName });
+    this.addDocumentation(entry.documentation, typeNode);
+    this.addProperties(entry, sourceClass, typeNode);
+  }
+
+  addProperties(entry: MessageEntry, sourceClass: IClass | undefined, classNode: XMLBuilder) {
+    let pEntries: EntryProperty[] = _.cloneDeep(entry.properties) || [];
+
+    if (sourceClass) {
+      let properties: IProperty[] = this.getAllProperties(sourceClass);
+
+      if (pEntries.length === 0) {
+        pEntries = properties.map(p => ({ id: p.id }));
       } else {
-        lower = upper = cardinality;
+        pEntries = pEntries.filter(entry => {
+          if (entry.id) return properties.find(p => p.id === entry.id);
+          return true;
+        });
       }
-    } catch (e) {
-      lower = '1';
-      upper = '1';
+    } else {
+      pEntries = pEntries.filter(entry => entry.id === undefined);
     }
 
-    if (lower !== '1') attrNode.att('minOccurs', lower);
+    if (pEntries.length === 0) return;
 
-    if (upper === '*') attrNode.att('maxOccurs', 'unbounded');
-    else if (upper !== '1') attrNode.att('maxOccurs', upper);
+    let sequenceNode = classNode.ele('xs:sequence');
+
+    pEntries.forEach(pEntry => {
+      this.addProperty(pEntry, sequenceNode);
+    });
   }
 
-  transformDescription(element: IElement, node: XMLBuilder) {
-    if (element.description)
+  addProperty(pEntry: EntryProperty, classSeqNode: XMLBuilder) {
+    let property: IProperty = this.model.getElementById(pEntry.id);
+    let propertyName: string;
+    let typeName: string;
+
+    // Adds a property that DOES NOT have a counter part in the input model
+    if (!property) {
+      if (!pEntry.label) throw new Error('Custom properties must have a label!');
+      propertyName = pEntry.label;
+
+      if (!pEntry.type)
+        throw new Error('Custom property <' + pEntry.label + '> must defined a type');
+
+      if (!pEntry.type.includes(':') && this.opts.prefix)
+        typeName = this.opts.prefix + ':' + pEntry.type;
+      else typeName = pEntry.type;
+    }
+    // Adds a property that HAS a counter part in the input model
+    else {
+      propertyName = pEntry.label || this.getXSDName(property.name);
+
+      if (!propertyName)
+        throw new Error('No name can be generated for property <' + pEntry.id + '>');
+
+      if (pEntry.type) {
+        typeName = pEntry.type;
+      } else {
+        if (!property.propertyType)
+          throw new Error('No type can be identified for property <' + pEntry.id + '>');
+
+        if (property.propertyType.type != OntoUMLType.CLASS_TYPE)
+          throw new Error('The type of property <' + pEntry.id + '> must be a class');
+
+        const type = <IClass>property.propertyType;
+        let stereotypes = type.stereotypes;
+
+        if (!stereotypes && stereotypes.length !== 1)
+          throw new Error(
+            'The type of property <' + pEntry.id + '> must have exactly one stereotype',
+          );
+
+        const stereotype = stereotypes[0];
+        if (stereotype === 'datatype') {
+          typeName = this.getXSDDatatype(type);
+        } else {
+          typeName = this.getXSDClassName(type);
+        }
+      }
+    }
+
+    let cardinality = this.getXSDCardinalities(pEntry);
+
+    const attrNode = classSeqNode.ele('xs:element', {
+      name: propertyName,
+      type: typeName,
+      ...cardinality,
+    });
+    this.addDocumentation(pEntry.documentation, attrNode);
+  }
+
+  getXSDCardinalities(pEntry: EntryProperty): { minOccurs: string; maxOccurs: string } {
+    let property: IProperty = this.model.getElementById(pEntry.id);
+
+    if (pEntry.min !== undefined) {
+      let minValue: number = parseInt(pEntry.min);
+      if (isNaN(minValue) || minValue < 0)
+        throw new Error(
+          'The minimum cardinality of property <' + pEntry.label ||
+            pEntry.id + '> must be a non-negative integer. Provided: ' + minValue,
+        );
+    }
+
+    if (pEntry.max !== undefined) {
+      let maxValue: number = parseInt(pEntry.max);
+
+      if (pEntry.max !== '*' && (isNaN(maxValue) || maxValue <= 0))
+        throw new Error(
+          'The maximum cardinality of property <' +
+            (pEntry.label || pEntry.id) +
+            "> must be a positive integer (or '*' for unbounded). Provided: max = " +
+            pEntry.max,
+        );
+
+      if (pEntry.min) {
+        let minValue: number = parseInt(pEntry.min);
+        if (maxValue < minValue)
+          throw new Error(
+            'The maximum cardinality of property <' +
+              (pEntry.label || pEntry.id) +
+              '> must be greater or equal to its minimum cardinality. Provided: min = ' +
+              pEntry.min +
+              ', max = ' +
+              maxValue,
+          );
+      }
+    }
+
+    let minOccurs: string = '1';
+    let maxOccurs: string = '1';
+
+    if (pEntry.min) {
+      minOccurs = pEntry.min;
+    } else if (property) {
+      let originalMin = this.getLowerCardinality(property);
+      if (originalMin !== null) minOccurs = originalMin;
+    }
+
+    if (pEntry.max) {
+      maxOccurs = pEntry.max;
+    } else if (property) {
+      let originalMax = this.getUpperCardinality(property);
+      if (originalMax !== null) maxOccurs = originalMax;
+    }
+
+    if (minOccurs === '1') {
+      minOccurs = undefined;
+    }
+
+    if (maxOccurs === '*') {
+      maxOccurs = 'unbounded';
+    } else if (maxOccurs === '1') {
+      maxOccurs = undefined;
+    }
+
+    return { minOccurs, maxOccurs };
+  }
+
+  addDocumentation(value: string | undefined | null, node: XMLBuilder) {
+    if (value)
       node
         .ele('xs:annotation')
         .ele('xs:documentation')
-        .txt(element.description);
+        .txt(value);
   }
 
   isPrimitiveDatatype(datatype: IClass): boolean {
@@ -328,20 +315,182 @@ export class OntoUML2XSD {
     return Object.keys(primitiveDatatypeMap).includes(name);
   }
 
-  getOpposingProperty(_class: IClass, relation: IRelation): IProperty {
-    const source = relation.properties[0];
-    const target = relation.properties[1];
+  getXSDName(originalName: string | null | undefined): string | undefined {
+    if (!originalName) return;
 
-    if (source.propertyType.id === _class.id) return target;
-    else return source;
-  }
-
-  getXSDName(originalName: string): string {
     return _.upperFirst(_.camelCase(originalName));
   }
 
-  getXSDDatatype(name: string): string {
-    let key = name.toLowerCase();
-    return this.opts.customDatatypeMap[key] || primitiveDatatypeMap[key] || this.getXSDName(name);
+  getXSDClassName(c: IClass): string {
+    const entry: MessageEntry = this.opts.message.find(entry => entry.id === c.id);
+    let name = entry && entry.label ? entry.label : this.getXSDName(c.name);
+    return (this.opts.prefix ? this.opts.prefix + ':' : '') + name;
+  }
+
+  getXSDDatatype(c: IClass): string {
+    let key = c.name.toLowerCase();
+    return (
+      this.opts.customDatatypeMap[c.id] ||
+      primitiveDatatypeMap[key] ||
+      (this.opts.prefix ? this.opts.prefix + ':' : '') + this.getXSDName(name)
+    );
+  }
+
+  // TODO: Move the functions below to the ModelManager
+  getOpposingProperty(sourceClass: IClass, relation: IRelation): IProperty {
+    const source = relation.properties[0];
+    const target = relation.properties[1];
+
+    if (source.propertyType.id === sourceClass.id) return target;
+    else return source;
+  }
+
+  getDirectProperties(c: IClass): IProperty[] {
+    let attributes: IProperty[] = c.properties || [];
+    let relationalProperties: IProperty[] = [];
+
+    const relations: IRelation[] = c.getRelations() || [];
+    relations.forEach(r => relationalProperties.push(this.getOpposingProperty(c, r)));
+
+    return _.concat(attributes, relationalProperties);
+  }
+
+  getAllProperties(c: IClass): IProperty[] {
+    let properties: IProperty[] = this.getDirectProperties(c);
+
+    const ancestors: IClassifier[] = c.getAncestors() || [];
+    ancestors.forEach(ancestor => {
+      if (ancestor.type === OntoUMLType.CLASS_TYPE)
+        properties = _.concat(properties, this.getDirectProperties(<IClass>ancestor));
+    });
+
+    return properties;
+  }
+
+  getLowerCardinality(p: IProperty): string | null {
+    return this.getCardinality(p, 'lower');
+  }
+
+  getUpperCardinality(p: IProperty): string | null {
+    return this.getCardinality(p, 'upper');
+  }
+
+  getCardinality(p: IProperty, selection: string): string | null {
+    let value: string = p.cardinality;
+
+    let lower: string;
+    let upper: string;
+
+    try {
+      if (value.includes('..')) {
+        [lower, upper] = value.split('..');
+      } else if (value === '*') {
+        lower = '0';
+        upper = '*';
+      } else {
+        lower = upper = value;
+      }
+
+      if (selection === 'lower') return lower;
+      if (selection === 'upper') return upper;
+    } catch {
+      return null;
+    }
+
+    return null;
   }
 }
+
+// let bodyNode = undefined;
+// let bodyRootName: string;
+// let bodyRootType: string;
+
+// let rootModelClass = this.opts.message[0].label || this.opts.message[0].name;
+
+// let rootModelClassName = this.getXSDName(rootModelClass);
+// if (!this.opts.wrapRootModelClass) {
+//   bodyRootName = rootModelClassName;
+//   bodyRootType = rootModelClassName;
+// } else if (this.opts.wrapRootModelClass === 'sequence') {
+//   bodyRootName = rootModelClassName + 'List';
+//   bodyRootType = rootModelClassName + 'List';
+
+//   bodyNode = {
+//     '@name': bodyRootType,
+//     'xs:sequence': {
+//       'xs:element': [
+//         {
+//           '@name': rootModelClassName,
+//           '@type': rootModelClassName,
+//           '@maxOccurs': 'unbounded',
+//         },
+//       ],
+//     },
+//   };
+// }
+
+// let basicStructure = {
+//   'xs:schema': {
+//     '@xmlns:xs': 'http://www.w3.org/2001/XMLSchema',
+//     // '@xmlns:iwlz': 'http://www.istandaarden.nl/iwlz/2_1/basisschema/schema',
+//     // '@xmlns:io31': 'http://www.istandaarden.nl/iwlz/2_1/io31/schema',
+//     // '@targetNamespace': 'http://www.istandaarden.nl/iwlz/2_1/io31/schema',
+//     // '@elementFormDefault': 'qualified',
+//     // 'xs:import': {
+//     //   '@namespace': 'http://www.istandaarden.nl/iwlz/2_1/basisschema/schema',
+//     //   '@schemaLocation': 'basisschema.xsd',
+//     // },
+//     'xs:annotation': {
+//       ...this.opts.schemaAnnotations,
+//     },
+//     'xs:element': {
+//       '@name': 'Message',
+//       '@type': this.opts.rootName,
+//     },
+//     'xs:complexType': [
+//       {
+//         '@name': this.opts.rootName,
+//         'xs:annotation': {
+//           'xs:documentation':
+//             'Message with information about the classified Wlz care (CIZ to care office).',
+//         },
+//         'xs:sequence': {
+//           'xs:element': [
+//             {
+//               '@name': 'Header',
+//               '@type': `Header`,
+//             },
+//             {
+//               '@name': bodyRootName,
+//               '@type': bodyRootType,
+//             },
+//           ],
+//         },
+//       },
+//       {
+//         '@name': 'Header',
+//         'xs:annotation': {
+//           'xs:documentation':
+//             'Message with information about the classified Wlz care (CIZ to care office).',
+//         },
+//         'xs:sequence': {
+//           'xs:element': [
+//             {
+//               '@name': 'BerichtCode',
+//             },
+//             {
+//               '@name': 'BerichtVersie',
+//             },
+//             {
+//               '@name': 'BerichtSubversie',
+//             },
+//             {
+//               '@name': 'XsdVersie',
+//             },
+//           ],
+//         },
+//       },
+//       bodyNode,
+//     ],
+//   },
+// };
