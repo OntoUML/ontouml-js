@@ -11047,7 +11047,7 @@
             "type": "Class",
             "id": "s2DG9A6AUB1UpDEU"
           },
-          "cardinality": "1",
+          "cardinality": "2..*",
           "isDerived": false,
           "isOrdered": false,
           "isReadOnly": false,
@@ -11141,7 +11141,7 @@
         {
           "type": "Property",
           "id": "BHi29A6AUB1UpDl1",
-          "name": null,
+          "name": "name",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -11166,7 +11166,7 @@
             "type": "Class",
             "id": "MWE29A6AUB1UpDlL"
           },
-          "cardinality": "1",
+          "cardinality": "1..3",
           "isDerived": false,
           "isOrdered": false,
           "isReadOnly": false,

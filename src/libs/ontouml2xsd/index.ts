@@ -6,30 +6,31 @@ import _ from 'lodash';
 import { create } from 'xmlbuilder2';
 import { XMLBuilder } from 'xmlbuilder2/lib/interfaces';
 
-export interface XSDImport {
-  prefix: string;
-  namespace: string;
-  schemaLocation: string;
-}
-
 export interface IOntoUML2XSDOptions {
   namespace?: string;
   prefix?: string;
   customDatatypeMap?: object;
   language?: string;
-  imports: XSDImport[];
+  imports: MessageImport[];
   message: MessageEntry[];
+}
+
+export interface MessageImport {
+  prefix: string;
+  namespace: string;
+  schemaLocation: string;
 }
 
 export interface MessageEntry {
   id?: string;
   label?: string;
   documentation?: string;
-  properties?: EntryProperty[];
+  properties?: PropertyEntry[];
 }
 
-export interface EntryProperty {
+export interface PropertyEntry {
   id?: string;
+  path?: string[];
   label?: string;
   documentation?: string;
   type?: string;
@@ -101,7 +102,7 @@ export class OntoUML2XSD {
     return basicStructure;
   }
 
-  addImport(i: XSDImport, builder: XMLBuilder) {
+  addImport(i: MessageImport, builder: XMLBuilder) {
     if (!i.namespace) throw new Error('No namespace defined in import entry');
     if (!i.schemaLocation) throw new Error('No schemaLocation value defined in import entry');
     builder.last().ele('xs:import', { namespace: i.namespace, schemaLocation: i.schemaLocation });
@@ -145,20 +146,31 @@ export class OntoUML2XSD {
   }
 
   addProperties(entry: MessageEntry, sourceClass: IClass | undefined, classNode: XMLBuilder) {
-    let pEntries: EntryProperty[] = _.cloneDeep(entry.properties) || [];
+    let pEntries: PropertyEntry[] = _.cloneDeep(entry.properties) || [];
 
+    // If a source class has been defined...
     if (sourceClass) {
       let properties: IProperty[] = this.getAllProperties(sourceClass);
 
+      //... but no properties have been listed,
+      // we add all attributes and relations to the message (including inherited ones)
       if (pEntries.length === 0) {
         pEntries = properties.map(p => ({ id: p.id }));
-      } else {
-        pEntries = pEntries.filter(entry => {
-          if (entry.id) return properties.find(p => p.id === entry.id);
+      }
+      //... but some properties have been listed,
+      // we only accept properties accesible from the source class, which include:
+      // direct, inherited, and transitive
+      else {
+        pEntries = pEntries.filter(pEntry => {
+          // TODO: Validate path
+          if (pEntry.id)
+            return properties.find(p => p.id === entry.id || this.isValidPath(entry, pEntry));
           return true;
         });
       }
-    } else {
+    }
+    // If the source class has NOT been defined, only custom properties are allowed
+    else {
       pEntries = pEntries.filter(entry => entry.id === undefined);
     }
 
@@ -171,7 +183,29 @@ export class OntoUML2XSD {
     });
   }
 
-  addProperty(pEntry: EntryProperty, classSeqNode: XMLBuilder) {
+  isValidPath(entry: MessageEntry, pEntry: PropertyEntry): boolean {
+    if (pEntry.path === undefined) return true;
+
+    let i = 0;
+    let node: IClass = this.model.getElementById(entry.id);
+
+    while (i < pEntry.path.length) {
+      // Checks if property exists in the model
+      let nextProp: IProperty = this.model.getElementById(pEntry.path[i]);
+      if (!nextProp) return false;
+
+      // Checks if property is accesible from node (owned or inherited, attribute or association end)
+      let nodeProperties: IProperty[] = this.getAllProperties(node);
+      if (nodeProperties.findIndex(p => p.id === nextProp.id) === -1) return false;
+
+      node = <IClass>nextProp.propertyType;
+      i++;
+    }
+
+    return true;
+  }
+
+  addProperty(pEntry: PropertyEntry, classSeqNode: XMLBuilder) {
     let property: IProperty = this.model.getElementById(pEntry.id);
     let propertyName: string;
     let typeName: string;
@@ -231,7 +265,7 @@ export class OntoUML2XSD {
     this.addDocumentation(pEntry.documentation, attrNode);
   }
 
-  getXSDCardinalities(pEntry: EntryProperty): { minOccurs: string; maxOccurs: string } {
+  getXSDCardinalities(pEntry: PropertyEntry): { minOccurs: string; maxOccurs: string } {
     let property: IProperty = this.model.getElementById(pEntry.id);
 
     if (pEntry.min !== undefined) {
@@ -274,15 +308,15 @@ export class OntoUML2XSD {
     if (pEntry.min) {
       minOccurs = pEntry.min;
     } else if (property) {
-      let originalMin = this.getLowerCardinality(property);
-      if (originalMin !== null) minOccurs = originalMin;
+      if (pEntry.path) minOccurs = this.derivePathLowerCardinality(pEntry) || minOccurs;
+      else minOccurs = this.getLowerCardinality(property) || minOccurs;
     }
 
     if (pEntry.max) {
       maxOccurs = pEntry.max;
     } else if (property) {
-      let originalMax = this.getUpperCardinality(property);
-      if (originalMax !== null) maxOccurs = originalMax;
+      if (pEntry.path) maxOccurs = this.derivePathUpperCardinality(pEntry) || maxOccurs;
+      else maxOccurs = this.getUpperCardinality(property) || maxOccurs;
     }
 
     if (minOccurs === '1') {
@@ -296,6 +330,35 @@ export class OntoUML2XSD {
     }
 
     return { minOccurs, maxOccurs };
+  }
+
+  derivePathLowerCardinality(pEntry: PropertyEntry): string {
+    if (!pEntry.path || pEntry.path.length === 0) return null;
+
+    let cardinality = 1;
+
+    pEntry.path.forEach(propId => {
+      let p: IProperty = this.model.getElementById(propId);
+      cardinality = cardinality * parseInt(this.getLowerCardinality(p));
+    });
+
+    return cardinality.toString();
+  }
+
+  derivePathUpperCardinality(pEntry: PropertyEntry): string {
+    if (!pEntry.path || pEntry.path.length === 0) return null;
+
+    let cardinality = 1;
+
+    pEntry.path.forEach(propId => {
+      let p: IProperty = this.model.getElementById(propId);
+      let upper = this.getUpperCardinality(p);
+      cardinality = cardinality * (upper === '*' ? -1 : parseInt(upper));
+    });
+
+    if (cardinality < 0) return '*';
+
+    return cardinality.toString();
   }
 
   addDocumentation(value: string | undefined | null, node: XMLBuilder) {
@@ -316,7 +379,7 @@ export class OntoUML2XSD {
   }
 
   getXSDName(originalName: string | null | undefined): string | undefined {
-    if (!originalName) return;
+    if (!originalName) return null;
 
     return _.upperFirst(_.camelCase(originalName));
   }
@@ -332,7 +395,7 @@ export class OntoUML2XSD {
     return (
       this.opts.customDatatypeMap[c.id] ||
       primitiveDatatypeMap[key] ||
-      (this.opts.prefix ? this.opts.prefix + ':' : '') + this.getXSDName(name)
+      (this.opts.prefix ? this.opts.prefix + ':' : '') + this.getXSDName(c.name)
     );
   }
 

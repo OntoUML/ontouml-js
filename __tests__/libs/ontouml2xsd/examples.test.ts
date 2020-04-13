@@ -88,10 +88,11 @@ describe('Examples', () => {
                   type: 'iwlz:CDT_Geboortedatum',
                 },
                 {
-                  // id: SET_ME,
+                  id: 'BHi29A6AUB1UpDl3',
+                  path: ['cezG9A6AUB1UpDJF', 'BHi29A6AUB1UpDl3'], // 'self.name.short name'
                   // name: 'name',
                   label: 'Naam',
-                  type: 'iwlz:LDT_Naam',
+                  // type: 'iwlz:LDT_Naam',
                 },
                 {
                   id: 'wO0TFHaGAqAe8BdY',
@@ -105,6 +106,16 @@ describe('Examples', () => {
                   type: 'xs:string',
                   min: '0',
                 },
+              ],
+            },
+            {
+              id: 'MWE29A6AUB1UpDlL',
+              // name: 'Short Name',
+              label: 'ShortName',
+              properties: [
+                { id: 'hrl29A6AUB1UpDmp' },
+                { id: 'qD529A6AUB1UpDmf' },
+                { id: '0NF29A6AUB1UpDmk' },
               ],
             },
             {
