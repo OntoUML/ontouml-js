@@ -161,11 +161,28 @@ export class OntoUML2XSD {
       // we only accept properties accesible from the source class, which include:
       // direct, inherited, and transitive
       else {
-        pEntries = pEntries.filter(pEntry => {
-          // TODO: Validate path
-          if (pEntry.id)
-            return properties.find(p => p.id === entry.id || this.isValidPath(entry, pEntry));
-          return true;
+        pEntries.forEach(pEntry => {
+          // property entry contains a valid path from source class
+          if (pEntry.id && pEntry.path && !this.isValidPath(entry, pEntry)) {
+            throw new Error(
+              'Invalid property path provided for property <' +
+                (pEntry.label || pEntry.id) +
+                '>. Provided: ' +
+                this.pathToString(pEntry.path),
+            );
+          }
+          // property is owned by source class
+          else if (
+            pEntry.id &&
+            !pEntry.path &&
+            properties.findIndex(p => p.id === pEntry.id) === -1
+          ) {
+            throw new Error(
+              'Property must be owned or inherited by source class <' +
+                (pEntry.label || pEntry.id) +
+                '>',
+            );
+          }
         });
       }
     }
@@ -203,6 +220,12 @@ export class OntoUML2XSD {
     }
 
     return true;
+  }
+
+  pathToString(path: string[]): string {
+    let properties = path.map(id => this.model.getElementById(id));
+
+    return '[' + properties.map(p => p.name).join(', ') + ']';
   }
 
   addProperty(pEntry: PropertyEntry, classSeqNode: XMLBuilder) {
