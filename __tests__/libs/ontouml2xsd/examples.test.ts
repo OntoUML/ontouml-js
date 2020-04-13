@@ -90,13 +90,31 @@ describe('Examples', () => {
                 {
                   id: 'BHi29A6AUB1UpDl3',
                   path: ['cezG9A6AUB1UpDJF', 'BHi29A6AUB1UpDl3'], // 'self.name.short name'
-                  // name: 'name',
                   label: 'Naam',
                   // type: 'iwlz:LDT_Naam',
                 },
                 {
+                  id: 'a_XkZnaGAqAeDhA_',
+                  path: ['0Knw43aAUBAysYmO', 'a_XkZnaGAqAeDhA_'], // 'self.registration.legal gender'
+                  label: 'Geslacht',
+                  type: 'iwlz:LDT_Geslacht',
+                },
+                {
+                  id: '2.Uo43aAUBAysYrg',
+                  path: ['0Knw43aAUBAysYmO', '2.Uo43aAUBAysYrg'], // 'self.registration.civil status'
+                  label: 'BurgerlijkeStaat',
+                  type: 'iwlz:LDT_BurgerlijkeStaat',
+                  min: '0',
+                },
+                {
+                  id: '01eUzHaGAqAe8CpW',
+                  // name: 'contact info',
+                  label: 'Contact',
+                  min: '1',
+                },
+                {
                   id: 'wO0TFHaGAqAe8BdY',
-                  // name: 'date of birth',
+                  // name: 'indication',
                   label: 'Indicatie',
                   min: '1',
                   max: '1',
@@ -106,6 +124,16 @@ describe('Examples', () => {
                   type: 'xs:string',
                   min: '0',
                 },
+              ],
+            },
+            {
+              id: 'OAOUzHaGAqAe8Co8',
+              // name: 'Contact Info',
+              label: 'Contact',
+              properties: [
+                { id: 'UH5UzHaGAqAe8CqF', label: 'Telefoon' },
+                { id: 'luFUzHaGAqAe8CqI', label: 'Emailadres' },
+                { id: 'Cwg.ZnaGAqAeDhWP', type: 'iwlz:CDT_Adres' },
               ],
             },
             {
