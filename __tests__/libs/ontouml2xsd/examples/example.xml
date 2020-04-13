@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Message xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./alpinebits.xsd">
-  <Header>
-    <BerichtCode>io31</BerichtCode>
-    <BerichtVersie>2.1</BerichtVersie>
-    <BerichtSubversie>2.1.1</BerichtSubversie>
-    <XsdVersie>1.0</XsdVersie>
-  </Header>
-  <EventPlanList>
-    <EventPlan>
-      <EndDate></EndDate>
-      <OrganizersList>
-        <Abstract></Abstract>
-        <Url></Url>
-        <Name></Name>
-      </OrganizersList>
-      <Name></Name>
-    </EventPlan>
-  </EventPlanList>
-</Message>
+<io31:Bericht xmlns:io31="http://www.istandaarden.nl/iwlz/2_1/io31/schema" xmlns:iwlz="http://www.istandaarden.nl/iwlz/2_1/basisschema/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.istandaarden.nl/iwlz/2_1/io31/schema ./IO31.xsd" >
+  <io31:Header>
+    <io31:BerichtCode>1</io31:BerichtCode>
+    <io31:BerichtVersie>2</io31:BerichtVersie>
+  </io31:Header>
+  <io31:Clienten>
+    <io31:Client>
+      <io31:Bsn>123123123</io31:Bsn>
+      <io31:Geboortedatum>
+        <iwlz:Datum>1990-03-15</iwlz:Datum>
+      </io31:Geboortedatum>
+      <io31:Naam>
+        <io31:Initials>T P S</io31:Initials>
+        <io31:FamilyName>Prince Sales</io31:FamilyName>
+        <io31:FirstName>Tiago</io31:FirstName>
+      </io31:Naam>
+      <io31:Geslacht>Man</io31:Geslacht>
+      <io31:BurgerlijkeStaat>1</io31:BurgerlijkeStaat>
+      <io31:LegalStatus>01</io31:LegalStatus>
+      <io31:Contact></io31:Contact>
+      <io31:Indicatie>
+        <io31:Ingangsdatum>2020-01-01</io31:Ingangsdatum>
+        <io31:Einddatum>2020-01-10</io31:Einddatum>
+      </io31:Indicatie>
+      <io31:Commentaar>This is a comment</io31:Commentaar>
+    </io31:Client>
+  </io31:Clienten>
+</io31:Bericht>

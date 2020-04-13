@@ -88,6 +88,9 @@ export class OntoUML2XSD {
       this.addImport(i, doc);
     });
 
+    let rootType = (this.opts.prefix ? this.opts.prefix + ':' : '') + this.opts.message[0].label;
+    doc.last().ele('xs:element', { name: 'Bericht', type: rootType });
+
     this.opts.message.forEach(entry => {
       if (entry.id === null || entry.id === undefined) this.addCustomEntry(entry, doc);
       else this.addClassEntry(entry, doc);
@@ -107,6 +110,7 @@ export class OntoUML2XSD {
         '@xmlns:xs': 'http://www.w3.org/2001/XMLSchema',
         '@targetNamespace': baseNamespace,
         ['@xmlns:' + basePrefix]: baseNamespace,
+        '@elementFormDefault': 'qualified',
       },
     };
 
