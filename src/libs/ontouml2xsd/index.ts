@@ -27,6 +27,13 @@ export interface MessageEntry {
   documentation?: string;
   properties?: PropertyEntry[];
   literals?: LiteralEntry[];
+  instances?: InstanceEntry[];
+}
+
+export interface InstanceEntry {
+  id?: string;
+  name?: string;
+  documentation?: string;
 }
 
 export interface LiteralEntry {
@@ -154,7 +161,7 @@ export class OntoUML2XSD {
 
     switch (stereotype) {
       case ClassStereotype.TYPE:
-        this.addTypeClassEntry(entry, builder);
+        this.addHouEntry(entry, builder);
         break;
 
       case ClassStereotype.ENUMERATION:
@@ -167,8 +174,45 @@ export class OntoUML2XSD {
     }
   }
 
-  // Adds an entry that refers to a <<type>> class in the input model
-  addTypeClassEntry(entry: MessageEntry, builder: XMLBuilder) {}
+  // Adds an entry that refers to a higher-order universal (<<type>> class) in the input model
+  addHouEntry(entry: MessageEntry, builder: XMLBuilder) {
+    let sourceHou: IClass = this.model.getElementById(entry.id);
+
+    if (!entry.label && !sourceHou.name)
+      throw new Error(
+        'Higher-order type <' + entry.id + '> has no name and no label has been provided!',
+      );
+
+    // if (!sourceHou.literals || sourceHou.literals.length === 0)
+    //   throw new Error(
+    //     'No instance can be identified for higher-order type <' +
+    //       (sourceHou.name || sourceHou.id) +
+    //       '>',
+    //   );
+
+    let enumName = entry.label || this.getXSDName(sourceHou.name) || '';
+    const enumNode = builder.last().ele('xs:simpleType', { name: enumName });
+
+    this.addDocumentation(entry.documentation, enumNode);
+
+    let instanceEntries = entry.instances;
+    // if (!literalEntries) literalEntries = sourceHou.literals.map(l => ({ id: l.id }));
+
+    enumNode.ele('xs:restriction').att('base', 'xs:string');
+
+    let maxSize = 1;
+
+    instanceEntries.forEach(iEntry => {
+      // let literal: ILiteral = this.model.getElementById(iEntry.id);
+      let name = iEntry.name; //|| literal.name;
+      let houNode = enumNode.last().ele('xs:enumeration', { value: name });
+      this.addDocumentation(iEntry.documentation, houNode);
+
+      maxSize = Math.max(maxSize, name.length);
+    });
+
+    enumNode.last().ele('xs:maxLength', { value: maxSize });
+  }
 
   addEnumerationEntry(entry: MessageEntry, builder: XMLBuilder) {
     let sourceEnum: IClass = this.model.getElementById(entry.id);
@@ -176,7 +220,7 @@ export class OntoUML2XSD {
     if (!entry.label && !sourceEnum.name)
       throw new Error('Enumeration <' + entry.id + '> has no name and no label has been provided!');
 
-    if (!sourceEnum.literals && sourceEnum.literals.length === 0)
+    if (!sourceEnum.literals || sourceEnum.literals.length === 0)
       throw new Error('Enumeration <' + entry.id + '> has no literals to be transformed!');
 
     let enumName = entry.label || this.getXSDName(sourceEnum.name) || '';

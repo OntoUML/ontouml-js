@@ -94,7 +94,7 @@ describe('Examples', () => {
                   id: 'a_XkZnaGAqAeDhA_',
                   path: ['0Knw43aAUBAysYmO', 'a_XkZnaGAqAeDhA_'], // 'registration.legal gender'
                   label: 'Geslacht',
-                  type: 'iwlz:LDT_Geslacht',
+                  // type: 'iwlz:LDT_Geslacht',
                 },
                 {
                   id: '2.Uo43aAUBAysYrg',
@@ -122,6 +122,16 @@ describe('Examples', () => {
                   type: 'xs:string',
                   min: '0',
                 },
+              ],
+            },
+            {
+              id: '2g1kZnaGAqAeDg_y',
+              documentation: 'This is the mapping of a 2nd-order type using enumeration.',
+              instances: [
+                { name: 'Man' },
+                { name: 'Woman' },
+                { name: 'Undeclared' },
+                { name: 'Unknown' },
               ],
             },
             {
