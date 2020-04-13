@@ -191,7 +191,10 @@
                   "id": "0RfD1HaGAqAe8BfK",
                   "name": "date of birth",
                   "description": "Transformation note: this time instant should be transformed in a \u0027special way\u0027; part of the date of birth can be unknown, this can now be marked in the messages as an extra attribute, indicating what part of the date is unknown (a (partly) dummy date will be used in the messages).",
-                  "propertyType": null,
+                  "propertyType": {
+                    "type": "Class",
+                    "id": "rWVQow6FYEGQTyAX"
+                  },
                   "cardinality": null,
                   "isDerived": false,
                   "isOrdered": false,
@@ -414,8 +417,8 @@
               "properties": [
                 {
                   "type": "Property",
-                  "id": "UH5UzHaGAqAe8CqF",
-                  "name": "telephone",
+                  "id": "luFUzHaGAqAe8CqI",
+                  "name": "email",
                   "description": null,
                   "propertyType": {
                     "type": "Class",
@@ -433,8 +436,8 @@
                 },
                 {
                   "type": "Property",
-                  "id": "luFUzHaGAqAe8CqI",
-                  "name": "email",
+                  "id": "UH5UzHaGAqAe8CqF",
+                  "name": "telephone",
                   "description": null,
                   "propertyType": {
                     "type": "Class",
@@ -465,13 +468,10 @@
               "properties": [
                 {
                   "type": "Property",
-                  "id": "Te2MzHaGAqAe8Cz1",
-                  "name": "start date",
+                  "id": "aBOMzHaGAqAe8Cz4",
+                  "name": "endDate",
                   "description": null,
-                  "propertyType": {
-                    "type": "Class",
-                    "id": "rWVQow6FYEGQTyAX"
-                  },
+                  "propertyType": null,
                   "cardinality": null,
                   "isDerived": false,
                   "isOrdered": false,
@@ -484,10 +484,13 @@
                 },
                 {
                   "type": "Property",
-                  "id": "aBOMzHaGAqAe8Cz4",
-                  "name": "endDate",
+                  "id": "Te2MzHaGAqAe8Cz1",
+                  "name": "start date",
                   "description": null,
-                  "propertyType": null,
+                  "propertyType": {
+                    "type": "Class",
+                    "id": "rWVQow6FYEGQTyAX"
+                  },
                   "cardinality": null,
                   "isDerived": false,
                   "isOrdered": false,
@@ -637,27 +640,8 @@
               "properties": [
                 {
                   "type": "Property",
-                  "id": "KT3uZnaGAqAeDhUx",
-                  "name": "postal code",
-                  "description": null,
-                  "propertyType": {
-                    "type": "Class",
-                    "id": "p9KKFHaGAqAe8Awi"
-                  },
-                  "cardinality": null,
-                  "isDerived": false,
-                  "isOrdered": false,
-                  "isReadOnly": false,
-                  "stereotypes": null,
-                  "propertyAssignments": null,
-                  "subsettedProperties": null,
-                  "redefinedProperties": null,
-                  "aggregationKind": "NONE"
-                },
-                {
-                  "type": "Property",
-                  "id": "RbqeZnaGAqAeDhVI",
-                  "name": "street",
+                  "id": "BvteZnaGAqAeDhVS",
+                  "name": "number",
                   "description": null,
                   "propertyType": {
                     "type": "Class",
@@ -694,8 +678,27 @@
                 },
                 {
                   "type": "Property",
-                  "id": "BvteZnaGAqAeDhVS",
-                  "name": "number",
+                  "id": "RbqeZnaGAqAeDhVI",
+                  "name": "street",
+                  "description": null,
+                  "propertyType": {
+                    "type": "Class",
+                    "id": "p9KKFHaGAqAe8Awi"
+                  },
+                  "cardinality": null,
+                  "isDerived": false,
+                  "isOrdered": false,
+                  "isReadOnly": false,
+                  "stereotypes": null,
+                  "propertyAssignments": null,
+                  "subsettedProperties": null,
+                  "redefinedProperties": null,
+                  "aggregationKind": "NONE"
+                },
+                {
+                  "type": "Property",
+                  "id": "KT3uZnaGAqAeDhUx",
+                  "name": "postal code",
                   "description": null,
                   "propertyType": {
                     "type": "Class",
@@ -1637,6 +1640,25 @@
               "properties": [
                 {
                   "type": "Property",
+                  "id": "_Gwm9A6AUB1UpDLt",
+                  "name": "family name",
+                  "description": null,
+                  "propertyType": {
+                    "type": "Class",
+                    "id": "p9KKFHaGAqAe8Awi"
+                  },
+                  "cardinality": "1",
+                  "isDerived": false,
+                  "isOrdered": false,
+                  "isReadOnly": false,
+                  "stereotypes": null,
+                  "propertyAssignments": null,
+                  "subsettedProperties": null,
+                  "redefinedProperties": null,
+                  "aggregationKind": "NONE"
+                },
+                {
+                  "type": "Property",
                   "id": "G5Tm9A6AUB1UpDNi",
                   "name": "preferred name",
                   "description": null,
@@ -1656,8 +1678,8 @@
                 },
                 {
                   "type": "Property",
-                  "id": "QVIm9A6AUB1UpDL3",
-                  "name": "partner name",
+                  "id": "riem9A6AUB1UpDMv",
+                  "name": "initials",
                   "description": null,
                   "propertyType": {
                     "type": "Class",
@@ -1694,27 +1716,8 @@
                 },
                 {
                   "type": "Property",
-                  "id": "riem9A6AUB1UpDMv",
-                  "name": "initials",
-                  "description": null,
-                  "propertyType": {
-                    "type": "Class",
-                    "id": "p9KKFHaGAqAe8Awi"
-                  },
-                  "cardinality": "1",
-                  "isDerived": false,
-                  "isOrdered": false,
-                  "isReadOnly": false,
-                  "stereotypes": null,
-                  "propertyAssignments": null,
-                  "subsettedProperties": null,
-                  "redefinedProperties": null,
-                  "aggregationKind": "NONE"
-                },
-                {
-                  "type": "Property",
-                  "id": "_Gwm9A6AUB1UpDLt",
-                  "name": "family name",
+                  "id": "QVIm9A6AUB1UpDL3",
+                  "name": "partner name",
                   "description": null,
                   "propertyType": {
                     "type": "Class",
@@ -1764,8 +1767,8 @@
                 },
                 {
                   "type": "Property",
-                  "id": "0NF29A6AUB1UpDmk",
-                  "name": "first name",
+                  "id": "qD529A6AUB1UpDmf",
+                  "name": "family name",
                   "description": null,
                   "propertyType": {
                     "type": "Class",
@@ -1783,8 +1786,8 @@
                 },
                 {
                   "type": "Property",
-                  "id": "qD529A6AUB1UpDmf",
-                  "name": "family name",
+                  "id": "0NF29A6AUB1UpDmk",
+                  "name": "first name",
                   "description": null,
                   "propertyType": {
                     "type": "Class",
@@ -1948,6 +1951,40 @@
               "stereotypes": ["datatype"],
               "isAbstract": false,
               "isDerived": false
+            },
+            {
+              "type": "Class",
+              "id": "HiufLo6GAqACCSQ2",
+              "name": "Legal Status",
+              "description": null,
+              "properties": null,
+              "literals": [
+                {
+                  "type": "Literal",
+                  "id": "FZpfLo6GAqACCSRI",
+                  "name": "free",
+                  "description": null,
+                  "propertyAssignments": null
+                },
+                {
+                  "type": "Literal",
+                  "id": "DS5fLo6GAqACCSRL",
+                  "name": "jail",
+                  "description": null,
+                  "propertyAssignments": null
+                },
+                {
+                  "type": "Literal",
+                  "id": "9BFfLo6GAqACCSRO",
+                  "name": "trial",
+                  "description": null,
+                  "propertyAssignments": null
+                }
+              ],
+              "propertyAssignments": null,
+              "stereotypes": ["enumeration"],
+              "isAbstract": false,
+              "isDerived": false
             }
           ],
           "propertyAssignments": null
@@ -2012,13 +2049,10 @@
                   "properties": [
                     {
                       "type": "Property",
-                      "id": "cQs5_vaFYFAUAjeI",
-                      "name": "decision number",
+                      "id": "xWD5_vaFYFAUAjey",
+                      "name": "decistion date",
                       "description": null,
-                      "propertyType": {
-                        "type": "Class",
-                        "id": "p9KKFHaGAqAe8Awi"
-                      },
+                      "propertyType": null,
                       "cardinality": null,
                       "isDerived": false,
                       "isOrdered": false,
@@ -2031,10 +2065,13 @@
                     },
                     {
                       "type": "Property",
-                      "id": "xWD5_vaFYFAUAjey",
-                      "name": "decistion date",
+                      "id": "cQs5_vaFYFAUAjeI",
+                      "name": "decision number",
                       "description": null,
-                      "propertyType": null,
+                      "propertyType": {
+                        "type": "Class",
+                        "id": "p9KKFHaGAqAe8Awi"
+                      },
                       "cardinality": null,
                       "isDerived": false,
                       "isOrdered": false,
@@ -2347,8 +2384,8 @@
                   "properties": [
                     {
                       "type": "Property",
-                      "id": "21oKzHaGAqAe8C_p",
-                      "name": "valid from",
+                      "id": "nVOKzHaGAqAe8DAO",
+                      "name": "valid until",
                       "description": null,
                       "propertyType": {
                         "type": "Class",
@@ -2366,8 +2403,8 @@
                     },
                     {
                       "type": "Property",
-                      "id": "nVOKzHaGAqAe8DAO",
-                      "name": "valid until",
+                      "id": "21oKzHaGAqAe8C_p",
+                      "name": "valid from",
                       "description": null,
                       "propertyType": {
                         "type": "Class",
@@ -3469,8 +3506,8 @@
                   "properties": [
                     {
                       "type": "Property",
-                      "id": "nB2k1naGAqAeDj55",
-                      "name": "dsmiv",
+                      "id": "umuk1naGAqAeDj59",
+                      "name": "icf",
                       "description": null,
                       "propertyType": null,
                       "cardinality": null,
@@ -3501,8 +3538,8 @@
                     },
                     {
                       "type": "Property",
-                      "id": "umuk1naGAqAeDj59",
-                      "name": "icf",
+                      "id": "nB2k1naGAqAeDj55",
+                      "name": "dsmiv",
                       "description": null,
                       "propertyType": null,
                       "cardinality": null,
@@ -3587,25 +3624,6 @@
                   "properties": [
                     {
                       "type": "Property",
-                      "id": "n3Ru4_aFYEGQWxtq",
-                      "name": "effective from",
-                      "description": "The time instant in which the client has the right to start receiving the Heatlhcare Service Package, or in which the client has started to receive the HSP. (It can be either the right or the execution of the right)",
-                      "propertyType": {
-                        "type": "Class",
-                        "id": "rWVQow6FYEGQTyAX"
-                      },
-                      "cardinality": null,
-                      "isDerived": false,
-                      "isOrdered": false,
-                      "isReadOnly": true,
-                      "stereotypes": null,
-                      "propertyAssignments": null,
-                      "subsettedProperties": null,
-                      "redefinedProperties": null,
-                      "aggregationKind": "NONE"
-                    },
-                    {
-                      "type": "Property",
                       "id": "B8Ye4_aFYEGQWxtt",
                       "name": "effective until",
                       "description": "The time instant in which the client stops having the right to receive the Heatlhcare Service Package, or in which the client has stopped receiving the HSP. (It can be either the right or the execution of the right)",
@@ -3617,6 +3635,25 @@
                       "isDerived": false,
                       "isOrdered": false,
                       "isReadOnly": false,
+                      "stereotypes": null,
+                      "propertyAssignments": null,
+                      "subsettedProperties": null,
+                      "redefinedProperties": null,
+                      "aggregationKind": "NONE"
+                    },
+                    {
+                      "type": "Property",
+                      "id": "n3Ru4_aFYEGQWxtq",
+                      "name": "effective from",
+                      "description": "The time instant in which the client has the right to start receiving the Heatlhcare Service Package, or in which the client has started to receive the HSP. (It can be either the right or the execution of the right)",
+                      "propertyType": {
+                        "type": "Class",
+                        "id": "rWVQow6FYEGQTyAX"
+                      },
+                      "cardinality": null,
+                      "isDerived": false,
+                      "isOrdered": false,
+                      "isReadOnly": true,
                       "stereotypes": null,
                       "propertyAssignments": null,
                       "subsettedProperties": null,
@@ -11290,6 +11327,56 @@
             "id": "f4Sg1naGAqAeDja_"
           },
           "cardinality": null,
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        }
+      ],
+      "propertyAssignments": null,
+      "stereotypes": null,
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Relation",
+      "id": "AzVfLo6GAqACCSRs",
+      "name": null,
+      "description": null,
+      "properties": [
+        {
+          "type": "Property",
+          "id": "gzVfLo6GAqACCSRt",
+          "name": null,
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "QFOaFHaGAqAe8A_X"
+          },
+          "cardinality": "*",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        },
+        {
+          "type": "Property",
+          "id": "gzVfLo6GAqACCSRv",
+          "name": "legal status",
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "HiufLo6GAqACCSQ2"
+          },
+          "cardinality": "1",
           "isDerived": false,
           "isOrdered": false,
           "isReadOnly": false,

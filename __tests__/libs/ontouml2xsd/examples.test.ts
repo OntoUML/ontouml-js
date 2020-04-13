@@ -71,50 +71,48 @@ describe('Examples', () => {
               ],
             },
             {
-              id: 'KqqJFHaGAqAe8BR_',
-              // name: 'LTH Client',
+              id: 'KqqJFHaGAqAe8BR_', // 'LTH Client',
               label: 'Client',
               properties: [
                 {
-                  id: 'R94syXaD.AAAAR2f',
-                  // name: 'BSN',
+                  id: 'R94syXaD.AAAAR2f', // 'BSN',
                   type: 'iwlz:LDT_BurgerServicenummer',
                 },
                 {
-                  id: '0RfD1HaGAqAe8BfK',
-                  // name: 'date of birth',
+                  id: '0RfD1HaGAqAe8BfK', //'date of birth',
                   label: 'Geboortedatum',
                   documentation: "The client's birthdate may be partially known.",
                   type: 'iwlz:CDT_Geboortedatum',
                 },
                 {
                   id: 'BHi29A6AUB1UpDl3',
-                  path: ['cezG9A6AUB1UpDJF', 'BHi29A6AUB1UpDl3'], // 'self.name.short name'
+                  path: ['cezG9A6AUB1UpDJF', 'BHi29A6AUB1UpDl3'], // 'name.short name'
                   label: 'Naam',
                   // type: 'iwlz:LDT_Naam',
                 },
                 {
                   id: 'a_XkZnaGAqAeDhA_',
-                  path: ['0Knw43aAUBAysYmO', 'a_XkZnaGAqAeDhA_'], // 'self.registration.legal gender'
+                  path: ['0Knw43aAUBAysYmO', 'a_XkZnaGAqAeDhA_'], // 'registration.legal gender'
                   label: 'Geslacht',
                   type: 'iwlz:LDT_Geslacht',
                 },
                 {
                   id: '2.Uo43aAUBAysYrg',
-                  path: ['0Knw43aAUBAysYmO', '2.Uo43aAUBAysYrg'], // 'self.registration.civil status'
+                  path: ['0Knw43aAUBAysYmO', '2.Uo43aAUBAysYrg'], // 'registration.civil status'
                   label: 'BurgerlijkeStaat',
                   type: 'iwlz:LDT_BurgerlijkeStaat',
                   min: '0',
                 },
                 {
-                  id: '01eUzHaGAqAe8CpW',
-                  // name: 'contact info',
+                  id: 'gzVfLo6GAqACCSRv', // legal status
+                },
+                {
+                  id: '01eUzHaGAqAe8CpW', // 'contact info',
                   label: 'Contact',
                   min: '1',
                 },
                 {
-                  id: 'wO0TFHaGAqAe8BdY',
-                  // name: 'indication',
+                  id: 'wO0TFHaGAqAe8BdY', // indication,
                   label: 'Indicatie',
                   min: '1',
                   max: '1',
@@ -127,8 +125,28 @@ describe('Examples', () => {
               ],
             },
             {
-              id: 'OAOUzHaGAqAe8Co8',
-              // name: 'Contact Info',
+              id: 'HiufLo6GAqACCSQ2', // <<enum>> Legal Status
+              documentation: 'This is an enumeration.',
+              literals: [
+                {
+                  id: 'FZpfLo6GAqACCSRI',
+                  value: '01',
+                  documentation: 'A free person.',
+                },
+                {
+                  id: 'DS5fLo6GAqACCSRL',
+                  value: '02',
+                  documentation: 'A person in jail.',
+                },
+                {
+                  id: '9BFfLo6GAqACCSRO',
+                  value: '03',
+                  documentation: 'A person underdoing a trial.',
+                },
+              ],
+            },
+            {
+              id: 'OAOUzHaGAqAe8Co8', // 'Contact Info',
               label: 'Contact',
               properties: [
                 { id: 'UH5UzHaGAqAe8CqF', label: 'Telefoon' },

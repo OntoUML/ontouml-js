@@ -1,6 +1,6 @@
 import { ModelManager } from '@libs/model';
-import { IClass, IRelation, IProperty, IElement, IClassifier } from '@types';
-import { OntoUMLType } from '@constants/.';
+import { IClass, IRelation, IProperty, IElement, IClassifier, ILiteral } from '@types';
+import { OntoUMLType, ClassStereotype } from '@constants/.';
 
 import _ from 'lodash';
 import { create } from 'xmlbuilder2';
@@ -26,6 +26,13 @@ export interface MessageEntry {
   label?: string;
   documentation?: string;
   properties?: PropertyEntry[];
+  literals?: LiteralEntry[];
+}
+
+export interface LiteralEntry {
+  id: string;
+  value?: string;
+  documentation?: string;
 }
 
 export interface PropertyEntry {
@@ -74,8 +81,9 @@ export class OntoUML2XSD {
       this.addImport(i, doc);
     });
 
-    this.opts.message.forEach(e => {
-      this.addEntry(e, doc);
+    this.opts.message.forEach(entry => {
+      if (entry.id === null || entry.id === undefined) this.addCustomEntry(entry, doc);
+      else this.addClassEntry(entry, doc);
     });
 
     const xml = doc.end({ prettyPrint: true });
@@ -108,124 +116,150 @@ export class OntoUML2XSD {
     builder.last().ele('xs:import', { namespace: i.namespace, schemaLocation: i.schemaLocation });
   }
 
-  addEntry(entry: MessageEntry, builder: XMLBuilder) {
-    let typeName: String;
-    let sourceClass: IClass;
+  // Adds an entry that DOES NOT refer to a class in the input model
+  addCustomEntry(entry: MessageEntry, builder: XMLBuilder) {
+    if (entry.id) throw new Error('Custom elements must not define a source class id.');
+    if (!entry.label) throw new Error('Custom elements must have a label.');
 
-    // Entry refers to an existing class in the input model
-    if (entry.id) {
-      let sourceElement: IElement = this.model.getElementById(entry.id);
+    const typeNode = builder.last().ele('xs:complexType', { name: entry.label });
+    this.addDocumentation(entry.documentation, typeNode);
 
-      if (!sourceElement)
-        throw new Error('The element <' + entry.id + '> does not exist in the model!');
+    // If the source class has NOT been defined, only custom properties are allowed
+    let pEntries = entry.properties.filter(entry => entry.id === undefined);
+    if (pEntries.length === 0) return;
 
-      if (!entry.label && !sourceElement.name)
-        throw new Error(
-          'The element <' + entry.id + '> has no name and no label has been provided!',
-        );
+    let sequenceNode = typeNode.ele('xs:sequence');
 
-      if (sourceElement.type !== OntoUMLType.CLASS_TYPE)
-        throw new Error('The element <' + entry.id + '> is not a class!');
+    pEntries.forEach(pEntry => this.addProperty(pEntry, sequenceNode));
+  }
 
-      // if (this.isPrimitiveDatatype(sourceClass)) return;
+  // Checks the basic consistency of a message entry and delegates it creation to the appropriate method
+  addClassEntry(entry: MessageEntry, builder: XMLBuilder) {
+    const sourceElement = this.model.getElementById(entry.id);
+    if (!sourceElement) throw new Error('Element <' + entry.id + '> does not exist in the model!');
 
-      typeName = entry.label || this.getXSDName(sourceElement.name) || '';
-      sourceClass = <IClass>sourceElement;
+    if (sourceElement.type !== OntoUMLType.CLASS_TYPE)
+      throw new Error('Element <' + entry.id + '> is not a class!');
+
+    const sourceClass = <IClass>sourceElement;
+
+    if (!sourceClass.stereotypes || sourceClass.stereotypes.length !== 1)
+      throw new Error(
+        'Class <' + (sourceClass.name || sourceClass.id) + '> must have exactly one stereotype.',
+      );
+
+    let stereotype = sourceClass.stereotypes[0];
+
+    console.log(sourceClass.name, '<<' + stereotype + '>>');
+
+    switch (stereotype) {
+      case ClassStereotype.TYPE:
+        this.addTypeClassEntry(entry, builder);
+        break;
+
+      case ClassStereotype.ENUMERATION:
+        this.addEnumerationEntry(entry, builder);
+        break;
+
+      default:
+        this.addDefaultClassEntry(entry, builder);
+        break;
     }
+  }
 
-    // Entry DOES NOT refer to a class in the input model
-    else {
-      if (!entry.label) throw new Error('Custom elements must have a label.');
+  // Adds an entry that refers to a <<type>> class in the input model
+  addTypeClassEntry(entry: MessageEntry, builder: XMLBuilder) {}
 
-      typeName = entry.label;
-    }
+  addEnumerationEntry(entry: MessageEntry, builder: XMLBuilder) {
+    let sourceEnum: IClass = this.model.getElementById(entry.id);
+
+    if (!entry.label && !sourceEnum.name)
+      throw new Error('Enumeration <' + entry.id + '> has no name and no label has been provided!');
+
+    if (!sourceEnum.literals && sourceEnum.literals.length === 0)
+      throw new Error('Enumeration <' + entry.id + '> has no literals to be transformed!');
+
+    let enumName = entry.label || this.getXSDName(sourceEnum.name) || '';
+    const enumNode = builder.last().ele('xs:simpleType', { name: enumName });
+
+    this.addDocumentation(entry.documentation, enumNode);
+
+    let literalEntries = entry.literals;
+    if (!literalEntries) literalEntries = sourceEnum.literals.map(l => ({ id: l.id }));
+
+    enumNode.ele('xs:restriction').att('base', 'xs:string');
+
+    let maxSize = 1;
+
+    literalEntries.forEach(lEntry => {
+      let literal: ILiteral = this.model.getElementById(lEntry.id);
+      let value = lEntry.value || literal.name;
+      let literalNode = enumNode.last().ele('xs:enumeration', { value });
+      this.addDocumentation(lEntry.documentation, literalNode);
+
+      maxSize = Math.max(maxSize, value.length);
+    });
+
+    enumNode.last().ele('xs:maxLength', { value: maxSize });
+  }
+
+  // Adds an entry that refers to a class in the input model
+  addDefaultClassEntry(entry: MessageEntry, builder: XMLBuilder) {
+    let sourceClass: IClass = this.model.getElementById(entry.id);
+
+    if (!entry.label && !sourceClass.name)
+      throw new Error('Class <' + entry.id + '> has no name and no label has been provided!');
+
+    // if (this.isPrimitiveDatatype(sourceClass)) return;
+    let typeName = entry.label || this.getXSDName(sourceClass.name) || '';
 
     const typeNode = builder.last().ele('xs:complexType', { name: typeName });
     this.addDocumentation(entry.documentation, typeNode);
-    this.addProperties(entry, sourceClass, typeNode);
+    this.addClassProperties(entry, sourceClass, typeNode);
   }
 
-  addProperties(entry: MessageEntry, sourceClass: IClass | undefined, classNode: XMLBuilder) {
+  addClassProperties(entry: MessageEntry, sourceClass: IClass | undefined, classNode: XMLBuilder) {
     let pEntries: PropertyEntry[] = _.cloneDeep(entry.properties) || [];
 
-    // If a source class has been defined...
-    if (sourceClass) {
-      let properties: IProperty[] = this.getAllProperties(sourceClass);
+    let properties: IProperty[] = this.getAllProperties(sourceClass);
 
-      //... but no properties have been listed,
-      // we add all attributes and relations to the message (including inherited ones)
-      if (pEntries.length === 0) {
-        pEntries = properties.map(p => ({ id: p.id }));
-      }
-      //... but some properties have been listed,
-      // we only accept properties accesible from the source class, which include:
-      // direct, inherited, and transitive
-      else {
-        pEntries.forEach(pEntry => {
-          // property entry contains a valid path from source class
-          if (pEntry.id && pEntry.path && !this.isValidPath(entry, pEntry)) {
-            throw new Error(
-              'Invalid property path provided for property <' +
-                (pEntry.label || pEntry.id) +
-                '>. Provided: ' +
-                this.pathToString(pEntry.path),
-            );
-          }
-          // property is owned by source class
-          else if (
-            pEntry.id &&
-            !pEntry.path &&
-            properties.findIndex(p => p.id === pEntry.id) === -1
-          ) {
-            throw new Error(
-              'Property must be owned or inherited by source class <' +
-                (pEntry.label || pEntry.id) +
-                '>',
-            );
-          }
-        });
-      }
+    // If no properties have been listed,
+    // we add all attributes and relations to the message (including inherited ones)
+    if (pEntries.length === 0) {
+      pEntries = properties.map(p => ({ id: p.id }));
     }
-    // If the source class has NOT been defined, only custom properties are allowed
+    // If some properties have been listed,
+    // we check if they are accesible from the source class, which include:
+    // direct and inherited attributes and relations, but also those reachable from the source classe
     else {
-      pEntries = pEntries.filter(entry => entry.id === undefined);
+      pEntries.forEach(pEntry => {
+        // property entry contains a valid path from source class
+        if (pEntry.id && pEntry.path && !this.isValidPath(entry, pEntry)) {
+          throw new Error(
+            'Invalid property path provided for property <' +
+              (pEntry.label || pEntry.id) +
+              '>. Provided: ' +
+              this.pathToString(pEntry.path),
+          );
+        }
+        // property is owned by source class
+        else if (
+          pEntry.id &&
+          !pEntry.path &&
+          properties.findIndex(p => p.id === pEntry.id) === -1
+        ) {
+          throw new Error(
+            'Property must be owned or inherited by source class <' +
+              (pEntry.label || pEntry.id) +
+              '>',
+          );
+        }
+      });
     }
 
     if (pEntries.length === 0) return;
-
     let sequenceNode = classNode.ele('xs:sequence');
-
-    pEntries.forEach(pEntry => {
-      this.addProperty(pEntry, sequenceNode);
-    });
-  }
-
-  isValidPath(entry: MessageEntry, pEntry: PropertyEntry): boolean {
-    if (pEntry.path === undefined) return true;
-
-    let i = 0;
-    let node: IClass = this.model.getElementById(entry.id);
-
-    while (i < pEntry.path.length) {
-      // Checks if property exists in the model
-      let nextProp: IProperty = this.model.getElementById(pEntry.path[i]);
-      if (!nextProp) return false;
-
-      // Checks if property is accesible from node (owned or inherited, attribute or association end)
-      let nodeProperties: IProperty[] = this.getAllProperties(node);
-      if (nodeProperties.findIndex(p => p.id === nextProp.id) === -1) return false;
-
-      node = <IClass>nextProp.propertyType;
-      i++;
-    }
-
-    return true;
-  }
-
-  pathToString(path: string[]): string {
-    let properties = path.map(id => this.model.getElementById(id));
-
-    return '[' + properties.map(p => p.name).join(', ') + ']';
+    pEntries.forEach(pEntry => this.addProperty(pEntry, sequenceNode));
   }
 
   addProperty(pEntry: PropertyEntry, classSeqNode: XMLBuilder) {
@@ -286,6 +320,14 @@ export class OntoUML2XSD {
       ...cardinality,
     });
     this.addDocumentation(pEntry.documentation, attrNode);
+  }
+
+  addDocumentation(value: string | undefined | null, node: XMLBuilder) {
+    if (value)
+      node
+        .ele('xs:annotation')
+        .ele('xs:documentation')
+        .txt(value);
   }
 
   getXSDCardinalities(pEntry: PropertyEntry): { minOccurs: string; maxOccurs: string } {
@@ -384,12 +426,32 @@ export class OntoUML2XSD {
     return cardinality.toString();
   }
 
-  addDocumentation(value: string | undefined | null, node: XMLBuilder) {
-    if (value)
-      node
-        .ele('xs:annotation')
-        .ele('xs:documentation')
-        .txt(value);
+  isValidPath(entry: MessageEntry, pEntry: PropertyEntry): boolean {
+    if (pEntry.path === undefined) return true;
+
+    let i = 0;
+    let node: IClass = this.model.getElementById(entry.id);
+
+    while (i < pEntry.path.length) {
+      // Checks if property exists in the model
+      let nextProp: IProperty = this.model.getElementById(pEntry.path[i]);
+      if (!nextProp) return false;
+
+      // Checks if property is accesible from node (owned or inherited, attribute or association end)
+      let nodeProperties: IProperty[] = this.getAllProperties(node);
+      if (nodeProperties.findIndex(p => p.id === nextProp.id) === -1) return false;
+
+      node = <IClass>nextProp.propertyType;
+      i++;
+    }
+
+    return true;
+  }
+
+  pathToString(path: string[]): string {
+    let properties = path.map(id => this.model.getElementById(id));
+
+    return '[' + properties.map(p => p.name).join(', ') + ']';
   }
 
   isPrimitiveDatatype(datatype: IClass): boolean {
