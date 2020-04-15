@@ -99,7 +99,7 @@ describe('InverseRelations', () => {
   it('should generate part-whole cardinality with name when create object property is true', async () => {
     const data = [
       '<owl:onProperty> <:hasEventProperPartPartipationalClassSource>',
-      '<owl:onProperty> <:hasProperPartClassTarget>',
+      '<owl:onProperty> <:hasProperPartClassSource>',
     ];
     const data2 = [
       '<owl:onProperty> <:hasEventProperPart>',
@@ -118,7 +118,7 @@ describe('InverseRelations', () => {
   it('should generate cardinality with stereotype property when create object property is false', async () => {
     const data = [
       '<owl:onProperty> <:hasEventProperPartPartipationalClassSource>',
-      '<owl:onProperty> <:hasProperPartClassTarget>',
+      '<owl:onProperty> <:hasProperPartClassSource>',
     ];
     const data2 = [
       '<owl:onProperty> <:hasEventProperPart>',

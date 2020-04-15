@@ -1355,7 +1355,7 @@
           "propertyAssignments": null,
           "subsettedProperties": null,
           "redefinedProperties": null,
-          "aggregationKind": "COMPOSITE"
+          "aggregationKind": "NONE"
         },
         {
           "type": "Property",
@@ -1374,7 +1374,7 @@
           "propertyAssignments": null,
           "subsettedProperties": null,
           "redefinedProperties": null,
-          "aggregationKind": "NONE"
+          "aggregationKind": "COMPOSITE"
         }
       ],
       "propertyAssignments": null,
