@@ -28,6 +28,7 @@ describe('Examples', () => {
           format: 'Turtle',
           baseIRI: 'https://alpinebits.org',
           createInverses: true,
+          createObjectProperty: false,
         },
       },
       {

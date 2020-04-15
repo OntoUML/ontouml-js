@@ -79,11 +79,11 @@ export async function transformRelations(
     const inverseRelation = {
       ...relation,
       properties: [relation.properties[1], relation.properties[0]],
-      getSource: () => {
-        return relation.properties[1].propertyType;
+      getSource() {
+        return this.properties[0].propertyType;
       },
-      getTarget: () => {
-        return relation.properties[0].propertyType;
+      getTarget() {
+        return this.properties[1].propertyType;
       },
     } as IRelation;
 
@@ -307,6 +307,7 @@ function transformRelationCardinalities(
   relation: IRelation,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
+  const { createInverses } = options;
   const { properties } = relation;
 
   const domain = properties[0];
@@ -315,8 +316,10 @@ function transformRelationCardinalities(
   const domainCardinality = domain.cardinality;
   const rangeCardinality = range.cardinality;
 
+  const quads = [];
+
   if (domainCardinality && rangeCardinality) {
-    return [
+    quads.push(
       ...transformRelationCardinality({
         writer,
         relation,
@@ -324,17 +327,22 @@ function transformRelationCardinalities(
         isDomain: true,
         options,
       }),
-      ...transformRelationCardinality({
-        writer,
-        relation,
-        cardinality: domainCardinality,
-        isDomain: false,
-        options,
-      }),
-    ];
+    );
+
+    if (!createInverses) {
+      quads.push(
+        ...transformRelationCardinality({
+          writer,
+          relation,
+          cardinality: domainCardinality,
+          isDomain: false,
+          options,
+        }),
+      );
+    }
   }
 
-  return [];
+  return quads;
 }
 
 /**
@@ -363,7 +371,7 @@ function transformRelationCardinality({
   const upperboundDomainCardinality = getUpperboundCardinality(cardinality);
   const hasInfiniteCardinality = cardinality.includes('*');
 
-  const defaultParams = { writer, relation, isDomain, options };
+  const defaultParams = { writer, relation, classUri, isDomain, options };
 
   // min = max
   if (
@@ -506,7 +514,7 @@ function generateRelationBlankQuad({
   // get range
   const classElement = isDomain ? relation.getTarget() : relation.getSource();
   const classUri = getURI({ element: classElement, options });
-  const isRelationDomain = isInvertedRelation ? !isDomain : isDomain;
+  let isRelationDomain = isInvertedRelation ? !isDomain : isDomain;
   let propertyUri = uri;
 
   // add gufo props when hide object property creation

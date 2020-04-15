@@ -52,12 +52,13 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
   let formattedName;
 
   if (isRelation) {
-    formattedName = name
-      ? formatName(
-          name,
-          (s: string) => s.charAt(0).toUpperCase() + s.substring(1),
-        )
-      : suggestedName;
+    formattedName =
+      name && !isInverseRelation
+        ? formatName(
+            name,
+            (s: string) => s.charAt(0).toUpperCase() + s.substring(1),
+          )
+        : suggestedName;
   } else if (isClass) {
     formattedName = name ? formatName(name) : null;
   } else {
