@@ -8,9 +8,9 @@ describe('Attributes', () => {
   beforeAll(async () => {
     alpinebits = await transformOntoUML2GUFO(alpinebitsModel);
     alpinebitsCustomLabel = await transformOntoUML2GUFO(alpinebitsModel, {
-      customLabels: {
-        capacity: 'owlCapacity',
-        tZNlFRaGAqCsIBOU: 'owlArea',
+      customElementMapping: {
+        capacity: { uri: 'owlCapacity' },
+        tZNlFRaGAqCsIBOU: { uri: 'owlArea' },
       },
     });
   });

@@ -20,9 +20,9 @@ describe('Relations', () => {
       createObjectProperty: false,
     });
     partWholeCustomLabel = await transformOntoUML2GUFO(partWholeModel, {
-      customLabels: {
-        geHLKw6GAqACBCSD: 'historicalDependence',
-        hF1rKw6GAqACBCXn: 'mediation',
+      customElementMapping: {
+        geHLKw6GAqACBCSD: { uri: 'historicalDependence' },
+        hF1rKw6GAqACBCXn: { uri: 'mediation' },
       },
     });
   });

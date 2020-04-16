@@ -124,14 +124,19 @@ describe('Relations', () => {
 
   it('should generate custom labels', async () => {
     const result = await transformOntoUML2GUFO(alpinebits, {
-      customLabels: {
-        JoK2ZeaGAqACBxS5: 'OWLPerson',
-        Organization: 'OWLOrganization',
-        'Event Plan': 'OWLEventPlan',
+      customElementMapping: {
+        JoK2ZeaGAqACBxS5: {
+          uri: 'OWLPerson',
+          label: { en: 'Person', pt: 'Pessoa' },
+        },
+        Organization: { uri: 'OWLOrganization' },
+        'Event Plan': { uri: 'OWLEventPlan' },
       },
     });
 
     expect(result).toContain('<:OWLPerson> <rdf:type> <owl:Class>');
+    expect(result).toContain('<:OWLPerson> <rdfs:label> "Person"@en');
+    expect(result).toContain('<:OWLPerson> <rdfs:label> "Pessoa"@pt');
     expect(result).toContain('<:OWLOrganization> <rdf:type> <owl:Class>');
     expect(result).toContain('<:OWLEventPlan> <rdf:type> <owl:Class>');
   });
