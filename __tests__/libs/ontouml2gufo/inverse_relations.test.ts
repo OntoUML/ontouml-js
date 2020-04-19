@@ -62,6 +62,26 @@ describe('InverseRelations', () => {
     }
   });
 
+  it('should generate a normal relation for inverted relations', async () => {
+    expect(alpinebits).toContain(
+      `<:CompositeArea> <rdfs:subClassOf> [
+        <rdf:type> <owl:Restriction>;
+        <owl:onProperty> <:subAreas>;
+        <owl:minQualifiedCardinality> "2"^^<xsd:nonNegativeInteger>;
+        <owl:onClass> <:MountainArea>
+      ] .`.replace(/ {6}/gm, ''),
+    );
+
+    expect(alpinebits).toContain(
+      `<:MountainArea> <rdfs:subClassOf> [
+        <rdf:type> <owl:Restriction>;
+        <owl:onProperty> <:isComponentOfCompositeArea>;
+        <owl:maxQualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;
+        <owl:onClass> <:CompositeArea>
+      ] .`.replace(/ {6}/gm, ''),
+    );
+  });
+
   it('should generate inverse relation for stereotypes', async () => {
     const data = [
       '<rdfs:subPropertyOf> <:bears>',

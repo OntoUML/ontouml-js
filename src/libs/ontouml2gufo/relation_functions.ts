@@ -72,40 +72,61 @@ export async function transformRelations(
   }
 
   for (let i = 0; i < relations.length; i += 1) {
-    const relation = relations[i];
-    const { stereotypes } = relation;
+    const { stereotypes, propertyAssignments } = relations[i];
     const stereotype = stereotypes ? stereotypes[0] : null;
 
-    const inverseRelation = {
-      ...relation,
-      properties: [relation.properties[1], relation.properties[0]],
+    const extraPropertyAssigments = generateExtraPropertyAssignments(
+      relations[i],
+      options,
+    );
+
+    relations[i].propertyAssignments = {
+      ...(propertyAssignments || {}),
+      ...extraPropertyAssigments,
+      isInverseRelation: false,
+    };
+
+    const methods = {
       getSource() {
         return this.properties[0].propertyType;
       },
       getTarget() {
         return this.properties[1].propertyType;
       },
-    } as IRelation;
+      getDerivingRelation() {
+        return this.properties[0].propertyType;
+      },
+      getDerivedClass() {
+        return this.properties[1].propertyType;
+      },
+    };
 
-    const extraPropertyAssigments = generateExtraPropertyAssignments(
-      relation,
-      options,
-    );
-
-    relation.propertyAssignments = {
-      ...(relation.propertyAssignments || {}),
-      ...extraPropertyAssigments,
-      isInverseRelation: false,
+    const relation = {
+      ...relations[i],
+      ...methods,
+      properties: extraPropertyAssigments.isInvertedRelation
+        ? [relations[i].properties[1], relations[i].properties[0]]
+        : relations[i].properties,
+      propertyAssignments: {
+        ...(propertyAssignments || {}),
+        ...extraPropertyAssigments,
+        isInverseRelation: false,
+      },
     };
 
     const uri = getURI({ element: relation, options });
 
-    inverseRelation.propertyAssignments = {
-      ...(inverseRelation.propertyAssignments || {}),
-      ...extraPropertyAssigments,
-      isInverseRelation: true,
-      relationUri: uri,
-    };
+    const inverseRelation = {
+      ...relation,
+      ...methods,
+      propertyAssignments: {
+        ...(propertyAssignments || {}),
+        ...extraPropertyAssigments,
+        isInverseRelation: true,
+        relationUri: uri,
+      },
+      properties: [relation.properties[1], relation.properties[0]],
+    } as IRelation;
 
     const isInverseTransformationEnabled =
       createInverses && !IgonoredInverseRelations.includes(stereotype);
@@ -186,7 +207,6 @@ function transformRelationBase(
   const uri = getURI({ element: relation, options });
   const {
     isPartWholeRelation,
-    isInvertedRelation,
     isInverseRelation,
     isPartWholeRelationBetweenEvents,
     isPartWholeRelationBetweenAspects,
@@ -208,15 +228,12 @@ function transformRelationBase(
   ];
 
   if (domainClassUri && rangeClassUri) {
-    const domainUri = isInvertedRelation ? rangeClassUri : domainClassUri;
-    const rangeUri = isInvertedRelation ? domainClassUri : rangeClassUri;
-
     quads.push(
-      quad(namedNode(uri), namedNode('rdfs:domain'), namedNode(domainUri)),
+      quad(namedNode(uri), namedNode('rdfs:domain'), namedNode(domainClassUri)),
     );
 
     quads.push(
-      quad(namedNode(uri), namedNode('rdfs:range'), namedNode(rangeUri)),
+      quad(namedNode(uri), namedNode('rdfs:range'), namedNode(rangeClassUri)),
     );
   }
 
@@ -502,7 +519,6 @@ function generateRelationBlankQuad({
   const { stereotypes } = relation;
   const stereotype = stereotypes ? stereotypes[0] : null;
   const {
-    isInvertedRelation,
     hideBaseCreation,
     isPartWholeRelationWithoutStereotype,
     isPartWholeRelationBetweenEvents,
@@ -514,7 +530,6 @@ function generateRelationBlankQuad({
   // get range
   const classElement = isDomain ? relation.getTarget() : relation.getSource();
   const classUri = getURI({ element: classElement, options });
-  let isRelationDomain = isInvertedRelation ? !isDomain : isDomain;
   let propertyUri = uri;
 
   // add gufo props when hide object property creation
@@ -544,7 +559,7 @@ function generateRelationBlankQuad({
     },
     {
       predicate: namedNode('owl:onProperty'),
-      object: isRelationDomain
+      object: isDomain
         ? namedNode(propertyUri)
         : writer.blank(namedNode('owl:inverseOf'), namedNode(propertyUri)),
     },
