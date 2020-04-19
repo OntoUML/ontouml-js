@@ -106,32 +106,20 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
 const getRelationName = (relation: IRelation): string => {
   const { id, stereotypes, properties, propertyAssignments } = relation;
   const stereotype = stereotypes ? stereotypes[0] : null;
-  const {
-    isInverseRelation,
-    isInvertedRelation,
-    isPartWholeRelation,
-  } = propertyAssignments;
+  const { isInverseRelation, isPartWholeRelation } = propertyAssignments;
   const RelationStereotypeMapping = isInverseRelation
     ? InverseRelationStereotypeMapping
     : NormalRelationStereotypeMapping;
 
-  const source = relation.getSource();
   const target = relation.getTarget();
-  const sourceAssociatioName = properties[0].name;
   const targetAssociationname = properties[1].name;
-  const hasAssociationName = isInvertedRelation
-    ? !!sourceAssociatioName
-    : !!targetAssociationname;
+  const hasAssociationName = !!targetAssociationname;
 
-  const sourceName =
-    formatName(sourceAssociatioName) ||
-    formatName(source.name) ||
-    formatName(id);
   const targetName =
     formatName(targetAssociationname) ||
     formatName(target.name) ||
     formatName(id);
-  let formattedElementName = isInvertedRelation ? sourceName : targetName;
+  let formattedElementName = targetName;
 
   const stereotypeName = RelationStereotypeMapping[stereotype];
   const associationName =
