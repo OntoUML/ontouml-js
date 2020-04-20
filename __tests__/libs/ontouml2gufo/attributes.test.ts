@@ -1,71 +1,49 @@
-import { alpinebits as alpinebitsModel } from '@test-models/valids';
+import { alpinebits } from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 
 describe('Attributes', () => {
-  let alpinebits;
-  let alpinebitsCustomLabel;
+  let result;
 
   beforeAll(async () => {
-    alpinebits = await transformOntoUML2GUFO(alpinebitsModel);
-    alpinebitsCustomLabel = await transformOntoUML2GUFO(alpinebitsModel, {
-      customElementMapping: {
-        capacity: { uri: 'owlCapacity' },
-        tZNlFRaGAqCsIBOU: { uri: 'owlArea' },
-      },
-    });
+    result = await transformOntoUML2GUFO(alpinebits);
   });
 
   it('should generate "capacity" as an int DatatypeProperty', async () => {
-    expect(alpinebits).toContain(
-      '<:capacity> <rdf:type> <owl:DatatypeProperty>',
-    );
-    expect(alpinebits).toContain(
+    expect(result).toContain('<:capacity> <rdf:type> <owl:DatatypeProperty>');
+    expect(result).toContain(
       '<:capacity> <rdfs:subPropertyOf> <gufo:hasQualityValue>',
     );
-    expect(alpinebits).toContain('<:capacity> <rdfs:domain> <:EventPlan>');
-    expect(alpinebits).toContain('<:capacity> <rdfs:range> <xsd:int>');
-    expect(alpinebits).toContain('<:capacity> <rdfs:label> "capacity"');
+    expect(result).toContain('<:capacity> <rdfs:domain> <:EventPlan>');
+    expect(result).toContain('<:capacity> <rdfs:range> <xsd:int>');
+    expect(result).toContain('<:capacity> <rdfs:label> "capacity"');
   });
 
   it('should generate "description" as a string DatatypeProperty', async () => {
-    expect(alpinebits).toContain(
+    expect(result).toContain(
       '<:description> <rdf:type> <owl:DatatypeProperty>',
     );
-    expect(alpinebits).toContain(
+    expect(result).toContain(
       '<:description> <rdfs:subPropertyOf> <gufo:hasQualityValue>',
     );
-    expect(alpinebits).toContain(
-      '<:description> <rdfs:domain> <:NamedIndividual>',
-    );
-    expect(alpinebits).toContain('<:description> <rdfs:range> <xsd:string>');
-    expect(alpinebits).toContain('<:description> <rdfs:label> "description"');
+    expect(result).toContain('<:description> <rdfs:domain> <:NamedIndividual>');
+    expect(result).toContain('<:description> <rdfs:range> <xsd:string>');
+    expect(result).toContain('<:description> <rdfs:label> "description"');
   });
 
   it('should generate attributes of datatypes classes without rdfs:subPropertyOf gufo:hasQualityValue', async () => {
-    expect(alpinebits).toContain('<:lower> <rdf:type> <owl:DatatypeProperty>');
-    expect(alpinebits).not.toContain(
+    expect(result).toContain('<:lower> <rdf:type> <owl:DatatypeProperty>');
+    expect(result).not.toContain(
       '<:lower> <rdfs:subPropertyOf> <gufo:hasQualityValue>',
     );
   });
 
   it('should generate attributes of stereotype classes with rdfs:subPropertyOf gufo:hasQualityValue', async () => {
-    expect(alpinebits).toContain('<:area> <rdf:type> <owl:DatatypeProperty>');
-    expect(alpinebits).toContain(
+    expect(result).toContain('<:area> <rdf:type> <owl:DatatypeProperty>');
+    expect(result).toContain(
       '<:area> <rdfs:subPropertyOf> <gufo:hasQualityValue>',
     );
-    expect(alpinebits).toContain('<:area> <rdfs:domain> <:GeospatialFeature>');
-    expect(alpinebits).toContain('<:area> <rdfs:range> <xsd:int>');
-    expect(alpinebits).toContain('<:area> <rdfs:label> "area"');
-  });
-
-  it('should generate custom labels', async () => {
-    const data = [
-      '<:owlCapacity> <rdf:type> <owl:DatatypeProperty>',
-      '<:owlArea> <rdf:type> <owl:DatatypeProperty>',
-    ];
-
-    for (const value of data) {
-      expect(alpinebitsCustomLabel).toContain(value);
-    }
+    expect(result).toContain('<:area> <rdfs:domain> <:GeospatialFeature>');
+    expect(result).toContain('<:area> <rdfs:range> <xsd:int>');
+    expect(result).toContain('<:area> <rdfs:label> "area"');
   });
 });
