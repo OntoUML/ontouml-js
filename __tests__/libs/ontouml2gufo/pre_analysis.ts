@@ -1,49 +1,123 @@
-import { packages as packagesModel } from '@test-models/valids';
+import { preAnalysis as preAnalysisModel } from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 import { IPreAnalysisItem } from '@types';
 
 describe('PreAnalysis', () => {
-  let packagesAnalysis;
+  let preAnalysis;
 
   beforeAll(async () => {
-    packagesAnalysis = (await transformOntoUML2GUFO(packagesModel, {
+    preAnalysis = (await transformOntoUML2GUFO(preAnalysisModel, {
       baseIRI: '://foo/',
-      preAnalysis: true,
       createInverses: true,
+      preAnalysis: true,
+      prefixPackages: true,
       customPackageMapping: {
-        ZPFjgI6GAqACCQyA: {
-          prefix: 'rdfs',
-          uri: 'https://custom.com/rdfs#',
-        },
-        School: {
-          prefix: 'customSchool',
+        test: {
+          prefix: 'test',
           uri: 'http://www.w3.org/2002/07/owl#',
+        },
+        'nQKxqY6D.AAAAQjF': {
+          prefix: 'owl',
+          uri: 'https://custom.com/owl#',
         },
       },
     })).preAnalysis;
   });
 
   it('should return invalid base IRI error', () => {
-    const invalidBaseIRI = packagesAnalysis.filter(
+    const items = preAnalysis.filter(
       (item: IPreAnalysisItem) => item.code === 'invalid_base_iri',
     );
 
-    expect(invalidBaseIRI.length).toBe(1);
+    expect(items.length).toBe(1);
   });
 
   it('should return invalid custom package prefix error', () => {
-    const invalidPackagePrefixes = packagesAnalysis.filter(
+    const items = preAnalysis.filter(
       (item: IPreAnalysisItem) => item.code === 'invalid_custom_package_prefix',
     );
 
-    expect(invalidPackagePrefixes.length).toBe(1);
+    expect(items.length).toBe(1);
   });
 
   it('should return invalid custom package uri error', () => {
-    const invalidPackagePrefixes = packagesAnalysis.filter(
+    const items = preAnalysis.filter(
       (item: IPreAnalysisItem) => item.code === 'invalid_custom_package_uri',
     );
 
-    expect(invalidPackagePrefixes.length).toBe(1);
+    expect(items.length).toBe(1);
+  });
+
+  it('should return invalid package prefix error', () => {
+    const items = preAnalysis.filter(
+      (item: IPreAnalysisItem) => item.code === 'invalid_package_prefix',
+    );
+
+    expect(items.length).toBe(2);
+  });
+
+  it('should return inexistent relation name error', () => {
+    const items = preAnalysis.filter(
+      (item: IPreAnalysisItem) => item.code === 'inexistent_relation_name',
+    );
+
+    expect(items.length).toBe(1);
+  });
+
+  it('should return inexistent inverse relation name error', () => {
+    const items = preAnalysis.filter(
+      (item: IPreAnalysisItem) =>
+        item.code === 'inexistent_inverse_relation_name',
+    );
+
+    expect(items.length).toBe(1);
+  });
+
+  it('should return source plural association end error', () => {
+    const items = preAnalysis.filter(
+      (item: IPreAnalysisItem) => item.code === 'plural_source_association_end',
+    );
+
+    expect(items.length).toBe(1);
+  });
+
+  it('should return target plural association end error', () => {
+    const items = preAnalysis.filter(
+      (item: IPreAnalysisItem) => item.code === 'plural_target_association_end',
+    );
+
+    expect(items.length).toBe(1);
+  });
+
+  it('should return repeated names error', () => {
+    const items = preAnalysis.filter(
+      (item: IPreAnalysisItem) => item.code === 'repeated_names',
+    );
+
+    expect(items.length).toBe(4);
+  });
+
+  it('should return inexistent source cardinality error', () => {
+    const items = preAnalysis.filter(
+      (item: IPreAnalysisItem) => item.code === 'inexistent_source_cardinality',
+    );
+
+    expect(items.length).toBe(1);
+  });
+
+  it('should return inexistent target cardinality error', () => {
+    const items = preAnalysis.filter(
+      (item: IPreAnalysisItem) => item.code === 'inexistent_target_cardinality',
+    );
+
+    expect(items.length).toBe(1);
+  });
+
+  it('should return inexistent attribute type error', () => {
+    const items = preAnalysis.filter(
+      (item: IPreAnalysisItem) => item.code === 'inexistent_attribute_type',
+    );
+
+    expect(items.length).toBe(2);
   });
 });

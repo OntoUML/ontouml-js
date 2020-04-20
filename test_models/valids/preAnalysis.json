@@ -1,0 +1,475 @@
+{
+  "type": "Package",
+  "id": "58r2KY6D.AAAAQ9h",
+  "name": "preAnalysis",
+  "description": null,
+  "contents": [
+    {
+      "type": "Class",
+      "id": "58r2KY6D.AAAAQ9i",
+      "name": "boolean",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "F8r2KY6D.AAAAQ9j",
+      "name": "byte",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "F8r2KY6D.AAAAQ9k",
+      "name": "char",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "F8r2KY6D.AAAAQ9l",
+      "name": "double",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "l8r2KY6D.AAAAQ9m",
+      "name": "float",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "l8r2KY6D.AAAAQ9n",
+      "name": "int",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "l8r2KY6D.AAAAQ9o",
+      "name": "long",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "l8r2KY6D.AAAAQ9p",
+      "name": "short",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "V8r2KY6D.AAAAQ9q",
+      "name": "void",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Class",
+      "id": "V8r2KY6D.AAAAQ9r",
+      "name": "string",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": ["datatype"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Package",
+      "id": "sz3aqY6D.AAAARLn",
+      "name": "rdfs",
+      "description": null,
+      "propertyAssignments": null,
+      "contents": [
+        {
+          "type": "Class",
+          "id": "OX46qY6D.AAAARMK",
+          "name": "KindClass1",
+          "description": null,
+          "properties": [
+            {
+              "type": "Property",
+              "id": "IHcGqY6D.AAAARPy",
+              "name": "attribute1",
+              "description": null,
+              "propertyType": null,
+              "cardinality": null,
+              "isDerived": false,
+              "isOrdered": false,
+              "isReadOnly": false,
+              "stereotypes": null,
+              "propertyAssignments": null,
+              "subsettedProperties": null,
+              "redefinedProperties": null,
+              "aggregationKind": "NONE"
+            }
+          ],
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["kind"],
+          "isAbstract": false,
+          "isDerived": false
+        },
+        {
+          "type": "Class",
+          "id": "XBb6qY6D.AAAAROc",
+          "name": "KindClass2",
+          "description": null,
+          "properties": [
+            {
+              "type": "Property",
+              "id": "GkimqY6D.AAAAQfJ",
+              "name": "attribute",
+              "description": null,
+              "propertyType": {
+                "type": "Class",
+                "id": "58r2KY6D.AAAAQ9i"
+              },
+              "cardinality": null,
+              "isDerived": false,
+              "isOrdered": false,
+              "isReadOnly": false,
+              "stereotypes": null,
+              "propertyAssignments": null,
+              "subsettedProperties": null,
+              "redefinedProperties": null,
+              "aggregationKind": "NONE"
+            }
+          ],
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["kind"],
+          "isAbstract": false,
+          "isDerived": false
+        },
+        {
+          "type": "Class",
+          "id": "ExnGqY6D.AAAAQdZ",
+          "name": "KindClass3",
+          "description": null,
+          "properties": [
+            {
+              "type": "Property",
+              "id": "5Xz5qY6D.AAAAQnH",
+              "name": "relation",
+              "description": null,
+              "propertyType": null,
+              "cardinality": null,
+              "isDerived": false,
+              "isOrdered": false,
+              "isReadOnly": false,
+              "stereotypes": null,
+              "propertyAssignments": null,
+              "subsettedProperties": null,
+              "redefinedProperties": null,
+              "aggregationKind": "NONE"
+            },
+            {
+              "type": "Property",
+              "id": "_8e5qY6D.AAAAQmp",
+              "name": "attribute",
+              "description": null,
+              "propertyType": {
+                "type": "Class",
+                "id": "l8r2KY6D.AAAAQ9n"
+              },
+              "cardinality": null,
+              "isDerived": false,
+              "isOrdered": false,
+              "isReadOnly": false,
+              "stereotypes": null,
+              "propertyAssignments": null,
+              "subsettedProperties": null,
+              "redefinedProperties": null,
+              "aggregationKind": "NONE"
+            }
+          ],
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["kind"],
+          "isAbstract": false,
+          "isDerived": false
+        },
+        {
+          "type": "Class",
+          "id": "Z.n5qY6D.AAAAQnZ",
+          "name": "KindClass4",
+          "description": null,
+          "properties": null,
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["kind"],
+          "isAbstract": false,
+          "isDerived": false
+        }
+      ]
+    },
+    {
+      "type": "Package",
+      "id": "Hqh6qY6D.AAAARM_",
+      "name": "test",
+      "description": null,
+      "contents": null,
+      "propertyAssignments": null
+    },
+    {
+      "type": "Package",
+      "id": "nQKxqY6D.AAAAQjF",
+      "name": "test2",
+      "description": null,
+      "contents": null,
+      "propertyAssignments": null
+    },
+    {
+      "type": "Relation",
+      "id": "1ZJGqY6D.AAAARRI",
+      "name": null,
+      "description": null,
+      "properties": [
+        {
+          "type": "Property",
+          "id": "1ZJGqY6D.AAAARRJ",
+          "name": null,
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "OX46qY6D.AAAARMK"
+          },
+          "cardinality": "0..*",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        },
+        {
+          "type": "Property",
+          "id": "1ZJGqY6D.AAAARRL",
+          "name": null,
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "XBb6qY6D.AAAAROc"
+          },
+          "cardinality": "0..*",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        }
+      ],
+      "propertyAssignments": null,
+      "stereotypes": ["material"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Relation",
+      "id": "8uPGqY6D.AAAAQd_",
+      "name": "relation",
+      "description": null,
+      "properties": [
+        {
+          "type": "Property",
+          "id": "8uPGqY6D.AAAAQeA",
+          "name": "inverse connects",
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "XBb6qY6D.AAAAROc"
+          },
+          "cardinality": null,
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        },
+        {
+          "type": "Property",
+          "id": "8uPGqY6D.AAAAQeC",
+          "name": "connects",
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "ExnGqY6D.AAAAQdZ"
+          },
+          "cardinality": null,
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        }
+      ],
+      "propertyAssignments": null,
+      "stereotypes": ["material"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Relation",
+      "id": "VAP5qY6D.AAAAQno",
+      "name": "relation1",
+      "description": null,
+      "properties": [
+        {
+          "type": "Property",
+          "id": "VAP5qY6D.AAAAQnp",
+          "name": "connect",
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "OX46qY6D.AAAARMK"
+          },
+          "cardinality": "0..*",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        },
+        {
+          "type": "Property",
+          "id": "1AP5qY6D.AAAAQnr",
+          "name": null,
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "Z.n5qY6D.AAAAQnZ"
+          },
+          "cardinality": "0..*",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        }
+      ],
+      "propertyAssignments": null,
+      "stereotypes": ["material"],
+      "isAbstract": false,
+      "isDerived": false
+    },
+    {
+      "type": "Relation",
+      "id": "rIcFqY6D.AAAAQoZ",
+      "name": "relation1",
+      "description": null,
+      "properties": [
+        {
+          "type": "Property",
+          "id": "rIcFqY6D.AAAAQoa",
+          "name": "connect",
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "Z.n5qY6D.AAAAQnZ"
+          },
+          "cardinality": "0..1",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        },
+        {
+          "type": "Property",
+          "id": "rIcFqY6D.AAAAQoc",
+          "name": "connect",
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "ExnGqY6D.AAAAQdZ"
+          },
+          "cardinality": "0..1",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        }
+      ],
+      "propertyAssignments": null,
+      "stereotypes": ["material"],
+      "isAbstract": false,
+      "isDerived": false
+    }
+  ],
+  "propertyAssignments": null
+}
