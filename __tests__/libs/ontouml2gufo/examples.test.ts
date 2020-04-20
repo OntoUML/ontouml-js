@@ -7,6 +7,7 @@ import {
   partWhole,
   packages,
   derivation,
+  inverseRelations,
 } from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 import { IPackage, IOntoUML2GUFOOptions } from '@types';
@@ -26,6 +27,8 @@ describe('Examples', () => {
         options: {
           format: 'Turtle',
           baseIRI: 'https://alpinebits.org',
+          createInverses: true,
+          createObjectProperty: false,
         },
       },
       {
@@ -34,7 +37,7 @@ describe('Examples', () => {
         options: {
           format: 'Turtle',
           baseIRI: 'https://alpinebits.org',
-          hideObjectPropertyCreation: true,
+          createObjectProperty: false,
         },
       },
       {
@@ -42,6 +45,25 @@ describe('Examples', () => {
         model: alpinebits,
         options: {
           baseIRI: 'https://alpinebits.org',
+        },
+      },
+      {
+        name: 'inverseRelations.ttl',
+        model: inverseRelations,
+        options: {
+          format: 'Turtle',
+          baseIRI: 'https://relations.org',
+          createInverses: true,
+        },
+      },
+      {
+        name: 'inverseRelationsHideObjectProperty.ttl',
+        model: inverseRelations,
+        options: {
+          format: 'Turtle',
+          baseIRI: 'https://relations.org',
+          createInverses: true,
+          createObjectProperty: false,
         },
       },
       {
@@ -78,7 +100,7 @@ describe('Examples', () => {
       {
         name: 'partWholeHideRelations.ttl',
         model: partWhole,
-        options: { format: 'Turtle', hideObjectPropertyCreation: true },
+        options: { format: 'Turtle', createObjectProperty: false },
       },
       {
         name: 'partWhole.nt',
@@ -113,7 +135,7 @@ describe('Examples', () => {
 
     for (let file of files) {
       const result = await transformOntoUML2GUFO(file.model, file.options);
-      const path = `__tests__/libs/ontuml2gufo/examples/${file.name}`;
+      const path = `__tests__/libs/ontouml2gufo/examples/${file.name}`;
 
       fs.writeFileSync(path, result);
     }

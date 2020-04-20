@@ -1,5 +1,5 @@
 import { ModelManager } from '@libs/model';
-import { OntoUML2GUFO } from '@libs/ontuml2gufo';
+import { OntoUML2GUFO } from '@libs/ontouml2gufo';
 import { IPackage, IOntoUML2GUFOOptions } from '@types';
 
 export async function transformOntoUML2GUFO(

@@ -1,7 +1,10 @@
 import memoizee from 'memoizee';
 import { IElement, IRelation, IPackage, IOntoUML2GUFOOptions } from '@types';
 import { OntoUMLType } from '@constants/.';
-import { RelationStereotypeMapping } from './constants';
+import {
+  NormalRelationStereotypeMapping,
+  InverseRelationStereotypeMapping,
+} from './constants';
 
 type GetURI = {
   element: IElement;
@@ -35,70 +38,36 @@ export const getPrefixes = memoizee(
 );
 
 export const getURI = memoizee(({ element, options }: GetURI): string => {
-  const { uriManager, prefixPackages } = options;
-  const uriFormatBy = options ? options.uriFormatBy || 'name' : 'name';
-  const { id, name } = element;
+  const { uriManager, uriFormatBy, prefixPackages } = options;
+  const { id, name, propertyAssignments } = element;
   const isRelation = element.type === OntoUMLType.RELATION_TYPE;
   const isClass = element.type === OntoUMLType.CLASS_TYPE;
+  const isInverseRelation = isRelation && propertyAssignments.isInverseRelation;
   let suggestedName = name;
 
   if (isRelation && !name && uriFormatBy === 'name') {
-    const relation = element as IRelation;
-    const { stereotypes, properties, propertyAssignments = {} } = relation;
-    const stereotype = stereotypes ? stereotypes[0] : null;
-    const { isInvertedRelation, isPartWholeRelation } = propertyAssignments;
-
-    const source = relation.getSource();
-    const target = relation.getTarget();
-    const sourceAssociatioName = properties[0].name;
-    const targetAssociationname = properties[1].name;
-    const hasAssociationName = isInvertedRelation
-      ? !!sourceAssociatioName
-      : !!targetAssociationname;
-
-    const sourceName =
-      formatName(sourceAssociatioName) ||
-      formatName(source.name) ||
-      formatName(id);
-    const targetName =
-      formatName(targetAssociationname) ||
-      formatName(target.name) ||
-      formatName(id);
-    let formattedElementName = isInvertedRelation ? sourceName : targetName;
-
-    const stereotypeName = RelationStereotypeMapping[stereotype];
-    const associationName =
-      formattedElementName.charAt(0).toLocaleLowerCase() +
-      formattedElementName.substring(1);
-
-    let prefixName = stereotypeName;
-
-    if (isPartWholeRelation && !stereotypeName) {
-      prefixName = 'isProperPartOf';
-    }
-
-    suggestedName =
-      hasAssociationName || !prefixName
-        ? associationName
-        : `${prefixName}${formattedElementName}`;
+    suggestedName = getRelationName(element as IRelation);
   }
 
   let formattedName;
 
   if (isRelation) {
-    formattedName = name
-      ? formatName(
-          name,
-          (s: string) => s.charAt(0).toUpperCase() + s.substring(1),
-        )
-      : suggestedName;
+    formattedName =
+      name && !isInverseRelation
+        ? formatName(
+            name,
+            (s: string) => s.charAt(0).toUpperCase() + s.substring(1),
+          )
+        : suggestedName;
   } else if (isClass) {
     formattedName = name ? formatName(name) : null;
   } else {
     formattedName = name ? cleanSpecialCharacters(name) : null;
   }
 
-  const formattedId = id ? cleanSpecialCharacters(id) : null;
+  const formattedId = id
+    ? `${isInverseRelation ? 'inverse_' : ''}${cleanSpecialCharacters(id)}`
+    : null;
 
   const elementUri = uriManager.generateUniqueURI({
     id: formattedId,
@@ -129,12 +98,44 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
 
       return isRoot ? `:${uri}` : `${formattedPackageUri}:${uri}`;
     }
-
-    return `:${uri}`;
   }
 
   return `:${uri}`;
 });
+
+const getRelationName = (relation: IRelation): string => {
+  const { id, stereotypes, properties, propertyAssignments } = relation;
+  const stereotype = stereotypes ? stereotypes[0] : null;
+  const { isInverseRelation, isPartWholeRelation } = propertyAssignments;
+  const RelationStereotypeMapping = isInverseRelation
+    ? InverseRelationStereotypeMapping
+    : NormalRelationStereotypeMapping;
+
+  const target = relation.getTarget();
+  const targetAssociationname = properties[1].name;
+  const hasAssociationName = !!targetAssociationname;
+
+  const targetName =
+    formatName(targetAssociationname) ||
+    formatName(target.name) ||
+    formatName(id);
+  let formattedElementName = targetName;
+
+  const stereotypeName = RelationStereotypeMapping[stereotype];
+  const associationName =
+    formattedElementName.charAt(0).toLocaleLowerCase() +
+    formattedElementName.substring(1);
+
+  let prefixName = stereotypeName;
+
+  if (isPartWholeRelation && !stereotypeName) {
+    prefixName = RelationStereotypeMapping['isProperPartOf'];
+  }
+
+  return hasAssociationName || !prefixName
+    ? associationName
+    : `${prefixName}${formattedElementName}`;
+};
 
 const cleanSpecialCharacters = memoizee((str: string) =>
   str

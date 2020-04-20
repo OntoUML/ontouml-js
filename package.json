@@ -23,7 +23,7 @@
     "bundle": "webpack",
     "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'",
     "test": "jest --coverage",
-    "test:clean": "jest --clearCache",
+    "test:clear": "jest --clearCache",
     "test:watch": "jest --watch"
   },
   "husky": {
