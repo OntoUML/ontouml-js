@@ -130,22 +130,22 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
   const isClass = element.type === OntoUMLType.CLASS_TYPE;
   const isInverseRelation = isRelation && propertyAssignments.isInverseRelation;
   const hasCustomPackage = Object.keys(customPackageMapping).length > 0;
+  const hasName = name && !isInverseRelation;
   let suggestedName = name;
 
-  if (isRelation && !name && uriFormatBy === 'name') {
+  if (isRelation && !hasName && uriFormatBy === 'name') {
     suggestedName = getRelationName(element as IRelation);
   }
 
   let formattedName;
 
   if (isRelation) {
-    formattedName =
-      name && !isInverseRelation
-        ? formatName(
-            name,
-            (s: string) => s.charAt(0).toUpperCase() + s.substring(1),
-          )
-        : suggestedName;
+    formattedName = hasName
+      ? formatName(
+          name,
+          (s: string) => s.charAt(0).toUpperCase() + s.substring(1),
+        )
+      : suggestedName;
   } else if (isClass) {
     formattedName = name ? formatName(name) : null;
   } else {

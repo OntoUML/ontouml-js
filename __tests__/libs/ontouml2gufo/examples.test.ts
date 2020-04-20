@@ -151,7 +151,7 @@ describe('Examples', () => {
       const result = await transformOntoUML2GUFO(file.model, file.options);
       const path = `__tests__/libs/ontouml2gufo/examples/${file.name}`;
 
-      fs.writeFileSync(path, result);
+      fs.writeFileSync(path, result.model);
     }
   });
 

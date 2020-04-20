@@ -6,13 +6,13 @@ describe('Attributes', () => {
   let alpinebitsCustomLabel;
 
   beforeAll(async () => {
-    alpinebits = await transformOntoUML2GUFO(alpinebitsModel);
-    alpinebitsCustomLabel = await transformOntoUML2GUFO(alpinebitsModel, {
+    alpinebits = (await transformOntoUML2GUFO(alpinebitsModel)).model;
+    alpinebitsCustomLabel = (await transformOntoUML2GUFO(alpinebitsModel, {
       customElementMapping: {
         capacity: { uri: 'owlCapacity' },
         tZNlFRaGAqCsIBOU: { uri: 'owlArea' },
       },
-    });
+    })).model;
   });
 
   it('should generate "capacity" as an int DatatypeProperty', async () => {

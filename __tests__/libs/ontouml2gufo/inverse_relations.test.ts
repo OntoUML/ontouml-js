@@ -10,21 +10,21 @@ describe('InverseRelations', () => {
   let inverseRelationsHideOP;
 
   beforeAll(async () => {
-    alpinebits = await transformOntoUML2GUFO(alpinebitsModel, {
+    alpinebits = (await transformOntoUML2GUFO(alpinebitsModel, {
       createInverses: true,
-    });
+    })).model;
 
-    inverseRelations = await transformOntoUML2GUFO(inverseRelationsModel, {
+    inverseRelations = (await transformOntoUML2GUFO(inverseRelationsModel, {
       createInverses: true,
-    });
+    })).model;
 
-    inverseRelationsHideOP = await transformOntoUML2GUFO(
+    inverseRelationsHideOP = (await transformOntoUML2GUFO(
       inverseRelationsModel,
       {
         createInverses: true,
         createObjectProperty: false,
       },
-    );
+    )).model;
   });
 
   it('should generate an uri automatically using association end', async () => {
