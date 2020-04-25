@@ -8,9 +8,11 @@ describe('Attributes', () => {
   beforeAll(async () => {
     alpinebits = (await transformOntoUML2GUFO(alpinebitsModel)).model;
     alpinebitsCustomLabel = (await transformOntoUML2GUFO(alpinebitsModel, {
+      createInverses: true,
       customElementMapping: {
         capacity: { uri: 'owlCapacity' },
         tZNlFRaGAqCsIBOU: { uri: 'owlArea' },
+        '3x40WRaGAqCsIB4X': { uri: 'hasTrail', label: { en: 'hasLabel' } },
       },
     })).model;
   });
@@ -62,6 +64,8 @@ describe('Attributes', () => {
     const data = [
       '<:owlCapacity> <rdf:type> <owl:DatatypeProperty>',
       '<:owlArea> <rdf:type> <owl:DatatypeProperty>',
+      '<:hasTrail> <rdf:type> <owl:ObjectProperty>',
+      '<:hasTrail> <rdfs:label> "hasLabel"@en',
     ];
 
     for (const value of data) {

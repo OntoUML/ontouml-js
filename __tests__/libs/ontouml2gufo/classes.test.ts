@@ -8,7 +8,7 @@ import {
 } from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 
-describe('Relations', () => {
+describe('Classes', () => {
   it('should transform OntoUML <<mixin>> class', async () => {
     const result = (await transformOntoUML2GUFO(mixinExample1, {
       uriFormatBy: 'id',

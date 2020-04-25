@@ -42,6 +42,7 @@ describe('Examples', () => {
             JoK2ZeaGAqACBxS5: { uri: 'OWLPerson', label: { pt: 'Pessoa' } },
             Organization: { uri: 'OWLOrganization' },
             'Event Plan': { uri: 'OWLEventPlan' },
+            '3x40WRaGAqCsIB4X': { uri: 'hasTrail', label: { en: 'hasLabel' } },
           },
         },
       },
