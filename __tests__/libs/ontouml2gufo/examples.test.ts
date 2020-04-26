@@ -14,6 +14,7 @@ import { IPackage, IOntoUML2GUFOOptions } from '@types';
 
 type File = {
   name: string;
+  docName?: string;
   model: IPackage;
   options?: Partial<IOntoUML2GUFOOptions>;
 };
@@ -23,11 +24,12 @@ describe('Examples', () => {
     const files: File[] = [
       {
         name: 'alpinebits.ttl',
+        docName: 'alpinebits.html',
         model: alpinebits,
         options: {
           format: 'Turtle',
           baseIRI: 'https://alpinebits.org',
-          createInverses: true,
+          createDocumentation: true,
           createObjectProperty: false,
         },
       },
@@ -109,8 +111,9 @@ describe('Examples', () => {
       },
       {
         name: 'partWhole.ttl',
+        docName: 'partWhole.html',
         model: partWhole,
-        options: { format: 'Turtle' },
+        options: { format: 'Turtle', createDocumentation: true },
       },
       {
         name: 'partWholeHideRelations.ttl',
@@ -152,11 +155,16 @@ describe('Examples', () => {
       const result = await transformOntoUML2GUFO(file.model, file.options);
       const path = `__tests__/libs/ontouml2gufo/examples/${file.name}`;
 
+      if (file.options && file.options.createDocumentation && file.docName) {
+        const docPath = `__tests__/libs/ontouml2gufo/examples/${file.docName}`;
+        fs.writeFileSync(docPath, result.documentation);
+      }
+
       fs.writeFileSync(path, result.model);
     }
   });
 
-  it('should generate example files', async () => {
+  it('should generate example files', () => {
     expect(true).toBe(true);
   });
 });

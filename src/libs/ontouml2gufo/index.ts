@@ -19,6 +19,7 @@ import { transformRelations } from './relation_functions';
 import { getURI, getPrefixes } from './helper_functions';
 import URIManager from './uri_manager';
 import { runPreAnalysis } from './pre_analysis';
+import { generateDocumentation } from './docs/docs';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -39,10 +40,12 @@ export class OntoUML2GUFO {
 
   async transformOntoUML2GUFO({
     baseIRI,
+    createDocumentation = false,
     createInverses = false,
     createObjectProperty = true,
     customElementMapping = {},
     customPackageMapping = {},
+    documentationProps = { title: 'Ontology', theme: {}, customPartials: {} },
     format = 'Turtle',
     preAnalysis = false,
     prefixPackages,
@@ -50,10 +53,12 @@ export class OntoUML2GUFO {
   }: IOntoUML2GUFOOptions): Promise<IOntoUML2GUFOResult> {
     const options = {
       baseIRI,
+      createDocumentation,
       createInverses,
       createObjectProperty,
       customElementMapping,
       customPackageMapping,
+      documentationProps,
       format,
       preAnalysis,
       prefixPackages,
@@ -70,15 +75,13 @@ export class OntoUML2GUFO {
     const packages = this.model.getAllContentsByType([
       OntoUMLType.PACKAGE_TYPE,
     ]) as IPackage[];
-    const prefixes = await getPrefixes(packages, options);
+    const modelPrefixes = await getPrefixes(packages, options);
+    const prefixes = {
+      ...modelPrefixes,
+      ...DefaultPrefixes,
+    };
 
-    const writer = new N3.Writer({
-      format,
-      prefixes: {
-        ...prefixes,
-        ...DefaultPrefixes,
-      },
-    });
+    const writer = new N3.Writer({ format, prefixes });
 
     writer.addQuads([
       quad(
@@ -97,12 +100,22 @@ export class OntoUML2GUFO {
 
     return await new Promise<IOntoUML2GUFOResult>(
       (resolve: (result: IOntoUML2GUFOResult) => void) => {
-        writer.end((error: any, result: string) => {
+        writer.end(async (error: any, result: string) => {
           if (error) {
             console.log(error);
           }
 
-          resolve({ preAnalysis: analysis, model: result });
+          let documentation = '';
+
+          if (createDocumentation) {
+            documentation = await generateDocumentation(
+              result,
+              prefixes,
+              options,
+            );
+          }
+
+          resolve({ documentation, preAnalysis: analysis, model: result });
         });
       },
     );

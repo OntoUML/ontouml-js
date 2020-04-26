@@ -1,6 +1,6 @@
 import { OntoUMLType, AggregationKind } from '@constants/.';
 import URIManager from '@libs/ontouml2gufo/uri_manager';
-
+import { OntoUML2GUFODocTheme } from '@libs/ontouml2gufo/docs/docs_theme';
 /**
  * Interface that captures common properties of objects in `ontouml-schema`. Whenever necessary, stereotypes are captured as regular string arrays.
  *
@@ -330,6 +330,7 @@ interface IOntoUMLError {
 
 interface IOntoUML2GUFOOptions {
   baseIRI: string;
+  createDocumentation?: boolean;
   createInverses?: boolean;
   createObjectProperty?: boolean;
   customElementMapping?: {
@@ -345,6 +346,20 @@ interface IOntoUML2GUFOOptions {
       prefix: string;
       uri: string;
     };
+  };
+  documentationProps?: {
+    title?: string;
+    customPartials?: {
+      headContent?: string;
+      styles?: string;
+      head?: string;
+      body?: string;
+      termsIndex?: string;
+      classes?: string;
+      relations?: string;
+      attributes?: string;
+    };
+    theme?: OntoUML2GUFODocTheme;
   };
   format?: string;
   preAnalysis?: boolean;
@@ -362,6 +377,7 @@ interface IPreAnalysisItem {
 }
 
 interface IOntoUML2GUFOResult {
+  documentation: string;
   preAnalysis: IPreAnalysisItem[];
   model: string;
 }
