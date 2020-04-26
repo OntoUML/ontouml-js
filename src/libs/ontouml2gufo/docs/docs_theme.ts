@@ -19,6 +19,7 @@ export type OntoUML2GUFODocTheme = {
   typography?: {
     fontFamily?: string;
     fontSize?: string;
+    mobileFontSize?: string;
   };
   overrides?: {
     body?: OverrideStyle;
@@ -43,6 +44,7 @@ const theme: OntoUML2GUFODocTheme = {
   typography: {
     fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
     fontSize: '10px',
+    mobileFontSize: '8px',
   },
   overrides: {
     body: {

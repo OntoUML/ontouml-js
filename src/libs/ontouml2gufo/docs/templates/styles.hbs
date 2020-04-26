@@ -12,6 +12,7 @@
     /* === TYPOGRAPHY === */
     --fontFamily: {{theme.typography.fontFamily}};
     --fontSize: {{theme.typography.fontSize}};
+    --mobileFontSize: {{theme.typography.mobileFontSize}};
     
     /* === OVERRIDES === */
 
@@ -128,7 +129,7 @@
 
   @media screen and (max-width: 768px) {
     html {
-      font-size: 8px;
+      font-size: var(--mobileFontSize);
     }
 
     body {
