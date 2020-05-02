@@ -12,7 +12,7 @@ export async function transformAnnotations(
   element: IElement,
   options: IOntoUML2GUFOOptions,
 ): Promise<boolean> {
-  const { propertyAssignments, description } = element;
+  const { propertyAssignments, description, name } = element;
   const { customLabel = {} } = getCustomElementData(element, options);
   const uri = getURI({ element, options });
   const quads = [];
@@ -41,6 +41,18 @@ export async function transformAnnotations(
         );
       }
     }
+  }
+
+  if (customLabel.default) {
+    quads.push(
+      quad(
+        namedNode(uri),
+        namedNode('rdfs:label'),
+        literal(customLabel.default),
+      ),
+    );
+  } else if (name) {
+    quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(name)));
   }
 
   if (description) {

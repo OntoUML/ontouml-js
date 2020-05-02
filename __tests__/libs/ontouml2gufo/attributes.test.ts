@@ -12,7 +12,10 @@ describe('Attributes', () => {
       customElementMapping: {
         capacity: { uri: 'owlCapacity' },
         tZNlFRaGAqCsIBOU: { uri: 'owlArea' },
-        '3x40WRaGAqCsIB4X': { uri: 'hasTrail', label: { en: 'hasLabel' } },
+        '3x40WRaGAqCsIB4X': {
+          uri: 'hasTrail',
+          label: { default: 'hasDefaultLabel', en: 'hasLabel' },
+        },
       },
     });
   });
@@ -65,6 +68,7 @@ describe('Attributes', () => {
       '<:owlCapacity> <rdf:type> <owl:DatatypeProperty>',
       '<:owlArea> <rdf:type> <owl:DatatypeProperty>',
       '<:hasTrail> <rdf:type> <owl:ObjectProperty>',
+      '<:hasTrail> <rdfs:label> "hasDefaultLabel"',
       '<:hasTrail> <rdfs:label> "hasLabel"@en',
     ];
 

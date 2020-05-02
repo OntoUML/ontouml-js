@@ -127,7 +127,7 @@ describe('Classes', () => {
       customElementMapping: {
         JoK2ZeaGAqACBxS5: {
           uri: 'OWLPerson',
-          label: { en: 'Person', pt: 'Pessoa' },
+          label: { default: 'OWLPerson', en: 'Person', pt: 'Pessoa' },
         },
         Organization: { uri: 'OWLOrganization' },
         'Event Plan': { uri: 'OWLEventPlan' },
@@ -135,6 +135,7 @@ describe('Classes', () => {
     });
 
     expect(result).toContain('<:OWLPerson> <rdf:type> <owl:Class>');
+    expect(result).toContain('<:OWLPerson> <rdfs:label> "OWLPerson"');
     expect(result).toContain('<:OWLPerson> <rdfs:label> "Person"@en');
     expect(result).toContain('<:OWLPerson> <rdfs:label> "Pessoa"@pt');
     expect(result).toContain('<:OWLOrganization> <rdf:type> <owl:Class>');

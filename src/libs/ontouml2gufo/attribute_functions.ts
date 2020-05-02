@@ -154,10 +154,6 @@ export async function transformAttributes(
       }
     }
 
-    if (name) {
-      quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(name)));
-    }
-
     // transform annotations
     await transformAnnotations(writer, attributes[i], options);
   }

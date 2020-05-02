@@ -22,7 +22,10 @@ describe('Relations', () => {
     partWholeCustomLabel = await transformOntoUML2GUFO(partWholeModel, {
       customElementMapping: {
         geHLKw6GAqACBCSD: { uri: 'historicalDependence' },
-        hF1rKw6GAqACBCXn: { uri: 'mediation' },
+        hF1rKw6GAqACBCXn: {
+          uri: 'mediation',
+          label: { default: 'OWLMediation' },
+        },
       },
     });
   });
@@ -244,6 +247,7 @@ describe('Relations', () => {
     const data = [
       '<:historicalDependence> <rdf:type> <owl:ObjectProperty>',
       '<:mediation> <rdf:type> <owl:ObjectProperty>',
+      '<:mediation> <rdfs:label> "OWLMediation',
     ];
 
     for (const value of data) {
