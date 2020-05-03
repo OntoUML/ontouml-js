@@ -146,6 +146,9 @@ export async function transformRelations(
 
     // transform annotations for relation
     await transformAnnotations(writer, relation, options);
+
+    // transform annotations for inverse relation
+    await transformAnnotations(writer, inverseRelation, options);
   }
 
   return true;

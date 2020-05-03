@@ -331,8 +331,22 @@ interface IOntoUMLError {
 interface IOntoUML2GUFOOptions {
   baseIRI: string;
   createInverses?: boolean;
-  format?: string;
   createObjectProperty?: boolean;
+  customElementMapping?: {
+    [key: string]: {
+      label?: {
+        [key: string]: string;
+      };
+      uri: string;
+    };
+  };
+  customPackageMapping?: {
+    [key: string]: {
+      prefix: string;
+      uri: string;
+    };
+  };
+  format?: string;
   prefixPackages?: boolean;
   uriFormatBy?: 'name' | 'id';
   uriManager?: URIManager;

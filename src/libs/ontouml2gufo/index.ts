@@ -37,16 +37,20 @@ export class OntoUML2GUFO {
   async transformOntoUML2GUFO({
     baseIRI,
     createInverses = false,
-    format = 'Turtle',
     createObjectProperty = true,
+    customElementMapping = {},
+    customPackageMapping = {},
+    format = 'Turtle',
     prefixPackages,
     uriFormatBy = 'name',
   }: IOntoUML2GUFOOptions): Promise<string> {
     const options = {
       baseIRI,
       createInverses,
-      format,
       createObjectProperty,
+      customElementMapping,
+      customPackageMapping,
+      format,
       prefixPackages,
       uriFormatBy,
       uriManager: new URIManager(),

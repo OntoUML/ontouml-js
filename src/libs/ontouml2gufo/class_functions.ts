@@ -106,7 +106,7 @@ export async function transformClassesByStereotype(
 
   for (let i = 0; i < classes.length; i += 1) {
     const classElement = classes[i];
-    const { name, stereotypes, properties } = classElement;
+    const { stereotypes, properties } = classElement;
     const uri = getURI({ element: classElement, options });
 
     if (!stereotypes || stereotypes.length !== 1) continue;
@@ -129,7 +129,6 @@ export async function transformClassesByStereotype(
             namedNode('rdf:type'),
             namedNode('owl:NamedIndividual'),
           ),
-          quad(namedNode(uri), namedNode('rdfs:label'), literal(name)),
         ]);
       }
 

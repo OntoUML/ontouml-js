@@ -3,11 +3,26 @@ import { transformOntoUML2GUFO } from './helpers';
 
 describe('Subpackages', () => {
   let owlContent;
+  let customPackages;
 
   beforeAll(async () => {
     owlContent = await transformOntoUML2GUFO(packages, {
       format: 'Turtle',
       prefixPackages: true,
+    });
+
+    customPackages = await transformOntoUML2GUFO(packages, {
+      format: 'Turtle',
+      customPackageMapping: {
+        ZPFjgI6GAqACCQyA: {
+          prefix: 'customPerson',
+          uri: 'https://custom.com/person#',
+        },
+        School: {
+          prefix: 'customSchool',
+          uri: 'https://custom.com/school#',
+        },
+      },
     });
   });
 
@@ -39,6 +54,28 @@ describe('Subpackages', () => {
 
     for (const value of data) {
       expect(owlContent).toContain(value);
+    }
+  });
+
+  it('should generate custom subpackages prefixes', () => {
+    const data = [
+      '@prefix customPerson: <https://custom.com/person#>.',
+      '@prefix customSchool: <https://custom.com/school#>.',
+    ];
+
+    for (const value of data) {
+      expect(customPackages).toContain(value);
+    }
+  });
+
+  it('should have elements with custom subpackage prefixes', () => {
+    const data = [
+      'customPerson:Father rdf:type owl:Class',
+      'customSchool:Student rdf:type owl:Class',
+    ];
+
+    for (const value of data) {
+      expect(customPackages).toContain(value);
     }
   });
 });

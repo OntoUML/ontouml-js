@@ -1,18 +1,32 @@
-import { alpinebits, partWhole, derivation } from '@test-models/valids';
+import {
+  alpinebits as alpinebitsModel,
+  partWhole as partWholeModel,
+  derivation as derivationModel,
+} from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 
 describe('Relations', () => {
-  let alpinebitsResult;
-  let derivationResult;
-  let partWholeResult;
-  let partWholeHideRelationResult;
+  let alpinebits;
+  let derivation;
+  let partWhole;
+  let partWholeHideRelation;
+  let partWholeCustomLabel;
 
   beforeAll(async () => {
-    alpinebitsResult = await transformOntoUML2GUFO(alpinebits);
-    derivationResult = await transformOntoUML2GUFO(derivation);
-    partWholeResult = await transformOntoUML2GUFO(partWhole);
-    partWholeHideRelationResult = await transformOntoUML2GUFO(partWhole, {
+    alpinebits = await transformOntoUML2GUFO(alpinebitsModel);
+    derivation = await transformOntoUML2GUFO(derivationModel);
+    partWhole = await transformOntoUML2GUFO(partWholeModel);
+    partWholeHideRelation = await transformOntoUML2GUFO(partWholeModel, {
       createObjectProperty: false,
+    });
+    partWholeCustomLabel = await transformOntoUML2GUFO(partWholeModel, {
+      customElementMapping: {
+        geHLKw6GAqACBCSD: { uri: 'historicalDependence' },
+        hF1rKw6GAqACBCXn: {
+          uri: 'mediation',
+          label: { default: 'OWLMediation' },
+        },
+      },
     });
   });
 
@@ -20,7 +34,7 @@ describe('Relations', () => {
     const data = ['<:isComponentOfSnowpark> <rdf:type> <owl:ObjectProperty>'];
 
     for (const value of data) {
-      expect(alpinebitsResult).toContain(value);
+      expect(alpinebits).toContain(value);
     }
   });
 
@@ -28,7 +42,7 @@ describe('Relations', () => {
     const data = ['<:organizer> <rdf:type> <owl:ObjectProperty>'];
 
     for (const value of data) {
-      expect(alpinebitsResult).toContain(value);
+      expect(alpinebits).toContain(value);
     }
   });
 
@@ -39,7 +53,7 @@ describe('Relations', () => {
     ];
 
     for (const value of data) {
-      expect(alpinebitsResult).toContain(value);
+      expect(alpinebits).toContain(value);
     }
   });
 
@@ -52,12 +66,12 @@ describe('Relations', () => {
     ];
 
     for (const value of data) {
-      expect(alpinebitsResult).toContain(value);
+      expect(alpinebits).toContain(value);
     }
   });
 
   it('should generate a cardinality restriction of 2..*', async () => {
-    expect(alpinebitsResult).toContain(
+    expect(alpinebits).toContain(
       `<:CompositeArea> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
         <owl:onProperty> [ <owl:inverseOf> <:isComponentOfCompositeArea> ];
@@ -68,7 +82,7 @@ describe('Relations', () => {
   });
 
   it('should generate a cardinality restriction of 1..*', async () => {
-    expect(alpinebitsResult).toContain(
+    expect(alpinebits).toContain(
       `<:EventPlan> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
         <owl:onProperty> <:organizer>;
@@ -78,7 +92,7 @@ describe('Relations', () => {
   });
 
   it('should generate a cardinality restriction of 0..1', () => {
-    expect(alpinebitsResult).toContain(
+    expect(alpinebits).toContain(
       `<:EventPlan> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
         <owl:onProperty> <:eventSeries>;
@@ -108,7 +122,7 @@ describe('Relations', () => {
     ];
 
     for (const value of data) {
-      expect(partWholeResult).toContain(value);
+      expect(partWhole).toContain(value);
     }
   });
 
@@ -134,7 +148,7 @@ describe('Relations', () => {
     ];
 
     for (const value of data) {
-      expect(partWholeResult).toContain(value);
+      expect(partWhole).toContain(value);
     }
   });
 
@@ -158,7 +172,7 @@ describe('Relations', () => {
     ];
 
     for (const value of data) {
-      expect(partWholeResult).toContain(value);
+      expect(partWhole).toContain(value);
     }
   });
 
@@ -183,7 +197,7 @@ describe('Relations', () => {
     ];
 
     for (const value of data) {
-      expect(partWholeResult).toContain(value);
+      expect(partWhole).toContain(value);
     }
   });
 
@@ -195,7 +209,7 @@ describe('Relations', () => {
     ];
 
     for (const value of data) {
-      expect(derivationResult).toContain(value);
+      expect(derivation).toContain(value);
     }
   });
 
@@ -210,8 +224,8 @@ describe('Relations', () => {
     ];
 
     for (const value of data) {
-      expect(partWholeResult).toContain(value);
-      expect(partWholeHideRelationResult).not.toContain(value);
+      expect(partWhole).toContain(value);
+      expect(partWholeHideRelation).not.toContain(value);
     }
   });
 
@@ -225,7 +239,19 @@ describe('Relations', () => {
     ];
 
     for (const value of data) {
-      expect(partWholeHideRelationResult).toContain(value);
+      expect(partWholeHideRelation).toContain(value);
+    }
+  });
+
+  it('should generate custom labels', async () => {
+    const data = [
+      '<:historicalDependence> <rdf:type> <owl:ObjectProperty>',
+      '<:mediation> <rdf:type> <owl:ObjectProperty>',
+      '<:mediation> <rdfs:label> "OWLMediation',
+    ];
+
+    for (const value of data) {
+      expect(partWholeCustomLabel).toContain(value);
     }
   });
 });

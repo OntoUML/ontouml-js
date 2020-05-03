@@ -32,6 +32,21 @@ describe('Examples', () => {
         },
       },
       {
+        name: 'alpinebitsCustomLabel.ttl',
+        model: alpinebits,
+        options: {
+          format: 'Turtle',
+          baseIRI: 'https://alpinebits.org',
+          createInverses: true,
+          customElementMapping: {
+            JoK2ZeaGAqACBxS5: { uri: 'OWLPerson', label: { pt: 'Pessoa' } },
+            Organization: { uri: 'OWLOrganization' },
+            'Event Plan': { uri: 'OWLEventPlan' },
+            '3x40WRaGAqCsIB4X': { uri: 'hasTrail', label: { en: 'hasLabel' } },
+          },
+        },
+      },
+      {
         name: 'alpinebitsHideRelations.ttl',
         model: alpinebits,
         options: {
