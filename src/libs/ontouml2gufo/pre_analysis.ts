@@ -13,13 +13,17 @@ import { OntoUMLType } from '@constants/.';
 import { DefaultPrefixes } from './constants';
 import { getPrefixes } from './helper_functions';
 
+enum PreAnalysisSeverity {
+  ERROR = 'error',
+  WARNING = 'warning',
+}
+
 /* 
   Pre-transformation preAnalysis to give users feedback about things that could potentially impact the transformation. Including:
   - Identify elements without name
   - Check invalid Base URI
   - Check package names prefixes that can clash with popular prefixes (rdfs, rdf, owl, etc)
   - Check repeated names (attributes, relation names and association ends, etc.)
-  - Check plural association ends
   - Check relations without cardinality
   - Check attributes without type
 */
@@ -72,8 +76,9 @@ async function checkBaseIRI(baseIRI: string): Promise<IPreAnalysisItem[]> {
     preAnalysis.push({
       id: randomId(),
       code: 'invalid_base_iri',
+      severity: PreAnalysisSeverity.WARNING,
       title: 'Invalid BaseIRI',
-      detail: `"${baseIRI}" is not a valid IRI.`,
+      description: `"${baseIRI}" is not a valid IRI.`,
       meta: { baseIRI },
     });
   }
@@ -91,20 +96,21 @@ async function checkPackagePrefixes(
   const defaultPrefixUris = Object.values(DefaultPrefixes);
 
   for (const key of Object.keys(customPackageMapping)) {
-    const packageEl =
-      packages.find(({ id, name }: IPackage) => id === key || name === key) ||
-      {};
+    const packageEl = packages.find(
+      ({ id, name }: IPackage) => id === key || name === key,
+    ) || { id: '', name: '' };
     const { prefix, uri } = customPackageMapping[key];
 
     if (defaultPrefixKeys.includes(prefix)) {
       preAnalysis.push({
         id: randomId(),
         code: 'invalid_custom_package_prefix',
+        severity: PreAnalysisSeverity.WARNING,
         title: 'Protected prefix provided in custom package mapping',
-        detail: `The prefix "${prefix}" is already used by another package imported by gUFO. Avoid using the following prefixes: ${defaultPrefixKeys.join(
+        description: `The prefix "${prefix}" is already used by another package imported by gUFO. Avoid using the following prefixes: ${defaultPrefixKeys.join(
           ', ',
         )}.`,
-        meta: { element: packageEl },
+        meta: { element: { id: packageEl.id, name: packageEl.name } },
       });
     }
 
@@ -112,9 +118,10 @@ async function checkPackagePrefixes(
       preAnalysis.push({
         id: randomId(),
         code: 'invalid_custom_package_uri',
+        severity: PreAnalysisSeverity.WARNING,
         title: 'Protected URI provided in custom package mapping',
-        detail: `The URI "${uri}" is already used by another package imported by gUFO.`,
-        meta: { element: packageEl },
+        description: `The URI "${uri}" is already used by another package imported by gUFO.`,
+        meta: { element: { id: packageEl.id, name: packageEl.name } },
       });
     }
   }
@@ -129,8 +136,9 @@ async function checkPackagePrefixes(
         preAnalysis.push({
           id: randomId(),
           code: 'invalid_package_prefix',
+          severity: PreAnalysisSeverity.WARNING,
           title: 'Protected prefix generated in package mapping',
-          detail: `The prefix "${prefix}" is already used by another package imported by gUFO. Beware of the following prefixes: ${defaultPrefixKeys.join(
+          description: `The prefix "${prefix}" is already used by another package imported by gUFO. Beware of the following prefixes: ${defaultPrefixKeys.join(
             ', ',
           )}.`,
           meta: { prefix, uri },
@@ -141,8 +149,9 @@ async function checkPackagePrefixes(
         preAnalysis.push({
           id: randomId(),
           code: 'invalid_package_uri',
+          severity: PreAnalysisSeverity.WARNING,
           title: 'Protected URI generated in package mapping',
-          detail: `The URI "${uri}" is already used by another package imported by gUFO.`,
+          description: `The URI "${uri}" is already used by another package imported by gUFO.`,
           meta: { prefix, uri },
         });
       }
@@ -173,8 +182,9 @@ async function checkPackagePrefixes(
 //       preAnalysis.push({
 //         id: randomId(),
 //         code: 'plural_target_association_end',
+//         severity: PreAnalysisSeverity.WARNING,
 //         title: 'Plural name used in association end',
-//         detail: `The plural name "${targetAssociationName}" is used in the target end of relation "${relation.name}", which holds between between "${source.name}" and "${target.name}".`,
+//         description: `The plural name "${targetAssociationName}" is used in the target end of relation "${relation.name}", which holds between between "${source.name}" and "${target.name}".`,
 //         meta: { element: relation },
 //       });
 //     }
@@ -187,8 +197,9 @@ async function checkPackagePrefixes(
 //       preAnalysis.push({
 //         id: randomId(),
 //         code: 'plural_source_association_end',
+//         severity: PreAnalysisSeverity.WARNING,
 //         title: 'Plural name used in association end',
-//         detail: `The plural name "${sourceAssociationName}" is used in the source end of relation "${relation.name}", which holds between between "${source.name}" and "${target.name}".`,
+//         description: `The plural name "${sourceAssociationName}" is used in the source end of relation "${relation.name}", which holds between between "${source.name}" and "${target.name}".`,
 //         meta: { element: relation },
 //       });
 //     }
@@ -217,9 +228,10 @@ async function checkInexistentRelationNames(
       preAnalysis.push({
         id: randomId(),
         code: 'inexistent_relation_name',
+        severity: PreAnalysisSeverity.WARNING,
         title: 'Missing relation name',
-        detail: `Missing name on ${stereotypeName} relation between classes "${source.name}" and "${target.name}".`,
-        meta: { element: relation },
+        description: `Missing name on ${stereotypeName} relation between classes "${source.name}" and "${target.name}".`,
+        meta: { element: { id: relation.id, name: relation.name } },
       });
     }
 
@@ -227,9 +239,10 @@ async function checkInexistentRelationNames(
       preAnalysis.push({
         id: randomId(),
         code: 'inexistent_inverse_relation_name',
+        severity: PreAnalysisSeverity.WARNING,
         title: 'Missing inverse relation name',
-        detail: `Missing inverse name for ${stereotypeName} relation between classes "${source.name}" and "${target.name}".`,
-        meta: { element: relation },
+        description: `Missing inverse name for ${stereotypeName} relation between classes "${source.name}" and "${target.name}".`,
+        meta: { element: { id: relation.id, name: relation.name } },
       });
     }
   });
@@ -289,11 +302,14 @@ async function checkRepeatedNames(
       preAnalysis.push({
         id: randomId(),
         code: 'repeated_names',
+        severity: PreAnalysisSeverity.WARNING,
         title: 'Duplicate element name',
-        detail: `The name "${name}" has been used multiple times: ${names
+        description: `The name "${name}" has been used multiple times: ${names
           .join(', ')
           .replace(/,(?!.*,)/gim, ' and')}.`,
-        meta: { elements: repeatedElements },
+        meta: {
+          elements: { id: repeatedElements.id, name: repeatedElements.name },
+        },
       });
     }
   }
@@ -317,9 +333,10 @@ async function checkInexistentCardinality(
       preAnalysis.push({
         id: randomId(),
         code: 'inexistent_source_cardinality',
+        severity: PreAnalysisSeverity.WARNING,
         title: 'Missing cardinality',
-        detail: `Missing cardinality on the source end of relation "${relation.name}" between clasess "${source.name}" and "${target.name}".`,
-        meta: { element: relation },
+        description: `Missing cardinality on the source end of relation "${relation.name}" between clasess "${source.name}" and "${target.name}".`,
+        meta: { element: { id: relation.id, name: relation.name } },
       });
     }
 
@@ -327,9 +344,10 @@ async function checkInexistentCardinality(
       preAnalysis.push({
         id: randomId(),
         code: 'inexistent_target_cardinality',
+        severity: PreAnalysisSeverity.WARNING,
         title: 'Missing cardinality',
-        detail: `Missing cardinality on the target end of relation "${relation.name}" between classes "${source.name}" and "${target.name}".`,
-        meta: { element: relation },
+        description: `Missing cardinality on the target end of relation "${relation.name}" between classes "${source.name}" and "${target.name}".`,
+        meta: { element: { id: relation.id, name: relation.name } },
       });
     }
   });
@@ -352,9 +370,13 @@ async function checkInexistentAttributesType(
         preAnalysis.push({
           id: randomId(),
           code: 'inexistent_attribute_type',
+          severity: PreAnalysisSeverity.WARNING,
           title: 'Missing attribute type',
-          detail: `Missing type on attribute "${name}" of class "${classElement.name}".`,
-          meta: { element: classElement, property },
+          description: `Missing type on attribute "${name}" of class "${classElement.name}".`,
+          meta: {
+            element: { id: classElement.id, name: classElement.name },
+            property: { id: property.id, name },
+          },
         });
       }
     });

@@ -357,7 +357,8 @@ interface IPreAnalysisItem {
   id: string;
   code?: string;
   title: string;
-  detail: string;
+  description: string;
+  severity?: 'error' | 'warning';
   meta?: Object;
 }
 
