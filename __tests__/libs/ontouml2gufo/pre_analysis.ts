@@ -73,22 +73,6 @@ describe('PreAnalysis', () => {
     expect(items.length).toBe(1);
   });
 
-  it('should return source plural association end error', () => {
-    const items = preAnalysis.filter(
-      (item: IPreAnalysisItem) => item.code === 'plural_source_association_end',
-    );
-
-    expect(items.length).toBe(1);
-  });
-
-  it('should return target plural association end error', () => {
-    const items = preAnalysis.filter(
-      (item: IPreAnalysisItem) => item.code === 'plural_target_association_end',
-    );
-
-    expect(items.length).toBe(1);
-  });
-
   it('should return repeated names error', () => {
     const items = preAnalysis.filter(
       (item: IPreAnalysisItem) => item.code === 'repeated_names',
