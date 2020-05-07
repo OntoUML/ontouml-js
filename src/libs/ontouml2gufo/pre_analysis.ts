@@ -79,7 +79,7 @@ async function checkBaseIRI(baseIRI: string): Promise<IPreAnalysisItem[]> {
       severity: PreAnalysisSeverity.WARNING,
       title: 'Invalid BaseIRI',
       description: `"${baseIRI}" is not a valid IRI.`,
-      meta: { baseIRI },
+      data: { baseIRI },
     });
   }
 
@@ -110,7 +110,7 @@ async function checkPackagePrefixes(
         description: `The prefix "${prefix}" is already used by another package imported by gUFO. Avoid using the following prefixes: ${defaultPrefixKeys.join(
           ', ',
         )}.`,
-        meta: { element: { id: packageEl.id, name: packageEl.name } },
+        data: { element: { id: packageEl.id, name: packageEl.name } },
       });
     }
 
@@ -121,7 +121,7 @@ async function checkPackagePrefixes(
         severity: PreAnalysisSeverity.WARNING,
         title: 'Protected URI provided in custom package mapping',
         description: `The URI "${uri}" is already used by another package imported by gUFO.`,
-        meta: { element: { id: packageEl.id, name: packageEl.name } },
+        data: { element: { id: packageEl.id, name: packageEl.name } },
       });
     }
   }
@@ -141,7 +141,7 @@ async function checkPackagePrefixes(
           description: `The prefix "${prefix}" is already used by another package imported by gUFO. Beware of the following prefixes: ${defaultPrefixKeys.join(
             ', ',
           )}.`,
-          meta: { prefix, uri },
+          data: { prefix, uri },
         });
       }
 
@@ -152,7 +152,7 @@ async function checkPackagePrefixes(
           severity: PreAnalysisSeverity.WARNING,
           title: 'Protected URI generated in package mapping',
           description: `The URI "${uri}" is already used by another package imported by gUFO.`,
-          meta: { prefix, uri },
+          data: { prefix, uri },
         });
       }
     }
@@ -185,7 +185,7 @@ async function checkPackagePrefixes(
 //         severity: PreAnalysisSeverity.WARNING,
 //         title: 'Plural name used in association end',
 //         description: `The plural name "${targetAssociationName}" is used in the target end of relation "${relation.name}", which holds between between "${source.name}" and "${target.name}".`,
-//         meta: { element: relation },
+//         data: { element: relation },
 //       });
 //     }
 
@@ -200,7 +200,7 @@ async function checkPackagePrefixes(
 //         severity: PreAnalysisSeverity.WARNING,
 //         title: 'Plural name used in association end',
 //         description: `The plural name "${sourceAssociationName}" is used in the source end of relation "${relation.name}", which holds between between "${source.name}" and "${target.name}".`,
-//         meta: { element: relation },
+//         data: { element: relation },
 //       });
 //     }
 //   });
@@ -227,22 +227,22 @@ async function checkInexistentRelationNames(
     if (!name && !targetAssociationName) {
       preAnalysis.push({
         id: randomId(),
-        code: 'inexistent_relation_name',
+        code: 'missing_relation_name',
         severity: PreAnalysisSeverity.WARNING,
         title: 'Missing relation name',
         description: `Missing name on ${stereotypeName} relation between classes "${source.name}" and "${target.name}".`,
-        meta: { element: { id: relation.id, name: relation.name } },
+        data: { element: { id: relation.id, name: relation.name } },
       });
     }
 
     if (createInverses && !sourceAssociationName) {
       preAnalysis.push({
         id: randomId(),
-        code: 'inexistent_inverse_relation_name',
+        code: 'missing_inverse_relation_name',
         severity: PreAnalysisSeverity.WARNING,
         title: 'Missing inverse relation name',
         description: `Missing inverse name for ${stereotypeName} relation between classes "${source.name}" and "${target.name}".`,
-        meta: { element: { id: relation.id, name: relation.name } },
+        data: { element: { id: relation.id, name: relation.name } },
       });
     }
   });
@@ -301,13 +301,13 @@ async function checkRepeatedNames(
 
       preAnalysis.push({
         id: randomId(),
-        code: 'repeated_names',
+        code: 'duplicate_names',
         severity: PreAnalysisSeverity.WARNING,
         title: 'Duplicate element name',
         description: `The name "${name}" has been used multiple times: ${names
           .join(', ')
           .replace(/,(?!.*,)/gim, ' and')}.`,
-        meta: {
+        data: {
           elements: { id: repeatedElements.id, name: repeatedElements.name },
         },
       });
@@ -332,22 +332,22 @@ async function checkInexistentCardinality(
     if (!sourceCardinality) {
       preAnalysis.push({
         id: randomId(),
-        code: 'inexistent_source_cardinality',
+        code: 'missing_source_cardinality',
         severity: PreAnalysisSeverity.WARNING,
         title: 'Missing cardinality',
         description: `Missing cardinality on the source end of relation "${relation.name}" between clasess "${source.name}" and "${target.name}".`,
-        meta: { element: { id: relation.id, name: relation.name } },
+        data: { element: { id: relation.id, name: relation.name } },
       });
     }
 
     if (!targetCardinality) {
       preAnalysis.push({
         id: randomId(),
-        code: 'inexistent_target_cardinality',
+        code: 'missing_target_cardinality',
         severity: PreAnalysisSeverity.WARNING,
         title: 'Missing cardinality',
         description: `Missing cardinality on the target end of relation "${relation.name}" between classes "${source.name}" and "${target.name}".`,
-        meta: { element: { id: relation.id, name: relation.name } },
+        data: { element: { id: relation.id, name: relation.name } },
       });
     }
   });
@@ -369,11 +369,11 @@ async function checkInexistentAttributesType(
       if (!propertyType) {
         preAnalysis.push({
           id: randomId(),
-          code: 'inexistent_attribute_type',
+          code: 'missing_attribute_type',
           severity: PreAnalysisSeverity.WARNING,
           title: 'Missing attribute type',
           description: `Missing type on attribute "${name}" of class "${classElement.name}".`,
-          meta: {
+          data: {
             element: { id: classElement.id, name: classElement.name },
             property: { id: property.id, name },
           },

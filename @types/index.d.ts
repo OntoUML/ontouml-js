@@ -359,7 +359,7 @@ interface IPreAnalysisItem {
   title: string;
   description: string;
   severity?: 'error' | 'warning';
-  meta?: Object;
+  data?: Object;
 }
 
 interface IOntoUML2GUFOResult {
