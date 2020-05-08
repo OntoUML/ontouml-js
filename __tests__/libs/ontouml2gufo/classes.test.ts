@@ -10,9 +10,9 @@ import { transformOntoUML2GUFO } from './helpers';
 
 describe('Classes', () => {
   it('should transform OntoUML <<mixin>> class', async () => {
-    const result = await transformOntoUML2GUFO(mixinExample1, {
+    const result = (await transformOntoUML2GUFO(mixinExample1, {
       uriFormatBy: 'id',
-    });
+    })).model;
 
     expect(result).toContain('<:yhVoWg6DAAAARSb> <rdf:type> <owl:Class>');
     expect(result).toContain(
@@ -26,16 +26,16 @@ describe('Classes', () => {
   });
 
   it('should transform OntoUML generalization set', async () => {
-    const result = await transformOntoUML2GUFO(mixinExample1);
+    const result = (await transformOntoUML2GUFO(mixinExample1)).model;
 
     expect(result).toContain('<:Crate> <owl:equivalentClass>');
     expect(result).toContain('<owl:unionOf> (<:BrokenCrate> <:SolidCrate>');
   });
 
   it('should transform OntoUML <<mode>> class as IntrinsicMode', async () => {
-    const result = await transformOntoUML2GUFO(modeExample1, {
+    const result = (await transformOntoUML2GUFO(modeExample1, {
       uriFormatBy: 'id',
-    });
+    })).model;
 
     expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:Class>');
     expect(result).toContain(
@@ -49,9 +49,9 @@ describe('Classes', () => {
   });
 
   it('should transform OntoUML <<mode>> class as ExtrinsicMode', async () => {
-    const result = await transformOntoUML2GUFO(modeExample2, {
+    const result = (await transformOntoUML2GUFO(modeExample2, {
       uriFormatBy: 'id',
-    });
+    })).model;
 
     expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:Class>');
     expect(result).toContain(
@@ -65,9 +65,9 @@ describe('Classes', () => {
   });
 
   it('should transform OntoUML <<relator>> class', async () => {
-    const result = await transformOntoUML2GUFO(relatorExample1, {
+    const result = (await transformOntoUML2GUFO(relatorExample1, {
       uriFormatBy: 'id',
-    });
+    })).model;
 
     expect(result).toContain('<:SzOFmg6DAAAAQuF> <rdf:type> <owl:Class>');
     expect(result).toContain(
@@ -81,9 +81,9 @@ describe('Classes', () => {
   });
 
   it('should transform OntoUML <<role>> class', async () => {
-    const result = await transformOntoUML2GUFO(roleExample1, {
+    const result = (await transformOntoUML2GUFO(roleExample1, {
       uriFormatBy: 'id',
-    });
+    })).model;
 
     // it's Husband a <<role>>
     expect(result).toContain('<:zT5mg6DAAAAQsY> <rdf:type> <owl:Class>');
@@ -112,7 +112,7 @@ describe('Classes', () => {
   });
 
   it('should transform <<enumeration>> class', async () => {
-    const result = await transformOntoUML2GUFO(alpinebits);
+    const result = (await transformOntoUML2GUFO(alpinebits)).model;
 
     expect(result).toContain(
       `<:SnowparkDifficulty> <owl:equivalentClass> [
@@ -123,7 +123,7 @@ describe('Classes', () => {
   });
 
   it('should generate custom labels', async () => {
-    const result = await transformOntoUML2GUFO(alpinebits, {
+    const result = (await transformOntoUML2GUFO(alpinebits, {
       customElementMapping: {
         JoK2ZeaGAqACBxS5: {
           uri: 'OWLPerson',
@@ -132,10 +132,9 @@ describe('Classes', () => {
         Organization: { uri: 'OWLOrganization' },
         'Event Plan': { uri: 'OWLEventPlan' },
       },
-    });
+    })).model;
 
     expect(result).toContain('<:OWLPerson> <rdf:type> <owl:Class>');
-    expect(result).toContain('<:OWLPerson> <rdfs:label> "OWLPerson"');
     expect(result).toContain('<:OWLPerson> <rdfs:label> "Person"@en');
     expect(result).toContain('<:OWLPerson> <rdfs:label> "Pessoa"@pt');
     expect(result).toContain('<:OWLOrganization> <rdf:type> <owl:Class>');

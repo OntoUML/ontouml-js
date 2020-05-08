@@ -9,6 +9,7 @@ const subkindExample1 = require('./subkind1.json');
 const alpinebits = require('./alpinebits.json');
 const istandard = require('./istandard.json');
 const person = require('./person.json');
+const preAnalysis = require('./preAnalysis.json');
 const partWhole = require('./partWhole.json');
 const annotations = require('./annotations.json');
 const packages = require('./packages.json');
@@ -27,6 +28,7 @@ export {
   alpinebits,
   istandard,
   person,
+  preAnalysis,
   partWhole,
   annotations,
   packages,

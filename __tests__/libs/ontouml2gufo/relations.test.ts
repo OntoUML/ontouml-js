@@ -13,13 +13,13 @@ describe('Relations', () => {
   let partWholeCustomLabel;
 
   beforeAll(async () => {
-    alpinebits = await transformOntoUML2GUFO(alpinebitsModel);
-    derivation = await transformOntoUML2GUFO(derivationModel);
-    partWhole = await transformOntoUML2GUFO(partWholeModel);
-    partWholeHideRelation = await transformOntoUML2GUFO(partWholeModel, {
+    alpinebits = (await transformOntoUML2GUFO(alpinebitsModel)).model;
+    derivation = (await transformOntoUML2GUFO(derivationModel)).model;
+    partWhole = (await transformOntoUML2GUFO(partWholeModel)).model;
+    partWholeHideRelation = (await transformOntoUML2GUFO(partWholeModel, {
       createObjectProperty: false,
-    });
-    partWholeCustomLabel = await transformOntoUML2GUFO(partWholeModel, {
+    })).model;
+    partWholeCustomLabel = (await transformOntoUML2GUFO(partWholeModel, {
       customElementMapping: {
         geHLKw6GAqACBCSD: { uri: 'historicalDependence' },
         hF1rKw6GAqACBCXn: {
@@ -27,7 +27,7 @@ describe('Relations', () => {
           label: { default: 'OWLMediation' },
         },
       },
-    });
+    })).model;
   });
 
   it('should generate an uri automatically using association end', async () => {

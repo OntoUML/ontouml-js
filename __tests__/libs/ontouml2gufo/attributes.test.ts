@@ -6,8 +6,8 @@ describe('Attributes', () => {
   let alpinebitsCustomLabel;
 
   beforeAll(async () => {
-    alpinebits = await transformOntoUML2GUFO(alpinebitsModel);
-    alpinebitsCustomLabel = await transformOntoUML2GUFO(alpinebitsModel, {
+    alpinebits = (await transformOntoUML2GUFO(alpinebitsModel)).model;
+    alpinebitsCustomLabel = (await transformOntoUML2GUFO(alpinebitsModel, {
       createInverses: true,
       customElementMapping: {
         capacity: { uri: 'owlCapacity' },
@@ -17,7 +17,7 @@ describe('Attributes', () => {
           label: { default: 'hasDefaultLabel', en: 'hasLabel' },
         },
       },
-    });
+    })).model;
   });
 
   it('should generate "capacity" as an int DatatypeProperty', async () => {

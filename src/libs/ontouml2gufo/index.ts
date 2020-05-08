@@ -7,8 +7,10 @@ import {
   IGeneralization,
   IRelation,
   IOntoUML2GUFOOptions,
+  IOntoUML2GUFOResult,
 } from '@types';
 import { OntoUMLType } from '@constants/.';
+import { DefaultPrefixes } from './constants';
 import {
   transformDisjointClasses,
   transformClassesByStereotype,
@@ -16,6 +18,7 @@ import {
 import { transformRelations } from './relation_functions';
 import { getURI, getPrefixes } from './helper_functions';
 import URIManager from './uri_manager';
+import { runPreAnalysis } from './pre_analysis';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -41,9 +44,10 @@ export class OntoUML2GUFO {
     customElementMapping = {},
     customPackageMapping = {},
     format = 'Turtle',
+    preAnalysis = false,
     prefixPackages,
     uriFormatBy = 'name',
-  }: IOntoUML2GUFOOptions): Promise<string> {
+  }: IOntoUML2GUFOOptions): Promise<IOntoUML2GUFOResult> {
     const options = {
       baseIRI,
       createInverses,
@@ -51,10 +55,17 @@ export class OntoUML2GUFO {
       customElementMapping,
       customPackageMapping,
       format,
+      preAnalysis,
       prefixPackages,
       uriFormatBy,
       uriManager: new URIManager(),
     };
+
+    let analysis = [];
+
+    if (preAnalysis) {
+      analysis = await runPreAnalysis(this.model, options);
+    }
 
     const packages = this.model.getAllContentsByType([
       OntoUMLType.PACKAGE_TYPE,
@@ -65,11 +76,7 @@ export class OntoUML2GUFO {
       format,
       prefixes: {
         ...prefixes,
-        gufo: 'http://purl.org/nemo/gufo#',
-        rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-        rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
-        owl: 'http://www.w3.org/2002/07/owl#',
-        xsd: 'http://www.w3.org/2001/XMLSchema#',
+        ...DefaultPrefixes,
       },
     });
 
@@ -88,15 +95,17 @@ export class OntoUML2GUFO {
       this.transformOntoUMLRelations2GUFO(writer, options),
     ]);
 
-    return await new Promise<string>((resolve: (result: string) => null) => {
-      writer.end((error: any, result: string) => {
-        if (error) {
-          console.log(error);
-        }
+    return await new Promise<IOntoUML2GUFOResult>(
+      (resolve: (result: IOntoUML2GUFOResult) => void) => {
+        writer.end((error: any, result: string) => {
+          if (error) {
+            console.log(error);
+          }
 
-        resolve(result);
-      });
-    });
+          resolve({ preAnalysis: analysis, model: result });
+        });
+      },
+    );
   }
 
   /**

@@ -347,7 +347,22 @@ interface IOntoUML2GUFOOptions {
     };
   };
   format?: string;
+  preAnalysis?: boolean;
   prefixPackages?: boolean;
   uriFormatBy?: 'name' | 'id';
   uriManager?: URIManager;
+}
+
+interface IPreAnalysisItem {
+  id: string;
+  code?: string;
+  title: string;
+  description: string;
+  severity?: 'error' | 'warning';
+  data?: Object;
+}
+
+interface IOntoUML2GUFOResult {
+  preAnalysis: IPreAnalysisItem[];
+  model: string;
 }

@@ -5,7 +5,7 @@ describe('Annotations', () => {
   let annotations;
 
   beforeAll(async () => {
-    annotations = await transformOntoUML2GUFO(annotationsModel);
+    annotations = (await transformOntoUML2GUFO(annotationsModel)).model;
   });
 
   it('should generate language labels on classess (testing with nl, pt, en, and it)', async () => {

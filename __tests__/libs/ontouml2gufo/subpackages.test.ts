@@ -6,12 +6,12 @@ describe('Subpackages', () => {
   let customPackages;
 
   beforeAll(async () => {
-    owlContent = await transformOntoUML2GUFO(packages, {
+    owlContent = (await transformOntoUML2GUFO(packages, {
       format: 'Turtle',
       prefixPackages: true,
-    });
+    })).model;
 
-    customPackages = await transformOntoUML2GUFO(packages, {
+    customPackages = (await transformOntoUML2GUFO(packages, {
       format: 'Turtle',
       customPackageMapping: {
         ZPFjgI6GAqACCQyA: {
@@ -23,7 +23,7 @@ describe('Subpackages', () => {
           uri: 'https://custom.com/school#',
         },
       },
-    });
+    })).model;
   });
 
   it('should generate subpackages prefixes', () => {

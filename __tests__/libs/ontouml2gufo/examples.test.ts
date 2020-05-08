@@ -8,6 +8,7 @@ import {
   packages,
   derivation,
   inverseRelations,
+  preAnalysis,
 } from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 import { IPackage, IOntoUML2GUFOOptions } from '@types';
@@ -16,6 +17,7 @@ type File = {
   name: string;
   model: IPackage;
   options?: Partial<IOntoUML2GUFOOptions>;
+  preAnalysisFile?: string;
 };
 
 describe('Examples', () => {
@@ -146,13 +148,41 @@ describe('Examples', () => {
         model: derivation,
         options: { format: 'Turtle' },
       },
+      {
+        name: 'preAnalysis.ttl',
+        preAnalysisFile: 'preAnalysis.json',
+        model: preAnalysis,
+        options: {
+          baseIRI: '://foo/',
+          createInverses: true,
+          preAnalysis: true,
+          prefixPackages: true,
+          customPackageMapping: {
+            test: {
+              prefix: 'test',
+              uri: 'http://www.w3.org/2002/07/owl#',
+            },
+            'nQKxqY6D.AAAAQjF': {
+              prefix: 'owl',
+              uri: 'https://custom.com/owl#',
+            },
+          },
+        },
+      },
     ];
 
     for (let file of files) {
-      const result = await transformOntoUML2GUFO(file.model, file.options);
-      const path = `__tests__/libs/ontouml2gufo/examples/${file.name}`;
+      const path = '__tests__/libs/ontouml2gufo/examples/';
 
-      fs.writeFileSync(path, result);
+      const result = await transformOntoUML2GUFO(file.model, file.options);
+      const modelFilepath = path + file.name;
+      fs.writeFileSync(modelFilepath, result.model);
+
+      if (file.preAnalysisFile) {
+        const analysisFilepath = path + file.preAnalysisFile;
+        const jsonContent = JSON.stringify(result.preAnalysis, null, 2);
+        fs.writeFileSync(analysisFilepath, jsonContent);
+      }
     }
   });
 

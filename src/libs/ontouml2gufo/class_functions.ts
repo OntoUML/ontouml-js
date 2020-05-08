@@ -27,7 +27,7 @@ import { transformAnnotations } from './annotation_function';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
-const { namedNode, literal, quad } = DataFactory;
+const { namedNode, quad } = DataFactory;
 
 /**
  * Transform classes of same stereotype using owl:AllDisjointClasses
