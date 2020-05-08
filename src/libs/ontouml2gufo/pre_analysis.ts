@@ -161,53 +161,6 @@ async function checkPackagePrefixes(
   return preAnalysis;
 }
 
-// async function checkPluralAssociationEnd(
-//   relations: IRelation[],
-//   options: IOntoUML2GUFOOptions,
-// ): Promise<IPreAnalysisItem[]> {
-//   const preAnalysis: IPreAnalysisItem[] = [];
-//   const { createInverses } = options;
-
-//   relations.forEach((relation: IRelation) => {
-//     const { properties } = relation;
-//     const source = relation.getSource();
-//     const target = relation.getTarget();
-//     const sourceAssociationName = properties[0].name;
-//     const targetAssociationName = properties[1].name;
-
-//     if (
-//       targetAssociationName &&
-//       targetAssociationName !== pluralize.singular(targetAssociationName)
-//     ) {
-//       preAnalysis.push({
-//         id: randomId(),
-//         code: 'plural_target_association_end',
-//         severity: PreAnalysisSeverity.WARNING,
-//         title: 'Plural name used in association end',
-//         description: `The plural name "${targetAssociationName}" is used in the target end of relation "${relation.name}", which holds between between "${source.name}" and "${target.name}".`,
-//         data: { element: relation },
-//       });
-//     }
-
-//     if (
-//       createInverses &&
-//       sourceAssociationName &&
-//       sourceAssociationName !== pluralize.singular(sourceAssociationName)
-//     ) {
-//       preAnalysis.push({
-//         id: randomId(),
-//         code: 'plural_source_association_end',
-//         severity: PreAnalysisSeverity.WARNING,
-//         title: 'Plural name used in association end',
-//         description: `The plural name "${sourceAssociationName}" is used in the source end of relation "${relation.name}", which holds between between "${source.name}" and "${target.name}".`,
-//         data: { element: relation },
-//       });
-//     }
-//   });
-
-//   return preAnalysis;
-// }
-
 async function checkInexistentRelationNames(
   relations: IRelation[],
   options: IOntoUML2GUFOOptions,
