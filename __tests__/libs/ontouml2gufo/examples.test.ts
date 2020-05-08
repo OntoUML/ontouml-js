@@ -18,7 +18,6 @@ type File = {
   model: IPackage;
   options?: Partial<IOntoUML2GUFOOptions>;
   preAnalysisFile?: string;
-
 };
 
 describe('Examples', () => {
@@ -151,7 +150,7 @@ describe('Examples', () => {
       },
       {
         name: 'preAnalysis.ttl',
-        preAnalysisFile: 'preAnalysis.json', 
+        preAnalysisFile: 'preAnalysis.json',
         model: preAnalysis,
         options: {
           baseIRI: '://foo/',
@@ -167,24 +166,23 @@ describe('Examples', () => {
               prefix: 'owl',
               uri: 'https://custom.com/owl#',
             },
-          }
-        }
-      }
+          },
+        },
+      },
     ];
 
     for (let file of files) {
-      const path = '__tests__/libs/ontouml2gufo/examples/'
-      
+      const path = '__tests__/libs/ontouml2gufo/examples/';
+
       const result = await transformOntoUML2GUFO(file.model, file.options);
-      const modelFilepath = path+file.name;
+      const modelFilepath = path + file.name;
       fs.writeFileSync(modelFilepath, result.model);
 
-      if(file.preAnalysisFile){
-        const analysisFilepath = path+file.preAnalysisFile;
+      if (file.preAnalysisFile) {
+        const analysisFilepath = path + file.preAnalysisFile;
         const jsonContent = JSON.stringify(result.preAnalysis, null, 2);
         fs.writeFileSync(analysisFilepath, jsonContent);
       }
-
     }
   });
 
