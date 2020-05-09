@@ -5,7 +5,7 @@
     [
       "module-resolver", {
         "alias": {
-          "@test-models": "./test_models",
+          "@test-models": "./__tests__/test_models",
           "@constants": "./src/constants",
           "@error": "./src/error",
           "@libs": "./src/libs",
