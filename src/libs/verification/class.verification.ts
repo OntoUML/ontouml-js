@@ -17,14 +17,14 @@ export const ClassVerification = {
     if (!_class.stereotypes || _class.stereotypes.length !== 1) {
       consistencyIssues.push(
         new VerificationIssue(
-          VerificationIssueCode.CLASS_NOT_UNIQUE_STEREOTYPE,
+          VerificationIssueCode.class_not_unique_stereotype,
           _class,
         ),
       );
     } else if (!classStereotypes.includes(_class.stereotypes[0])) {
       consistencyIssues.push(
         new VerificationIssue(
-          VerificationIssueCode.CLASS_INVALID_ONTOUML_STEREOTYPE,
+          VerificationIssueCode.class_invalid_ontouml_stereotype,
           _class,
         ),
       );
@@ -32,7 +32,7 @@ export const ClassVerification = {
 
     if (_class.name && pluralize.isPlural(_class.name)) {
       consistencyIssues.push(
-        new VerificationIssue(VerificationIssueCode.CLASS_PLURAL_NAME, _class),
+        new VerificationIssue(VerificationIssueCode.class_plural_name, _class),
       );
     }
 
@@ -43,7 +43,7 @@ export const ClassVerification = {
     ) {
       consistencyIssues.push(
         new VerificationIssue(
-          VerificationIssueCode.CLASS_ENUMERATION_WITH_PROPERTIES,
+          VerificationIssueCode.class_enumeration_with_properties,
           _class,
         ),
       );
@@ -54,7 +54,7 @@ export const ClassVerification = {
     ) {
       consistencyIssues.push(
         new VerificationIssue(
-          VerificationIssueCode.CLASS_NON_ENUMERATION_WITH_LITERALS,
+          VerificationIssueCode.class_non_enumeration_with_literals,
           _class,
         ),
       );
@@ -63,15 +63,41 @@ export const ClassVerification = {
     return consistencyIssues;
   },
 
-  async check(_class: IClass): Promise<VerificationIssue[]> {
+  check(_class: IClass): VerificationIssue[] {
     const potentialIssues: VerificationIssue[] = [
       // each verification goes here
+      this.checkKindSpecialization(_class),
     ];
 
     return potentialIssues;
   },
 
-  async checkKindSpecialization(_class: IClass): Promise<VerificationIssue> {
+  checkKindSpecialization(_class: IClass): VerificationIssue {
+    if (_class.isSortal()) {
+      const kindAncestors = _class
+        .getAncestors()
+        .filter((ancestor: IClass) => ancestor.isUltimateSortal());
+
+      if (_class.isUltimateSortal() && kindAncestors.length > 0) {
+        return new VerificationIssue(
+          VerificationIssueCode.class_identity_provider_specialization,
+          _class,
+          kindAncestors,
+        );
+      } else if (!_class.isUltimateSortal() && kindAncestors.length > 1) {
+        return new VerificationIssue(
+          VerificationIssueCode.class_multiple_identity_provider,
+          _class,
+          kindAncestors,
+        );
+      } else if (!_class.isUltimateSortal() && kindAncestors.length === 0) {
+        return new VerificationIssue(
+          VerificationIssueCode.class_missing_identity_provider,
+          _class,
+        );
+      }
+    }
+
     return null;
   },
 };

@@ -1,10 +1,14 @@
 import { ModelManager } from '@libs/model';
-import { minimalConsistency } from '@test-models/verification';
+import {
+  minimalConsistency,
+  classVerification,
+} from '@test-models/verification';
 import { OntoUML2Verification } from '@libs/verification';
 import {
   VerificationIssue,
   VerificationIssueCode,
 } from '@libs/verification/issues';
+import { IElement } from '@types';
 
 describe('Model deserializing', () => {
   const inputModel = minimalConsistency;
@@ -24,11 +28,12 @@ describe('Model deserializing', () => {
 
   it('Checks classes with not issues', () => {
     const personIssues = issues.filter(
-      (issue: VerificationIssue) => issue.source.name === 'Person',
+      (issue: VerificationIssue) =>
+        (issue.source as IElement).name === 'Person',
     );
     const diseaseIssues = issues.filter(
       (issue: VerificationIssue) =>
-        issue.source.name === 'Disease Severity Level',
+        (issue.source as IElement).name === 'Disease Severity Level',
     );
 
     expect(personIssues.length === 0).toBeTruthy();
@@ -37,27 +42,29 @@ describe('Model deserializing', () => {
 
   it('Check unique valid stereotype', () => {
     const agentIssues = issues.filter(
-      (issue: VerificationIssue) => issue.source.name === 'Agent',
+      (issue: VerificationIssue) => (issue.source as IElement).name === 'Agent',
     );
     const contractIssues = issues.filter(
-      (issue: VerificationIssue) => issue.source.name === 'Contract',
+      (issue: VerificationIssue) =>
+        (issue.source as IElement).name === 'Contract',
     );
     const enumerationIssues = issues.filter(
-      (issue: VerificationIssue) => issue.source.name === 'Enumeration',
+      (issue: VerificationIssue) =>
+        (issue.source as IElement).name === 'Enumeration',
     );
 
     expect(
       agentIssues.length === 1 &&
         agentIssues.filter(
           (issue: VerificationIssue) =>
-            issue.code === VerificationIssueCode.CLASS_NOT_UNIQUE_STEREOTYPE,
+            issue.code === VerificationIssueCode.class_not_unique_stereotype,
         ),
     ).toBeTruthy();
     expect(
       contractIssues.length === 1 &&
         contractIssues.filter(
           (issue: VerificationIssue) =>
-            issue.code === VerificationIssueCode.CLASS_NOT_UNIQUE_STEREOTYPE,
+            issue.code === VerificationIssueCode.class_not_unique_stereotype,
         ),
     ).toBeTruthy();
     expect(
@@ -65,7 +72,7 @@ describe('Model deserializing', () => {
         enumerationIssues.filter(
           (issue: VerificationIssue) =>
             issue.code ===
-            VerificationIssueCode.CLASS_INVALID_ONTOUML_STEREOTYPE,
+            VerificationIssueCode.class_invalid_ontouml_stereotype,
         ),
     ).toBeTruthy();
   });
@@ -73,11 +80,11 @@ describe('Model deserializing', () => {
   it('Check enumeration and classes with either literals or properties.', () => {
     const bedroomASIssues = issues.filter(
       (issue: VerificationIssue) =>
-        issue.source.name === 'Bedroom Availability Status',
+        (issue.source as IElement).name === 'Bedroom Availability Status',
     );
     // const officeASIssues = issues.filter(
     //   (issue: VerificationIssue) =>
-    //     issue.source.name === 'Office Availability Status',
+    //     (issue.source as IElement).name === 'Office Availability Status',
     // );
 
     expect(
@@ -85,7 +92,7 @@ describe('Model deserializing', () => {
         bedroomASIssues.filter(
           (issue: VerificationIssue) =>
             issue.code ===
-            VerificationIssueCode.CLASS_ENUMERATION_WITH_PROPERTIES,
+            VerificationIssueCode.class_enumeration_with_properties,
         ),
     ).toBeTruthy();
 
@@ -102,14 +109,15 @@ describe('Model deserializing', () => {
 
   it('Check class with plural name warning.', () => {
     const peopleIssues = issues.filter(
-      (issue: VerificationIssue) => issue.source.name === 'People',
+      (issue: VerificationIssue) =>
+        (issue.source as IElement).name === 'People',
     );
 
     expect(
       peopleIssues.length === 1 &&
         peopleIssues.filter(
           (issue: VerificationIssue) =>
-            issue.code === VerificationIssueCode.CLASS_PLURAL_NAME,
+            issue.code === VerificationIssueCode.class_plural_name,
         ),
     ).toBeTruthy();
   });

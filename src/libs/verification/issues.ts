@@ -7,33 +7,33 @@ import pluralize from 'pluralize';
 import { ClassStereotype } from '@constants/.';
 
 export enum IssueSeverity {
-  ERROR = 'ERROR',
-  WARNING = 'WARNING',
+  error = 'error',
+  warning = 'warning',
 }
 
 export enum VerificationIssueCode {
-  CLASS_NOT_UNIQUE_STEREOTYPE = 'CLASS_NOT_UNIQUE_STEREOTYPE',
-  CLASS_PLURAL_NAME = 'CLASS_PLURAL_NAME',
-  CLASS_INVALID_ONTOUML_STEREOTYPE = 'CLASS_INVALID_ONTOUML_STEREOTYPE',
-  CLASS_NON_ENUMERATION_WITH_LITERALS = 'CLASS_NON_ENUMERATION_WITH_LITERALS',
-  CLASS_ENUMERATION_WITH_PROPERTIES = 'CLASS_ENUMERATION_WITH_PROPERTIES',
-  CLASS_MISSING_ALLOWED_NATURES = 'CLASS_MISSING_ALLOWED_NATURES',
-  CLASS_MISSING_IS_EXTENSIONAL = 'CLASS_MISSING_IS_EXTENSIONAL',
-  CLASS_MISSING_IS_POWERTYPE = 'CLASS_MISSING_IS_POWERTYPE',
-  CLASS_MISSING_ORDER = 'CLASS_MISSING_ORDER',
-  CLASS_MISSING_IDENTITY_PROVIDER = 'CLASS_MISSING_IDENTITY_PROVIDER',
-  CLASS_IDENTITY_PROVIDER_SPECIALIZATION = 'CLASS_IDENTITY_PROVIDER_SPECIALIZATION',
-  CLASS_MISSING_IS_READ_ONLY = 'CLASS_MISSING_IS_READ_ONLY',
-  GENERALIZATION_INCONSISTENT_SPECIALIZATION = 'GENERALIZATION_INCONSISTENT_SPECIALIZATION',
-  GENERALIZATION_INCOMPATIBLE_NATURES = 'GENERALIZATION_INCOMPATIBLE_NATURES',
-  GENERALIZATION_INCOMPATIBLE_ENUMERATION = 'GENERALIZATION_INCOMPATIBLE_ENUMERATION',
-  GENERALIZATION_INCOMPATIBLE_DATATYPE = 'GENERALIZATION_INCOMPATIBLE_DATATYPE',
-  CLASS_MULTIPLE_IDENTITY_PROVIDER = 'CLASS_MULTIPLE_IDENTITY_PROVIDER',
-  GENERALIZATION_INCOMPATIBLE_CLASS_RIGIDITY = 'GENERALIZATION_INCOMPATIBLE_CLASS_RIGIDITY',
-  GENERALIZATION_INCOMPATIBLE_CLASS_SORTALITY = 'GENERALIZATION_INCOMPATIBLE_CLASS_SORTALITY',
-  GENERALIZATION_INCOMPATIBLE_RELATION_TYPE = 'GENERALIZATION_INCOMPATIBLE_RELATION_TYPE',
-  RELATION_MULTIPLE_STEREOTYPES = 'RELATION_MULTIPLE_STEREOTYPES',
-  RELATION_IMPROPER_DERIVATION = 'RELATION_IMPROPER_DERIVATION',
+  class_identity_provider_specialization = 'class_identity_provider_specialization',
+  class_missing_allowed_natures = 'class_missing_allowed_natures',
+  class_missing_identity_provider = 'class_missing_identity_provider',
+  class_missing_is_extensional = 'class_missing_is_extensional',
+  class_missing_is_powertype = 'class_missing_is_powertype',
+  class_missing_order = 'class_missing_order',
+  class_multiple_identity_provider = 'class_multiple_identity_provider',
+  class_not_unique_stereotype = 'class_not_unique_stereotype',
+  class_plural_name = 'class_plural_name',
+  class_invalid_ontouml_stereotype = 'class_invalid_ontouml_stereotype',
+  class_non_enumeration_with_literals = 'class_non_enumeration_with_literals',
+  class_enumeration_with_properties = 'class_enumeration_with_properties',
+  relation_missing_is_read_only = 'relation_missing_is_read_only',
+  generalization_inconsistent_specialization = 'generalization_inconsistent_specialization',
+  generalization_incompatible_natures = 'generalization_incompatible_natures',
+  generalization_incompatible_enumeration = 'generalization_incompatible_enumeration',
+  generalization_incompatible_datatype = 'generalization_incompatible_datatype',
+  generalization_incompatible_class_rigidity = 'generalization_incompatible_class_rigidity',
+  generalization_incompatible_class_sortality = 'generalization_incompatible_class_sortality',
+  generalization_incompatible_relation_type = 'generalization_incompatible_relation_type',
+  relation_multiple_stereotypes = 'relation_multiple_stereotypes',
+  relation_improper_derivation = 'relation_improper_derivation',
 }
 
 /**
@@ -71,12 +71,14 @@ export class VerificationIssue {
     this.severity = null;
     this.alternatives = null;
 
+    let aux;
+
     // TODO: enable alternatives again later
     switch (code) {
-      case VerificationIssueCode.CLASS_NOT_UNIQUE_STEREOTYPE:
+      case VerificationIssueCode.class_not_unique_stereotype:
         this.title = 'Not unique class stereotype.';
         this.description = `The class ${source.name} must have a unique OntoUML stereotype.`;
-        this.severity = IssueSeverity.ERROR;
+        this.severity = IssueSeverity.error;
         // this.alternatives = [
         //   new VerificationAlternative(
         //     VerificationAlternativeCode.REPLACE_ONTOUML_CLASS_STEREOTYPE,
@@ -84,10 +86,10 @@ export class VerificationIssue {
         //   ),
         // ];
         break;
-      case VerificationIssueCode.CLASS_INVALID_ONTOUML_STEREOTYPE:
+      case VerificationIssueCode.class_invalid_ontouml_stereotype:
         this.title = 'No valid OntoUML stereotype.';
         this.description = `The class ${source.name} must have a unique OntoUML stereotype.`;
-        this.severity = IssueSeverity.ERROR;
+        this.severity = IssueSeverity.error;
         // this.alternatives = [
         //   new VerificationAlternative(
         //     VerificationAlternativeCode.REPLACE_ONTOUML_CLASS_STEREOTYPE,
@@ -95,14 +97,14 @@ export class VerificationIssue {
         //   ),
         // ];
         break;
-      case VerificationIssueCode.CLASS_PLURAL_NAME:
+      case VerificationIssueCode.class_plural_name:
         this.title = 'Classes should not have plural names.';
         this.description = `The class ${
           source.name
         } should have its name in the singular form (${pluralize.singular(
           source.name,
         )}).`;
-        this.severity = IssueSeverity.WARNING;
+        this.severity = IssueSeverity.warning;
         // this.alternatives = [
         //   new VerificationAlternative(
         //     VerificationAlternativeCode.ONTOUML_CLASS_NAME_TO_PLURAL,
@@ -110,10 +112,10 @@ export class VerificationIssue {
         //   ),
         // ];
         break;
-      case VerificationIssueCode.CLASS_NON_ENUMERATION_WITH_LITERALS:
+      case VerificationIssueCode.class_non_enumeration_with_literals:
         this.title = 'Only enumerations may have literals.';
         this.description = `The class ${source.name} is not decorated as «${ClassStereotype.ENUMERATION}» and thus cannot have literals.`;
-        this.severity = IssueSeverity.ERROR;
+        this.severity = IssueSeverity.error;
         // this.alternatives = [
         //   new VerificationAlternative(
         //     VerificationAlternativeCode.REPLACE_ONTOUML_CLASS_STEREOTYPE,
@@ -125,10 +127,10 @@ export class VerificationIssue {
         //   ),
         // ];
         break;
-      case VerificationIssueCode.CLASS_ENUMERATION_WITH_PROPERTIES:
+      case VerificationIssueCode.class_enumeration_with_properties:
         this.title = 'Enumerations may not have attributes.';
         this.description = `The class ${source.name} decorated as «${ClassStereotype.ENUMERATION}» cannot have attributes.`;
-        this.severity = IssueSeverity.ERROR;
+        this.severity = IssueSeverity.error;
         // this.alternatives = [
         //   new VerificationAlternative(
         //     VerificationAlternativeCode.REPLACE_ONTOUML_CLASS_STEREOTYPE,
@@ -140,72 +142,129 @@ export class VerificationIssue {
         //   ),
         // ];
         break;
-      case VerificationIssueCode.CLASS_MISSING_ALLOWED_NATURES:
+      case VerificationIssueCode.class_missing_allowed_natures:
         // The case of a class missing allowed ontological natures field
+        this.title = ``;
+        this.description = ``;
+        this.severity = IssueSeverity.error;
         throw `Unimplemented verification issue code: ${code}.`;
         break;
-      case VerificationIssueCode.CLASS_MISSING_IS_EXTENSIONAL:
+      case VerificationIssueCode.class_missing_is_extensional:
         // The case of a class missing "isExtensional" field
+        this.title = ``;
+        this.description = ``;
+        this.severity = IssueSeverity.error;
         throw `Unimplemented verification issue code: ${code}.`;
         break;
-      case VerificationIssueCode.CLASS_MISSING_IS_POWERTYPE:
+      case VerificationIssueCode.class_missing_is_powertype:
         // The case of a class missing "isPowertype" field
+        this.title = ``;
+        this.description = ``;
+        this.severity = IssueSeverity.error;
         throw `Unimplemented verification issue code: ${code}.`;
         break;
-      case VerificationIssueCode.CLASS_MISSING_ORDER:
+      case VerificationIssueCode.class_missing_order:
         // The case of a class missing "order" field
+        this.title = ``;
+        this.description = ``;
+        this.severity = IssueSeverity.error;
         throw `Unimplemented verification issue code: ${code}.`;
         break;
-      case VerificationIssueCode.CLASS_MISSING_IDENTITY_PROVIDER:
+      case VerificationIssueCode.class_missing_identity_provider:
         // The case of a sortal class missing an specialization towards a kind or type
-        throw `Unimplemented verification issue code: ${code}.`;
+        this.title =
+          'Every sortal class must specialize a unique ultimate sortal.';
+        this.description = `The class ${source.name} must specialize (directly or indirectly) a unique class decorated as one of the following: «kind», «collective», «quantity», «relator», «mode», «quality», «type».`;
+        this.severity = IssueSeverity.error;
         break;
-      case VerificationIssueCode.CLASS_MULTIPLE_IDENTITY_PROVIDER:
+      case VerificationIssueCode.class_multiple_identity_provider:
         // The case of a sortal class specializing multiple kinds or types
-        throw `Unimplemented verification issue code: ${code}.`;
+        aux = context
+          .map((element: IElement) => `«${element.name}»`)
+          .join(', ');
+        this.title =
+          'Every sortal class must specialize a unique ultimate sortal.';
+        this.description = `The class ${source.name} is specializing multiple classes that represent ultimate sortals: ${aux}.`;
+        this.severity = IssueSeverity.error;
         break;
-      case VerificationIssueCode.CLASS_IDENTITY_PROVIDER_SPECIALIZATION:
+      case VerificationIssueCode.class_identity_provider_specialization:
         // The case of a KIND class specializing other kinds
+        aux = context
+          .map((element: IElement) => `«${element.name}»`)
+          .join(', ');
+        this.title =
+          'Classes representing ultimate sortals cannot specialize other ultimate sortals.';
+        this.description = `The class ${source.name} is specializing other classes that represent ultimate sortals: ${aux}.`;
+        this.severity = IssueSeverity.error;
+        break;
+      case VerificationIssueCode.relation_missing_is_read_only:
+        // TODO: The case of a relation missing a required "isReadOnly" field
+        this.title = ``;
+        this.description = ``;
+        this.severity = IssueSeverity.error;
         throw `Unimplemented verification issue code: ${code}.`;
         break;
-      case VerificationIssueCode.CLASS_MISSING_IS_READ_ONLY:
-        // The case of a class missing "iReadOnly" field
-        throw `Unimplemented verification issue code: ${code}.`;
-        break;
-      case VerificationIssueCode.RELATION_MULTIPLE_STEREOTYPES:
+      case VerificationIssueCode.relation_multiple_stereotypes:
         // The case of a relation with multiple stereotypes
+        this.title = ``;
+        this.description = ``;
+        this.severity = IssueSeverity.error;
         throw `Unimplemented verification issue code: ${code}.`;
         break;
-      case VerificationIssueCode.RELATION_IMPROPER_DERIVATION:
+      case VerificationIssueCode.relation_improper_derivation:
         // The case of a derivation relation that has stereotypes or is not connecting a relation to a class
+        this.title = ``;
+        this.description = ``;
+        this.severity = IssueSeverity.error;
         throw `Unimplemented verification issue code: ${code}.`;
         break;
-      case VerificationIssueCode.GENERALIZATION_INCONSISTENT_SPECIALIZATION:
-        // The case of a generalization connecting elements that are not uniquely classes or relations
+      case VerificationIssueCode.generalization_inconsistent_specialization:
+        // TODO: The case of a generalization connecting elements that are not uniquely classes or relations
+        this.title = ``;
+        this.description = ``;
+        this.severity = IssueSeverity.error;
         throw `Unimplemented verification issue code: ${code}.`;
         break;
-      case VerificationIssueCode.GENERALIZATION_INCOMPATIBLE_NATURES:
+      case VerificationIssueCode.generalization_incompatible_natures:
         // The case of a class specializing a class of an incompatible nature
+        this.title = ``;
+        this.description = ``;
+        this.severity = IssueSeverity.error;
         throw `Unimplemented verification issue code: ${code}.`;
         break;
-      case VerificationIssueCode.GENERALIZATION_INCOMPATIBLE_ENUMERATION:
-        // The case of an enumeration specializing a non-enumeration class
+      case VerificationIssueCode.generalization_incompatible_enumeration:
+        // TODO: The case of an enumeration specializing a non-enumeration class
+        this.title = ``;
+        this.description = ``;
+        this.severity = IssueSeverity.error;
         throw `Unimplemented verification issue code: ${code}.`;
         break;
-      case VerificationIssueCode.GENERALIZATION_INCOMPATIBLE_DATATYPE:
-        // The case of a datatype specializing a non-datatype class
+      case VerificationIssueCode.generalization_incompatible_datatype:
+        // TODO: The case of a datatype specializing a non-datatype class
+        this.title = ``;
+        this.description = ``;
+        this.severity = IssueSeverity.error;
         throw `Unimplemented verification issue code: ${code}.`;
         break;
-      case VerificationIssueCode.GENERALIZATION_INCOMPATIBLE_CLASS_RIGIDITY:
+      case VerificationIssueCode.generalization_incompatible_class_rigidity:
         // The case of a rigid or semi-rigid class specializing an anti-rigid one
+        this.title = ``;
+        this.description = ``;
+        this.severity = IssueSeverity.error;
         throw `Unimplemented verification issue code: ${code}.`;
         break;
-      case VerificationIssueCode.GENERALIZATION_INCOMPATIBLE_CLASS_SORTALITY:
+      case VerificationIssueCode.generalization_incompatible_class_sortality:
         // The case of a non-sortal class specializing an sortal one
+        this.title = ``;
+        this.description = ``;
+        this.severity = IssueSeverity.error;
         throw `Unimplemented verification issue code: ${code}.`;
         break;
-      case VerificationIssueCode.GENERALIZATION_INCOMPATIBLE_RELATION_TYPE:
+      case VerificationIssueCode.generalization_incompatible_relation_type:
         // The case of a relation specializing another of a distinct stereotype
+        this.title = ``;
+        this.description = ``;
+        this.severity = IssueSeverity.error;
         throw `Unimplemented verification issue code: ${code}.`;
         break;
 
