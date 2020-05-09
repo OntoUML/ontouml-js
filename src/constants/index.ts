@@ -67,12 +67,13 @@ export enum RelationStereotype {
 }
 
 export enum OntologicalNature {
-  OBJECT = 'object',
-  COLLECTIVE = 'collective',
-  QUANTITY = 'quantity',
-  RELATOR = 'relator',
-  MODE = 'mode',
-  QUALITY = 'quality',
-  TYPE = 'type',
-  EVENT = 'event',
+  functional_complex = 'functional-complex',
+  collective = 'collective',
+  quantity = 'quantity',
+  relator = 'relator',
+  mode = 'mode',
+  quality = 'quality',
+  type = 'type',
+  event = 'event',
+  abstract = 'abstract',
 }

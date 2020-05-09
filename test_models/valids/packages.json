@@ -6,6 +6,10 @@
   "contents": [
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "cZ5jgI6GAqACCQkE",
       "name": "boolean",
       "description": null,
@@ -18,6 +22,10 @@
     },
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "yZ5jgI6GAqACCQkF",
       "name": "byte",
       "description": null,
@@ -30,6 +38,10 @@
     },
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "KZ5jgI6GAqACCQkG",
       "name": "char",
       "description": null,
@@ -42,6 +54,10 @@
     },
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "KZ5jgI6GAqACCQkH",
       "name": "double",
       "description": null,
@@ -54,6 +70,10 @@
     },
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "KZ5jgI6GAqACCQkI",
       "name": "float",
       "description": null,
@@ -66,6 +86,10 @@
     },
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "qZ5jgI6GAqACCQkJ",
       "name": "int",
       "description": null,
@@ -78,6 +102,10 @@
     },
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "qZ5jgI6GAqACCQkK",
       "name": "long",
       "description": null,
@@ -90,6 +118,10 @@
     },
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "qZ5jgI6GAqACCQkL",
       "name": "short",
       "description": null,
@@ -102,6 +134,10 @@
     },
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "aZ5jgI6GAqACCQkM",
       "name": "void",
       "description": null,
@@ -114,6 +150,10 @@
     },
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "aZ5jgI6GAqACCQkN",
       "name": "string",
       "description": null,
@@ -132,6 +172,10 @@
       "contents": [
         {
           "type": "Class",
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null,
+          "allowed": null,
           "id": "zK7jgI6GAqACCQyp",
           "name": "Person",
           "description": null,
@@ -144,6 +188,10 @@
         },
         {
           "type": "Class",
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null,
+          "allowed": null,
           "id": "o63jgI6GAqACCQzX",
           "name": "Man",
           "description": null,
@@ -156,6 +204,10 @@
         },
         {
           "type": "Class",
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null,
+          "allowed": null,
           "id": "Gz3jgI6GAqACCQzj",
           "name": "Woman",
           "description": null,
@@ -168,6 +220,10 @@
         },
         {
           "type": "Class",
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null,
+          "allowed": null,
           "id": "AvQTgI6GAqACCQ1B",
           "name": "Child",
           "description": null,
@@ -180,6 +236,10 @@
         },
         {
           "type": "Class",
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null,
+          "allowed": null,
           "id": ".ewTgI6GAqACCQ1N",
           "name": "Adult",
           "description": null,
@@ -192,6 +252,10 @@
         },
         {
           "type": "Class",
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null,
+          "allowed": null,
           "id": "eTwTgI6GAqACCQ1Z",
           "name": "Elder",
           "description": null,
@@ -204,6 +268,10 @@
         },
         {
           "type": "Class",
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null,
+          "allowed": null,
           "id": "976ngI6GAqACCQ4o",
           "name": "Father",
           "description": null,
@@ -216,6 +284,10 @@
         },
         {
           "type": "Class",
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null,
+          "allowed": null,
           "id": "38WngI6GAqACCQ5E",
           "name": "Mother",
           "description": null,
@@ -245,6 +317,10 @@
       "contents": [
         {
           "type": "Class",
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null,
+          "allowed": null,
           "id": "lrqXgI6GAqACCQ_7",
           "name": "Student",
           "description": null,
@@ -257,6 +333,10 @@
         },
         {
           "type": "Class",
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null,
+          "allowed": null,
           "id": "y1aXgI6GAqACCRAH",
           "name": "Enrollment",
           "description": null,
@@ -269,6 +349,10 @@
         },
         {
           "type": "Class",
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null,
+          "allowed": null,
           "id": "qGGXgI6GAqACCRAT",
           "name": "School",
           "description": null,
@@ -295,6 +379,10 @@
               "contents": [
                 {
                   "type": "Class",
+                  "isExtensional": null,
+                  "isPowertype": null,
+                  "order": null,
+                  "allowed": null,
                   "id": "ODz3gI6GAqACCRG6",
                   "name": "My Other Class",
                   "description": null,
@@ -309,6 +397,10 @@
             },
             {
               "type": "Class",
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null,
+              "allowed": null,
               "id": "jRj3gI6GAqACCRGz",
               "name": "My Class",
               "description": null,
@@ -332,6 +424,10 @@
       "contents": [
         {
           "type": "Class",
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null,
+          "allowed": null,
           "id": "fO_ngI6GAqACCQ8v",
           "name": "Employee",
           "description": null,
@@ -344,6 +440,10 @@
         },
         {
           "type": "Class",
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null,
+          "allowed": null,
           "id": "xpAXgI6GAqACCQ87",
           "name": "Company",
           "description": null,
@@ -356,6 +456,10 @@
         },
         {
           "type": "Class",
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null,
+          "allowed": null,
           "id": "J5IXgI6GAqACCQ9g",
           "name": "Employment Contract",
           "description": null,
@@ -375,6 +479,10 @@
           "contents": [
             {
               "type": "Class",
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null,
+              "allowed": null,
               "id": "lStXgI6GAqACCRDL",
               "name": "University",
               "description": null,
@@ -387,6 +495,10 @@
             },
             {
               "type": "Class",
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null,
+              "allowed": null,
               "id": "okdXgI6GAqACCRDX",
               "name": "Professor",
               "description": null,
@@ -399,6 +511,10 @@
             },
             {
               "type": "Class",
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null,
+              "allowed": null,
               "id": "LfdXgI6GAqACCRDj",
               "name": "Researcher",
               "description": null,
@@ -411,6 +527,10 @@
             },
             {
               "type": "Class",
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null,
+              "allowed": null,
               "id": "lsjXgI6GAqACCRDx",
               "name": "Class",
               "description": null,

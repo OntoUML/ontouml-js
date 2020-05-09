@@ -5,8 +5,7 @@ import {
   VerificationIssue,
   VerificationIssueCode,
 } from '@libs/verification/issues';
-import { IElement, IPackage, IClass } from '@types';
-import { OntoUMLType } from '@constants/.';
+import { IPackage, IClass } from '@types';
 
 describe('Model deserializing', () => {
   const inputModel = classVerification;

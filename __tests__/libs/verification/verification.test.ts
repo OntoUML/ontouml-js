@@ -1,8 +1,5 @@
 import { ModelManager } from '@libs/model';
-import {
-  minimalConsistency,
-  classVerification,
-} from '@test-models/verification';
+import { minimalConsistency } from '@test-models/verification';
 import { OntoUML2Verification } from '@libs/verification';
 import {
   VerificationIssue,
@@ -42,15 +39,13 @@ describe('Model deserializing', () => {
 
   it('Check unique valid stereotype', () => {
     const agentIssues = issues.filter(
-      (issue: VerificationIssue) => (issue.source as IElement).name === 'Agent',
+      (issue: VerificationIssue) => issue.source.id === 'NfL0Pg6GAqACnAov',
     );
     const contractIssues = issues.filter(
-      (issue: VerificationIssue) =>
-        (issue.source as IElement).name === 'Contract',
+      (issue: VerificationIssue) => issue.source.id === 'b5N0Pg6GAqACnAoe',
     );
     const enumerationIssues = issues.filter(
-      (issue: VerificationIssue) =>
-        (issue.source as IElement).name === 'Enumeration',
+      (issue: VerificationIssue) => issue.source.id === '_d6GPg6GAqACnArf',
     );
 
     expect(
@@ -79,8 +74,7 @@ describe('Model deserializing', () => {
 
   it('Check enumeration and classes with either literals or properties.', () => {
     const bedroomASIssues = issues.filter(
-      (issue: VerificationIssue) =>
-        (issue.source as IElement).name === 'Bedroom Availability Status',
+      (issue: VerificationIssue) => issue.source.id === 'GL_UPg6GAqACnAnm',
     );
     // const officeASIssues = issues.filter(
     //   (issue: VerificationIssue) =>
@@ -109,8 +103,7 @@ describe('Model deserializing', () => {
 
   it('Check class with plural name warning.', () => {
     const peopleIssues = issues.filter(
-      (issue: VerificationIssue) =>
-        (issue.source as IElement).name === 'People',
+      (issue: VerificationIssue) => issue.source.id === 'AEbUPg6GAqACnAna',
     );
 
     expect(

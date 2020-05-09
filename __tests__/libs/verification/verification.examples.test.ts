@@ -1,12 +1,8 @@
 import { ModelManager } from '@libs/model';
 import { alpinebits } from '@test-models/valids';
 import { OntoUML2Verification } from '@libs/verification';
-import {
-  VerificationIssue,
-  VerificationIssueCode,
-} from '@libs/verification/issues';
+import { VerificationIssue } from '@libs/verification/issues';
 import { OntoUML2GUFO } from '@libs/ontuml2gufo';
-import { IGeneralizationSet } from '@types';
 
 describe('Model deserializing', () => {
   const inputModel = alpinebits;
@@ -24,10 +20,5 @@ describe('Model deserializing', () => {
     issues = await verification.run();
 
     let service = new OntoUML2GUFO(modelManager);
-    let output = await service.transformOntoUML2GUFO({
-      baseIRI: 'http://api.ontouml.org',
-      format: 'Turtle',
-      uriFormatBy: 'name',
-    });
   });
 });

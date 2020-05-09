@@ -17,6 +17,7 @@ import { OntoUMLType } from '@constants/.';
 import { ClassVerification } from './class.verification';
 import { VerificationIssue, IssueSeverity } from './issues';
 import { ModelManager } from '@libs/model';
+import { GeneralizationVerification } from './generalization.verification';
 
 /**
  * Utility class for perform syntactical model verification
@@ -44,14 +45,14 @@ export class OntoUML2Verification {
 
         case OntoUMLType.CLASS_TYPE:
           const _class: IClass = element as IClass;
-          const consistencyIssues: VerificationIssue[] = ClassVerification.checkMinimalConsistency(
+          const classConsistencyIssues: VerificationIssue[] = ClassVerification.checkMinimalConsistency(
             _class,
           );
-          issues = [...issues, ...consistencyIssues];
+          issues = [...issues, ...classConsistencyIssues];
 
           if (
-            consistencyIssues &&
-            consistencyIssues.find(
+            classConsistencyIssues &&
+            classConsistencyIssues.find(
               (issue: VerificationIssue) =>
                 issue.severity === IssueSeverity.error,
             )
@@ -70,6 +71,25 @@ export class OntoUML2Verification {
         case OntoUMLType.GENERALIZATION_TYPE:
           // const generalization = element as IGeneralization;
           const generalization: IGeneralization = element as IGeneralization;
+          const genConsistencyIssues: VerificationIssue[] = GeneralizationVerification.checkMinimalConsistency(
+            generalization,
+          );
+          issues = [...issues, ...genConsistencyIssues];
+
+          if (
+            genConsistencyIssues &&
+            genConsistencyIssues.find(
+              (issue: VerificationIssue) =>
+                issue.severity === IssueSeverity.error,
+            )
+          ) {
+            break;
+          } else {
+            issues = [
+              ...issues,
+              ...GeneralizationVerification.check(generalization),
+            ];
+          }
           break;
 
         case OntoUMLType.GENERALIZATION_SET_TYPE:

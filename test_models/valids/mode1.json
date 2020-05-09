@@ -7,6 +7,10 @@
   "contents": [
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "qJdeWA6AUB0UtAWm",
       "name": "Headache",
       "description": null,
@@ -19,6 +23,10 @@
     },
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "Q5deWA6AUB0UtAWn",
       "name": "Person",
       "description": null,

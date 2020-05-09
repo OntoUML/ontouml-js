@@ -6,6 +6,10 @@
   "contents": [
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "EoyrEI6GAqACCWes",
       "name": "Person",
       "description": null,
@@ -18,6 +22,10 @@
     },
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "OWyrEI6GAqACCWe1",
       "name": "Organization",
       "description": null,
@@ -30,6 +38,10 @@
     },
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "V9yrEI6GAqACCWe.",
       "name": "Employee",
       "description": null,
@@ -42,6 +54,10 @@
     },
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "sQmrEI6GAqACCWf7",
       "name": "Employment Contract",
       "description": null,
@@ -54,6 +70,10 @@
     },
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "mrIbEI6GAqACCWjt",
       "name": "Love",
       "description": null,
@@ -66,6 +86,10 @@
     },
     {
       "type": "Class",
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null,
+      "allowed": null,
       "id": "poA7EI6GAqACCWou",
       "name": "Weight",
       "description": null,

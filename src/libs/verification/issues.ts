@@ -1,8 +1,5 @@
 import { IElement, IReference } from '@types';
-import {
-  VerificationAlternative,
-  VerificationAlternativeCode,
-} from './alternatives';
+import { VerificationAlternative } from './alternatives';
 import pluralize from 'pluralize';
 import { ClassStereotype } from '@constants/.';
 
@@ -24,6 +21,7 @@ export enum VerificationIssueCode {
   class_invalid_ontouml_stereotype = 'class_invalid_ontouml_stereotype',
   class_non_enumeration_with_literals = 'class_non_enumeration_with_literals',
   class_enumeration_with_properties = 'class_enumeration_with_properties',
+  class_incompatible_natures = 'class_incompatible_natures',
   relation_missing_is_read_only = 'relation_missing_is_read_only',
   generalization_inconsistent_specialization = 'generalization_inconsistent_specialization',
   generalization_incompatible_natures = 'generalization_incompatible_natures',
@@ -195,6 +193,12 @@ export class VerificationIssue {
         this.title =
           'Classes representing ultimate sortals cannot specialize other ultimate sortals.';
         this.description = `The class ${source.name} is specializing other classes that represent ultimate sortals: ${aux}.`;
+        this.severity = IssueSeverity.error;
+        break;
+      case VerificationIssueCode.class_incompatible_natures:
+        // this.title =
+        //   'Classes representing ultimate sortals cannot specialize other ultimate sortals.';
+        // this.description = `The class ${source.name} is specializing other classes that represent ultimate sortals: ${aux}.`;
         this.severity = IssueSeverity.error;
         break;
       case VerificationIssueCode.relation_missing_is_read_only:

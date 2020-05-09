@@ -1,7 +1,41 @@
 import { IClass } from '@types';
 import { VerificationIssue, VerificationIssueCode } from './issues';
 import pluralize from 'pluralize';
-import { ClassStereotype } from '@constants/.';
+import { ClassStereotype, OntologicalNature } from '@constants/.';
+
+const allNatures = [
+  OntologicalNature.abstract,
+  OntologicalNature.collective,
+  OntologicalNature.event,
+  OntologicalNature.functional_complex,
+  OntologicalNature.mode,
+  OntologicalNature.quality,
+  OntologicalNature.quantity,
+  OntologicalNature.relator,
+  OntologicalNature.type,
+];
+
+const allAllowedNatures = {};
+allAllowedNatures[ClassStereotype.CATEGORY] = allNatures;
+allAllowedNatures[ClassStereotype.MIXIN] = allNatures;
+allAllowedNatures[ClassStereotype.ROLE_MIXIN] = allNatures;
+allAllowedNatures[ClassStereotype.PHASE_MIXIN] = allNatures;
+allAllowedNatures[ClassStereotype.KIND] = [
+  OntologicalNature.functional_complex,
+];
+allAllowedNatures[ClassStereotype.QUANTITY] = [OntologicalNature.quantity];
+allAllowedNatures[ClassStereotype.COLLECTIVE] = [OntologicalNature.collective];
+allAllowedNatures[ClassStereotype.RELATOR] = [OntologicalNature.relator];
+allAllowedNatures[ClassStereotype.MODE] = [OntologicalNature.mode];
+allAllowedNatures[ClassStereotype.QUALITY] = [OntologicalNature.quality];
+allAllowedNatures[ClassStereotype.SUBKIND] = allNatures;
+allAllowedNatures[ClassStereotype.ROLE] = allNatures;
+allAllowedNatures[ClassStereotype.PHASE] = allNatures;
+allAllowedNatures[ClassStereotype.TYPE] = [OntologicalNature.type];
+allAllowedNatures[ClassStereotype.EVENT] = [OntologicalNature.event];
+allAllowedNatures[ClassStereotype.HISTORICAL_ROLE] = [OntologicalNature.event];
+allAllowedNatures[ClassStereotype.DATATYPE] = [OntologicalNature.abstract];
+allAllowedNatures[ClassStereotype.ENUMERATION] = [OntologicalNature.abstract];
 
 /**
  * Functions for syntactical verification of classes
@@ -99,5 +133,26 @@ export const ClassVerification = {
     }
 
     return null;
+  },
+
+  checkCompatibleNatures(_class: IClass): VerificationIssue {
+    if (!_class.allowed || !_class.stereotypes) {
+      return null;
+    }
+
+    const stereotype = _class.stereotypes[0];
+
+    let incompatibleNatures = _class.allowed.filter(
+      (nature: OntologicalNature) =>
+        allAllowedNatures[stereotype] &&
+        !allAllowedNatures[stereotype].includes(nature),
+    );
+
+    return incompatibleNatures.length > 0
+      ? new VerificationIssue(
+          VerificationIssueCode.class_incompatible_natures,
+          _class,
+        )
+      : null;
   },
 };

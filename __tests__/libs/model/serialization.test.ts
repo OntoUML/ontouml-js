@@ -10,7 +10,7 @@ describe('Model deserializing', () => {
     const inputModel = model as IPackage;
     let modelManager: ModelManager;
 
-    it('Check input model against OntoUML Schema', () => {
+    it(`Check input model against OntoUML Schema (${inputModel.id})`, () => {
       modelManager = new ModelManager(inputModel);
     });
     it('Test serialization', () => {
