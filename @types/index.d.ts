@@ -372,8 +372,9 @@ interface IPreAnalysisItem {
   id: string;
   code?: string;
   title: string;
-  detail: string;
-  meta?: Object;
+  description: string;
+  severity?: 'error' | 'warning';
+  data?: Object;
 }
 
 interface IOntoUML2GUFOResult {

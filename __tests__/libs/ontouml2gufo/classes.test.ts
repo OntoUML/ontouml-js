@@ -127,7 +127,7 @@ describe('Classes', () => {
       customElementMapping: {
         JoK2ZeaGAqACBxS5: {
           uri: 'OWLPerson',
-          label: { en: 'Person', pt: 'Pessoa' },
+          label: { default: 'OWLPerson', en: 'Person', pt: 'Pessoa' },
         },
         Organization: { uri: 'OWLOrganization' },
         'Event Plan': { uri: 'OWLEventPlan' },

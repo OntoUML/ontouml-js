@@ -6,7 +6,7 @@ import { transformAnnotations } from './annotation_function';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
-const { namedNode, literal, quad } = DataFactory;
+const { namedNode, quad } = DataFactory;
 
 const XSDDatatypes = [
   'anyURI',
@@ -69,7 +69,7 @@ export async function transformAttributes(
   const quads = [];
 
   for (let i = 0; i < attributes.length; i += 1) {
-    const { name, propertyType: attributeElement } = attributes[i];
+    const { propertyType: attributeElement } = attributes[i];
     const uri = getURI({ element: attributes[i], options });
     const classUri = getURI({ element: classElement, options });
     const {
@@ -152,10 +152,6 @@ export async function transformAttributes(
           ),
         );
       }
-    }
-
-    if (name) {
-      quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(name)));
     }
 
     // transform annotations

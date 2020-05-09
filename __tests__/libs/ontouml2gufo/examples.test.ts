@@ -8,15 +8,16 @@ import {
   packages,
   derivation,
   inverseRelations,
+  preAnalysis,
 } from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 import { IPackage, IOntoUML2GUFOOptions } from '@types';
 
 type File = {
   name: string;
-  docName?: string;
   model: IPackage;
   options?: Partial<IOntoUML2GUFOOptions>;
+  preAnalysisFile?: string;
 };
 
 describe('Examples', () => {
@@ -24,12 +25,11 @@ describe('Examples', () => {
     const files: File[] = [
       {
         name: 'alpinebits.ttl',
-        docName: 'alpinebits.html',
         model: alpinebits,
         options: {
           format: 'Turtle',
           baseIRI: 'https://alpinebits.org',
-          createDocumentation: true,
+          createInverses: true,
           createObjectProperty: false,
         },
       },
@@ -111,9 +111,8 @@ describe('Examples', () => {
       },
       {
         name: 'partWhole.ttl',
-        docName: 'partWhole.html',
         model: partWhole,
-        options: { format: 'Turtle', createDocumentation: true },
+        options: { format: 'Turtle' },
       },
       {
         name: 'partWholeHideRelations.ttl',
@@ -149,22 +148,45 @@ describe('Examples', () => {
         model: derivation,
         options: { format: 'Turtle' },
       },
+      {
+        name: 'preAnalysis.ttl',
+        preAnalysisFile: 'preAnalysis.json',
+        model: preAnalysis,
+        options: {
+          baseIRI: '://foo/',
+          createInverses: true,
+          preAnalysis: true,
+          prefixPackages: true,
+          customPackageMapping: {
+            test: {
+              prefix: 'test',
+              uri: 'http://www.w3.org/2002/07/owl#',
+            },
+            'nQKxqY6D.AAAAQjF': {
+              prefix: 'owl',
+              uri: 'https://custom.com/owl#',
+            },
+          },
+        },
+      },
     ];
 
     for (let file of files) {
+      const path = '__tests__/libs/ontouml2gufo/examples/';
+
       const result = await transformOntoUML2GUFO(file.model, file.options);
-      const path = `__tests__/libs/ontouml2gufo/examples/${file.name}`;
+      const modelFilepath = path + file.name;
+      fs.writeFileSync(modelFilepath, result.model);
 
-      if (file.options && file.options.createDocumentation && file.docName) {
-        const docPath = `__tests__/libs/ontouml2gufo/examples/${file.docName}`;
-        fs.writeFileSync(docPath, result.documentation);
+      if (file.preAnalysisFile) {
+        const analysisFilepath = path + file.preAnalysisFile;
+        const jsonContent = JSON.stringify(result.preAnalysis, null, 2);
+        fs.writeFileSync(analysisFilepath, jsonContent);
       }
-
-      fs.writeFileSync(path, result.model);
     }
   });
 
-  it('should generate example files', () => {
+  it('should generate example files', async () => {
     expect(true).toBe(true);
   });
 });

@@ -1,6 +1,5 @@
 import randomId from 'random-id';
 import isURI from 'validate.io-uri';
-import pluralize from 'pluralize';
 import {
   IPreAnalysisItem,
   IPackage,
@@ -14,13 +13,17 @@ import { OntoUMLType } from '@constants/.';
 import { DefaultPrefixes } from './constants';
 import { getPrefixes } from './helper_functions';
 
+enum PreAnalysisSeverity {
+  ERROR = 'error',
+  WARNING = 'warning',
+}
+
 /* 
   Pre-transformation preAnalysis to give users feedback about things that could potentially impact the transformation. Including:
   - Identify elements without name
   - Check invalid Base URI
   - Check package names prefixes that can clash with popular prefixes (rdfs, rdf, owl, etc)
   - Check repeated names (attributes, relation names and association ends, etc.)
-  - Check plural association ends
   - Check relations without cardinality
   - Check attributes without type
 */
@@ -44,7 +47,6 @@ export async function runPreAnalysis(
     baseIRIAnalysis,
     packageAnalysis,
     inexistentRelationNamesAnalysis,
-    pluralAssociationEndAnalysis,
     repeatedNameAnalysis,
     inexistentCardinality,
     inexistentAttributesType,
@@ -52,7 +54,6 @@ export async function runPreAnalysis(
     checkBaseIRI(baseIRI),
     checkPackagePrefixes(packages, options),
     checkInexistentRelationNames(relations, options),
-    checkPluralAssociationEnd(relations, options),
     checkRepeatedNames(elements),
     checkInexistentCardinality(relations),
     checkInexistentAttributesType(classes),
@@ -62,7 +63,6 @@ export async function runPreAnalysis(
     ...baseIRIAnalysis,
     ...packageAnalysis,
     ...inexistentRelationNamesAnalysis,
-    ...pluralAssociationEndAnalysis,
     ...repeatedNameAnalysis,
     ...inexistentCardinality,
     ...inexistentAttributesType,
@@ -76,9 +76,10 @@ async function checkBaseIRI(baseIRI: string): Promise<IPreAnalysisItem[]> {
     preAnalysis.push({
       id: randomId(),
       code: 'invalid_base_iri',
+      severity: PreAnalysisSeverity.WARNING,
       title: 'Invalid BaseIRI',
-      detail: `"${baseIRI}" is not a valid IRI.`,
-      meta: { baseIRI },
+      description: `"${baseIRI}" is not a valid IRI.`,
+      data: { baseIRI },
     });
   }
 
@@ -95,18 +96,21 @@ async function checkPackagePrefixes(
   const defaultPrefixUris = Object.values(DefaultPrefixes);
 
   for (const key of Object.keys(customPackageMapping)) {
-    const packageEl =
-      packages.find(({ id, name }: IPackage) => id === key || name === key) ||
-      {};
+    const packageEl = packages.find(
+      ({ id, name }: IPackage) => id === key || name === key,
+    ) || { id: '', name: '' };
     const { prefix, uri } = customPackageMapping[key];
 
     if (defaultPrefixKeys.includes(prefix)) {
       preAnalysis.push({
         id: randomId(),
         code: 'invalid_custom_package_prefix',
-        title: 'Invalid Custom Package Prefix',
-        detail: `Prefix "${prefix}" is a default gUFO package prefix`,
-        meta: { element: packageEl },
+        severity: PreAnalysisSeverity.WARNING,
+        title: 'Protected prefix provided in custom package mapping',
+        description: `The prefix "${prefix}" is already used by another package imported by gUFO. Avoid using the following prefixes: ${defaultPrefixKeys.join(
+          ', ',
+        )}.`,
+        data: { element: { id: packageEl.id, name: packageEl.name } },
       });
     }
 
@@ -114,9 +118,10 @@ async function checkPackagePrefixes(
       preAnalysis.push({
         id: randomId(),
         code: 'invalid_custom_package_uri',
-        title: 'Invalid Custom Package URI',
-        detail: `URI "${uri}" is a default gUFO package uri`,
-        meta: { element: packageEl },
+        severity: PreAnalysisSeverity.WARNING,
+        title: 'Protected URI provided in custom package mapping',
+        description: `The URI "${uri}" is already used by another package imported by gUFO.`,
+        data: { element: { id: packageEl.id, name: packageEl.name } },
       });
     }
   }
@@ -131,9 +136,12 @@ async function checkPackagePrefixes(
         preAnalysis.push({
           id: randomId(),
           code: 'invalid_package_prefix',
-          title: 'Invalid Package Prefix',
-          detail: `Prefix "${prefix}" is a default gUFO package prefix`,
-          meta: { prefix, uri },
+          severity: PreAnalysisSeverity.WARNING,
+          title: 'Protected prefix generated in package mapping',
+          description: `The prefix "${prefix}" is already used by another package imported by gUFO. Beware of the following prefixes: ${defaultPrefixKeys.join(
+            ', ',
+          )}.`,
+          data: { prefix, uri },
         });
       }
 
@@ -141,9 +149,10 @@ async function checkPackagePrefixes(
         preAnalysis.push({
           id: randomId(),
           code: 'invalid_package_uri',
-          title: 'Invalid Package URI',
-          detail: `URI "${uri}" is a default gUFO package uri`,
-          meta: { prefix, uri },
+          severity: PreAnalysisSeverity.WARNING,
+          title: 'Protected URI generated in package mapping',
+          description: `The URI "${uri}" is already used by another package imported by gUFO.`,
+          data: { prefix, uri },
         });
       }
     }
@@ -160,54 +169,9 @@ async function checkInexistentRelationNames(
   const { createInverses } = options;
 
   relations.forEach((relation: IRelation) => {
-    const { properties } = relation;
-    const source = relation.getSource();
-    const target = relation.getTarget();
-    const sourceAssociationName = properties[0].name;
-    const targetAssociationName = properties[1].name;
-
-    if (
-      targetAssociationName &&
-      targetAssociationName !== pluralize.singular(targetAssociationName)
-    ) {
-      preAnalysis.push({
-        id: randomId(),
-        code: 'plural_target_association_end',
-        title: 'Plural Target Association End',
-        detail: `Target association end "${targetAssociationName}" between "${source.name}" and "${target.name}" do not have a singular name`,
-        meta: { element: relation },
-      });
-    }
-
-    if (
-      createInverses &&
-      sourceAssociationName &&
-      sourceAssociationName !== pluralize.singular(sourceAssociationName)
-    ) {
-      preAnalysis.push({
-        id: randomId(),
-        code: 'plural_source_association_end',
-        title: 'Plural Source Association End',
-        detail: `Source association end "${sourceAssociationName}" between "${source.name}" and "${target.name}" do not have a singular name`,
-        meta: { element: relation },
-      });
-    }
-  });
-
-  return preAnalysis;
-}
-
-async function checkPluralAssociationEnd(
-  relations: IRelation[],
-  options: IOntoUML2GUFOOptions,
-): Promise<IPreAnalysisItem[]> {
-  const preAnalysis: IPreAnalysisItem[] = [];
-  const { createInverses } = options;
-
-  relations.forEach((relation: IRelation) => {
     const { name, stereotypes, properties } = relation;
     const stereotype = stereotypes ? stereotypes[0] : null;
-    const stereotypeName = stereotype ? `"${stereotype}" ` : '';
+    const stereotypeName = stereotype ? `<<${stereotype}>>` : '';
     const source = relation.getSource();
     const target = relation.getTarget();
     const sourceAssociationName = properties[0].name;
@@ -216,20 +180,22 @@ async function checkPluralAssociationEnd(
     if (!name && !targetAssociationName) {
       preAnalysis.push({
         id: randomId(),
-        code: 'inexistent_relation_name',
-        title: 'Inexistent Relation Name',
-        detail: `${stereotypeName}relation between "${source.name}" and "${target.name}" do not have a proper name`,
-        meta: { element: relation },
+        code: 'missing_relation_name',
+        severity: PreAnalysisSeverity.WARNING,
+        title: 'Missing relation name',
+        description: `Missing name on ${stereotypeName} relation between classes "${source.name}" and "${target.name}".`,
+        data: { element: { id: relation.id, name: relation.name } },
       });
     }
 
     if (createInverses && !sourceAssociationName) {
       preAnalysis.push({
         id: randomId(),
-        code: 'inexistent_inverse_relation_name',
-        title: 'Inexistent Inverse Relation Name',
-        detail: `${stereotypeName}relation between "${target.name}" and "${source.name}" do not have a proper association end name`,
-        meta: { element: relation },
+        code: 'missing_inverse_relation_name',
+        severity: PreAnalysisSeverity.WARNING,
+        title: 'Missing inverse relation name',
+        description: `Missing inverse name for ${stereotypeName} relation between classes "${source.name}" and "${target.name}".`,
+        data: { element: { id: relation.id, name: relation.name } },
       });
     }
   });
@@ -269,10 +235,10 @@ async function checkRepeatedNames(
             const source = relation.getSource();
             const target = relation.getTarget();
 
-            return `${element.type} "${element.name}" of ${relation.type} between "${source.name}" and "${target.name}"`;
+            return `association end "${element.name}" of relation "${relation.name}" between classes "${source.name}" and "${target.name}"`;
           }
 
-          return `${element.type} "${element.name}" of ${parent.type} ${parent.name}`;
+          return `attribute "${element.name}" of class ${parent.name}`;
         }
 
         if (element.type === OntoUMLType.RELATION_TYPE) {
@@ -280,20 +246,23 @@ async function checkRepeatedNames(
           const source = relation.getSource();
           const target = relation.getTarget();
 
-          return `${relation.type} "${relation.name}" between "${source.name}" and "${target.name}"`;
+          return `relation "${relation.name}" between classes "${source.name}" and "${target.name}"`;
         }
 
-        return `${element.type} "${element.name}"`;
+        return `${element.type.toLowerCase()} "${element.name}"`;
       });
 
       preAnalysis.push({
         id: randomId(),
-        code: 'repeated_names',
-        title: 'Repeated Names',
-        detail: `${names
+        code: 'duplicate_names',
+        severity: PreAnalysisSeverity.WARNING,
+        title: 'Duplicate element name',
+        description: `The name "${name}" has been used multiple times: ${names
           .join(', ')
-          .replace(/,(?!.*,)/gim, ' and')} have repeated names`,
-        meta: { elements: repeatedElements },
+          .replace(/,(?!.*,)/gim, ' and')}.`,
+        data: {
+          elements: { id: repeatedElements.id, name: repeatedElements.name },
+        },
       });
     }
   }
@@ -316,20 +285,22 @@ async function checkInexistentCardinality(
     if (!sourceCardinality) {
       preAnalysis.push({
         id: randomId(),
-        code: 'inexistent_source_cardinality',
-        title: 'Inexistent Source Cardinality',
-        detail: `Relation between "${source.name}" and ${target.name} has no cardinality in its source`,
-        meta: { element: relation },
+        code: 'missing_source_cardinality',
+        severity: PreAnalysisSeverity.WARNING,
+        title: 'Missing cardinality',
+        description: `Missing cardinality on the source end of relation "${relation.name}" between clasess "${source.name}" and "${target.name}".`,
+        data: { element: { id: relation.id, name: relation.name } },
       });
     }
 
     if (!targetCardinality) {
       preAnalysis.push({
         id: randomId(),
-        code: 'inexistent_target_cardinality',
-        title: 'Inexistent Target Cardinality',
-        detail: `Relation between "${source.name}" and ${target.name} has no cardinality in its target`,
-        meta: { element: relation },
+        code: 'missing_target_cardinality',
+        severity: PreAnalysisSeverity.WARNING,
+        title: 'Missing cardinality',
+        description: `Missing cardinality on the target end of relation "${relation.name}" between classes "${source.name}" and "${target.name}".`,
+        data: { element: { id: relation.id, name: relation.name } },
       });
     }
   });
@@ -351,10 +322,14 @@ async function checkInexistentAttributesType(
       if (!propertyType) {
         preAnalysis.push({
           id: randomId(),
-          code: 'inexistent_attribute_type',
-          title: 'Inexistent Attribute Type',
-          detail: `Attribute "${name}" of Class "${classElement.name}" has no type`,
-          meta: { element: classElement, property },
+          code: 'missing_attribute_type',
+          severity: PreAnalysisSeverity.WARNING,
+          title: 'Missing attribute type',
+          description: `Missing type on attribute "${name}" of class "${classElement.name}".`,
+          data: {
+            element: { id: classElement.id, name: classElement.name },
+            property: { id: property.id, name },
+          },
         });
       }
     });
