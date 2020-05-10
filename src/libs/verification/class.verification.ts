@@ -3,7 +3,7 @@ import { VerificationIssue, VerificationIssueCode } from './issues';
 import pluralize from 'pluralize';
 import { ClassStereotype, OntologicalNature } from '@constants/.';
 
-const allNatures = [
+export const allNatures = [
   OntologicalNature.abstract,
   OntologicalNature.collective,
   OntologicalNature.event,
@@ -15,7 +15,7 @@ const allNatures = [
   OntologicalNature.type,
 ];
 
-const allAllowedNatures = {};
+export const allAllowedNatures = {};
 allAllowedNatures[ClassStereotype.CATEGORY] = allNatures;
 allAllowedNatures[ClassStereotype.MIXIN] = allNatures;
 allAllowedNatures[ClassStereotype.ROLE_MIXIN] = allNatures;
@@ -101,6 +101,11 @@ export const ClassVerification = {
     const potentialIssues: VerificationIssue[] = [
       // each verification goes here
       this.checkKindSpecialization(_class),
+      this.checkCompatibleNatures(_class),
+      this.checkMissingNatures(_class),
+      this.checkMissingIsExtensional(_class),
+      this.checkMissingIsPowertype(_class),
+      this.checkMissingOrder(_class),
     ];
 
     return potentialIssues;
@@ -153,6 +158,64 @@ export const ClassVerification = {
           VerificationIssueCode.class_incompatible_natures,
           _class,
         )
+      : null;
+  },
+
+  checkMissingNatures(_class: IClass): VerificationIssue {
+    if (!_class.stereotypes) {
+      return null;
+    }
+
+    return !_class.allowed
+      ? new VerificationIssue(
+          VerificationIssueCode.class_missing_allowed_natures,
+          _class,
+        )
+      : null;
+  },
+
+  checkMissingIsExtensional(_class: IClass): VerificationIssue {
+    if (
+      !_class.stereotypes ||
+      !_class.stereotypes.includes(ClassStereotype.COLLECTIVE)
+    ) {
+      return null;
+    }
+
+    return _class.isExtensional === null
+      ? new VerificationIssue(
+          VerificationIssueCode.class_missing_is_extensional,
+          _class,
+        )
+      : null;
+  },
+
+  checkMissingIsPowertype(_class: IClass): VerificationIssue {
+    if (
+      !_class.stereotypes ||
+      !_class.stereotypes.includes(ClassStereotype.TYPE)
+    ) {
+      return null;
+    }
+
+    return _class.isPowertype === null
+      ? new VerificationIssue(
+          VerificationIssueCode.class_missing_is_powertype,
+          _class,
+        )
+      : null;
+  },
+
+  checkMissingOrder(_class: IClass): VerificationIssue {
+    if (
+      !_class.stereotypes ||
+      !_class.stereotypes.includes(ClassStereotype.TYPE)
+    ) {
+      return null;
+    }
+
+    return !_class.order
+      ? new VerificationIssue(VerificationIssueCode.class_missing_order, _class)
       : null;
   },
 };

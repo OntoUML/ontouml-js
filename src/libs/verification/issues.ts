@@ -1,7 +1,8 @@
-import { IElement, IReference } from '@types';
+import { IElement, IReference, IClass } from '@types';
 import { VerificationAlternative } from './alternatives';
 import pluralize from 'pluralize';
 import { ClassStereotype } from '@constants/.';
+import { allAllowedNatures } from './class.verification';
 
 export enum IssueSeverity {
   error = 'error',
@@ -142,31 +143,31 @@ export class VerificationIssue {
         break;
       case VerificationIssueCode.class_missing_allowed_natures:
         // The case of a class missing allowed ontological natures field
-        this.title = ``;
-        this.description = ``;
+        aux = source && source.name ? source.name : source.id;
+        this.title = `Missing 'allowed' natures meta-property.`;
+        this.description = `The class ${aux} is missing the 'allowed' natures meta-property.`;
         this.severity = IssueSeverity.error;
-        throw `Unimplemented verification issue code: ${code}.`;
         break;
       case VerificationIssueCode.class_missing_is_extensional:
         // The case of a class missing "isExtensional" field
-        this.title = ``;
-        this.description = ``;
+        aux = source && source.name ? source.name : source.id;
+        this.title = `Missing 'isExtensional' meta-property.`;
+        this.description = `The «${ClassStereotype.COLLECTIVE}» class ${aux} is missing the 'isExtensional' meta-property.`;
         this.severity = IssueSeverity.error;
-        throw `Unimplemented verification issue code: ${code}.`;
         break;
       case VerificationIssueCode.class_missing_is_powertype:
         // The case of a class missing "isPowertype" field
-        this.title = ``;
-        this.description = ``;
+        aux = source && source.name ? source.name : source.id;
+        this.title = `Missing 'isPowertype' meta-property.`;
+        this.description = `The «${ClassStereotype.TYPE}» class ${aux} is missing the 'isPowertype' meta-property.`;
         this.severity = IssueSeverity.error;
-        throw `Unimplemented verification issue code: ${code}.`;
         break;
       case VerificationIssueCode.class_missing_order:
         // The case of a class missing "order" field
-        this.title = ``;
-        this.description = ``;
+        aux = source && source.name ? source.name : source.id;
+        this.title = `Missing 'order' meta-property.`;
+        this.description = `The «${ClassStereotype.TYPE}» class ${aux} is missing the 'order' meta-property.`;
         this.severity = IssueSeverity.error;
-        throw `Unimplemented verification issue code: ${code}.`;
         break;
       case VerificationIssueCode.class_missing_identity_provider:
         // The case of a sortal class missing an specialization towards a kind or type
@@ -196,9 +197,16 @@ export class VerificationIssue {
         this.severity = IssueSeverity.error;
         break;
       case VerificationIssueCode.class_incompatible_natures:
-        // this.title =
-        //   'Classes representing ultimate sortals cannot specialize other ultimate sortals.';
-        // this.description = `The class ${source.name} is specializing other classes that represent ultimate sortals: ${aux}.`;
+        aux = {};
+        aux.stereotype = (source as IClass).stereotypes[0];
+        aux.allowed = (source as IClass).allowed[0];
+        aux.name = source && source.name ? source.name : source.id;
+        this.title = `Incompatible allowed natures.`;
+        this.description = `The «${aux.stereotype}» class ${
+          aux.name
+        } has 'allowed' natures incompatible with its stereotype. For this stereotypes, the compatible natures are: ${
+          allAllowedNatures[aux.stereotype]
+        }.`;
         this.severity = IssueSeverity.error;
         break;
       case VerificationIssueCode.relation_missing_is_read_only:
@@ -231,38 +239,47 @@ export class VerificationIssue {
         break;
       case VerificationIssueCode.generalization_incompatible_natures:
         // The case of a class specializing a class of an incompatible nature
-        this.title = ``;
-        this.description = ``;
-        this.severity = IssueSeverity.error;
-        throw `Unimplemented verification issue code: ${code}.`;
+        this.title = `Prohibited specialization: incompatible natures.`;
+        aux = [];
+        aux[0] =
+          context[0] && context[0].name ? context[0].name : context[0].id;
+        aux[1] =
+          context[1] && context[1].name ? context[1].name : context[1].id;
+        this.description = `The allowed ontological natures of instances of ${aux[1]} are not among the allowed ontological natures of its superclass ${aux[0]}.`;
         break;
       case VerificationIssueCode.generalization_incompatible_enumeration:
-        // TODO: The case of an enumeration specializing a non-enumeration class
-        this.title = ``;
-        this.description = ``;
+        // The case of an enumeration specializing a non-enumeration class
+        // TODO: check if this constraint is consistent
+        this.title = `Prohibited specialization: enumeration specialization.`;
+        this.description = `A enumeration can only be in generalization relation with other enumerations.`;
         this.severity = IssueSeverity.error;
-        throw `Unimplemented verification issue code: ${code}.`;
         break;
       case VerificationIssueCode.generalization_incompatible_datatype:
-        // TODO: The case of a datatype specializing a non-datatype class
-        this.title = ``;
-        this.description = ``;
+        // The case of a datatype specializing a non-datatype class
+        this.title = `Prohibited specialization: datatype specialization.`;
+        this.description = `A datatype can only be in generalization relation with other datatypes.`;
         this.severity = IssueSeverity.error;
-        throw `Unimplemented verification issue code: ${code}.`;
         break;
       case VerificationIssueCode.generalization_incompatible_class_rigidity:
         // The case of a rigid or semi-rigid class specializing an anti-rigid one
-        this.title = ``;
-        this.description = ``;
-        this.severity = IssueSeverity.error;
-        throw `Unimplemented verification issue code: ${code}.`;
+        this.title = `Prohibited specialization: rigid/semi-rigid specializing an anti-rigid.`;
+        aux = [];
+        aux[0] =
+          context[0] && context[0].name ? context[0].name : context[0].id;
+        aux[1] =
+          context[1] && context[1].name ? context[1].name : context[1].id;
+        this.description = `The rigid/semi-rigid class ${aux[0]} cannot specialize the anti-rigid class ${aux[1]}.`;
         break;
       case VerificationIssueCode.generalization_incompatible_class_sortality:
         // The case of a non-sortal class specializing an sortal one
-        this.title = ``;
-        this.description = ``;
+        this.title = `Prohibited specialization: non-sortal specializing a sortal.`;
+        aux = [];
+        aux[0] =
+          context[0] && context[0].name ? context[0].name : context[0].id;
+        aux[1] =
+          context[1] && context[1].name ? context[1].name : context[1].id;
+        this.description = `The non-sortal class ${aux[0]} cannot specialize the sortal class ${aux[1]}.`;
         this.severity = IssueSeverity.error;
-        throw `Unimplemented verification issue code: ${code}.`;
         break;
       case VerificationIssueCode.generalization_incompatible_relation_type:
         // The case of a relation specializing another of a distinct stereotype

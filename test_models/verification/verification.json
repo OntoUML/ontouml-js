@@ -266,6 +266,22 @@
               "isExtensional": null,
               "isPowertype": null,
               "order": null
+            },
+            {
+              "type": "Class",
+              "id": "22mF_46GAqACnAuj",
+              "name": "Legal Entity",
+              "description": null,
+              "properties": null,
+              "literals": null,
+              "propertyAssignments": null,
+              "stereotypes": ["category"],
+              "isAbstract": true,
+              "isDerived": false,
+              "allowed": null,
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null
             }
           ]
         },
@@ -319,132 +335,9 @@
               "stereotypes": ["kind"],
               "isAbstract": false,
               "isDerived": false,
-              "allowed": ["object"],
+              "allowed": ["functional-complex"],
               "isExtensional": null,
               "isPowertype": null,
-              "order": null
-            }
-          ]
-        },
-        {
-          "type": "Package",
-          "id": "G_siXI6GAqACnBEq",
-          "name": "class_missing_is_extensional",
-          "description": null,
-          "propertyAssignments": null,
-          "contents": [
-            {
-              "type": "Class",
-              "id": "dtISXI6GAqACnBHY",
-              "name": "Forest",
-              "description": null,
-              "properties": null,
-              "literals": null,
-              "propertyAssignments": null,
-              "stereotypes": ["collective"],
-              "isAbstract": false,
-              "isDerived": false,
-              "allowed": ["collective"],
-              "isExtensional": false,
-              "isPowertype": null,
-              "order": null
-            },
-            {
-              "type": "Class",
-              "id": "cboSXI6GAqACnBHk",
-              "name": "Deck",
-              "description": null,
-              "properties": null,
-              "literals": null,
-              "propertyAssignments": null,
-              "stereotypes": ["collective"],
-              "isAbstract": false,
-              "isDerived": false,
-              "allowed": ["collective"],
-              "isExtensional": false,
-              "isPowertype": null,
-              "order": null
-            }
-          ]
-        },
-        {
-          "type": "Package",
-          "id": "N0qiXI6GAqACnBE.",
-          "name": "class_missing_is_powertype",
-          "description": null,
-          "propertyAssignments": null,
-          "contents": [
-            {
-              "type": "Class",
-              "id": "majSXI6GAqACnBKN",
-              "name": "Person Type",
-              "description": null,
-              "properties": null,
-              "literals": null,
-              "propertyAssignments": null,
-              "stereotypes": ["type"],
-              "isAbstract": false,
-              "isDerived": false,
-              "allowed": ["type"],
-              "isExtensional": null,
-              "isPowertype": false,
-              "order": "2"
-            },
-            {
-              "type": "Class",
-              "id": "eTTSXI6GAqACnBKZ",
-              "name": "Organization Type",
-              "description": null,
-              "properties": null,
-              "literals": null,
-              "propertyAssignments": null,
-              "stereotypes": ["type"],
-              "isAbstract": false,
-              "isDerived": false,
-              "allowed": ["type"],
-              "isExtensional": null,
-              "isPowertype": false,
-              "order": "2"
-            }
-          ]
-        },
-        {
-          "type": "Package",
-          "id": "em9yXI6GAqACnBLs",
-          "name": "class_missing_order",
-          "description": null,
-          "propertyAssignments": null,
-          "contents": [
-            {
-              "type": "Class",
-              "id": "5ELyXI6GAqACnBME",
-              "name": "Animal Species",
-              "description": null,
-              "properties": null,
-              "literals": null,
-              "propertyAssignments": null,
-              "stereotypes": ["type"],
-              "isAbstract": false,
-              "isDerived": false,
-              "allowed": ["type"],
-              "isExtensional": null,
-              "isPowertype": false,
-              "order": "2"
-            },
-            {
-              "type": "Class",
-              "id": "ECHyXI6GAqACnBMQ",
-              "name": "Tree Species",
-              "description": null,
-              "properties": null,
-              "literals": null,
-              "propertyAssignments": null,
-              "stereotypes": ["type"],
-              "isAbstract": false,
-              "isDerived": false,
-              "allowed": ["type"],
-              "isExtensional": null,
-              "isPowertype": false,
               "order": null
             }
           ]
@@ -742,6 +635,244 @@
               ]
             }
           ]
+        },
+        {
+          "type": "Package",
+          "id": "G_siXI6GAqACnBEq",
+          "name": "class_missing_is_extensional",
+          "description": null,
+          "propertyAssignments": null,
+          "contents": [
+            {
+              "type": "Class",
+              "id": "dtISXI6GAqACnBHY",
+              "name": "Forest",
+              "description": null,
+              "properties": null,
+              "literals": null,
+              "propertyAssignments": null,
+              "stereotypes": ["collective"],
+              "isAbstract": true,
+              "isDerived": false,
+              "allowed": ["collective"],
+              "isExtensional": false,
+              "isPowertype": null,
+              "order": null
+            },
+            {
+              "type": "Class",
+              "id": "cboSXI6GAqACnBHk",
+              "name": "Deck",
+              "description": null,
+              "properties": null,
+              "literals": null,
+              "propertyAssignments": null,
+              "stereotypes": ["collective"],
+              "isAbstract": false,
+              "isDerived": false,
+              "allowed": ["collective"],
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null
+            }
+          ]
+        },
+        {
+          "type": "Package",
+          "id": "N0qiXI6GAqACnBE.",
+          "name": "class_missing_is_powertype",
+          "description": null,
+          "propertyAssignments": null,
+          "contents": [
+            {
+              "type": "Class",
+              "id": "majSXI6GAqACnBKN",
+              "name": "Person Type",
+              "description": null,
+              "properties": null,
+              "literals": null,
+              "propertyAssignments": null,
+              "stereotypes": ["type"],
+              "isAbstract": false,
+              "isDerived": false,
+              "allowed": ["type"],
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": "2"
+            },
+            {
+              "type": "Class",
+              "id": "eTTSXI6GAqACnBKZ",
+              "name": "Organization Type",
+              "description": null,
+              "properties": null,
+              "literals": null,
+              "propertyAssignments": null,
+              "stereotypes": ["type"],
+              "isAbstract": false,
+              "isDerived": false,
+              "allowed": ["type"],
+              "isExtensional": null,
+              "isPowertype": true,
+              "order": "2"
+            }
+          ]
+        },
+        {
+          "type": "Package",
+          "id": "em9yXI6GAqACnBLs",
+          "name": "class_missing_order",
+          "description": null,
+          "propertyAssignments": null,
+          "contents": [
+            {
+              "type": "Class",
+              "id": "5ELyXI6GAqACnBME",
+              "name": "Animal Species",
+              "description": null,
+              "properties": null,
+              "literals": null,
+              "propertyAssignments": null,
+              "stereotypes": ["type"],
+              "isAbstract": false,
+              "isDerived": false,
+              "allowed": ["type"],
+              "isExtensional": null,
+              "isPowertype": false,
+              "order": "2"
+            },
+            {
+              "type": "Class",
+              "id": "ECHyXI6GAqACnBMQ",
+              "name": "Tree Species",
+              "description": null,
+              "properties": null,
+              "literals": null,
+              "propertyAssignments": null,
+              "stereotypes": ["type"],
+              "isAbstract": false,
+              "isDerived": false,
+              "allowed": ["type"],
+              "isExtensional": null,
+              "isPowertype": false,
+              "order": null
+            }
+          ]
+        },
+        {
+          "type": "Package",
+          "id": "EIFj_46GAqACnA0N",
+          "name": "class_incompatible_natures",
+          "description": null,
+          "propertyAssignments": null,
+          "contents": [
+            {
+              "type": "Class",
+              "id": "Swdj_46GAqACnA0m",
+              "name": "WeightInKG",
+              "description": null,
+              "properties": null,
+              "literals": null,
+              "propertyAssignments": null,
+              "stereotypes": ["datatype"],
+              "isAbstract": false,
+              "isDerived": false,
+              "allowed": ["abstract"],
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null
+            },
+            {
+              "type": "Class",
+              "id": "53jj_46GAqACnA00",
+              "name": "Difficulty",
+              "description": null,
+              "properties": null,
+              "literals": null,
+              "propertyAssignments": null,
+              "stereotypes": ["enumeration"],
+              "isAbstract": false,
+              "isDerived": false,
+              "allowed": ["event"],
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null
+            },
+            {
+              "type": "Class",
+              "id": "NeAT_46GAqACnA1Z",
+              "name": "Party",
+              "description": null,
+              "properties": null,
+              "literals": null,
+              "propertyAssignments": null,
+              "stereotypes": ["event"],
+              "isAbstract": false,
+              "isDerived": false,
+              "allowed": ["event"],
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null
+            },
+            {
+              "type": "Class",
+              "id": "HVwT_46GAqACnA1n",
+              "name": "Former President",
+              "description": null,
+              "properties": null,
+              "literals": null,
+              "propertyAssignments": null,
+              "stereotypes": ["historicalRole"],
+              "isAbstract": false,
+              "isDerived": false,
+              "allowed": ["functional-complex", "mode", "quantity"],
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null
+            },
+            {
+              "type": "Class",
+              "id": "q.sT_46GAqACnA15",
+              "name": "Car Model",
+              "description": null,
+              "properties": null,
+              "literals": null,
+              "propertyAssignments": null,
+              "stereotypes": ["type"],
+              "isAbstract": false,
+              "isDerived": false,
+              "allowed": ["type"],
+              "isExtensional": null,
+              "isPowertype": false,
+              "order": "2"
+            },
+            {
+              "type": "Class",
+              "id": "7VKT_46GAqACnA2V",
+              "name": "Species",
+              "description": null,
+              "properties": null,
+              "literals": null,
+              "propertyAssignments": null,
+              "stereotypes": ["type"],
+              "isAbstract": false,
+              "isDerived": false,
+              "allowed": [
+                "abstract",
+                "collective",
+                "event",
+                "functional-complex",
+                "mode",
+                "quality",
+                "quantity",
+                "relator",
+                "type"
+              ],
+              "isExtensional": null,
+              "isPowertype": false,
+              "order": "2"
+            }
+          ]
         }
       ]
     },
@@ -943,7 +1074,7 @@
         {
           "type": "Package",
           "id": "JAbCvI6GAqACnBhB",
-          "name": "GENERALIZATION_INCOMPATIBLE_NATURES",
+          "name": "generalization_incompatible_natures",
           "description": null,
           "propertyAssignments": null,
           "contents": [
@@ -958,7 +1089,7 @@
               "stereotypes": ["category"],
               "isAbstract": true,
               "isDerived": false,
-              "allowed": ["object"],
+              "allowed": ["functional-complex"],
               "isExtensional": null,
               "isPowertype": null,
               "order": null
@@ -974,7 +1105,7 @@
               "stereotypes": ["kind"],
               "isAbstract": false,
               "isDerived": false,
-              "allowed": ["object"],
+              "allowed": ["functional-complex"],
               "isExtensional": null,
               "isPowertype": null,
               "order": null
@@ -1000,7 +1131,7 @@
         {
           "type": "Package",
           "id": "EATqvI6GAqACnBj0",
-          "name": "GENERALIZATION_INCOMPATIBLE_CLASS_RIGIDITY",
+          "name": "generalization_incompatible_class_rigidity",
           "description": null,
           "propertyAssignments": null,
           "contents": [
@@ -1100,7 +1231,7 @@
         {
           "type": "Package",
           "id": "061avI6GAqACnBnq",
-          "name": "GENERALIZATION_INCOMPATIBLE_CLASS_SORTALITY",
+          "name": "generalization_incompatible_class_sortality",
           "description": null,
           "propertyAssignments": null,
           "contents": [

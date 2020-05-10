@@ -38,11 +38,11 @@ export const GeneralizationVerification = {
   check(generalization: IGeneralization): VerificationIssue[] {
     const potentialIssues: VerificationIssue[] = [
       // each verification goes here
-      // this.checkGeneralizationSortality(generalization),
-      // this.checkGeneralizationRigidity(generalization),
-      // this.checkGeneralizationDatatype(generalization),
-      // this.checkGeneralizationEnumeration(generalization),
-      // this.checkGeneralizationCompatibleNatures(generalization),
+      this.checkGeneralizationSortality(generalization),
+      this.checkGeneralizationRigidity(generalization),
+      // this.checkGeneralizationDatatype(generalization),  TODO: add tests and enable
+      // this.checkGeneralizationEnumeration(generalization), TODO: add tests and enable
+      this.checkGeneralizationCompatibleNatures(generalization),
     ];
 
     return potentialIssues;

@@ -2,11 +2,7 @@ import {
   IPackage,
   IElement,
   IClass,
-  IRelation,
   IGeneralization,
-  IGeneralizationSet,
-  IProperty,
-  ILiteral,
   // IRelation,
   // IGeneralization,
   // IGeneralizationSet,
@@ -40,7 +36,7 @@ export class OntoUML2Verification {
       switch (element.type) {
         case OntoUMLType.PACKAGE_TYPE:
           // const _package = element as IPackage;
-          const _package: IPackage = element as IPackage;
+          // const _package: IPackage = element as IPackage;
           break;
 
         case OntoUMLType.CLASS_TYPE:
@@ -65,7 +61,7 @@ export class OntoUML2Verification {
 
         case OntoUMLType.RELATION_TYPE:
           // const relation = element as IRelation;
-          const relation: IRelation = element as IRelation;
+          // const relation: IRelation = element as IRelation;
           break;
 
         case OntoUMLType.GENERALIZATION_TYPE:
@@ -94,17 +90,17 @@ export class OntoUML2Verification {
 
         case OntoUMLType.GENERALIZATION_SET_TYPE:
           // const generalizationSet = element as IGeneralizationSet;
-          const generalizationSet: IGeneralizationSet = element as IGeneralizationSet;
+          // const generalizationSet: IGeneralizationSet = element as IGeneralizationSet;
           break;
 
         case OntoUMLType.PROPERTY_TYPE:
           // const property = element as IProperty;
-          const property: IProperty = element as IProperty;
+          // const property: IProperty = element as IProperty;
           break;
 
         case OntoUMLType.LITERAL_TYPE:
           // const literal = element as ILiteral;
-          const literal: ILiteral = element as ILiteral;
+          // const literal: ILiteral = element as ILiteral;
           break;
 
         default:
