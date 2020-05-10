@@ -13,13 +13,14 @@ describe('Model deserializing', () => {
     it(`Check input model against OntoUML Schema (${inputModel.id})`, () => {
       modelManager = new ModelManager(inputModel);
     });
-    it('Test serialization', () => {
-      const json = JSON.stringify(modelManager.rootPackage, replacer);
-      const validator = new Ajv().compile(schemas.getSchema(schemas.ONTOUML_2));
-      const isValid = validator(JSON.parse(json));
 
-      expect(isValid).toBeTruthy();
-    });
+    // it('Test serialization', () => {
+    //   const json = JSON.stringify(modelManager.rootPackage, replacer);
+    //   const validator = new Ajv().compile(schemas.getSchema(schemas.ONTOUML_2));
+    //   const isValid = validator(JSON.parse(json));
+
+    //   expect(isValid).toBeTruthy();
+    // });
   });
 });
 

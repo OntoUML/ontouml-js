@@ -1,12 +1,8 @@
 import { ModelManager } from '@libs/model';
 import { alpinebits } from '@test-models/valids';
 import { OntoUML2Verification } from '@libs/verification';
-import {
-  VerificationIssue,
-  VerificationIssueCode,
-} from '@libs/verification/issues';
+import { VerificationIssue } from '@libs/verification/issues';
 import { OntoUML2GUFO } from '@libs/ontouml2gufo';
-import { IGeneralizationSet } from '@types';
 
 describe('Model deserializing', () => {
   const inputModel = alpinebits;

@@ -1,6 +1,5 @@
 import { IElement, IReference, IClass } from '@types';
 import { VerificationAlternative } from './alternatives';
-import pluralize from 'pluralize';
 import { ClassStereotype } from '@constants/.';
 import { allAllowedNatures } from './class.verification';
 
@@ -18,7 +17,6 @@ export enum VerificationIssueCode {
   class_missing_order = 'class_missing_order',
   class_multiple_identity_provider = 'class_multiple_identity_provider',
   class_not_unique_stereotype = 'class_not_unique_stereotype',
-  class_plural_name = 'class_plural_name',
   class_invalid_ontouml_stereotype = 'class_invalid_ontouml_stereotype',
   class_non_enumeration_with_literals = 'class_non_enumeration_with_literals',
   class_enumeration_with_properties = 'class_enumeration_with_properties',
@@ -92,21 +90,6 @@ export class VerificationIssue {
         // this.alternatives = [
         //   new VerificationAlternative(
         //     VerificationAlternativeCode.REPLACE_ONTOUML_CLASS_STEREOTYPE,
-        //     source,
-        //   ),
-        // ];
-        break;
-      case VerificationIssueCode.class_plural_name:
-        this.title = 'Classes should not have plural names.';
-        this.description = `The class ${
-          source.name
-        } should have its name in the singular form (${pluralize.singular(
-          source.name,
-        )}).`;
-        this.severity = IssueSeverity.warning;
-        // this.alternatives = [
-        //   new VerificationAlternative(
-        //     VerificationAlternativeCode.ONTOUML_CLASS_NAME_TO_PLURAL,
         //     source,
         //   ),
         // ];

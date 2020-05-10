@@ -1,6 +1,5 @@
 import { IClass } from '@types';
 import { VerificationIssue, VerificationIssueCode } from './issues';
-import pluralize from 'pluralize';
 import { ClassStereotype, OntologicalNature } from '@constants/.';
 
 export const allNatures = [
@@ -63,13 +62,6 @@ export const ClassVerification = {
         ),
       );
     }
-
-    // TODO: replace plural checking module
-    // if (_class.name && pluralize.isPlural(_class.name)) {
-    //   consistencyIssues.push(
-    //     new VerificationIssue(VerificationIssueCode.class_plural_name, _class),
-    //   );
-    // }
 
     if (
       _class.stereotypes &&

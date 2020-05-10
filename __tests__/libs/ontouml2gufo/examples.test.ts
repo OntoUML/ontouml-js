@@ -168,27 +168,27 @@ describe('Examples', () => {
           baseIRI: 'http://example.com/derivation',
         },
       },
-      // {
-      //   name: 'preAnalysis.ttl',
-      //   preAnalysisFile: 'preAnalysis.json',
-      //   model: preAnalysis,
-      //   options: {
-      //     baseIRI: '://foo/',
-      //     createInverses: true,
-      //     preAnalysis: true,
-      //     prefixPackages: true,
-      //     customPackageMapping: {
-      //       test: {
-      //         prefix: 'test',
-      //         uri: 'http://www.w3.org/2002/07/owl#',
-      //       },
-      //       'nQKxqY6D.AAAAQjF': {
-      //         prefix: 'owl',
-      //         uri: 'https://custom.com/owl#',
-      //       },
-      //     },
-      //   },
-      // },
+      {
+        name: 'preAnalysis.ttl',
+        preAnalysisFile: 'preAnalysis.json',
+        model: preAnalysis,
+        options: {
+          baseIRI: '://foo/',
+          createInverses: true,
+          preAnalysis: true,
+          prefixPackages: true,
+          customPackageMapping: {
+            test: {
+              prefix: 'test',
+              uri: 'http://www.w3.org/2002/07/owl#',
+            },
+            'nQKxqY6D.AAAAQjF': {
+              prefix: 'owl',
+              uri: 'https://custom.com/owl#',
+            },
+          },
+        },
+      },
     ];
 
     for (let file of files) {

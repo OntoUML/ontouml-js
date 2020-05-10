@@ -1,6 +1,5 @@
 import { Quad, N3Writer } from 'n3';
 import { IClass, ILiteral, IOntoUML2GUFOOptions, IRelation } from '@types';
-import { RelationStereotype } from '@constants/.';
 import { getURI } from './helper_functions';
 
 const N3 = require('n3');
@@ -123,12 +122,14 @@ export function transformMode(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const uri = getURI({ element: classElement, options });
-  const relations = classElement.getRelations();
-  const relationStereotypes = relations
-    .filter((relation: IRelation) => relation.stereotypes !== null)
-    .map((relation: IRelation) => relation.stereotypes[0]);
   const quads = [];
+  const uri = getURI({ element: classElement, options });
+
+  // const relations = classElement.getRelations();
+
+  // const relationStereotypes = relations
+  //   .filter((relation: IRelation) => relation.stereotypes !== null)
+  //   .map((relation: IRelation) => relation.stereotypes[0]);
 
   // if (
   //   relationStereotypes.includes(RelationStereotype.CHARACTERIZATION) &&
