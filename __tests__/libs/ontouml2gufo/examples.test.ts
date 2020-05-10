@@ -85,27 +85,27 @@ describe('Examples', () => {
           createObjectProperty: false,
         },
       },
-      // {
-      //   name: 'istandard.ttl',
-      //   model: istandard,
-      //   options: {
-      //     format: 'Turtle',
-      //     baseIRI: 'https://istandaarden.nl',
-      //   },
-      // },
-      // {
-      //   name: 'istandard.nt',
-      //   model: istandard,
-      // },
-      // {
-      //   name: 'istandardMultiplePackages.ttl',
-      //   model: istandard,
-      //   options: {
-      //     format: 'Turtle',
-      //     baseIRI: 'https://istandaarden.nl',
-      //     prefixPackages: true,
-      //   },
-      // },
+      {
+        name: 'istandard.ttl',
+        model: istandard,
+        options: {
+          format: 'Turtle',
+          baseIRI: 'https://istandaarden.nl',
+        },
+      },
+      {
+        name: 'istandard.nt',
+        model: istandard,
+      },
+      {
+        name: 'istandardMultiplePackages.ttl',
+        model: istandard,
+        options: {
+          format: 'Turtle',
+          baseIRI: 'https://istandaarden.nl',
+          prefixPackages: true,
+        },
+      },
       {
         name: 'person.ttl',
         model: person,
