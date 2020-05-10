@@ -24,10 +24,5 @@ describe('Model deserializing', () => {
     issues = await verification.run();
 
     let service = new OntoUML2GUFO(modelManager);
-    let output = await service.transformOntoUML2GUFO({
-      baseIRI: 'http://api.ontouml.org',
-      format: 'Turtle',
-      uriFormatBy: 'name',
-    });
   });
 });
