@@ -14,11 +14,11 @@ export function transformKind(
   const uri = getURI({ element: classElement, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subClassOf'),
-      namedNode('gufo:FunctionalComplex'),
-    ),
+    // quad(
+    //   namedNode(uri),
+    //   namedNode('rdfs:subClassOf'),
+    //   namedNode('gufo:FunctionalComplex'),
+    // ),
     quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Kind')),
   ];
 }
@@ -50,11 +50,6 @@ export function transformHistoricalRole(
   const uri = getURI({ element: classElement, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subClassOf'),
-      namedNode('gufo:Endurant'),
-    ),
     quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Role')),
   ];
 }
@@ -75,11 +70,6 @@ export function transformCategory(
   const uri = getURI({ element: classElement, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subClassOf'),
-      namedNode('gufo:Endurant'),
-    ),
     quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Category')),
   ];
 }
@@ -91,11 +81,6 @@ export function transformMixin(
   const uri = getURI({ element: classElement, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subClassOf'),
-      namedNode('gufo:Endurant'),
-    ),
     quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Mixin')),
   ];
 }
@@ -107,11 +92,6 @@ export function transformRoleMixin(
   const uri = getURI({ element: classElement, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subClassOf'),
-      namedNode('gufo:Endurant'),
-    ),
     quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:RoleMixin')),
   ];
 }
@@ -123,11 +103,6 @@ export function transformPhaseMixin(
   const uri = getURI({ element: classElement, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subClassOf'),
-      namedNode('gufo:Endurant'),
-    ),
     quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:PhaseMixin')),
   ];
 }
@@ -139,11 +114,11 @@ export function transformRelator(
   const uri = getURI({ element: classElement, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subClassOf'),
-      namedNode('gufo:Relator'),
-    ),
+    // quad(
+    //   namedNode(uri),
+    //   namedNode('rdfs:subClassOf'),
+    //   namedNode('gufo:Relator'),
+    // ),
     quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Kind')),
   ];
 }
@@ -159,26 +134,26 @@ export function transformMode(
     .map((relation: IRelation) => relation.stereotypes[0]);
   const quads = [];
 
-  if (
-    relationStereotypes.includes(RelationStereotype.CHARACTERIZATION) &&
-    relationStereotypes.includes(RelationStereotype.EXTERNAL_DEPENDENCE)
-  ) {
-    quads.push(
-      quad(
-        namedNode(uri),
-        namedNode('rdfs:subClassOf'),
-        namedNode('gufo:ExtrinsicMode'),
-      ),
-    );
-  } else {
-    quads.push(
-      quad(
-        namedNode(uri),
-        namedNode('rdfs:subClassOf'),
-        namedNode('gufo:IntrinsicMode'),
-      ),
-    );
-  }
+  // if (
+  //   relationStereotypes.includes(RelationStereotype.CHARACTERIZATION) &&
+  //   relationStereotypes.includes(RelationStereotype.EXTERNAL_DEPENDENCE)
+  // ) {
+  //   quads.push(
+  //     quad(
+  //       namedNode(uri),
+  //       namedNode('rdfs:subClassOf'),
+  //       namedNode('gufo:ExtrinsicMode'),
+  //     ),
+  //   );
+  // } else {
+  //   quads.push(
+  //     quad(
+  //       namedNode(uri),
+  //       namedNode('rdfs:subClassOf'),
+  //       namedNode('gufo:IntrinsicMode'),
+  //     ),
+  //   );
+  // }
 
   quads.push(
     quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Kind')),
@@ -194,11 +169,11 @@ export function transformQuality(
   const uri = getURI({ element: classElement, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subClassOf'),
-      namedNode('gufo:Quality'),
-    ),
+    // quad(
+    //   namedNode(uri),
+    //   namedNode('rdfs:subClassOf'),
+    //   namedNode('gufo:Quality'),
+    // ),
     quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Kind')),
   ];
 }
@@ -210,11 +185,11 @@ export function transformQuantity(
   const uri = getURI({ element: classElement, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subClassOf'),
-      namedNode('gufo:Quantity'),
-    ),
+    // quad(
+    //   namedNode(uri),
+    //   namedNode('rdfs:subClassOf'),
+    //   namedNode('gufo:Quantity'),
+    // ),
     quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Kind')),
   ];
 }
@@ -226,11 +201,11 @@ export function transformCollective(
   const uri = getURI({ element: classElement, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subClassOf'),
-      namedNode('gufo:Collection'),
-    ),
+    // quad(
+    //   namedNode(uri),
+    //   namedNode('rdfs:subClassOf'),
+    //   namedNode('gufo:Collection'),
+    // ),
     quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Kind')),
   ];
 }
@@ -242,7 +217,7 @@ export function transformEvent(
   const uri = getURI({ element: classElement, options });
 
   return [
-    quad(namedNode(uri), namedNode('rdfs:subClassOf'), namedNode('gufo:Event')),
+    // quad(namedNode(uri), namedNode('rdfs:subClassOf'), namedNode('gufo:Event')),
   ];
 }
 
@@ -253,11 +228,11 @@ export function transformType(
   const uri = getURI({ element: classElement, options });
 
   return [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subClassOf'),
-      namedNode('gufo:ConcreteIndividualType'),
-    ),
+    // quad(
+    //   namedNode(uri),
+    //   namedNode('rdfs:subClassOf'),
+    //   namedNode('gufo:ConcreteIndividualType'),
+    // ),
   ];
 }
 
@@ -271,11 +246,11 @@ export function transformDatatype(
 
   if (isComplexDatatype) {
     return [
-      quad(
-        namedNode(uri),
-        namedNode('rdfs:subClassOf'),
-        namedNode('gufo:QualityValue'),
-      ),
+      // quad(
+      //   namedNode(uri),
+      //   namedNode('rdfs:subClassOf'),
+      //   namedNode('gufo:QualityValue'),
+      // ),
     ];
   }
 
@@ -304,11 +279,11 @@ export function transformEnumeration(
   );
 
   const quads = [
-    quad(
-      namedNode(uri),
-      namedNode('rdfs:subClassOf'),
-      namedNode('gufo:QualityValue'),
-    ),
+    // quad(
+    //   namedNode(uri),
+    //   namedNode('rdfs:subClassOf'),
+    //   namedNode('gufo:QualityValue'),
+    // ),
     quad(
       namedNode(uri),
       namedNode('owl:equivalentClass'),

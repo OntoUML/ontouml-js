@@ -22,6 +22,7 @@ import {
   transformDatatype,
   transformEnumeration,
 } from './class_stereotype_functions';
+import { getGufoParent } from './class_mapping';
 import { transformAttributes } from './attribute_functions';
 import { transformAnnotations } from './annotation_function';
 
@@ -143,6 +144,16 @@ export async function transformClassesByStereotype(
             namedNode(parentUri),
           );
         }
+      }
+
+      // Add subClassOf from allowed nature
+      const gufoParentUri = getGufoParent(classElement)
+      if(gufoParentUri){
+        await writer.addQuad(
+          namedNode(uri),
+          namedNode('rdfs:subClassOf'),
+          namedNode(gufoParentUri),
+        );
       }
 
       // Get quads from class stereotype function

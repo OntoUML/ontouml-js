@@ -48,8 +48,8 @@ describe('Subpackages', () => {
       'school:Student rdf:type owl:Class',
       'job:Employee rdf:type owl:Class',
       'universityJob:Professor rdf:type owl:Class',
-      'duplicateNamePackage:MyClass rdf:type owl:Class',
-      'duplicateNamePackagezr3gi6gaqaccrgt:MyOtherClass rdf:type owl:Class',
+      'duplicateNamePackage:Ship rdf:type owl:Class',
+      'duplicateNamePackagezr3gi6gaqaccrgt:Car rdf:type owl:Class',
     ];
 
     for (const value of data) {

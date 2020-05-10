@@ -6,135 +6,23 @@
   "contents": [
     {
       "type": "Class",
-      "id": "3H23do6D.AAAAQxK",
-      "name": "boolean",
-      "description": null,
-      "properties": null,
-      "literals": null,
-      "propertyAssignments": null,
-      "stereotypes": ["datatype"],
-      "isAbstract": false,
-      "isDerived": false
-    },
-    {
-      "type": "Class",
-      "id": "fH23do6D.AAAAQxL",
-      "name": "byte",
-      "description": null,
-      "properties": null,
-      "literals": null,
-      "propertyAssignments": null,
-      "stereotypes": ["datatype"],
-      "isAbstract": false,
-      "isDerived": false
-    },
-    {
-      "type": "Class",
-      "id": "fH23do6D.AAAAQxM",
-      "name": "char",
-      "description": null,
-      "properties": null,
-      "literals": null,
-      "propertyAssignments": null,
-      "stereotypes": ["datatype"],
-      "isAbstract": false,
-      "isDerived": false
-    },
-    {
-      "type": "Class",
-      "id": "_H23do6D.AAAAQxN",
-      "name": "double",
-      "description": null,
-      "properties": null,
-      "literals": null,
-      "propertyAssignments": null,
-      "stereotypes": ["datatype"],
-      "isAbstract": false,
-      "isDerived": false
-    },
-    {
-      "type": "Class",
-      "id": "_H23do6D.AAAAQxO",
-      "name": "float",
-      "description": null,
-      "properties": null,
-      "literals": null,
-      "propertyAssignments": null,
-      "stereotypes": ["datatype"],
-      "isAbstract": false,
-      "isDerived": false
-    },
-    {
-      "type": "Class",
-      "id": "An23do6D.AAAAQxP",
-      "name": "int",
-      "description": null,
-      "properties": null,
-      "literals": null,
-      "propertyAssignments": null,
-      "stereotypes": ["datatype"],
-      "isAbstract": false,
-      "isDerived": false
-    },
-    {
-      "type": "Class",
-      "id": "An23do6D.AAAAQxQ",
-      "name": "long",
-      "description": null,
-      "properties": null,
-      "literals": null,
-      "propertyAssignments": null,
-      "stereotypes": ["datatype"],
-      "isAbstract": false,
-      "isDerived": false
-    },
-    {
-      "type": "Class",
-      "id": "gn23do6D.AAAAQxR",
-      "name": "short",
-      "description": null,
-      "properties": null,
-      "literals": null,
-      "propertyAssignments": null,
-      "stereotypes": ["datatype"],
-      "isAbstract": false,
-      "isDerived": false
-    },
-    {
-      "type": "Class",
-      "id": "gn23do6D.AAAAQxS",
-      "name": "void",
-      "description": null,
-      "properties": null,
-      "literals": null,
-      "propertyAssignments": null,
-      "stereotypes": ["datatype"],
-      "isAbstract": false,
-      "isDerived": false
-    },
-    {
-      "type": "Class",
-      "id": "gn23do6D.AAAAQxT",
-      "name": "string",
-      "description": null,
-      "properties": null,
-      "literals": null,
-      "propertyAssignments": null,
-      "stereotypes": ["datatype"],
-      "isAbstract": false,
-      "isDerived": false
-    },
-    {
-      "type": "Class",
       "id": "oZh3do6D.AAAAQ_W",
       "name": "Comparative Class Source",
       "description": null,
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["kind"],
+      "stereotypes": [
+        "kind"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -144,9 +32,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["kind"],
+      "stereotypes": [
+        "kind"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -156,9 +52,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["kind"],
+      "stereotypes": [
+        "kind"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -168,9 +72,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["kind"],
+      "stereotypes": [
+        "kind"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -180,9 +92,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["relator"],
+      "stereotypes": [
+        "relator"
+      ],
+      "allowed": [
+        "relator"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -192,9 +112,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["kind"],
+      "stereotypes": [
+        "kind"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -204,9 +132,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["mode"],
+      "stereotypes": [
+        "mode"
+      ],
+      "allowed": [
+        "mode"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -216,9 +152,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["kind"],
+      "stereotypes": [
+        "kind"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -228,9 +172,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["quality"],
+      "stereotypes": [
+        "quality"
+      ],
+      "allowed": [
+        "quality"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -240,9 +192,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["kind"],
+      "stereotypes": [
+        "kind"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -252,9 +212,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["kind"],
+      "stereotypes": [
+        "kind"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -264,9 +232,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["kind"],
+      "stereotypes": [
+        "kind"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -276,9 +252,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["quantity"],
+      "stereotypes": [
+        "quantity"
+      ],
+      "allowed": [
+        "quantity"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -288,9 +272,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["quantity"],
+      "stereotypes": [
+        "quantity"
+      ],
+      "allowed": [
+        "quantity"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -300,9 +292,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["kind"],
+      "stereotypes": [
+        "kind"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -312,9 +312,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["collective"],
+      "stereotypes": [
+        "collective"
+      ],
+      "allowed": [
+        "collective"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -324,9 +332,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["collective"],
+      "stereotypes": [
+        "collective"
+      ],
+      "allowed": [
+        "collective"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -336,9 +352,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["collective"],
+      "stereotypes": [
+        "collective"
+      ],
+      "allowed": [
+        "collective"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -348,9 +372,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["event"],
+      "stereotypes": [
+        "event"
+      ],
+      "allowed": [
+        "event"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -360,9 +392,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["kind"],
+      "stereotypes": [
+        "kind"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -372,9 +412,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["event"],
+      "stereotypes": [
+        "event"
+      ],
+      "allowed": [
+        "event"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -384,9 +432,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["kind"],
+      "stereotypes": [
+        "kind"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -396,9 +452,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["event"],
+      "stereotypes": [
+        "event"
+      ],
+      "allowed": [
+        "event"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -408,9 +472,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["kind"],
+      "stereotypes": [
+        "kind"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -420,9 +492,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["historicalRole"],
+      "stereotypes": [
+        "historicalRole"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -432,9 +512,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["historicalRole"],
+      "stereotypes": [
+        "historicalRole"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -444,9 +532,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["event"],
+      "stereotypes": [
+        "event"
+      ],
+      "allowed": [
+        "event"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -456,9 +552,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["event"],
+      "stereotypes": [
+        "event"
+      ],
+      "allowed": [
+        "event"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -468,9 +572,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["event"],
+      "stereotypes": [
+        "event"
+      ],
+      "allowed": [
+        "event"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -480,9 +592,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["mode"],
+      "stereotypes": [
+        "mode"
+      ],
+      "allowed": [
+        "mode"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -492,9 +612,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["kind"],
+      "stereotypes": [
+        "kind"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -504,9 +632,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["type"],
+      "stereotypes": [
+        "type"
+      ],
+      "allowed": [
+        "type"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -516,9 +652,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["event"],
+      "stereotypes": [
+        "event"
+      ],
+      "allowed": [
+        "event"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -528,9 +672,17 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": ["kind"],
+      "stereotypes": [
+        "kind"
+      ],
+      "allowed": [
+        "functional-complex"
+      ],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Relation",
@@ -578,7 +730,9 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": ["comparative"],
+      "stereotypes": [
+        "comparative"
+      ],
       "isAbstract": false,
       "isDerived": false
     },
@@ -628,7 +782,9 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": ["material"],
+      "stereotypes": [
+        "material"
+      ],
       "isAbstract": false,
       "isDerived": false
     },
@@ -678,7 +834,9 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": ["mediation"],
+      "stereotypes": [
+        "mediation"
+      ],
       "isAbstract": false,
       "isDerived": false
     },
@@ -728,7 +886,9 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": ["externalDependence"],
+      "stereotypes": [
+        "externalDependence"
+      ],
       "isAbstract": false,
       "isDerived": false
     },
@@ -778,7 +938,9 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": ["characterization"],
+      "stereotypes": [
+        "characterization"
+      ],
       "isAbstract": false,
       "isDerived": false
     },
@@ -828,7 +990,9 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": ["componentOf"],
+      "stereotypes": [
+        "componentOf"
+      ],
       "isAbstract": false,
       "isDerived": false
     },
@@ -878,7 +1042,9 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": ["subQuantityOf"],
+      "stereotypes": [
+        "subQuantityOf"
+      ],
       "isAbstract": false,
       "isDerived": false
     },
@@ -928,7 +1094,9 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": ["memberOf"],
+      "stereotypes": [
+        "memberOf"
+      ],
       "isAbstract": false,
       "isDerived": false
     },
@@ -978,7 +1146,9 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": ["subCollectionOf"],
+      "stereotypes": [
+        "subCollectionOf"
+      ],
       "isAbstract": false,
       "isDerived": false
     },
@@ -1028,7 +1198,9 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": ["participation"],
+      "stereotypes": [
+        "participation"
+      ],
       "isAbstract": false,
       "isDerived": false
     },
@@ -1078,7 +1250,9 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": ["creation"],
+      "stereotypes": [
+        "creation"
+      ],
       "isAbstract": false,
       "isDerived": false
     },
@@ -1128,7 +1302,9 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": ["termination"],
+      "stereotypes": [
+        "termination"
+      ],
       "isAbstract": false,
       "isDerived": false
     },
@@ -1178,7 +1354,9 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": ["historicalDependence"],
+      "stereotypes": [
+        "historicalDependence"
+      ],
       "isAbstract": false,
       "isDerived": false
     },
@@ -1228,7 +1406,9 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": ["participational"],
+      "stereotypes": [
+        "participational"
+      ],
       "isAbstract": false,
       "isDerived": false
     },
@@ -1278,7 +1458,9 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": ["manifestation"],
+      "stereotypes": [
+        "manifestation"
+      ],
       "isAbstract": false,
       "isDerived": false
     },
@@ -1328,7 +1510,9 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": ["instantiation"],
+      "stereotypes": [
+        "instantiation"
+      ],
       "isAbstract": false,
       "isDerived": false
     },
