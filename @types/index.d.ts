@@ -1,4 +1,4 @@
-import { OntoUMLType, AggregationKind } from '@constants/.';
+import { OntoUMLType, AggregationKind, OntologicalNature } from '@constants/.';
 import URIManager from '@libs/ontouml2gufo/uri_manager';
 
 /**
@@ -159,6 +159,10 @@ interface IPackage extends IElement, IContainer {
 interface IClass extends IElement, IContainer, IDecoratable, IClassifier {
   type: OntoUMLType.CLASS_TYPE;
   literals: ILiteral[] | null;
+  allowed: OntologicalNature[] | null;
+  isExtensional: boolean | null;
+  isPowertype: boolean | null;
+  order: number | null;
 
   /**
    * An array of IGeneralizationSet objects where the object is the `categorizer` IClassifier.
@@ -166,6 +170,41 @@ interface IClass extends IElement, IContainer, IDecoratable, IClassifier {
    * **Read Only**. Do not manually update.
    */
   _categorizerOfGeneralizationSets?: IGeneralizationSet[] | null;
+
+  /**
+   * Returns true iff the class has one of the following stereotypes as its unique stereotype: «kind», «collective», «quantity», «relator», «mode», «quality», «subkind», «role», «phase»
+   */
+  isSortal?: () => boolean;
+
+  /**
+   * Returns true if the class has one of the following stereotypes as its unique stereotype: «category», «roleMixin», «phaseMixin», «mixin»
+   */
+  isNonSortal?: () => boolean;
+
+  /**
+   * Returns true if the class has one of the following stereotypes as its unique stereotype: «kind», «collective», «quantity», «relator», «mode», «quality»
+   */
+  isUltimateSortal?: () => boolean;
+
+  /**
+   * Returns true iff the class has one of the following stereotypes as its unique stereotype: «kind», «collective», «quantity», «relator», «mode», «quality», «subkind», «category»
+   */
+  isRigid?: () => boolean;
+
+  /**
+   * Returns true iff the class has one of the following stereotypes as its unique stereotype: «mixin»
+   */
+  isSemiRigid?: () => boolean;
+
+  /**
+   * Returns true iff the class has one of the following stereotypes as its unique stereotype: «roleMixin», «phaseMixin», «role», «phase»
+   */
+  isAntiRigid?: () => boolean;
+
+  /**
+   * Returns true iff the class has all ontological natures passed through `instancesNatures` among its allowed natures.
+   */
+  allowsInstances?: (instancesNatures: OntologicalNature[]) => boolean;
 }
 
 /**

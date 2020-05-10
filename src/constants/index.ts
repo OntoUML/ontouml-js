@@ -65,3 +65,15 @@ export enum RelationStereotype {
   SUBQUANTITY_OF = 'subQuantityOf',
   TERMINATION = 'termination',
 }
+
+export enum OntologicalNature {
+  functional_complex = 'functional-complex',
+  collective = 'collective',
+  quantity = 'quantity',
+  relator = 'relator',
+  mode = 'mode',
+  quality = 'quality',
+  type = 'type',
+  event = 'event',
+  abstract = 'abstract',
+}
