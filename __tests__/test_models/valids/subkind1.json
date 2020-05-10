@@ -1,0 +1,116 @@
+{
+  "type": "Package",
+  "id": "SaL.mg6D.AAAAQBO",
+  "name": "Subkind1",
+  "description": null,
+  "contents": [
+    {
+      "type": "Package",
+      "id": "CK0hmg6D.AAAAQXz",
+      "name": "Diagram1",
+      "description": null,
+      "propertyAssignments": null,
+      "contents": [
+        {
+          "type": "Class",
+          "id": "1DWBmg6D.AAAAQWV",
+          "name": "Person",
+          "description": null,
+          "properties": null,
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["kind"],
+          "allowed": ["functional-complex"],
+          "isAbstract": false,
+          "isDerived": false,
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null
+        },
+        {
+          "type": "Class",
+          "id": "vmFBmg6D.AAAAQXE",
+          "name": "Man",
+          "description": null,
+          "properties": null,
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["subkind"],
+          "allowed": ["functional-complex"],
+          "isAbstract": false,
+          "isDerived": false,
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null
+        },
+        {
+          "type": "Class",
+          "id": "kX.Rmg6D.AAAAQYU",
+          "name": "Woman",
+          "description": null,
+          "properties": null,
+          "literals": null,
+          "propertyAssignments": null,
+          "stereotypes": ["subkind"],
+          "allowed": ["functional-complex"],
+          "isAbstract": false,
+          "isDerived": false,
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null
+        }
+      ]
+    },
+    {
+      "type": "Generalization",
+      "id": "uWFBmg6D.AAAAQXJ",
+      "name": null,
+      "description": null,
+      "propertyAssignments": null,
+      "general": {
+        "type": "Class",
+        "id": "1DWBmg6D.AAAAQWV"
+      },
+      "specific": {
+        "type": "Class",
+        "id": "vmFBmg6D.AAAAQXE"
+      }
+    },
+    {
+      "type": "Generalization",
+      "id": "RX.Rmg6D.AAAAQYZ",
+      "name": null,
+      "description": null,
+      "propertyAssignments": null,
+      "general": {
+        "type": "Class",
+        "id": "1DWBmg6D.AAAAQWV"
+      },
+      "specific": {
+        "type": "Class",
+        "id": "kX.Rmg6D.AAAAQYU"
+      }
+    },
+    {
+      "type": "GeneralizationSet",
+      "id": "uczRmg6D.AAAAQZM",
+      "name": "Person",
+      "description": null,
+      "propertyAssignments": null,
+      "categorizer": null,
+      "generalizations": [
+        {
+          "type": "Generalization",
+          "id": "uWFBmg6D.AAAAQXJ"
+        },
+        {
+          "type": "Generalization",
+          "id": "RX.Rmg6D.AAAAQYZ"
+        }
+      ],
+      "isDisjoint": true,
+      "isComplete": true
+    }
+  ],
+  "propertyAssignments": null
+}

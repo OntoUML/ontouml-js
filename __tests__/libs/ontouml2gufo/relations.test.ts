@@ -31,10 +31,14 @@ describe('Relations', () => {
   });
 
   it('should generate an uri automatically using association end', async () => {
-    const data = ['<:isComponentOfSnowpark> <rdf:type> <owl:ObjectProperty>'];
+    const data = [
+      '<:historicallyDependsOnKeynoteInvitation> <rdfs:subPropertyOf> <gufo:historicallyDependsOn> .',
+      '<:mediatesKeynoteSpeaker> <rdfs:subPropertyOf> <gufo:mediates> .',
+      '<:isProperPartOfPerson> <rdfs:subPropertyOf> <gufo:isObjectProperPartOf> .',
+    ];
 
     for (const value of data) {
-      expect(alpinebits).toContain(value);
+      expect(partWhole).toContain(value);
     }
   });
 
@@ -60,9 +64,9 @@ describe('Relations', () => {
   it('should connect a relation to gUFO stereotype', async () => {
     const data = [
       '<:organizer> <rdfs:subPropertyOf> <gufo:mediates>',
-      '<:described> <rdfs:subPropertyOf> <gufo:historicallyDependsOn>',
-      '<:isComponentOfSnowpark> <rdfs:subPropertyOf> <gufo:isComponentOf>',
-      '<:geospatialFeature> <rdfs:subPropertyOf> <gufo:inheresIn>',
+      '<:depicted> <rdfs:subPropertyOf> <gufo:historicallyDependsOn>',
+      '<:snowparkcontainer> <rdfs:subPropertyOf> <gufo:isComponentOf>',
+      '<:feature> <rdfs:subPropertyOf> <gufo:inheresIn>',
     ];
 
     for (const value of data) {
@@ -74,7 +78,7 @@ describe('Relations', () => {
     expect(alpinebits).toContain(
       `<:CompositeArea> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
-        <owl:onProperty> [ <owl:inverseOf> <:isComponentOfCompositeArea> ];
+        <owl:onProperty> [ <owl:inverseOf> <:superarea> ];
         <owl:minQualifiedCardinality> "2"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:MountainArea>
       ] .`.replace(/ {6}/gm, ''),
@@ -95,7 +99,7 @@ describe('Relations', () => {
     expect(alpinebits).toContain(
       `<:EventPlan> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
-        <owl:onProperty> <:eventSeries>;
+        <owl:onProperty> <:eventseries>;
         <owl:maxQualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:EventSeries>
       ] .`.replace(/ {6}/gm, ''),
@@ -114,10 +118,11 @@ describe('Relations', () => {
       '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
       '<owl:onClass> <:KeynoteSpeaker>',
       '] .',
-      '<:KeynoteSpeaker> <rdfs:subClassOf> [',
+      '<:KeynoteSpeech> <rdfs:subClassOf> [',
       '<rdf:type> <owl:Restriction>;',
-      '<owl:onProperty> [ <owl:inverseOf> <:keynoteSpeaker> ];',
-      '<owl:someValuesFrom> <:KeynoteSpeech>',
+      '<owl:onProperty> <:keynoteSpeaker>;',
+      '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
+      '<owl:onClass> <:KeynoteSpeaker>',
       '] .',
     ];
 

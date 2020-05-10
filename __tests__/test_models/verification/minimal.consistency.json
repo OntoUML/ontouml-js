@@ -6,10 +6,6 @@
   "contents": [
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "v8xkPg6GAqACnAXb",
       "name": "boolean",
       "description": null,
@@ -17,15 +13,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "_8xkPg6GAqACnAXc",
       "name": "byte",
       "description": null,
@@ -33,15 +29,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "ACxkPg6GAqACnAXd",
       "name": "char",
       "description": null,
@@ -49,15 +45,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "ACxkPg6GAqACnAXe",
       "name": "double",
       "description": null,
@@ -65,15 +61,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "gCxkPg6GAqACnAXf",
       "name": "float",
       "description": null,
@@ -81,15 +77,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "QCxkPg6GAqACnAXg",
       "name": "int",
       "description": null,
@@ -97,15 +93,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "QCxkPg6GAqACnAXh",
       "name": "long",
       "description": null,
@@ -113,15 +109,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "wCxkPg6GAqACnAXi",
       "name": "short",
       "description": null,
@@ -129,15 +125,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "ICxkPg6GAqACnAXj",
       "name": "void",
       "description": null,
@@ -145,15 +141,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "ICxkPg6GAqACnAXk",
       "name": "string",
       "description": null,
@@ -161,8 +157,12 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Package",
@@ -180,10 +180,6 @@
           "contents": [
             {
               "type": "Class",
-              "isExtensional": null,
-              "isPowertype": null,
-              "order": null,
-              "allowed": null,
               "id": "WRwUPg6GAqACnAmI",
               "name": "Person",
               "description": null,
@@ -208,15 +204,15 @@
               "literals": null,
               "propertyAssignments": null,
               "stereotypes": ["kind"],
+              "allowed": ["functional-complex"],
               "isAbstract": false,
-              "isDerived": false
+              "isDerived": false,
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null
             },
             {
               "type": "Class",
-              "isExtensional": null,
-              "isPowertype": null,
-              "order": null,
-              "allowed": null,
               "id": "9cZUPg6GAqACnAm2",
               "name": "Disease Severity Level",
               "description": null,
@@ -253,8 +249,12 @@
               ],
               "propertyAssignments": null,
               "stereotypes": ["enumeration"],
+              "allowed": ["abstract"],
               "isAbstract": false,
-              "isDerived": false
+              "isDerived": false,
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null
             }
           ]
         },
@@ -267,10 +267,6 @@
           "contents": [
             {
               "type": "Class",
-              "isExtensional": null,
-              "isPowertype": null,
-              "order": null,
-              "allowed": null,
               "id": "AEbUPg6GAqACnAna",
               "name": "People",
               "description": null,
@@ -278,15 +274,15 @@
               "literals": null,
               "propertyAssignments": null,
               "stereotypes": ["kind"],
+              "allowed": ["functional-complex"],
               "isAbstract": false,
-              "isDerived": false
+              "isDerived": false,
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null
             },
             {
               "type": "Class",
-              "isExtensional": null,
-              "isPowertype": null,
-              "order": null,
-              "allowed": null,
               "id": "GL_UPg6GAqACnAnm",
               "name": "Bedroom Availability Status",
               "description": null,
@@ -314,15 +310,15 @@
               "literals": null,
               "propertyAssignments": null,
               "stereotypes": ["enumeration"],
+              "allowed": ["abstract"],
               "isAbstract": false,
-              "isDerived": false
+              "isDerived": false,
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null
             },
             {
               "type": "Class",
-              "isExtensional": null,
-              "isPowertype": null,
-              "order": null,
-              "allowed": null,
               "id": "b5N0Pg6GAqACnAoe",
               "name": "Contract",
               "description": null,
@@ -330,15 +326,15 @@
               "literals": null,
               "propertyAssignments": null,
               "stereotypes": ["relator", "kind", "enumeration"],
+              "allowed": ["functional-complex", "relator", "abstract"],
               "isAbstract": false,
-              "isDerived": false
+              "isDerived": false,
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null
             },
             {
               "type": "Class",
-              "isExtensional": null,
-              "isPowertype": null,
-              "order": null,
-              "allowed": null,
               "id": "NfL0Pg6GAqACnAov",
               "name": "Agent",
               "description": null,
@@ -346,15 +342,15 @@
               "literals": null,
               "propertyAssignments": null,
               "stereotypes": null,
+              "allowed": null,
               "isAbstract": false,
-              "isDerived": false
+              "isDerived": false,
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null
             },
             {
               "type": "Class",
-              "isExtensional": null,
-              "isPowertype": null,
-              "order": null,
-              "allowed": null,
               "id": "_d6GPg6GAqACnArf",
               "name": "Enumeration",
               "description": null,
@@ -362,15 +358,15 @@
               "literals": null,
               "propertyAssignments": null,
               "stereotypes": ["Enum"],
+              "allowed": ["abstract"],
               "isAbstract": false,
-              "isDerived": false
+              "isDerived": false,
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null
             },
             {
               "type": "Class",
-              "isExtensional": null,
-              "isPowertype": null,
-              "order": null,
-              "allowed": null,
               "id": "ikLuPg6GAqACnAr7",
               "name": "Office Availability Status",
               "description": null,
@@ -378,8 +374,12 @@
               "literals": null,
               "propertyAssignments": null,
               "stereotypes": ["datatype"],
+              "allowed": ["abstract"],
               "isAbstract": false,
-              "isDerived": false
+              "isDerived": false,
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null
             }
           ]
         }

@@ -5,7 +5,7 @@ import {
   VerificationIssue,
   VerificationIssueCode,
 } from '@libs/verification/issues';
-import { IPackage, IClass, IGeneralization } from '@types';
+import { IGeneralization } from '@types';
 
 describe('Model deserializing', () => {
   const inputModel = classVerification;

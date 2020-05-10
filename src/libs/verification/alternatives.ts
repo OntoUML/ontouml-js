@@ -1,10 +1,8 @@
 import { IElement } from '@types';
 import { OntoUMLType, ClassStereotype, RelationStereotype } from '@constants/.';
-import pluralize from 'pluralize';
 
 export enum VerificationAlternativeCode {
   replace_ontouml_class_stereotype = 'replace_ontouml_class_stereotype',
-  ontouml_class_name_to_plural = 'ontouml_class_name_to_plural',
   remove_literals = 'remove_literals',
   replace_ontouml_class_stereotype_to_enumeration = 'replace_ontouml_class_stereotype_to_enumeration',
   remove_properties = 'remove_properties',
@@ -36,13 +34,6 @@ export class VerificationAlternative {
           source.id} a unique stereotype from the set {${getElementStereotypes(
           source,
         ).join(', ')}}.`;
-        this.elements = null;
-        break;
-      case VerificationAlternativeCode.ontouml_class_name_to_plural:
-        this.title = 'Change name to singular form.';
-        this.description = `Change name from ${
-          source.name
-        } to ${pluralize.singular(source.name)}.`;
         this.elements = null;
         break;
       case VerificationAlternativeCode.remove_literals:

@@ -20,7 +20,7 @@ describe('Classes', () => {
     );
     expect(result).toContain('<:yhVoWg6DAAAARSb> <rdfs:label> "Seatable"');
     expect(result).toContain(
-      '<:yhVoWg6DAAAARSb> <rdfs:subClassOf> <gufo:Endurant>',
+      '<:yhVoWg6DAAAARSb> <rdfs:subClassOf> <gufo:Object>',
     );
     expect(result).toContain('<:yhVoWg6DAAAARSb> <rdf:type> <gufo:Mixin>');
   });

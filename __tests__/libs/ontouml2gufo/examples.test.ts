@@ -29,8 +29,8 @@ describe('Examples', () => {
         options: {
           format: 'Turtle',
           baseIRI: 'https://alpinebits.org',
-          createInverses: true,
-          createObjectProperty: false,
+          createInverses: false,
+          createObjectProperty: true,
         },
       },
       {
@@ -38,7 +38,7 @@ describe('Examples', () => {
         model: alpinebits,
         options: {
           format: 'Turtle',
-          baseIRI: 'https://alpinebits.org',
+          baseIRI: 'https://alpinebits.org/custom',
           createInverses: true,
           customElementMapping: {
             JoK2ZeaGAqACBxS5: { uri: 'OWLPerson', label: { pt: 'Pessoa' } },
@@ -53,7 +53,7 @@ describe('Examples', () => {
         model: alpinebits,
         options: {
           format: 'Turtle',
-          baseIRI: 'https://alpinebits.org',
+          baseIRI: 'https://alpinebits.org/hide',
           createObjectProperty: false,
         },
       },
@@ -61,7 +61,9 @@ describe('Examples', () => {
         name: 'alpinebits.nt',
         model: alpinebits,
         options: {
-          baseIRI: 'https://alpinebits.org',
+          baseIRI: 'https://alpinebits.org/nt',
+          createInverses: true,
+          createObjectProperty: true,
         },
       },
       {
@@ -69,7 +71,7 @@ describe('Examples', () => {
         model: inverseRelations,
         options: {
           format: 'Turtle',
-          baseIRI: 'https://relations.org',
+          baseIRI: 'https://relations.org/inverse',
           createInverses: true,
         },
       },
@@ -78,7 +80,7 @@ describe('Examples', () => {
         model: inverseRelations,
         options: {
           format: 'Turtle',
-          baseIRI: 'https://relations.org',
+          baseIRI: 'https://relations.org/hide',
           createInverses: true,
           createObjectProperty: false,
         },
@@ -112,41 +114,59 @@ describe('Examples', () => {
       {
         name: 'partWhole.ttl',
         model: partWhole,
-        options: { format: 'Turtle' },
+        options: {
+          format: 'Turtle',
+          baseIRI: 'http://example.com/part-whole',
+        },
       },
       {
         name: 'partWholeHideRelations.ttl',
         model: partWhole,
-        options: { format: 'Turtle', createObjectProperty: false },
+        options: {
+          format: 'Turtle',
+          baseIRI: 'http://example.com/part-whole/hide',
+          createObjectProperty: false,
+        },
       },
       {
         name: 'partWhole.nt',
         model: partWhole,
+        options: {
+          baseIRI: 'http://example.com/part-whole/nt',
+        },
       },
       {
         name: 'annotations.ttl',
         model: annotations,
-        options: { format: 'Turtle' },
-      },
-      {
-        name: 'annotations.ttl',
-        model: annotations,
-        options: { format: 'Turtle' },
+        options: {
+          format: 'Turtle',
+          baseIRI: 'http://example.com/annotations',
+        },
       },
       {
         name: 'packagesMultiple.ttl',
         model: packages,
-        options: { format: 'Turtle', prefixPackages: true },
+        options: {
+          format: 'Turtle',
+          baseIRI: 'http://example.com/package/multiple',
+          prefixPackages: true,
+        },
       },
       {
         name: 'packagesSingle.ttl',
         model: packages,
-        options: { format: 'Turtle' },
+        options: {
+          format: 'Turtle',
+          baseIRI: 'http://example.com/package/single',
+        },
       },
       {
         name: 'derivation.ttl',
         model: derivation,
-        options: { format: 'Turtle' },
+        options: {
+          format: 'Turtle',
+          baseIRI: 'http://example.com/derivation',
+        },
       },
       {
         name: 'preAnalysis.ttl',

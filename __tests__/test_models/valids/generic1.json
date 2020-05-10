@@ -6,10 +6,6 @@
   "contents": [
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "qJdeWA6AUB0UtAWm",
       "name": "boolean",
       "description": null,
@@ -17,15 +13,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "Q5deWA6AUB0UtAWn",
       "name": "byte",
       "description": null,
@@ -33,15 +29,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "Q5deWA6AUB0UtAWo",
       "name": "char",
       "description": null,
@@ -49,15 +45,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "w5deWA6AUB0UtAWp",
       "name": "double",
       "description": null,
@@ -65,15 +61,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "w5deWA6AUB0UtAWq",
       "name": "float",
       "description": null,
@@ -81,15 +77,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "I5deWA6AUB0UtAWr",
       "name": "int",
       "description": null,
@@ -97,15 +93,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "I5deWA6AUB0UtAWs",
       "name": "long",
       "description": null,
@@ -113,15 +109,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "o5deWA6AUB0UtAWt",
       "name": "short",
       "description": null,
@@ -129,15 +125,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "o5deWA6AUB0UtAWu",
       "name": "void",
       "description": null,
@@ -145,15 +141,15 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
-      "isExtensional": null,
-      "isPowertype": null,
-      "order": null,
-      "allowed": null,
       "id": "Y5deWA6AUB0UtAWv",
       "name": "string",
       "description": null,
@@ -161,8 +157,12 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Package",
@@ -197,10 +197,6 @@
           "contents": [
             {
               "type": "Class",
-              "isExtensional": null,
-              "isPowertype": null,
-              "order": null,
-              "allowed": null,
               "id": "V_WRBA6AUB0UtAyA",
               "name": "Date",
               "description": null,
@@ -266,15 +262,15 @@
               "literals": null,
               "propertyAssignments": null,
               "stereotypes": ["datatype"],
+              "allowed": ["abstract"],
               "isAbstract": false,
-              "isDerived": false
+              "isDerived": false,
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null
             },
             {
               "type": "Class",
-              "isExtensional": null,
-              "isPowertype": null,
-              "order": null,
-              "allowed": null,
               "id": "IqtNhA6GAqACnAhN",
               "name": "Month",
               "description": null,
@@ -282,8 +278,12 @@
               "literals": null,
               "propertyAssignments": null,
               "stereotypes": ["enumeration"],
+              "allowed": ["abstract"],
               "isAbstract": false,
-              "isDerived": false
+              "isDerived": false,
+              "isExtensional": null,
+              "isPowertype": null,
+              "order": null
             }
           ]
         }
@@ -298,10 +298,6 @@
       "contents": [
         {
           "type": "Class",
-          "isExtensional": null,
-          "isPowertype": null,
-          "order": null,
-          "allowed": null,
           "id": "rw.hBA6AUB0UtArB",
           "name": "Agent",
           "description": null,
@@ -311,15 +307,15 @@
             "definition": "https://en.wikipedia.org/wiki/Agency_(philosophy)"
           },
           "stereotypes": ["category"],
+          "allowed": ["functional-complex"],
           "isAbstract": true,
-          "isDerived": false
+          "isDerived": false,
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null
         },
         {
           "type": "Class",
-          "isExtensional": null,
-          "isPowertype": null,
-          "order": null,
-          "allowed": null,
           "id": "2uxhBA6AUB0UtArb",
           "name": "Person",
           "description": null,
@@ -327,15 +323,15 @@
           "literals": null,
           "propertyAssignments": null,
           "stereotypes": ["kind"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
-          "isDerived": false
+          "isDerived": false,
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null
         },
         {
           "type": "Class",
-          "isExtensional": null,
-          "isPowertype": null,
-          "order": null,
-          "allowed": null,
           "id": "j5phBA6AUB0UtAts",
           "name": "Organization",
           "description": null,
@@ -343,15 +339,15 @@
           "literals": null,
           "propertyAssignments": null,
           "stereotypes": ["kind"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
-          "isDerived": false
+          "isDerived": false,
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null
         },
         {
           "type": "Class",
-          "isExtensional": null,
-          "isPowertype": null,
-          "order": null,
-          "allowed": null,
           "id": "_xThBA6AUB0UtAvg",
           "name": "School",
           "description": null,
@@ -359,15 +355,15 @@
           "literals": null,
           "propertyAssignments": null,
           "stereotypes": ["subkind"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
-          "isDerived": false
+          "isDerived": false,
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null
         },
         {
           "type": "Class",
-          "isExtensional": null,
-          "isPowertype": null,
-          "order": null,
-          "allowed": null,
           "id": "GDbhBA6AUB0UtAv1",
           "name": "Student",
           "description": null,
@@ -375,15 +371,15 @@
           "literals": null,
           "propertyAssignments": null,
           "stereotypes": ["role"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
-          "isDerived": false
+          "isDerived": false,
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null
         },
         {
           "type": "Class",
-          "isExtensional": null,
-          "isPowertype": null,
-          "order": null,
-          "allowed": null,
           "id": "JLnhBA6AUB0UtAwO",
           "name": "Enrollment",
           "description": null,
@@ -391,15 +387,15 @@
           "literals": null,
           "propertyAssignments": null,
           "stereotypes": ["relator"],
+          "allowed": ["relator"],
           "isAbstract": false,
-          "isDerived": false
+          "isDerived": false,
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null
         },
         {
           "type": "Class",
-          "isExtensional": null,
-          "isPowertype": null,
-          "order": null,
-          "allowed": null,
           "id": "wukRBA6AUB0UtAxW",
           "name": "Enrollment Date",
           "description": null,
@@ -427,15 +423,15 @@
           "literals": null,
           "propertyAssignments": null,
           "stereotypes": ["quality"],
+          "allowed": ["quality"],
           "isAbstract": false,
-          "isDerived": false
+          "isDerived": false,
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null
         },
         {
           "type": "Class",
-          "isExtensional": null,
-          "isPowertype": null,
-          "order": null,
-          "allowed": null,
           "id": "h_Y9hA6GAqACnA1t",
           "name": "Sophomore",
           "description": null,
@@ -443,15 +439,15 @@
           "literals": null,
           "propertyAssignments": null,
           "stereotypes": ["role"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
-          "isDerived": false
+          "isDerived": false,
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null
         },
         {
           "type": "Class",
-          "isExtensional": null,
-          "isPowertype": null,
-          "order": null,
-          "allowed": null,
           "id": "cea9hA6GAqACnA2B",
           "name": "Privately Enrolled",
           "description": null,
@@ -459,15 +455,15 @@
           "literals": null,
           "propertyAssignments": null,
           "stereotypes": ["role"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
-          "isDerived": false
+          "isDerived": false,
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null
         },
         {
           "type": "Class",
-          "isExtensional": null,
-          "isPowertype": null,
-          "order": null,
-          "allowed": null,
           "id": "6XxdhA6GAqACnA0J",
           "name": "Department",
           "description": null,
@@ -475,24 +471,28 @@
           "literals": null,
           "propertyAssignments": null,
           "stereotypes": ["subkind"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
-          "isDerived": false
+          "isDerived": false,
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null
         },
         {
           "type": "Class",
-          "isExtensional": null,
-          "isPowertype": null,
-          "order": null,
-          "allowed": null,
           "id": "zxmNJA6GAqACnA7H",
           "name": "Agent Type",
           "description": null,
           "properties": null,
           "literals": null,
           "propertyAssignments": null,
-          "stereotypes": ["powertype"],
+          "stereotypes": ["type"],
+          "allowed": ["type"],
           "isAbstract": false,
-          "isDerived": false
+          "isDerived": false,
+          "isExtensional": null,
+          "isPowertype": null,
+          "order": null
         }
       ]
     },

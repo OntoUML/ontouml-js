@@ -15,13 +15,13 @@ module.exports = {
     "node",
   ],
   moduleNameMapper: {
-    "^@test-models(.*)": "<rootDir>/test_models$1",
+    "^@test-models(.*)": "<rootDir>/__tests__/test_models$1",
     "^@constants(.*)": "<rootDir>/src/constants$1",
     "^@error(.*)": "<rootDir>/src/error$1",
     "^@libs(.*)": "<rootDir>/src/libs$1",
     "^@utils(.*)": "<rootDir>/src/utils$1"
   },
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(ts|js)x?$',
+  testRegex: '(/__tests__/libs/.*|(\\.|/)(test|spec))\\.(ts|js)x?$',
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
     'src/**/*.{ts,tsx,js,jsx}',

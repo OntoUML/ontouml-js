@@ -101,16 +101,6 @@ describe('Model deserializing', () => {
     // ).toBeTruthy();
   });
 
-  it('Check class with plural name warning.', () => {
-    const peopleIssues = issues.filter(
-      (issue: VerificationIssue) =>
-        issue.source.id === 'AEbUPg6GAqACnAna' &&
-        issue.code === VerificationIssueCode.class_plural_name,
-    );
-
-    expect(peopleIssues).toBeDefined();
-  });
-
   it('Stringify issues', () => {
     try {
       expect(true).toBeTruthy();

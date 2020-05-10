@@ -29,8 +29,8 @@ describe('InverseRelations', () => {
 
   it('should generate an uri automatically using association end', async () => {
     const data = [
-      '<:snowparkFeature> <owl:inverseOf> <:isComponentOfSnowpark>',
-      '<:isComponentOfSnowpark> <rdf:type> <owl:ObjectProperty>',
+      '<:snowparkfeature> <owl:inverseOf> <:snowparkcontainer>',
+      '<:snowparkcontainer> <rdf:type> <owl:ObjectProperty>',
     ];
 
     for (const value of data) {
@@ -40,7 +40,7 @@ describe('InverseRelations', () => {
 
   it('should generate an uri automatically using stereotype', async () => {
     const data = [
-      '<:organizedEvent> <owl:inverseOf> <:organizer>',
+      '<:organizedevent> <owl:inverseOf> <:organizer>',
       '<:organizer> <rdf:type> <owl:ObjectProperty>',
     ];
 
@@ -53,8 +53,8 @@ describe('InverseRelations', () => {
     const data = [
       '<:organizer> <rdfs:domain> <:EventPlan>',
       '<:organizer> <rdfs:range> <:Organizer>',
-      '<:organizedEvent> <rdfs:domain> <:Organizer>',
-      '<:organizedEvent> <rdfs:range> <:EventPlan>',
+      '<:organizedevent> <rdfs:domain> <:Organizer>',
+      '<:organizedevent> <rdfs:range> <:EventPlan>',
     ];
 
     for (const value of data) {
@@ -66,7 +66,7 @@ describe('InverseRelations', () => {
     expect(alpinebits).toContain(
       `<:CompositeArea> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
-        <owl:onProperty> <:subAreas>;
+        <owl:onProperty> <:subarea>;
         <owl:minQualifiedCardinality> "2"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:MountainArea>
       ] .`.replace(/ {6}/gm, ''),
@@ -75,7 +75,7 @@ describe('InverseRelations', () => {
     expect(alpinebits).toContain(
       `<:MountainArea> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
-        <owl:onProperty> <:isComponentOfCompositeArea>;
+        <owl:onProperty> <:superarea>;
         <owl:maxQualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:CompositeArea>
       ] .`.replace(/ {6}/gm, ''),
