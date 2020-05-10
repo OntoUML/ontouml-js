@@ -34,7 +34,7 @@ describe('Relations', () => {
     const data = [
       '<:historicallyDependsOnKeynoteInvitation> <rdfs:subPropertyOf> <gufo:historicallyDependsOn> .',
       '<:mediatesKeynoteSpeaker> <rdfs:subPropertyOf> <gufo:mediates> .',
-      '<:isProperPartOfPerson> <rdfs:subPropertyOf> <gufo:isObjectProperPartOf> .'
+      '<:isProperPartOfPerson> <rdfs:subPropertyOf> <gufo:isObjectProperPartOf> .',
     ];
 
     for (const value of data) {
@@ -123,7 +123,7 @@ describe('Relations', () => {
       '<owl:onProperty> <:keynoteSpeaker>;',
       '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
       '<owl:onClass> <:KeynoteSpeaker>',
-      '] .'
+      '] .',
     ];
 
     for (const value of data) {

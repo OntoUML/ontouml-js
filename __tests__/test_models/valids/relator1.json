@@ -12,12 +12,8 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
-      "allowed": [
-        "abstract"
-      ],
+      "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
       "isDerived": false,
       "isExtensional": null,
@@ -32,12 +28,8 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
-      "allowed": [
-        "abstract"
-      ],
+      "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
       "isDerived": false,
       "isExtensional": null,
@@ -52,12 +44,8 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
-      "allowed": [
-        "abstract"
-      ],
+      "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
       "isDerived": false,
       "isExtensional": null,
@@ -72,12 +60,8 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
-      "allowed": [
-        "abstract"
-      ],
+      "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
       "isDerived": false,
       "isExtensional": null,
@@ -92,12 +76,8 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
-      "allowed": [
-        "abstract"
-      ],
+      "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
       "isDerived": false,
       "isExtensional": null,
@@ -112,12 +92,8 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
-      "allowed": [
-        "abstract"
-      ],
+      "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
       "isDerived": false,
       "isExtensional": null,
@@ -132,12 +108,8 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
-      "allowed": [
-        "abstract"
-      ],
+      "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
       "isDerived": false,
       "isExtensional": null,
@@ -152,12 +124,8 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
-      "allowed": [
-        "abstract"
-      ],
+      "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
       "isDerived": false,
       "isExtensional": null,
@@ -172,12 +140,8 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
-      "allowed": [
-        "abstract"
-      ],
+      "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
       "isDerived": false,
       "isExtensional": null,
@@ -192,12 +156,8 @@
       "properties": null,
       "literals": null,
       "propertyAssignments": null,
-      "stereotypes": [
-        "datatype"
-      ],
-      "allowed": [
-        "abstract"
-      ],
+      "stereotypes": ["datatype"],
+      "allowed": ["abstract"],
       "isAbstract": false,
       "isDerived": false,
       "isExtensional": null,
@@ -219,12 +179,8 @@
           "properties": null,
           "literals": null,
           "propertyAssignments": null,
-          "stereotypes": [
-            "kind"
-          ],
-          "allowed": [
-            "functional-complex"
-          ],
+          "stereotypes": ["kind"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
           "isDerived": false,
           "isExtensional": null,
@@ -239,12 +195,8 @@
           "properties": null,
           "literals": null,
           "propertyAssignments": null,
-          "stereotypes": [
-            "subkind"
-          ],
-          "allowed": [
-            "functional-complex"
-          ],
+          "stereotypes": ["subkind"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
           "isDerived": false,
           "isExtensional": null,
@@ -259,12 +211,8 @@
           "properties": null,
           "literals": null,
           "propertyAssignments": null,
-          "stereotypes": [
-            "subkind"
-          ],
-          "allowed": [
-            "functional-complex"
-          ],
+          "stereotypes": ["subkind"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
           "isDerived": false,
           "isExtensional": null,
@@ -279,12 +227,8 @@
           "properties": null,
           "literals": null,
           "propertyAssignments": null,
-          "stereotypes": [
-            "role"
-          ],
-          "allowed": [
-            "functional-complex"
-          ],
+          "stereotypes": ["role"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
           "isDerived": false,
           "isExtensional": null,
@@ -299,12 +243,8 @@
           "properties": null,
           "literals": null,
           "propertyAssignments": null,
-          "stereotypes": [
-            "role"
-          ],
-          "allowed": [
-            "functional-complex"
-          ],
+          "stereotypes": ["role"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
           "isDerived": false,
           "isExtensional": null,
@@ -319,12 +259,8 @@
           "properties": null,
           "literals": null,
           "propertyAssignments": null,
-          "stereotypes": [
-            "relator"
-          ],
-          "allowed": [
-            "relator"
-          ],
+          "stereotypes": ["relator"],
+          "allowed": ["relator"],
           "isAbstract": false,
           "isDerived": false,
           "isExtensional": null,
@@ -459,9 +395,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -511,9 +445,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "mediation"
-      ],
+      "stereotypes": ["mediation"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -563,9 +495,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "material"
-      ],
+      "stereotypes": ["material"],
       "isAbstract": false,
       "isDerived": false
     },
@@ -615,9 +545,7 @@
         }
       ],
       "propertyAssignments": null,
-      "stereotypes": [
-        "derivation"
-      ],
+      "stereotypes": ["derivation"],
       "isAbstract": false,
       "isDerived": false
     }

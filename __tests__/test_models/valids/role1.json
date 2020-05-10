@@ -19,12 +19,8 @@
           "properties": null,
           "literals": null,
           "propertyAssignments": null,
-          "stereotypes": [
-            "kind"
-          ],
-          "allowed": [
-            "functional-complex"
-          ],
+          "stereotypes": ["kind"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
           "isDerived": false,
           "isExtensional": null,
@@ -39,12 +35,8 @@
           "properties": null,
           "literals": null,
           "propertyAssignments": null,
-          "stereotypes": [
-            "subkind"
-          ],
-          "allowed": [
-            "functional-complex"
-          ],
+          "stereotypes": ["subkind"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
           "isDerived": false,
           "isExtensional": null,
@@ -59,12 +51,8 @@
           "properties": null,
           "literals": null,
           "propertyAssignments": null,
-          "stereotypes": [
-            "subkind"
-          ],
-          "allowed": [
-            "functional-complex"
-          ],
+          "stereotypes": ["subkind"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
           "isDerived": false,
           "isExtensional": null,
@@ -79,12 +67,8 @@
           "properties": null,
           "literals": null,
           "propertyAssignments": null,
-          "stereotypes": [
-            "role"
-          ],
-          "allowed": [
-            "functional-complex"
-          ],
+          "stereotypes": ["role"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
           "isDerived": false,
           "isExtensional": null,
@@ -99,12 +83,8 @@
           "properties": null,
           "literals": null,
           "propertyAssignments": null,
-          "stereotypes": [
-            "role"
-          ],
-          "allowed": [
-            "functional-complex"
-          ],
+          "stereotypes": ["role"],
+          "allowed": ["functional-complex"],
           "isAbstract": false,
           "isDerived": false,
           "isExtensional": null,

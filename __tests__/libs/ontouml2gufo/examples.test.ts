@@ -114,7 +114,7 @@ describe('Examples', () => {
       {
         name: 'partWhole.ttl',
         model: partWhole,
-        options: { 
+        options: {
           format: 'Turtle',
           baseIRI: 'http://example.com/part-whole',
         },
@@ -122,23 +122,23 @@ describe('Examples', () => {
       {
         name: 'partWholeHideRelations.ttl',
         model: partWhole,
-        options: { 
-          format: 'Turtle', 
+        options: {
+          format: 'Turtle',
           baseIRI: 'http://example.com/part-whole/hide',
-          createObjectProperty: false 
+          createObjectProperty: false,
         },
       },
       {
         name: 'partWhole.nt',
         model: partWhole,
-        options: { 
+        options: {
           baseIRI: 'http://example.com/part-whole/nt',
         },
       },
       {
         name: 'annotations.ttl',
         model: annotations,
-        options: { 
+        options: {
           format: 'Turtle',
           baseIRI: 'http://example.com/annotations',
         },
@@ -146,16 +146,16 @@ describe('Examples', () => {
       {
         name: 'packagesMultiple.ttl',
         model: packages,
-        options: { 
-          format: 'Turtle', 
+        options: {
+          format: 'Turtle',
           baseIRI: 'http://example.com/package/multiple',
-          prefixPackages: true 
+          prefixPackages: true,
         },
       },
       {
         name: 'packagesSingle.ttl',
         model: packages,
-        options: { 
+        options: {
           format: 'Turtle',
           baseIRI: 'http://example.com/package/single',
         },
@@ -163,7 +163,7 @@ describe('Examples', () => {
       {
         name: 'derivation.ttl',
         model: derivation,
-        options: { 
+        options: {
           format: 'Turtle',
           baseIRI: 'http://example.com/derivation',
         },

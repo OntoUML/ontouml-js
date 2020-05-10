@@ -147,8 +147,8 @@ export async function transformClassesByStereotype(
       }
 
       // Add subClassOf from allowed nature
-      const gufoParentUri = getGufoParent(classElement)
-      if(gufoParentUri){
+      const gufoParentUri = getGufoParent(classElement);
+      if (gufoParentUri) {
         await writer.addQuad(
           namedNode(uri),
           namedNode('rdfs:subClassOf'),

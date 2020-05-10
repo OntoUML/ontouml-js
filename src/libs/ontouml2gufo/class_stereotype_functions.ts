@@ -49,9 +49,7 @@ export function transformHistoricalRole(
 ): Quad[] {
   const uri = getURI({ element: classElement, options });
 
-  return [
-    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Role')),
-  ];
+  return [quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Role'))];
 }
 
 export function transformPhase(
@@ -80,9 +78,7 @@ export function transformMixin(
 ): Quad[] {
   const uri = getURI({ element: classElement, options });
 
-  return [
-    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Mixin')),
-  ];
+  return [quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Mixin'))];
 }
 
 export function transformRoleMixin(
