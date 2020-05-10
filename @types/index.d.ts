@@ -1,5 +1,5 @@
 import { OntoUMLType, AggregationKind, OntologicalNature } from '@constants/.';
-import URIManager from '@libs/ontuml2gufo/uri_manager';
+import URIManager from '@libs/ontouml2gufo/uri_manager';
 
 /**
  * Interface that captures common properties of objects in `ontouml-schema`. Whenever necessary, stereotypes are captured as regular string arrays.
@@ -369,9 +369,39 @@ interface IOntoUMLError {
 
 interface IOntoUML2GUFOOptions {
   baseIRI: string;
+  createInverses?: boolean;
+  createObjectProperty?: boolean;
+  customElementMapping?: {
+    [key: string]: {
+      label?: {
+        [key: string]: string;
+      };
+      uri: string;
+    };
+  };
+  customPackageMapping?: {
+    [key: string]: {
+      prefix: string;
+      uri: string;
+    };
+  };
   format?: string;
-  hideObjectPropertyCreation?: boolean;
+  preAnalysis?: boolean;
   prefixPackages?: boolean;
   uriFormatBy?: 'name' | 'id';
   uriManager?: URIManager;
+}
+
+interface IPreAnalysisItem {
+  id: string;
+  code?: string;
+  title: string;
+  description: string;
+  severity?: 'error' | 'warning';
+  data?: Object;
+}
+
+interface IOntoUML2GUFOResult {
+  preAnalysis: IPreAnalysisItem[];
+  model: string;
 }

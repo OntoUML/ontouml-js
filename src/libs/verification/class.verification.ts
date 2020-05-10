@@ -64,11 +64,12 @@ export const ClassVerification = {
       );
     }
 
-    if (_class.name && pluralize.isPlural(_class.name)) {
-      consistencyIssues.push(
-        new VerificationIssue(VerificationIssueCode.class_plural_name, _class),
-      );
-    }
+    // TODO: replace plural checking module
+    // if (_class.name && pluralize.isPlural(_class.name)) {
+    //   consistencyIssues.push(
+    //     new VerificationIssue(VerificationIssueCode.class_plural_name, _class),
+    //   );
+    // }
 
     if (
       _class.stereotypes &&

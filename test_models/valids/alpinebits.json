@@ -347,7 +347,7 @@
             {
               "type": "Property",
               "id": "AUy1.g6AUB20tzxR",
-              "name": "openingHours",
+              "name": "opening hours",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -607,7 +607,7 @@
             {
               "type": "Property",
               "id": "Il1L0Q6GAqACCg3n",
-              "name": "availableHours",
+              "name": "available hours",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -1475,7 +1475,7 @@
             {
               "type": "Property",
               "id": "1K0xFRaGAqCsIA8_",
-              "name": "baseSnow",
+              "name": "base snow",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -1494,7 +1494,7 @@
             {
               "type": "Property",
               "id": "nISxFRaGAqCsIA9K",
-              "name": "snowOverNight",
+              "name": "snow over night",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -1532,7 +1532,7 @@
             {
               "type": "Property",
               "id": "nI8xFRaGAqCsIA9G",
-              "name": "stormTotal",
+              "name": "storm total",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -1551,7 +1551,7 @@
             {
               "type": "Property",
               "id": "RVLhFRaGAqCsIA2c",
-              "name": "obtainedIn",
+              "name": "obtained in",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -1570,7 +1570,7 @@
             {
               "type": "Property",
               "id": "dcsxFRaGAqCsIA9D",
-              "name": "baseSnowRange",
+              "name": "base snow range",
               "description": null,
               "propertyType": null,
               "cardinality": null,
@@ -1586,7 +1586,7 @@
             {
               "type": "Property",
               "id": "odkOsQ6GAqACClVD",
-              "name": "snowMaking",
+              "name": "snow making",
               "description": null,
               "propertyType": {
                 "type": "Class",
@@ -3641,7 +3641,7 @@
         {
           "type": "Property",
           "id": "ta4OZeaGAqACBxXZ",
-          "name": null,
+          "name": "organized event",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -3660,7 +3660,7 @@
         {
           "type": "Property",
           "id": "ta4OZeaGAqACBxXb",
-          "name": "organizers",
+          "name": "organizer",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -3691,7 +3691,7 @@
         {
           "type": "Property",
           "id": "rI7OZeaGAqACBxaO",
-          "name": null,
+          "name": "is sponsor of",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -3710,7 +3710,7 @@
         {
           "type": "Property",
           "id": "rI7OZeaGAqACBxaQ",
-          "name": "sponsors",
+          "name": "sponsor",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -3760,7 +3760,7 @@
         {
           "type": "Property",
           "id": "VuRuZeaGAqACBxdQ",
-          "name": "subEvents",
+          "name": "sub events",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -3791,7 +3791,7 @@
         {
           "type": "Property",
           "id": "eecx5eaGAqACBx2O",
-          "name": null,
+          "name": "is contributor of",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -3810,7 +3810,7 @@
         {
           "type": "Property",
           "id": "eecx5eaGAqACBx2Q",
-          "name": "contributors",
+          "name": "contributor",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -3841,7 +3841,7 @@
         {
           "type": "Property",
           "id": "gLFx5eaGAqACBx3n",
-          "name": null,
+          "name": "is publisher of",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -3891,7 +3891,7 @@
         {
           "type": "Property",
           "id": "tXIEFeaGAqACByF7",
-          "name": "multimediaDescriptions",
+          "name": "multimedia description",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -3941,7 +3941,7 @@
         {
           "type": "Property",
           "id": "zVD0FeaGAqACByXk",
-          "name": null,
+          "name": "is venue of",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -3960,7 +3960,7 @@
         {
           "type": "Property",
           "id": "zVD0FeaGAqACByXm",
-          "name": "venues",
+          "name": "venue",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -3991,7 +3991,7 @@
         {
           "type": "Property",
           "id": "qFia0.aGAqAovRLL",
-          "name": "editions",
+          "name": "edition",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4010,7 +4010,7 @@
         {
           "type": "Property",
           "id": "qFia0.aGAqAovRLN",
-          "name": "eventSeries",
+          "name": "event series",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4041,7 +4041,7 @@
         {
           "type": "Property",
           "id": "rtJ3KRaGAqACCBHr",
-          "name": "features",
+          "name": "snowpark feature",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4091,7 +4091,7 @@
         {
           "type": "Property",
           "id": ".LAPKRaGAqACCBJt",
-          "name": "lifts",
+          "name": "lift",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4141,7 +4141,7 @@
         {
           "type": "Property",
           "id": "3x40WRaGAqCsIB4X",
-          "name": "trails",
+          "name": "trail",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4341,7 +4341,7 @@
         {
           "type": "Property",
           "id": "5ALZWRaGAqCsIDCM",
-          "name": null,
+          "name": "is opening hours of",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4360,7 +4360,7 @@
         {
           "type": "Property",
           "id": "5ALZWRaGAqCsIDCK",
-          "name": "openingHours",
+          "name": "opening hours",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4441,7 +4441,7 @@
         {
           "type": "Property",
           "id": "eTVhFRaGAqCsIA1p",
-          "name": "snowConditions",
+          "name": "snow condition",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4460,7 +4460,7 @@
         {
           "type": "Property",
           "id": "eTVhFRaGAqCsIA1r",
-          "name": null,
+          "name": "measurement place",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4510,7 +4510,7 @@
         {
           "type": "Property",
           "id": "4XBRFRaGAqCsIA5C",
-          "name": "secondarySurface",
+          "name": "secondary surface",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4560,7 +4560,7 @@
         {
           "type": "Property",
           "id": "oVhRFRaGAqCsIA5V",
-          "name": "primarySurface",
+          "name": "primary surface",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4610,7 +4610,7 @@
         {
           "type": "Property",
           "id": "pz.5FRaGAqCsIBNE",
-          "name": "subAreas",
+          "name": "sub areas",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4641,7 +4641,7 @@
         {
           "type": "Property",
           "id": "ZDhTFRaGAqCsIB2t",
-          "name": null,
+          "name": "connects from",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4660,7 +4660,7 @@
         {
           "type": "Property",
           "id": "5DhTFRaGAqCsIB2v",
-          "name": "connections",
+          "name": "connects to",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4691,7 +4691,7 @@
         {
           "type": "Property",
           "id": "iiSilRaGAqCsICVX",
-          "name": null,
+          "name": "owned area",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4710,7 +4710,7 @@
         {
           "type": "Property",
           "id": "iiSilRaGAqCsICVZ",
-          "name": "areaOwner",
+          "name": "area owner",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4791,7 +4791,7 @@
         {
           "type": "Property",
           "id": "guit.g6AUB20t0EA",
-          "name": "geometries",
+          "name": "geometry",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4810,7 +4810,7 @@
         {
           "type": "Property",
           "id": "guit.g6AUB20t0EC",
-          "name": null,
+          "name": "geospatial feature",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4841,7 +4841,7 @@
         {
           "type": "Property",
           "id": "j7k8EQ6GAqACCjEZ",
-          "name": null,
+          "name": "is license of",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4891,7 +4891,7 @@
         {
           "type": "Property",
           "id": "gPm8EQ6GAqACCjFx",
-          "name": null,
+          "name": "owned media",
           "description": null,
           "propertyType": {
             "type": "Class",
@@ -4910,7 +4910,7 @@
         {
           "type": "Property",
           "id": "gPm8EQ6GAqACCjFz",
-          "name": "copyrightOwner",
+          "name": "copyright owner",
           "description": null,
           "propertyType": {
             "type": "Class",

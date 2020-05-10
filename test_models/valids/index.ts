@@ -9,10 +9,12 @@ const subkindExample1 = require('./subkind1.json');
 const alpinebits = require('./alpinebits.json');
 const istandard = require('./istandard.json');
 const person = require('./person.json');
+const preAnalysis = require('./preAnalysis.json');
 const partWhole = require('./partWhole.json');
 const annotations = require('./annotations.json');
 const packages = require('./packages.json');
 const derivation = require('./derivation.json');
+const inverseRelations = require('./inverseRelations.json');
 
 export {
   genericExample1,
@@ -26,8 +28,10 @@ export {
   alpinebits,
   istandard,
   person,
+  preAnalysis,
   partWhole,
   annotations,
   packages,
   derivation,
+  inverseRelations,
 };

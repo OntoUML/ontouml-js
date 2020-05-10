@@ -1,7 +1,7 @@
 import { N3Writer } from 'n3';
 import { IElement, IOntoUML2GUFOOptions } from '@types';
 import { AvailableLanguages } from './constants';
-import { getURI } from './helper_functions';
+import { getURI, getCustomElementData } from './helper_functions';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -12,9 +12,22 @@ export async function transformAnnotations(
   element: IElement,
   options: IOntoUML2GUFOOptions,
 ): Promise<boolean> {
-  const { propertyAssignments, description } = element;
+  const { propertyAssignments, description, name } = element;
+  const { customLabel = {} } = getCustomElementData(element, options);
   const uri = getURI({ element, options });
   const quads = [];
+
+  for (const language of Object.keys(customLabel)) {
+    if (AvailableLanguages.includes(language)) {
+      quads.push(
+        quad(
+          namedNode(uri),
+          namedNode('rdfs:label'),
+          literal(customLabel[language], language),
+        ),
+      );
+    }
+  }
 
   if (propertyAssignments) {
     for (const language of Object.keys(propertyAssignments)) {
@@ -28,6 +41,18 @@ export async function transformAnnotations(
         );
       }
     }
+  }
+
+  if (customLabel.default) {
+    quads.push(
+      quad(
+        namedNode(uri),
+        namedNode('rdfs:label'),
+        literal(customLabel.default),
+      ),
+    );
+  } else if (name) {
+    quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(name)));
   }
 
   if (description) {

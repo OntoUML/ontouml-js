@@ -23,7 +23,7 @@
     "bundle": "webpack",
     "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'",
     "test": "jest --coverage",
-    "test:clean": "jest --clearCache",
+    "test:clear": "jest --clearCache",
     "test:watch": "jest --watch"
   },
   "husky": {
@@ -50,9 +50,11 @@
     "nodemon": "^1.19.4",
     "ontouml-schema": "^0.2.4",
     "pluralize": "^8.0.0",
+    "random-id": "^1.0.3",
     "regenerator-runtime": "^0.13.3",
     "tslib": "~1.10.0",
-    "uniqid": "^5.2.0"
+    "uniqid": "^5.2.0",
+    "validate.io-uri": "^1.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.5",

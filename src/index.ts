@@ -9,7 +9,7 @@ import {
   VerificationAlternative,
   VerificationAlternativeCode,
 } from '@libs/verification/alternatives';
-import { OntoUML2GUFO } from '@libs/ontuml2gufo';
+import { OntoUML2GUFO } from '@libs/ontouml2gufo';
 
 export {
   ModelManager,
