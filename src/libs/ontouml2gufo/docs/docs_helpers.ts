@@ -1,4 +1,5 @@
 import { N3Store } from 'n3';
+import { DefaultPrefixes } from '../constants';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -10,6 +11,8 @@ type URIData = {
   name: string;
   prefixName: string;
   prefix: string;
+  url: string;
+  urlTarget: string;
 };
 
 export function getURIData(
@@ -20,12 +23,16 @@ export function getURIData(
   let name = '';
   let prefixName = '';
   let prefix = '';
+  let url = '';
+  let urlTarget = '';
 
   for (const key of Object.keys(prefixes)) {
     if (uri.includes(prefixes[key])) {
+      prefix = key;
       name = uri.replace(prefixes[key], '');
       prefixName = `${prefix}:${name}`;
-      prefix = key;
+      url = DefaultPrefixes[prefix] ? `${prefixes[key]}${name}` : `#${name}`;
+      urlTarget = DefaultPrefixes[prefix] ? '_blank' : '_self';
 
       break;
     }
@@ -51,7 +58,7 @@ export function getURIData(
     ? labelQuad.object.id.substring(1, labelQuad.object.id.length - 1)
     : '';
 
-  return { comment, label, name, prefixName, prefix };
+  return { comment, label, name, prefixName, prefix, url, urlTarget };
 }
 
 export function getElement(

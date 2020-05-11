@@ -15,6 +15,7 @@ import { IPackage, IOntoUML2GUFOOptions } from '@types';
 
 type File = {
   name: string;
+  docName?: string;
   model: IPackage;
   options?: Partial<IOntoUML2GUFOOptions>;
   preAnalysisFile?: string;
@@ -25,10 +26,12 @@ describe('Examples', () => {
     const files: File[] = [
       {
         name: 'alpinebits.ttl',
+        docName: 'alpinebits.html',
         model: alpinebits,
         options: {
           format: 'Turtle',
           baseIRI: 'https://alpinebits.org',
+          createDocumentation: true,
           createInverses: false,
           createObjectProperty: true,
         },
@@ -197,6 +200,11 @@ describe('Examples', () => {
       const result = await transformOntoUML2GUFO(file.model, file.options);
       const modelFilepath = path + file.name;
       fs.writeFileSync(modelFilepath, result.model);
+
+      if (file.options && file.options.createDocumentation && file.docName) {
+        const docPath = `__tests__/libs/ontouml2gufo/examples/${file.docName}`;
+        fs.writeFileSync(docPath, result.documentation);
+      }
 
       if (file.preAnalysisFile) {
         const analysisFilepath = path + file.preAnalysisFile;

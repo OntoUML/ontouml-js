@@ -3,6 +3,7 @@ import { getClasses } from './docs_class';
 import { getRelations } from './docs_relations';
 import defaultTheme from './docs_theme';
 import { getHBSTemplate } from './docs_hbs_helpers';
+import { getAttributes } from './docs_attributes';
 
 const N3 = require('n3');
 
@@ -23,6 +24,7 @@ export async function generateDocumentation(
 
   const classes = getClasses(model, prefixes);
   const relations = getRelations(model, prefixes);
+  const attributes = getAttributes(model, prefixes);
 
   // === GENERATE TEMPLATE ===
 
@@ -31,6 +33,7 @@ export async function generateDocumentation(
   return await template({
     classes,
     relations,
+    attributes,
     title,
     theme: { ...defaultTheme, ...theme },
   });

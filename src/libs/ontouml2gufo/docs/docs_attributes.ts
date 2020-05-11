@@ -5,7 +5,7 @@ const N3 = require('n3');
 const { DataFactory } = N3;
 const { namedNode } = DataFactory;
 
-export function isRelation(
+export function isAttribute(
   uri: string,
   model: N3Store,
   prefixes: Prefixes,
@@ -13,14 +13,14 @@ export function isRelation(
   const quad = model.getQuads(
     namedNode(uri),
     namedNode(`${prefixes.rdf}type`),
-    namedNode(`${prefixes.owl}ObjectProperty`),
+    namedNode(`${prefixes.owl}DatatypeProperty`),
     null,
   )[0];
 
   return !!quad;
 }
 
-export function getRelation(
+export function getAttribute(
   uri: string,
   model: N3Store,
   prefixes: Prefixes,
@@ -48,19 +48,19 @@ export function getRelation(
   };
 }
 
-export function getRelations(
+export function getAttributes(
   model: N3Store,
   prefixes: Prefixes,
 ): DocRelation[] {
   const quads = model.getQuads(
     null,
     namedNode(`${prefixes.rdf}type`),
-    namedNode(`${prefixes.owl}ObjectProperty`),
+    namedNode(`${prefixes.owl}DatatypeProperty`),
     null,
   );
 
   const relations = quads.map((quad: Quad) =>
-    getRelation(quad.subject.id, model, prefixes),
+    getAttribute(quad.subject.id, model, prefixes),
   );
 
   return relations.sort((c1: DocRelation, c2: DocRelation) =>

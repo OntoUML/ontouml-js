@@ -19,7 +19,7 @@
           <tr>
             <th>in domain of:</th>
             <td>
-              {{#isDomainOf}}<a href="#{{name}}">{{prefixName}}</a> {{/isDomainOf}}
+              {{#isDomainOf}}<a href="{{url}}" target="{{urlTarget}}">{{prefixName}}</a> {{/isDomainOf}}
             </td>
           </tr>
           {{/compare}}
@@ -27,7 +27,7 @@
           <tr>
             <th>in range of:</th>
             <td>
-              {{#isRangeOf}}<a href="#{{name}}">{{prefixName}}</a> {{/isRangeOf}}
+              {{#isRangeOf}}<a href="{{url}}" target="{{urlTarget}}">{{prefixName}}</a> {{/isRangeOf}}
             </td>
           </tr>
           {{/compare}}

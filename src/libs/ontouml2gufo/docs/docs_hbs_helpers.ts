@@ -54,6 +54,7 @@ export function getHBSTemplate(options: IOntoUML2GUFOOptions) {
       termsIndex,
       classes: customClasses,
       relations: customRelations,
+      attributes: customAttributes,
     },
   } = documentationProps;
 
@@ -80,6 +81,11 @@ export function getHBSTemplate(options: IOntoUML2GUFOOptions) {
       name: 'relations',
       filename: 'templates/relations.hbs',
       custom: customRelations,
+    },
+    {
+      name: 'attributes',
+      filename: 'templates/attributes.hbs',
+      custom: customAttributes,
     },
   ];
 
