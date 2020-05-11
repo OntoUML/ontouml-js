@@ -5,6 +5,7 @@ import {
   VerificationIssue,
   VerificationIssueCode,
 } from '@libs/verification/issues';
+import { IElement } from '@types';
 
 describe('Model deserializing', () => {
   const inputModel = minimalConsistency;
@@ -24,11 +25,12 @@ describe('Model deserializing', () => {
 
   it('Checks classes with not issues', () => {
     const personIssues = issues.filter(
-      (issue: VerificationIssue) => issue.source.name === 'Person',
+      (issue: VerificationIssue) =>
+        (issue.source as IElement).name === 'Person',
     );
     const diseaseIssues = issues.filter(
       (issue: VerificationIssue) =>
-        issue.source.name === 'Disease Severity Level',
+        (issue.source as IElement).name === 'Disease Severity Level',
     );
 
     expect(personIssues.length === 0).toBeTruthy();
@@ -37,27 +39,27 @@ describe('Model deserializing', () => {
 
   it('Check unique valid stereotype', () => {
     const agentIssues = issues.filter(
-      (issue: VerificationIssue) => issue.source.name === 'Agent',
+      (issue: VerificationIssue) => issue.source.id === 'NfL0Pg6GAqACnAov',
     );
     const contractIssues = issues.filter(
-      (issue: VerificationIssue) => issue.source.name === 'Contract',
+      (issue: VerificationIssue) => issue.source.id === 'b5N0Pg6GAqACnAoe',
     );
     const enumerationIssues = issues.filter(
-      (issue: VerificationIssue) => issue.source.name === 'Enumeration',
+      (issue: VerificationIssue) => issue.source.id === '_d6GPg6GAqACnArf',
     );
 
     expect(
       agentIssues.length === 1 &&
         agentIssues.filter(
           (issue: VerificationIssue) =>
-            issue.code === VerificationIssueCode.CLASS_NOT_UNIQUE_STEREOTYPE,
+            issue.code === VerificationIssueCode.class_not_unique_stereotype,
         ),
     ).toBeTruthy();
     expect(
       contractIssues.length === 1 &&
         contractIssues.filter(
           (issue: VerificationIssue) =>
-            issue.code === VerificationIssueCode.CLASS_NOT_UNIQUE_STEREOTYPE,
+            issue.code === VerificationIssueCode.class_not_unique_stereotype,
         ),
     ).toBeTruthy();
     expect(
@@ -65,19 +67,18 @@ describe('Model deserializing', () => {
         enumerationIssues.filter(
           (issue: VerificationIssue) =>
             issue.code ===
-            VerificationIssueCode.CLASS_INVALID_ONTOUML_STEREOTYPE,
+            VerificationIssueCode.class_invalid_ontouml_stereotype,
         ),
     ).toBeTruthy();
   });
 
   it('Check enumeration and classes with either literals or properties.', () => {
     const bedroomASIssues = issues.filter(
-      (issue: VerificationIssue) =>
-        issue.source.name === 'Bedroom Availability Status',
+      (issue: VerificationIssue) => issue.source.id === 'GL_UPg6GAqACnAnm',
     );
     // const officeASIssues = issues.filter(
     //   (issue: VerificationIssue) =>
-    //     issue.source.name === 'Office Availability Status',
+    //     (issue.source as IElement).name === 'Office Availability Status',
     // );
 
     expect(
@@ -85,7 +86,7 @@ describe('Model deserializing', () => {
         bedroomASIssues.filter(
           (issue: VerificationIssue) =>
             issue.code ===
-            VerificationIssueCode.CLASS_ENUMERATION_WITH_PROPERTIES,
+            VerificationIssueCode.class_enumeration_with_properties,
         ),
     ).toBeTruthy();
 
@@ -100,17 +101,63 @@ describe('Model deserializing', () => {
     // ).toBeTruthy();
   });
 
-  it('Check class with plural name warning.', () => {
-    const peopleIssues = issues.filter(
-      (issue: VerificationIssue) => issue.source.name === 'People',
-    );
-
-    expect(
-      peopleIssues.length === 1 &&
-        peopleIssues.filter(
-          (issue: VerificationIssue) =>
-            issue.code === VerificationIssueCode.CLASS_PLURAL_NAME,
-        ),
-    ).toBeTruthy();
+  it('Stringify issues', () => {
+    try {
+      expect(true).toBeTruthy();
+    } catch (error) {
+      expect(false).toBeTruthy();
+    }
   });
 });
+
+// TODO: move replacer to serialization library
+function replacer(key, value) {
+  if (key.startsWith('_')) {
+    return undefined;
+  }
+
+  if (this.type) {
+    let contentsFields = [];
+
+    switch (this.type) {
+      case 'Package':
+        contentsFields = ['contents'];
+        break;
+      case 'Class':
+        contentsFields = ['properties', 'literals'];
+        break;
+      case 'Relation':
+        contentsFields = ['properties'];
+        break;
+      case 'Literal':
+        break;
+      case 'Property':
+        break;
+      case 'Generalization':
+        break;
+      case 'GeneralizationSet':
+        // contentsFields = ['generalizations'];
+        break;
+    }
+
+    if (
+      !contentsFields.includes(key) &&
+      key !== 'stereotypes' &&
+      Array.isArray(value)
+    ) {
+      return value.map(item =>
+        item.id && item.type ? { id: item.id, type: item.type } : value,
+      );
+    } else if (
+      !contentsFields.includes(key) &&
+      key !== 'stereotypes' &&
+      value instanceof Object
+    ) {
+      return value.id && value.type
+        ? { id: value.id, type: value.type }
+        : value;
+    }
+  }
+
+  return value;
+}

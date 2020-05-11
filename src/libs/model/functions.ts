@@ -9,7 +9,7 @@ import {
   IProperty,
   IClass,
 } from '@types';
-import { OntoUMLType } from '@constants/.';
+import { OntoUMLType, ClassStereotype, OntologicalNature } from '@constants/.';
 import memoizee from 'memoizee';
 
 export function inject(
@@ -100,7 +100,15 @@ const functions = {
   },
   _IDecoratable: {},
   _IPackage: {},
-  _IClass: {},
+  _IClass: {
+    isSortal,
+    isNonSortal,
+    isUltimateSortal,
+    isRigid,
+    isSemiRigid,
+    isAntiRigid,
+    allowsInstances,
+  },
   _IRelation: {
     isBinary,
     isTernary,
@@ -279,6 +287,120 @@ function getRelations(): IRelation[] {
         relation.properties[1].propertyType.id === self.id,
     )
     .map((relation: IRelation) => relation);
+}
+
+function isSortal(): boolean {
+  const self = this as IClass;
+
+  if (self.stereotypes && self.stereotypes.length === 1) {
+    const strs: string[] = [
+      ClassStereotype.KIND,
+      ClassStereotype.COLLECTIVE,
+      ClassStereotype.QUANTITY,
+      ClassStereotype.RELATOR,
+      ClassStereotype.MODE,
+      ClassStereotype.QUALITY,
+      ClassStereotype.SUBKIND,
+      ClassStereotype.ROLE,
+      ClassStereotype.PHASE,
+    ];
+    return strs.includes(self.stereotypes[0]);
+  }
+
+  return false;
+}
+
+function isNonSortal(): boolean {
+  const self = this as IClass;
+
+  if (self.stereotypes && self.stereotypes.length === 1) {
+    const strs: string[] = [
+      ClassStereotype.CATEGORY,
+      ClassStereotype.MIXIN,
+      ClassStereotype.ROLE_MIXIN,
+      ClassStereotype.PHASE_MIXIN,
+    ];
+    return strs.includes(self.stereotypes[0]);
+  }
+
+  return false;
+}
+
+function isUltimateSortal(): boolean {
+  const self = this as IClass;
+
+  if (self.stereotypes && self.stereotypes.length === 1) {
+    const strs: string[] = [
+      ClassStereotype.KIND,
+      ClassStereotype.COLLECTIVE,
+      ClassStereotype.QUANTITY,
+      ClassStereotype.RELATOR,
+      ClassStereotype.MODE,
+      ClassStereotype.QUALITY,
+    ];
+    return strs.includes(self.stereotypes[0]);
+  }
+
+  return false;
+}
+
+function isRigid(): boolean {
+  const self = this as IClass;
+
+  if (self.stereotypes && self.stereotypes.length === 1) {
+    const strs: string[] = [
+      ClassStereotype.KIND,
+      ClassStereotype.COLLECTIVE,
+      ClassStereotype.QUANTITY,
+      ClassStereotype.RELATOR,
+      ClassStereotype.MODE,
+      ClassStereotype.QUALITY,
+      ClassStereotype.SUBKIND,
+      ClassStereotype.CATEGORY,
+    ];
+    return strs.includes(self.stereotypes[0]);
+  }
+
+  return false;
+}
+
+function isSemiRigid(): boolean {
+  const self = this as IClass;
+
+  if (self.stereotypes && self.stereotypes.length === 1) {
+    const strs: string[] = [ClassStereotype.MIXIN];
+    return strs.includes(self.stereotypes[0]);
+  }
+
+  return false;
+}
+
+function isAntiRigid(): boolean {
+  const self = this as IClass;
+
+  if (self.stereotypes && self.stereotypes.length === 1) {
+    const strs: string[] = [
+      ClassStereotype.ROLE_MIXIN,
+      ClassStereotype.PHASE_MIXIN,
+      ClassStereotype.ROLE,
+      ClassStereotype.PHASE,
+    ];
+    return strs.includes(self.stereotypes[0]);
+  }
+
+  return false;
+}
+
+function allowsInstances(instancesNatures: OntologicalNature[]): boolean {
+  const self = this as IClass;
+
+  if (self.allowed) {
+    return instancesNatures.every((instancesNature: OntologicalNature) =>
+      self.allowed.includes(instancesNature),
+    );
+  }
+
+  return false;
 }
 
 function isBinary(): boolean {

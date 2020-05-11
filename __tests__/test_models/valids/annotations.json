@@ -14,7 +14,11 @@
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "allowed": ["abstract"],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -26,7 +30,11 @@
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "allowed": ["abstract"],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -38,7 +46,11 @@
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "allowed": ["abstract"],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -50,7 +62,11 @@
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "allowed": ["abstract"],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -62,7 +78,11 @@
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "allowed": ["abstract"],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -74,7 +94,11 @@
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "allowed": ["abstract"],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -86,7 +110,11 @@
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "allowed": ["abstract"],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -98,7 +126,11 @@
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "allowed": ["abstract"],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -110,7 +142,11 @@
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "allowed": ["abstract"],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -122,7 +158,11 @@
       "propertyAssignments": null,
       "stereotypes": ["datatype"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "allowed": ["abstract"],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -157,15 +197,18 @@
       ],
       "literals": null,
       "propertyAssignments": {
+        "en": "Person",
         "pt": "Pessoa",
         "it": "Persona",
-        "en": "Person",
-        "nl": "Persoon",
-        "myTaggedValue": "This should not be transformed as a label."
+        "nl": "Persoon"
       },
       "stereotypes": ["kind"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "allowed": ["functional-complex"],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Class",
@@ -194,12 +237,14 @@
         }
       ],
       "literals": null,
-      "propertyAssignments": {
-        "myCustomTaggedValue": "My custom value"
-      },
+      "propertyAssignments": null,
       "stereotypes": ["relator"],
       "isAbstract": false,
-      "isDerived": false
+      "isDerived": false,
+      "allowed": ["relator"],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
     },
     {
       "type": "Relation",
