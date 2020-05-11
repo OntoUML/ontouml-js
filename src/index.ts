@@ -4,6 +4,7 @@ import { OntoUML2Verification } from '@libs/verification';
 import {
   VerificationIssue,
   VerificationIssueCode,
+  IssueSeverity,
 } from '@libs/verification/issues';
 import {
   VerificationAlternative,
@@ -18,5 +19,6 @@ export {
   VerificationIssueCode,
   VerificationAlternative,
   VerificationAlternativeCode,
+  IssueSeverity,  
   OntoUML2GUFO,
 };
