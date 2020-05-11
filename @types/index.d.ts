@@ -395,6 +395,7 @@ interface IOntoUML2GUFOOptions {
       styles?: string;
       head?: string;
       body?: string;
+      generalInformation?: string;
       termsIndex?: string;
       classes?: string;
       relations?: string;

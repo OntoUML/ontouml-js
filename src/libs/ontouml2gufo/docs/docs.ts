@@ -1,9 +1,10 @@
 import { IOntoUML2GUFOOptions } from '@types';
 import { getClasses } from './docs_class';
 import { getRelations } from './docs_relations';
+import { getAttributes } from './docs_attributes';
 import defaultTheme from './docs_theme';
 import { getHBSTemplate } from './docs_hbs_helpers';
-import { getAttributes } from './docs_attributes';
+import { getPrefixList } from './docs_helpers';
 
 const N3 = require('n3');
 
@@ -25,16 +26,20 @@ export async function generateDocumentation(
   const classes = getClasses(model, prefixes);
   const relations = getRelations(model, prefixes);
   const attributes = getAttributes(model, prefixes);
+  const prefixList = getPrefixList(prefixes);
+  const namespace = baseIRI;
 
   // === GENERATE TEMPLATE ===
 
   const template = getHBSTemplate(options);
 
   return await template({
+    title,
+    namespace,
+    prefixList,
     classes,
     relations,
     attributes,
-    title,
     theme: { ...defaultTheme, ...theme },
   });
 }

@@ -51,6 +51,7 @@ export function getHBSTemplate(options: IOntoUML2GUFOOptions) {
       styles,
       head,
       body,
+      generalInformation,
       termsIndex,
       classes: customClasses,
       relations: customRelations,
@@ -67,6 +68,11 @@ export function getHBSTemplate(options: IOntoUML2GUFOOptions) {
     { name: 'styles', filename: 'templates/styles.hbs', custom: styles },
     { name: 'head', filename: 'templates/head.hbs', custom: head },
     { name: 'body', filename: 'templates/body.hbs', custom: body },
+    {
+      name: 'general_information',
+      filename: 'templates/general_information.hbs',
+      custom: generalInformation,
+    },
     {
       name: 'terms_index',
       filename: 'templates/terms_index.hbs',

@@ -71,3 +71,15 @@ export function getElement(
     uri,
   };
 }
+
+type PrefixList = {
+  prefix: string;
+  uri: string;
+}[];
+
+export function getPrefixList(prefixes: Prefixes): PrefixList {
+  return Object.keys(prefixes).map(prefix => ({
+    prefix,
+    uri: prefixes[prefix],
+  }));
+}
