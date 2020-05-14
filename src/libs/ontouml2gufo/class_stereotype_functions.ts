@@ -1,5 +1,5 @@
 import { Quad, N3Writer } from 'n3';
-import { IClass, ILiteral, IOntoUML2GUFOOptions, IRelation } from '@types';
+import { IClass, ILiteral, IOntoUML2GUFOOptions } from '@types';
 import { getURI } from './helper_functions';
 
 const N3 = require('n3');
@@ -211,7 +211,7 @@ export function transformEvent(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const uri = getURI({ element: classElement, options });
+  getURI({ element: classElement, options });
 
   return [
     // quad(namedNode(uri), namedNode('rdfs:subClassOf'), namedNode('gufo:Event')),
@@ -222,7 +222,7 @@ export function transformType(
   classElement: IClass,
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
-  const uri = getURI({ element: classElement, options });
+  getURI({ element: classElement, options });
 
   return [
     // quad(
@@ -238,7 +238,7 @@ export function transformDatatype(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const { properties } = classElement;
-  const uri = getURI({ element: classElement, options });
+  getURI({ element: classElement, options });
   const isComplexDatatype = !!properties;
 
   if (isComplexDatatype) {

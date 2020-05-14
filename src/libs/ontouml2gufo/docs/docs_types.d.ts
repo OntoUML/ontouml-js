@@ -24,4 +24,7 @@ type DocClass = DocElement & {
   disjointWith: DocElement[];
   isDomainOf: DocElement[];
   isRangeOf: DocElement[];
+  supertypes: DocElement[];
+  subtypes: DocElement[];
+  stereotypes: DocElement[];
 };
