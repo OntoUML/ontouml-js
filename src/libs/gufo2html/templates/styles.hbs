@@ -16,46 +16,12 @@
     
     /* === OVERRIDES === */
 
-    /* BODY */
-    --bodyFontSize: {{theme.overrides.body.fontSize}};
-    --bodyLineHeight: {{theme.overrides.body.lineHeight}};
-    --bodyMargin: {{theme.overrides.body.margin}};
-    --bodyPadding: {{theme.overrides.body.padding}};
+    {{#styles}}
+    {{#cssProperties}}
+    {{cssVar}}
+    {{/cssProperties}}
     
-    /* H1 */
-    --h1FontFamily: {{theme.overrides.h1.fontFamily}};
-    --h1FontSize: {{theme.overrides.h1.fontSize}};
-    --h1LineHeight: {{theme.overrides.h1.lineHeight}};
-    --h1Margin: {{theme.overrides.h1.margin}};
-    --h1Padding: {{theme.overrides.h1.padding}};
-
-    /* H2 */
-    --h2FontFamily: {{theme.overrides.h2.fontFamily}};
-    --h2FontSize: {{theme.overrides.h2.fontSize}};
-    --h2LineHeight: {{theme.overrides.h2.lineHeight}};
-    --h2Margin: {{theme.overrides.h2.margin}};
-    --h2Padding: {{theme.overrides.h2.padding}};
-
-    /* H3 */
-    --h3FontFamily: {{theme.overrides.h3.fontFamily}};
-    --h3FontSize: {{theme.overrides.h3.fontSize}};
-    --h3LineHeight: {{theme.overrides.h3.lineHeight}};
-    --h3Margin: {{theme.overrides.h3.margin}};
-    --h3Padding: {{theme.overrides.h3.padding}};
-
-    /* H4 */
-    --h4FontFamily: {{theme.overrides.h4.fontFamily}};
-    --h4FontSize: {{theme.overrides.h4.fontSize}};
-    --h4LineHeight: {{theme.overrides.h4.lineHeight}};
-    --h4Margin: {{theme.overrides.h4.margin}};
-    --h4Padding: {{theme.overrides.h4.padding}};
-
-    /* H5 */
-    --h5FontFamily: {{theme.overrides.h5.fontFamily}};
-    --h5FontSize: {{theme.overrides.h5.fontSize}};
-    --h5LineHeight: {{theme.overrides.h5.lineHeight}};
-    --h5Margin: {{theme.overrides.h5.margin}};
-    --h5Padding: {{theme.overrides.h5.padding}};
+    {{/styles}}
   }
 
   html {
@@ -73,7 +39,7 @@
     overflow-x: hidden;
   }
 
-  h1, h2, h3, h4, h5 {
+  h1, h2, h3, h4, h5, p, a {
     margin-block-start: 0;
     margin-block-end: 0;
     margin-inline-start: 0;
@@ -82,50 +48,20 @@
     padding-block-end: 0;
     padding-inline-start: 0;
     padding-inline-end: 0;
+  }
+
+  h1, h2, h3, h4, h5 {
     color: var(--titleColor);
   }
 
-  h1 {
-    font-size: var(--h1FontSize);
-    font-family: var(--h1FontFamily);
-    line-height: var(--h1LineHeight);
-    margin: var(--h1Margin);
-    padding: var(--h1Padding);
+  {{#styles}}
+  {{htmlTag}} {
+    {{#cssProperties}}
+    {{cssProperty}}
+    {{/cssProperties}}
   }
 
-  h2 {
-    border-top: 1px solid;
-    border-color: var(--borderColor); 
-    font-size: var(--h2FontSize);
-    font-family: var(--h2FontFamily);
-    line-height: var(--h2LineHeight);
-    margin: var(--h2Margin);
-    padding: var(--h2Padding);
-  }
-
-  h3 {
-    font-size: var(--h3FontSize);
-    font-family: var(--h3FontFamily);
-    line-height: var(--h3LineHeight);
-    margin: var(--h3Margin);
-    padding: var(--h3Padding);
-  }
-
-  h4 {
-    font-size: var(--h4FontSize);
-    font-family: var(--h4FontFamily);
-    line-height: var(--h4LineHeight);
-    margin: var(--h4Margin);
-    padding: var(--h4Padding);
-  }
-
-  h5 {
-    font-size: var(--h5FontSize);
-    font-family: var(--h5FontFamily);
-    line-height: var(--h5LineHeight);
-    margin: var(--h5Margin);
-    padding: var(--h5Padding);
-  }
+  {{/styles}}
 
   @media screen and (max-width: 768px) {
     html {

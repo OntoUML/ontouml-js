@@ -390,6 +390,7 @@ interface IOntoUML2GUFOOptions {
   };
   documentationProps?: {
     title?: string;
+    description?: string[];
     customPartials?: {
       headContent?: string;
       styles?: string;

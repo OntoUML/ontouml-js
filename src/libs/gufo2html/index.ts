@@ -2,7 +2,7 @@ import { IGUFO2HTMLOptions } from '@types';
 import { getClasses } from './classes';
 import { getRelations } from './relations';
 import { getAttributes } from './attributes';
-import defaultTheme from './theme';
+import defaultTheme, { generateOverrideStyles } from './theme';
 import { getHBSTemplate } from './hbs_helpers';
 import { getPrefixList } from './helpers';
 
@@ -16,17 +16,19 @@ export async function generateDocumentation(
   options: IGUFO2HTMLOptions,
 ): Promise<string> {
   const { baseIRI, format, documentationProps } = options;
-  const { title, theme } = documentationProps;
+  const { title, description, theme: customTheme } = documentationProps;
   const parser = new N3.Parser({ baseIRI, format, prefixes });
   const data = await parser.parse(gufoStringFile);
   const model = await new N3.Store(data);
 
   // === GENERATE ONTOLOGY ELEMENTS ===
 
+  const theme = { ...defaultTheme, ...customTheme };
   const classes = getClasses(model, prefixes);
   const relations = getRelations(model, prefixes);
   const attributes = getAttributes(model, prefixes);
   const prefixList = getPrefixList(prefixes);
+  const styles = generateOverrideStyles(theme.overrides);
   const namespace = baseIRI;
 
   // === GENERATE TEMPLATE ===
@@ -35,11 +37,13 @@ export async function generateDocumentation(
 
   return await template({
     title,
+    description,
     namespace,
     prefixList,
     classes,
     relations,
     attributes,
-    theme: { ...defaultTheme, ...theme },
+    styles,
+    theme,
   });
 }

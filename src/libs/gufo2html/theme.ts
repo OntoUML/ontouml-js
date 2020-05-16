@@ -1,10 +1,4 @@
-type OverrideStyle = {
-  fontFamily?: string;
-  fontSize?: string;
-  lineHeight?: string;
-  margin?: string;
-  padding?: string;
-};
+import * as CSS from 'csstype';
 
 export type OntoUML2GUFODocTheme = {
   colors?: {
@@ -22,12 +16,7 @@ export type OntoUML2GUFODocTheme = {
     mobileFontSize?: string;
   };
   overrides?: {
-    body?: OverrideStyle;
-    h1?: OverrideStyle;
-    h2?: OverrideStyle;
-    h3?: OverrideStyle;
-    h4?: OverrideStyle;
-    h5?: OverrideStyle;
+    [key in keyof HTMLElementTagNameMap]?: CSS.Properties;
   };
 };
 
@@ -54,7 +43,7 @@ const theme: OntoUML2GUFODocTheme = {
     },
     h1: {
       fontSize: '3.6rem',
-      margin: '3rem 0 2rem 0',
+      margin: '3rem 0 4rem 0',
     },
     h2: {
       fontSize: '3.2rem',
@@ -73,7 +62,50 @@ const theme: OntoUML2GUFODocTheme = {
       fontSize: '1.6rem',
       margin: '2rem 0 1rem',
     },
+    p: {
+      fontSize: '1.6rem',
+      margin: '0 0 1rem',
+    },
+    a: {
+      fontSize: '1.6rem',
+    },
   },
+};
+
+type OverrideStyles = {
+  htmlTag: string;
+  values: {
+    cssVar: string;
+    cssProperties: string[];
+  }[];
+}[];
+
+export const generateOverrideStyles = (
+  themeOverrides: OntoUML2GUFODocTheme['overrides'],
+): OverrideStyles => {
+  const styles = [];
+
+  for (const tag of Object.keys(themeOverrides)) {
+    const htmlTag = [];
+
+    for (const cssProperty of Object.keys(themeOverrides[tag])) {
+      const cssKey = cssProperty.replace(/([A-Z])/g, '-$1').toLowerCase();
+      const value = themeOverrides[tag][cssProperty];
+      const cssVar = `--${tag}_${cssProperty}`;
+
+      htmlTag.push({
+        cssVar: `${cssVar}: ${value};`,
+        cssProperty: `${cssKey}: var(${cssVar});`,
+      });
+    }
+
+    styles.push({
+      htmlTag: tag,
+      cssProperties: htmlTag,
+    });
+  }
+
+  return styles;
 };
 
 export default theme;

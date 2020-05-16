@@ -45,6 +45,7 @@
     "@babel/runtime": "^7.6.3",
     "@types/n3": "^1.1.5",
     "ajv": "^6.10.2",
+    "csstype": "^2.6.10",
     "esm": "^3.2.25",
     "handlebars": "^4.7.6",
     "memoizee": "^0.4.14",
