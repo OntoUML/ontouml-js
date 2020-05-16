@@ -19,7 +19,7 @@ import { transformRelations } from './relation_functions';
 import { getURI, getPrefixes } from './helper_functions';
 import URIManager from './uri_manager';
 import { runPreAnalysis } from './pre_analysis';
-import { generateDocumentation } from './docs/docs';
+import { generateDocumentation } from '@libs/gufo2html';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -108,11 +108,11 @@ export class OntoUML2GUFO {
           let documentation = '';
 
           if (createDocumentation) {
-            documentation = await generateDocumentation(
-              result,
-              prefixes,
-              options,
-            );
+            documentation = await generateDocumentation(result, prefixes, {
+              baseIRI,
+              format,
+              documentationProps,
+            });
           }
 
           resolve({ documentation, preAnalysis: analysis, model: result });

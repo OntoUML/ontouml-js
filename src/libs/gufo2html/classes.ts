@@ -1,5 +1,5 @@
 import { N3Store, Quad } from 'n3';
-import { getElement } from './docs_helpers';
+import { getElement } from './helpers';
 
 const N3 = require('n3');
 const { DataFactory } = N3;

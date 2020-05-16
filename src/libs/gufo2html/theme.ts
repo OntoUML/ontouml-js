@@ -49,7 +49,7 @@ const theme: OntoUML2GUFODocTheme = {
   overrides: {
     body: {
       fontSize: '1.6rem',
-      lineHeight: '1.8em',
+      lineHeight: '2.4rem',
       padding: '3.2rem',
     },
     h1: {

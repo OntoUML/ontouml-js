@@ -1,6 +1,6 @@
 import { OntoUMLType, AggregationKind, OntologicalNature } from '@constants/.';
 import URIManager from '@libs/ontouml2gufo/uri_manager';
-import { OntoUML2GUFODocTheme } from '@libs/ontouml2gufo/docs/docs_theme';
+import { OntoUML2GUFODocTheme } from '@libs/gufo2html/theme';
 /**
  * Interface that captures common properties of objects in `ontouml-schema`. Whenever necessary, stereotypes are captured as regular string arrays.
  *
@@ -408,6 +408,12 @@ interface IOntoUML2GUFOOptions {
   prefixPackages?: boolean;
   uriFormatBy?: 'name' | 'id';
   uriManager?: URIManager;
+}
+
+interface IGUFO2HTMLOptions {
+  baseIRI?: IOntoUML2GUFOOptions['baseIRI'];
+  documentationProps?: IOntoUML2GUFOOptions['documentationProps'];
+  format?: IOntoUML2GUFOOptions['format'];
 }
 
 interface IPreAnalysisItem {

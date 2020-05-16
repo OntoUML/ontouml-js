@@ -1,5 +1,5 @@
 import { N3Store } from 'n3';
-import { DefaultPrefixes } from '../constants';
+import { DefaultPrefixes } from '@libs/ontouml2gufo/constants';
 
 const N3 = require('n3');
 const { DataFactory } = N3;

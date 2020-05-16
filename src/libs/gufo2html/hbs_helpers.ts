@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import Handlebars from 'handlebars';
-import { IOntoUML2GUFOOptions } from '@types';
+import { IGUFO2HTMLOptions } from '@types';
 
 // === LOAD TEMPLATE LAYOUT ===
 
@@ -43,7 +43,7 @@ Handlebars.registerHelper('compare', function(
   return console.error(`Error: Expression "${operator}" not found`);
 });
 
-export function getHBSTemplate(options: IOntoUML2GUFOOptions) {
+export function getHBSTemplate(options: IGUFO2HTMLOptions) {
   const { documentationProps } = options;
   const {
     customPartials: {

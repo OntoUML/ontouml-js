@@ -1,24 +1,24 @@
-import { IOntoUML2GUFOOptions } from '@types';
-import { getClasses } from './docs_class';
-import { getRelations } from './docs_relations';
-import { getAttributes } from './docs_attributes';
-import defaultTheme from './docs_theme';
-import { getHBSTemplate } from './docs_hbs_helpers';
-import { getPrefixList } from './docs_helpers';
+import { IGUFO2HTMLOptions } from '@types';
+import { getClasses } from './classes';
+import { getRelations } from './relations';
+import { getAttributes } from './attributes';
+import defaultTheme from './theme';
+import { getHBSTemplate } from './hbs_helpers';
+import { getPrefixList } from './helpers';
 
 const N3 = require('n3');
 
 type Prefixes = { [key: string]: string };
 
 export async function generateDocumentation(
-  result: string,
+  gufoStringFile: string,
   prefixes: Prefixes,
-  options: IOntoUML2GUFOOptions,
+  options: IGUFO2HTMLOptions,
 ): Promise<string> {
   const { baseIRI, format, documentationProps } = options;
   const { title, theme } = documentationProps;
   const parser = new N3.Parser({ baseIRI, format, prefixes });
-  const data = await parser.parse(result);
+  const data = await parser.parse(gufoStringFile);
   const model = await new N3.Store(data);
 
   // === GENERATE ONTOLOGY ELEMENTS ===
