@@ -10,6 +10,7 @@ import {
   VerificationAlternativeCode,
 } from '@libs/verification/alternatives';
 import { OntoUML2GUFO } from '@libs/ontouml2gufo';
+import { GUFO2HTML } from '@libs/gufo2html';
 
 export {
   ModelManager,
@@ -19,4 +20,5 @@ export {
   VerificationAlternative,
   VerificationAlternativeCode,
   OntoUML2GUFO,
+  GUFO2HTML,
 };

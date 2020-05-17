@@ -10,40 +10,42 @@ const N3 = require('n3');
 
 type Prefixes = { [key: string]: string };
 
-export async function generateDocumentation(
-  gufoStringFile: string,
-  prefixes: Prefixes,
-  options: IGUFO2HTMLOptions,
-): Promise<string> {
-  const { baseIRI, format, documentationProps } = options;
-  const { title, description, theme: customTheme } = documentationProps;
-  const parser = new N3.Parser({ baseIRI, format, prefixes });
-  const data = await parser.parse(gufoStringFile);
-  const model = await new N3.Store(data);
+export class GUFO2HTML {
+  async generateHTML(
+    gufoStringFile: string,
+    prefixes: Prefixes,
+    options: IGUFO2HTMLOptions,
+  ): Promise<string> {
+    const { baseIRI, format, documentationProps } = options;
+    const { title, description, theme: customTheme } = documentationProps;
+    const parser = new N3.Parser({ baseIRI, format, prefixes });
+    const data = await parser.parse(gufoStringFile);
+    const model = await new N3.Store(data);
 
-  // === GENERATE ONTOLOGY ELEMENTS ===
+    // === GENERATE ONTOLOGY ELEMENTS ===
 
-  const theme = { ...defaultTheme, ...customTheme };
-  const classes = getClasses(model, prefixes);
-  const relations = getRelations(model, prefixes);
-  const attributes = getAttributes(model, prefixes);
-  const prefixList = getPrefixList(prefixes);
-  const styles = generateOverrideStyles(theme.overrides);
-  const namespace = baseIRI;
+    const theme = { ...defaultTheme, ...customTheme };
+    const classes = getClasses(model, prefixes);
+    const relations = getRelations(model, prefixes);
+    const attributes = getAttributes(model, prefixes);
+    const prefixList = getPrefixList(prefixes);
+    const styles = generateOverrideStyles(theme.overrides);
+    const namespace = baseIRI;
 
-  // === GENERATE TEMPLATE ===
+    // === GENERATE TEMPLATE ===
 
-  const template = getHBSTemplate(options);
+    const template = getHBSTemplate(options);
 
-  return await template({
-    title,
-    description,
-    namespace,
-    prefixList,
-    classes,
-    relations,
-    attributes,
-    styles,
-    theme,
-  });
+    return await template({
+      title,
+      description,
+      namespace,
+      prefixList,
+      classes,
+      relations,
+      attributes,
+      styles,
+      theme,
+    });
+  }
 }
