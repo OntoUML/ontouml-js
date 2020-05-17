@@ -1,14 +1,15 @@
-import path from 'path';
-import fs from 'fs';
 import Handlebars from 'handlebars';
 import { IGUFO2HTMLOptions } from '@types';
-
-// === LOAD TEMPLATE LAYOUT ===
-
-const templateStr = fs
-  // tslint:disable-next-line: non-literal-fs-path
-  .readFileSync(path.resolve(__dirname, 'templates/layout.hbs'))
-  .toString('utf8');
+import attributesPartial from './templates/attributes';
+import bodyPartial from './templates/body';
+import classesPartial from './templates/classes';
+import generalInformationPartial from './templates/general_information';
+import headContentPartial from './templates/head_content';
+import headPartial from './templates/head';
+import layoutPartial from './templates/layout';
+import relationsPartial from './templates/relations';
+import stylesPartial from './templates/styles';
+import termsIndexPartial from './templates/terms_index';
 
 // === HELPERS ===
 
@@ -45,64 +46,34 @@ Handlebars.registerHelper('compare', function(
 
 export function getHBSTemplate(options: IGUFO2HTMLOptions) {
   const { documentationProps } = options;
+  const { customPartials } = documentationProps || {};
   const {
-    customPartials: {
-      headContent,
-      styles,
-      head,
-      body,
-      generalInformation,
-      termsIndex,
-      classes: customClasses,
-      relations: customRelations,
-      attributes: customAttributes,
-    },
-  } = documentationProps;
+    headContent = headContentPartial,
+    styles = stylesPartial,
+    head = headPartial,
+    body = bodyPartial,
+    generalInformation = generalInformationPartial,
+    termsIndex = termsIndexPartial,
+    classes = classesPartial,
+    relations = relationsPartial,
+    attributes = attributesPartial,
+  } = customPartials || {};
 
   const partials: PartialTemplate[] = [
-    {
-      name: 'head_content',
-      filename: 'templates/head_content.hbs',
-      custom: headContent,
-    },
-    { name: 'styles', filename: 'templates/styles.hbs', custom: styles },
-    { name: 'head', filename: 'templates/head.hbs', custom: head },
-    { name: 'body', filename: 'templates/body.hbs', custom: body },
-    {
-      name: 'general_information',
-      filename: 'templates/general_information.hbs',
-      custom: generalInformation,
-    },
-    {
-      name: 'terms_index',
-      filename: 'templates/terms_index.hbs',
-      custom: termsIndex,
-    },
-    {
-      name: 'classes',
-      filename: 'templates/classes.hbs',
-      custom: customClasses,
-    },
-    {
-      name: 'relations',
-      filename: 'templates/relations.hbs',
-      custom: customRelations,
-    },
-    {
-      name: 'attributes',
-      filename: 'templates/attributes.hbs',
-      custom: customAttributes,
-    },
+    { name: 'head_content', partial: headContent },
+    { name: 'styles', partial: styles },
+    { name: 'head', partial: head },
+    { name: 'body', partial: body },
+    { name: 'general_information', partial: generalInformation },
+    { name: 'terms_index', partial: termsIndex },
+    { name: 'classes', partial: classes },
+    { name: 'relations', partial: relations },
+    { name: 'attributes', partial: attributes },
   ];
 
-  partials.forEach(({ name, filename, custom }: PartialTemplate) => {
-    const partialStr = fs
-      // tslint:disable-next-line: non-literal-fs-path
-      .readFileSync(path.resolve(__dirname, filename))
-      .toString('utf8');
-
-    Handlebars.registerPartial(name, custom || partialStr);
+  partials.forEach(({ name, partial }: PartialTemplate) => {
+    Handlebars.registerPartial(name, partial);
   });
 
-  return Handlebars.compile(templateStr);
+  return Handlebars.compile(layoutPartial);
 }

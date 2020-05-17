@@ -1,3 +1,4 @@
+export default `
 <div class="general-information">
   <h3>Namespace</h3>
   <p>
@@ -15,3 +16,4 @@
     </tbody>
   </table>
 </div>
+`;

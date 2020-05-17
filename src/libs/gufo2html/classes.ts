@@ -29,7 +29,7 @@ export function getClasses(model: N3Store, prefixes: Prefixes): DocClass[] {
   );
 
   const classes = quads
-    .filter((quad: Quad) => !quad.subject.id.includes('_:b'))
+    .filter((quad: Quad) => !quad.subject.id.includes('_:'))
     .map((quad: Quad) => getClass(quad.subject.id, model, prefixes));
 
   return classes.sort((c1: DocClass, c2: DocClass) =>

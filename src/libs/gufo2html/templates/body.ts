@@ -1,3 +1,4 @@
+export default `
 <body>
   <h1>{{title}}</h1>
   {{#description}}
@@ -22,3 +23,4 @@
   <h2 id="attributes">5. Datatype Properties</h2>
   {{> attributes}}
 </body>
+`;

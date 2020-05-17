@@ -1,3 +1,4 @@
+export default `
 <div class="terms-index">
   <p>
     <b>Classes:</b>{{#classes}} | <a href="{{url}}">{{name}}</a>{{/classes}}
@@ -9,3 +10,4 @@
     <b>Dataatype Properties:</b>{{#attributes}} | <a href="{{url}}">{{name}}</a>{{/attributes}}
   </p>
 </div>
+`;

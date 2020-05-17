@@ -1,3 +1,4 @@
+export default `
 <style>
   :root {
     /* === COLORS === */
@@ -87,3 +88,4 @@
   }
   
 </style>
+`;

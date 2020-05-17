@@ -17,7 +17,8 @@ export class GUFO2HTML {
     options: IGUFO2HTMLOptions,
   ): Promise<string> {
     const { baseIRI, format, documentationProps } = options;
-    const { title, description, theme: customTheme } = documentationProps;
+    const { title = 'Ontology', description = '', theme: customTheme = {} } =
+      documentationProps || {};
     const parser = new N3.Parser({ baseIRI, format, prefixes });
     const data = await parser.parse(gufoStringFile);
     const model = await new N3.Store(data);

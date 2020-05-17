@@ -1,3 +1,4 @@
+export default `
 <div class="classes">
   {{#classes}}
     <h3 id="{{name}}">{{name}}</h3>
@@ -60,3 +61,4 @@
     </div>
   {{/classes}}
 </div>
+`;

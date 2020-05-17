@@ -1,7 +1,6 @@
 type PartialTemplate = {
-  custom?: string;
   name: string;
-  filename: string;
+  partial: string;
 };
 
 type Prefixes = { [key: string]: string };

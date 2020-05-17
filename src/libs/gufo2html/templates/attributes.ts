@@ -1,5 +1,6 @@
-<div class="relations">
-  {{#relations}}
+export default `
+<div class="attributes">
+  {{#attributes}}
     <h3 id="{{name}}">{{name}}</h3>
     {{#if comment}}
     <p>{{comment}}</p>
@@ -36,5 +37,6 @@
         </tbody>
       </table>
     </div>
-  {{/relations}}
+  {{/attributes}}
 </div>
+`;

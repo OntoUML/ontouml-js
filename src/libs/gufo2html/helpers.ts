@@ -78,7 +78,7 @@ type PrefixList = {
 }[];
 
 export function getPrefixList(prefixes: Prefixes): PrefixList {
-  return Object.keys(prefixes).map(prefix => ({
+  return Object.keys(prefixes).map((prefix: string) => ({
     prefix,
     uri: prefixes[prefix],
   }));

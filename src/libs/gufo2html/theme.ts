@@ -46,6 +46,7 @@ const theme: OntoUML2GUFODocTheme = {
       margin: '3rem 0 4rem 0',
     },
     h2: {
+      borderTop: '1px solid var(--borderColor)',
       fontSize: '3.2rem',
       margin: '7rem 0 3rem',
       padding: '1em 0 0 0',
