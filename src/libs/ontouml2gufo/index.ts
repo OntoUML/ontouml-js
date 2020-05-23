@@ -1,4 +1,5 @@
 import { N3Writer } from 'n3';
+import { transformGUFO2HTML } from 'gufo2html';
 import { ModelManager } from '@libs/model';
 import {
   IClass,
@@ -39,10 +40,12 @@ export class OntoUML2GUFO {
 
   async transformOntoUML2GUFO({
     baseIRI,
+    createDocumentation = false,
     createInverses = false,
     createObjectProperty = true,
     customElementMapping = {},
     customPackageMapping = {},
+    documentationProps = {},
     format = 'Turtle',
     preAnalysis = false,
     prefixPackages,
@@ -50,10 +53,12 @@ export class OntoUML2GUFO {
   }: IOntoUML2GUFOOptions): Promise<IOntoUML2GUFOResult> {
     const options = {
       baseIRI,
+      createDocumentation,
       createInverses,
       createObjectProperty,
       customElementMapping,
       customPackageMapping,
+      documentationProps,
       format,
       preAnalysis,
       prefixPackages,
@@ -97,12 +102,24 @@ export class OntoUML2GUFO {
 
     return await new Promise<IOntoUML2GUFOResult>(
       (resolve: (result: IOntoUML2GUFOResult) => void) => {
-        writer.end((error: any, result: string) => {
+        writer.end(async (error: any, result: string) => {
           if (error) {
             console.log(error);
           }
 
-          resolve({ preAnalysis: analysis, model: result });
+          let documentation = '';
+
+          if (createDocumentation) {
+            const { html } = await transformGUFO2HTML(result, {
+              baseIRI,
+              format,
+              documentationProps,
+            });
+
+            documentation = html;
+          }
+
+          resolve({ documentation, preAnalysis: analysis, model: result });
         });
       },
     );

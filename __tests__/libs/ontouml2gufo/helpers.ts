@@ -12,7 +12,7 @@ export async function transformOntoUML2GUFO(
 
   return await service.transformOntoUML2GUFO({
     baseIRI: 'https://example.com',
-    format: 'N-Triple',
+    format: 'N-Triples',
     ...options,
   });
 }
