@@ -19,6 +19,6 @@ export {
   VerificationIssueCode,
   VerificationAlternative,
   VerificationAlternativeCode,
-  IssueSeverity,  
+  IssueSeverity,
   OntoUML2GUFO,
 };

@@ -42,6 +42,7 @@ export enum ClassStereotype {
   TYPE = 'type',
   EVENT = 'event',
   HISTORICAL_ROLE = 'historicalRole',
+  HISTORICAL_ROLE_MIXIN = 'historicalRoleMixin',
   DATATYPE = 'datatype',
   ENUMERATION = 'enumeration',
 }

@@ -303,6 +303,7 @@ function isSortal(): boolean {
       ClassStereotype.SUBKIND,
       ClassStereotype.ROLE,
       ClassStereotype.PHASE,
+      ClassStereotype.HISTORICAL_ROLE,
     ];
     return strs.includes(self.stereotypes[0]);
   }
@@ -319,6 +320,7 @@ function isNonSortal(): boolean {
       ClassStereotype.MIXIN,
       ClassStereotype.ROLE_MIXIN,
       ClassStereotype.PHASE_MIXIN,
+      ClassStereotype.HISTORICAL_ROLE_MIXIN,
     ];
     return strs.includes(self.stereotypes[0]);
   }
@@ -357,6 +359,7 @@ function isRigid(): boolean {
       ClassStereotype.QUALITY,
       ClassStereotype.SUBKIND,
       ClassStereotype.CATEGORY,
+      ClassStereotype.TYPE,
     ];
     return strs.includes(self.stereotypes[0]);
   }
@@ -384,6 +387,8 @@ function isAntiRigid(): boolean {
       ClassStereotype.PHASE_MIXIN,
       ClassStereotype.ROLE,
       ClassStereotype.PHASE,
+      ClassStereotype.HISTORICAL_ROLE,
+      ClassStereotype.HISTORICAL_ROLE_MIXIN,
     ];
     return strs.includes(self.stereotypes[0]);
   }

@@ -825,7 +825,7 @@
               "stereotypes": ["historicalRole"],
               "isAbstract": false,
               "isDerived": false,
-              "allowed": ["functional-complex", "mode", "quantity"],
+              "allowed": ["functional-complex", "mode", "event"],
               "isExtensional": null,
               "isPowertype": null,
               "order": null

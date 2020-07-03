@@ -9,6 +9,7 @@ import {
   transformSubkind,
   transformRole,
   transformHistoricalRole,
+  transformHistoricalRoleMixin,
   transformPhase,
   transformCategory,
   transformMixin,
@@ -101,6 +102,7 @@ export async function transformClassesByStereotype(
     [ClassStereotype.EVENT]: transformEvent,
     [ClassStereotype.TYPE]: transformType,
     [ClassStereotype.HISTORICAL_ROLE]: transformHistoricalRole,
+    [ClassStereotype.HISTORICAL_ROLE_MIXIN]: transformHistoricalRoleMixin,
     [ClassStereotype.DATATYPE]: transformDatatype,
     [ClassStereotype.ENUMERATION]: transformEnumeration,
   };
