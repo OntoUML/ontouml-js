@@ -201,7 +201,7 @@ export const ClassVerification = {
 
     return !_class.allowed
       ? new VerificationIssue(
-          VerificationIssueCode.class_missing_allowed_natures,
+          VerificationIssueCode.class_missing_nature_restrictions,
           _class,
         )
       : null;

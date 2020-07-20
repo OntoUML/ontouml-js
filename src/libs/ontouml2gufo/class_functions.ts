@@ -148,7 +148,7 @@ export async function transformClassesByStereotype(
         }
       }
 
-      // Add subClassOf from allowed nature
+      // Add subClassOf from allowed natures
       const gufoParentUri = getGufoParent(classElement);
       if (gufoParentUri) {
         await writer.addQuad(

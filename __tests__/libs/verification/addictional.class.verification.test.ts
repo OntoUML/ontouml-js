@@ -23,7 +23,7 @@ describe('Model deserializing', () => {
     issues = await verification.run();
   });
 
-  it(`Checks code ${VerificationIssueCode.class_missing_allowed_natures}`, () => {
+  it(`Checks code ${VerificationIssueCode.class_missing_nature_restrictions}`, () => {
     const pkg = modelManager.getElementById('Pwi8Ns6GAqACHQ0l') as IPackage;
     const nativeAmerican = pkg.contents.find(
       (element: IElement) => element.name === 'Native American',
@@ -41,22 +41,22 @@ describe('Model deserializing', () => {
     const nativeAmericanIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
         issue.source.id === nativeAmerican.id &&
-        issue.code === VerificationIssueCode.class_missing_allowed_natures,
+        issue.code === VerificationIssueCode.class_missing_nature_restrictions,
     );
     const childIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
         issue.source.id === child.id &&
-        issue.code === VerificationIssueCode.class_missing_allowed_natures,
+        issue.code === VerificationIssueCode.class_missing_nature_restrictions,
     );
     const studentIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
         issue.source.id === student.id &&
-        issue.code === VerificationIssueCode.class_missing_allowed_natures,
+        issue.code === VerificationIssueCode.class_missing_nature_restrictions,
     );
     const formerPresidentIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
         issue.source.id === formerPresident.id &&
-        issue.code === VerificationIssueCode.class_missing_allowed_natures,
+        issue.code === VerificationIssueCode.class_missing_nature_restrictions,
     );
 
     expect(nativeAmerican).toBeDefined();
@@ -88,27 +88,27 @@ describe('Model deserializing', () => {
     const agentIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
         issue.source.id === agent.id &&
-        issue.code === VerificationIssueCode.class_missing_allowed_natures,
+        issue.code === VerificationIssueCode.class_missing_nature_restrictions,
     );
     const activeOrganizationIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
         issue.source.id === activeOrganization.id &&
-        issue.code === VerificationIssueCode.class_missing_allowed_natures,
+        issue.code === VerificationIssueCode.class_missing_nature_restrictions,
     );
     const customerIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
         issue.source.id === customer.id &&
-        issue.code === VerificationIssueCode.class_missing_allowed_natures,
+        issue.code === VerificationIssueCode.class_missing_nature_restrictions,
     );
     const extinctOrganizationIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
         issue.source.id === extinctOrganization.id &&
-        issue.code === VerificationIssueCode.class_missing_allowed_natures,
+        issue.code === VerificationIssueCode.class_missing_nature_restrictions,
     );
     const socialAgentIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
         issue.source.id === socialAgent.id &&
-        issue.code === VerificationIssueCode.class_missing_allowed_natures,
+        issue.code === VerificationIssueCode.class_missing_nature_restrictions,
     );
 
     expect(agent).toBeDefined();
@@ -127,7 +127,7 @@ describe('Model deserializing', () => {
     // console.log(agentIssue);
   });
 
-  it(`Checks code ${VerificationIssueCode.class_missing_allowed_natures}`, () => {
+  it(`Checks code ${VerificationIssueCode.class_missing_nature_restrictions}`, () => {
     const pkg = modelManager.getElementById('mflots6GAqACHQia') as IPackage;
 
     const productModel = pkg.contents.find(

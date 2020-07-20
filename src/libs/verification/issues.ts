@@ -10,7 +10,7 @@ export enum IssueSeverity {
 
 export enum VerificationIssueCode {
   class_identity_provider_specialization = 'class_identity_provider_specialization',
-  class_missing_allowed_natures = 'class_missing_allowed_natures',
+  class_missing_nature_restrictions = 'class_missing_nature_restrictions',
   class_missing_identity_provider = 'class_missing_identity_provider',
   class_missing_is_extensional = 'class_missing_is_extensional',
   class_missing_is_powertype = 'class_missing_is_powertype',
@@ -124,7 +124,7 @@ export class VerificationIssue {
         //   ),
         // ];
         break;
-      case VerificationIssueCode.class_missing_allowed_natures:
+      case VerificationIssueCode.class_missing_nature_restrictions:
         // The case of a class missing allowed ontological natures field
         aux = {
           name: source && source.name ? source.name : source.id,
@@ -198,10 +198,10 @@ export class VerificationIssue {
         aux.stereotype = (source as IClass).stereotypes[0];
         aux.allowed = (source as IClass).allowed[0];
         aux.name = source && source.name ? source.name : source.id;
-        this.title = `Incompatible allowed natures.`;
+        this.title = `Incompatible stereotype and 'restrictedTo' combination.`;
         this.description = `The «${aux.stereotype}» class ${
           aux.name
-        } has 'allowed' natures incompatible with its stereotype. For this stereotypes, the compatible natures are: ${
+        } has its value for 'restrictedTo' incompatible with the stereotype. The compatible natures are: ${
           allAllowedNatures[aux.stereotype]
         }.`;
         this.severity = IssueSeverity.error;
@@ -236,13 +236,13 @@ export class VerificationIssue {
         break;
       case VerificationIssueCode.generalization_incompatible_natures:
         // The case of a class specializing a class of an incompatible nature
-        this.title = `Prohibited specialization: incompatible natures.`;
+        this.title = `Prohibited specialization: incompatible 'restrictedTo' values.`;
         aux = [];
         aux[0] =
           context[0] && context[0].name ? context[0].name : context[0].id;
         aux[1] =
           context[1] && context[1].name ? context[1].name : context[1].id;
-        this.description = `The allowed ontological natures of instances of ${aux[1]} are not among the allowed ontological natures of its superclass ${aux[0]}.`;
+        this.description = `The value of 'restrictedTo' in ${aux[1]} is incompatible the value of 'restrictedTo' in the specialized class ${aux[0]}. Make sure that ${aux[1]} only specializes classes that include its own value for 'restrictedTo'.`;
         this.severity = IssueSeverity.error;
         break;
       case VerificationIssueCode.generalization_incompatible_enumeration:

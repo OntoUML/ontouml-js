@@ -162,7 +162,7 @@ describe('Model deserializing', () => {
     expect(speciesIssue).toBeDefined();
   });
 
-  it(`Checks code ${VerificationIssueCode.class_missing_allowed_natures}`, () => {
+  it(`Checks code ${VerificationIssueCode.class_missing_nature_restrictions}`, () => {
     const person = modelManager.getElementById('ncWiXI6GAqACnBFg');
     const organization = modelManager.getElementById('kJRiXI6GAqACnBF2');
     const legalEntity = modelManager.getElementById('22mF_46GAqACnAuj');
@@ -170,17 +170,17 @@ describe('Model deserializing', () => {
     const personIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
         issue.source.id === person.id &&
-        issue.code === VerificationIssueCode.class_missing_allowed_natures,
+        issue.code === VerificationIssueCode.class_missing_nature_restrictions,
     );
     const organizationIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
         issue.source.id === organization.id &&
-        issue.code === VerificationIssueCode.class_missing_allowed_natures,
+        issue.code === VerificationIssueCode.class_missing_nature_restrictions,
     );
     const legalEntityIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
         issue.source.id === legalEntity.id &&
-        issue.code === VerificationIssueCode.class_missing_allowed_natures,
+        issue.code === VerificationIssueCode.class_missing_nature_restrictions,
     );
 
     expect(organizationIssue).toBeDefined();
