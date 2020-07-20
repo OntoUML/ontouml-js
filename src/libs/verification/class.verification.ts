@@ -14,7 +14,7 @@ export const allNatures = [
   OntologicalNature.type,
 ];
 
-export const allowedNaturesForSortals = [
+export const allowedNaturesForAntiRigidSortals = [
   OntologicalNature.collective,
   OntologicalNature.functional_complex,
   OntologicalNature.mode,
@@ -54,10 +54,19 @@ allAllowedNatures[ClassStereotype.MODE] = [OntologicalNature.mode];
 allAllowedNatures[ClassStereotype.QUALITY] = [OntologicalNature.quality];
 allAllowedNatures[ClassStereotype.TYPE] = [OntologicalNature.type];
 
-allAllowedNatures[ClassStereotype.SUBKIND] = allowedNaturesForSortals;
-allAllowedNatures[ClassStereotype.ROLE] = allowedNaturesForSortals;
-allAllowedNatures[ClassStereotype.PHASE] = allowedNaturesForSortals;
-allAllowedNatures[ClassStereotype.HISTORICAL_ROLE] = allowedNaturesForSortals;
+allAllowedNatures[ClassStereotype.SUBKIND] = [
+  OntologicalNature.collective,
+  OntologicalNature.functional_complex,
+  OntologicalNature.mode,
+  OntologicalNature.quality,
+  OntologicalNature.quantity,
+  OntologicalNature.relator,
+];
+allAllowedNatures[ClassStereotype.ROLE] = allowedNaturesForAntiRigidSortals;
+allAllowedNatures[ClassStereotype.PHASE] = allowedNaturesForAntiRigidSortals;
+allAllowedNatures[
+  ClassStereotype.HISTORICAL_ROLE
+] = allowedNaturesForAntiRigidSortals;
 
 allAllowedNatures[ClassStereotype.EVENT] = [OntologicalNature.event];
 allAllowedNatures[ClassStereotype.DATATYPE] = [OntologicalNature.abstract];

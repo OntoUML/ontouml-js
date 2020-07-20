@@ -1,4 +1,4 @@
-import { IElement, IReference, IClass } from '@types';
+import { IElement, IReference, IClass, IDecoratable } from '@types';
 import { VerificationAlternative } from './alternatives';
 import { ClassStereotype } from '@constants/.';
 import { allAllowedNatures } from './class.verification';
@@ -126,30 +126,44 @@ export class VerificationIssue {
         break;
       case VerificationIssueCode.class_missing_allowed_natures:
         // The case of a class missing allowed ontological natures field
-        aux = source && source.name ? source.name : source.id;
-        this.title = `Missing 'allowed' natures meta-property.`;
-        this.description = `The class ${aux} is missing the 'allowed' natures meta-property.`;
+        aux = {
+          name: source && source.name ? source.name : source.id,
+          stereotype:
+            source && (source as IDecoratable).stereotypes
+              ? (source as IDecoratable).stereotypes[0]
+              : '',
+        };
+        this.title = `The meta-property 'restrictedTo' is not assigned.`;
+        this.description = ![
+          ClassStereotype.SUBKIND,
+          ClassStereotype.PHASE,
+          ClassStereotype.ROLE,
+          ClassStereotype.HISTORICAL_ROLE,
+        ].includes(aux.stereotype)
+          ? `The meta-property 'restrictedTo' of class ${aux.name} must specify the possible ontological natures of its instances.`
+          : `The meta-property 'restrictedTo' of class ${aux.name} must specify the possible ontological natures of its instances. Classes decorated with «${aux.stereotype}» must inherit this value through specialization (i.e. they must specify the same value as the ultimate sortal they specialize).`;
+        // this.description = `The meta-property 'restrictedTo' of class ${aux} must specify the possible ontological natures of its instances. Classes with `;
         this.severity = IssueSeverity.error;
         break;
       case VerificationIssueCode.class_missing_is_extensional:
         // The case of a class missing "isExtensional" field
         aux = source && source.name ? source.name : source.id;
-        this.title = `Missing 'isExtensional' meta-property.`;
-        this.description = `The «${ClassStereotype.COLLECTIVE}» class ${aux} is missing the 'isExtensional' meta-property.`;
+        this.title = `The meta-property 'isExtensional' is not assigned.`;
+        this.description = `The meta-property 'isExtensional' of «${ClassStereotype.COLLECTIVE}» class ${aux} must be assigned.`;
         this.severity = IssueSeverity.error;
         break;
       case VerificationIssueCode.class_missing_is_powertype:
         // The case of a class missing "isPowertype" field
         aux = source && source.name ? source.name : source.id;
-        this.title = `Missing 'isPowertype' meta-property.`;
-        this.description = `The «${ClassStereotype.TYPE}» class ${aux} is missing the 'isPowertype' meta-property.`;
+        this.title = `The meta-property 'isPowertype' is not assigned.`;
+        this.description = `The meta-property 'isPowertype' of «${ClassStereotype.TYPE}» class ${aux} must be assigned.`;
         this.severity = IssueSeverity.error;
         break;
       case VerificationIssueCode.class_missing_order:
         // The case of a class missing "order" field
         aux = source && source.name ? source.name : source.id;
-        this.title = `Missing 'order' meta-property.`;
-        this.description = `The «${ClassStereotype.TYPE}» class ${aux} is missing the 'order' meta-property.`;
+        this.title = `The meta-property 'order' is not assigned.`;
+        this.description = `The meta-property 'order' of «${ClassStereotype.TYPE}» class ${aux} must be assigned.`;
         this.severity = IssueSeverity.error;
         break;
       case VerificationIssueCode.class_missing_identity_provider:
