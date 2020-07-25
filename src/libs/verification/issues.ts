@@ -21,7 +21,6 @@ export enum VerificationIssueCode {
   class_non_enumeration_with_literals = 'class_non_enumeration_with_literals',
   class_enumeration_with_properties = 'class_enumeration_with_properties',
   class_incompatible_natures = 'class_incompatible_natures',
-  relation_missing_is_read_only = 'relation_missing_is_read_only',
   generalization_inconsistent_specialization = 'generalization_inconsistent_specialization',
   generalization_incompatible_natures = 'generalization_incompatible_natures',
   generalization_incompatible_enumeration = 'generalization_incompatible_enumeration',
@@ -30,6 +29,7 @@ export enum VerificationIssueCode {
   generalization_incompatible_class_sortality = 'generalization_incompatible_class_sortality',
   generalization_incompatible_relation_type = 'generalization_incompatible_relation_type',
   relation_multiple_stereotypes = 'relation_multiple_stereotypes',
+  relation_missing_is_read_only = 'relation_missing_is_read_only',
   relation_improper_derivation = 'relation_improper_derivation',
 }
 
@@ -168,9 +168,16 @@ export class VerificationIssue {
         break;
       case VerificationIssueCode.class_missing_identity_provider:
         // The case of a sortal class missing an specialization towards a kind or type
+        aux = (source as IDecoratable).stereotypes
+          ? (source as IDecoratable).stereotypes[0]
+          : null;
         this.title =
           'Every sortal class must specialize a unique ultimate sortal.';
-        this.description = `The class ${source.name} must specialize (directly or indirectly) a unique class decorated as one of the following: «kind», «collective», «quantity», «relator», «mode», «quality», «type».`;
+        this.description = `The class ${
+          source.name
+        } must specialize (directly or indirectly) a unique class decorated as one of the following: «kind», «collective», «quantity», «relator», «mode», «quality»${
+          aux === ClassStereotype.SUBKIND ? ', «type»' : ''
+        }).`;
         this.severity = IssueSeverity.error;
         break;
       case VerificationIssueCode.class_multiple_identity_provider:
@@ -247,7 +254,7 @@ export class VerificationIssue {
         break;
       case VerificationIssueCode.generalization_incompatible_enumeration:
         // The case of an enumeration specializing a non-enumeration class
-        // TODO: check if this constraint is consistent
+        // TODO: check if this constraint should exist
         this.title = `Prohibited specialization: enumeration specialization.`;
         this.description = `A enumeration can only be in generalization relation with other enumerations.`;
         this.severity = IssueSeverity.error;
