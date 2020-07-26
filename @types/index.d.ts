@@ -358,6 +358,51 @@ interface IRelatedLink {
   };
 }
 
+interface IDiagram {
+  type: string;
+  id: string;
+  name: string;
+  description: string;
+  owner: IReference;
+  contents: IDiagramElement[];
+}
+
+interface IDiagramElement {
+  type: string;
+  id: string;
+  source: IReference;
+  field: string;
+  points: IPoint[];
+  font: IFont[];
+  line: ILine[];
+  background: IBackground;
+  visibility: object;
+  elements: IDiagramElement[];
+}
+
+interface IPoint {
+  x: number;
+  y: number;
+}
+
+interface IFont {
+  name: string;
+  size: number;
+  color: string;
+}
+
+interface IBackground {
+  color: string;
+  transparency: number;
+}
+
+interface ILine {
+  color: string;
+  transparency: number;
+  weight: number;
+  style: string;
+}
+
 interface IOntoUMLError {
   id?: string;
   code: string;

@@ -1,0 +1,1025 @@
+[
+  {
+    "id": "0",
+    "type": "Diagram",
+    "name": "Cluster of Marriage",
+    "description": null,
+    "owner": {
+      "type": "Package",
+      "id": "mRPQoc6GAqACAgBO"
+    },
+    "contents": [
+      {
+        "type": "Shape",
+        "id": "marriage-shape",
+        "source": {
+          "type": "Class",
+          "id": "rPmS4c6GAqACAgkB"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "husband-shape",
+        "source": {
+          "type": "Class",
+          "id": "eNSS4c6GAqACAgi8"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "wife-shape",
+        "source": {
+          "type": "Class",
+          "id": "6sSS4c6GAqACAgiw"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "person-shape",
+        "source": {
+          "type": "Class",
+          "id": "Zunwoc6GAqACAgWp"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "man-shape",
+        "source": {
+          "type": "Class",
+          "id": "NNkS4c6GAqACAgc7"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "woman-shape",
+        "source": {
+          "type": "Class",
+          "id": "bGkS4c6GAqACAgco"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "involves-husband-line",
+        "source": {
+          "type": "Relation",
+          "id": "jLuS4c6GAqACAgkd"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "involves-wife-line",
+        "source": {
+          "type": "Relation",
+          "id": "YfBS4c6GAqACAgk8"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "woman-|>person-line",
+        "source": {
+          "type": "Generalization",
+          "id": "tgMS4c6GAqACAgfV"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "man-|>person-line",
+        "source": {
+          "type": "Generalization",
+          "id": "KtMS4c6GAqACAgfm"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "wife-|>woman-line",
+        "source": {
+          "type": "Generalization",
+          "id": "VDaS4c6GAqACAgji"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "husband-|>man-line",
+        "source": {
+          "type": "Generalization",
+          "id": "BD6S4c6GAqACAgjz"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Label",
+        "id": "genderset-label",
+        "source": {
+          "type": "GeneralizationSet",
+          "id": "9gmG4c6GAqACAgqv"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      }
+    ]
+  },
+  {
+    "id": "1",
+    "type": "Diagram",
+    "name": "Cluster of Emplyoment",
+    "description": null,
+    "owner": {
+      "type": "Package",
+      "id": "mRPQoc6GAqACAgBO"
+    },
+    "contents": [
+      {
+        "type": "Shape",
+        "id": "emplyoment-shape",
+        "source": {
+          "type": "Class",
+          "id": "aHWy4c6GAqACAgrV"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "employee-shape",
+        "source": {
+          "type": "Class",
+          "id": "Q0Gy4c6GAqACAgq3"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "organization-shape",
+        "source": {
+          "type": "Class",
+          "id": "rgey4c6GAqACAgrh"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "person-shape",
+        "source": {
+          "type": "Class",
+          "id": "Zunwoc6GAqACAgWp"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "involves-employee-line",
+        "source": {
+          "type": "Relation",
+          "id": "6Epy4c6GAqACAgsV"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "involves-employer-line",
+        "source": {
+          "type": "Relation",
+          "id": "etZy4c6GAqACAgsu"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "employee-|>person-line",
+        "source": {
+          "type": "Generalization",
+          "id": ".zxy4c6GAqACAgsC"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "type": "Diagram",
+    "name": "Cluster of Car Ownership",
+    "description": null,
+    "owner": {
+      "type": "Package",
+      "id": "mRPQoc6GAqACAgBO"
+    },
+    "contents": [
+      {
+        "type": "Shape",
+        "id": "car-ownership-shape",
+        "source": {
+          "type": "Class",
+          "id": "dNQK4c6GAqACAguT"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "car-shape",
+        "source": {
+          "type": "Class",
+          "id": "fnIK4c6GAqACAguf"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "car-agency-shape",
+        "source": {
+          "type": "Class",
+          "id": "5Ffy4c6GAqACAguD"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "organization-shape",
+        "source": {
+          "type": "Class",
+          "id": "rgey4c6GAqACAgrh"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "involves-car-line",
+        "source": {
+          "type": "Relation",
+          "id": "Yg8q4c6GAqACAg3J"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "involves-owner-line",
+        "source": {
+          "type": "Relation",
+          "id": "jOCq4c6GAqACAg3c"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "car-agency-|>organization-line",
+        "source": {
+          "type": "Generalization",
+          "id": "..5K4c6GAqACAgxj"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "type": "Diagram",
+    "name": "Cluster of Car Rental",
+    "description": null,
+    "owner": {
+      "type": "Package",
+      "id": "mRPQoc6GAqACAgBO"
+    },
+    "contents": [
+      {
+        "type": "Shape",
+        "id": "car-rental-shape",
+        "source": {
+          "type": "Class",
+          "id": "NgSK4c6GAqACAgvt"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "responsible-employee-shape",
+        "source": {
+          "type": "Class",
+          "id": "UgqK4c6GAqACAgv5"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "customer-shape",
+        "source": {
+          "type": "Class",
+          "id": "N9tK4c6GAqACAgy."
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "rental-car-shape",
+        "source": {
+          "type": "Class",
+          "id": "5i0K4c6GAqACAgvJ"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "person-shape",
+        "source": {
+          "type": "Class",
+          "id": "Zunwoc6GAqACAgWp"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "employee-shape",
+        "source": {
+          "type": "Class",
+          "id": "Q0Gy4c6GAqACAgq3"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "car-shape",
+        "source": {
+          "type": "Class",
+          "id": "fnIK4c6GAqACAguf"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "available-car-shape",
+        "source": {
+          "type": "Class",
+          "id": "ORkK4c6GAqACAgu9"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "corporate-customer-shape",
+        "source": {
+          "type": "Class",
+          "id": "0acK4c6GAqACAgvV"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "personal-customer-shape",
+        "source": {
+          "type": "Class",
+          "id": "drCK4c6GAqACAgvh"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "organization-shape",
+        "source": {
+          "type": "Class",
+          "id": "rgey4c6GAqACAgrh"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "living-person-shape",
+        "source": {
+          "type": "Class",
+          "id": "nnrS4c6GAqACAgm9"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "adult-shape",
+        "source": {
+          "type": "Class",
+          "id": "aFfS4c6GAqACAgoo"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "deceased-person-shape",
+        "source": {
+          "type": "Class",
+          "id": "ifbS4c6GAqACAgnJ"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "child-shape",
+        "source": {
+          "type": "Class",
+          "id": "SAfS4c6GAqACAgoQ"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "teenager-shape",
+        "source": {
+          "type": "Class",
+          "id": "BKfS4c6GAqACAgoc"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Shape",
+        "id": "under-maintenance-car-shape",
+        "source": {
+          "type": "Class",
+          "id": "kGYK4c6GAqACAgut"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "involves-employee-line",
+        "source": {
+          "type": "Relation",
+          "id": "0VAq4c6GAqACAg1p"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "involves-customer-line",
+        "source": {
+          "type": "Relation",
+          "id": "NZgq4c6GAqACAg18"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "involves-rental-line",
+        "source": {
+          "type": "Relation",
+          "id": "aooq4c6GAqACAg2P"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "living-person-|>person-line",
+        "source": {
+          "type": "Generalization",
+          "id": "PMnS4c6GAqACAgni"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "adult-|>living-person-line",
+        "source": {
+          "type": "Generalization",
+          "id": "wkYy4c6GAqACAgqJ"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "employee-|>person-line",
+        "source": {
+          "type": "Generalization",
+          "id": ".zxy4c6GAqACAgsC"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "responsible-employee-|>employee-line",
+        "source": {
+          "type": "Generalization",
+          "id": ".OuK4c6GAqACAgwn"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "available-car-|>car-line",
+        "source": {
+          "type": "Generalization",
+          "id": "83NK4c6GAqACAgyy"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "rental-car-|>available-car-line",
+        "source": {
+          "type": "Generalization",
+          "id": "eDLK4c6GAqACAgzj"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "corporate-customer-|>customer-line",
+        "source": {
+          "type": "Generalization",
+          "id": "QZbK4c6GAqACAgz4"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "corporate-customer-|>organization-line",
+        "source": {
+          "type": "Generalization",
+          "id": "IuHK4c6GAqACAg0R"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "personal-customer-|>customer-line",
+        "source": {
+          "type": "Generalization",
+          "id": "g9XK4c6GAqACAg0q"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "personal-customer-|>adult-line",
+        "source": {
+          "type": "Generalization",
+          "id": "EBvK4c6GAqACAg1I"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "deceased-person-|>person-line",
+        "source": {
+          "type": "Generalization",
+          "id": "EIXS4c6GAqACAgnz"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "child-|>living-person-line",
+        "source": {
+          "type": "Generalization",
+          "id": "qDIy4c6GAqACAgpl"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "teenager-|>living-person-line",
+        "source": {
+          "type": "Generalization",
+          "id": "22oy4c6GAqACAgp4"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Line",
+        "id": "under-maintenance-car-|>car-line",
+        "source": {
+          "type": "Generalization",
+          "id": "7F1K4c6GAqACAgyV"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Label",
+        "id": "lifeset-label",
+        "source": {
+          "type": "GeneralizationSet",
+          "id": "7uuG4c6GAqACAgq9"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Label",
+        "id": "agephaseset-label",
+        "source": {
+          "type": "GeneralizationSet",
+          "id": "tt3G4c6GAqACAgrN"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Label",
+        "id": "carstateset-label",
+        "source": {
+          "type": "GeneralizationSet",
+          "id": "11Im4c6GAqACAgru"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      },
+      {
+        "type": "Label",
+        "id": "customertypeset-label",
+        "source": {
+          "type": "GeneralizationSet",
+          "id": "Uih_Uc6GAqACAgvK"
+        },
+        "field": null,
+        "points": null,
+        "font": null,
+        "line": null,
+        "background": null,
+        "visibility": null,
+        "elements": null
+      }
+    ]
+  }
+]

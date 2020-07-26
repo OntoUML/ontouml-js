@@ -1,6 +1,7 @@
 {
   "singleQuote": true,
-  "trailingComma": "all",
+  "trailingComma": "es5",
+  printWidth: 120,
   "overrides": [
     {
       "files": "*.ts",

@@ -11,6 +11,7 @@ import {
   VerificationAlternativeCode,
 } from '@libs/verification/alternatives';
 import { OntoUML2GUFO } from '@libs/ontouml2gufo';
+import { ClusterFinder } from '@libs/complexity';
 
 export {
   ModelManager,
@@ -21,4 +22,5 @@ export {
   VerificationAlternativeCode,
   IssueSeverity,
   OntoUML2GUFO,
+  ClusterFinder,
 };
