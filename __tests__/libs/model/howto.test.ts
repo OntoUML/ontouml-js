@@ -10,15 +10,10 @@ it('Check README How To code', () => {
 
   const rootPackage = modelManager.rootPackage; // ontoULMSchemaModel root package
   rootPackage.getAllContents(); // returns elements recursively contained within the executing package
-  rootPackage.getAllContentsByType([
-    OntoUMLType.GENERALIZATION_TYPE,
-    OntoUMLType.PROPERTY_TYPE,
-  ]); // returns elements contained within in the package selected by type
+  rootPackage.getAllContentsByType([OntoUMLType.GENERALIZATION_TYPE, OntoUMLType.PROPERTY_TYPE]); // returns elements contained within in the package selected by type
   rootPackage.getContentById('elementId'); // returns the element bearering the given id
 
-  const student = rootPackage
-    .getAllContents()
-    .find((element: IElement) => element.name === 'Student') as IClass; // Student role class
+  const student = rootPackage.getAllContents().find((element: IElement) => element.name === 'Student') as IClass; // Student role class
   student.stereotypes; // [ 'role' ]
   student.getParents(); // [ Person kind class ]
   student.getAncestors(); // [ Person kind class, Agent category class ]

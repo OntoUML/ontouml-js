@@ -1,7 +1,4 @@
-import {
-  alpinebits as alpinebitsModel,
-  inverseRelations as inverseRelationsModel,
-} from '@test-models/valids';
+import { alpinebits as alpinebitsModel, inverseRelations as inverseRelationsModel } from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 
 describe('InverseRelations', () => {
@@ -18,13 +15,10 @@ describe('InverseRelations', () => {
       createInverses: true,
     })).model;
 
-    inverseRelationsHideOP = (await transformOntoUML2GUFO(
-      inverseRelationsModel,
-      {
-        createInverses: true,
-        createObjectProperty: false,
-      },
-    )).model;
+    inverseRelationsHideOP = (await transformOntoUML2GUFO(inverseRelationsModel, {
+      createInverses: true,
+      createObjectProperty: false,
+    })).model;
   });
 
   it('should generate an uri automatically using association end', async () => {
@@ -39,10 +33,7 @@ describe('InverseRelations', () => {
   });
 
   it('should generate an uri automatically using stereotype', async () => {
-    const data = [
-      '<:organizedevent> <owl:inverseOf> <:organizer>',
-      '<:organizer> <rdf:type> <owl:ObjectProperty>',
-    ];
+    const data = ['<:organizedevent> <owl:inverseOf> <:organizer>', '<:organizer> <rdf:type> <owl:ObjectProperty>'];
 
     for (const value of data) {
       expect(alpinebits).toContain(value);
@@ -69,7 +60,7 @@ describe('InverseRelations', () => {
         <owl:onProperty> <:subarea>;
         <owl:minQualifiedCardinality> "2"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:MountainArea>
-      ] .`.replace(/ {6}/gm, ''),
+      ] .`.replace(/ {6}/gm, '')
     );
 
     expect(alpinebits).toContain(
@@ -78,7 +69,7 @@ describe('InverseRelations', () => {
         <owl:onProperty> <:superarea>;
         <owl:maxQualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:CompositeArea>
-      ] .`.replace(/ {6}/gm, ''),
+      ] .`.replace(/ {6}/gm, '')
     );
   });
 
@@ -121,10 +112,7 @@ describe('InverseRelations', () => {
       '<owl:onProperty> <:hasEventProperPartPartipationalClassSource>',
       '<owl:onProperty> <:hasProperPartClassSource>',
     ];
-    const data2 = [
-      '<owl:onProperty> <:hasEventProperPart>',
-      '<owl:onProperty> <:hasProperPart>',
-    ];
+    const data2 = ['<owl:onProperty> <:hasEventProperPart>', '<owl:onProperty> <:hasProperPart>'];
 
     for (const value of data) {
       expect(inverseRelations).toContain(value);
@@ -140,10 +128,7 @@ describe('InverseRelations', () => {
       '<owl:onProperty> <:hasEventProperPartPartipationalClassSource>',
       '<owl:onProperty> <:hasProperPartClassSource>',
     ];
-    const data2 = [
-      '<owl:onProperty> <:hasEventProperPart>',
-      '<owl:onProperty> <:hasProperPart>',
-    ];
+    const data2 = ['<owl:onProperty> <:hasEventProperPart>', '<owl:onProperty> <:hasProperPart>'];
 
     for (const value of data) {
       expect(inverseRelationsHideOP).not.toContain(value);

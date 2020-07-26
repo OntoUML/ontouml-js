@@ -69,10 +69,7 @@ describe('Subpackages', () => {
   });
 
   it('should have elements with custom subpackage prefixes', () => {
-    const data = [
-      'customPerson:Father rdf:type owl:Class',
-      'customSchool:Student rdf:type owl:Class',
-    ];
+    const data = ['customPerson:Father rdf:type owl:Class', 'customSchool:Student rdf:type owl:Class'];
 
     for (const value of data) {
       expect(customPackages).toContain(value);

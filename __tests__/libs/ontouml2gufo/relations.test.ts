@@ -51,10 +51,7 @@ describe('Relations', () => {
   });
 
   it('should generate a domain and range to relation', async () => {
-    const data = [
-      '<:organizer> <rdfs:domain> <:EventPlan>',
-      '<:organizer> <rdfs:range> <:Organizer>',
-    ];
+    const data = ['<:organizer> <rdfs:domain> <:EventPlan>', '<:organizer> <rdfs:range> <:Organizer>'];
 
     for (const value of data) {
       expect(alpinebits).toContain(value);
@@ -81,7 +78,7 @@ describe('Relations', () => {
         <owl:onProperty> [ <owl:inverseOf> <:superarea> ];
         <owl:minQualifiedCardinality> "2"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:MountainArea>
-      ] .`.replace(/ {6}/gm, ''),
+      ] .`.replace(/ {6}/gm, '')
     );
   });
 
@@ -91,7 +88,7 @@ describe('Relations', () => {
         <rdf:type> <owl:Restriction>;
         <owl:onProperty> <:organizer>;
         <owl:someValuesFrom> <:Organizer>
-      ] .`.replace(/ {6}/gm, ''),
+      ] .`.replace(/ {6}/gm, '')
     );
   });
 
@@ -102,7 +99,7 @@ describe('Relations', () => {
         <owl:onProperty> <:eventseries>;
         <owl:maxQualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:EventSeries>
-      ] .`.replace(/ {6}/gm, ''),
+      ] .`.replace(/ {6}/gm, '')
     );
   });
 

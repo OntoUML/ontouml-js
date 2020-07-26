@@ -4,7 +4,7 @@ import { IPackage, IOntoUML2GUFOOptions, IOntoUML2GUFOResult } from '@types';
 
 export async function transformOntoUML2GUFO(
   model: IPackage,
-  options?: Partial<IOntoUML2GUFOOptions>,
+  options?: Partial<IOntoUML2GUFOOptions>
 ): Promise<IOntoUML2GUFOResult> {
   const modelCopy = JSON.parse(JSON.stringify(model));
   const modelManager = new ModelManager(modelCopy);
