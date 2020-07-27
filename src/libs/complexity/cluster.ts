@@ -1,21 +1,19 @@
-import { IPackage, IClass, IGeneralizationSet, IGeneralization, IRelation, IElement } from '@types';
+import { IPackage, IClass, IGeneralizationSet, IGeneralization, IRelation, IElement, IReference } from '@types';
 import { Diagram } from './diagram';
 import { uniqBy } from 'lodash';
 
 export class Cluster {
   id: string;
   name: string;
-  relator: IClass;
   classes: IClass[];
   relations: IRelation[];
   generalizations: IGeneralization[];
   generalizationSets: IGeneralizationSet[];
 
-  constructor(id: string, relator: IClass) {
+  constructor(id: string, name: string) {
     this.id = id;
-    this.name = 'Cluster of ' + relator.name;
-    this.relator = relator;
-    this.classes = [relator];
+    this.name = name;
+    this.classes = [];
     this.relations = [];
     this.generalizations = [];
     this.generalizationSets = [];
@@ -31,16 +29,52 @@ export class Cluster {
     return diagram;
   }
 
+  addClass(_class: IClass): boolean {
+    if (!_class) return false;
+
+    this.classes.push(_class);
+    return true;
+  }
+
+  containsClass(_class: IElement | IReference): boolean {
+    return this.classes.findIndex(c => c.id === _class.id) >= 0;
+  }
+
   addClasses(classes: IClass[]) {
     this.classes = this.classes.concat(classes);
+  }
+
+  addRelation(relation: IRelation): boolean {
+    if (!relation) return false;
+
+    this.relations.push(relation);
+    return true;
+  }
+
+  containsRelation(relation: IElement): boolean {
+    return this.relations.findIndex(r => r.id === relation.id) >= 0;
   }
 
   addRelations(relations: IRelation[]) {
     this.relations = this.relations.concat(relations);
   }
 
+  addGeneralization(generalization: IGeneralization): boolean {
+    if (!generalization) return false;
+
+    this.generalizations.push(generalization);
+    return true;
+  }
+
   addGeneralizations(generalizations: IGeneralization[]) {
     this.generalizations = this.generalizations.concat(generalizations);
+  }
+
+  addGeneralizationSet(generalizationSet: IGeneralizationSet): boolean {
+    if (!generalizationSet) return false;
+
+    this.generalizationSets.push(generalizationSet);
+    return true;
   }
 
   addGeneralizationSets(generalizationSets: IGeneralizationSet[]) {
@@ -48,13 +82,25 @@ export class Cluster {
   }
 
   removeDuplicates() {
-    this.classes = this.removeDuplicatesArray(this.classes);
-    this.relations = this.removeDuplicatesArray(this.relations);
-    this.generalizations = this.removeDuplicatesArray(this.generalizations);
-    this.generalizationSets = this.removeDuplicatesArray(this.generalizationSets);
+    this.classes = Cluster.removeDuplicatesArray(this.classes);
+    this.relations = Cluster.removeDuplicatesArray(this.relations);
+    this.generalizations = Cluster.removeDuplicatesArray(this.generalizations);
+    this.generalizationSets = Cluster.removeDuplicatesArray(this.generalizationSets);
   }
 
-  private removeDuplicatesArray<T extends IElement>(elements: T[]): T[] {
+  static removeDuplicatesArray<T extends IElement>(elements: T[]): T[] {
     return uniqBy(elements, 'id');
+  }
+
+  addAll(cluster: Cluster): boolean {
+    if (!cluster) return false;
+
+    this.addClasses(cluster.classes);
+    this.addRelations(cluster.relations);
+    this.addGeneralizations(cluster.generalizations);
+    this.addGeneralizationSets(cluster.generalizationSets);
+
+    this.removeDuplicates();
+    return true;
   }
 }

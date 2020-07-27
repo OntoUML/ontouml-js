@@ -30,31 +30,31 @@ export class Diagram implements IDiagram {
     this.contents = [];
   }
 
-  addElement(element: IDiagramElement) {
+  public addElement(element: IDiagramElement) {
     this.contents.push(element);
   }
 
-  addShape(_class: IClass) {
+  public addShape(_class: IClass) {
     this.addElement(new Shape(_class));
   }
 
-  addShapes(classes: IClass[]) {
+  public addShapes(classes: IClass[]) {
     classes.forEach(_class => this.addShape(_class));
   }
 
-  addLine(relation: IRelation | IGeneralization) {
+  public addLine(relation: IRelation | IGeneralization) {
     this.addElement(new Line(relation));
   }
 
-  addLines(relations: IRelation[] | IGeneralization[]) {
+  public addLines(relations: IRelation[] | IGeneralization[]) {
     relations.forEach(relation => this.addLine(relation));
   }
 
-  addLabel(genSet: IGeneralizationSet) {
+  public addLabel(genSet: IGeneralizationSet) {
     this.addElement(new Label(genSet));
   }
 
-  addLabels(genSets: IGeneralizationSet[]) {
+  public addLabels(genSets: IGeneralizationSet[]) {
     genSets.forEach(genSet => this.addLabel(genSet));
   }
 }

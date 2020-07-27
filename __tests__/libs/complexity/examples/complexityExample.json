@@ -209,7 +209,7 @@
   {
     "id": "1",
     "type": "Diagram",
-    "name": "Cluster of Emplyoment",
+    "name": "Cluster of Employment",
     "description": null,
     "owner": {
       "type": "Package",
@@ -218,7 +218,7 @@
     "contents": [
       {
         "type": "Shape",
-        "id": "emplyoment-shape",
+        "id": "employment-shape",
         "source": {
           "type": "Class",
           "id": "aHWy4c6GAqACAgrV"

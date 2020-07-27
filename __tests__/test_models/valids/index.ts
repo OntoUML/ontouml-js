@@ -15,7 +15,8 @@ const annotations = require('./annotations.json');
 const packages = require('./packages.json');
 const derivation = require('./derivation.json');
 const inverseRelations = require('./inverseRelations.json');
-const complexityClustering = require('./complexityClustering.json');
+const complexityExample = require('./complexityExample.json');
+const complexityExtendedExample = require('./complexityExtendedExample.json');
 const complexityNonSortals = require('./complexityNonSortals.json');
 
 export {
@@ -36,6 +37,7 @@ export {
   packages,
   derivation,
   inverseRelations,
-  complexityClustering,
+  complexityExample,
+  complexityExtendedExample,
   complexityNonSortals,
 };
