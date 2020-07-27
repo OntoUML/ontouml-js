@@ -60,7 +60,11 @@ export function eject(element: IElement): void {
   });
 }
 
-function injectFunctions(element: IElement, functionImplementations: any, enableMemoization: boolean = true): void {
+function injectFunctions(
+  element: IElement,
+  functionImplementations: any,
+  enableMemoization: boolean = true
+): void {
   Object.keys(functionImplementations).forEach((functionName: string) => {
     element[functionName] = enableMemoization
       ? memoizee(functionImplementations[functionName])
@@ -202,7 +206,9 @@ function getParents(): IClassifier[] {
   const self = this as IClassifier;
 
   return self._generalOfGeneralizations
-    ? self._generalOfGeneralizations.map((generalization: IGeneralization) => generalization.general as IClassifier)
+    ? self._generalOfGeneralizations.map(
+        (generalization: IGeneralization) => generalization.general as IClassifier
+      )
     : [];
 }
 
@@ -210,7 +216,9 @@ function getChildren(): IClassifier[] {
   const self = this as IClassifier;
 
   return self._specificOfGeneralizations
-    ? self._specificOfGeneralizations.map((specialization: IGeneralization) => specialization.specific as IClassifier)
+    ? self._specificOfGeneralizations.map(
+        (specialization: IGeneralization) => specialization.specific as IClassifier
+      )
     : [];
 }
 
@@ -250,7 +258,8 @@ function getRelations(): IRelation[] {
     .getAllContentsByType([OntoUMLType.RELATION_TYPE])
     .filter(
       (relation: IRelation) =>
-        relation.properties[0].propertyType.id === self.id || relation.properties[1].propertyType.id === self.id
+        relation.properties[0].propertyType.id === self.id ||
+        relation.properties[1].propertyType.id === self.id
     )
     .map((relation: IRelation) => relation);
 }
@@ -366,7 +375,9 @@ function allowsInstances(instancesNatures: OntologicalNature[]): boolean {
   const self = this as IClass;
 
   if (self.allowed) {
-    return instancesNatures.every((instancesNature: OntologicalNature) => self.allowed.includes(instancesNature));
+    return instancesNatures.every((instancesNature: OntologicalNature) =>
+      self.allowed.includes(instancesNature)
+    );
   }
 
   return false;
@@ -398,7 +409,9 @@ function isDerivation(): boolean {
   const source = self.properties[0].propertyType as IClassifier;
   const target = self.properties[1].propertyType as IClassifier;
 
-  return source && target && source.type === OntoUMLType.RELATION_TYPE && target.type === OntoUMLType.CLASS_TYPE;
+  return (
+    source && target && source.type === OntoUMLType.RELATION_TYPE && target.type === OntoUMLType.CLASS_TYPE
+  );
 }
 
 function getSource(): IClass {

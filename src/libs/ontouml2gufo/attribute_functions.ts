@@ -103,7 +103,9 @@ export async function transformAttributes(
       quads.push(quad(namedNode(uri), namedNode('rdfs:range'), namedNode(rangeUri)));
 
       if (!isComplexAttribute) {
-        quads.push(quad(namedNode(uri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:hasReifiedQualityValue')));
+        quads.push(
+          quad(namedNode(uri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:hasReifiedQualityValue'))
+        );
       }
     }
 

@@ -71,15 +71,27 @@ export const ClassVerification = {
     const classStereotypes = Object.values(ClassStereotype) as string[];
 
     if (!_class.stereotypes || _class.stereotypes.length !== 1) {
-      consistencyIssues.push(new VerificationIssue(VerificationIssueCode.class_not_unique_stereotype, _class));
+      consistencyIssues.push(
+        new VerificationIssue(VerificationIssueCode.class_not_unique_stereotype, _class)
+      );
     } else if (!classStereotypes.includes(_class.stereotypes[0])) {
-      consistencyIssues.push(new VerificationIssue(VerificationIssueCode.class_invalid_ontouml_stereotype, _class));
+      consistencyIssues.push(
+        new VerificationIssue(VerificationIssueCode.class_invalid_ontouml_stereotype, _class)
+      );
     }
 
     if (_class.stereotypes && _class.stereotypes.includes(ClassStereotype.ENUMERATION) && _class.properties) {
-      consistencyIssues.push(new VerificationIssue(VerificationIssueCode.class_enumeration_with_properties, _class));
-    } else if (_class.stereotypes && !_class.stereotypes.includes(ClassStereotype.ENUMERATION) && _class.literals) {
-      consistencyIssues.push(new VerificationIssue(VerificationIssueCode.class_non_enumeration_with_literals, _class));
+      consistencyIssues.push(
+        new VerificationIssue(VerificationIssueCode.class_enumeration_with_properties, _class)
+      );
+    } else if (
+      _class.stereotypes &&
+      !_class.stereotypes.includes(ClassStereotype.ENUMERATION) &&
+      _class.literals
+    ) {
+      consistencyIssues.push(
+        new VerificationIssue(VerificationIssueCode.class_non_enumeration_with_literals, _class)
+      );
     }
 
     return consistencyIssues;
@@ -110,7 +122,11 @@ export const ClassVerification = {
           kindAncestors
         );
       } else if (!_class.isUltimateSortal() && kindAncestors.length > 1) {
-        return new VerificationIssue(VerificationIssueCode.class_multiple_identity_provider, _class, kindAncestors);
+        return new VerificationIssue(
+          VerificationIssueCode.class_multiple_identity_provider,
+          _class,
+          kindAncestors
+        );
       } else if (
         !_class.isUltimateSortal() &&
         kindAncestors.length === 0 &&
@@ -131,7 +147,8 @@ export const ClassVerification = {
     const stereotype = _class.stereotypes[0];
 
     let incompatibleNatures = _class.allowed.filter(
-      (nature: OntologicalNature) => allAllowedNatures[stereotype] && !allAllowedNatures[stereotype].includes(nature)
+      (nature: OntologicalNature) =>
+        allAllowedNatures[stereotype] && !allAllowedNatures[stereotype].includes(nature)
     );
 
     return incompatibleNatures.length > 0
@@ -144,7 +161,9 @@ export const ClassVerification = {
       return null;
     }
 
-    return !_class.allowed ? new VerificationIssue(VerificationIssueCode.class_missing_allowed_natures, _class) : null;
+    return !_class.allowed
+      ? new VerificationIssue(VerificationIssueCode.class_missing_allowed_natures, _class)
+      : null;
   },
 
   checkMissingIsExtensional(_class: IClass): VerificationIssue {

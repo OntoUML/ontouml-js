@@ -26,7 +26,9 @@ export async function transformAnnotations(
   if (propertyAssignments) {
     for (const language of Object.keys(propertyAssignments)) {
       if (AvailableLanguages.includes(language)) {
-        quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(propertyAssignments[language], language)));
+        quads.push(
+          quad(namedNode(uri), namedNode('rdfs:label'), literal(propertyAssignments[language], language))
+        );
       }
     }
   }

@@ -266,7 +266,9 @@ function transformRelationBase(relation: IRelation, options: IOntoUML2GUFOOption
   if (name) {
     quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(name)));
   } else {
-    quads.push(quad(namedNode(uri), namedNode('rdfs:comment'), literal('Relation URI was automatically generated.')));
+    quads.push(
+      quad(namedNode(uri), namedNode('rdfs:comment'), literal('Relation URI was automatically generated.'))
+    );
   }
 
   return quads;
@@ -275,7 +277,11 @@ function transformRelationBase(relation: IRelation, options: IOntoUML2GUFOOption
 /**
  * Transform relation cardinalities to gUFO
  */
-function transformRelationCardinalities(writer: N3Writer, relation: IRelation, options: IOntoUML2GUFOOptions): Quad[] {
+function transformRelationCardinalities(
+  writer: N3Writer,
+  relation: IRelation,
+  options: IOntoUML2GUFOOptions
+): Quad[] {
   const { createInverses } = options;
   const { properties } = relation;
 
@@ -504,7 +510,9 @@ function generateRelationBlankQuad({
     },
     {
       predicate: namedNode('owl:onProperty'),
-      object: isDomain ? namedNode(propertyUri) : writer.blank(namedNode('owl:inverseOf'), namedNode(propertyUri)),
+      object: isDomain
+        ? namedNode(propertyUri)
+        : writer.blank(namedNode('owl:inverseOf'), namedNode(propertyUri)),
     },
   ];
 

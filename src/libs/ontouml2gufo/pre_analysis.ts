@@ -1,6 +1,14 @@
 import randomId from 'random-id';
 import isURI from 'validate.io-uri';
-import { IPreAnalysisItem, IPackage, IOntoUML2GUFOOptions, IRelation, IElement, IClass, IProperty } from '@types';
+import {
+  IPreAnalysisItem,
+  IPackage,
+  IOntoUML2GUFOOptions,
+  IRelation,
+  IElement,
+  IClass,
+  IProperty,
+} from '@types';
 import { OntoUMLType } from '@constants/.';
 import { DefaultPrefixes } from './constants';
 import { getPrefixes } from './helper_functions';
@@ -19,7 +27,10 @@ enum PreAnalysisSeverity {
   - Check relations without cardinality
   - Check attributes without type
 */
-export async function runPreAnalysis(model: IPackage, options: IOntoUML2GUFOOptions): Promise<IPreAnalysisItem[]> {
+export async function runPreAnalysis(
+  model: IPackage,
+  options: IOntoUML2GUFOOptions
+): Promise<IPreAnalysisItem[]> {
   const { baseIRI } = options;
   const elements = model.getAllContents();
   const packages = model.getAllContentsByType([OntoUMLType.PACKAGE_TYPE]) as IPackage[];
@@ -69,14 +80,20 @@ async function checkBaseIRI(baseIRI: string): Promise<IPreAnalysisItem[]> {
   return preAnalysis;
 }
 
-async function checkPackagePrefixes(packages: IPackage[], options: IOntoUML2GUFOOptions): Promise<IPreAnalysisItem[]> {
+async function checkPackagePrefixes(
+  packages: IPackage[],
+  options: IOntoUML2GUFOOptions
+): Promise<IPreAnalysisItem[]> {
   const preAnalysis: IPreAnalysisItem[] = [];
   const { customPackageMapping, prefixPackages } = options;
   const defaultPrefixKeys = Object.keys(DefaultPrefixes);
   const defaultPrefixUris = Object.values(DefaultPrefixes);
 
   for (const key of Object.keys(customPackageMapping)) {
-    const packageEl = packages.find(({ id, name }: IPackage) => id === key || name === key) || { id: '', name: '' };
+    const packageEl = packages.find(({ id, name }: IPackage) => id === key || name === key) || {
+      id: '',
+      name: '',
+    };
     const { prefix, uri } = customPackageMapping[key];
 
     if (defaultPrefixKeys.includes(prefix)) {

@@ -41,7 +41,9 @@ export class OntoUML2Verification {
 
         case OntoUMLType.CLASS_TYPE:
           const _class: IClass = element as IClass;
-          const classConsistencyIssues: VerificationIssue[] = ClassVerification.checkMinimalConsistency(_class);
+          const classConsistencyIssues: VerificationIssue[] = ClassVerification.checkMinimalConsistency(
+            _class
+          );
           issues = [...issues, ...classConsistencyIssues];
 
           if (

@@ -1,4 +1,12 @@
-import { IPackage, IClass, IGeneralizationSet, IGeneralization, IRelation, IElement, IReference } from '@types';
+import {
+  IPackage,
+  IClass,
+  IGeneralizationSet,
+  IGeneralization,
+  IRelation,
+  IElement,
+  IReference,
+} from '@types';
 import { Diagram } from './diagram';
 import { uniqBy } from 'lodash';
 

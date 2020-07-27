@@ -25,9 +25,12 @@ export function generateExtraPropertyAssignments(relation: IRelation, options: I
   // part-whole checking
   const partWholeKinds = [AggregationKind.SHARED, AggregationKind.COMPOSITE];
   const isPartWholeRelation =
-    partWholeKinds.includes(properties[0].aggregationKind) || partWholeKinds.includes(properties[1].aggregationKind);
+    partWholeKinds.includes(properties[0].aggregationKind) ||
+    partWholeKinds.includes(properties[1].aggregationKind);
   const isPartWholeRelationBetweenEvents =
-    isPartWholeRelation && sourceStereotype === ClassStereotype.EVENT && targetStereotype === ClassStereotype.EVENT;
+    isPartWholeRelation &&
+    sourceStereotype === ClassStereotype.EVENT &&
+    targetStereotype === ClassStereotype.EVENT;
   const isPartWholeRelationBetweenAspects =
     isPartWholeRelation &&
     AspectProperPartClassStereotypeList.includes(sourceStereotype) &&
@@ -49,7 +52,9 @@ export function generateExtraPropertyAssignments(relation: IRelation, options: I
     !createObjectProperty &&
     (HideObjectPropertyCreationList.includes(stereotype) || isPartWholeRelationWithoutStereotype);
   const hideReadOnlyBaseCreation =
-    !createObjectProperty && isReadOnlyRelation && HideReadOnlyObjectPropertyCreationList.includes(stereotype);
+    !createObjectProperty &&
+    isReadOnlyRelation &&
+    HideReadOnlyObjectPropertyCreationList.includes(stereotype);
   const hideBaseCreation = hideNormalBaseCreation || hideReadOnlyBaseCreation;
 
   // add extra properties

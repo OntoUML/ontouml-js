@@ -64,7 +64,9 @@ describe('Model deserializing', () => {
 
     const children = student.getChildren();
 
-    expect(children.length === 2 && children.includes(sophomore) && children.includes(privately)).toBeTruthy();
+    expect(
+      children.length === 2 && children.includes(sophomore) && children.includes(privately)
+    ).toBeTruthy();
   });
 
   it('Check getAncestors()', () => {
@@ -75,7 +77,10 @@ describe('Model deserializing', () => {
     const ancestors = sophomore.getAncestors();
 
     expect(
-      ancestors.length === 3 && ancestors.includes(student) && ancestors.includes(person) && ancestors.includes(agent)
+      ancestors.length === 3 &&
+        ancestors.includes(student) &&
+        ancestors.includes(person) &&
+        ancestors.includes(agent)
     ).toBeTruthy();
   });
 

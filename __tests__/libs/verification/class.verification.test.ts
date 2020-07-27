@@ -28,7 +28,8 @@ describe('Model deserializing', () => {
 
     const agentIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
-        issue.source.id === agent.id && issue.code === VerificationIssueCode.class_identity_provider_specialization
+        issue.source.id === agent.id &&
+        issue.code === VerificationIssueCode.class_identity_provider_specialization
     );
     const otherIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
@@ -48,7 +49,8 @@ describe('Model deserializing', () => {
 
     const institutionIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
-        issue.source.id === institution.id && issue.code === VerificationIssueCode.class_missing_identity_provider
+        issue.source.id === institution.id &&
+        issue.code === VerificationIssueCode.class_missing_identity_provider
     );
     const otherIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
@@ -69,11 +71,14 @@ describe('Model deserializing', () => {
 
     const customerIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
-        issue.source.id === customer.id && issue.code === VerificationIssueCode.class_multiple_identity_provider
+        issue.source.id === customer.id &&
+        issue.code === VerificationIssueCode.class_multiple_identity_provider
     );
     const otherIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
-        (issue.source.id === person.id || issue.source.id === organization.id || issue.source.id === student.id) &&
+        (issue.source.id === person.id ||
+          issue.source.id === organization.id ||
+          issue.source.id === student.id) &&
         issue.code === VerificationIssueCode.class_multiple_identity_provider
     );
 
@@ -136,11 +141,13 @@ describe('Model deserializing', () => {
     );
     const organizationIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
-        issue.source.id === organization.id && issue.code === VerificationIssueCode.class_missing_allowed_natures
+        issue.source.id === organization.id &&
+        issue.code === VerificationIssueCode.class_missing_allowed_natures
     );
     const legalEntityIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
-        issue.source.id === legalEntity.id && issue.code === VerificationIssueCode.class_missing_allowed_natures
+        issue.source.id === legalEntity.id &&
+        issue.code === VerificationIssueCode.class_missing_allowed_natures
     );
 
     expect(organizationIssue).toBeDefined();

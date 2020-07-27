@@ -21,7 +21,9 @@ describe('Model deserializing', () => {
   });
 
   it('Checks classes with not issues', () => {
-    const personIssues = issues.filter((issue: VerificationIssue) => (issue.source as IElement).name === 'Person');
+    const personIssues = issues.filter(
+      (issue: VerificationIssue) => (issue.source as IElement).name === 'Person'
+    );
     const diseaseIssues = issues.filter(
       (issue: VerificationIssue) => (issue.source as IElement).name === 'Disease Severity Level'
     );
@@ -32,8 +34,12 @@ describe('Model deserializing', () => {
 
   it('Check unique valid stereotype', () => {
     const agentIssues = issues.filter((issue: VerificationIssue) => issue.source.id === 'NfL0Pg6GAqACnAov');
-    const contractIssues = issues.filter((issue: VerificationIssue) => issue.source.id === 'b5N0Pg6GAqACnAoe');
-    const enumerationIssues = issues.filter((issue: VerificationIssue) => issue.source.id === '_d6GPg6GAqACnArf');
+    const contractIssues = issues.filter(
+      (issue: VerificationIssue) => issue.source.id === 'b5N0Pg6GAqACnAoe'
+    );
+    const enumerationIssues = issues.filter(
+      (issue: VerificationIssue) => issue.source.id === '_d6GPg6GAqACnArf'
+    );
 
     expect(
       agentIssues.length === 1 &&
@@ -56,7 +62,9 @@ describe('Model deserializing', () => {
   });
 
   it('Check enumeration and classes with either literals or properties.', () => {
-    const bedroomASIssues = issues.filter((issue: VerificationIssue) => issue.source.id === 'GL_UPg6GAqACnAnm');
+    const bedroomASIssues = issues.filter(
+      (issue: VerificationIssue) => issue.source.id === 'GL_UPg6GAqACnAnm'
+    );
     // const officeASIssues = issues.filter(
     //   (issue: VerificationIssue) =>
     //     (issue.source as IElement).name === 'Office Availability Status',

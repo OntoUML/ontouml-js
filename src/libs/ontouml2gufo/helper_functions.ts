@@ -41,7 +41,10 @@ export const getPrefixes = memoizee(async (packages: IPackage[], options: IOntoU
 
 type CustomPrefixData = { customPrefix?: string; customUri: string };
 
-export const getCustomPackageData = (packageEl: IPackage, options: IOntoUML2GUFOOptions): CustomPrefixData => {
+export const getCustomPackageData = (
+  packageEl: IPackage,
+  options: IOntoUML2GUFOOptions
+): CustomPrefixData => {
   const { id, name } = packageEl;
   const { customPackageMapping } = options;
   let customPrefix;
@@ -182,7 +185,8 @@ const getRelationName = (relation: IRelation): string => {
   let formattedElementName = targetName;
 
   const stereotypeName = RelationStereotypeMapping[stereotype];
-  const associationName = formattedElementName.charAt(0).toLocaleLowerCase() + formattedElementName.substring(1);
+  const associationName =
+    formattedElementName.charAt(0).toLocaleLowerCase() + formattedElementName.substring(1);
 
   let prefixName = stereotypeName;
 
@@ -213,16 +217,17 @@ const cleanSpecialCharacters = memoizee((str: string) =>
     : null
 );
 
-const transformToCamelCase = memoizee((name: string, mapFunction?: (s: string, index: number) => string): string =>
-  name
-    ? name
-        .toLowerCase()
-        .split(' ')
-        .map((s: string, index: number) =>
-          mapFunction ? mapFunction(s, index) : s.charAt(0).toUpperCase() + s.substring(1)
-        )
-        .join(' ')
-    : null
+const transformToCamelCase = memoizee(
+  (name: string, mapFunction?: (s: string, index: number) => string): string =>
+    name
+      ? name
+          .toLowerCase()
+          .split(' ')
+          .map((s: string, index: number) =>
+            mapFunction ? mapFunction(s, index) : s.charAt(0).toUpperCase() + s.substring(1)
+          )
+          .join(' ')
+      : null
 );
 
 const formatName = memoizee((name: string, mapFunction?: (s: string, index: number) => string): string =>
@@ -233,7 +238,9 @@ const formatPackageName = memoizee((name: string): string =>
   name
     ? cleanSpecialCharacters(
         transformToCamelCase(name, (s: string, index: number) =>
-          index === 0 ? s.charAt(0).toLowerCase() + s.substring(1) : s.charAt(0).toUpperCase() + s.substring(1)
+          index === 0
+            ? s.charAt(0).toLowerCase() + s.substring(1)
+            : s.charAt(0).toUpperCase() + s.substring(1)
         )
       )
     : null

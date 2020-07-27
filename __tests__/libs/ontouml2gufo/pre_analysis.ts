@@ -31,7 +31,9 @@ describe('PreAnalysis', () => {
   });
 
   it('should return invalid custom package prefix error', () => {
-    const items = preAnalysis.filter((item: IPreAnalysisItem) => item.code === 'invalid_custom_package_prefix');
+    const items = preAnalysis.filter(
+      (item: IPreAnalysisItem) => item.code === 'invalid_custom_package_prefix'
+    );
 
     expect(items.length).toBe(1);
   });
@@ -55,7 +57,9 @@ describe('PreAnalysis', () => {
   });
 
   it('should return inexistent inverse relation name error', () => {
-    const items = preAnalysis.filter((item: IPreAnalysisItem) => item.code === 'missing_inverse_relation_name');
+    const items = preAnalysis.filter(
+      (item: IPreAnalysisItem) => item.code === 'missing_inverse_relation_name'
+    );
 
     expect(items.length).toBe(1);
   });

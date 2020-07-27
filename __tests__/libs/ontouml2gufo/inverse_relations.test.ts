@@ -1,4 +1,7 @@
-import { alpinebits as alpinebitsModel, inverseRelations as inverseRelationsModel } from '@test-models/valids';
+import {
+  alpinebits as alpinebitsModel,
+  inverseRelations as inverseRelationsModel,
+} from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 
 describe('InverseRelations', () => {
@@ -33,7 +36,10 @@ describe('InverseRelations', () => {
   });
 
   it('should generate an uri automatically using stereotype', async () => {
-    const data = ['<:organizedevent> <owl:inverseOf> <:organizer>', '<:organizer> <rdf:type> <owl:ObjectProperty>'];
+    const data = [
+      '<:organizedevent> <owl:inverseOf> <:organizer>',
+      '<:organizer> <rdf:type> <owl:ObjectProperty>',
+    ];
 
     for (const value of data) {
       expect(alpinebits).toContain(value);

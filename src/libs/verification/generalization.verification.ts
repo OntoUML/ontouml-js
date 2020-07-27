@@ -49,10 +49,11 @@ export const GeneralizationVerification = {
     }
 
     return general.isSortal() && specific.isNonSortal()
-      ? new VerificationIssue(VerificationIssueCode.generalization_incompatible_class_sortality, generalization, [
-          general,
-          specific,
-        ])
+      ? new VerificationIssue(
+          VerificationIssueCode.generalization_incompatible_class_sortality,
+          generalization,
+          [general, specific]
+        )
       : null;
   },
 
@@ -65,10 +66,11 @@ export const GeneralizationVerification = {
     }
 
     return general.isAntiRigid() && (specific.isRigid() || specific.isSemiRigid())
-      ? new VerificationIssue(VerificationIssueCode.generalization_incompatible_class_rigidity, generalization, [
-          general,
-          specific,
-        ])
+      ? new VerificationIssue(
+          VerificationIssueCode.generalization_incompatible_class_rigidity,
+          generalization,
+          [general, specific]
+        )
       : null;
   },
 

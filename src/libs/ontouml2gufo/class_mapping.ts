@@ -56,10 +56,15 @@ export function getGufoParentFromAllowed(classElement: IClass): string {
 
   if (allowed.includes('event')) return 'gufo:ConcreteIndividual';
 
-  if (!allowed.includes('collective') && !allowed.includes('functional-complex') && !allowed.includes('quantity'))
+  if (
+    !allowed.includes('collective') &&
+    !allowed.includes('functional-complex') &&
+    !allowed.includes('quantity')
+  )
     return 'gufo:Aspect';
 
-  if (!allowed.includes('quality') && !allowed.includes('mode') && !allowed.includes('relator')) return 'gufo:Object';
+  if (!allowed.includes('quality') && !allowed.includes('mode') && !allowed.includes('relator'))
+    return 'gufo:Object';
 
   return 'gufo:Endurant';
 }

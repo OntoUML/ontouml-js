@@ -20,7 +20,12 @@ export const HideObjectPropertyCreationList = [
   'termination',
 ];
 
-export const HideReadOnlyObjectPropertyCreationList = ['componentOf', 'memberOf', 'subCollectionOf', 'subQuantityOf'];
+export const HideReadOnlyObjectPropertyCreationList = [
+  'componentOf',
+  'memberOf',
+  'subCollectionOf',
+  'subQuantityOf',
+];
 
 export const RelationsInverted = ['creation', 'termination', 'participation'];
 

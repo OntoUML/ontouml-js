@@ -205,7 +205,11 @@ export function transformDatatype(classElement: IClass, options: IOntoUML2GUFOOp
   return [];
 }
 
-export function transformEnumeration(classElement: IClass, options: IOntoUML2GUFOOptions, writer?: N3Writer): Quad[] {
+export function transformEnumeration(
+  classElement: IClass,
+  options: IOntoUML2GUFOOptions,
+  writer?: N3Writer
+): Quad[] {
   const { literals } = classElement;
 
   if (!literals) {
