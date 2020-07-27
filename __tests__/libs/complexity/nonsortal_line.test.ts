@@ -16,7 +16,7 @@ describe('getDescendantsNonSortalLine()', () => {
     const modelManager = new ModelManager(modelCopy);
 
     const musicalArtist = modelManager.getElementById('R2SB0c6GAqACAg52');
-    const children = ClusterFinder.getDescendantsNonSortalLine(musicalArtist);
+    const children = ClusterFinder.getNonSortalLine(musicalArtist);
 
     expect(children).toHaveLength(2);
 
@@ -29,7 +29,7 @@ describe('getDescendantsNonSortalLine()', () => {
     const modelManager = new ModelManager(modelCopy);
 
     const physicalObject = modelManager.getElementById('tvoJ0c6GAqACAhO5');
-    const children = ClusterFinder.getDescendantsNonSortalLine(physicalObject);
+    const children = ClusterFinder.getNonSortalLine(physicalObject);
 
     expectToContainClass(children, 'Airplane', ClassStereotype.KIND);
     expectToContainClass(children, 'Car', ClassStereotype.KIND);
@@ -45,7 +45,7 @@ describe('getDescendantsNonSortalLine()', () => {
     const modelManager = new ModelManager(modelCopy);
 
     const physicalObject = modelManager.getElementById('tvoJ0c6GAqACAhO5');
-    const children = ClusterFinder.getDescendantsNonSortalLine(physicalObject);
+    const children = ClusterFinder.getNonSortalLine(physicalObject);
 
     expectToContainClass(children, 'Machine', ClassStereotype.CATEGORY);
     expectToContainClass(children, 'Vehicle', ClassStereotype.CATEGORY);
@@ -58,7 +58,7 @@ describe('getDescendantsNonSortalLine()', () => {
     const modelManager = new ModelManager(modelCopy);
 
     const agent = modelManager.getElementById('Lb0.0c6GAqACAgv9');
-    const children = ClusterFinder.getDescendantsNonSortalLine(agent);
+    const children = ClusterFinder.getNonSortalLine(agent);
 
     expect(children).toHaveLength(4);
 
