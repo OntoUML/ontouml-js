@@ -1,143 +1,159 @@
 /**
  * This class is responsible for storing the attribute data.
- * 
+ *
  * Author: Gustavo L. Guidoni
  */
 
 import { INodeProperty } from '../INodeProperty';
 
-export class NodeProperty implements INodeProperty{
-    //attributes intended for the class
-    private id: string;
-    private name: string;
-    private dataType: string;
-	private acceptNull: boolean ;
-	private multivalued: boolean;
-    
-    //attributes intended for the construction of the table
-	//private columnName: string;
-	private isPK: boolean;
-	private isFK: boolean;
-	private foreignNodeID: string;
-    private defaultValue: any;
-    private resolved: boolean;
+export class NodeProperty implements INodeProperty {
+  //attributes intended for the class
+  private id: string;
+  private name: string;
+  private dataType: string;
+  private acceptNull: boolean;
+  private multivalued: boolean;
 
-    constructor(id: string, name: string, dataType: string, acceptNull: boolean, multivalued: boolean){
-        this.id = id;
-        this.name = name;
-        this.dataType = dataType;
-        this.acceptNull = acceptNull;
-        this.multivalued = multivalued;
-        
-		//this.columnName = name;
-		this.isPK = false;
-		this.isFK = false;
-		this.defaultValue = null;
-		this.resolved = false;
-    }
-    
-    getID(): string{
-        return this.id;
-    }
-    
-    setName(name: string): void {
-        this.name = name;
-    }
+  //attributes intended for the construction of the table
+  //private columnName: string;
+  private isPK: boolean;
+  private isFK: boolean;
+  private foreignNodeID: string;
+  private defaultValue: any;
+  private resolved: boolean;
 
-    getName(): string {
-        return this.name;
+  constructor(
+    id: string,
+    name: string,
+    dataType: string,
+    acceptNull: boolean,
+    multivalued: boolean,
+  ) {
+    this.id = id;
+    this.name = name;
+    this.dataType = dataType;
+    this.acceptNull = acceptNull;
+    this.multivalued = multivalued;
+
+    //this.columnName = name;
+    this.isPK = false;
+    this.isFK = false;
+    this.defaultValue = null;
+    this.resolved = false;
+  }
+
+  getID(): string {
+    return this.id;
+  }
+
+  setName(name: string): void {
+    this.name = name;
+  }
+
+  getName(): string {
+    return this.name;
+  }
+
+  //setColumnName(name: string): void {
+  //    this.columnName = name;
+  // }
+
+  //getColumnName(): string {
+  //    return this.columnName;
+  //}
+
+  setDataType(dataType: string): void {
+    this.dataType = dataType;
+  }
+
+  getDataType(): string {
+    return this.dataType;
+  }
+
+  setPrimeryKey(flag: boolean): void {
+    this.isPK = flag;
+    if (flag) {
+      this.acceptNull = false;
     }
+  }
 
-    //setColumnName(name: string): void {
-    //    this.columnName = name;
-   // }
+  isPrimaryKey(): boolean {
+    return this.isPK;
+  }
 
-    //getColumnName(): string {
-    //    return this.columnName;
-    //}
-
-    setDataType(dataType: string): void {
-        this.dataType = dataType;
+  setForeignNodeID(foreignNodeID: string): void {
+    if (foreignNodeID != null) {
+      this.isFK = true;
+      this.foreignNodeID = foreignNodeID;
+    } else {
+      //removes the foreign key
+      this.isFK = false;
+      this.foreignNodeID = null;
     }
+  }
 
-    getDataType(): string {
-        return this.dataType;
-    }
+  getForeignKeyNodeID(): string {
+    return this.foreignNodeID;
+  }
 
-    setPrimeryKey(flag: boolean): void {
-        this.isPK = flag;
-        if(flag){
-            this.acceptNull = false;
-        }
-    }
+  isForeignKey(): boolean {
+    return this.isFK;
+  }
 
-    isPrimaryKey(): boolean {
-        return this.isPK;
-    }
+  setNullable(flag: boolean): void {
+    this.acceptNull = flag;
+  }
 
-    setForeignNodeID(foreignNodeID: string): void {
-        if( foreignNodeID != null) {
-			this.isFK = true;
-			this.foreignNodeID = foreignNodeID;
-		}
-		else {
-            //removes the foreign key
-			this.isFK = false;
-			this.foreignNodeID = null;
-		}
-    }
+  isNullable(): boolean {
+    return this.acceptNull;
+  }
 
-    getForeignKeyNodeID(): string {
-        return this.foreignNodeID;
-    }
+  setMultivalued(flag: boolean): void {
+    this.multivalued = flag;
+  }
 
-    isForeignKey(): boolean {
-        return this.isFK;
-    }
+  isMultivalued(): boolean {
+    return this.multivalued;
+  }
 
-    setNullable(flag: boolean): void {
-        this.acceptNull = flag;
-    }
+  setDefaultValue(value: any): void {
+    this.defaultValue = value;
+  }
 
-    isNullable(): boolean {
-       return this.acceptNull;
-    }
+  getDefaultValue() {
+    return this.defaultValue;
+  }
 
-    setMultivalued(flag: boolean): void {
-        this.multivalued = flag;
-    }
+  setResolved(flag: boolean): void {
+    this.resolved = flag;
+  }
 
-    isMultivalued(): boolean {
-        return this.multivalued;
-    }
+  isResolved(): boolean {
+    return this.resolved;
+  }
 
-    setDefaultValue(value: any): void {
-        this.defaultValue = value;
-    }
+  clone(): INodeProperty {
+    let newProperty: INodeProperty = new NodeProperty(
+      this.id,
+      this.name,
+      this.dataType,
+      this.acceptNull,
+      this.multivalued,
+    );
+    newProperty.setPrimeryKey(this.isPK);
+    newProperty.setForeignNodeID(this.foreignNodeID);
+    //newProperty.setColumnName(this.columnName);
+    newProperty.setDefaultValue(this.defaultValue);
+    return newProperty;
+  }
 
-    getDefaultValue() {
-        return this.defaultValue;
-    }
-
-    setResolved(flag: boolean): void {
-        this.resolved = flag;
-    }
-
-    isResolved(): boolean {
-        return this.resolved;
-    }
-
-    clone(): INodeProperty {
-        let newProperty : INodeProperty = new NodeProperty(this.id, this.name, this.dataType, this.acceptNull, this.multivalued);
-        newProperty.setPrimeryKey(this.isPK);
-        newProperty.setForeignNodeID(this.foreignNodeID);
-        //newProperty.setColumnName(this.columnName);
-        newProperty.setDefaultValue(this.defaultValue);
-        return newProperty;
-    }
-
-    toString(): string{
-        return this.name + ": " + this.dataType + ", " + ((this.acceptNull == true) ? "NULL" : "NOT NULL") ;
-    }
-    
+  toString(): string {
+    return (
+      this.name +
+      ': ' +
+      this.dataType +
+      ', ' +
+      (this.acceptNull == true ? 'NULL' : 'NOT NULL')
+    );
+  }
 }

@@ -1,11 +1,11 @@
 /**
- * This class is responsible for keeping in memory the same graph found 
+ * This class is responsible for keeping in memory the same graph found
  * in the Turtle file.
- * 
+ *
  * Author: Gustavo L. Guidoni
  */
 
-import { IGraph } from "../IGraph";
+import { IGraph } from '../IGraph';
 import { INode } from '../INode';
 import { IGraphGeneralization } from '../IGraphGeneralization';
 import { IGraphRelation } from '../IGraphRelation';
@@ -16,194 +16,197 @@ import { GraphRelation } from './GraphRelation';
 import { GraphGeneralization } from './GraphGeneralization';
 
 export class Graph implements IGraph {
-	private nodes: INode[];
-	private associations: IGraphAssociation[];
-	private generalizationSets: IGraphGeneralizationSet[];
+  private nodes: INode[];
+  private associations: IGraphAssociation[];
+  private generalizationSets: IGraphGeneralizationSet[];
 
-	constructor(nodes?: INode[], associations?: IGraphAssociation[], gs?: IGraphGeneralizationSet[]  ) {
-		if(nodes)
-			this.nodes = nodes;
-		else this.nodes = [];
+  constructor(
+    nodes?: INode[],
+    associations?: IGraphAssociation[],
+    gs?: IGraphGeneralizationSet[],
+  ) {
+    if (nodes) this.nodes = nodes;
+    else this.nodes = [];
 
-		if(associations)
-			this.associations = associations;
-		else this.associations = [];
+    if (associations) this.associations = associations;
+    else this.associations = [];
 
-		if(gs)
-			this.generalizationSets = gs;
-		else this.generalizationSets = [];
-	}
+    if (gs) this.generalizationSets = gs;
+    else this.generalizationSets = [];
+  }
 
-	addNode(newNode: INode): void {
-		this.nodes.push(newNode);
-	}
-	
-	getNodeById(id: string): INode {
-		for (let val of this.nodes) {
-			if(val.getId() == id)	
-				return val;
-		};
-		return null;
-	}
+  addNode(newNode: INode): void {
+    this.nodes.push(newNode);
+  }
 
-	getNodeByName(name: string): INode{
-		for (let val of this.nodes) {
-			if(val.getName() == name)	
-				return val;
-		};
-		return null;
-	}
+  getNodeById(id: string): INode {
+    for (let val of this.nodes) {
+      if (val.getId() == id) return val;
+    }
+    return null;
+  }
 
-	getNodes(): INode[] {
-		return this.nodes;
-	}
+  getNodeByName(name: string): INode {
+    for (let val of this.nodes) {
+      if (val.getName() == name) return val;
+    }
+    return null;
+  }
 
-	existsNode(node: INode): boolean {
-		return this.nodes.includes(node);
-	}
+  getNodes(): INode[] {
+    return this.nodes;
+  }
 
-	addRelation(relation: IGraphRelation): void{
-		if( this.getAssociationByID(relation.getAssociationID()) == null){
-			this.associations.push(relation);
-		}
-	}
+  existsNode(node: INode): boolean {
+    return this.nodes.includes(node);
+  }
 
-	addGeneralization(generalization: IGraphGeneralization): void {
-		if( !this.associations.includes(generalization) ){
-			this.associations.push(generalization);
-		}
-	}
+  addRelation(relation: IGraphRelation): void {
+    if (this.getAssociationByID(relation.getAssociationID()) == null) {
+      this.associations.push(relation);
+    }
+  }
 
-	addGeneralizationSet(generalizationSet: IGraphGeneralizationSet): void {
-		if( !this.generalizationSets.includes(generalizationSet) ){
-			this.generalizationSets.push(generalizationSet);
-		}
-	}
+  addGeneralization(generalization: IGraphGeneralization): void {
+    if (!this.associations.includes(generalization)) {
+      this.associations.push(generalization);
+    }
+  }
 
-	getAssociationByID(id: string): IGraphAssociation{
-		for (let val of this.associations) {
-			if(val.getAssociationID() == id)	
-				return val;
-		};
-		return null;
-	}
+  addGeneralizationSet(generalizationSet: IGraphGeneralizationSet): void {
+    if (!this.generalizationSets.includes(generalizationSet)) {
+      this.generalizationSets.push(generalizationSet);
+    }
+  }
 
-	getAssociations(): IGraphAssociation[]{
-		return this.associations;
-	}
+  getAssociationByID(id: string): IGraphAssociation {
+    for (let val of this.associations) {
+      if (val.getAssociationID() == id) return val;
+    }
+    return null;
+  }
 
-	getToplevelNonSortal(): INode {
-		for (let node of this.nodes) {
-			if (	Util.isNonSortal( node.getStereotype() ) &&
-					!node.isSpecialization() &&
-					node.hasSpecialization()//Allows the generation of a table with a "non-sortal" without heirs.
-				) {
-				return node;
-			}
-		}
-		return null;
-	}
+  getAssociations(): IGraphAssociation[] {
+    return this.associations;
+  }
 
-	getLeafSortalNonKind(): INode {
-		for(let node of this.nodes){
-			if ( 	Util.isSortalNonKind( node.getStereotype() ) && //is a subkind, phase or role
-					! node.hasSpecialization() ) { //is a leaf node
-				 	return node;
-			}
-		}
-		return null;
-	}
+  getToplevelNonSortal(): INode {
+    for (let node of this.nodes) {
+      if (
+        Util.isNonSortal(node.getStereotype()) &&
+        !node.isSpecialization() &&
+        node.hasSpecialization() //Allows the generation of a table with a "non-sortal" without heirs.
+      ) {
+        return node;
+      }
+    }
+    return null;
+  }
 
-	removeNodes(nodes: INode[]): void{
-		for (let node of nodes) {
-			this.removeNode(node);
-		}
-	}
+  getLeafSortalNonKind(): INode {
+    for (let node of this.nodes) {
+      if (
+        Util.isSortalNonKind(node.getStereotype()) && //is a subkind, phase or role
+        !node.hasSpecialization()
+      ) {
+        //is a leaf node
+        return node;
+      }
+    }
+    return null;
+  }
 
-	removeNode(node: INode): void {
-		let index = this.nodes.indexOf(node);
-		this.nodes.splice(index, 1);
+  removeNodes(nodes: INode[]): void {
+    for (let node of nodes) {
+      this.removeNode(node);
+    }
+  }
 
-		let relation: IGraphRelation;
-		let removeRelations = node.getRelations();
-		while( removeRelations.length != 0 ){
-			relation = removeRelations[0];
-			index = this.associations.indexOf(relation);
-			this.associations.splice(index, 1);
-			relation.deleteAssociation();
-		}
+  removeNode(node: INode): void {
+    let index = this.nodes.indexOf(node);
+    this.nodes.splice(index, 1);
 
-		let generalization: IGraphGeneralization;
-		let removeGeneralizations = node.getGeneralizations();
-		while( removeGeneralizations.length != 0 ){
-			generalization = removeGeneralizations[0];
-			index = this.associations.indexOf(generalization);
-			this.associations.splice(index, 1);
-			generalization.deleteAssociation();
-		}
-	}
+    let relation: IGraphRelation;
+    let removeRelations = node.getRelations();
+    while (removeRelations.length != 0) {
+      relation = removeRelations[0];
+      index = this.associations.indexOf(relation);
+      this.associations.splice(index, 1);
+      relation.deleteAssociation();
+    }
 
-	setAllNodesUnsolved(): void {
-		this.nodes.forEach( (node: INode) =>{
-			node.setResolved(false);
-		});
-		this.associations.forEach( (association: IGraphAssociation) =>{
-			association.setResolved(false);
-		});
-	}
+    let generalization: IGraphGeneralization;
+    let removeGeneralizations = node.getGeneralizations();
+    while (removeGeneralizations.length != 0) {
+      generalization = removeGeneralizations[0];
+      index = this.associations.indexOf(generalization);
+      this.associations.splice(index, 1);
+      generalization.deleteAssociation();
+    }
+  }
 
-	removeAssociation(association: IGraphAssociation): void{
-		if( association instanceof GraphRelation ){
-			this.removeRelation(association);
-		}
-		if( association instanceof GraphGeneralization ){
-			this.removeGeneralization(association);
-		}
-		let index = this.associations.indexOf(association);
-		if(index != -1)
-			this.associations.splice(index, 1);
-	}
+  setAllNodesUnsolved(): void {
+    this.nodes.forEach((node: INode) => {
+      node.setResolved(false);
+    });
+    this.associations.forEach((association: IGraphAssociation) => {
+      association.setResolved(false);
+    });
+  }
 
-	private removeRelation(relation: IGraphRelation): void{
-		relation.deleteAssociation();
-	}
+  removeAssociation(association: IGraphAssociation): void {
+    if (association instanceof GraphRelation) {
+      this.removeRelation(association);
+    }
+    if (association instanceof GraphGeneralization) {
+      this.removeGeneralization(association);
+    }
+    let index = this.associations.indexOf(association);
+    if (index != -1) this.associations.splice(index, 1);
+  }
 
-	private removeGeneralization(generalization: IGraphGeneralization): void{
-		generalization.deleteAssociation();
-	}
+  private removeRelation(relation: IGraphRelation): void {
+    relation.deleteAssociation();
+  }
 
-	removeAssociations(associations: IGraphAssociation[]): void{
-		for (let association of associations) {
-			this.removeAssociation(association);
-		}
-	}
+  private removeGeneralization(generalization: IGraphGeneralization): void {
+    generalization.deleteAssociation();
+  }
 
-	clone(): IGraph {
-		let newNodes: INode[] = [];
-		let newAssociations: IGraphAssociation[] = [];
-		let newGS: IGraphGeneralizationSet[] = [];
-		
-		this.nodes.forEach( (node: INode)=>{
-			newNodes.push(node.clone());
-		});
-		
-		this.associations.forEach( (association: IGraphAssociation)=>{
-			newAssociations.push(association.cloneChangingReferencesTo(newNodes));
-		});
+  removeAssociations(associations: IGraphAssociation[]): void {
+    for (let association of associations) {
+      this.removeAssociation(association);
+    }
+  }
 
-		this.generalizationSets.forEach( (gs: IGraphGeneralizationSet)=>{
-			newGS.push(gs.cloneChangingReferencesTo(newNodes) as IGraphGeneralizationSet );
-		});
-		
-		return new Graph(newNodes, newAssociations, newGS);
-	}	
+  clone(): IGraph {
+    let newNodes: INode[] = [];
+    let newAssociations: IGraphAssociation[] = [];
+    let newGS: IGraphGeneralizationSet[] = [];
 
-	toString(): string {
-		let msg = "";
+    this.nodes.forEach((node: INode) => {
+      newNodes.push(node.clone());
+    });
 
-		this.nodes.forEach((node: INode) => {
-			msg += node.toString()+ "\n";
-		});
-		return msg;
-	}
+    this.associations.forEach((association: IGraphAssociation) => {
+      newAssociations.push(association.cloneChangingReferencesTo(newNodes));
+    });
+
+    this.generalizationSets.forEach((gs: IGraphGeneralizationSet) => {
+      newGS.push(gs.cloneChangingReferencesTo(
+        newNodes,
+      ) as IGraphGeneralizationSet);
+    });
+
+    return new Graph(newNodes, newAssociations, newGS);
+  }
+
+  toString(): string {
+    let msg = '';
+
+    this.nodes.forEach((node: INode) => {
+      msg += node.toString() + '\n';
+    });
+    return msg;
+  }
 }

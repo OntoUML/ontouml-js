@@ -1,6 +1,6 @@
 /**
  * Transforms the Class model to the Entity-Relationship model.
- * 
+ *
  * Author: Gustavo Ludovico Guidoni
  */
 
@@ -11,22 +11,18 @@ import { SolvesForeignKey } from './SolvesForeignKey';
 import { SolvesName } from './SolvesName';
 import { SolvesMultivaluedProperty } from './SolvesMultivaluedProperty';
 
-export class ToEntityRelationship{
+export class ToEntityRelationship {
+  public static run(graph: IGraph, applyStandardizeNames: boolean): void {
+    SolvesMultivaluedProperty.solves(graph);
 
-    public static run(graph: IGraph, applyStandardizeNames: boolean): void {
-		
-		SolvesMultivaluedProperty.solves(graph);
+    //resolveCardinalityNtoN( targetGraph );
 
-		//resolveCardinalityNtoN( targetGraph );
-		
-		SolvesEnumeration.solves(graph);
+    SolvesEnumeration.solves(graph);
 
-		SolvesPrimaryKey.solves(graph);
+    SolvesPrimaryKey.solves(graph);
 
-		SolvesForeignKey.solves(graph);
+    SolvesForeignKey.solves(graph);
 
-		if(applyStandardizeNames)
-			SolvesName.solves(graph);
-        
-    }
+    if (applyStandardizeNames) SolvesName.solves(graph);
+  }
 }

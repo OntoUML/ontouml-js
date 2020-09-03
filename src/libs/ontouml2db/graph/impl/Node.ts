@@ -1,12 +1,12 @@
 /**
  * The Node is the class responsible for storing only the classes that make up the
- * diagram. In this way, Node and Class can be understood as synonyms. The Node stores 
- * all the class associations. Note: the graph formed is bidirectional. 
- * 
+ * diagram. In this way, Node and Class can be understood as synonyms. The Node stores
+ * all the class associations. Note: the graph formed is bidirectional.
+ *
  * In order to maintain the classes traceability of the source diagram to the destination
  * diagram, the current Node also stores a reference to the destination diagram Node.
- * 
- * Author: Gustavo L. Guidoni 
+ *
+ * Author: Gustavo L. Guidoni
  */
 
 import { INode } from '../INode';
@@ -24,236 +24,238 @@ import { ITracker } from '../ITracker';
 import { IGraphAssociation } from '../IGraphAssociation';
 import { IGraphGeneralizationSet } from '../IGraphGeneralizationSet';
 
-export class Node implements INode{
-    private id: string;
-    private name : string;
-    private stereotype : ClassStereotype;
-    private resolved: boolean;
+export class Node implements INode {
+  private id: string;
+  private name: string;
+  private stereotype: ClassStereotype;
+  private resolved: boolean;
 
-    private propertyContainer: IPropertyContainer;
-	private associationContainer: IAssociationContainer;
-	private trackerContainer: ITrackerContainer;
-	
-    constructor(id: string, name: string, stereotype: ClassStereotype){
-        this.id = id;
-        this.name = name;
-        this.stereotype = stereotype;
-        this.resolved = false;
+  private propertyContainer: IPropertyContainer;
+  private associationContainer: IAssociationContainer;
+  private trackerContainer: ITrackerContainer;
 
-        this.propertyContainer = new PropertyContainer();
-        this.associationContainer = new AssociationContainer(this);
-        this.trackerContainer = new TrackerContainer(this);
-    }
+  constructor(id: string, name: string, stereotype: ClassStereotype) {
+    this.id = id;
+    this.name = name;
+    this.stereotype = stereotype;
+    this.resolved = false;
 
-    getId(): string{
-        return this.id;
-    }
+    this.propertyContainer = new PropertyContainer();
+    this.associationContainer = new AssociationContainer(this);
+    this.trackerContainer = new TrackerContainer(this);
+  }
 
-    setName(name: string): void {
-        this.name = name;
-    }
+  getId(): string {
+    return this.id;
+  }
 
-    getName(): string {
-       return this.name;
-    }
+  setName(name: string): void {
+    this.name = name;
+  }
 
-    setStereotype(stereotype: ClassStereotype): void {
-        this.stereotype = stereotype;
-    }
+  getName(): string {
+    return this.name;
+  }
 
-    getStereotype(): ClassStereotype {
-        return this.stereotype;
-    }
+  setStereotype(stereotype: ClassStereotype): void {
+    this.stereotype = stereotype;
+  }
 
-    setPropertyContainer(container: IPropertyContainer): void{
-        this.propertyContainer = container;
-    }
+  getStereotype(): ClassStereotype {
+    return this.stereotype;
+  }
 
-    setResolved(flag: boolean): void {
-        this.resolved = flag;
-    }
+  setPropertyContainer(container: IPropertyContainer): void {
+    this.propertyContainer = container;
+  }
 
-    isResolved(): boolean {
-        return this.resolved;
-    }
+  setResolved(flag: boolean): void {
+    this.resolved = flag;
+  }
 
-    trackingToString(): string {
-        throw new Error("Method not implemented.");
-    }
+  isResolved(): boolean {
+    return this.resolved;
+  }
 
-    clone(): INode {
-        let newNode: INode = new Node(this.id, this.name, this.stereotype);
-        newNode.setPropertyContainer( this.propertyContainer.clonePropertyContainer() );
-        newNode.addTrackedNode(this);
-        this.addTrackedNode(newNode);
-        return newNode;
-    }
+  trackingToString(): string {
+    throw new Error('Method not implemented.');
+  }
 
-    //---------------------------------------------------------------------------------------
-    //--- The methods below are intended to manipulate the attributes (PropertyContainer)
-    //---------------------------------------------------------------------------------------
-    
-    addProperty(property: INodeProperty): void {
-        this.propertyContainer.addProperty(property);
-    }
+  clone(): INode {
+    let newNode: INode = new Node(this.id, this.name, this.stereotype);
+    newNode.setPropertyContainer(
+      this.propertyContainer.clonePropertyContainer(),
+    );
+    newNode.addTrackedNode(this);
+    this.addTrackedNode(newNode);
+    return newNode;
+  }
 
-    addProperties(properties: INodeProperty[]): void {
-        this.propertyContainer.addProperties(properties);
-    }
+  //---------------------------------------------------------------------------------------
+  //--- The methods below are intended to manipulate the attributes (PropertyContainer)
+  //---------------------------------------------------------------------------------------
 
-    addPropertyAt(index: number, property: INodeProperty): void {
-        this.propertyContainer.addPropertyAt(index, property);
-    }
+  addProperty(property: INodeProperty): void {
+    this.propertyContainer.addProperty(property);
+  }
 
-    addPropertiesAt(index: number, properties: INodeProperty[]): void {
-        this.propertyContainer.addPropertiesAt(index, properties);
-    }
+  addProperties(properties: INodeProperty[]): void {
+    this.propertyContainer.addProperties(properties);
+  }
 
-    getPropertyByName(name: string): INodeProperty{
-        return this.propertyContainer.getPropertyByName(name);
-    }
+  addPropertyAt(index: number, property: INodeProperty): void {
+    this.propertyContainer.addPropertyAt(index, property);
+  }
 
-    getProperties(): INodeProperty[] {
-        return this.propertyContainer.getProperties();
-    }
+  addPropertiesAt(index: number, properties: INodeProperty[]): void {
+    this.propertyContainer.addPropertiesAt(index, properties);
+  }
 
-    clonePropertyContainer(): IPropertyContainer {
-        return this.propertyContainer.clonePropertyContainer();
-    }
+  getPropertyByName(name: string): INodeProperty {
+    return this.propertyContainer.getPropertyByName(name);
+  }
 
-    removeProperty(id: string): void {
-        this.propertyContainer.removeProperty(id);
-    }
+  getProperties(): INodeProperty[] {
+    return this.propertyContainer.getProperties();
+  }
 
-    getPrimaryKey(): INodeProperty {
-        return this.propertyContainer.getPrimaryKey();
-    }
+  clonePropertyContainer(): IPropertyContainer {
+    return this.propertyContainer.clonePropertyContainer();
+  }
 
-    getPKName(): string {
-        return this.propertyContainer.getPKName();
-    }
+  removeProperty(id: string): void {
+    this.propertyContainer.removeProperty(id);
+  }
 
-    existsPropertyName(propertyName: string): boolean {
-        return this.propertyContainer.existsPropertyName(propertyName);
-    }
+  getPrimaryKey(): INodeProperty {
+    return this.propertyContainer.getPrimaryKey();
+  }
 
-    //---------------------------------------------------------------------------------------
-    //--- The methods below are intended to manipulate the associations (AssociationContainer)
-    //---------------------------------------------------------------------------------------
-    
-    addGeneralization(generalization: IGraphGeneralization){
-        this.associationContainer.addGeneralization(generalization);
-    }
+  getPKName(): string {
+    return this.propertyContainer.getPKName();
+  }
 
-	getGeneralizations(): IGraphGeneralization[]{
-        return this.associationContainer.getGeneralizations();
-    }
+  existsPropertyName(propertyName: string): boolean {
+    return this.propertyContainer.existsPropertyName(propertyName);
+  }
 
-    getGeneralizationSets(): IGraphGeneralizationSet[]{
-        return this.associationContainer.getGeneralizationSets();
-    }
-    
-    addRelation(relation: IGraphRelation): void {
-       this.associationContainer.addRelation(relation);
-    }
-    
-    getRelations(): import("../IGraphRelation").IGraphRelation[] {
-        return this.associationContainer.getRelations();
-    }
+  //---------------------------------------------------------------------------------------
+  //--- The methods below are intended to manipulate the associations (AssociationContainer)
+  //---------------------------------------------------------------------------------------
 
-    isSpecialization(): boolean {
-       return this.associationContainer.isSpecialization();
-    }
-    
-    hasSpecialization(): boolean {
-        return this.associationContainer.hasSpecialization();
-    }
-    
-    deleteAssociation(association: IGraphAssociation): void {
-        this.associationContainer.deleteAssociation(association);
-    }
+  addGeneralization(generalization: IGraphGeneralization) {
+    this.associationContainer.addGeneralization(generalization);
+  }
 
-    //---------------------------------------------------------------------------------------
-    //--- The methods below are intended to manipulate the trackers nodes (TrackerContainer)
-    //---------------------------------------------------------------------------------------
-    
-    addSourceTrackedNode(newNodeTracker: INode): void {
-        this.trackerContainer.addSourceTrackedNode(newNodeTracker);
-    }
+  getGeneralizations(): IGraphGeneralization[] {
+    return this.associationContainer.getGeneralizations();
+  }
 
-    addTrackedNode(newNodeTracker: INode): void {
-        this.trackerContainer.addTrackedNode(newNodeTracker);
-    }
+  getGeneralizationSets(): IGraphGeneralizationSet[] {
+    return this.associationContainer.getGeneralizationSets();
+  }
 
-    addTracking(trackers: ITracker[]): void {
-        this.trackerContainer.addTracking(trackers);
-    }
+  addRelation(relation: IGraphRelation): void {
+    this.associationContainer.addRelation(relation);
+  }
 
-    removeSourceTracking(): void {
-        this.trackerContainer.removeSourceTracking();
-    }
+  getRelations(): import('../IGraphRelation').IGraphRelation[] {
+    return this.associationContainer.getRelations();
+  }
 
-    removeTracking(node: INode): void {
-        this.trackerContainer.removeTracking(node);
-    }
-    
-    changeSourceTracking(newNodeTracker: INode): void {
-        this.trackerContainer.changeSourceTracking(newNodeTracker);
-    }
+  isSpecialization(): boolean {
+    return this.associationContainer.isSpecialization();
+  }
 
-    changeTracking(oldNodeTracker: INode, newNodeTracker: INode): void {
-        this.trackerContainer.changeTracking(oldNodeTracker, newNodeTracker);
-    }
+  hasSpecialization(): boolean {
+    return this.associationContainer.hasSpecialization();
+  }
 
-    setSourceTrackerField(property: INodeProperty, value: any): void {
-       this.trackerContainer.setSourceTrackerField(property, value);
-    }
+  deleteAssociation(association: IGraphAssociation): void {
+    this.associationContainer.deleteAssociation(association);
+  }
 
-    setTrackerField(node: INode, property: INodeProperty, value: any): void {
-        this.trackerContainer.setTrackerField(node, property, value);
-    }
+  //---------------------------------------------------------------------------------------
+  //--- The methods below are intended to manipulate the trackers nodes (TrackerContainer)
+  //---------------------------------------------------------------------------------------
 
-    setSourcePropertyLinkedAtNode(linkedNode: INode): void {
-        this.trackerContainer.setSourcePropertyLinkedAtNode(linkedNode);
-    }
+  addSourceTrackedNode(newNodeTracker: INode): void {
+    this.trackerContainer.addSourceTrackedNode(newNodeTracker);
+  }
 
-    setPropertyLinkedAtNode(node: INode, linkedNode: INode): void {
-        this.trackerContainer.setPropertyLinkedAtNode(node, linkedNode);
-    }
+  addTrackedNode(newNodeTracker: INode): void {
+    this.trackerContainer.addTrackedNode(newNodeTracker);
+  }
 
-    removeSourcePropertyLinkedAtNode(id: string): void {
-        this.trackerContainer.removeSourcePropertyLinkedAtNode(id);
-    }
+  addTracking(trackers: ITracker[]): void {
+    this.trackerContainer.addTracking(trackers);
+  }
 
-    removePropertyLinkedAtNode(id: string): void {
-       this.trackerContainer.removePropertyLinkedAtNode(id);
-    }
+  removeSourceTracking(): void {
+    this.trackerContainer.removeSourceTracking();
+  }
 
-    getAmountNodesTracked(): number {
-        throw new Error("Method not implemented.");
-    }
-    getTargetColumnName(field: string): string {
-        throw new Error("Method not implemented.");
-    }
-    getTargetPKName(): string {
-        throw new Error("Method not implemented.");
-    }
+  removeTracking(node: INode): void {
+    this.trackerContainer.removeTracking(node);
+  }
 
-    getTrackers(): ITracker[] {
-        return this.trackerContainer.getTrackers();
-    }
+  changeSourceTracking(newNodeTracker: INode): void {
+    this.trackerContainer.changeSourceTracking(newNodeTracker);
+  }
 
-    //----------------------------------------------------
-    
-    toString(): string{
-        let msg = "\n" + this.name + " <<" + this.stereotype + ">>";
-		
-		msg += this.propertyContainer.toString();
-		
-        msg += this.associationContainer.toString();
-		
-        msg += this.trackerContainer.toString();
-		
-		return msg;
-    }
+  changeTracking(oldNodeTracker: INode, newNodeTracker: INode): void {
+    this.trackerContainer.changeTracking(oldNodeTracker, newNodeTracker);
+  }
+
+  setSourceTrackerField(property: INodeProperty, value: any): void {
+    this.trackerContainer.setSourceTrackerField(property, value);
+  }
+
+  setTrackerField(node: INode, property: INodeProperty, value: any): void {
+    this.trackerContainer.setTrackerField(node, property, value);
+  }
+
+  setSourcePropertyLinkedAtNode(linkedNode: INode): void {
+    this.trackerContainer.setSourcePropertyLinkedAtNode(linkedNode);
+  }
+
+  setPropertyLinkedAtNode(node: INode, linkedNode: INode): void {
+    this.trackerContainer.setPropertyLinkedAtNode(node, linkedNode);
+  }
+
+  removeSourcePropertyLinkedAtNode(id: string): void {
+    this.trackerContainer.removeSourcePropertyLinkedAtNode(id);
+  }
+
+  removePropertyLinkedAtNode(id: string): void {
+    this.trackerContainer.removePropertyLinkedAtNode(id);
+  }
+
+  getAmountNodesTracked(): number {
+    throw new Error('Method not implemented.');
+  }
+  getTargetColumnName(field: string): string {
+    throw new Error('Method not implemented.');
+  }
+  getTargetPKName(): string {
+    throw new Error('Method not implemented.');
+  }
+
+  getTrackers(): ITracker[] {
+    return this.trackerContainer.getTrackers();
+  }
+
+  //----------------------------------------------------
+
+  toString(): string {
+    let msg = '\n' + this.name + ' <<' + this.stereotype + '>>';
+
+    msg += this.propertyContainer.toString();
+
+    msg += this.associationContainer.toString();
+
+    msg += this.trackerContainer.toString();
+
+    return msg;
+  }
 }
