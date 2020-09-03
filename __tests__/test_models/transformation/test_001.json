@@ -1,0 +1,324 @@
+{
+  "type": "Package",
+  "id": "yLXM.86GAqAMEg94",
+  "name": "001-basic",
+  "description": null,
+  "contents": [
+    {
+      "type": "Class",
+      "id": "yLXM.86GAqAMEg95",
+      "name": "boolean",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": [
+        "datatype"
+      ],
+      "isAbstract": false,
+      "isDerived": false,
+      "allowed": [
+        "abstract"
+      ],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
+    },
+    {
+      "type": "Class",
+      "id": "RLXM.86GAqAMEg96",
+      "name": "byte",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": [
+        "datatype"
+      ],
+      "isAbstract": false,
+      "isDerived": false,
+      "allowed": [
+        "abstract"
+      ],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
+    },
+    {
+      "type": "Class",
+      "id": "RLXM.86GAqAMEg97",
+      "name": "char",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": [
+        "datatype"
+      ],
+      "isAbstract": false,
+      "isDerived": false,
+      "allowed": [
+        "abstract"
+      ],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
+    },
+    {
+      "type": "Class",
+      "id": "RLXM.86GAqAMEg98",
+      "name": "double",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": [
+        "datatype"
+      ],
+      "isAbstract": false,
+      "isDerived": false,
+      "allowed": [
+        "abstract"
+      ],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
+    },
+    {
+      "type": "Class",
+      "id": "RLXM.86GAqAMEg99",
+      "name": "float",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": [
+        "datatype"
+      ],
+      "isAbstract": false,
+      "isDerived": false,
+      "allowed": [
+        "abstract"
+      ],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
+    },
+    {
+      "type": "Class",
+      "id": "RLXM.86GAqAMEg9.",
+      "name": "int",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": [
+        "datatype"
+      ],
+      "isAbstract": false,
+      "isDerived": false,
+      "allowed": [
+        "abstract"
+      ],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
+    },
+    {
+      "type": "Class",
+      "id": "RLXM.86GAqAMEg9_",
+      "name": "long",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": [
+        "datatype"
+      ],
+      "isAbstract": false,
+      "isDerived": false,
+      "allowed": [
+        "abstract"
+      ],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
+    },
+    {
+      "type": "Class",
+      "id": "RLXM.86GAqAMEg.A",
+      "name": "short",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": [
+        "datatype"
+      ],
+      "isAbstract": false,
+      "isDerived": false,
+      "allowed": [
+        "abstract"
+      ],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
+    },
+    {
+      "type": "Class",
+      "id": "RLXM.86GAqAMEg.B",
+      "name": "void",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": [
+        "datatype"
+      ],
+      "isAbstract": false,
+      "isDerived": false,
+      "allowed": [
+        "abstract"
+      ],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
+    },
+    {
+      "type": "Class",
+      "id": "RLXM.86GAqAMEg.C",
+      "name": "string",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": [
+        "datatype"
+      ],
+      "isAbstract": false,
+      "isDerived": false,
+      "allowed": [
+        "abstract"
+      ],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
+    },
+    {
+      "type": "Class",
+      "id": "POEi.86GAqAMEhMT",
+      "name": "Person",
+      "description": null,
+      "properties": [
+        {
+          "type": "Property",
+          "id": "gc0i.86GAqAMEhMd",
+          "name": "birthDate",
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "dUji.86GAqAMEhM."
+          },
+          "cardinality": "1",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        }
+      ],
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": [
+        "kind"
+      ],
+      "isAbstract": false,
+      "isDerived": false,
+      "allowed": [
+        "functional-complex"
+      ],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
+    },
+    {
+      "type": "Class",
+      "id": "dUji.86GAqAMEhM.",
+      "name": "Date",
+      "description": null,
+      "properties": null,
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": [
+        "datatype"
+      ],
+      "isAbstract": false,
+      "isDerived": false,
+      "allowed": [
+        "abstract"
+      ],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
+    },
+    {
+      "type": "Class",
+      "id": "RaVYZ86GAqAMEgc9",
+      "name": "NamedEntity",
+      "description": null,
+      "properties": [
+        {
+          "type": "Property",
+          "id": "HEF4Z86GAqAMEgdT",
+          "name": "name",
+          "description": null,
+          "propertyType": {
+            "type": "Class",
+            "id": "RLXM.86GAqAMEg.C"
+          },
+          "cardinality": "1",
+          "isDerived": false,
+          "isOrdered": false,
+          "isReadOnly": false,
+          "stereotypes": null,
+          "propertyAssignments": null,
+          "subsettedProperties": null,
+          "redefinedProperties": null,
+          "aggregationKind": "NONE"
+        }
+      ],
+      "literals": null,
+      "propertyAssignments": null,
+      "stereotypes": [
+        "category"
+      ],
+      "isAbstract": true,
+      "isDerived": false,
+      "allowed": [
+        "functional-complex"
+      ],
+      "isExtensional": null,
+      "isPowertype": null,
+      "order": null
+    },
+    {
+      "type": "Generalization",
+      "id": "xK4EZ86GAqAMEgiV",
+      "name": null,
+      "description": null,
+      "propertyAssignments": null,
+      "general": {
+        "type": "Class",
+        "id": "RaVYZ86GAqAMEgc9"
+      },
+      "specific": {
+        "type": "Class",
+        "id": "POEi.86GAqAMEhMT"
+      }
+    }
+  ],
+  "propertyAssignments": null
+}
