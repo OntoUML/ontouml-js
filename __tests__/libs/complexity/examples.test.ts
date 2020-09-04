@@ -1,11 +1,11 @@
 import fs from 'fs';
 import { complexityExtendedExample, complexityExample } from '@test-models/valids';
-import { IPackage } from '@types';
+import { IPackage, IDiagram } from '@types';
 import { ClusterFinder } from '@libs/complexity';
 import { ModelManager } from '@libs/model';
-import { Diagram } from '@libs/complexity/diagram';
+// import { IDiagram } from '@libs/complexity/diagram';
 
-function generateDiagrams(filename: string, model: IPackage): Diagram[] {
+function generateDiagrams(filename: string, model: IPackage): IDiagram[] {
   const modelCopy = JSON.parse(JSON.stringify(model));
   const modelManager = new ModelManager(modelCopy);
   const service = new ClusterFinder(modelManager);
@@ -19,24 +19,24 @@ function generateDiagrams(filename: string, model: IPackage): Diagram[] {
   return output;
 }
 
-function expectDiagramToContain(diagram: Diagram, id: string) {
+function expectDiagramToContain(diagram: IDiagram, id: string) {
   const element = diagram.contents.find(element => element.id === id);
   expect(element).toBeTruthy();
 }
 
-function expectDiagramToExclude(diagram: Diagram, id: string) {
+function expectDiagramToExclude(diagram: IDiagram, id: string) {
   const element = diagram.contents.find(element => element.id === id);
   expect(element).toBeFalsy();
 }
 
-function expectToContainDiagram(diagrams: Diagram[], name: string): Diagram {
+function expectToContainDiagram(diagrams: IDiagram[], name: string): IDiagram {
   const diagram = diagrams.find(d => d.name === name);
   expect(diagram).toBeTruthy();
   return diagram;
 }
 
 describe('Basic clusterization example', () => {
-  let diagrams: Diagram[];
+  let diagrams: IDiagram[];
 
   beforeAll(() => {
     diagrams = generateDiagrams('complexityExample', complexityExample);
@@ -47,7 +47,7 @@ describe('Basic clusterization example', () => {
   });
 
   describe('Marriage cluster', () => {
-    let diagram: Diagram;
+    let diagram: IDiagram;
 
     beforeAll(() => {
       diagram = diagrams.find(d => d.name === 'Cluster of Marriage');
@@ -76,7 +76,7 @@ describe('Basic clusterization example', () => {
   });
 
   describe('Car Rental cluster', () => {
-    let diagram: Diagram;
+    let diagram: IDiagram;
 
     beforeAll(() => {
       diagram = diagrams.find(d => d.name === 'Cluster of Car Rental');
@@ -120,7 +120,7 @@ describe('Basic clusterization example', () => {
 });
 
 describe('Extended clusterization example', () => {
-  let diagrams: Diagram[];
+  let diagrams: IDiagram[];
 
   beforeAll(() => {
     diagrams = generateDiagrams('complexityExtendedExample', complexityExtendedExample);
@@ -141,7 +141,7 @@ describe('Extended clusterization example', () => {
   });
 
   describe('`Official Commitment` cluster (Non sortal relator mediating sortal types)', () => {
-    let diagram: Diagram;
+    let diagram: IDiagram;
 
     beforeAll(() => {
       diagram = diagrams.find(d => d.name === 'Cluster of Official Commitment');
@@ -177,7 +177,7 @@ describe('Extended clusterization example', () => {
   });
 
   describe('`Employement` cluster (Sortal relator that specializes a non sortal) ', () => {
-    let diagram: Diagram;
+    let diagram: IDiagram;
 
     beforeAll(() => {
       diagram = diagrams.find(d => d.name === 'Cluster of Employment');
@@ -220,7 +220,7 @@ describe('Extended clusterization example', () => {
   });
 
   describe('`Rental Insurance` cluster (Linked relators) ', () => {
-    let diagram: Diagram;
+    let diagram: IDiagram;
 
     beforeAll(() => {
       diagram = diagrams.find(d => d.name === 'Cluster of Rental Insurance');
