@@ -3,8 +3,9 @@
   "version": "0.1.6",
   "description": "Javascript library utility for manipulating OntoUML models.",
   "license": "Apache-2.0",
+  "engineStrict": true,
   "engines": {
-    "node": ">= 10.13"
+    "node": ">= 12"
   },
   "main": "dist/index.js",
   "files": [
