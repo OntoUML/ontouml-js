@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "engineStrict": true,
   "engines": {
-    "node": ">= 12"
+    "node": ">= 0.12"
   },
   "main": "dist/index.js",
   "files": [
