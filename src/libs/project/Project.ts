@@ -1,7 +1,7 @@
 import schemas from 'ontouml-schema';
 import Ajv from 'ajv';
 import { OntoUMLType } from '@constants/.';
-import { Model } from './Model';
+import { Package } from './Package';
 import { Diagram } from './Diagram';
 import { Class } from './Class';
 import { Relation } from './Relation';
@@ -16,8 +16,10 @@ export class Project {
   id: string;
   name: null | string | object = null;
   description: null | string | object = null;
-  model: null | Model;
+  model: null | Package;
   diagrams: null | Diagram[];
+
+  // locked: boolean = false;
 
   constructor(ontoumlSchemaInstance: object) {
     if (ontoumlSchemaInstance) {
@@ -33,6 +35,10 @@ export class Project {
 
       Object.assign(this, ontoumlSchemaInstance);
     }
+  }
+
+  getModelElement(match: object): ModelElement {
+    throw new Error('Method unimplemented!');
   }
 
   getAllModelElement(match: object): ModelElement[] {
@@ -76,6 +82,14 @@ export class Project {
   }
 
   toJSON(): object {
+    throw new Error('Method unimplemented!');
+  }
+
+  get locked(): boolean {
+    throw new Error('Method unimplemented!');
+  }
+
+  set locked(value: boolean) {
     throw new Error('Method unimplemented!');
   }
 }
