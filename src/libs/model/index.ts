@@ -215,6 +215,7 @@ export class ModelManager {
   updateReadOnlyReferencesToIProperty(property: IProperty): void {
     switch (property._container.type) {
       case OntoUMLType.CLASS_TYPE:
+        // if(property.type) property.type._typeOfAttributes = Array.isArray(property.type._typeOfAttributes) ? property.type._typeOfAttributes.push(property);
         break;
       case OntoUMLType.RELATION_TYPE:
         break;

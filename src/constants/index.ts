@@ -10,6 +10,7 @@ export enum Sortality {
 }
 
 export enum OntoUMLType {
+  PROJECT_TYPE = 'Project',
   PACKAGE_TYPE = 'Package',
   CLASS_TYPE = 'Class',
   RELATION_TYPE = 'Relation',
