@@ -39,9 +39,11 @@ import { test_025 } from '@test-models/transformation';
 import { test_026 } from '@test-models/transformation';
 import { test_027 } from '@test-models/transformation';
 import { test_028 } from '@test-models/transformation';
+import { getHeapStatistics } from 'v8';
 
 describe('Database transformation test', () => {
   test('Run Example', () => {
+
     let mapper = new Transformation2DB(RunExample);
     mapper.setStandardizeDatabaseNomenclature(true);
 

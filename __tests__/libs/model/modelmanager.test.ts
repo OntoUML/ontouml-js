@@ -9,6 +9,7 @@ describe('Model deserializing', () => {
 
   it('Check input model against OntoUML Schema', () => {
     modelManager = new ModelManager(inputModel);
+    expect(modelManager).toBeTruthy();
   });
 
   it('Check getRootPackage()', () => {
