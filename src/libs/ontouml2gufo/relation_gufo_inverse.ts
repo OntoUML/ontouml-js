@@ -1,4 +1,4 @@
-import { N3Writer } from 'n3';
+import { Writer as N3Writer } from 'n3';
 import {
   NormalRelationStereotypeMapping,
   InverseRelationStereotypeMapping,

@@ -1,4 +1,4 @@
-import { N3Writer } from 'n3';
+import { Writer as N3Writer } from 'n3';
 import { IElement, IOntoUML2GUFOOptions } from '@types';
 import { AvailableLanguages } from './constants';
 import { getURI, getCustomElementData } from './helper_functions';

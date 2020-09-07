@@ -1,4 +1,4 @@
-import { Quad, N3Writer } from 'n3';
+import { Quad, Writer as N3Writer } from 'n3';
 import { IClass, ILiteral, IOntoUML2GUFOOptions } from '@types';
 import { getURI } from './helper_functions';
 

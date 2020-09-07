@@ -1,4 +1,4 @@
-import { N3Writer, Quad, BlankNode } from 'n3';
+import { Writer as N3Writer, Quad, BlankNode } from 'n3';
 import memoizee from 'memoizee';
 import { IRelation, IOntoUML2GUFOOptions } from '@types';
 import { RelationStereotype } from '@constants/.';
