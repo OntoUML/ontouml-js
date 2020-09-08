@@ -1,6 +1,6 @@
 import schemas from 'ontouml-schema';
 import Ajv from 'ajv';
-import { OntoUMLType } from '@constants/.';
+import { OntoUMLType, OntologicalNature } from '@constants/.';
 import { Package } from './Package';
 import { Diagram } from './Diagram';
 import { Class } from './Class';
@@ -19,7 +19,7 @@ export class Project {
   model: null | Package;
   diagrams: null | Diagram[];
 
-  // locked: boolean = false;
+  private _locked: boolean = false;
 
   constructor(ontoumlSchemaInstance: object) {
     if (ontoumlSchemaInstance) {
@@ -86,10 +86,16 @@ export class Project {
   }
 
   get locked(): boolean {
-    throw new Error('Method unimplemented!');
+    return this._locked;
   }
 
   set locked(value: boolean) {
+    throw new Error('Method unimplemented!');
+    // TODO: implement a loop that changes the "isWritable" property in all fields
+    // this._locked = value;
+  }
+
+  getClassesByNature(nature: OntologicalNature | OntologicalNature[]): Class[] {
     throw new Error('Method unimplemented!');
   }
 }
