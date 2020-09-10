@@ -21,10 +21,8 @@ import { GraphRelation } from './GraphRelation';
 import { GraphAssociation } from './GraphAssociation';
 import { Tracker } from './Tracker';
 
-export class Node implements IPropertyContainer,
-  IAssociationContainer,
-  ITrackerContainer {
-                                                   
+export class Node
+  implements IPropertyContainer, IAssociationContainer, ITrackerContainer {
   private id: string;
   private name: string;
   private stereotype: ClassStereotype;

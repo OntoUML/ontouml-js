@@ -151,9 +151,7 @@ export class Lifting {
     else return gs.getName();
   }
 
-  static getNewSourceCardinality(
-    gs: GraphGeneralizationSet,
-  ): Cardinality {
+  static getNewSourceCardinality(gs: GraphGeneralizationSet): Cardinality {
     if (gs.isDisjoint() && gs.isComplete()) {
       return Cardinality.C1;
     } else if (gs.isDisjoint() && !gs.isComplete()) {

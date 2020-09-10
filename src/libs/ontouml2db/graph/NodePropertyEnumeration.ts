@@ -6,7 +6,6 @@
  * Author: Gustavo Ludovido Guidoni
  */
 
-
 import { NodeProperty } from './NodeProperty';
 
 export class NodePropertyEnumeration extends NodeProperty {

@@ -6,42 +6,36 @@ import { Cardinality } from '@libs/ontouml2db/graph/util/enumerations';
 import { TrackerChecker } from '@libs/ontouml2db/graph/graph_tester/TrackerChecker';
 
 export const gChecker_028_multivalued_property = new GraphChecker()
-    .addNode(
+  .addNode(
     new NodeChecker('person')
-        .addProperty(new PropertyChecker('person_id', false))
-        .addProperty(new PropertyChecker('name', false)),
-    )
-    .addNode(
+      .addProperty(new PropertyChecker('person_id', false))
+      .addProperty(new PropertyChecker('name', false)),
+  )
+  .addNode(
     new NodeChecker('tel')
-        .addProperty(new PropertyChecker('tel_id', false))
-        .addProperty(new PropertyChecker('person_id', false))
-        .addProperty(new PropertyChecker('tel', false)),
-    )
-    .addNode(
+      .addProperty(new PropertyChecker('tel_id', false))
+      .addProperty(new PropertyChecker('person_id', false))
+      .addProperty(new PropertyChecker('tel', false)),
+  )
+  .addNode(
     new NodeChecker('address')
-        .addProperty(new PropertyChecker('address_id', false))
-        .addProperty(new PropertyChecker('person_id', false))
-        .addProperty(new PropertyChecker('address', false)),
-    )
-    .addRelationship(
+      .addProperty(new PropertyChecker('address_id', false))
+      .addProperty(new PropertyChecker('person_id', false))
+      .addProperty(new PropertyChecker('address', false)),
+  )
+  .addRelationship(
+    new RelationshipChecker('person', Cardinality.C1, 'tel', Cardinality.C0_N),
+  )
+  .addRelationship(
     new RelationshipChecker(
-        'person',
-        Cardinality.C1,
-        'tel',
-        Cardinality.C0_N,
+      'person',
+      Cardinality.C1,
+      'address',
+      Cardinality.C0_N,
     ),
-    )
-    .addRelationship(
-    new RelationshipChecker(
-        'person',
-        Cardinality.C1,
-        'address',
-        Cardinality.C0_N,
-    ),
-    )
-    .addTracker(new TrackerChecker('Person', 'person')
-);
+  )
+  .addTracker(new TrackerChecker('Person', 'person'));
 
 it('should ignore', () => {
-    expect(true).toBe(true);
-  });
+  expect(true).toBe(true);
+});

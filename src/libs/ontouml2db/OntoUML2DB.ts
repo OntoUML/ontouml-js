@@ -71,10 +71,9 @@ export class OntoUML2DB {
   //  dbms = DBMSType.GENERIC_SCHEMA,
   //  standardizeNames = true,
   //): string {
-  getSchema(options: IOntoUML2DBOptions): string{
-
+  getSchema(options: IOntoUML2DBOptions): string {
     if (this.targetGraph == null) {
-      this.doMapping(options.strategyType, options.standardizeNames)
+      this.doMapping(options.strategyType, options.standardizeNames);
     }
 
     let script = RelationalSchema.getSchema(this.targetGraph, options.dbms);
@@ -82,7 +81,7 @@ export class OntoUML2DB {
     return script;
   }
 
-  getTest(options: IOntoUML2DBOptions){
+  getTest(options: IOntoUML2DBOptions) {
     console.log(options);
   }
   /**
@@ -91,10 +90,7 @@ export class OntoUML2DB {
   doMapping(strategyType: StrategyType, standardizeNames: boolean): void {
     this.appliesMappingStrategy(strategyType);
 
-    ToEntityRelationship.run(
-      this.targetGraph,
-      standardizeNames,
-    );
+    ToEntityRelationship.run(this.targetGraph, standardizeNames);
   }
 
   appliesMappingStrategy(strategyType: StrategyType): void {

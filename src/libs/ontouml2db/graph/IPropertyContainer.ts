@@ -7,7 +7,6 @@
 
 import { NodeProperty } from './NodeProperty';
 
-
 export interface IPropertyContainer {
   /**
    * Adds a new property in the container.

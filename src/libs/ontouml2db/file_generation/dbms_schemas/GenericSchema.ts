@@ -62,10 +62,7 @@ export class GenericSchema implements IDBMSSchema {
     return 'CREATE TABLE ';
   }
 
-  createColumn(
-    property: NodeProperty,
-    firstColumn: boolean,
-  ): string {
+  createColumn(property: NodeProperty, firstColumn: boolean): string {
     let ddl: string = '';
     let comma: string = '';
     let columnName: string = '';

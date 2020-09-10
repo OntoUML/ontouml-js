@@ -4,7 +4,7 @@
  * Author: Gustavo L. Guidoni
  */
 
-export class NodeProperty  {
+export class NodeProperty {
   //attributes intended for the class
   private id: string;
   private name: string;

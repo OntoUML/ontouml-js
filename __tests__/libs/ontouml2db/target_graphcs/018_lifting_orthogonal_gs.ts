@@ -6,47 +6,46 @@ import { Cardinality } from '@libs/ontouml2db/graph/util/enumerations';
 import { TrackerChecker } from '@libs/ontouml2db/graph/graph_tester/TrackerChecker';
 
 export const gChecker_018_lifting_orthogonal_gs = new GraphChecker()
-    .addNode(
+  .addNode(
     new NodeChecker('person')
-        .addProperty(new PropertyChecker('person_id', false))
-        .addProperty(new PropertyChecker('birth_date', false))
-        .addProperty(new PropertyChecker('rg', true))
-        .addProperty(new PropertyChecker('ci', true))
-        .addProperty(
+      .addProperty(new PropertyChecker('person_id', false))
+      .addProperty(new PropertyChecker('birth_date', false))
+      .addProperty(new PropertyChecker('rg', true))
+      .addProperty(new PropertyChecker('ci', true))
+      .addProperty(
         new PropertyChecker('life_phase_enum', false, [
-            'CHILD',
-            'TEENAGER',
-            'ADULT',
+          'CHILD',
+          'TEENAGER',
+          'ADULT',
         ]),
-        ),
-    )
-    .addNode(
+      ),
+  )
+  .addNode(
     new NodeChecker('nationality')
-        .addProperty(new PropertyChecker('nationality_id', false))
-        .addProperty(new PropertyChecker('person_id', false))
-        .addProperty(
+      .addProperty(new PropertyChecker('nationality_id', false))
+      .addProperty(new PropertyChecker('person_id', false))
+      .addProperty(
         new PropertyChecker('nationality_enum', false, [
-            'BRAZILIANCITIZEN',
-            'ITALIANCITIZEN',
+          'BRAZILIANCITIZEN',
+          'ITALIANCITIZEN',
         ]),
-        ),
-    )
-    .addRelationship(
+      ),
+  )
+  .addRelationship(
     new RelationshipChecker(
-        'nationality',
-        Cardinality.C0_N,
-        'person',
-        Cardinality.C1,
+      'nationality',
+      Cardinality.C0_N,
+      'person',
+      Cardinality.C1,
     ),
-    )
-    .addTracker(new TrackerChecker('Person', 'person'))
-    .addTracker(new TrackerChecker('Adult', 'person'))
-    .addTracker(new TrackerChecker('Teenager', 'person'))
-    .addTracker(new TrackerChecker('Child', 'person'))
-    .addTracker(new TrackerChecker('BrazilianCitizen', 'person'))
-    .addTracker(new TrackerChecker('ItalianCitizen', 'person')
-);
+  )
+  .addTracker(new TrackerChecker('Person', 'person'))
+  .addTracker(new TrackerChecker('Adult', 'person'))
+  .addTracker(new TrackerChecker('Teenager', 'person'))
+  .addTracker(new TrackerChecker('Child', 'person'))
+  .addTracker(new TrackerChecker('BrazilianCitizen', 'person'))
+  .addTracker(new TrackerChecker('ItalianCitizen', 'person'));
 
 it('should ignore', () => {
-    expect(true).toBe(true);
-  });
+  expect(true).toBe(true);
+});

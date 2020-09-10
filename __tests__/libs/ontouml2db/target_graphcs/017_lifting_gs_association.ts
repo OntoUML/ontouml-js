@@ -5,7 +5,6 @@ import { RelationshipChecker } from '@libs/ontouml2db/graph/graph_tester/Relatio
 import { Cardinality } from '@libs/ontouml2db/graph/util/enumerations';
 import { TrackerChecker } from '@libs/ontouml2db/graph/graph_tester/TrackerChecker';
 
-
 export const gChecker_017_lifting_gs_association = new GraphChecker()
   .addNode(
     new NodeChecker('person')
@@ -35,9 +34,8 @@ export const gChecker_017_lifting_gs_association = new GraphChecker()
   .addTracker(new TrackerChecker('Adult', 'person'))
   .addTracker(new TrackerChecker('Child', 'person'))
   .addTracker(new TrackerChecker('Employee', 'person'))
-  .addTracker(new TrackerChecker('Employment', 'employment')
-  );
+  .addTracker(new TrackerChecker('Employment', 'employment'));
 
-  it('should ignore', () => {
-    expect(true).toBe(true);
-  });
+it('should ignore', () => {
+  expect(true).toBe(true);
+});

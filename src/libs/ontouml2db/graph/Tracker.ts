@@ -4,10 +4,10 @@
  * Author: Gustavo L. Guidoni
  */
 
- import { NodeProperty } from './NodeProperty';
- import { Node } from './Node';
+import { NodeProperty } from './NodeProperty';
+import { Node } from './Node';
 
-export class Tracker  {
+export class Tracker {
   private node: Node;
   private property: NodeProperty;
   private value: any;
@@ -91,4 +91,3 @@ export class Tracker  {
     return this.propertyLinkedAtNode;
   }
 }
-

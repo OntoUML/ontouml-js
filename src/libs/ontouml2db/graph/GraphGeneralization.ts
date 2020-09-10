@@ -15,11 +15,7 @@ export class GraphGeneralization extends GraphAssociation {
   private specializationNode: Node;
   private belongToGS: GraphGeneralizationSet;
 
-  constructor(
-    id: string,
-    generalizationNode: Node,
-    specializationNode: Node,
-  ) {
+  constructor(id: string, generalizationNode: Node, specializationNode: Node) {
     super(id, 'unamed', AssociationType.GENERALIZATION_TYPE);
     this.generalizationNode = generalizationNode;
     this.specializationNode = specializationNode;

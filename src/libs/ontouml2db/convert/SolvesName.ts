@@ -7,7 +7,6 @@ import { NodePropertyEnumeration } from '../graph/NodePropertyEnumeration';
 import { Graph } from '../graph/Graph';
 
 export class SolvesName {
-
   static solves(graph: Graph): void {
     for (let node of graph.getNodes()) {
       node.setName(SolvesName.adjust(node.getName()));
@@ -20,9 +19,7 @@ export class SolvesName {
     }
   }
 
-  static adjustEnumerationValues(
-    enumeration: NodePropertyEnumeration,
-  ): void {
+  static adjustEnumerationValues(enumeration: NodePropertyEnumeration): void {
     let values = enumeration.getValues();
 
     for (let index = 0; index < values.length; index++) {

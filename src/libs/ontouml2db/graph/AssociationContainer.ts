@@ -100,10 +100,7 @@ export class AssociationContainer implements IAssociationContainer {
    */
   isSpecialization(): boolean {
     for (let generalization of this.generalizations) {
-      if (
-        generalization.getSpecific().getId() ==
-        this.parentNode.getId()
-      )
+      if (generalization.getSpecific().getId() == this.parentNode.getId())
         return true;
     }
     return false;
@@ -116,10 +113,7 @@ export class AssociationContainer implements IAssociationContainer {
    */
   hasSpecialization(): boolean {
     for (let generalization of this.generalizations) {
-      if (
-        generalization.getGeneral().getId() ==
-        this.parentNode.getId()
-      )
+      if (generalization.getGeneral().getId() == this.parentNode.getId())
         return true;
     }
     return false;

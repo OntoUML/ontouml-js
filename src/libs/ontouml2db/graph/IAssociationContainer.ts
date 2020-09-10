@@ -11,7 +11,6 @@ import { GraphGeneralization } from './GraphGeneralization';
 import { GraphAssociation } from './GraphAssociation';
 import { GraphGeneralizationSet } from './GraphGeneralizationSet';
 
-
 export interface IAssociationContainer {
   /**
    * Adds a new association to the node. Each node has a list of its associations. In

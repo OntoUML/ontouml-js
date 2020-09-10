@@ -34,17 +34,12 @@ export class Flatten {
     }
   }
 
-  static flattenGeneralization(
-    generalization: GraphGeneralization,
-  ): void {
+  static flattenGeneralization(generalization: GraphGeneralization): void {
     //The generalization is not removed from the node here because when removing the
     //node, its associations are also removed.
     generalization
       .getSpecific()
-      .addPropertiesAt(
-        0,
-        generalization.getGeneral().getProperties(),
-      );
+      .addPropertiesAt(0, generalization.getGeneral().getProperties());
 
     //for tracking between graphs
     generalization

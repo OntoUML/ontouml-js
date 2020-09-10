@@ -12,7 +12,6 @@ import { SolvesMultivaluedProperty } from './SolvesMultivaluedProperty';
 import { Graph } from '../graph/Graph';
 
 export class ToEntityRelationship {
-  
   static run(graph: Graph, applyStandardizeNames: boolean): void {
     SolvesMultivaluedProperty.solves(graph);
 

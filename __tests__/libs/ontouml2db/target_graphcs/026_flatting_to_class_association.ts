@@ -6,71 +6,70 @@ import { Cardinality } from '@libs/ontouml2db/graph/util/enumerations';
 import { TrackerChecker } from '@libs/ontouml2db/graph/graph_tester/TrackerChecker';
 
 export const gChecker_026_flatting_to_class_association = new GraphChecker()
-    .addNode(
+  .addNode(
     new NodeChecker('person').addProperty(
-        new PropertyChecker('person_id', false),
+      new PropertyChecker('person_id', false),
     ),
-    )
-    .addNode(
+  )
+  .addNode(
     new NodeChecker('associated_class1').addProperty(
-        new PropertyChecker('associated_class1_id', false),
+      new PropertyChecker('associated_class1_id', false),
     ),
-    )
-    .addNode(
+  )
+  .addNode(
     new NodeChecker('associated_class2').addProperty(
-        new PropertyChecker('associated_class2_id', false),
+      new PropertyChecker('associated_class2_id', false),
     ),
-    )
-    .addNode(
+  )
+  .addNode(
     new NodeChecker('associated_class3').addProperty(
-        new PropertyChecker('associated_class3_id', false),
+      new PropertyChecker('associated_class3_id', false),
     ),
-    )
-    .addNode(
+  )
+  .addNode(
     new NodeChecker('associated_class4').addProperty(
-        new PropertyChecker('associated_class4_id', false),
+      new PropertyChecker('associated_class4_id', false),
     ),
-    )
-    .addRelationship(
+  )
+  .addRelationship(
     new RelationshipChecker(
-        'person',
-        Cardinality.C0_N,
-        'associated_class1',
-        Cardinality.C0_N,
+      'person',
+      Cardinality.C0_N,
+      'associated_class1',
+      Cardinality.C0_N,
     ),
-    )
-    .addRelationship(
+  )
+  .addRelationship(
     new RelationshipChecker(
-        'person',
-        Cardinality.C0_N,
-        'associated_class2',
-        Cardinality.C1_N,
+      'person',
+      Cardinality.C0_N,
+      'associated_class2',
+      Cardinality.C1_N,
     ),
-    )
-    .addRelationship(
+  )
+  .addRelationship(
     new RelationshipChecker(
-        'person',
-        Cardinality.C0_1,
-        'associated_class3',
-        Cardinality.C0_1,
+      'person',
+      Cardinality.C0_1,
+      'associated_class3',
+      Cardinality.C0_1,
     ),
-    )
-    .addRelationship(
+  )
+  .addRelationship(
     new RelationshipChecker(
-        'person',
-        Cardinality.C0_1,
-        'associated_class4',
-        Cardinality.C1,
+      'person',
+      Cardinality.C0_1,
+      'associated_class4',
+      Cardinality.C1,
     ),
-    )
-    .addTracker(new TrackerChecker('NamedEntity', 'person'))
-    .addTracker(new TrackerChecker('Person', 'person'))
-    .addTracker(new TrackerChecker('AssociatedClass1', 'associated_class1'))
-    .addTracker(new TrackerChecker('AssociatedClass2', 'associated_class2'))
-    .addTracker(new TrackerChecker('AssociatedClass3', 'associated_class3'))
-    .addTracker(new TrackerChecker('AssociatedClass4', 'associated_class4')
-);
+  )
+  .addTracker(new TrackerChecker('NamedEntity', 'person'))
+  .addTracker(new TrackerChecker('Person', 'person'))
+  .addTracker(new TrackerChecker('AssociatedClass1', 'associated_class1'))
+  .addTracker(new TrackerChecker('AssociatedClass2', 'associated_class2'))
+  .addTracker(new TrackerChecker('AssociatedClass3', 'associated_class3'))
+  .addTracker(new TrackerChecker('AssociatedClass4', 'associated_class4'));
 
 it('should ignore', () => {
-    expect(true).toBe(true);
-  });
+  expect(true).toBe(true);
+});

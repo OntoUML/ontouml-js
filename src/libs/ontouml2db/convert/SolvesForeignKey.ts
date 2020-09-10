@@ -66,10 +66,7 @@ export class SolvesForeignKey {
     to.addPropertyAt(1, fk);
   }
 
-  static getNewFKName(
-    prop: NodeProperty,
-    relation: GraphRelation,
-  ): string {
+  static getNewFKName(prop: NodeProperty, relation: GraphRelation): string {
     let result: string;
     let associationName: string;
 
@@ -88,4 +85,3 @@ export class SolvesForeignKey {
     return result + '_id';
   }
 }
-

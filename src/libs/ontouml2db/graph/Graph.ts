@@ -60,7 +60,7 @@ export class Graph {
    */
   getNodeByName(name: string): Node {
     let n: Node;
-    
+
     for (let val of this.nodes) {
       if (val.getName() == name) return val;
     }
@@ -241,7 +241,7 @@ export class Graph {
     for (let association of associations) {
       this.removeAssociation(association);
     }
-  }  
+  }
 
   /**
    * Marks all nodes as unsolved.

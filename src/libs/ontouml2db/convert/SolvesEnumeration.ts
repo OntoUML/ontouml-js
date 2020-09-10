@@ -9,7 +9,6 @@ import { GraphRelation } from '../graph/GraphRelation';
 import { Node } from '../graph/Node';
 
 export class SolvesEnumeration {
-
   static solves(graph: Graph): void {
     let nodesToDestroy: Node[] = [];
     let associationsToRemove: GraphRelation[] = [];
@@ -40,10 +39,7 @@ export class SolvesEnumeration {
     graph.removeNodes(nodesToDestroy);
   }
 
-  static addEnumerationColumn(
-    enumNode: Node,
-    relation: GraphRelation,
-  ): void {
+  static addEnumerationColumn(enumNode: Node, relation: GraphRelation): void {
     let targetNode: Node;
     let cardinalityOfEnum: Cardinality;
     let isNull: boolean;
@@ -82,10 +78,7 @@ export class SolvesEnumeration {
     else return relation.getSourceNode();
   }
 
-  static getCardinalityOf(
-    node: Node,
-    relation: GraphRelation,
-  ): Cardinality {
+  static getCardinalityOf(node: Node, relation: GraphRelation): Cardinality {
     if (relation.getSourceNode() == node)
       return relation.getSourceCardinality();
     else return relation.getTargetCardinality();

@@ -19,7 +19,11 @@ export class SolvesMultivaluedProperty {
       idToRemove.length = 0;
       for (let property of node.getProperties()) {
         if (property.isMultivalued()) {
-          SolvesMultivaluedProperty.transformPropertyIntoNode(property, node, graph);
+          SolvesMultivaluedProperty.transformPropertyIntoNode(
+            property,
+            node,
+            graph,
+          );
           idToRemove.push(property.getID());
         }
       }

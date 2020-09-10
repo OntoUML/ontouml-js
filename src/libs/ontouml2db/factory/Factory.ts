@@ -55,10 +55,10 @@ export class Factory {
 
     classes.forEach((iclass: IClass) => {
       if (this.getUfoStereotype(iclass) != null) {
-      //if (iclass.stereotypes != null) {
-      //  if (iclass.stereotypes.length > 0) {
-          this.putClass(iclass);
-      //  }
+        //if (iclass.stereotypes != null) {
+        //  if (iclass.stereotypes.length > 0) {
+        this.putClass(iclass);
+        //  }
       }
     });
   }

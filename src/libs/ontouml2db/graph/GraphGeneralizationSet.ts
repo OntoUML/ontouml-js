@@ -41,7 +41,7 @@ export class GraphGeneralizationSet extends GraphAssociation {
     return this.generalizationNode;
   }
 
-   /**
+  /**
    * Adds a new specialization node to the generalization set.,
    *
    * @param specialization Specialization node to be add in the generalization set
@@ -124,8 +124,7 @@ export class GraphGeneralizationSet extends GraphAssociation {
 
     while (i < generalizations.length) {
       if (
-        generalizations[i].getGeneral().getId() ==
-          superNode.getId() &&
+        generalizations[i].getGeneral().getId() == superNode.getId() &&
         generalizations[i].getSpecific().getId() == subNode.getId()
       )
         return generalizations[i];
