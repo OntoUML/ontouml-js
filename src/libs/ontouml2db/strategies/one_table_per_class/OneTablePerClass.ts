@@ -1,8 +1,8 @@
 import { IStrategy } from '../IStrategy';
-import { IGraph } from '@libs/ontouml2db/graph/IGraph';
+import { Graph } from '@libs/ontouml2db/graph/Graph';
 
 export class OneTablePerClass implements IStrategy {
-  run(graph: IGraph): void {
+  run(graph: Graph): void {
     //Do nothing. The target diagram is the same as the source diagram.
   }
 }

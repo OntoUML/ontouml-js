@@ -4,8 +4,8 @@
  */
 
 import { PropertyChecker } from './PropertyChecker';
-import { INode } from '@libs/ontouml2db/graph/INode';
-import { IGraph } from '@libs/ontouml2db/graph/IGraph';
+import { Node } from '@libs/ontouml2db/graph/Node';
+import { Graph } from '@libs/ontouml2db/graph/Graph';
 
 export class NodeChecker {
   private name: string;
@@ -16,14 +16,14 @@ export class NodeChecker {
     this.properties = [];
   }
 
-  public addProperty(property: PropertyChecker): NodeChecker {
+  addProperty(property: PropertyChecker): NodeChecker {
     this.properties.push(property);
     return this;
   }
 
-  public check(graph: IGraph): string {
+  check(graph: Graph): string {
     let result = '';
-    let node: INode;
+    let node: Node;
 
     node = graph.getNodeByName(this.name);
 

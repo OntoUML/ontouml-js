@@ -4,8 +4,8 @@
  */
 
 import { IDBMSSchema } from './IDBMSSchema';
-import { IGraph } from '@libs/ontouml2db/graph/IGraph';
-import { INodeProperty } from '@libs/ontouml2db/graph/INodeProperty';
+import { Graph } from '@libs/ontouml2db/graph/Graph';
+import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 import { GenericSchema } from './GenericSchema';
 
 export class H2Schema extends GenericSchema implements IDBMSSchema {
@@ -23,7 +23,7 @@ export class H2Schema extends GenericSchema implements IDBMSSchema {
     this.types.set('string', 'VARCHAR(20)');
   }
 
-  getSchema(graph: IGraph): string {
+  getSchema(graph: Graph): string {
     let ddl: string = '';
 
     ddl = this.createTables(graph);
@@ -33,11 +33,11 @@ export class H2Schema extends GenericSchema implements IDBMSSchema {
     return ddl;
   }
 
-  protected createTableDescription() {
+  createTableDescription() {
     return 'CREATE TABLE IF NOT EXISTS ';
   }
 
-  protected getPKDescription(property: INodeProperty) {
+  getPKDescription(property: NodeProperty) {
     if (property.isPrimaryKey()) return ' IDENTITY PRIMARY KEY';
     else return '';
   }

@@ -3,11 +3,12 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { INode } from '../INode';
+import { Node } from '../Node';
 import { ClassStereotype } from '@constants/.';
 
 export class Util {
-  static findNodeById(id: string, nodes: INode[]): INode {
+  
+  static findNodeById(id: string, nodes: Node[]): Node {
     let i: number = 0;
 
     while (i < nodes.length) {

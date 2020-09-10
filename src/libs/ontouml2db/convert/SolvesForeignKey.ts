@@ -3,22 +3,22 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { IGraph } from '../graph/IGraph';
-import { IGraphRelation } from '../graph/IGraphRelation';
 import { Cardinality } from '../graph/util/enumerations';
-import { INode } from '../graph/INode';
-import { INodeProperty } from '../graph/INodeProperty';
+import { Graph } from '../graph/Graph';
+import { GraphRelation } from '../graph/GraphRelation';
+import { Node } from '../graph/Node';
+import { NodeProperty } from '../graph/NodeProperty';
 
 export class SolvesForeignKey {
-  public static solves(graph: IGraph): void {
-    for (let relation of graph.getAssociations() as IGraphRelation[]) {
+  static solves(graph: Graph): void {
+    for (let relation of graph.getAssociations() as GraphRelation[]) {
       if (
         (relation.getSourceCardinality() == Cardinality.C0_1 ||
           relation.getSourceCardinality() == Cardinality.C1) &&
         (relation.getTargetCardinality() == Cardinality.C0_N ||
           relation.getTargetCardinality() == Cardinality.C1_N)
       ) {
-        this.propagateKey(
+        SolvesForeignKey.propagateKey(
           relation.getSourceNode(),
           relation.getSourceCardinality(),
           relation.getTargetNode(),
@@ -30,7 +30,7 @@ export class SolvesForeignKey {
         (relation.getSourceCardinality() == Cardinality.C0_N ||
           relation.getSourceCardinality() == Cardinality.C1_N)
       ) {
-        this.propagateKey(
+        SolvesForeignKey.propagateKey(
           relation.getTargetNode(),
           relation.getTargetCardinality(),
           relation.getSourceNode(),
@@ -40,17 +40,17 @@ export class SolvesForeignKey {
     }
   }
 
-  private static propagateKey(
-    from: INode,
+  static propagateKey(
+    from: Node,
     cardinalityFrom: Cardinality,
-    to: INode,
-    relation: IGraphRelation,
+    to: Node,
+    relation: GraphRelation,
   ): void {
     let fk = from.getPrimaryKey().clone();
     let newPropertyName: string;
 
     if (to.existsPropertyName(fk.getName())) {
-      newPropertyName = this.getNewFKName(fk, relation);
+      newPropertyName = SolvesForeignKey.getNewFKName(fk, relation);
       fk.setName(newPropertyName);
     }
     fk.setPrimeryKey(false);
@@ -66,9 +66,9 @@ export class SolvesForeignKey {
     to.addPropertyAt(1, fk);
   }
 
-  private static getNewFKName(
-    prop: INodeProperty,
-    relation: IGraphRelation,
+  static getNewFKName(
+    prop: NodeProperty,
+    relation: GraphRelation,
   ): string {
     let result: string;
     let associationName: string;
@@ -88,3 +88,4 @@ export class SolvesForeignKey {
     return result + '_id';
   }
 }
+

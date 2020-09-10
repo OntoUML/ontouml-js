@@ -3,9 +3,9 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { INodeProperty } from '@libs/ontouml2db/graph/INodeProperty';
-import { INode } from '@libs/ontouml2db/graph/INode';
-import { INodePropertyEnumeration } from '@libs/ontouml2db/graph/INodePropertyEnumeration';
+import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
+import { Node } from '@libs/ontouml2db/graph/Node';
+import { NodePropertyEnumeration } from '@libs/ontouml2db/graph/NodePropertyEnumeration';
 
 export class PropertyChecker {
   private name: string;
@@ -18,8 +18,8 @@ export class PropertyChecker {
     this.enumValues = enumValues;
   }
 
-  public check(node: INode): string {
-    let property: INodeProperty;
+  check(node: Node): string {
+    let property: NodeProperty;
 
     property = node.getPropertyByName(this.name);
 
@@ -43,7 +43,7 @@ export class PropertyChecker {
     }
 
     if (this.enumValues != null) {
-      let enumProperty = property as INodePropertyEnumeration;
+      let enumProperty = property as NodePropertyEnumeration;
 
       //for( let val of enumProperty.getValues() ){
       for (let val of this.enumValues) {

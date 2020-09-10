@@ -4,46 +4,42 @@
  * Author: João Paulo A. Almeida; Gustavo L. Guidoni
  */
 
-import { INode } from '@libs/ontouml2db/graph/INode';
-import { IGraph } from '@libs/ontouml2db/graph/IGraph';
-import { INodeProperty } from '@libs/ontouml2db/graph/INodeProperty';
-import { NodeProperty } from '@libs/ontouml2db/graph/impl/NodeProperty';
-import { Node } from '@libs/ontouml2db/graph/impl/Node';
+import { Node } from '@libs/ontouml2db/graph/Node';
+import { Graph } from '@libs/ontouml2db/graph/Graph';
+import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 import { Increment } from '@libs/ontouml2db/graph/util/Increment';
-import { IGraphGeneralizationSet } from '@libs/ontouml2db/graph/IGraphGeneralizationSet';
-import { INodePropertyEnumeration } from '@libs/ontouml2db/graph/INodePropertyEnumeration';
-import { NodePropertyEnumeration } from '@libs/ontouml2db/graph/impl/NodePropertyEnumeration';
+import { GraphGeneralizationSet } from '@libs/ontouml2db/graph/GraphGeneralizationSet';
+import { NodePropertyEnumeration } from '@libs/ontouml2db/graph/NodePropertyEnumeration';
 import { ClassStereotype } from '@constants/.';
-import { GraphRelation } from '@libs/ontouml2db/graph/impl/GraphRelation';
-import { IGraphRelation } from '@libs/ontouml2db/graph/IGraphRelation';
+import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
 import { Cardinality } from '@libs/ontouml2db/graph/util/enumerations';
 
 export class Lifting {
-  public static doLifting(graph: IGraph): void {
+  static doLifting(graph: Graph): void {
     let node = graph.getLeafSortalNonKind();
 
     while (node != null) {
-      this.liftNode(node, graph);
+      Lifting.liftNode(node, graph);
       graph.removeNode(node);
       node = graph.getLeafSortalNonKind();
     }
   }
 
-  private static liftNode(node: INode, graph: IGraph): void {
-    this.resolveGeneralization(node);
+  static liftNode(node: Node, graph: Graph): void {
+    Lifting.resolveGeneralization(node);
 
-    this.resolveGeneralizationSet(node, graph);
+    Lifting.resolveGeneralizationSet(node, graph);
 
-    this.liftAtributes(node);
+    Lifting.liftAtributes(node);
 
-    this.remakeReferences(node);
+    Lifting.remakeReferences(node);
   }
 
   // **************************************************************************************
   // *********** Resolve the nodes generalizations
   // **************************************************************************************
-  private static resolveGeneralization(node: INode): void {
-    let newProperty: INodeProperty;
+  static resolveGeneralization(node: Node): void {
+    let newProperty: NodeProperty;
     node.setResolved(true);
     //here, each node must have only one generaization node
     //Generalization Sets are resolved by "resolveGeneralizatinSet
@@ -53,7 +49,7 @@ export class Lifting {
       //create a boolean for the specialization
       newProperty = new NodeProperty(
         Increment.getNext().toString(),
-        'is' + generalization.getSpecializationNode().getName(),
+        'is' + generalization.getSpecific().getName(),
         'boolean',
         false,
         false,
@@ -71,40 +67,40 @@ export class Lifting {
   // *********** Resolve the node attributes
   // **************************************************************************************
   //must be called after creating all attributes on the specialization nodes.
-  private static liftAtributes(node: INode): void {
+  static liftAtributes(node: Node): void {
     //here, each note must have only one generaization
 
     if (node.getGeneralizations().length == 0) return;
 
     let generalization = node.getGeneralizations()[0];
 
-    let properties = generalization.getSpecializationNode().getProperties();
+    let properties = generalization.getSpecific().getProperties();
 
     for (let property of properties) {
       if (property.getDefaultValue() == null)
         //Does not change nullability for columns with default values (eg is_employee default false)
         property.setNullable(true);
     }
-    generalization.getGeneralizationNode().addProperties(properties);
+    generalization.getGeneral().addProperties(properties);
   }
 
   // **************************************************************************************
   // *********** Resolve the node generalization sets
   // **************************************************************************************
-  private static resolveGeneralizationSet(node: INode, graph: IGraph): void {
+  static resolveGeneralizationSet(node: Node, graph: Graph): void {
     let enumTableName: string;
     let enumFieldName: string;
     let associationName: string;
-    let newEnumerationField: INodePropertyEnumeration;
-    let newNode: INode;
-    let newRelation: IGraphRelation;
+    let newEnumerationField: NodePropertyEnumeration;
+    let newNode: Node;
+    let newRelation: GraphRelation;
 
     for (let gs of node.getGeneralizationSets()) {
-      //The Generalization Set is resolved as soon as it is identified and marked as resolved. This is
+      //The Generalization Set is resolved as soon as it is identified and marked as resolved. Lifting is
       //necessary because the "lifting" process will call the other subclasses to resolve their attributes
       //and associations, not being able to repeat the process of solving the generalization set.
       if (!gs.isResolved()) {
-        enumTableName = this.getEnumName(gs);
+        enumTableName = Lifting.getEnumName(gs);
         enumFieldName = enumTableName + 'Enum';
         associationName = 'enum_' + Increment.getNext();
 
@@ -125,18 +121,18 @@ export class Lifting {
         newRelation = new GraphRelation(
           associationName,
           newNode,
-          this.getNewSourceCardinality(gs),
-          gs.getGeneralizationNode(),
+          Lifting.getNewSourceCardinality(gs),
+          gs.getGeneral(),
           Cardinality.C0_N,
         );
 
-        gs.getGeneralizationNode().addRelation(newRelation);
+        gs.getGeneral().addRelation(newRelation);
         newNode.addRelation(newRelation);
 
         graph.addNode(newNode);
         graph.addRelation(newRelation);
 
-        for (let specializationNode of gs.getSpecializationNodes()) {
+        for (let specializationNode of gs.getSpecific()) {
           newEnumerationField.addValue(specializationNode.getName());
           specializationNode.setSourceTrackerField(
             newEnumerationField,
@@ -149,14 +145,14 @@ export class Lifting {
     }
   }
 
-  private static getEnumName(gs: IGraphGeneralizationSet): string {
+  static getEnumName(gs: GraphGeneralizationSet): string {
     if (gs.getName() == null || gs.getName().trim() == '')
       return 'Enum' + Increment.getNext();
     else return gs.getName();
   }
 
-  private static getNewSourceCardinality(
-    gs: IGraphGeneralizationSet,
+  static getNewSourceCardinality(
+    gs: GraphGeneralizationSet,
   ): Cardinality {
     if (gs.isDisjoint() && gs.isComplete()) {
       return Cardinality.C1;
@@ -173,23 +169,23 @@ export class Lifting {
   // **************************************************************************************
   // *********** Resolve the references
   // **************************************************************************************
-  private static remakeReferences(node: INode): void {
+  static remakeReferences(node: Node): void {
     //here, each node must have only one generaization node
     let generalization = node.getGeneralizations()[0];
 
-    let superNode = generalization.getGeneralizationNode();
+    let superNode = generalization.getGeneral();
 
     while (node.getRelations().length != 0) {
       let relation = node.getRelations()[0];
       if (relation.getSourceNode() == node) {
         relation.setSourceNode(superNode);
         relation.setTargetCardinality(
-          this.getNewCardinality(relation.getTargetCardinality()),
+          Lifting.getNewCardinality(relation.getTargetCardinality()),
         );
       } else {
         relation.setTargetNode(superNode);
         relation.setSourceCardinality(
-          this.getNewCardinality(relation.getSourceCardinality()),
+          Lifting.getNewCardinality(relation.getSourceCardinality()),
         );
       }
       superNode.addRelation(relation);
@@ -198,7 +194,7 @@ export class Lifting {
     node.changeSourceTracking(superNode);
   }
 
-  private static getNewCardinality(oldCardinality: Cardinality): Cardinality {
+  static getNewCardinality(oldCardinality: Cardinality): Cardinality {
     if (oldCardinality == Cardinality.C1_N) {
       return Cardinality.C0_N;
     } else if (oldCardinality == Cardinality.C1) {

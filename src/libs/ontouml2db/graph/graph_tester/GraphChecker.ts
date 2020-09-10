@@ -3,8 +3,8 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { IGraph } from '@libs/ontouml2db/graph/IGraph';
-import { Transformation2DB } from '@libs/ontouml2db/Transformation2DB';
+import { Graph } from '@libs/ontouml2db/graph/Graph';
+import { OntoUML2DB } from '@libs/ontouml2db/OntoUML2DB';
 import { NodeChecker } from './NodeCheker';
 import { TrackerChecker } from './TrackerChecker';
 import { RelationshipChecker } from './RelationshipChecker';
@@ -13,8 +13,8 @@ export class GraphChecker {
   private nodes: NodeChecker[];
   private relationships: RelationshipChecker[];
   private trackers: TrackerChecker[];
-  private targetGraph: IGraph;
-  private sourceGraph: IGraph;
+  private targetGraph: Graph;
+  private sourceGraph: Graph;
 
   constructor() {
     this.nodes = [];
@@ -28,28 +28,28 @@ export class GraphChecker {
   //associationsTest = builder.associations;
   //trackersTest = builder.trackers;
   //}
-  public setTransformation(transformation: Transformation2DB): GraphChecker {
+  setTransformation(transformation: OntoUML2DB): GraphChecker {
     this.targetGraph = transformation.getTargetGraph();
     this.sourceGraph = transformation.getSourceGraph();
     return this;
   }
 
-  public addNode(node: NodeChecker): GraphChecker {
+  addNode(node: NodeChecker): GraphChecker {
     this.nodes.push(node);
     return this;
   }
 
-  public addRelationship(relationship: RelationshipChecker): GraphChecker {
+  addRelationship(relationship: RelationshipChecker): GraphChecker {
     this.relationships.push(relationship);
     return this;
   }
 
-  public addTracker(tracker: TrackerChecker): GraphChecker {
+  addTracker(tracker: TrackerChecker): GraphChecker {
     this.trackers.push(tracker);
     return this;
   }
 
-  public check(): string {
+  check(): string {
     let result = '';
 
     // **************************************************************

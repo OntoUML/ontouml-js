@@ -6,9 +6,9 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { INode } from './INode';
-import { INodeProperty } from './INodeProperty';
-import { ITracker } from './ITracker';
+import { Node } from './Node';
+import { Tracker } from './Tracker';
+import { NodeProperty } from './NodeProperty';
 
 export interface ITrackerContainer {
   /**
@@ -17,14 +17,14 @@ export interface ITrackerContainer {
    *
    * @param newNodeTracker. New node to be traced by the source node.
    */
-  addSourceTrackedNode(newNodeTracker: INode): void;
+  addSourceTrackedNode(newNodeTracker: Node): void;
 
   /**
    * Adds a node that will be tracked by the current node.
    *
    * @param newNodeReference. Node to be tracked.
    */
-  addTrackedNode(newNodeTracker: INode): void;
+  addTrackedNode(newNodeTracker: Node): void;
 
   /**
    * Adds a set of trackers that will be tracked by the current node.
@@ -32,7 +32,7 @@ export interface ITrackerContainer {
    * @param trackers. Node that is part of the set of nodes that
    * identify the current node.
    */
-  addTracking(trackers: ITracker[]): void;
+  addTracking(trackers: Tracker[]): void;
 
   /**
    * Removes the current node from the source node, that is, the
@@ -45,7 +45,7 @@ export interface ITrackerContainer {
    *
    * @param node. Node that will no longer be tracked.
    */
-  removeTracking(node: INode): void;
+  removeTracking(node: Node): void;
 
   /**
    * Informs that the current node will no longer be tracked by
@@ -54,7 +54,7 @@ export interface ITrackerContainer {
    * @param newNodeTracker. Node to be traced in place of the
    * current node.
    */
-  changeSourceTracking(newNodeTracker: INode): void;
+  changeSourceTracking(newNodeTracker: Node): void;
 
   /**
    * Changes the tracking to a new node. A node can be associated
@@ -64,7 +64,7 @@ export interface ITrackerContainer {
    * @param oldNodeTracker. Node that will no longer be tracked.
    * @param newNodeTracker. Node that will be tracked.
    */
-  changeTracking(oldNodeTracker: INode, newNodeTracker: INode): void;
+  changeTracking(oldNodeTracker: Node, newNodeTracker: Node): void;
 
   /**
    * Informs for the source node that it is identified in the current
@@ -75,7 +75,7 @@ export interface ITrackerContainer {
    * @param value. Value that identifies the source node in the informed
    * property.
    */
-  setSourceTrackerField(property: INodeProperty, value: any): void;
+  setSourceTrackerField(property: NodeProperty, value: any): void;
 
   /**
    * Informs that the current node is associated with the node's property
@@ -86,7 +86,7 @@ export interface ITrackerContainer {
    * is identified.
    * @param value. Property value that identifies the current node.
    */
-  setTrackerField(node: INode, property: INodeProperty, value: any): void;
+  setTrackerField(node: Node, property: NodeProperty, value: any): void;
 
   /**
    * Informs for the source node that the property of the current node is
@@ -96,7 +96,7 @@ export interface ITrackerContainer {
    *
    * @param linkedNode. Node responsible for storing the source of the property value.
    */
-  setSourcePropertyLinkedAtNode(linkedNode: INode): void;
+  setSourcePropertyLinkedAtNode(linkedNode: Node): void;
 
   /**
    * Informs that the property of the current node is associated with another
@@ -107,7 +107,7 @@ export interface ITrackerContainer {
    * @param node. Node tracked.
    * @param linkedNode. Node that has the source of the data.
    */
-  setPropertyLinkedAtNode(node: INode, linkedNode: INode): void;
+  setPropertyLinkedAtNode(node: Node, linkedNode: Node): void;
 
   /**
    * Informs for the source node that the current node's property is no
@@ -156,7 +156,7 @@ export interface ITrackerContainer {
    *
    * @return One ArrayList with the nodes referenced by the current node.
    */
-  getTrackers(): ITracker[];
+  getTrackers(): Tracker[];
 
   /**
    *

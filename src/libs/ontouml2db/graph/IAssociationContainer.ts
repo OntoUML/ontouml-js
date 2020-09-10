@@ -6,10 +6,11 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { IGraphAssociation } from './IGraphAssociation';
-import { IGraphRelation } from './IGraphRelation';
-import { IGraphGeneralization } from './IGraphGeneralization';
-import { IGraphGeneralizationSet } from './IGraphGeneralizationSet';
+import { GraphRelation } from './GraphRelation';
+import { GraphGeneralization } from './GraphGeneralization';
+import { GraphAssociation } from './GraphAssociation';
+import { GraphGeneralizationSet } from './GraphGeneralizationSet';
+
 
 export interface IAssociationContainer {
   /**
@@ -19,7 +20,7 @@ export interface IAssociationContainer {
    *
    * @param relation Relatin to be added.
    */
-  addRelation(relation: IGraphRelation): void;
+  addRelation(relation: GraphRelation): void;
 
   /**
    * Returns the associations with the node.
@@ -27,31 +28,31 @@ export interface IAssociationContainer {
    * @return An list with all the associations that arrive and depart from the
    * respective node.
    */
-  getRelations(): IGraphRelation[];
+  getRelations(): GraphRelation[];
 
   /**
    * Adds a new generalization to the node's association set.
    *
    * @param generalization Generalizatin to be added
    */
-  addGeneralization(generalization: IGraphGeneralization);
+  addGeneralization(generalization: GraphGeneralization);
 
   /**
    * Returns generalizations belonging to the node.
    */
-  getGeneralizations(): IGraphGeneralization[];
+  getGeneralizations(): GraphGeneralization[];
 
   /**
    * Returns generalization sets belonging to the node, when the node is a
    * generalization of some node.
    */
-  getGeneralizationSets(): IGraphGeneralizationSet[];
+  getGeneralizationSets(): GraphGeneralizationSet[];
 
   /**
    * Removes the association form the node. The association still exists in the graph.
    * @param association
    */
-  deleteAssociation(association: IGraphAssociation): void;
+  deleteAssociation(association: GraphAssociation): void;
 
   /**
    * Checks whether the current node is a specialist node of some generalization.

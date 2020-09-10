@@ -3,9 +3,9 @@
  */
 
 import { Cardinality } from '@libs/ontouml2db/graph/util/enumerations';
-import { IGraph } from '@libs/ontouml2db/graph/IGraph';
-import { IGraphAssociation } from '@libs/ontouml2db/graph/IGraphAssociation';
-import { IGraphRelation } from '@libs/ontouml2db/graph/IGraphRelation';
+import { Graph } from '@libs/ontouml2db/graph/Graph';
+import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
+import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
 
 export class RelationshipChecker {
   private sourceNodeName: string;
@@ -25,7 +25,7 @@ export class RelationshipChecker {
     this.targetCardinality = targetCardinality;
   }
 
-  public check(graph: IGraph): string {
+  check(graph: Graph): string {
     //Checks whether the associations are the same.
     if (!this.existsAssociation(graph.getAssociations())) {
       return (
@@ -39,8 +39,8 @@ export class RelationshipChecker {
     return '';
   }
 
-  private existsAssociation(associations: IGraphAssociation[]): boolean {
-    for (let relation of associations as IGraphRelation[]) {
+  existsAssociation(associations: GraphAssociation[]): boolean {
+    for (let relation of associations as GraphRelation[]) {
       if (
         (relation.getSourceNode().getName() == this.sourceNodeName &&
           relation.getSourceCardinality() == this.sourceCardinality &&

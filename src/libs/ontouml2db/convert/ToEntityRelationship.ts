@@ -4,15 +4,16 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { IGraph } from '../graph/IGraph';
 import { SolvesEnumeration } from './SolvesEnumeration';
 import { SolvesPrimaryKey } from './SolvesPrimaryKey';
 import { SolvesForeignKey } from './SolvesForeignKey';
 import { SolvesName } from './SolvesName';
 import { SolvesMultivaluedProperty } from './SolvesMultivaluedProperty';
+import { Graph } from '../graph/Graph';
 
 export class ToEntityRelationship {
-  public static run(graph: IGraph, applyStandardizeNames: boolean): void {
+  
+  static run(graph: Graph, applyStandardizeNames: boolean): void {
     SolvesMultivaluedProperty.solves(graph);
 
     //resolveCardinalityNtoN( targetGraph );

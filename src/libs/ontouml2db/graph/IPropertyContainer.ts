@@ -5,7 +5,8 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { INodeProperty } from './INodeProperty';
+import { NodeProperty } from './NodeProperty';
+
 
 export interface IPropertyContainer {
   /**
@@ -13,14 +14,14 @@ export interface IPropertyContainer {
    *
    * @param property. Property to be added.
    */
-  addProperty(property: INodeProperty): void;
+  addProperty(property: NodeProperty): void;
 
   /**
    * Adds a set of property in the container.
    *
    * @param properties. An ArrayList with the properties to be added.
    */
-  addProperties(properties: INodeProperty[]): void;
+  addProperties(properties: NodeProperty[]): void;
 
   /**
    * Adds a new property in the container in a specific position.
@@ -28,7 +29,7 @@ export interface IPropertyContainer {
    * @param index. Position in which the property will be added.
    * @param property. Property to be added.
    */
-  addPropertyAt(index: number, property: INodeProperty): void;
+  addPropertyAt(index: number, property: NodeProperty): void;
 
   /**
    * Adds a set of property in the container from a specific position
@@ -36,21 +37,21 @@ export interface IPropertyContainer {
    * @param index. Initial position to be added to the properties.
    * @param properties. Propertues to be added.
    */
-  addPropertiesAt(index: number, properties: INodeProperty[]): void;
+  addPropertiesAt(index: number, properties: NodeProperty[]): void;
 
   /**
    * Returns the property.
    *
    * @param name. Property name to search for.
    */
-  getPropertyByName(name: string): INodeProperty;
+  getPropertyByName(name: string): NodeProperty;
 
   /**
    * Returns all properties of the container.
    *
    * @return An ArrayList with all properties.
    */
-  getProperties(): INodeProperty[];
+  getProperties(): NodeProperty[];
 
   /**
    * Clone the container and indicate which node it belongs to.
@@ -72,7 +73,7 @@ export interface IPropertyContainer {
    *
    * @return The primary key property
    */
-  getPrimaryKey(): INodeProperty;
+  getPrimaryKey(): NodeProperty;
 
   /**
    * Finds the property marked as primary key and returns its name.

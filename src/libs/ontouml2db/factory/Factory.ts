@@ -5,7 +5,6 @@
  */
 
 import { ModelManager } from '@libs/model';
-import { IGraph } from '../graph/IGraph';
 import {
   IPackage,
   IClass,
@@ -14,22 +13,17 @@ import {
   IGeneralizationSet,
 } from '@types';
 import { OntoUMLType, ClassStereotype } from '@constants/.';
-import { Graph } from '../graph/impl/Graph';
-import { INode } from '../graph/INode';
-import { INodeProperty } from '../graph/INodeProperty';
-import { IGraphRelation } from '../graph/IGraphRelation';
-import { IGraphGeneralization } from '../graph/IGraphGeneralization';
-import { Node } from '../graph/impl/Node';
-import { NodeProperty } from '../graph/impl/NodeProperty';
-import { GraphRelation } from '../graph/impl/GraphRelation';
-import { GraphGeneralization } from '../graph/impl/GraphGeneralization';
-import { GraphGeneralizationSet } from '../graph/impl/GraphGeneralizationSet';
+import { Graph } from '../graph/Graph';
+import { Node } from '../graph/Node';
 import { Cardinality } from '../graph/util/enumerations';
-import { IGraphGeneralizationSet } from '../graph/IGraphGeneralizationSet';
+import { NodeProperty } from '../graph/NodeProperty';
+import { GraphRelation } from '../graph/GraphRelation';
+import { GraphGeneralization } from '../graph/GraphGeneralization';
+import { GraphGeneralizationSet } from '../graph/GraphGeneralizationSet';
 
 export class Factory {
-  private graph: IGraph;
-  private modelManager: ModelManager;
+  graph: Graph;
+  modelManager: ModelManager;
 
   constructor(model: IPackage) {
     let modelCopy = JSON.parse(JSON.stringify(model));
@@ -38,7 +32,7 @@ export class Factory {
     this.graph = new Graph();
   }
 
-  public mountGraph(): IGraph {
+  mountGraph(): Graph {
     this.putClasses();
 
     this.putRelations();
@@ -53,7 +47,7 @@ export class Factory {
   /********************************************************************
    ** puts the classes
    *********************************************************************/
-  private putClasses(): void {
+  putClasses(): void {
     let classes: IClass[];
     classes = this.modelManager.rootPackage.getAllContentsByType([
       OntoUMLType.CLASS_TYPE,
@@ -61,14 +55,17 @@ export class Factory {
 
     classes.forEach((iclass: IClass) => {
       if (this.getUfoStereotype(iclass) != null) {
-        this.putClass(iclass);
+      //if (iclass.stereotypes != null) {
+      //  if (iclass.stereotypes.length > 0) {
+          this.putClass(iclass);
+      //  }
       }
     });
   }
 
-  private putClass(iclass: IClass): void {
-    let node: INode;
-    let property: INodeProperty;
+  putClass(iclass: IClass): void {
+    let node: Node;
+    let property: NodeProperty;
 
     node = new Node(iclass.id, iclass.name, this.getUfoStereotype(iclass));
 
@@ -98,14 +95,14 @@ export class Factory {
     this.graph.addNode(node);
   }
 
-  private getAcceptNull(cardinality: string): boolean {
+  getAcceptNull(cardinality: string): boolean {
     if (cardinality == null) return true;
 
     if (cardinality.substring(0, 1) == '0') return true;
     else return false;
   }
 
-  private getIsMultivalued(cardinality: string): boolean {
+  getIsMultivalued(cardinality: string): boolean {
     if (cardinality == null) return false;
 
     if (cardinality.length > 3) {
@@ -124,7 +121,7 @@ export class Factory {
     return false;
   }
 
-  private getUfoStereotype(iclass: IClass): ClassStereotype {
+  getUfoStereotype(iclass: IClass): ClassStereotype {
     let classStereotype: ClassStereotype = null;
     if (iclass.stereotypes != null) {
       iclass.stereotypes.some(element => {
@@ -188,9 +185,9 @@ export class Factory {
    *********************************************************************/
 
   putRelations(): void {
-    let newRelation: IGraphRelation;
-    let sourceNode: INode;
-    let targetNode: INode;
+    let newRelation: GraphRelation;
+    let sourceNode: Node;
+    let targetNode: Node;
     let relations = this.modelManager.rootPackage.getAllContentsByType([
       OntoUMLType.RELATION_TYPE,
     ]) as IRelation[];
@@ -255,9 +252,9 @@ export class Factory {
    ** puts the generalizations
    *********************************************************************/
   putGeneralizaitons(): void {
-    let newGeneralization: IGraphGeneralization;
-    let generalizationNode: INode;
-    let specializationNode: INode;
+    let newGeneralization: GraphGeneralization;
+    let generalizationNode: Node;
+    let specializationNode: Node;
     let generalizations = this.modelManager.rootPackage.getAllContentsByType([
       OntoUMLType.GENERALIZATION_TYPE,
     ]) as IGeneralization[];
@@ -283,13 +280,13 @@ export class Factory {
    ** puts the generalization sets
    *********************************************************************/
   putGeneralizationSets(): void {
-    let newGeneralizationSet: IGraphGeneralizationSet;
-    let graphGeneralization: IGraphGeneralization;
+    let newGeneralizationSet: GraphGeneralizationSet;
+    let graphGeneralization: GraphGeneralization;
     let generalizationSets = this.modelManager.rootPackage.getAllContentsByType(
       [OntoUMLType.GENERALIZATION_SET_TYPE],
     ) as IGeneralizationSet[];
 
-    //informar para cada generalização que ela pertence a um conjunto de generalização
+    //informs the generalization set that the generalizations belong to.
     generalizationSets.forEach((gs: IGeneralizationSet) => {
       newGeneralizationSet = new GraphGeneralizationSet(
         gs.id,
@@ -297,17 +294,17 @@ export class Factory {
         gs.isDisjoint,
         gs.isComplete,
       );
-      newGeneralizationSet.setGenealizationNode(
+      newGeneralizationSet.setGeneral(
         this.graph.getNodeById(gs.getGeneral().id),
       );
 
       gs.generalizations.forEach((generalization: IGeneralization) => {
-        newGeneralizationSet.addSpecializationNode(this.graph.getNodeById(
+        newGeneralizationSet.addSpecific(this.graph.getNodeById(
           generalization.specific.id,
-        ) as INode);
+        ) as Node);
         graphGeneralization = this.graph.getAssociationByID(
           generalization.id,
-        ) as IGraphGeneralization;
+        ) as GraphGeneralization;
         graphGeneralization.setBelongGeneralizationSet(newGeneralizationSet);
       });
       this.graph.addGeneralizationSet(newGeneralizationSet);

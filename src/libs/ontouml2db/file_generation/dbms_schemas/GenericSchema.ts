@@ -4,14 +4,14 @@
  */
 
 import { IDBMSSchema } from './IDBMSSchema';
-import { IGraph } from '@libs/ontouml2db/graph/IGraph';
-import { INode } from '@libs/ontouml2db/graph/INode';
-import { INodeProperty } from '@libs/ontouml2db/graph/INodeProperty';
+import { Graph } from '@libs/ontouml2db/graph/Graph';
+import { Node } from '@libs/ontouml2db/graph/Node';
+import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 import { Util } from '@libs/ontouml2db/graph/util/Util';
-import { NodePropertyEnumeration } from '@libs/ontouml2db/graph/impl/NodePropertyEnumeration';
+import { NodePropertyEnumeration } from '@libs/ontouml2db/graph/NodePropertyEnumeration';
 
 export class GenericSchema implements IDBMSSchema {
-  protected types: Map<string, string>;
+  types: Map<string, string>;
 
   constructor() {
     this.types = new Map();
@@ -26,7 +26,7 @@ export class GenericSchema implements IDBMSSchema {
     this.types.set('string', 'VARCHAR(20)');
   }
 
-  public getSchema(graph: IGraph): string {
+  getSchema(graph: Graph): string {
     let ddl: string = '';
 
     ddl = this.createTables(graph);
@@ -36,7 +36,7 @@ export class GenericSchema implements IDBMSSchema {
     return ddl;
   }
   // ************************************************************************
-  protected createTables(graph: IGraph): string {
+  createTables(graph: Graph): string {
     let ddl: string = '';
     for (let node of graph.getNodes()) {
       ddl += this.createTable(node);
@@ -44,7 +44,7 @@ export class GenericSchema implements IDBMSSchema {
     return ddl;
   }
 
-  protected createTable(node: INode): string {
+  createTable(node: Node): string {
     let ddl: string = '';
     let firstColumn: boolean = true;
 
@@ -58,12 +58,12 @@ export class GenericSchema implements IDBMSSchema {
     return ddl;
   }
 
-  protected createTableDescription() {
+  createTableDescription() {
     return 'CREATE TABLE ';
   }
 
-  protected createColumn(
-    property: INodeProperty,
+  createColumn(
+    property: NodeProperty,
     firstColumn: boolean,
   ): string {
     let ddl: string = '';
@@ -92,31 +92,32 @@ export class GenericSchema implements IDBMSSchema {
     ddl += columnType;
     ddl += nullable;
     ddl += primaryKey;
+    ddl += defalutValue;
 
     return ddl;
   }
 
-  protected getPKDescription(property: INodeProperty): string {
+  getPKDescription(property: NodeProperty): string {
     if (property.isPrimaryKey()) return ' PRIMARY KEY';
     else return '';
   }
 
-  protected getNullable(property: INodeProperty): string {
+  getNullable(property: NodeProperty): string {
     if (property.isNullable()) return ' NULL';
     else return ' NOT NULL';
   }
 
-  protected getColumnName(property: INodeProperty): string {
+  getColumnName(property: NodeProperty): string {
     return this.getColumnType(property);
   }
 
-  protected getDefaultValue(property: INodeProperty): string {
+  getDefaultValue(property: NodeProperty): string {
     if (property.getDefaultValue() != null)
       return (' DEFAULT ' + property.getDefaultValue()).toUpperCase();
     else return '';
   }
 
-  protected getColumnType(property: INodeProperty): string {
+  getColumnType(property: NodeProperty): string {
     let ddl: string = '';
     let first: boolean;
 
@@ -146,7 +147,7 @@ export class GenericSchema implements IDBMSSchema {
 
   // ***************************************************************************
 
-  protected createForeingKeys(graph: IGraph): string {
+  createForeingKeys(graph: Graph): string {
     let ddl: string = '';
 
     for (let node of graph.getNodes()) {

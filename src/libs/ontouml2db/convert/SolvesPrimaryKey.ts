@@ -3,15 +3,14 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { IGraph } from '../graph/IGraph';
-import { INodeProperty } from '../graph/INodeProperty';
 import { Increment } from '../graph/util/Increment';
-import { NodeProperty } from '../graph/impl/NodeProperty';
+import { NodeProperty } from '../graph/NodeProperty';
+import { Graph } from '../graph/Graph';
 
 export class SolvesPrimaryKey {
-  public static solves(graph: IGraph): void {
+  static solves(graph: Graph): void {
     let pkName: string;
-    let property: INodeProperty;
+    let property: NodeProperty;
     let newID: string;
 
     for (let node of graph.getNodes()) {

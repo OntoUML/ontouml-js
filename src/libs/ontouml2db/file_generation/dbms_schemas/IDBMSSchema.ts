@@ -3,7 +3,7 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { IGraph } from '@libs/ontouml2db/graph/IGraph';
+import { Graph } from '@libs/ontouml2db/graph/Graph';
 
 export interface IDBMSSchema {
   /**
@@ -11,5 +11,5 @@ export interface IDBMSSchema {
    *
    * @param target Graph (ER) to be generated the script with the relational scheme.
    */
-  getSchema(target: IGraph): string;
+  getSchema(target: Graph): string;
 }

@@ -6,8 +6,8 @@
 export class Increment {
   private static next: number;
 
-  public static getNext(): number {
-    if (this.next == null) this.next = 1;
-    return this.next++;
+  static getNext(): number {
+    if (Increment.next == null) this.next = 1;
+    return Increment.next++;
   }
 }

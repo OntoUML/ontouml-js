@@ -3,25 +3,25 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { IGraph } from '../graph/IGraph';
-import { NodePropertyEnumeration } from '../graph/impl/NodePropertyEnumeration';
-import { INodePropertyEnumeration } from '../graph/INodePropertyEnumeration';
+import { NodePropertyEnumeration } from '../graph/NodePropertyEnumeration';
+import { Graph } from '../graph/Graph';
 
 export class SolvesName {
-  public static solves(graph: IGraph): void {
+
+  static solves(graph: Graph): void {
     for (let node of graph.getNodes()) {
-      node.setName(this.adjust(node.getName()));
+      node.setName(SolvesName.adjust(node.getName()));
       for (let property of node.getProperties()) {
-        property.setName(this.adjust(property.getName()));
+        property.setName(SolvesName.adjust(property.getName()));
         if (property instanceof NodePropertyEnumeration) {
-          this.adjustEnumerationValues(property);
+          SolvesName.adjustEnumerationValues(property);
         }
       }
     }
   }
 
-  private static adjustEnumerationValues(
-    enumeration: INodePropertyEnumeration,
+  static adjustEnumerationValues(
+    enumeration: NodePropertyEnumeration,
   ): void {
     let values = enumeration.getValues();
 
@@ -30,7 +30,7 @@ export class SolvesName {
     }
   }
 
-  private static adjust(name: string): string {
+  static adjust(name: string): string {
     let newName = ''; // + name.charAt(0);
     let index = 0; //1;
 

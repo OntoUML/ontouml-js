@@ -3,206 +3,86 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { GraphChecker } from '@libs/ontouml2db/graph/graph_tester/GraphChecker';
-import { NodeChecker } from '@libs/ontouml2db/graph/graph_tester/NodeCheker';
-import { PropertyChecker } from '@libs/ontouml2db/graph/graph_tester/PropertyChecker';
-import { TrackerChecker } from '@libs/ontouml2db/graph/graph_tester/TrackerChecker';
-import { RelationshipChecker } from '@libs/ontouml2db/graph/graph_tester/RelationshipChecker';
-import { Transformation2DB } from '@libs/ontouml2db/Transformation2DB';
-import { Cardinality } from '@libs/ontouml2db/graph/util/enumerations';
-import { RunExample } from '@test-models/transformation';
-import { test_001 } from '@test-models/transformation';
-import { test_002 } from '@test-models/transformation';
-import { test_003 } from '@test-models/transformation';
-import { test_004 } from '@test-models/transformation';
-import { test_005 } from '@test-models/transformation';
-import { test_006 } from '@test-models/transformation';
-import { test_007 } from '@test-models/transformation';
-import { test_008 } from '@test-models/transformation';
-import { test_009 } from '@test-models/transformation';
-import { test_010 } from '@test-models/transformation';
-import { test_011 } from '@test-models/transformation';
-import { test_012 } from '@test-models/transformation';
-import { test_013 } from '@test-models/transformation';
-import { test_014 } from '@test-models/transformation';
-import { test_015 } from '@test-models/transformation';
-import { test_016 } from '@test-models/transformation';
-import { test_017 } from '@test-models/transformation';
-import { test_018 } from '@test-models/transformation';
-import { test_019 } from '@test-models/transformation';
-import { test_020 } from '@test-models/transformation';
-import { test_021 } from '@test-models/transformation';
-import { test_022 } from '@test-models/transformation';
-import { test_023 } from '@test-models/transformation';
-import { test_024 } from '@test-models/transformation';
-import { test_025 } from '@test-models/transformation';
-import { test_026 } from '@test-models/transformation';
-import { test_027 } from '@test-models/transformation';
-import { test_028 } from '@test-models/transformation';
-import { getHeapStatistics } from 'v8';
+import { StrategyType } from '@libs/ontouml2db/strategies/StrategyType';
+import { DBMSType } from '@libs/ontouml2db/file_generation/DMBSType';
+import { OntoUML2DB } from '@libs/ontouml2db/OntoUML2DB';
+import { IOntoUML2DBOptions } from '@libs/ontouml2db/IOntoUML2DBOptions';
+import { RunExample } from './test_models/index'
+import { test_001_simple_flattening,
+  test_002_flatting_with_duplicate_attribures,
+  test_003_flatting_gs,
+  test_004_flatting_multiples_generalizations,
+  test_005_flatting_orthogonal_gs,
+  test_006_flatting_cascading_gs,
+  test_007_flatting_category_without_specialization,
+  test_008_flatting_root_association,
+  test_009_flatting_with_association,
+  test_010_flatting_with_association_multiples_generalizations,
+  test_011_flatting_cascading_association_multiples_gs,
+  test_012_simple_lifting,
+  test_013_lifting_cascade_generalization,
+  test_014_lifting_multiple_generalizations,
+  test_015_lifting_multiple_generalizations_duplicate_attributes,
+  test_016_lifting_cascade_generalization_association,
+  test_017_lifting_gs_association,
+  test_018_lifting_orthogonal_gs,
+  test_019_lifting_generalization_and_gs,
+  test_020_lifting_hierarchy_gs,
+  test_021_lifting_Generalization_and_gs_association,
+  test_022_lifting_gs_disjoint,
+  test_023_lifting_gs_disjoint_incomplete,
+  test_024_lifting_gs_overlapping_complete,
+  test_025_lifting_gs_overlapping_incomplete,
+  test_026_flatting_to_class_association,
+  test_027_lifting_multiple_relations_to_remake,
+  test_028_multivalued_property } from './test_models/index';
+
+import { gChecker_run_example, 
+  gChecker_001_simple_flattening,
+  gChecker_002_flatting_with_duplicate_attribures,
+  gChecker_003_flatting_gs, 
+  gChecker_004_flatting_multiples_generalizations, 
+  gChecker_005_flatting_orthogonal_gs, 
+  gChecker_006_flatting_cascading_gs, 
+  gChecker_007_flatting_category_without_specialization, 
+  gChecker_008_flatting_root_association, 
+  gChecker_009_flatting_with_association, 
+  gChecker_010_flatting_with_association_multiples_generalizations, 
+  gChecker_011_flatting_cascading_association_multiples_gs, 
+  gChecker_012_simple_lifting, 
+  gChecker_013_lifting_cascade_generalization, 
+  gChecker_014_lifting_multiple_generalizations, 
+  gChecker_015_lifting_multiple_generalizations_duplicate_attributes, 
+  gChecker_016_lifting_cascade_generalization_association, 
+  gChecker_017_lifting_gs_association, 
+  gChecker_018_lifting_orthogonal_gs, 
+  gChecker_019_lifting_generalization_and_gs, 
+  gChecker_020_lifting_hierarchy_gs, 
+  gChecker_021_lifting_generalization_and_gs_association, 
+  gChecker_022_lifting_gs_disjoint_complete, 
+  gChecker_023_lifting_gs_disjoint_incomplete, 
+  gChecker_024_lifting_gs_overlapping_complete, 
+  gChecker_025_lifting_gs_overlapping_incomplete, 
+  gChecker_026_flatting_to_class_association, 
+  gChecker_027_lifting_multiple_relations_to_remake, 
+  gChecker_028_multivalued_property } from './target_graphcs/index';
+
+
+let options: IOntoUML2DBOptions = {  
+  strategyType: StrategyType.ONE_TABLE_PER_KIND, 
+  dbms: DBMSType.GENERIC_SCHEMA,
+  standardizeNames: true};
 
 describe('Database transformation test', () => {
   test('Run Example', () => {
+    //Tests the transformation applied to a comprehensive example. All other tests evaluate the 
+    //relationships between classes in isolation.
+    let mapper = new OntoUML2DB(RunExample);
+    mapper.getSchema( options );
 
-    let mapper = new Transformation2DB(RunExample);
-    mapper.setStandardizeDatabaseNomenclature(true);
+    gChecker_run_example.setTransformation(mapper);
 
-    mapper.doMapping();
-
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('birth_date', false))
-          .addProperty(new PropertyChecker('rg', true))
-          .addProperty(new PropertyChecker('ci', true))
-          .addProperty(new PropertyChecker('is_employee', false))
-          .addProperty(new PropertyChecker('is_personal_customer', false))
-          .addProperty(new PropertyChecker('credit_rating', true))
-          .addProperty(new PropertyChecker('credit_card', true))
-          .addProperty(
-            new PropertyChecker('life_phase_enum', false, ['CHILD', 'ADULT']),
-          ),
-      )
-      .addNode(
-        new NodeChecker('organization')
-          .addProperty(new PropertyChecker('organization_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('address', false))
-          .addProperty(new PropertyChecker('is_corporate_customer', false))
-          .addProperty(new PropertyChecker('credit_rating', true))
-          .addProperty(new PropertyChecker('credit_limit', true))
-          .addProperty(new PropertyChecker('is_contractor', false))
-          .addProperty(new PropertyChecker('playground_size', true))
-          .addProperty(new PropertyChecker('capacity', true))
-          .addProperty(
-            new PropertyChecker('organization_type_enum', true, [
-              'PRIMARYSCHOOL',
-              'HOSPITAL',
-            ]),
-          ),
-      )
-      .addNode(
-        new NodeChecker('employment')
-          .addProperty(new PropertyChecker('employment_id', false))
-          .addProperty(new PropertyChecker('organization_id', false))
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('salary', false)),
-      )
-      .addNode(
-        new NodeChecker('supply_contract')
-          .addProperty(new PropertyChecker('supply_contract_id', false))
-          .addProperty(new PropertyChecker('organization_id', false))
-          .addProperty(new PropertyChecker('organization_customer_id', true))
-          .addProperty(new PropertyChecker('person_id', true))
-          .addProperty(new PropertyChecker('contract_value', false)),
-      )
-      .addNode(
-        new NodeChecker('enrollment')
-          .addProperty(new PropertyChecker('enrollment_id', false))
-          .addProperty(new PropertyChecker('organization_id', false))
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('grade', false)),
-      )
-      .addNode(
-        new NodeChecker('nationality')
-          .addProperty(new PropertyChecker('nationality_id', false))
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(
-            new PropertyChecker('nationality_enum', false, [
-              'BRAZILIANCITIZEN',
-              'ITALIANCITIZEN',
-            ]),
-          ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'nationality',
-          Cardinality.C0_N,
-          'person',
-          Cardinality.C1,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'enrollment',
-          Cardinality.C0_N,
-          'person',
-          Cardinality.C1,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'employment',
-          Cardinality.C0_N,
-          'person',
-          Cardinality.C1,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'supply_contract',
-          Cardinality.C0_N,
-          'person',
-          Cardinality.C0_1,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'organization',
-          Cardinality.C1,
-          'employment',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'organization',
-          Cardinality.C1,
-          'supply_contract',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'organization',
-          Cardinality.C0_1,
-          'supply_contract',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'organization',
-          Cardinality.C1,
-          'enrollment',
-          Cardinality.C0_N,
-        ),
-      )
-
-      .addTracker(new TrackerChecker('NamedEntity', 'person'))
-      .addTracker(new TrackerChecker('NamedEntity', 'organization'))
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Organization', 'organization'))
-      .addTracker(new TrackerChecker('BrazilianCitizen', 'person'))
-      .addTracker(new TrackerChecker('ItalianCitizen', 'person'))
-      .addTracker(new TrackerChecker('Child', 'person'))
-      .addTracker(new TrackerChecker('Adult', 'person'))
-      .addTracker(new TrackerChecker('Employee', 'person'))
-      .addTracker(new TrackerChecker('Customer', 'person'))
-      .addTracker(new TrackerChecker('Customer', 'organization'))
-      .addTracker(new TrackerChecker('PersonalCustomer', 'person'))
-      .addTracker(new TrackerChecker('CorporateCustomer', 'organization'))
-      .addTracker(new TrackerChecker('Employment', 'employment'))
-      .addTracker(new TrackerChecker('SupplyContract', 'supply_contract'))
-      .addTracker(new TrackerChecker('Contractor', 'organization'))
-      .addTracker(new TrackerChecker('PrimarySchool', 'organization'))
-      .addTracker(new TrackerChecker('Hospital', 'organization'))
-      .addTracker(new TrackerChecker('Enrollment', 'enrollment'));
-
-    let result = gChecker.check();
+    let result = gChecker_run_example.check();
 
     if (result != '') {
       console.log(mapper.getSourceGraph().toString());
@@ -211,53 +91,27 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('001 Simple Flattening', () => {
-    let mapper = new Transformation2DB(test_001);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('001 Evaluates flattening involving only one generalization', () => {
+    let mapper = new OntoUML2DB(test_001_simple_flattening);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('birth_date', false)),
-      )
-      .addTracker(new TrackerChecker('NamedEntity', 'person'))
-      .addTracker(new TrackerChecker('Person', 'person'));
+    gChecker_001_simple_flattening.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_001_simple_flattening.check();
 
     if (result != '') {
-      console.log(
-        '************ SOURCE GRAPH: \n' + mapper.getSourceGraph().toString(),
-      );
-      console.log(
-        '************ TARGET GRAPH: \n' + mapper.getTargetGraph().toString(),
-      );
+      console.log( mapper.getTargetGraph().toString() );
       expect(result).toBe('');
     }
   });
 
-  test('002 Flatting with Duplicate Attribures', () => {
-    let mapper = new Transformation2DB(test_002);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('002 Evaluates flattening involving only one generalization where there are attributes with the same name in the superclass and subclass', () => {
+    let mapper = new OntoUML2DB(test_002_flatting_with_duplicate_attribures);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('x1', true))
-          .addProperty(new PropertyChecker('x2', true))
-          .addProperty(new PropertyChecker('x3', true)),
-      )
-      .addTracker(new TrackerChecker('NamedEntity', 'person'))
-      .addTracker(new TrackerChecker('Person', 'person'));
+    gChecker_002_flatting_with_duplicate_attribures.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_002_flatting_with_duplicate_attribures.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -265,31 +119,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('003 Flatting Generalization Set', () => {
-    let mapper = new Transformation2DB(test_003);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('003 Evaluates flattening involving only one generalizations set', () => {
+    let mapper = new OntoUML2DB(test_003_flatting_gs);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('birth_date', true)),
-      )
-      .addNode(
-        new NodeChecker('organization')
-          .addProperty(new PropertyChecker('organization_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('address', true)),
-      )
-      .addTracker(new TrackerChecker('NamedEntity', 'person'))
-      .addTracker(new TrackerChecker('NamedEntity', 'organization'))
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Organization', 'organization'));
+    gChecker_003_flatting_gs.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_003_flatting_gs.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -297,38 +133,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('004 Flatting Multiples Generalizations', () => {
-    let mapper = new Transformation2DB(test_004);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('004 Evaluates flattening involving one generalizations set and one simple generalization', () => {
+    let mapper = new OntoUML2DB(test_004_flatting_multiples_generalizations);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('birth_date', false)),
-      )
-      .addNode(
-        new NodeChecker('organization')
-          .addProperty(new PropertyChecker('organization_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('address', false)),
-      )
-      .addNode(
-        new NodeChecker('test')
-          .addProperty(new PropertyChecker('test_id', false))
-          .addProperty(new PropertyChecker('name', false)),
-      )
-      .addTracker(new TrackerChecker('NamedEntity', 'person'))
-      .addTracker(new TrackerChecker('NamedEntity', 'organization'))
-      .addTracker(new TrackerChecker('NamedEntity', 'test'))
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Organization', 'organization'))
-      .addTracker(new TrackerChecker('Test', 'test'));
+    gChecker_004_flatting_multiples_generalizations.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_004_flatting_multiples_generalizations.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -336,53 +147,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('005 Flatting Orthogonal Generalization Sets', () => {
-    let mapper = new Transformation2DB(test_005);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('005 Evaluates flattening involving two orthogonal generalizations sets to each other', () => {
+    let mapper = new OntoUML2DB(test_005_flatting_orthogonal_gs);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('birth_date', false)),
-      )
-      .addNode(
-        new NodeChecker('organization')
-          .addProperty(new PropertyChecker('organization_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('address', false)),
-      )
-      .addNode(
-        new NodeChecker('person_x')
-          .addProperty(new PropertyChecker('person_x_id', false))
-          .addProperty(new PropertyChecker('name', false)),
-      )
-      .addNode(
-        new NodeChecker('organization_x')
-          .addProperty(new PropertyChecker('organization_x_id', false))
-          .addProperty(new PropertyChecker('name', false)),
-      )
-      .addNode(
-        new NodeChecker('test_x')
-          .addProperty(new PropertyChecker('test_x_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('test', true)),
-      )
-      .addTracker(new TrackerChecker('NamedEntity', 'person'))
-      .addTracker(new TrackerChecker('NamedEntity', 'organization'))
-      .addTracker(new TrackerChecker('NamedEntity', 'person_x'))
-      .addTracker(new TrackerChecker('NamedEntity', 'organization_x'))
-      .addTracker(new TrackerChecker('NamedEntity', 'test_x'))
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Organization', 'organization'))
-      .addTracker(new TrackerChecker('PersonX', 'person_x'))
-      .addTracker(new TrackerChecker('OrganizationX', 'organization_x'))
-      .addTracker(new TrackerChecker('TestX', 'test_x'));
+    gChecker_005_flatting_orthogonal_gs.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_005_flatting_orthogonal_gs.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -390,35 +161,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('006 Flatting Cascading Generalization Sets', () => {
-    let mapper = new Transformation2DB(test_006);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('006 Evaluates the flattening involving a generalization set, where the subclasses are superclasses of other classes', () => {
+    let mapper = new OntoUML2DB(test_006_flatting_cascading_gs);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('name_b', true))
-          .addProperty(new PropertyChecker('birth_date', false)),
-      )
-      .addNode(
-        new NodeChecker('organization')
-          .addProperty(new PropertyChecker('organization_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('name_a', true))
-          .addProperty(new PropertyChecker('address', false)),
-      )
-      .addTracker(new TrackerChecker('NamedEntity', 'person'))
-      .addTracker(new TrackerChecker('NamedEntity', 'organization'))
-      .addTracker(new TrackerChecker('NamedEntityB', 'person'))
-      .addTracker(new TrackerChecker('NamedEntityA', 'organization'))
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Organization', 'organization'));
+    gChecker_006_flatting_cascading_gs.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_006_flatting_cascading_gs.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -426,38 +175,14 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('007 Flatting Category Without Specialization', () => {
-    let mapper = new Transformation2DB(test_007);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('007 Evaluates the flattening involving one generalization set, where the superclass has one generalization relationship with another nonsortal class', () => {
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('birth_date', false)),
-      )
-      .addNode(
-        new NodeChecker('organization')
-          .addProperty(new PropertyChecker('organization_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('address', false)),
-      )
-      .addNode(
-        new NodeChecker('named_entity_a')
-          .addProperty(new PropertyChecker('named_entity_a_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('name_a', true)),
-      )
-      .addTracker(new TrackerChecker('NamedEntity', 'person'))
-      .addTracker(new TrackerChecker('NamedEntity', 'organization'))
-      .addTracker(new TrackerChecker('NamedEntity', 'named_entity_a'))
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Organization', 'organization'));
+    let mapper = new OntoUML2DB(test_007_flatting_category_without_specialization);
+    mapper.getSchema( options );
 
-    let result = gChecker.check();
+    gChecker_007_flatting_category_without_specialization.setTransformation(mapper);
+
+    let result = gChecker_007_flatting_category_without_specialization.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -465,54 +190,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('008 Flatting Root Association', () => {
-    let mapper = new Transformation2DB(test_008);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('008 Evaluates the flattening involving a generalization set, where the superclass has an association with a sortal', () => {
+    let mapper = new OntoUML2DB(test_008_flatting_root_association);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('birth_date', false)),
-      )
-      .addNode(
-        new NodeChecker('organization')
-          .addProperty(new PropertyChecker('organization_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('address', false)),
-      )
-      .addNode(
-        new NodeChecker('test')
-          .addProperty(new PropertyChecker('test_id', false))
-          .addProperty(new PropertyChecker('organization_id', true))
-          .addProperty(new PropertyChecker('person_id', true)),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'organization',
-          Cardinality.C0_1,
-          'test',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'person',
-          Cardinality.C0_1,
-          'test',
-          Cardinality.C0_N,
-        ),
-      )
-      .addTracker(new TrackerChecker('NamedEntity', 'person'))
-      .addTracker(new TrackerChecker('NamedEntity', 'organization'))
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Organization', 'organization'))
-      .addTracker(new TrackerChecker('Test', 'test'));
+    gChecker_008_flatting_root_association.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_008_flatting_root_association.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -520,92 +204,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('009 Flatting Cascading Association', () => {
-    let mapper = new Transformation2DB(test_009);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('009 Evaluates the flattening involving a generalization set and a hierarchy of nonSortals', () => {
+    let mapper = new OntoUML2DB(test_009_flatting_with_association);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('birth_date', false)),
-      )
-      .addNode(
-        new NodeChecker('organization')
-          .addProperty(new PropertyChecker('organization_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('address', false)),
-      )
-      .addNode(
-        new NodeChecker('person_b')
-          .addProperty(new PropertyChecker('person_b_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('name_b', false))
-          .addProperty(new PropertyChecker('birth_date_b', false)),
-      )
-      .addNode(
-        new NodeChecker('organization_b')
-          .addProperty(new PropertyChecker('organization_b_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('name_b', false))
-          .addProperty(new PropertyChecker('address', false)),
-      )
-      .addNode(
-        new NodeChecker('test')
-          .addProperty(new PropertyChecker('test_id', false))
-          .addProperty(new PropertyChecker('organization_id', true))
-          .addProperty(new PropertyChecker('person_id', true))
-          .addProperty(new PropertyChecker('organization_b_id', true))
-          .addProperty(new PropertyChecker('person_b_id', true)),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'organization',
-          Cardinality.C0_1,
-          'test',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'person',
-          Cardinality.C0_1,
-          'test',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'organization_b',
-          Cardinality.C0_1,
-          'test',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'person_b',
-          Cardinality.C0_1,
-          'test',
-          Cardinality.C0_N,
-        ),
-      )
-      .addTracker(new TrackerChecker('NamedEntity', 'person'))
-      .addTracker(new TrackerChecker('NamedEntity', 'organization'))
-      .addTracker(new TrackerChecker('NamedEntity', 'person_b'))
-      .addTracker(new TrackerChecker('NamedEntity', 'organization_b'))
-      .addTracker(new TrackerChecker('NamedEntityB', 'person_b'))
-      .addTracker(new TrackerChecker('NamedEntityB', 'organization_b'))
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Organization', 'organization'))
-      .addTracker(new TrackerChecker('PersonB', 'person_b'))
-      .addTracker(new TrackerChecker('OrganizationB', 'organization_b'))
-      .addTracker(new TrackerChecker('Test', 'test'));
+    gChecker_009_flatting_with_association.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_009_flatting_with_association.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -613,86 +218,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('010 Flatting Cascading Association With Multiples Generalizations', () => {
-    let mapper = new Transformation2DB(test_010);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('010 Evaluates the flatting with one association and multiples generalizations', () => {
+    let mapper = new OntoUML2DB(test_010_flatting_with_association_multiples_generalizations);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('organization_a')
-          .addProperty(new PropertyChecker('organization_a_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('address', false)),
-      )
-      .addNode(
-        new NodeChecker('organization_b')
-          .addProperty(new PropertyChecker('organization_b_id', false))
-          .addProperty(new PropertyChecker('name', false)),
-      )
-      .addNode(
-        new NodeChecker('organization_c')
-          .addProperty(new PropertyChecker('organization_c_id', false))
-          .addProperty(new PropertyChecker('name', false)),
-      )
-      .addNode(
-        new NodeChecker('organization_d')
-          .addProperty(new PropertyChecker('organization_d_id', false))
-          .addProperty(new PropertyChecker('name', false)),
-      )
-      .addNode(
-        new NodeChecker('test')
-          .addProperty(new PropertyChecker('test_id', false))
-          .addProperty(new PropertyChecker('test1', false))
-          .addProperty(new PropertyChecker('organization_a_id', true))
-          .addProperty(new PropertyChecker('organization_b_id', true))
-          .addProperty(new PropertyChecker('organization_c_id', true))
-          .addProperty(new PropertyChecker('organization_d_id', true)),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'organization_a',
-          Cardinality.C0_1,
-          'test',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'organization_b',
-          Cardinality.C0_1,
-          'test',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'organization_c',
-          Cardinality.C0_1,
-          'test',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'organization_d',
-          Cardinality.C0_1,
-          'test',
-          Cardinality.C0_N,
-        ),
-      )
-      .addTracker(new TrackerChecker('NamedEntity', 'organization_a'))
-      .addTracker(new TrackerChecker('NamedEntity', 'organization_b'))
-      .addTracker(new TrackerChecker('NamedEntity', 'organization_c'))
-      .addTracker(new TrackerChecker('NamedEntity', 'organization_d'))
-      .addTracker(new TrackerChecker('OrganizationA', 'organization_a'))
-      .addTracker(new TrackerChecker('OrganizationB', 'organization_b'))
-      .addTracker(new TrackerChecker('OrganizationC', 'organization_c'))
-      .addTracker(new TrackerChecker('OrganizationD', 'organization_d'))
-      .addTracker(new TrackerChecker('Test', 'test'));
+    gChecker_010_flatting_with_association_multiples_generalizations.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_010_flatting_with_association_multiples_generalizations.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -700,86 +232,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('011 Flatting Cascading Association With Multiples Generalization Sets', () => {
-    let mapper = new Transformation2DB(test_011);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('011 Evaluates the flatting with one association and multiples generalization sets', () => {
+    let mapper = new OntoUML2DB(test_011_flatting_cascading_association_multiples_gs);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('organization_a')
-          .addProperty(new PropertyChecker('organization_a_id', false))
-          .addProperty(new PropertyChecker('name', false)),
-      )
-      .addNode(
-        new NodeChecker('organization_b')
-          .addProperty(new PropertyChecker('organization_b_id', false))
-          .addProperty(new PropertyChecker('name', false))
-          .addProperty(new PropertyChecker('address', false)),
-      )
-      .addNode(
-        new NodeChecker('organization_c')
-          .addProperty(new PropertyChecker('organization_c_id', false))
-          .addProperty(new PropertyChecker('name', false)),
-      )
-      .addNode(
-        new NodeChecker('organization_d')
-          .addProperty(new PropertyChecker('organization_d_id', false))
-          .addProperty(new PropertyChecker('name', false)),
-      )
-      .addNode(
-        new NodeChecker('test')
-          .addProperty(new PropertyChecker('test_id', false))
-          .addProperty(new PropertyChecker('test1', false))
-          .addProperty(new PropertyChecker('organization_a_id', true))
-          .addProperty(new PropertyChecker('organization_b_id', true))
-          .addProperty(new PropertyChecker('organization_c_id', true))
-          .addProperty(new PropertyChecker('organization_d_id', true)),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'organization_a',
-          Cardinality.C0_1,
-          'test',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'organization_b',
-          Cardinality.C0_1,
-          'test',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'organization_c',
-          Cardinality.C0_1,
-          'test',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'organization_d',
-          Cardinality.C0_1,
-          'test',
-          Cardinality.C0_N,
-        ),
-      )
-      .addTracker(new TrackerChecker('NamedEntity', 'organization_a'))
-      .addTracker(new TrackerChecker('NamedEntity', 'organization_b'))
-      .addTracker(new TrackerChecker('NamedEntity', 'organization_c'))
-      .addTracker(new TrackerChecker('NamedEntity', 'organization_d'))
-      .addTracker(new TrackerChecker('OrganizationA', 'organization_a'))
-      .addTracker(new TrackerChecker('OrganizationB', 'organization_b'))
-      .addTracker(new TrackerChecker('OrganizationC', 'organization_c'))
-      .addTracker(new TrackerChecker('OrganizationD', 'organization_d'))
-      .addTracker(new TrackerChecker('Test', 'test'));
+    gChecker_011_flatting_cascading_association_multiples_gs.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_011_flatting_cascading_association_multiples_gs.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -787,24 +246,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('012 Simple Lifting', () => {
-    let mapper = new Transformation2DB(test_012);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('012 Evaluates the lifting with a simple generalization', () => {
+    let mapper = new OntoUML2DB(test_012_simple_lifting);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('birth_date', false))
-          .addProperty(new PropertyChecker('test', true))
-          .addProperty(new PropertyChecker('is_employee', false)),
-      )
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Employee', 'person'));
+    gChecker_012_simple_lifting.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_012_simple_lifting.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -812,27 +260,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('013 Lifting Cascade Generalization', () => {
-    let mapper = new Transformation2DB(test_013);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('013 Evaluate the lifting with cascading generalizations', () => {
+    let mapper = new OntoUML2DB(test_013_lifting_cascade_generalization);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('birth_date', false))
-          .addProperty(new PropertyChecker('test_role_x', true))
-          .addProperty(new PropertyChecker('test_employee', true))
-          .addProperty(new PropertyChecker('is_role_x', false))
-          .addProperty(new PropertyChecker('is_employee', false)),
-      )
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('RoleX', 'person'))
-      .addTracker(new TrackerChecker('Employee', 'person'));
+    gChecker_013_lifting_cascade_generalization.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_013_lifting_cascade_generalization.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -840,30 +274,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('014 Lifting Multiple Generalizations', () => {
-    let mapper = new Transformation2DB(test_014);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('014 Evaluate the lifting with multiple generalizations, without forming a generalization set ', () => {
+    let mapper = new OntoUML2DB(test_014_lifting_multiple_generalizations);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('birth_date', false))
-          .addProperty(new PropertyChecker('test1', true))
-          .addProperty(new PropertyChecker('test2', true))
-          .addProperty(new PropertyChecker('test3', true))
-          .addProperty(new PropertyChecker('is_employee', false))
-          .addProperty(new PropertyChecker('is_role_x', false))
-          .addProperty(new PropertyChecker('is_role_y', false)),
-      )
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('RoleX', 'person'))
-      .addTracker(new TrackerChecker('RoleY', 'person'))
-      .addTracker(new TrackerChecker('Employee', 'person'));
+    gChecker_014_lifting_multiple_generalizations.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_014_lifting_multiple_generalizations.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -871,27 +288,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('015 Lifting Multiple Generalizations with duplicate attributes', () => {
-    let mapper = new Transformation2DB(test_015);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('015 Evaluate the survey with a generalization set with the attribute name repeated in both subclasses ', () => {
+    let mapper = new OntoUML2DB(test_015_lifting_multiple_generalizations_duplicate_attributes);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('birth_date', false))
-          .addProperty(new PropertyChecker('test1', true))
-          .addProperty(
-            new PropertyChecker('person_phase_enum', false, ['CHILD', 'ADULT']),
-          ),
-      )
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Child', 'person'))
-      .addTracker(new TrackerChecker('Adult', 'person'));
+    gChecker_015_lifting_multiple_generalizations_duplicate_attributes.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_015_lifting_multiple_generalizations_duplicate_attributes.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -899,41 +302,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('016 Lifting Cascade Generalization With Association', () => {
-    let mapper = new Transformation2DB(test_016);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('016 Evaluate the lifting with cascading generalizations and one association with the subclass', () => {
+    let mapper = new OntoUML2DB(test_016_lifting_cascade_generalization_association);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('birth_date', false))
-          .addProperty(new PropertyChecker('test', true))
-          .addProperty(new PropertyChecker('is_adult', false))
-          .addProperty(new PropertyChecker('is_employee', false)),
-      )
-      .addNode(
-        new NodeChecker('employment')
-          .addProperty(new PropertyChecker('employment_id', false))
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('salary', false)),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'person',
-          Cardinality.C1,
-          'employment',
-          Cardinality.C0_N,
-        ),
-      )
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Adult', 'person'))
-      .addTracker(new TrackerChecker('Employee', 'person'))
-      .addTracker(new TrackerChecker('Employment', 'employment'));
+    gChecker_016_lifting_cascade_generalization_association.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_016_lifting_cascade_generalization_association.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -941,44 +316,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('017 Lifting Generalization Set With Association', () => {
-    let mapper = new Transformation2DB(test_017);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('017 Evaluate the lifting with one generalization set, where one subclass has one specializatoin and one association', () => {
+    let mapper = new OntoUML2DB(test_017_lifting_gs_association);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('birth_date', false))
-          .addProperty(new PropertyChecker('test', true))
-          .addProperty(new PropertyChecker('is_employee', false))
-          .addProperty(
-            new PropertyChecker('life_phase_enum', false, ['CHILD', 'ADULT']),
-          ),
-      )
-      .addNode(
-        new NodeChecker('employment')
-          .addProperty(new PropertyChecker('employment_id', false))
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('salary', false)),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'person',
-          Cardinality.C1,
-          'employment',
-          Cardinality.C0_N,
-        ),
-      )
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Adult', 'person'))
-      .addTracker(new TrackerChecker('Child', 'person'))
-      .addTracker(new TrackerChecker('Employee', 'person'))
-      .addTracker(new TrackerChecker('Employment', 'employment'));
+    gChecker_017_lifting_gs_association.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_017_lifting_gs_association.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -986,54 +330,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('018 Lifting Orthogonal Generalization Set', () => {
-    let mapper = new Transformation2DB(test_018);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('018 Evaluate the lifting with orthogonal generalization sets', () => {
+    let mapper = new OntoUML2DB(test_018_lifting_orthogonal_gs);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('birth_date', false))
-          .addProperty(new PropertyChecker('rg', true))
-          .addProperty(new PropertyChecker('ci', true))
-          .addProperty(
-            new PropertyChecker('life_phase_enum', false, [
-              'CHILD',
-              'TEENAGER',
-              'ADULT',
-            ]),
-          ),
-      )
-      .addNode(
-        new NodeChecker('nationality')
-          .addProperty(new PropertyChecker('nationality_id', false))
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(
-            new PropertyChecker('nationality_enum', false, [
-              'BRAZILIANCITIZEN',
-              'ITALIANCITIZEN',
-            ]),
-          ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'nationality',
-          Cardinality.C0_N,
-          'person',
-          Cardinality.C1,
-        ),
-      )
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Adult', 'person'))
-      .addTracker(new TrackerChecker('Teenager', 'person'))
-      .addTracker(new TrackerChecker('Child', 'person'))
-      .addTracker(new TrackerChecker('BrazilianCitizen', 'person'))
-      .addTracker(new TrackerChecker('ItalianCitizen', 'person'));
+    gChecker_018_lifting_orthogonal_gs.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_018_lifting_orthogonal_gs.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -1041,37 +344,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('019 Lifting Generalization And Generalization Set', () => {
-    let mapper = new Transformation2DB(test_019);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('019 Evaluate the lifting with one generalization set and two simple generalizations', () => {
+    let mapper = new OntoUML2DB(test_019_lifting_generalization_and_gs);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('birth_date', false))
-          .addProperty(new PropertyChecker('rg', true))
-          .addProperty(new PropertyChecker('ci', true))
-          .addProperty(new PropertyChecker('is_brazilian_citizen', false))
-          .addProperty(new PropertyChecker('is_italian_citizen', false))
-          .addProperty(
-            new PropertyChecker('life_phase_enum', false, [
-              'CHILD',
-              'TEENAGER',
-              'ADULT',
-            ]),
-          ),
-      )
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Adult', 'person'))
-      .addTracker(new TrackerChecker('Teenager', 'person'))
-      .addTracker(new TrackerChecker('Child', 'person'))
-      .addTracker(new TrackerChecker('BrazilianCitizen', 'person'))
-      .addTracker(new TrackerChecker('ItalianCitizen', 'person'));
+    gChecker_019_lifting_generalization_and_gs.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_019_lifting_generalization_and_gs.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -1079,63 +358,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('020 Lifting Hierarchy Generalization Set', () => {
-    let mapper = new Transformation2DB(test_020);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('020 Evaluate the lifting with hierarchy of generalization sets', () => {
+    let mapper = new OntoUML2DB(test_020_lifting_hierarchy_gs);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('birth_date', false))
-          .addProperty(new PropertyChecker('is_employee', false))
-          .addProperty(
-            new PropertyChecker('life_phase_enum', false, [
-              'CHILD',
-              'TEENAGER',
-              'ADULT',
-            ]),
-          )
-          .addProperty(
-            new PropertyChecker('teenager_phase_enum', true, [
-              'TEENAGERA',
-              'TEENAGERB',
-            ]),
-          )
-          .addProperty(
-            new PropertyChecker('adult_phase_enum', true, ['ADULTA', 'ADULTB']),
-          )
-          .addProperty(new PropertyChecker('test_teenager_b', true))
-          .addProperty(new PropertyChecker('test_adult_a', true))
-          .addProperty(new PropertyChecker('test_adult_b', true)),
-      )
-      .addNode(
-        new NodeChecker('employment')
-          .addProperty(new PropertyChecker('employment_id', false))
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('salary', false)),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'person',
-          Cardinality.C1,
-          'employment',
-          Cardinality.C0_N,
-        ),
-      )
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Adult', 'person'))
-      .addTracker(new TrackerChecker('Teenager', 'person'))
-      .addTracker(new TrackerChecker('Child', 'person'))
-      .addTracker(new TrackerChecker('TeenagerA', 'person'))
-      .addTracker(new TrackerChecker('TeenagerB', 'person'))
-      .addTracker(new TrackerChecker('AdultA', 'person'))
-      .addTracker(new TrackerChecker('AdultB', 'person'))
-      .addTracker(new TrackerChecker('Employee', 'person'));
+    gChecker_020_lifting_hierarchy_gs.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_020_lifting_hierarchy_gs.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -1143,64 +372,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('021 Lifting Generalization And Generalization Set With Association', () => {
-    let mapper = new Transformation2DB(test_021);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('021 Evaluate the lifting with generalizations, one generalization set and association in the subclasses', () => {
+    let mapper = new OntoUML2DB(test_021_lifting_Generalization_and_gs_association);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('birth_date', false))
-          .addProperty(
-            new PropertyChecker('life_phase_enum', false, [
-              'CHILD',
-              'TEENAGER',
-              'ADULT',
-            ]),
-          )
-          .addProperty(new PropertyChecker('is_test1', false))
-          .addProperty(new PropertyChecker('is_test2', false))
-          .addProperty(new PropertyChecker('test2', true)),
-      )
-      .addNode(
-        new NodeChecker('employment_a')
-          .addProperty(new PropertyChecker('employment_a_id', false))
-          .addProperty(new PropertyChecker('person_id', false)),
-      )
-      .addNode(
-        new NodeChecker('employment_b')
-          .addProperty(new PropertyChecker('employment_b_id', false))
-          .addProperty(new PropertyChecker('person_id', false)),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'person',
-          Cardinality.C1,
-          'employment_a',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'person',
-          Cardinality.C1,
-          'employment_b',
-          Cardinality.C0_N,
-        ),
-      )
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Adult', 'person'))
-      .addTracker(new TrackerChecker('Teenager', 'person'))
-      .addTracker(new TrackerChecker('Child', 'person'))
-      .addTracker(new TrackerChecker('Test1', 'person'))
-      .addTracker(new TrackerChecker('Test2', 'person'))
-      .addTracker(new TrackerChecker('EmploymentA', 'employment_a'))
-      .addTracker(new TrackerChecker('EmploymentB', 'employment_b'));
+    gChecker_021_lifting_generalization_and_gs_association.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_021_lifting_generalization_and_gs_association.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -1208,42 +386,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('022 Lifting GS Disjoint Complete', () => {
-    let mapper = new Transformation2DB(test_022);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('022 Evaluate the lifting with a disjoint and complete generalization set', () => {
+    let mapper = new OntoUML2DB(test_022_lifting_gs_disjoint);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('super_class')
-          .addProperty(new PropertyChecker('super_class_id', false))
-          .addProperty(
-            new PropertyChecker('super_class_type_enum', false, [
-              'SUBCLASS1',
-              'SUBCLASS2',
-            ]),
-          ),
-      )
-      .addNode(
-        new NodeChecker('associated_class')
-          .addProperty(new PropertyChecker('associated_class_id', false))
-          .addProperty(new PropertyChecker('super_class_id', false)),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'super_class',
-          Cardinality.C1,
-          'associated_class',
-          Cardinality.C0_N,
-        ),
-      )
-      .addTracker(new TrackerChecker('SuperClass', 'super_class'))
-      .addTracker(new TrackerChecker('SubClass1', 'super_class'))
-      .addTracker(new TrackerChecker('SubClass2', 'super_class'))
-      .addTracker(new TrackerChecker('AssociatedClass', 'associated_class'));
+    gChecker_022_lifting_gs_disjoint_complete.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_022_lifting_gs_disjoint_complete.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -1251,42 +400,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('023 Lifting GS Disjoint Incomplete', () => {
-    let mapper = new Transformation2DB(test_023);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('023 Evaluate the lifting with a disjoint and incomplete generalization set', () => {
+    let mapper = new OntoUML2DB(test_023_lifting_gs_disjoint_incomplete);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('super_class')
-          .addProperty(new PropertyChecker('super_class_id', false))
-          .addProperty(
-            new PropertyChecker('super_class_type_enum', true, [
-              'SUBCLASS1',
-              'SUBCLASS2',
-            ]),
-          ),
-      )
-      .addNode(
-        new NodeChecker('associated_class')
-          .addProperty(new PropertyChecker('associated_class_id', false))
-          .addProperty(new PropertyChecker('super_class_id', false)),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'super_class',
-          Cardinality.C1,
-          'associated_class',
-          Cardinality.C0_N,
-        ),
-      )
-      .addTracker(new TrackerChecker('SuperClass', 'super_class'))
-      .addTracker(new TrackerChecker('SubClass1', 'super_class'))
-      .addTracker(new TrackerChecker('SubClass2', 'super_class'))
-      .addTracker(new TrackerChecker('AssociatedClass', 'associated_class'));
+    gChecker_023_lifting_gs_disjoint_incomplete.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_023_lifting_gs_disjoint_incomplete.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -1294,56 +414,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('024 Lifting GS Overlapping Complete', () => {
-    let mapper = new Transformation2DB(test_024);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('024 Evaluate the lifting with a overlapping and complete generalization set', () => {
+    let mapper = new OntoUML2DB(test_024_lifting_gs_overlapping_complete);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('super_class').addProperty(
-          new PropertyChecker('super_class_id', false),
-        ),
-      )
-      .addNode(
-        new NodeChecker('super_class_type')
-          .addProperty(new PropertyChecker('super_class_type_id', false))
-          .addProperty(new PropertyChecker('super_class_id', false))
-          .addProperty(
-            new PropertyChecker('super_class_type_enum', false, [
-              'SUBCLASS1',
-              'SUBCLASS2',
-            ]),
-          ),
-      )
-      .addNode(
-        new NodeChecker('associated_class')
-          .addProperty(new PropertyChecker('associated_class_id', false))
-          .addProperty(new PropertyChecker('super_class_id', false)),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'super_class',
-          Cardinality.C1,
-          'associated_class',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'super_class_type',
-          Cardinality.C1_N,
-          'super_class',
-          Cardinality.C1,
-        ),
-      )
-      .addTracker(new TrackerChecker('SuperClass', 'super_class'))
-      .addTracker(new TrackerChecker('SubClass1', 'super_class'))
-      .addTracker(new TrackerChecker('SubClass2', 'super_class'))
-      .addTracker(new TrackerChecker('AssociatedClass', 'associated_class'));
+    gChecker_024_lifting_gs_overlapping_complete.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_024_lifting_gs_overlapping_complete.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -1351,56 +428,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('025 Lifting GS Overlapping Incomplete', () => {
-    let mapper = new Transformation2DB(test_025);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('025 Evaluate the lifting with a overlapping and incomplete generalization set', () => {
+    let mapper = new OntoUML2DB(test_025_lifting_gs_overlapping_incomplete);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('super_class').addProperty(
-          new PropertyChecker('super_class_id', false),
-        ),
-      )
-      .addNode(
-        new NodeChecker('super_class_type')
-          .addProperty(new PropertyChecker('super_class_type_id', false))
-          .addProperty(new PropertyChecker('super_class_id', false))
-          .addProperty(
-            new PropertyChecker('super_class_type_enum', false, [
-              'SUBCLASS1',
-              'SUBCLASS2',
-            ]),
-          ),
-      )
-      .addNode(
-        new NodeChecker('associated_class')
-          .addProperty(new PropertyChecker('associated_class_id', false))
-          .addProperty(new PropertyChecker('super_class_id', false)),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'super_class',
-          Cardinality.C1,
-          'associated_class',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'super_class_type',
-          Cardinality.C0_N,
-          'super_class',
-          Cardinality.C1,
-        ),
-      )
-      .addTracker(new TrackerChecker('SuperClass', 'super_class'))
-      .addTracker(new TrackerChecker('SubClass1', 'super_class'))
-      .addTracker(new TrackerChecker('SubClass2', 'super_class'))
-      .addTracker(new TrackerChecker('AssociatedClass', 'associated_class'));
+    gChecker_025_lifting_gs_overlapping_incomplete.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_025_lifting_gs_overlapping_incomplete.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -1408,78 +442,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('026 Flatting To Class Association', () => {
-    let mapper = new Transformation2DB(test_026);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('026 Evaluate the cardinality of the association with the superclass in the event of a flattening', () => {
+    let mapper = new OntoUML2DB(test_026_flatting_to_class_association);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person').addProperty(
-          new PropertyChecker('person_id', false),
-        ),
-      )
-      .addNode(
-        new NodeChecker('associated_class1').addProperty(
-          new PropertyChecker('associated_class1_id', false),
-        ),
-      )
-      .addNode(
-        new NodeChecker('associated_class2').addProperty(
-          new PropertyChecker('associated_class2_id', false),
-        ),
-      )
-      .addNode(
-        new NodeChecker('associated_class3').addProperty(
-          new PropertyChecker('associated_class3_id', false),
-        ),
-      )
-      .addNode(
-        new NodeChecker('associated_class4').addProperty(
-          new PropertyChecker('associated_class4_id', false),
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'person',
-          Cardinality.C0_N,
-          'associated_class1',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'person',
-          Cardinality.C0_N,
-          'associated_class2',
-          Cardinality.C1_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'person',
-          Cardinality.C0_1,
-          'associated_class3',
-          Cardinality.C0_1,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'person',
-          Cardinality.C0_1,
-          'associated_class4',
-          Cardinality.C1,
-        ),
-      )
-      .addTracker(new TrackerChecker('NamedEntity', 'person'))
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('AssociatedClass1', 'associated_class1'))
-      .addTracker(new TrackerChecker('AssociatedClass2', 'associated_class2'))
-      .addTracker(new TrackerChecker('AssociatedClass3', 'associated_class3'))
-      .addTracker(new TrackerChecker('AssociatedClass4', 'associated_class4'));
+    gChecker_026_flatting_to_class_association.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_026_flatting_to_class_association.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -1487,56 +456,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('027 Lifting With multiple relations to remake', () => {
-    let mapper = new Transformation2DB(test_027);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('027 Evaluate the lifting when one subclass has two indirect associations', () => {
+    let mapper = new OntoUML2DB(test_027_lifting_multiple_relations_to_remake);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(
-            new PropertyChecker('life_phase_enum', false, ['CHILD', 'ADULT']),
-          )
-          .addProperty(new PropertyChecker('is_employee', false))
-          .addProperty(new PropertyChecker('is_personal_customer', false)),
-      )
-      .addNode(
-        new NodeChecker('employment')
-          .addProperty(new PropertyChecker('employment_id', false))
-          .addProperty(new PropertyChecker('person_id', false)),
-      )
-      .addNode(
-        new NodeChecker('test')
-          .addProperty(new PropertyChecker('test_id', false))
-          .addProperty(new PropertyChecker('person_id', false)),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'person',
-          Cardinality.C1,
-          'employment',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'person',
-          Cardinality.C1,
-          'test',
-          Cardinality.C0_N,
-        ),
-      )
-      .addTracker(new TrackerChecker('Person', 'person'))
-      .addTracker(new TrackerChecker('Child', 'person'))
-      .addTracker(new TrackerChecker('Adult', 'person'))
-      .addTracker(new TrackerChecker('Employee', 'person'))
-      .addTracker(new TrackerChecker('PersonalCustomer', 'person'))
-      .addTracker(new TrackerChecker('Employment', 'employment'));
+    gChecker_027_lifting_multiple_relations_to_remake.setTransformation(mapper);
 
-    let result = gChecker.check();
+    let result = gChecker_027_lifting_multiple_relations_to_remake.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());
@@ -1544,50 +470,13 @@ describe('Database transformation test', () => {
     }
   });
 
-  test('028 Test multivalued property', () => {
-    let mapper = new Transformation2DB(test_028);
-    mapper.setStandardizeDatabaseNomenclature(true);
-    mapper.doMapping();
+  test('028 Evaluates the multivalued property', () => {
+    let mapper = new OntoUML2DB(test_028_multivalued_property);
+    mapper.getSchema( options );
 
-    let gChecker = new GraphChecker()
-      .setTransformation(mapper)
-      .addNode(
-        new NodeChecker('person')
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('name', false)),
-      )
-      .addNode(
-        new NodeChecker('tel')
-          .addProperty(new PropertyChecker('tel_id', false))
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('tel', false)),
-      )
-      .addNode(
-        new NodeChecker('address')
-          .addProperty(new PropertyChecker('address_id', false))
-          .addProperty(new PropertyChecker('person_id', false))
-          .addProperty(new PropertyChecker('address', false)),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'person',
-          Cardinality.C1,
-          'tel',
-          Cardinality.C0_N,
-        ),
-      )
-      .addRelationship(
-        new RelationshipChecker(
-          'person',
-          Cardinality.C1,
-          'address',
-          Cardinality.C0_N,
-        ),
-      )
+    gChecker_028_multivalued_property.setTransformation(mapper);
 
-      .addTracker(new TrackerChecker('Person', 'person'));
-
-    let result = gChecker.check();
+    let result = gChecker_028_multivalued_property.check();
 
     if (result != '') {
       console.log(mapper.getTargetGraph().toString());

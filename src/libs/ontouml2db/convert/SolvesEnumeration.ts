@@ -2,16 +2,17 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { IGraph } from '../graph/IGraph';
-import { INode } from '../graph/INode';
-import { IGraphRelation } from '../graph/IGraphRelation';
 import { ClassStereotype } from '@constants/.';
 import { Cardinality } from '../graph/util/enumerations';
+import { Graph } from '../graph/Graph';
+import { GraphRelation } from '../graph/GraphRelation';
+import { Node } from '../graph/Node';
 
 export class SolvesEnumeration {
-  public static solves(graph: IGraph): void {
-    let nodesToDestroy: INode[] = [];
-    let associationsToRemove: IGraphRelation[] = [];
+
+  static solves(graph: Graph): void {
+    let nodesToDestroy: Node[] = [];
+    let associationsToRemove: GraphRelation[] = [];
 
     for (let node of graph.getNodes()) {
       if (node.getStereotype() == ClassStereotype.ENUMERATION) {
@@ -19,7 +20,7 @@ export class SolvesEnumeration {
         for (let relation of node.getRelations()) {
           if (relation.isLowCardinalityOfNode(node)) {
             //Transforms the enumeration into a column in the target node.
-            this.addEnumerationColumn(node, relation);
+            SolvesEnumeration.addEnumerationColumn(node, relation);
             nodesToDestroy.push(node);
             associationsToRemove.push(relation);
           } else if (relation.isHighCardinalityOfNode(node)) {
@@ -39,17 +40,17 @@ export class SolvesEnumeration {
     graph.removeNodes(nodesToDestroy);
   }
 
-  private static addEnumerationColumn(
-    enumNode: INode,
-    relation: IGraphRelation,
+  static addEnumerationColumn(
+    enumNode: Node,
+    relation: GraphRelation,
   ): void {
-    let targetNode: INode;
+    let targetNode: Node;
     let cardinalityOfEnum: Cardinality;
     let isNull: boolean;
     let isMultivalued: boolean;
 
-    targetNode = this.getTargetNode(enumNode, relation);
-    cardinalityOfEnum = this.getCardinalityOf(enumNode, relation);
+    targetNode = SolvesEnumeration.getTargetNode(enumNode, relation);
+    cardinalityOfEnum = SolvesEnumeration.getCardinalityOf(enumNode, relation);
 
     if (
       cardinalityOfEnum == Cardinality.C0_1 ||
@@ -76,14 +77,14 @@ export class SolvesEnumeration {
     }
   }
 
-  private static getTargetNode(node: INode, relation: IGraphRelation): INode {
+  static getTargetNode(node: Node, relation: GraphRelation): Node {
     if (relation.getSourceNode() == node) return relation.getTargetNode();
     else return relation.getSourceNode();
   }
 
-  private static getCardinalityOf(
-    node: INode,
-    relation: IGraphRelation,
+  static getCardinalityOf(
+    node: Node,
+    relation: GraphRelation,
   ): Cardinality {
     if (relation.getSourceNode() == node)
       return relation.getSourceCardinality();

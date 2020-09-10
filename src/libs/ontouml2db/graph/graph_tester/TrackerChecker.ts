@@ -3,19 +3,19 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { IGraph } from '@libs/ontouml2db/graph/IGraph';
-import { ITracker } from '@libs/ontouml2db/graph/ITracker';
+import { Graph } from '@libs/ontouml2db/graph/Graph';
+import { Tracker } from '@libs/ontouml2db/graph/Tracker';
 
 export class TrackerChecker {
   private sourceNodeName: string;
   private targetNodeName: string;
 
-  public constructor(sourceNode: string, targetNode: string) {
+  constructor(sourceNode: string, targetNode: string) {
     this.sourceNodeName = sourceNode;
     this.targetNodeName = targetNode;
   }
 
-  public check(graph: IGraph): string {
+  check(graph: Graph): string {
     let sourceNode = graph.getNodeByName(this.sourceNodeName);
     if (sourceNode == null) {
       return "Class '" + this.sourceNodeName + "' was not found.";
@@ -34,7 +34,7 @@ export class TrackerChecker {
     return '';
   }
 
-  private existsNode(trackers: ITracker[]): boolean {
+  existsNode(trackers: Tracker[]): boolean {
     for (let tracker of trackers) {
       if (tracker.getNode().getName() == this.targetNodeName) return true;
     }
