@@ -59,3 +59,7 @@ export {
   test_027_lifting_multiple_relations_to_remake,
   test_028_multivalued_property,
 };
+
+it('should ignore', () => {
+  expect(true).toBe(true);
+});
