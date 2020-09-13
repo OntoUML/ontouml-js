@@ -48,10 +48,7 @@ export class OntoUML2Verification {
 
           if (
             classConsistencyIssues &&
-            classConsistencyIssues.find(
-              (issue: VerificationIssue) =>
-                issue.severity === IssueSeverity.error,
-            )
+            classConsistencyIssues.find((issue: VerificationIssue) => issue.severity === IssueSeverity.error)
           ) {
             break;
           } else {
@@ -74,17 +71,11 @@ export class OntoUML2Verification {
 
           if (
             genConsistencyIssues &&
-            genConsistencyIssues.find(
-              (issue: VerificationIssue) =>
-                issue.severity === IssueSeverity.error,
-            )
+            genConsistencyIssues.find((issue: VerificationIssue) => issue.severity === IssueSeverity.error)
           ) {
             break;
           } else {
-            issues = [
-              ...issues,
-              ...GeneralizationVerification.check(generalization),
-            ];
+            issues = [...issues, ...GeneralizationVerification.check(generalization)];
           }
           break;
 

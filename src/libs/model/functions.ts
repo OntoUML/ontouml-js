@@ -12,10 +12,7 @@ import {
 import { OntoUMLType, ClassStereotype, OntologicalNature } from '@constants/.';
 import memoizee from 'memoizee';
 
-export function inject(
-  element: IElement,
-  enableMemoization: boolean = true,
-): void {
+export function inject(element: IElement, enableMemoization: boolean = true): void {
   injectFunctions(element, functions._IElement, enableMemoization);
 
   if (element.hasIContainerType()) {
@@ -44,11 +41,7 @@ export function inject(
       injectFunctions(element, functions._IGeneralization, enableMemoization);
       break;
     case OntoUMLType.GENERALIZATION_SET_TYPE:
-      injectFunctions(
-        element,
-        functions._IGeneralizationSet,
-        enableMemoization,
-      );
+      injectFunctions(element, functions._IGeneralizationSet, enableMemoization);
       break;
     case OntoUMLType.PROPERTY_TYPE:
       injectFunctions(element, functions._IProperty, enableMemoization);
@@ -147,25 +140,19 @@ function getRootPackage(): IPackage {
 }
 
 function hasIContainerType(): boolean {
-  return [
-    OntoUMLType.PACKAGE_TYPE,
-    OntoUMLType.CLASS_TYPE,
-    OntoUMLType.RELATION_TYPE,
-  ].includes((this as IElement).type);
+  return [OntoUMLType.PACKAGE_TYPE, OntoUMLType.CLASS_TYPE, OntoUMLType.RELATION_TYPE].includes(
+    (this as IElement).type,
+  );
 }
 
 function hasIDecoratableType(): boolean {
-  return [
-    OntoUMLType.PROPERTY_TYPE,
-    OntoUMLType.CLASS_TYPE,
-    OntoUMLType.RELATION_TYPE,
-  ].includes((this as IElement).type);
+  return [OntoUMLType.PROPERTY_TYPE, OntoUMLType.CLASS_TYPE, OntoUMLType.RELATION_TYPE].includes(
+    (this as IElement).type,
+  );
 }
 
 function hasIClassifierType(): boolean {
-  return [OntoUMLType.CLASS_TYPE, OntoUMLType.RELATION_TYPE].includes(
-    (this as IElement).type,
-  );
+  return [OntoUMLType.CLASS_TYPE, OntoUMLType.RELATION_TYPE].includes((this as IElement).type);
 }
 
 function getAllContents(): IElement[] {
@@ -187,24 +174,16 @@ function getAllContents(): IElement[] {
           };
         }
         allElements = [...allElements, ...innerContents];
-      } else if (
-        content.type === OntoUMLType.CLASS_TYPE ||
-        content.type === OntoUMLType.RELATION_TYPE
-      ) {
+      } else if (content.type === OntoUMLType.CLASS_TYPE || content.type === OntoUMLType.RELATION_TYPE) {
         allElements = [
           ...allElements,
-          ...((content as IClassifier).properties
-            ? (content as IClassifier).properties
-            : []),
+          ...((content as IClassifier).properties ? (content as IClassifier).properties : []),
         ];
       }
     });
 
     return allElements;
-  } else if (
-    this.type === OntoUMLType.CLASS_TYPE ||
-    this.type === OntoUMLType.RELATION_TYPE
-  ) {
+  } else if (this.type === OntoUMLType.CLASS_TYPE || this.type === OntoUMLType.RELATION_TYPE) {
     return (this as IClassifier).properties;
   }
 
@@ -214,9 +193,7 @@ function getAllContents(): IElement[] {
 function getAllContentsByType(types: OntoUMLType[]): IElement[] {
   const self = this as IContainer;
 
-  return self
-    .getAllContents()
-    .filter((element: IElement) => types.includes(element.type));
+  return self.getAllContents().filter((element: IElement) => types.includes(element.type));
 }
 
 function getContentById(id: string): IElement {
@@ -230,8 +207,7 @@ function getParents(): IClassifier[] {
 
   return self._generalOfGeneralizations
     ? self._generalOfGeneralizations.map(
-        (generalization: IGeneralization) =>
-          generalization.general as IClassifier,
+        (generalization: IGeneralization) => generalization.general as IClassifier,
       )
     : [];
 }
@@ -241,8 +217,7 @@ function getChildren(): IClassifier[] {
 
   return self._specificOfGeneralizations
     ? self._specificOfGeneralizations.map(
-        (specialization: IGeneralization) =>
-          specialization.specific as IClassifier,
+        (specialization: IGeneralization) => specialization.specific as IClassifier,
       )
     : [];
 }
@@ -410,12 +385,7 @@ function isBinary(): boolean {
   const source = self.properties[0].propertyType as IClassifier;
   const target = self.properties[1].propertyType as IClassifier;
 
-  return (
-    source &&
-    target &&
-    source.type === OntoUMLType.CLASS_TYPE &&
-    target.type === OntoUMLType.CLASS_TYPE
-  );
+  return source && target && source.type === OntoUMLType.CLASS_TYPE && target.type === OntoUMLType.CLASS_TYPE;
 }
 
 function isTernary(): boolean {
@@ -435,39 +405,28 @@ function isDerivation(): boolean {
   const target = self.properties[1].propertyType as IClassifier;
 
   return (
-    source &&
-    target &&
-    source.type === OntoUMLType.RELATION_TYPE &&
-    target.type === OntoUMLType.CLASS_TYPE
+    source && target && source.type === OntoUMLType.RELATION_TYPE && target.type === OntoUMLType.CLASS_TYPE
   );
 }
 
 function getSource(): IClass {
   const self = this as IRelation;
-  return self.isBinary() && self.properties[0]
-    ? (self.properties[0].propertyType as IClass)
-    : ({} as IClass);
+  return self.isBinary() && self.properties[0] ? (self.properties[0].propertyType as IClass) : ({} as IClass);
 }
 
 function getTarget(): IClass {
   const self = this as IRelation;
-  return self.isBinary() && self.properties[1]
-    ? (self.properties[1].propertyType as IClass)
-    : ({} as IClass);
+  return self.isBinary() && self.properties[1] ? (self.properties[1].propertyType as IClass) : ({} as IClass);
 }
 
 function getDerivingRelation(): IRelation {
   const self = this as IRelation;
-  return self.isDerivation() && self.properties[0]
-    ? (self.properties[0].propertyType as IRelation)
-    : null;
+  return self.isDerivation() && self.properties[0] ? (self.properties[0].propertyType as IRelation) : null;
 }
 
 function getDerivedClass(): IClass {
   const self = this as IRelation;
-  return self.isDerivation() && self.properties[1]
-    ? (self.properties[1].propertyType as IClass)
-    : null;
+  return self.isDerivation() && self.properties[1] ? (self.properties[1].propertyType as IClass) : null;
 }
 
 function getGeneral(): IClassifier {

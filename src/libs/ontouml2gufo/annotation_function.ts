@@ -19,13 +19,7 @@ export async function transformAnnotations(
 
   for (const language of Object.keys(customLabel)) {
     if (AvailableLanguages.includes(language)) {
-      quads.push(
-        quad(
-          namedNode(uri),
-          namedNode('rdfs:label'),
-          literal(customLabel[language], language),
-        ),
-      );
+      quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(customLabel[language], language)));
     }
   }
 
@@ -33,32 +27,20 @@ export async function transformAnnotations(
     for (const language of Object.keys(propertyAssignments)) {
       if (AvailableLanguages.includes(language)) {
         quads.push(
-          quad(
-            namedNode(uri),
-            namedNode('rdfs:label'),
-            literal(propertyAssignments[language], language),
-          ),
+          quad(namedNode(uri), namedNode('rdfs:label'), literal(propertyAssignments[language], language)),
         );
       }
     }
   }
 
   if (customLabel.default) {
-    quads.push(
-      quad(
-        namedNode(uri),
-        namedNode('rdfs:label'),
-        literal(customLabel.default),
-      ),
-    );
+    quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(customLabel.default)));
   } else if (name) {
     quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(name)));
   }
 
   if (description) {
-    quads.push(
-      quad(namedNode(uri), namedNode('rdfs:comment'), literal(description)),
-    );
+    quads.push(quad(namedNode(uri), namedNode('rdfs:comment'), literal(description)));
   }
 
   if (quads.length > 0) {

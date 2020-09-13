@@ -54,22 +54,10 @@ function replacer(key, value) {
         break;
     }
 
-    if (
-      !contentsFields.includes(key) &&
-      key !== 'stereotypes' &&
-      Array.isArray(value)
-    ) {
-      return value.map(item =>
-        item.id && item.type ? { id: item.id, type: item.type } : value,
-      );
-    } else if (
-      !contentsFields.includes(key) &&
-      key !== 'stereotypes' &&
-      value instanceof Object
-    ) {
-      return value.id && value.type
-        ? { id: value.id, type: value.type }
-        : value;
+    if (!contentsFields.includes(key) && key !== 'stereotypes' && Array.isArray(value)) {
+      return value.map(item => (item.id && item.type ? { id: item.id, type: item.type } : value));
+    } else if (!contentsFields.includes(key) && key !== 'stereotypes' && value instanceof Object) {
+      return value.id && value.type ? { id: value.id, type: value.type } : value;
     }
   }
 

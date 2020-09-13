@@ -10,10 +10,7 @@ it('Check README How To code', () => {
 
   const rootPackage = modelManager.rootPackage; // ontoULMSchemaModel root package
   rootPackage.getAllContents(); // returns elements recursively contained within the executing package
-  rootPackage.getAllContentsByType([
-    OntoUMLType.GENERALIZATION_TYPE,
-    OntoUMLType.PROPERTY_TYPE,
-  ]); // returns elements contained within in the package selected by type
+  rootPackage.getAllContentsByType([OntoUMLType.GENERALIZATION_TYPE, OntoUMLType.PROPERTY_TYPE]); // returns elements contained within in the package selected by type
   rootPackage.getContentById('elementId'); // returns the element bearering the given id
 
   const student = rootPackage

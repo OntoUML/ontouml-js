@@ -13,6 +13,7 @@ describe('Subpackages', () => {
 
     customPackages = (await transformOntoUML2GUFO(packages, {
       format: 'Turtle',
+      prefixPackages: true,
       customPackageMapping: {
         ZPFjgI6GAqACCQyA: {
           prefix: 'customPerson',

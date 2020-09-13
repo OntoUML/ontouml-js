@@ -84,26 +84,17 @@ export class ModelManager {
         const relation = element as IRelation;
 
         if (relation.properties) {
-          relation.properties.forEach(
-            (property: IProperty) => (property._container = relation),
-          );
+          relation.properties.forEach((property: IProperty) => (property._container = relation));
         }
-        contents = [
-          ...contents,
-          ...(relation.properties ? relation.properties : []),
-        ];
+        contents = [...contents, ...(relation.properties ? relation.properties : [])];
       } else if (element.type === OntoUMLType.CLASS_TYPE) {
         const _class = element as IClass;
 
         if (_class.properties) {
-          _class.properties.forEach(
-            (property: IProperty) => (property._container = _class),
-          );
+          _class.properties.forEach((property: IProperty) => (property._container = _class));
         }
         if (_class.literals) {
-          _class.literals.forEach(
-            (literal: ILiteral) => (literal._container = _class),
-          );
+          _class.literals.forEach((literal: ILiteral) => (literal._container = _class));
         }
         contents = [
           ...contents,
@@ -124,9 +115,7 @@ export class ModelManager {
    * @param elementId - Desired element's id.
    */
   getElementById(elementId: string): any {
-    return this.getElements().find(
-      (element: IElement) => element.id === elementId,
-    );
+    return this.getElements().find((element: IElement) => element.id === elementId);
   }
 
   replaceReferences(element: IElement): void {
@@ -145,14 +134,10 @@ export class ModelManager {
         this.updateReadOnlyReferencesToIRelation(element as IRelation);
         break;
       case OntoUMLType.GENERALIZATION_TYPE:
-        this.updateReadOnlyReferencesToIGeneralization(
-          element as IGeneralization,
-        );
+        this.updateReadOnlyReferencesToIGeneralization(element as IGeneralization);
         break;
       case OntoUMLType.GENERALIZATION_SET_TYPE:
-        this.updateReadOnlyReferencesToIGeneralizationSet(
-          element as IGeneralizationSet,
-        );
+        this.updateReadOnlyReferencesToIGeneralizationSet(element as IGeneralizationSet);
         break;
       case OntoUMLType.PROPERTY_TYPE:
         this.updateReadOnlyReferencesToIProperty(element as IProperty);
@@ -172,13 +157,9 @@ export class ModelManager {
     }
   }
 
-  updateReadOnlyReferencesToIGeneralization(
-    generalization: IGeneralization,
-  ): void {
+  updateReadOnlyReferencesToIGeneralization(generalization: IGeneralization): void {
     const general = this.allElements[generalization.general.id] as IClassifier;
-    const specific = this.allElements[
-      generalization.specific.id
-    ] as IClassifier;
+    const specific = this.allElements[generalization.specific.id] as IClassifier;
 
     general._specificOfGeneralizations = general._specificOfGeneralizations
       ? [...general._specificOfGeneralizations, generalization]
@@ -188,20 +169,13 @@ export class ModelManager {
       : [generalization];
   }
 
-  updateReadOnlyReferencesToIGeneralizationSet(
-    generalizationSet: IGeneralizationSet,
-  ): void {
+  updateReadOnlyReferencesToIGeneralizationSet(generalizationSet: IGeneralizationSet): void {
     if (generalizationSet.generalizations) {
-      generalizationSet.generalizations.forEach(
-        (generalization: IGeneralization) => {
-          generalization._memberOfGeneralizationSets = !generalization._memberOfGeneralizationSets
-            ? []
-            : [
-                ...generalization._memberOfGeneralizationSets,
-                generalizationSet,
-              ];
-        },
-      );
+      generalizationSet.generalizations.forEach((generalization: IGeneralization) => {
+        generalization._memberOfGeneralizationSets = !generalization._memberOfGeneralizationSets
+          ? []
+          : [...generalization._memberOfGeneralizationSets, generalizationSet];
+      });
     }
 
     if (generalizationSet.categorizer) {

@@ -33,15 +33,9 @@ export async function runPreAnalysis(
 ): Promise<IPreAnalysisItem[]> {
   const { baseIRI } = options;
   const elements = model.getAllContents();
-  const packages = model.getAllContentsByType([
-    OntoUMLType.PACKAGE_TYPE,
-  ]) as IPackage[];
-  const classes = model.getAllContentsByType([
-    OntoUMLType.CLASS_TYPE,
-  ]) as IClass[];
-  const relations = model.getAllContentsByType([
-    OntoUMLType.RELATION_TYPE,
-  ]) as IRelation[];
+  const packages = model.getAllContentsByType([OntoUMLType.PACKAGE_TYPE]) as IPackage[];
+  const classes = model.getAllContentsByType([OntoUMLType.CLASS_TYPE]) as IClass[];
+  const relations = model.getAllContentsByType([OntoUMLType.RELATION_TYPE]) as IRelation[];
 
   const [
     baseIRIAnalysis,
@@ -96,9 +90,10 @@ async function checkPackagePrefixes(
   const defaultPrefixUris = Object.values(DefaultPrefixes);
 
   for (const key of Object.keys(customPackageMapping)) {
-    const packageEl = packages.find(
-      ({ id, name }: IPackage) => id === key || name === key,
-    ) || { id: '', name: '' };
+    const packageEl = packages.find(({ id, name }: IPackage) => id === key || name === key) || {
+      id: '',
+      name: '',
+    };
     const { prefix, uri } = customPackageMapping[key];
 
     if (defaultPrefixKeys.includes(prefix)) {
@@ -203,9 +198,7 @@ async function checkInexistentRelationNames(
   return preAnalysis;
 }
 
-async function checkRepeatedNames(
-  elements: IElement[],
-): Promise<IPreAnalysisItem[]> {
+async function checkRepeatedNames(elements: IElement[]): Promise<IPreAnalysisItem[]> {
   const preAnalysis: IPreAnalysisItem[] = [];
   const elementNames = {};
 
@@ -270,9 +263,7 @@ async function checkRepeatedNames(
   return preAnalysis;
 }
 
-async function checkInexistentCardinality(
-  relations: IRelation[],
-): Promise<IPreAnalysisItem[]> {
+async function checkInexistentCardinality(relations: IRelation[]): Promise<IPreAnalysisItem[]> {
   const preAnalysis: IPreAnalysisItem[] = [];
 
   relations.forEach((relation: IRelation) => {
@@ -308,9 +299,7 @@ async function checkInexistentCardinality(
   return preAnalysis;
 }
 
-async function checkInexistentAttributesType(
-  classes: IClass[],
-): Promise<IPreAnalysisItem[]> {
+async function checkInexistentAttributesType(classes: IClass[]): Promise<IPreAnalysisItem[]> {
   const preAnalysis: IPreAnalysisItem[] = [];
 
   classes.forEach((classElement: IClass) => {

@@ -3,24 +3,16 @@ import { VerificationIssue, VerificationIssueCode } from './issues';
 import { OntoUMLType, ClassStereotype, OntologicalNature } from '@constants/.';
 
 export const GeneralizationVerification = {
-  checkMinimalConsistency(
-    generalization: IGeneralization,
-  ): VerificationIssue[] {
+  checkMinimalConsistency(generalization: IGeneralization): VerificationIssue[] {
     const consistencyIssues: VerificationIssue[] = [];
     const general = generalization.general;
     const specific = generalization.specific;
 
-    if (
-      general.type !== OntoUMLType.CLASS_TYPE &&
-      general.type !== OntoUMLType.RELATION_TYPE
-    ) {
+    if (general.type !== OntoUMLType.CLASS_TYPE && general.type !== OntoUMLType.RELATION_TYPE) {
       // TODO: Bad general reference
     }
 
-    if (
-      specific.type !== OntoUMLType.CLASS_TYPE &&
-      specific.type !== OntoUMLType.RELATION_TYPE
-    ) {
+    if (specific.type !== OntoUMLType.CLASS_TYPE && specific.type !== OntoUMLType.RELATION_TYPE) {
       // TODO: Bad specific reference
     }
 
@@ -48,16 +40,11 @@ export const GeneralizationVerification = {
     return potentialIssues;
   },
 
-  checkGeneralizationSortality(
-    generalization: IGeneralization,
-  ): VerificationIssue {
+  checkGeneralizationSortality(generalization: IGeneralization): VerificationIssue {
     const general: IClass = generalization.general as IClass;
     const specific: IClass = generalization.specific as IClass;
 
-    if (
-      general.type !== OntoUMLType.CLASS_TYPE ||
-      specific.type !== OntoUMLType.CLASS_TYPE
-    ) {
+    if (general.type !== OntoUMLType.CLASS_TYPE || specific.type !== OntoUMLType.CLASS_TYPE) {
       return null;
     }
 
@@ -70,21 +57,15 @@ export const GeneralizationVerification = {
       : null;
   },
 
-  checkGeneralizationRigidity(
-    generalization: IGeneralization,
-  ): VerificationIssue {
+  checkGeneralizationRigidity(generalization: IGeneralization): VerificationIssue {
     const general: IClass = generalization.general as IClass;
     const specific: IClass = generalization.specific as IClass;
 
-    if (
-      general.type !== OntoUMLType.CLASS_TYPE ||
-      specific.type !== OntoUMLType.CLASS_TYPE
-    ) {
+    if (general.type !== OntoUMLType.CLASS_TYPE || specific.type !== OntoUMLType.CLASS_TYPE) {
       return null;
     }
 
-    return general.isAntiRigid() &&
-      (specific.isRigid() || specific.isSemiRigid())
+    return general.isAntiRigid() && (specific.isRigid() || specific.isSemiRigid())
       ? new VerificationIssue(
           VerificationIssueCode.generalization_incompatible_class_rigidity,
           generalization,
@@ -93,9 +74,7 @@ export const GeneralizationVerification = {
       : null;
   },
 
-  checkGeneralizationDatatype(
-    generalization: IGeneralization,
-  ): VerificationIssue {
+  checkGeneralizationDatatype(generalization: IGeneralization): VerificationIssue {
     const general: IClass = generalization.general as IClass;
     const specific: IClass = generalization.specific as IClass;
 
@@ -111,17 +90,14 @@ export const GeneralizationVerification = {
     return (general.stereotypes.includes[ClassStereotype.DATATYPE] ||
       specific.stereotypes.includes[ClassStereotype.DATATYPE]) &&
       general.stereotypes[0] !== specific.stereotypes[0]
-      ? new VerificationIssue(
-          VerificationIssueCode.generalization_incompatible_datatype,
-          generalization,
-          [general, specific],
-        )
+      ? new VerificationIssue(VerificationIssueCode.generalization_incompatible_datatype, generalization, [
+          general,
+          specific,
+        ])
       : null;
   },
 
-  checkGeneralizationEnumeration(
-    generalization: IGeneralization,
-  ): VerificationIssue {
+  checkGeneralizationEnumeration(generalization: IGeneralization): VerificationIssue {
     const general: IClass = generalization.general as IClass;
     const specific: IClass = generalization.specific as IClass;
 
@@ -137,17 +113,14 @@ export const GeneralizationVerification = {
     return (general.stereotypes.includes[ClassStereotype.ENUMERATION] ||
       specific.stereotypes.includes[ClassStereotype.ENUMERATION]) &&
       general.stereotypes[0] !== specific.stereotypes[0]
-      ? new VerificationIssue(
-          VerificationIssueCode.generalization_incompatible_enumeration,
-          generalization,
-          [general, specific],
-        )
+      ? new VerificationIssue(VerificationIssueCode.generalization_incompatible_enumeration, generalization, [
+          general,
+          specific,
+        ])
       : null;
   },
 
-  checkGeneralizationCompatibleNatures(
-    generalization: IGeneralization,
-  ): VerificationIssue {
+  checkGeneralizationCompatibleNatures(generalization: IGeneralization): VerificationIssue {
     const general: IClass = generalization.general as IClass;
     const specific: IClass = generalization.specific as IClass;
 
@@ -160,14 +133,11 @@ export const GeneralizationVerification = {
       return null;
     }
 
-    return specific.allowed.find(
-      (nature: OntologicalNature) => !general.allowed.includes(nature),
-    )
-      ? new VerificationIssue(
-          VerificationIssueCode.generalization_incompatible_natures,
-          generalization,
-          [general, specific],
-        )
+    return specific.allowed.find((nature: OntologicalNature) => !general.allowed.includes(nature))
+      ? new VerificationIssue(VerificationIssueCode.generalization_incompatible_natures, generalization, [
+          general,
+          specific,
+        ])
       : null;
   },
 };

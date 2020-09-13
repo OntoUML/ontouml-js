@@ -15,13 +15,9 @@ describe('Classes', () => {
     })).model;
 
     expect(result).toContain('<:yhVoWg6DAAAARSb> <rdf:type> <owl:Class>');
-    expect(result).toContain(
-      '<:yhVoWg6DAAAARSb> <rdf:type> <owl:NamedIndividual>',
-    );
+    expect(result).toContain('<:yhVoWg6DAAAARSb> <rdf:type> <owl:NamedIndividual>');
     expect(result).toContain('<:yhVoWg6DAAAARSb> <rdfs:label> "Seatable"');
-    expect(result).toContain(
-      '<:yhVoWg6DAAAARSb> <rdfs:subClassOf> <gufo:Object>',
-    );
+    expect(result).toContain('<:yhVoWg6DAAAARSb> <rdfs:subClassOf> <gufo:Object>');
     expect(result).toContain('<:yhVoWg6DAAAARSb> <rdf:type> <gufo:Mixin>');
   });
 
@@ -38,13 +34,9 @@ describe('Classes', () => {
     })).model;
 
     expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:Class>');
-    expect(result).toContain(
-      '<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:NamedIndividual>',
-    );
+    expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:NamedIndividual>');
     expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdfs:label> "Headache" .');
-    expect(result).toContain(
-      '<:qJdeWA6AUB0UtAWm> <rdfs:subClassOf> <gufo:IntrinsicMode>',
-    );
+    expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdfs:subClassOf> <gufo:IntrinsicMode>');
     expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <gufo:Kind>');
   });
 
@@ -54,13 +46,9 @@ describe('Classes', () => {
     })).model;
 
     expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:Class>');
-    expect(result).toContain(
-      '<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:NamedIndividual>',
-    );
+    expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:NamedIndividual>');
     expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdfs:label> "Love" .');
-    expect(result).toContain(
-      '<:qJdeWA6AUB0UtAWm> <rdfs:subClassOf> <gufo:ExtrinsicMode>',
-    );
+    expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdfs:subClassOf> <gufo:ExtrinsicMode>');
     expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <gufo:Kind>');
   });
 
@@ -70,13 +58,9 @@ describe('Classes', () => {
     })).model;
 
     expect(result).toContain('<:SzOFmg6DAAAAQuF> <rdf:type> <owl:Class>');
-    expect(result).toContain(
-      '<:SzOFmg6DAAAAQuF> <rdf:type> <owl:NamedIndividual>',
-    );
+    expect(result).toContain('<:SzOFmg6DAAAAQuF> <rdf:type> <owl:NamedIndividual>');
     expect(result).toContain('<:SzOFmg6DAAAAQuF> <rdfs:label> "Marriage"');
-    expect(result).toContain(
-      '<:SzOFmg6DAAAAQuF> <rdfs:subClassOf> <gufo:Relator>',
-    );
+    expect(result).toContain('<:SzOFmg6DAAAAQuF> <rdfs:subClassOf> <gufo:Relator>');
     expect(result).toContain('<:SzOFmg6DAAAAQuF> <rdf:type> <gufo:Kind>');
   });
 
@@ -87,27 +71,19 @@ describe('Classes', () => {
 
     // it's Husband a <<role>>
     expect(result).toContain('<:zT5mg6DAAAAQsY> <rdf:type> <owl:Class>');
-    expect(result).toContain(
-      '<:zT5mg6DAAAAQsY> <rdf:type> <owl:NamedIndividual>',
-    );
+    expect(result).toContain('<:zT5mg6DAAAAQsY> <rdf:type> <owl:NamedIndividual>');
     expect(result).toContain('<:zT5mg6DAAAAQsY> <rdfs:label> "Husband"');
     expect(result).toContain('<:zT5mg6DAAAAQsY> <rdf:type> <gufo:Role>');
 
     // <<role>> Husband subclass of <<subkind>> Man
-    expect(result).toContain(
-      '<:zT5mg6DAAAAQsY> <rdfs:subClassOf> <:ech5mg6DAAAAQqj>',
-    );
+    expect(result).toContain('<:zT5mg6DAAAAQsY> <rdfs:subClassOf> <:ech5mg6DAAAAQqj>');
     expect(result).toContain('<:ech5mg6DAAAAQqj> <rdf:type> <gufo:SubKind> ');
     expect(result).toContain('<:ech5mg6DAAAAQqj> <rdfs:label> "Man"');
 
     // <<subkind>> Man is subclass of <<kind>> Person
-    expect(result).toContain(
-      '<:ech5mg6DAAAAQqj> <rdfs:subClassOf> <:IsW5mg6DAAAAQqE>',
-    );
+    expect(result).toContain('<:ech5mg6DAAAAQqj> <rdfs:subClassOf> <:IsW5mg6DAAAAQqE>');
     expect(result).toContain('<:IsW5mg6DAAAAQqE> <rdf:type> <gufo:Kind>');
-    expect(result).toContain(
-      '<:IsW5mg6DAAAAQqE> <rdfs:subClassOf> <gufo:FunctionalComplex>',
-    );
+    expect(result).toContain('<:IsW5mg6DAAAAQqE> <rdfs:subClassOf> <gufo:FunctionalComplex>');
     expect(result).toContain('<:IsW5mg6DAAAAQqE> <rdfs:label> "Person"');
   });
 

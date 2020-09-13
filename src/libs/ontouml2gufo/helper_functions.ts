@@ -10,9 +10,9 @@ type GetURI = {
 
 export const getBasePrefix = memoizee(async (options: IOntoUML2GUFOOptions) => {
   const { baseIRI, basePrefix } = options;
-  let prefix = {}
-  
-  if (basePrefix && basePrefix.trim().length>0 ) {
+  let prefix = {};
+
+  if (basePrefix && basePrefix.trim().length > 0) {
     prefix[basePrefix] = `${baseIRI}#`;
   } else {
     prefix[''] = `${baseIRI}#`;
@@ -21,14 +21,11 @@ export const getBasePrefix = memoizee(async (options: IOntoUML2GUFOOptions) => {
   return prefix;
 });
 
-
 export const getPackagePrefixes = memoizee(async (packages: IPackage[], options: IOntoUML2GUFOOptions) => {
-  const { baseIRI, prefixPackages, uriManager, customPackageMapping } = options;
+  const { baseIRI, prefixPackages, uriManager } = options;
   const prefixes = {};
-  const hasCustomPackages = Object.keys(customPackageMapping).length > 0;
 
-  if (prefixPackages || hasCustomPackages) {
-
+  if (prefixPackages) {
     for (let i = 0; i < packages.length; i += 1) {
       const { id, name } = packages[i];
       const { customUri, customPrefix } = getCustomPackageData(packages[i], options);
@@ -191,7 +188,8 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
     }
   }
 
-  return `:${uri}`;
+  let basePrefix = options.basePrefix || '';
+  return `${basePrefix}:${uri}`;
 });
 
 export const getRelationName = (relation: IRelation): string => {

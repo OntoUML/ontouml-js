@@ -195,6 +195,7 @@ describe('Examples', () => {
         model: referenceOntologyTrust,
         options: {
           baseIRI: 'https://purl.org/krdb-core/rot',
+          basePrefix: 'rot',
           format: 'Turtle',
           createObjectProperty: true,
           createInverses: false,

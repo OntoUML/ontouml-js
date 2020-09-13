@@ -44,7 +44,7 @@ export class OntoUML2GUFO {
     format = 'Turtle',
     preAnalysis = false,
     prefixPackages,
-    uriFormatBy = 'name' ,
+    uriFormatBy = 'name',
   }: IOntoUML2GUFOOptions): Promise<IOntoUML2GUFOResult> {
     const options = {
       baseIRI,
@@ -72,8 +72,8 @@ export class OntoUML2GUFO {
     const writer = new N3.Writer({
       format,
       prefixes: {
-        ... await getBasePrefix(options),
-        ... await getPackagePrefixes(packages, options),
+        ...(await getBasePrefix(options)),
+        ...(await getPackagePrefixes(packages, options)),
         ...DefaultPrefixes,
       },
     });

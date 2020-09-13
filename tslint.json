@@ -13,12 +13,6 @@
     "no-redundant-jsdoc": false,
     "prefer-type-cast": false,
     "max-func-body-length": false,
-    "typedef": [
-      true,
-      "parameter",
-      "arrow-parameter",
-      "property-declaration",
-      "member-variable-declaration"
-    ]
+    "typedef": [true, "parameter", "arrow-parameter", "property-declaration", "member-variable-declaration"]
   }
 }

@@ -259,7 +259,7 @@
               "stereotypes": ["category"],
               "isAbstract": true,
               "isDerived": false,
-              "allowed": ["functional-complex"],
+              "allowed": ["collective", "functional-complex", "quantity"],
               "isExtensional": null,
               "isPowertype": null,
               "order": null
@@ -323,7 +323,7 @@
               "stereotypes": ["category"],
               "isAbstract": true,
               "isDerived": false,
-              "allowed": ["functional-complex"],
+              "allowed": ["collective", "functional-complex", "quantity"],
               "isExtensional": null,
               "isPowertype": null,
               "order": null
@@ -458,7 +458,7 @@
           "stereotypes": ["roleMixin"],
           "isAbstract": true,
           "isDerived": false,
-          "allowed": ["mode"],
+          "allowed": ["intrinsic-mode"],
           "isExtensional": null,
           "isPowertype": null,
           "order": null
@@ -474,7 +474,7 @@
           "stereotypes": ["roleMixin"],
           "isAbstract": true,
           "isDerived": false,
-          "allowed": ["functional-complex"],
+          "allowed": ["collective", "functional-complex", "quantity"],
           "isExtensional": null,
           "isPowertype": null,
           "order": null
@@ -506,7 +506,7 @@
           "stereotypes": ["roleMixin"],
           "isAbstract": true,
           "isDerived": false,
-          "allowed": ["functional-complex"],
+          "allowed": ["collective", "functional-complex", "quantity"],
           "isExtensional": null,
           "isPowertype": null,
           "order": null
@@ -522,7 +522,7 @@
           "stereotypes": ["roleMixin"],
           "isAbstract": true,
           "isDerived": false,
-          "allowed": ["functional-complex"],
+          "allowed": ["collective", "functional-complex", "quantity"],
           "isExtensional": null,
           "isPowertype": null,
           "order": null
