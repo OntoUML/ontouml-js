@@ -27,23 +27,14 @@ export const HideReadOnlyObjectPropertyCreationList = [
   'subQuantityOf',
 ];
 
-export const RelationsInverted = ['creation', 'termination', 'participation'];
+export const AspectProperPartClassStereotypeList = ['relator', 'mode', 'quality'];
 
-export const AspectProperPartClassStereotypeList = [
-  'relator',
-  'mode',
-  'quality',
-];
-
-export const ObjectProperPartClassStereotypeList = [
-  'kind',
-  'collective',
-  'quantity',
-];
+export const ObjectProperPartClassStereotypeList = ['kind', 'collective', 'quantity'];
 
 export const IgnoreCardinalityCreationList = ['comparative', 'material'];
 
 export const NormalRelationStereotypeMapping = {
+  bringsAbout: 'broughtAbout',
   characterization: 'inheresIn',
   comparative: 'comparativeRelationshipType',
   componentOf: 'isComponentOf',
@@ -52,6 +43,10 @@ export const NormalRelationStereotypeMapping = {
   externalDependence: 'externallyDependsOn',
   historicalDependence: 'historicallyDependsOn',
   instantiation: 'categorizes',
+  isProperPartOf: 'isProperPartOf',
+  isEventProperPartOf: 'isEventProperPartOf',
+  isAspectProperPartOf: 'isAspectProperPartOf',
+  isObjectProperPartOf: 'isObjectProperPartOf',
   manifestation: 'manifestedIn',
   material: 'materialRelationshipType',
   mediation: 'mediates',
@@ -61,10 +56,7 @@ export const NormalRelationStereotypeMapping = {
   subCollectionOf: 'isSubCollectionOf',
   subQuantityOf: 'isSubQuantityOf',
   termination: 'wasTerminatedIn',
-  isProperPartOf: 'isProperPartOf',
-  isEventProperPartOf: 'isEventProperPartOf',
-  isAspectProperPartOf: 'isAspectProperPartOf',
-  isObjectProperPartOf: 'isObjectProperPartOf',
+  triggers: 'contributedToTrigger',
 };
 
 export const IgonoredInverseRelations = ['derivation', 'instantiation'];

@@ -9,6 +9,7 @@ import {
   derivation,
   inverseRelations,
   preAnalysis,
+  referenceOntologyTrust,
 } from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 import { IPackage, IOntoUML2GUFOOptions } from '@types';
@@ -23,170 +24,182 @@ type File = {
 describe('Examples', () => {
   beforeAll(async () => {
     const files: File[] = [
+      // {
+      //   name: 'alpinebits.ttl',
+      //   model: alpinebits,
+      //   options: {
+      //     format: 'Turtle',
+      //     baseIRI: 'https://alpinebits.org',
+      //     createInverses: false,
+      //     createObjectProperty: true,
+      //   },
+      // },
+      // {
+      //   name: 'alpinebitsCustomLabel.ttl',
+      //   model: alpinebits,
+      //   options: {
+      //     format: 'Turtle',
+      //     baseIRI: 'https://alpinebits.org/custom',
+      //     createInverses: true,
+      //     customElementMapping: {
+      //       JoK2ZeaGAqACBxS5: { uri: 'OWLPerson', label: { pt: 'Pessoa' } },
+      //       Organization: { uri: 'OWLOrganization' },
+      //       'Event Plan': { uri: 'OWLEventPlan' },
+      //       '3x40WRaGAqCsIB4X': { uri: 'hasTrail', label: { en: 'hasLabel' } },
+      //     },
+      //   },
+      // },
+      // {
+      //   name: 'alpinebitsHideRelations.ttl',
+      //   model: alpinebits,
+      //   options: {
+      //     format: 'Turtle',
+      //     baseIRI: 'https://alpinebits.org/hide',
+      //     createObjectProperty: false,
+      //   },
+      // },
+      // {
+      //   name: 'alpinebits.nt',
+      //   model: alpinebits,
+      //   options: {
+      //     baseIRI: 'https://alpinebits.org/nt',
+      //     createInverses: true,
+      //     createObjectProperty: true,
+      //   },
+      // },
+      // {
+      //   name: 'inverseRelations.ttl',
+      //   model: inverseRelations,
+      //   options: {
+      //     format: 'Turtle',
+      //     baseIRI: 'https://relations.org/inverse',
+      //     createInverses: true,
+      //   },
+      // },
+      // {
+      //   name: 'inverseRelationsHideObjectProperty.ttl',
+      //   model: inverseRelations,
+      //   options: {
+      //     format: 'Turtle',
+      //     baseIRI: 'https://relations.org/hide',
+      //     createInverses: true,
+      //     createObjectProperty: false,
+      //   },
+      // },
+      // {
+      //   name: 'istandard.ttl',
+      //   model: istandard,
+      //   options: {
+      //     format: 'Turtle',
+      //     baseIRI: 'https://istandaarden.nl',
+      //   },
+      // },
+      // {
+      //   name: 'istandard.nt',
+      //   model: istandard,
+      // },
+      // {
+      //   name: 'istandardMultiplePackages.ttl',
+      //   model: istandard,
+      //   options: {
+      //     format: 'Turtle',
+      //     baseIRI: 'https://istandaarden.nl',
+      //     prefixPackages: true,
+      //   },
+      // },
+      // {
+      //   name: 'person.ttl',
+      //   model: person,
+      //   options: { format: 'Turtle' },
+      // },
+      // {
+      //   name: 'partWhole.ttl',
+      //   model: partWhole,
+      //   options: {
+      //     format: 'Turtle',
+      //     baseIRI: 'http://example.com/part-whole',
+      //   },
+      // },
+      // {
+      //   name: 'partWholeHideRelations.ttl',
+      //   model: partWhole,
+      //   options: {
+      //     format: 'Turtle',
+      //     baseIRI: 'http://example.com/part-whole/hide',
+      //     createObjectProperty: false,
+      //   },
+      // },
+      // {
+      //   name: 'partWhole.nt',
+      //   model: partWhole,
+      //   options: {
+      //     baseIRI: 'http://example.com/part-whole/nt',
+      //   },
+      // },
+      // {
+      //   name: 'annotations.ttl',
+      //   model: annotations,
+      //   options: {
+      //     format: 'Turtle',
+      //     baseIRI: 'http://example.com/annotations',
+      //   },
+      // },
+      // {
+      //   name: 'packagesMultiple.ttl',
+      //   model: packages,
+      //   options: {
+      //     format: 'Turtle',
+      //     baseIRI: 'http://example.com/package/multiple',
+      //     prefixPackages: true,
+      //   },
+      // },
+      // {
+      //   name: 'packagesSingle.ttl',
+      //   model: packages,
+      //   options: {
+      //     format: 'Turtle',
+      //     baseIRI: 'http://example.com/package/single',
+      //   },
+      // },
+      // {
+      //   name: 'derivation.ttl',
+      //   model: derivation,
+      //   options: {
+      //     format: 'Turtle',
+      //     baseIRI: 'http://example.com/derivation',
+      //   },
+      // },
+      // {
+      //   name: 'preAnalysis.ttl',
+      //   preAnalysisFile: 'preAnalysis.json',
+      //   model: preAnalysis,
+      //   options: {
+      //     baseIRI: '://foo/',
+      //     createInverses: true,
+      //     preAnalysis: true,
+      //     prefixPackages: true,
+      //     customPackageMapping: {
+      //       test: {
+      //         prefix: 'test',
+      //         uri: 'http://www.w3.org/2002/07/owl#',
+      //       },
+      //       'nQKxqY6D.AAAAQjF': {
+      //         prefix: 'owl',
+      //         uri: 'https://custom.com/owl#',
+      //       },
+      //     },
+      //   },
+      // },
       {
-        name: 'alpinebits.ttl',
-        model: alpinebits,
+        name: 'referenceOntologyTrust.ttl',
+        model: referenceOntologyTrust,
         options: {
+          baseIRI: 'https://purl.org/krdb-core/rot',
           format: 'Turtle',
-          baseIRI: 'https://alpinebits.org',
+          createObjectProperty: true,
           createInverses: false,
-          createObjectProperty: true,
-        },
-      },
-      {
-        name: 'alpinebitsCustomLabel.ttl',
-        model: alpinebits,
-        options: {
-          format: 'Turtle',
-          baseIRI: 'https://alpinebits.org/custom',
-          createInverses: true,
-          customElementMapping: {
-            JoK2ZeaGAqACBxS5: { uri: 'OWLPerson', label: { pt: 'Pessoa' } },
-            Organization: { uri: 'OWLOrganization' },
-            'Event Plan': { uri: 'OWLEventPlan' },
-            '3x40WRaGAqCsIB4X': { uri: 'hasTrail', label: { en: 'hasLabel' } },
-          },
-        },
-      },
-      {
-        name: 'alpinebitsHideRelations.ttl',
-        model: alpinebits,
-        options: {
-          format: 'Turtle',
-          baseIRI: 'https://alpinebits.org/hide',
-          createObjectProperty: false,
-        },
-      },
-      {
-        name: 'alpinebits.nt',
-        model: alpinebits,
-        options: {
-          baseIRI: 'https://alpinebits.org/nt',
-          createInverses: true,
-          createObjectProperty: true,
-        },
-      },
-      {
-        name: 'inverseRelations.ttl',
-        model: inverseRelations,
-        options: {
-          format: 'Turtle',
-          baseIRI: 'https://relations.org/inverse',
-          createInverses: true,
-        },
-      },
-      {
-        name: 'inverseRelationsHideObjectProperty.ttl',
-        model: inverseRelations,
-        options: {
-          format: 'Turtle',
-          baseIRI: 'https://relations.org/hide',
-          createInverses: true,
-          createObjectProperty: false,
-        },
-      },
-      {
-        name: 'istandard.ttl',
-        model: istandard,
-        options: {
-          format: 'Turtle',
-          baseIRI: 'https://istandaarden.nl',
-        },
-      },
-      {
-        name: 'istandard.nt',
-        model: istandard,
-      },
-      {
-        name: 'istandardMultiplePackages.ttl',
-        model: istandard,
-        options: {
-          format: 'Turtle',
-          baseIRI: 'https://istandaarden.nl',
-          prefixPackages: true,
-        },
-      },
-      {
-        name: 'person.ttl',
-        model: person,
-        options: { format: 'Turtle' },
-      },
-      {
-        name: 'partWhole.ttl',
-        model: partWhole,
-        options: {
-          format: 'Turtle',
-          baseIRI: 'http://example.com/part-whole',
-        },
-      },
-      {
-        name: 'partWholeHideRelations.ttl',
-        model: partWhole,
-        options: {
-          format: 'Turtle',
-          baseIRI: 'http://example.com/part-whole/hide',
-          createObjectProperty: false,
-        },
-      },
-      {
-        name: 'partWhole.nt',
-        model: partWhole,
-        options: {
-          baseIRI: 'http://example.com/part-whole/nt',
-        },
-      },
-      {
-        name: 'annotations.ttl',
-        model: annotations,
-        options: {
-          format: 'Turtle',
-          baseIRI: 'http://example.com/annotations',
-        },
-      },
-      {
-        name: 'packagesMultiple.ttl',
-        model: packages,
-        options: {
-          format: 'Turtle',
-          baseIRI: 'http://example.com/package/multiple',
-          prefixPackages: true,
-        },
-      },
-      {
-        name: 'packagesSingle.ttl',
-        model: packages,
-        options: {
-          format: 'Turtle',
-          baseIRI: 'http://example.com/package/single',
-        },
-      },
-      {
-        name: 'derivation.ttl',
-        model: derivation,
-        options: {
-          format: 'Turtle',
-          baseIRI: 'http://example.com/derivation',
-        },
-      },
-      {
-        name: 'preAnalysis.ttl',
-        preAnalysisFile: 'preAnalysis.json',
-        model: preAnalysis,
-        options: {
-          baseIRI: '://foo/',
-          createInverses: true,
-          preAnalysis: true,
-          prefixPackages: true,
-          customPackageMapping: {
-            test: {
-              prefix: 'test',
-              uri: 'http://www.w3.org/2002/07/owl#',
-            },
-            'nQKxqY6D.AAAAQjF': {
-              prefix: 'owl',
-              uri: 'https://custom.com/owl#',
-            },
-          },
+          preAnalysis: false,
+          prefixPackages: false,
         },
       },
     ];

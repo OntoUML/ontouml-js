@@ -41,12 +41,15 @@ export enum ClassStereotype {
   QUALITY = 'quality',
   TYPE = 'type',
   EVENT = 'event',
+  SITUATION = 'situation',
   HISTORICAL_ROLE = 'historicalRole',
+  HISTORICAL_ROLE_MIXIN = 'historicalRoleMixin',
   DATATYPE = 'datatype',
   ENUMERATION = 'enumeration',
 }
 
 export enum RelationStereotype {
+  BRINGS_ABOUT = 'bringsAbout',
   CHARACTERIZATION = 'characterization',
   COMPARATIVE = 'comparative',
   COMPONENT_OF = 'componentOf',
@@ -64,6 +67,7 @@ export enum RelationStereotype {
   SUBCOLLECTION_OF = 'subCollectionOf',
   SUBQUANTITY_OF = 'subQuantityOf',
   TERMINATION = 'termination',
+  TRIGGERS = 'triggers',
 }
 
 export enum OntologicalNature {
@@ -71,9 +75,11 @@ export enum OntologicalNature {
   collective = 'collective',
   quantity = 'quantity',
   relator = 'relator',
-  mode = 'mode',
+  intrinsic_mode = 'intrinsic-mode',
+  extrinsic_mode = 'extrinsic-mode',
   quality = 'quality',
   type = 'type',
   event = 'event',
+  situation = 'situation',
   abstract = 'abstract',
 }

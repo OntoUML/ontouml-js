@@ -15,6 +15,7 @@ const annotations = require('./annotations.json');
 const packages = require('./packages.json');
 const derivation = require('./derivation.json');
 const inverseRelations = require('./inverseRelations.json');
+const referenceOntologyTrust = require('./referenceOntologyTrust.json');
 
 export {
   genericExample1,
@@ -34,4 +35,5 @@ export {
   packages,
   derivation,
   inverseRelations,
+  referenceOntologyTrust,
 };

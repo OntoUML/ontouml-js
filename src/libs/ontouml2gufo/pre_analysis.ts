@@ -11,7 +11,7 @@ import {
 } from '@types';
 import { OntoUMLType } from '@constants/.';
 import { DefaultPrefixes } from './constants';
-import { getPrefixes } from './helper_functions';
+import { getPackagePrefixes } from './helper_functions';
 
 enum PreAnalysisSeverity {
   ERROR = 'error',
@@ -127,7 +127,7 @@ async function checkPackagePrefixes(
   }
 
   if (prefixPackages) {
-    const prefixes = await getPrefixes(packages, options);
+    const prefixes = await getPackagePrefixes(packages, options);
 
     for (const prefix of Object.keys(prefixes)) {
       const uri = prefixes[prefix];

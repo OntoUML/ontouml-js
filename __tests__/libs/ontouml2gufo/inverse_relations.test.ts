@@ -18,19 +18,16 @@ describe('InverseRelations', () => {
       createInverses: true,
     })).model;
 
-    inverseRelationsHideOP = (await transformOntoUML2GUFO(
-      inverseRelationsModel,
-      {
-        createInverses: true,
-        createObjectProperty: false,
-      },
-    )).model;
+    inverseRelationsHideOP = (await transformOntoUML2GUFO(inverseRelationsModel, {
+      createInverses: true,
+      createObjectProperty: false,
+    })).model;
   });
 
   it('should generate an uri automatically using association end', async () => {
     const data = [
-      '<:snowparkfeature> <owl:inverseOf> <:snowparkcontainer>',
-      '<:snowparkcontainer> <rdf:type> <owl:ObjectProperty>',
+      '<:snowparkFeature> <owl:inverseOf> <:snowparkContainer>',
+      '<:snowparkContainer> <rdf:type> <owl:ObjectProperty>',
     ];
 
     for (const value of data) {
@@ -40,7 +37,7 @@ describe('InverseRelations', () => {
 
   it('should generate an uri automatically using stereotype', async () => {
     const data = [
-      '<:organizedevent> <owl:inverseOf> <:organizer>',
+      '<:organizedEvent> <owl:inverseOf> <:organizer>',
       '<:organizer> <rdf:type> <owl:ObjectProperty>',
     ];
 
@@ -53,8 +50,8 @@ describe('InverseRelations', () => {
     const data = [
       '<:organizer> <rdfs:domain> <:EventPlan>',
       '<:organizer> <rdfs:range> <:Organizer>',
-      '<:organizedevent> <rdfs:domain> <:Organizer>',
-      '<:organizedevent> <rdfs:range> <:EventPlan>',
+      '<:organizedEvent> <rdfs:domain> <:Organizer>',
+      '<:organizedEvent> <rdfs:range> <:EventPlan>',
     ];
 
     for (const value of data) {
@@ -66,7 +63,7 @@ describe('InverseRelations', () => {
     expect(alpinebits).toContain(
       `<:CompositeArea> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
-        <owl:onProperty> <:subarea>;
+        <owl:onProperty> <:subArea>;
         <owl:minQualifiedCardinality> "2"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:MountainArea>
       ] .`.replace(/ {6}/gm, ''),
@@ -75,7 +72,7 @@ describe('InverseRelations', () => {
     expect(alpinebits).toContain(
       `<:MountainArea> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
-        <owl:onProperty> <:superarea>;
+        <owl:onProperty> <:superArea>;
         <owl:maxQualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:CompositeArea>
       ] .`.replace(/ {6}/gm, ''),
@@ -121,10 +118,7 @@ describe('InverseRelations', () => {
       '<owl:onProperty> <:hasEventProperPartPartipationalClassSource>',
       '<owl:onProperty> <:hasProperPartClassSource>',
     ];
-    const data2 = [
-      '<owl:onProperty> <:hasEventProperPart>',
-      '<owl:onProperty> <:hasProperPart>',
-    ];
+    const data2 = ['<owl:onProperty> <:hasEventProperPart>', '<owl:onProperty> <:hasProperPart>'];
 
     for (const value of data) {
       expect(inverseRelations).toContain(value);
@@ -140,10 +134,7 @@ describe('InverseRelations', () => {
       '<owl:onProperty> <:hasEventProperPartPartipationalClassSource>',
       '<owl:onProperty> <:hasProperPartClassSource>',
     ];
-    const data2 = [
-      '<owl:onProperty> <:hasEventProperPart>',
-      '<owl:onProperty> <:hasProperPart>',
-    ];
+    const data2 = ['<owl:onProperty> <:hasEventProperPart>', '<owl:onProperty> <:hasProperPart>'];
 
     for (const value of data) {
       expect(inverseRelationsHideOP).not.toContain(value);

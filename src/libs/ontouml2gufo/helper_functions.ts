@@ -1,56 +1,54 @@
 import memoizee from 'memoizee';
 import { IElement, IRelation, IPackage, IOntoUML2GUFOOptions } from '@types';
 import { OntoUMLType } from '@constants/.';
-import {
-  NormalRelationStereotypeMapping,
-  InverseRelationStereotypeMapping,
-} from './constants';
+import { NormalRelationStereotypeMapping, InverseRelationStereotypeMapping } from './constants';
 
 type GetURI = {
   element: IElement;
   options?: IOntoUML2GUFOOptions;
 };
 
-export const getPrefixes = memoizee(
-  async (packages: IPackage[], options: IOntoUML2GUFOOptions) => {
-    const {
-      baseIRI,
-      prefixPackages,
-      uriManager,
-      customPackageMapping,
-    } = options;
-    const prefixes = {};
-    const hasCustomPackages = Object.keys(customPackageMapping).length > 0;
+export const getBasePrefix = memoizee(async (options: IOntoUML2GUFOOptions) => {
+  const { baseIRI, basePrefix } = options;
+  let prefix = {}
+  
+  if (basePrefix && basePrefix.trim().length>0 ) {
+    prefix[basePrefix] = `${baseIRI}#`;
+  } else {
+    prefix[''] = `${baseIRI}#`;
+  }
 
-    if (prefixPackages || hasCustomPackages) {
-      prefixes[''] = `${baseIRI}#`;
+  return prefix;
+});
 
-      for (let i = 0; i < packages.length; i += 1) {
-        const { id, name } = packages[i];
-        const { customUri, customPrefix } = getCustomPackageData(
-          packages[i],
-          options,
-        );
 
-        if (customUri && customPrefix) {
-          prefixes[customPrefix] = customUri;
-        } else if (prefixPackages) {
-          const packageUri = uriManager.generateUniqueURI({
-            id,
-            name,
-          });
-          const uri = formatPackageName(packageUri);
+export const getPackagePrefixes = memoizee(async (packages: IPackage[], options: IOntoUML2GUFOOptions) => {
+  const { baseIRI, prefixPackages, uriManager, customPackageMapping } = options;
+  const prefixes = {};
+  const hasCustomPackages = Object.keys(customPackageMapping).length > 0;
 
-          prefixes[uri] = `${baseIRI}/${uri}#`;
-        }
+  if (prefixPackages || hasCustomPackages) {
+
+    for (let i = 0; i < packages.length; i += 1) {
+      const { id, name } = packages[i];
+      const { customUri, customPrefix } = getCustomPackageData(packages[i], options);
+
+      if (customUri && customPrefix) {
+        prefixes[customPrefix] = customUri;
+      } else if (prefixPackages) {
+        const packageUri = uriManager.generateUniqueURI({
+          id,
+          name,
+        });
+        const uri = normalizeName(packageUri);
+
+        prefixes[uri] = `${baseIRI}/${uri}#`;
       }
-    } else {
-      prefixes[''] = `${baseIRI}#`;
     }
+  }
 
-    return prefixes;
-  },
-);
+  return prefixes;
+});
 
 type CustomPrefixData = { customPrefix?: string; customUri: string };
 
@@ -79,10 +77,7 @@ type CustomElementData = {
   customUri: string;
 };
 
-export const getCustomElementData = (
-  element: IElement,
-  options: IOntoUML2GUFOOptions,
-): CustomElementData => {
+export const getCustomElementData = (element: IElement, options: IOntoUML2GUFOOptions): CustomElementData => {
   const { id, name, type } = element;
   const { customElementMapping } = options;
   let customLabel;
@@ -114,75 +109,77 @@ export const getCustomElementData = (
   return { customLabel, customUri };
 };
 
-export const getPackagePrefix = memoizee(
-  (packageEl: IPackage, options: IOntoUML2GUFOOptions): string => {
-    const { id, name } = packageEl;
-    const { uriManager, prefixPackages } = options;
-    const { customPrefix } = getCustomPackageData(packageEl, options);
+export const getPackagePrefix = memoizee((packageEl: IPackage, options: IOntoUML2GUFOOptions): string => {
+  const { id, name } = packageEl;
+  const { uriManager, prefixPackages } = options;
+  const { customPrefix } = getCustomPackageData(packageEl, options);
 
-    if (customPrefix) {
-      return `${customPrefix}:`;
-    } else if (prefixPackages) {
-      const packagePrefix = uriManager.generateUniqueURI({ id, name });
-      const prefix = formatPackageName(packagePrefix);
+  if (customPrefix) {
+    return `${customPrefix}:`;
+  } else if (prefixPackages) {
+    const packagePrefix = uriManager.generateUniqueURI({ id, name });
+    const prefix = normalizeName(packagePrefix);
 
-      return `${prefix}:`;
-    }
+    return `${prefix}:`;
+  }
 
-    return ':';
-  },
-);
+  return ':';
+});
 
+export const getAssignedUri = (element: IElement): string => {
+  const propertyAssignments = element.propertyAssignments;
+  return propertyAssignments && propertyAssignments.uri ? propertyAssignments.uri : null;
+};
+
+export const hasAssignedUri = (element: IElement): boolean => {
+  return getAssignedUri(element) !== null;
+};
+
+//TODO: Properly test this method
 export const getURI = memoizee(({ element, options }: GetURI): string => {
-  const {
-    uriManager,
-    uriFormatBy,
-    prefixPackages,
-    customPackageMapping,
-  } = options;
-  const { id, name, propertyAssignments } = element;
-  const isRelation = element.type === OntoUMLType.RELATION_TYPE;
-  const isClass = element.type === OntoUMLType.CLASS_TYPE;
-  const isInverseRelation = isRelation && propertyAssignments.isInverseRelation;
-  const hasCustomPackage = Object.keys(customPackageMapping).length > 0;
-  let suggestedName = name;
+  if (hasAssignedUri(element)) {
+    return getAssignedUri(element);
+  }
 
-  if (isRelation && uriFormatBy === 'name') {
+  let suggestedName;
+
+  const isRelation = element.type === OntoUMLType.RELATION_TYPE;
+  if (isRelation && options.uriFormatBy === 'name') {
     suggestedName = getRelationName(element as IRelation);
+  } else {
+    suggestedName = element.name;
   }
 
   let formattedName;
 
   if (isRelation) {
     formattedName = suggestedName;
-  } else if (isClass) {
-    formattedName = name ? formatName(name) : null;
   } else {
-    formattedName = name ? cleanSpecialCharacters(name) : null;
+    formattedName = element.name ? normalizeName(element.name) : null;
   }
 
-  const formattedId = id
-    ? `${isInverseRelation ? 'inverse_' : ''}${cleanSpecialCharacters(id)}`
+  const isInverseRelation = isRelation && element.propertyAssignments.isInverseRelation;
+  const formattedId = element.id
+    ? `${isInverseRelation ? 'inverse_' : ''}${normalizeName(element.id)}`
     : null;
   const { customUri } = getCustomElementData(element, options);
 
   const elementUri =
     customUri ||
-    uriManager.generateUniqueURI({
+    options.uriManager.generateUniqueURI({
       id: formattedId,
       name: formattedName,
     });
 
-  let uri =
-    uriFormatBy === 'id'
-      ? formattedId || elementUri
-      : elementUri || formattedId;
+  let uri = options.uriFormatBy === 'id' ? formattedId || elementUri : elementUri || formattedId;
 
   if (!uri) {
     return null;
   }
 
-  if (prefixPackages || hasCustomPackage) {
+  const hasCustomPackage =
+    options.customPackageMapping && Object.keys(options.customPackageMapping).length > 0;
+  if (options.prefixPackages || hasCustomPackage) {
     const root = element.getRootPackage ? element.getRootPackage() : null;
     const packageEl = element._container as IPackage;
 
@@ -197,93 +194,43 @@ export const getURI = memoizee(({ element, options }: GetURI): string => {
   return `:${uri}`;
 });
 
-const getRelationName = (relation: IRelation): string => {
+export const getRelationName = (relation: IRelation): string => {
   const { id, name, stereotypes, properties, propertyAssignments } = relation;
   const stereotype = stereotypes ? stereotypes[0] : null;
   const { isInverseRelation, isPartWholeRelation } = propertyAssignments;
   const RelationStereotypeMapping = isInverseRelation
     ? InverseRelationStereotypeMapping
     : NormalRelationStereotypeMapping;
-
   const target = relation.getTarget();
   const targetAssociationName = properties[1].name;
   const hasAssociationName = !!targetAssociationName;
-
-  const targetName =
-    formatName(targetAssociationName) ||
-    formatName(target.name) ||
-    formatName(id);
+  const targetName = normalizeName(targetAssociationName) || normalizeName(target.name) || normalizeName(id);
   let formattedElementName = targetName;
-
   const stereotypeName = RelationStereotypeMapping[stereotype];
   const associationName =
-    formattedElementName.charAt(0).toLocaleLowerCase() +
-    formattedElementName.substring(1);
-
+    formattedElementName.charAt(0).toLocaleLowerCase() + formattedElementName.substring(1);
   let prefixName = stereotypeName;
-
   if (isPartWholeRelation && !stereotypeName) {
     prefixName = RelationStereotypeMapping['isProperPartOf'];
   }
-
-  let relationName = prefixName
-    ? `${prefixName}${formattedElementName}`
-    : associationName;
-
+  let relationName = prefixName ? `${prefixName}${formattedElementName}` : associationName;
   if (name && !isInverseRelation) {
-    relationName = formatName(
-      name,
-      (s: string) => s.charAt(0).toUpperCase() + s.substring(1),
-    );
+    relationName = normalizeName(name);
   }
-
   if (hasAssociationName) {
     relationName = associationName;
   }
-
   return relationName;
 };
 
-const cleanSpecialCharacters = memoizee((str: string) =>
-  str
-    ? str
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-zA-Z0-9 ]/g, '')
-        .replace(/ /g, '')
-    : null,
-);
+export const normalizeName = memoizee((name: string): string => {
+  if (!name) {
+    return null;
+  }
 
-const transformToCamelCase = memoizee(
-  (name: string, mapFunction?: (s: string, index: number) => string): string =>
-    name
-      ? name
-          .toLowerCase()
-          .split(' ')
-          .map((s: string, index: number) =>
-            mapFunction
-              ? mapFunction(s, index)
-              : s.charAt(0).toUpperCase() + s.substring(1),
-          )
-          .join(' ')
-      : null,
-);
+  name = name.replace(/[\s-](\w)/g, (_match, $1) => {
+    return $1.toUpperCase();
+  });
 
-const formatName = memoizee(
-  (name: string, mapFunction?: (s: string, index: number) => string): string =>
-    name
-      ? cleanSpecialCharacters(transformToCamelCase(name, mapFunction))
-      : null,
-);
-
-const formatPackageName = memoizee((name: string): string =>
-  name
-    ? cleanSpecialCharacters(
-        transformToCamelCase(name, (s: string, index: number) =>
-          index === 0
-            ? s.charAt(0).toLowerCase() + s.substring(1)
-            : s.charAt(0).toUpperCase() + s.substring(1),
-        ),
-      )
-    : null,
-);
+  return name.replace(/[^a-zA-Z0-9_]/g, '');
+});

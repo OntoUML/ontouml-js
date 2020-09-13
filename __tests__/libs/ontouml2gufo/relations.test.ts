@@ -51,10 +51,7 @@ describe('Relations', () => {
   });
 
   it('should generate a domain and range to relation', async () => {
-    const data = [
-      '<:organizer> <rdfs:domain> <:EventPlan>',
-      '<:organizer> <rdfs:range> <:Organizer>',
-    ];
+    const data = ['<:organizer> <rdfs:domain> <:EventPlan>', '<:organizer> <rdfs:range> <:Organizer>'];
 
     for (const value of data) {
       expect(alpinebits).toContain(value);
@@ -65,7 +62,7 @@ describe('Relations', () => {
     const data = [
       '<:organizer> <rdfs:subPropertyOf> <gufo:mediates>',
       '<:depicted> <rdfs:subPropertyOf> <gufo:historicallyDependsOn>',
-      '<:snowparkcontainer> <rdfs:subPropertyOf> <gufo:isComponentOf>',
+      '<:snowparkContainer> <rdfs:subPropertyOf> <gufo:isComponentOf>',
       '<:feature> <rdfs:subPropertyOf> <gufo:inheresIn>',
     ];
 
@@ -78,7 +75,7 @@ describe('Relations', () => {
     expect(alpinebits).toContain(
       `<:CompositeArea> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
-        <owl:onProperty> [ <owl:inverseOf> <:superarea> ];
+        <owl:onProperty> [ <owl:inverseOf> <:superArea> ];
         <owl:minQualifiedCardinality> "2"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:MountainArea>
       ] .`.replace(/ {6}/gm, ''),
@@ -99,7 +96,7 @@ describe('Relations', () => {
     expect(alpinebits).toContain(
       `<:EventPlan> <rdfs:subClassOf> [
         <rdf:type> <owl:Restriction>;
-        <owl:onProperty> <:eventseries>;
+        <owl:onProperty> <:eventSeries>;
         <owl:maxQualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:EventSeries>
       ] .`.replace(/ {6}/gm, ''),
@@ -208,9 +205,9 @@ describe('Relations', () => {
 
   it('should generate derivation relation', async () => {
     const data = [
-      '<:Loves> <gufo:isDerivedFrom> <:Love>',
-      '<:HeavierThan> <gufo:isDerivedFrom> <:Weight>',
-      '<:WorksAt> <gufo:isDerivedFrom> <:EmploymentContract>',
+      '<:loves> <gufo:isDerivedFrom> <:Love>',
+      '<:heavierThan> <gufo:isDerivedFrom> <:Weight>',
+      '<:worksAt> <gufo:isDerivedFrom> <:EmploymentContract>',
     ];
 
     for (const value of data) {
