@@ -182,22 +182,18 @@ export class Class extends Classifier implements IDecoratable {
     throw new Error('Method unimplemented!');
   }
 
-  /**
-   * Always return an array, even if empty
-   *
-   * Looks only among ancestors
-   */
-  getUltimateSortals(): Class[] {
+  getUltimateSortalAncestors(): Class[] {
+    throw new Error('Method unimplemented!');
+  }
+
+  getUltimateSortalsDescendants(): Class[] {
     throw new Error('Method unimplemented!');
   }
 
   /**
-   * Always return an array, even if empty
-   *
-   * Looks below among descents and side trees
+   * Returns not only ancestors and descendants, but also those reachable through non-disjoint diverging branch in generalization hierarchies
    */
-  // TODO: review names
-  getUltimateSortalsBelow(): Class[] {
+  getUltimateSortalsInReach(): Class[] {
     throw new Error('Method unimplemented!');
   }
 
@@ -302,6 +298,35 @@ export class Class extends Classifier implements IDecoratable {
   }
 
   getAllLiterals(): Literal[] {
+    throw new Error('Method unimplemented!');
+  }
+
+  isPrimitiveDataType(): boolean {
+    throw new Error('Method unimplemented!');
+  }
+
+  // TODO: evaluate if these stereotype retrieval methods are necessary
+  static getUltimateSortalStereotypes(): ClassStereotype[] {
+    throw new Error('Method unimplemented!');
+  }
+
+  static getSortalStereotypes(): ClassStereotype[] {
+    throw new Error('Method unimplemented!');
+  }
+
+  static getNonSortalStereotypes(): ClassStereotype[] {
+    throw new Error('Method unimplemented!');
+  }
+
+  static getRigidStereotypes(): ClassStereotype[] {
+    throw new Error('Method unimplemented!');
+  }
+
+  static getAntiRigidStereotypes(): ClassStereotype[] {
+    throw new Error('Method unimplemented!');
+  }
+
+  static getSemiRigidStereotypes(): ClassStereotype[] {
     throw new Error('Method unimplemented!');
   }
 }
