@@ -161,8 +161,6 @@ interface IClass extends IElement, IContainer, IDecoratable, IClassifier {
   allowed: string[] | null;
   isExtensional: boolean | null;
   literals: ILiteral[] | null;
-  allowed: OntologicalNature[] | null;
-  isExtensional: boolean | null;
   isPowertype: boolean | null;
   order: number | null;
 

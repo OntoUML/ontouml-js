@@ -1,5 +1,5 @@
 import { Quad, N3Writer } from 'n3';
-import { IClass, ILiteral, IOntoUML2GUFOOptions, IRelation } from '@types';
+import { IClass, ILiteral, IOntoUML2GUFOOptions } from '@types';
 import { getURI } from './helper_functions';
 
 const N3 = require('n3');
@@ -49,6 +49,17 @@ export function transformHistoricalRole(
   const uri = getURI({ element: classElement, options });
 
   return [quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Role'))];
+}
+
+export function transformHistoricalRoleMixin(
+  classElement: IClass,
+  options: IOntoUML2GUFOOptions,
+): Quad[] {
+  const uri = getURI({ element: classElement, options });
+
+  return [
+    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:RoleMixin')),
+  ];
 }
 
 export function transformPhase(
@@ -213,6 +224,8 @@ export function transformEvent(
 ): Quad[] {
   const uri = getURI({ element: classElement, options });
 
+  uri;
+
   return [
     // quad(namedNode(uri), namedNode('rdfs:subClassOf'), namedNode('gufo:Event')),
   ];
@@ -223,6 +236,8 @@ export function transformType(
   options: IOntoUML2GUFOOptions,
 ): Quad[] {
   const uri = getURI({ element: classElement, options });
+
+  uri;
 
   return [
     // quad(
@@ -240,6 +255,8 @@ export function transformDatatype(
   const { properties } = classElement;
   const uri = getURI({ element: classElement, options });
   const isComplexDatatype = !!properties;
+
+  uri;
 
   if (isComplexDatatype) {
     return [
