@@ -1,13 +1,13 @@
 import { ModelElement } from './ModelElement';
 import { OntoUMLType } from '@constants/.';
+import { Project } from './Project';
 
 export class Package extends ModelElement {
-  type: OntoUMLType.PACKAGE_TYPE;
-  contents: null | ModelElement[];
+  contents?: ModelElement[];
 
-  constructor() {
-    super();
-    throw new Error('Class unimplemented');
+  constructor(project: Project) {
+    super(project);
+    this.type = OntoUMLType.PACKAGE_TYPE;
   }
 
   getAllContents(match: object): ModelElement[] {

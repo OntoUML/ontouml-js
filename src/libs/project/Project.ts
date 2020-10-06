@@ -1,5 +1,7 @@
 import schemas from 'ontouml-schema';
 import Ajv from 'ajv';
+import randomId from 'random-id';
+
 import { OntoUMLType, OntologicalNature } from '@constants/.';
 import { Package } from './Package';
 import { Diagram } from './Diagram';
@@ -14,27 +16,47 @@ import { ModelElement } from './ModelElement';
 export class Project {
   type: OntoUMLType.PROJECT_TYPE;
   id: string;
-  name: null | string | object = null;
-  description: null | string | object = null;
-  model: null | Package;
-  diagrams: null | Diagram[];
+  name?: string | object;
+  description?: string | object;
+  model?: Package;
+  diagrams?: Diagram[];
 
-  private _locked: boolean = false;
+  _locked: boolean;
+  _elementsMap: Map<OntoUMLType, Map<string, ModelElement>>;
 
-  constructor(ontoumlSchemaInstance: object) {
-    if (ontoumlSchemaInstance) {
-      const validator = new Ajv().compile(schemas.getSchema(schemas.ONTOUML_2));
-      const isValid = validator(ontoumlSchemaInstance);
+  constructor(ontoumlSchemaInstance?: object) {
+    this.id = randomId();
+    this._locked = false;
+    this._elementsMap = new Map();
 
-      if (!isValid) {
-        throw {
-          message: 'Invalid model input.',
-          errors: validator.errors,
-        };
-      }
-
-      Object.assign(this, ontoumlSchemaInstance);
+    for (let ontoUmlType in OntoUMLType) {
+      console.log('Initializing map for tyoe: ' + ontoUmlType);
+      this._elementsMap.set(OntoUMLType[ontoUmlType], new Map());
     }
+
+    this.model = this.createPackage();
+  }
+
+  register(element: ModelElement) {
+    const id = element.id;
+    const type = element.type;
+    const selectedMap = this._elementsMap.get(type);
+
+    console.log(selectedMap, type, id, this._elementsMap);
+
+    if (!selectedMap) {
+      throw new Error('Invalid OntoUMLType');
+    } else if (selectedMap.get(element.id)) {
+      throw new Error('Model element ID conflict.');
+    } else {
+      selectedMap.set(id, element);
+    }
+  }
+
+  createPackage(): Package {
+    const pkg = new Package(this);
+    this.register(pkg);
+    return pkg;
   }
 
   getModelElement(match: object): ModelElement {

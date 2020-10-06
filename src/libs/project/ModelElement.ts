@@ -1,18 +1,20 @@
+import randomId from 'random-id';
+
 import { OntoUMLType } from '@constants/.';
 import { Project } from './Project';
 
 export class ModelElement {
   type: OntoUMLType;
   id: string;
-  name: null | string | object; // TODO: add support to multilingual textual fields
-  description: null | string | object;
-  propertyAssignments: null | object;
+  name?: string | object; // TODO: add support to multilingual textual fields
+  description?: string | object;
+  propertyAssignments?: object;
 
-  project: Project = null; // TODO: look for circular dependency issues
-  container: ModelElement = null; // TODO: should we detail the parent's type as Package or Class, for instance?
+  project?: Project; // TODO: look for circular dependency issues
+  container?: ModelElement; // TODO: should we detail the parent's type as Package or Class, for instance?
 
-  constructor() {
-    throw new Error('Class unimplemented');
+  constructor(project?: Project) {
+    this.id = randomId();
   }
 
   lock(): void {
