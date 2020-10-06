@@ -359,7 +359,6 @@ function isRigid(): boolean {
       ClassStereotype.QUALITY,
       ClassStereotype.SUBKIND,
       ClassStereotype.CATEGORY,
-      ClassStereotype.TYPE,
     ];
     return strs.includes(self.stereotypes[0]);
   }

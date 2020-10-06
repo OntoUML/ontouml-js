@@ -5,7 +5,8 @@
     {
       "files": "*.ts",
       "options": {
-        "parser": "typescript"
+        "parser": "typescript",
+        "printWidth": 130
       }
     }
   ]
