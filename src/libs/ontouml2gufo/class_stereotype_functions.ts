@@ -6,10 +6,7 @@ const N3 = require('n3');
 const { DataFactory } = N3;
 const { namedNode, quad, literal } = DataFactory;
 
-export function transformKind(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformKind(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: classElement, options });
 
   return [
@@ -22,101 +19,61 @@ export function transformKind(
   ];
 }
 
-export function transformSubkind(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformSubkind(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: classElement, options });
 
-  return [
-    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:SubKind')),
-  ];
+  return [quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:SubKind'))];
 }
 
-export function transformRole(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformRole(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: classElement, options });
 
   return [quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Role'))];
 }
 
-export function transformHistoricalRole(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformHistoricalRole(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: classElement, options });
 
   return [quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Role'))];
 }
 
-export function transformHistoricalRoleMixin(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformHistoricalRoleMixin(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: classElement, options });
 
-  return [
-    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:RoleMixin')),
-  ];
+  return [quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:RoleMixin'))];
 }
 
-export function transformPhase(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformPhase(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: classElement, options });
 
   return [quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Phase'))];
 }
 
-export function transformCategory(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformCategory(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: classElement, options });
 
-  return [
-    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Category')),
-  ];
+  return [quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Category'))];
 }
 
-export function transformMixin(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformMixin(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: classElement, options });
 
   return [quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Mixin'))];
 }
 
-export function transformRoleMixin(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformRoleMixin(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: classElement, options });
 
-  return [
-    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:RoleMixin')),
-  ];
+  return [quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:RoleMixin'))];
 }
 
-export function transformPhaseMixin(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformPhaseMixin(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: classElement, options });
 
-  return [
-    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:PhaseMixin')),
-  ];
+  return [quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:PhaseMixin'))];
 }
 
-export function transformRelator(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformRelator(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: classElement, options });
 
   return [
@@ -129,10 +86,7 @@ export function transformRelator(
   ];
 }
 
-export function transformMode(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformMode(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const quads = [];
   const uri = getURI({ element: classElement, options });
 
@@ -163,17 +117,12 @@ export function transformMode(
   //   );
   // }
 
-  quads.push(
-    quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Kind')),
-  );
+  quads.push(quad(namedNode(uri), namedNode('rdf:type'), namedNode('gufo:Kind')));
 
   return quads;
 }
 
-export function transformQuality(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformQuality(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: classElement, options });
 
   return [
@@ -186,10 +135,7 @@ export function transformQuality(
   ];
 }
 
-export function transformQuantity(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformQuantity(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: classElement, options });
 
   return [
@@ -202,10 +148,7 @@ export function transformQuantity(
   ];
 }
 
-export function transformCollective(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformCollective(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: classElement, options });
 
   return [
@@ -218,10 +161,7 @@ export function transformCollective(
   ];
 }
 
-export function transformEvent(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformEvent(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: classElement, options });
 
   uri;
@@ -231,10 +171,7 @@ export function transformEvent(
   ];
 }
 
-export function transformType(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformType(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const uri = getURI({ element: classElement, options });
 
   uri;
@@ -248,10 +185,7 @@ export function transformType(
   ];
 }
 
-export function transformDatatype(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+export function transformDatatype(classElement: IClass, options: IOntoUML2GUFOOptions): Quad[] {
   const { properties } = classElement;
   const uri = getURI({ element: classElement, options });
   const isComplexDatatype = !!properties;
@@ -271,11 +205,7 @@ export function transformDatatype(
   return [];
 }
 
-export function transformEnumeration(
-  classElement: IClass,
-  options: IOntoUML2GUFOOptions,
-  writer?: N3Writer,
-): Quad[] {
+export function transformEnumeration(classElement: IClass, options: IOntoUML2GUFOOptions, writer?: N3Writer): Quad[] {
   const { literals } = classElement;
 
   if (!literals) {
@@ -318,9 +248,7 @@ export function transformEnumeration(
     const literalUri = literalUris[i];
 
     quads.push(quad(literalUri, namedNode('rdf:type'), namedNode(uri)));
-    quads.push(
-      quad(literalUri, namedNode('rdf:label'), literal(literals[i].name)),
-    );
+    quads.push(quad(literalUri, namedNode('rdf:label'), literal(literals[i].name)));
   }
 
   return quads;

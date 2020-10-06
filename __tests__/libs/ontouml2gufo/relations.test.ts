@@ -1,8 +1,4 @@
-import {
-  alpinebits as alpinebitsModel,
-  partWhole as partWholeModel,
-  derivation as derivationModel,
-} from '@test-models/valids';
+import { alpinebits as alpinebitsModel, partWhole as partWholeModel, derivation as derivationModel } from '@test-models/valids';
 import { transformOntoUML2GUFO } from './helpers';
 
 describe('Relations', () => {
@@ -51,10 +47,7 @@ describe('Relations', () => {
   });
 
   it('should generate a domain and range to relation', async () => {
-    const data = [
-      '<:organizer> <rdfs:domain> <:EventPlan>',
-      '<:organizer> <rdfs:range> <:Organizer>',
-    ];
+    const data = ['<:organizer> <rdfs:domain> <:EventPlan>', '<:organizer> <rdfs:range> <:Organizer>'];
 
     for (const value of data) {
       expect(alpinebits).toContain(value);

@@ -20,26 +20,13 @@ export const HideObjectPropertyCreationList = [
   'termination',
 ];
 
-export const HideReadOnlyObjectPropertyCreationList = [
-  'componentOf',
-  'memberOf',
-  'subCollectionOf',
-  'subQuantityOf',
-];
+export const HideReadOnlyObjectPropertyCreationList = ['componentOf', 'memberOf', 'subCollectionOf', 'subQuantityOf'];
 
 export const RelationsInverted = ['creation', 'termination', 'participation'];
 
-export const AspectProperPartClassStereotypeList = [
-  'relator',
-  'mode',
-  'quality',
-];
+export const AspectProperPartClassStereotypeList = ['relator', 'mode', 'quality'];
 
-export const ObjectProperPartClassStereotypeList = [
-  'kind',
-  'collective',
-  'quantity',
-];
+export const ObjectProperPartClassStereotypeList = ['kind', 'collective', 'quantity'];
 
 export const IgnoreCardinalityCreationList = ['comparative', 'material'];
 

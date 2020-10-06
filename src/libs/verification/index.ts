@@ -41,17 +41,12 @@ export class OntoUML2Verification {
 
         case OntoUMLType.CLASS_TYPE:
           const _class: IClass = element as IClass;
-          const classConsistencyIssues: VerificationIssue[] = ClassVerification.checkMinimalConsistency(
-            _class,
-          );
+          const classConsistencyIssues: VerificationIssue[] = ClassVerification.checkMinimalConsistency(_class);
           issues = [...issues, ...classConsistencyIssues];
 
           if (
             classConsistencyIssues &&
-            classConsistencyIssues.find(
-              (issue: VerificationIssue) =>
-                issue.severity === IssueSeverity.error,
-            )
+            classConsistencyIssues.find((issue: VerificationIssue) => issue.severity === IssueSeverity.error)
           ) {
             break;
           } else {
@@ -67,24 +62,16 @@ export class OntoUML2Verification {
         case OntoUMLType.GENERALIZATION_TYPE:
           // const generalization = element as IGeneralization;
           const generalization: IGeneralization = element as IGeneralization;
-          const genConsistencyIssues: VerificationIssue[] = GeneralizationVerification.checkMinimalConsistency(
-            generalization,
-          );
+          const genConsistencyIssues: VerificationIssue[] = GeneralizationVerification.checkMinimalConsistency(generalization);
           issues = [...issues, ...genConsistencyIssues];
 
           if (
             genConsistencyIssues &&
-            genConsistencyIssues.find(
-              (issue: VerificationIssue) =>
-                issue.severity === IssueSeverity.error,
-            )
+            genConsistencyIssues.find((issue: VerificationIssue) => issue.severity === IssueSeverity.error)
           ) {
             break;
           } else {
-            issues = [
-              ...issues,
-              ...GeneralizationVerification.check(generalization),
-            ];
+            issues = [...issues, ...GeneralizationVerification.check(generalization)];
           }
           break;
 

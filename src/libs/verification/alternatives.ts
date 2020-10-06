@@ -30,8 +30,7 @@ export class VerificationAlternative {
     switch (code) {
       case VerificationAlternativeCode.replace_ontouml_class_stereotype:
         this.title = "Replace element's stereotypes.";
-        this.description = `Apply to ${source.name ||
-          source.id} a unique stereotype from the set {${getElementStereotypes(
+        this.description = `Apply to ${source.name || source.id} a unique stereotype from the set {${getElementStereotypes(
           source,
         ).join(', ')}}.`;
         this.elements = null;

@@ -56,19 +56,10 @@ export function getGufoParentFromAllowed(classElement: IClass): string {
 
   if (allowed.includes('event')) return 'gufo:ConcreteIndividual';
 
-  if (
-    !allowed.includes('collective') &&
-    !allowed.includes('functional-complex') &&
-    !allowed.includes('quantity')
-  )
+  if (!allowed.includes('collective') && !allowed.includes('functional-complex') && !allowed.includes('quantity'))
     return 'gufo:Aspect';
 
-  if (
-    !allowed.includes('quality') &&
-    !allowed.includes('mode') &&
-    !allowed.includes('relator')
-  )
-    return 'gufo:Object';
+  if (!allowed.includes('quality') && !allowed.includes('mode') && !allowed.includes('relator')) return 'gufo:Object';
 
   return 'gufo:Endurant';
 }
@@ -87,13 +78,9 @@ export function getGufoParent(classElement: IClass): string {
     if (parent.type !== OntoUMLType.CLASS_TYPE) continue;
 
     const parentAllowed = (parent as IClass).allowed || [];
-    const containsAll = (source, target) =>
-      target.every(v => source.includes(v));
+    const containsAll = (source, target) => target.every(v => source.includes(v));
 
-    if (
-      containsAll(allowed, parentAllowed) &&
-      containsAll(parentAllowed, allowed)
-    ) {
+    if (containsAll(allowed, parentAllowed) && containsAll(parentAllowed, allowed)) {
       hasSameNatureAsAParent = true;
       break;
     }

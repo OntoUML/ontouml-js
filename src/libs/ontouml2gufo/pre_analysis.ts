@@ -1,14 +1,6 @@
 import randomId from 'random-id';
 import isURI from 'validate.io-uri';
-import {
-  IPreAnalysisItem,
-  IPackage,
-  IOntoUML2GUFOOptions,
-  IRelation,
-  IElement,
-  IClass,
-  IProperty,
-} from '@types';
+import { IPreAnalysisItem, IPackage, IOntoUML2GUFOOptions, IRelation, IElement, IClass, IProperty } from '@types';
 import { OntoUMLType } from '@constants/.';
 import { DefaultPrefixes } from './constants';
 import { getPrefixes } from './helper_functions';
@@ -27,21 +19,12 @@ enum PreAnalysisSeverity {
   - Check relations without cardinality
   - Check attributes without type
 */
-export async function runPreAnalysis(
-  model: IPackage,
-  options: IOntoUML2GUFOOptions,
-): Promise<IPreAnalysisItem[]> {
+export async function runPreAnalysis(model: IPackage, options: IOntoUML2GUFOOptions): Promise<IPreAnalysisItem[]> {
   const { baseIRI } = options;
   const elements = model.getAllContents();
-  const packages = model.getAllContentsByType([
-    OntoUMLType.PACKAGE_TYPE,
-  ]) as IPackage[];
-  const classes = model.getAllContentsByType([
-    OntoUMLType.CLASS_TYPE,
-  ]) as IClass[];
-  const relations = model.getAllContentsByType([
-    OntoUMLType.RELATION_TYPE,
-  ]) as IRelation[];
+  const packages = model.getAllContentsByType([OntoUMLType.PACKAGE_TYPE]) as IPackage[];
+  const classes = model.getAllContentsByType([OntoUMLType.CLASS_TYPE]) as IClass[];
+  const relations = model.getAllContentsByType([OntoUMLType.RELATION_TYPE]) as IRelation[];
 
   const [
     baseIRIAnalysis,
@@ -86,19 +69,14 @@ async function checkBaseIRI(baseIRI: string): Promise<IPreAnalysisItem[]> {
   return preAnalysis;
 }
 
-async function checkPackagePrefixes(
-  packages: IPackage[],
-  options: IOntoUML2GUFOOptions,
-): Promise<IPreAnalysisItem[]> {
+async function checkPackagePrefixes(packages: IPackage[], options: IOntoUML2GUFOOptions): Promise<IPreAnalysisItem[]> {
   const preAnalysis: IPreAnalysisItem[] = [];
   const { customPackageMapping, prefixPackages } = options;
   const defaultPrefixKeys = Object.keys(DefaultPrefixes);
   const defaultPrefixUris = Object.values(DefaultPrefixes);
 
   for (const key of Object.keys(customPackageMapping)) {
-    const packageEl = packages.find(
-      ({ id, name }: IPackage) => id === key || name === key,
-    ) || { id: '', name: '' };
+    const packageEl = packages.find(({ id, name }: IPackage) => id === key || name === key) || { id: '', name: '' };
     const { prefix, uri } = customPackageMapping[key];
 
     if (defaultPrefixKeys.includes(prefix)) {
@@ -161,10 +139,7 @@ async function checkPackagePrefixes(
   return preAnalysis;
 }
 
-async function checkInexistentRelationNames(
-  relations: IRelation[],
-  options: IOntoUML2GUFOOptions,
-): Promise<IPreAnalysisItem[]> {
+async function checkInexistentRelationNames(relations: IRelation[], options: IOntoUML2GUFOOptions): Promise<IPreAnalysisItem[]> {
   const preAnalysis: IPreAnalysisItem[] = [];
   const { createInverses } = options;
 
@@ -203,9 +178,7 @@ async function checkInexistentRelationNames(
   return preAnalysis;
 }
 
-async function checkRepeatedNames(
-  elements: IElement[],
-): Promise<IPreAnalysisItem[]> {
+async function checkRepeatedNames(elements: IElement[]): Promise<IPreAnalysisItem[]> {
   const preAnalysis: IPreAnalysisItem[] = [];
   const elementNames = {};
 
@@ -257,9 +230,7 @@ async function checkRepeatedNames(
         code: 'duplicate_names',
         severity: PreAnalysisSeverity.WARNING,
         title: 'Duplicate element name',
-        description: `The name "${name}" has been used multiple times: ${names
-          .join(', ')
-          .replace(/,(?!.*,)/gim, ' and')}.`,
+        description: `The name "${name}" has been used multiple times: ${names.join(', ').replace(/,(?!.*,)/gim, ' and')}.`,
         data: {
           elements: { id: repeatedElements.id, name: repeatedElements.name },
         },
@@ -270,9 +241,7 @@ async function checkRepeatedNames(
   return preAnalysis;
 }
 
-async function checkInexistentCardinality(
-  relations: IRelation[],
-): Promise<IPreAnalysisItem[]> {
+async function checkInexistentCardinality(relations: IRelation[]): Promise<IPreAnalysisItem[]> {
   const preAnalysis: IPreAnalysisItem[] = [];
 
   relations.forEach((relation: IRelation) => {
@@ -308,9 +277,7 @@ async function checkInexistentCardinality(
   return preAnalysis;
 }
 
-async function checkInexistentAttributesType(
-  classes: IClass[],
-): Promise<IPreAnalysisItem[]> {
+async function checkInexistentAttributesType(classes: IClass[]): Promise<IPreAnalysisItem[]> {
   const preAnalysis: IPreAnalysisItem[] = [];
 
   classes.forEach((classElement: IClass) => {

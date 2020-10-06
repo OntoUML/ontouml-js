@@ -75,10 +75,7 @@ export async function transformRelations(
     const { stereotypes, propertyAssignments } = relations[i];
     const stereotype = stereotypes ? stereotypes[0] : null;
 
-    const extraPropertyAssigments = generateExtraPropertyAssignments(
-      relations[i],
-      options,
-    );
+    const extraPropertyAssigments = generateExtraPropertyAssignments(relations[i], options);
 
     relations[i].propertyAssignments = {
       ...(propertyAssignments || {}),
@@ -128,18 +125,13 @@ export async function transformRelations(
       properties: [relation.properties[1], relation.properties[0]],
     } as IRelation;
 
-    const isInverseTransformationEnabled =
-      createInverses && !IgonoredInverseRelations.includes(stereotype);
+    const isInverseTransformationEnabled = createInverses && !IgonoredInverseRelations.includes(stereotype);
 
     const relationQuads = transformRelation(writer, relation, options);
     let inverseRelationQuads = [];
 
     if (isInverseTransformationEnabled) {
-      inverseRelationQuads = transformRelation(
-        writer,
-        inverseRelation,
-        options,
-      );
+      inverseRelationQuads = transformRelation(writer, inverseRelation, options);
     }
 
     await writer.addQuads([...relationQuads, ...inverseRelationQuads]);
@@ -154,11 +146,7 @@ export async function transformRelations(
   return true;
 }
 
-function transformRelation(
-  writer: N3Writer,
-  relation: IRelation,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+function transformRelation(writer: N3Writer, relation: IRelation, options: IOntoUML2GUFOOptions): Quad[] {
   const { stereotypes } = relation;
   const stereotype = stereotypes ? stereotypes[0] : null;
   const { hideBaseCreation } = relation.propertyAssignments;
@@ -176,24 +164,16 @@ function transformRelation(
 
     if (!IgnoreCardinalityCreationList.includes(stereotype)) {
       // Get cardinalities quads from relation
-      cardinalityQuads = transformRelationCardinalities(
-        writer,
-        relation,
-        options,
-      );
+      cardinalityQuads = transformRelationCardinalities(writer, relation, options);
     }
   }
 
   // stereotype checking
-  const hasStereotypeFunction =
-    stereotype && Object.keys(transformStereotypeFunction).includes(stereotype);
+  const hasStereotypeFunction = stereotype && Object.keys(transformStereotypeFunction).includes(stereotype);
 
   if (hasStereotypeFunction && !hideBaseCreation) {
     // Get stereotype quads from relation
-    stereotypeQuads = transformStereotypeFunction[stereotype](
-      relation,
-      options,
-    );
+    stereotypeQuads = transformStereotypeFunction[stereotype](relation, options);
   }
 
   return [...baseQuads, ...cardinalityQuads, ...stereotypeQuads];
@@ -202,10 +182,7 @@ function transformRelation(
 /**
  * Transform relation domain and range classes to gUFO
  */
-function transformRelationBase(
-  relation: IRelation,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+function transformRelationBase(relation: IRelation, options: IOntoUML2GUFOOptions): Quad[] {
   const { name, propertyAssignments } = relation;
   const uri = getURI({ element: relation, options });
   const {
@@ -222,37 +199,23 @@ function transformRelationBase(
   const domainClassUri = getURI({ element: sourceClass, options });
   const rangeClassUri = getURI({ element: targetClass, options });
 
-  const quads = [
-    quad(
-      namedNode(uri),
-      namedNode('rdf:type'),
-      namedNode('owl:ObjectProperty'),
-    ),
-  ];
+  const quads = [quad(namedNode(uri), namedNode('rdf:type'), namedNode('owl:ObjectProperty'))];
 
   if (domainClassUri && rangeClassUri) {
-    quads.push(
-      quad(namedNode(uri), namedNode('rdfs:domain'), namedNode(domainClassUri)),
-    );
+    quads.push(quad(namedNode(uri), namedNode('rdfs:domain'), namedNode(domainClassUri)));
 
-    quads.push(
-      quad(namedNode(uri), namedNode('rdfs:range'), namedNode(rangeClassUri)),
-    );
+    quads.push(quad(namedNode(uri), namedNode('rdfs:range'), namedNode(rangeClassUri)));
   }
 
   if (isInverseRelation) {
     const { relationUri } = relation.propertyAssignments;
 
-    quads.push(
-      quad(namedNode(uri), namedNode('owl:inverseOf'), namedNode(relationUri)),
-    );
+    quads.push(quad(namedNode(uri), namedNode('owl:inverseOf'), namedNode(relationUri)));
   }
 
   // transform part-whole relations
   if (isPartWholeRelation) {
-    const RelationStereotypeMapping = isInverseRelation
-      ? InverseRelationStereotypeMapping
-      : NormalRelationStereotypeMapping;
+    const RelationStereotypeMapping = isInverseRelation ? InverseRelationStereotypeMapping : NormalRelationStereotypeMapping;
     const prefix = isInverseRelation ? '' : 'gufo';
 
     // relation between events
@@ -261,9 +224,7 @@ function transformRelationBase(
         quad(
           namedNode(uri),
           namedNode('rdfs:subPropertyOf'),
-          namedNode(
-            `${prefix}:${RelationStereotypeMapping['isEventProperPartOf']}`,
-          ),
+          namedNode(`${prefix}:${RelationStereotypeMapping['isEventProperPartOf']}`),
         ),
       );
     }
@@ -273,9 +234,7 @@ function transformRelationBase(
         quad(
           namedNode(uri),
           namedNode('rdfs:subPropertyOf'),
-          namedNode(
-            `${prefix}:${RelationStereotypeMapping['isAspectProperPartOf']}`,
-          ),
+          namedNode(`${prefix}:${RelationStereotypeMapping['isAspectProperPartOf']}`),
         ),
       );
     }
@@ -285,9 +244,7 @@ function transformRelationBase(
         quad(
           namedNode(uri),
           namedNode('rdfs:subPropertyOf'),
-          namedNode(
-            `${prefix}:${RelationStereotypeMapping['isObjectProperPartOf']}`,
-          ),
+          namedNode(`${prefix}:${RelationStereotypeMapping['isObjectProperPartOf']}`),
         ),
       );
     }
@@ -307,13 +264,7 @@ function transformRelationBase(
   if (name) {
     quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(name)));
   } else {
-    quads.push(
-      quad(
-        namedNode(uri),
-        namedNode('rdfs:comment'),
-        literal('Relation URI was automatically generated.'),
-      ),
-    );
+    quads.push(quad(namedNode(uri), namedNode('rdfs:comment'), literal('Relation URI was automatically generated.')));
   }
 
   return quads;
@@ -322,11 +273,7 @@ function transformRelationBase(
 /**
  * Transform relation cardinalities to gUFO
  */
-function transformRelationCardinalities(
-  writer: N3Writer,
-  relation: IRelation,
-  options: IOntoUML2GUFOOptions,
-): Quad[] {
+function transformRelationCardinalities(writer: N3Writer, relation: IRelation, options: IOntoUML2GUFOOptions): Quad[] {
   const { createInverses } = options;
   const { properties } = relation;
 
@@ -394,10 +341,7 @@ function transformRelationCardinality({
   const defaultParams = { writer, relation, classUri, isDomain, options };
 
   // min = max
-  if (
-    lowerboundDomainCardinality === upperboundDomainCardinality &&
-    !hasInfiniteCardinality
-  ) {
+  if (lowerboundDomainCardinality === upperboundDomainCardinality && !hasInfiniteCardinality) {
     quads.push(
       generateRelationCardinalityQuad({
         ...defaultParams,
@@ -417,11 +361,7 @@ function transformRelationCardinality({
     );
   }
   // 2..*, 3..* ...
-  else if (
-    lowerboundDomainCardinality > 1 &&
-    lowerboundDomainCardinality < 99999 &&
-    hasInfiniteCardinality
-  ) {
+  else if (lowerboundDomainCardinality > 1 && lowerboundDomainCardinality < 99999 && hasInfiniteCardinality) {
     quads.push(
       generateRelationCardinalityQuad({
         ...defaultParams,
@@ -537,9 +477,7 @@ function generateRelationBlankQuad({
 
   // add gufo props when hide object property creation
   if (hideBaseCreation) {
-    const RelationStereotypeMapping = isInverseRelation
-      ? InverseRelationStereotypeMapping
-      : NormalRelationStereotypeMapping;
+    const RelationStereotypeMapping = isInverseRelation ? InverseRelationStereotypeMapping : NormalRelationStereotypeMapping;
     const prefix = isInverseRelation ? '' : 'gufo';
 
     if (stereotype) {
@@ -562,19 +500,14 @@ function generateRelationBlankQuad({
     },
     {
       predicate: namedNode('owl:onProperty'),
-      object: isDomain
-        ? namedNode(propertyUri)
-        : writer.blank(namedNode('owl:inverseOf'), namedNode(propertyUri)),
+      object: isDomain ? namedNode(propertyUri) : writer.blank(namedNode('owl:inverseOf'), namedNode(propertyUri)),
     },
   ];
 
   if (cardinality && cardinalityPredicate) {
     blankTriples.push({
       predicate: namedNode(cardinalityPredicate),
-      object: literal(
-        cardinality.toString(),
-        namedNode('xsd:nonNegativeInteger'),
-      ),
+      object: literal(cardinality.toString(), namedNode('xsd:nonNegativeInteger')),
     });
 
     blankTriples.push({

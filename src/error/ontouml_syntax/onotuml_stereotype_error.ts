@@ -19,8 +19,7 @@ class OntoUMLStereotypeError extends OntoUMLError {
       code: 'ontouml_stereotype_error',
       detail,
       links: {
-        self:
-          'https://github.com/OntoUML/ontouml-js/wiki/OntoUML-Syntax-Constraints',
+        self: 'https://github.com/OntoUML/ontouml-js/wiki/OntoUML-Syntax-Constraints',
       },
       meta: { element },
     });
