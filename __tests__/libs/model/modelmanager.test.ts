@@ -33,10 +33,7 @@ describe('Model deserializing', () => {
   });
 
   it('Check getAllContentsByType()', () => {
-    const selectedContents = modelManager.rootPackage.getAllContentsByType([
-      OntoumlType.CLASS_TYPE,
-      OntoumlType.RELATION_TYPE,
-    ]);
+    const selectedContents = modelManager.rootPackage.getAllContentsByType([OntoumlType.CLASS_TYPE, OntoumlType.RELATION_TYPE]);
     expect(selectedContents.length).toBeGreaterThan(0);
     expect(selectedContents.filter((element: IElement) => !element.hasIClassifierType()).length).toBe(0);
   });
@@ -45,7 +42,7 @@ describe('Model deserializing', () => {
     modelManager.rootPackage
       .getAllContents()
       .forEach((element: IElement) =>
-        expect(modelManager.allElements[element.id] === modelManager.getElementById(element.id)).toBeTruthy(),
+        expect(modelManager.allElements[element.id] === modelManager.getElementById(element.id)).toBeTruthy()
       );
   });
 
@@ -64,9 +61,7 @@ describe('Model deserializing', () => {
 
     const children = student.getChildren();
 
-    expect(
-      children.length === 2 && children.includes(sophomore) && children.includes(privately),
-    ).toBeTruthy();
+    expect(children.length === 2 && children.includes(sophomore) && children.includes(privately)).toBeTruthy();
   });
 
   it('Check getAncestors()', () => {
@@ -77,10 +72,7 @@ describe('Model deserializing', () => {
     const ancestors = sophomore.getAncestors();
 
     expect(
-      ancestors.length === 3 &&
-        ancestors.includes(student) &&
-        ancestors.includes(person) &&
-        ancestors.includes(agent),
+      ancestors.length === 3 && ancestors.includes(student) && ancestors.includes(person) && ancestors.includes(agent)
     ).toBeTruthy();
   });
 
@@ -95,7 +87,7 @@ describe('Model deserializing', () => {
       descendants.length === 3 &&
         descendants.includes(student) &&
         descendants.includes(sophomore) &&
-        descendants.includes(privately),
+        descendants.includes(privately)
     ).toBeTruthy();
   });
 });

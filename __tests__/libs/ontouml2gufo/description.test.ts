@@ -9,7 +9,7 @@ describe('Descriptions to rdfs:comments', () => {
     _class.description = description;
 
     const model = OntoumlFactory.createPackage(null, [_class]);
-    const result = generateGufo(model)
+    const result = generateGufo(model);
 
     expect(result).toContain('<:Person> <rdfs:comment> "' + description + '"');
   });
@@ -23,7 +23,7 @@ describe('Descriptions to rdfs:comments', () => {
     attr.description = description;
 
     const model = OntoumlFactory.createPackage(null, [_class, datatype]);
-    const result = generateGufo(model)
+    const result = generateGufo(model);
 
     expect(result).toContain('<:name> <rdfs:comment> "' + description + '"');
   });
@@ -36,7 +36,7 @@ describe('Descriptions to rdfs:comments', () => {
     relation.description = description;
 
     const model = OntoumlFactory.createPackage(null, [_class, relation]);
-    const result = generateGufo(model)
+    const result = generateGufo(model);
 
     expect(result).toContain('<:knows> <rdfs:comment> "' + description + '"');
 

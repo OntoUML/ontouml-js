@@ -6,7 +6,7 @@ describe('Enumeration', () => {
   beforeAll(async () => {
     const _class = OntoumlFactory.createEnumeration('Color', ['blue', 'red', 'green']);
     const model = OntoumlFactory.createPackage(null, [_class]);
-    result = generateGufo(model)
+    result = generateGufo(model);
   });
 
   it('should transform «enumeration» class', async () => {

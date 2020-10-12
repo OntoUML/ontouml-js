@@ -45,6 +45,7 @@ describe('Custom labels', () => {
     for (const value of data) {
       expect(partWholeCustomLabel).toContain(value);
     }
+  });
 });
 
 // let alpinebits;

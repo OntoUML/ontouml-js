@@ -12,7 +12,7 @@ describe('Names in multiple languages', () => {
     };
 
     const model = OntoumlFactory.createPackage(null, [_class]);
-    const result = generateGufo(model)
+    const result = generateGufo(model);
 
     expect(result).toContain('<:Person> <rdfs:label> "Person"@en');
     expect(result).toContain('<:Person> <rdfs:label> "Persona"@it');
@@ -32,7 +32,7 @@ describe('Names in multiple languages', () => {
     };
 
     const model = OntoumlFactory.createPackage(null, [_class]);
-    const result = generateGufo(model)
+    const result = generateGufo(model);
 
     expect(result).toContain('<:name> <rdfs:label> "naam"@nl');
     expect(result).toContain('<:name> <rdfs:label> "nome"@pt');
@@ -51,7 +51,7 @@ describe('Names in multiple languages', () => {
     };
 
     const model = OntoumlFactory.createPackage(null, [_class, relation]);
-    const result = generateGufo(model)
+    const result = generateGufo(model);
 
     expect(result).toContain('<:knows> <rdfs:label> "knows"@en');
     expect(result).toContain('<:knows> <rdfs:label> "conosce"@it');

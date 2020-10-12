@@ -39,5 +39,5 @@ export {
   inverseRelations,
   referenceOntologyTrust,
   schoolTransportation,
-  ontouml2dbExample,
+  ontouml2dbExample
 };
