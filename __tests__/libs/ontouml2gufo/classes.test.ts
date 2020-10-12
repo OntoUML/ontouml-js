@@ -1,119 +1,196 @@
-import {
-  mixinExample1,
-  modeExample1,
-  modeExample2,
-  relatorExample1,
-  roleExample1,
-  alpinebits,
-} from '@test-models/valids';
-import { transformOntoUML2GUFO } from './helpers';
+import { OntologicalNature } from '@constants/.';
+import { OntoumlFactory, generateGufo } from './helpers';
 
 describe('Classes', () => {
-  it('should transform OntoUML <<mixin>> class', async () => {
-    const result = (await transformOntoUML2GUFO(mixinExample1, {
-      uriFormatBy: 'id',
-    })).model;
+  it('should generate a label with the original name of the class', () => {
+    const _class = OntoumlFactory.createKind('Happy Person');
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
 
-    expect(result).toContain('<:yhVoWg6DAAAARSb> <rdf:type> <owl:Class>');
-    expect(result).toContain('<:yhVoWg6DAAAARSb> <rdf:type> <owl:NamedIndividual>');
-    expect(result).toContain('<:yhVoWg6DAAAARSb> <rdfs:label> "Seatable"');
-    expect(result).toContain('<:yhVoWg6DAAAARSb> <rdfs:subClassOf> <gufo:Object>');
-    expect(result).toContain('<:yhVoWg6DAAAARSb> <rdf:type> <gufo:Mixin>');
+    expect(result).toContain('<:HappyPerson> <rdfs:label> "Happy Person"');
   });
 
-  it('should transform OntoUML generalization set', async () => {
-    const result = (await transformOntoUML2GUFO(mixinExample1)).model;
+  it('should generate a owl:Class and an owl:NamedIndividual', async () => {
+    const _class = OntoumlFactory.createKind('Person');
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
 
-    expect(result).toContain('<:Crate> <owl:equivalentClass>');
-    expect(result).toContain('<owl:unionOf> (<:BrokenCrate> <:SolidCrate>');
+    expect(result).toContain('<:Person> <rdf:type> <owl:Class>');
+    expect(result).toContain('<:Person> <rdf:type> <owl:NamedIndividual>');
   });
 
-  it('should transform OntoUML <<mode>> class as IntrinsicMode', async () => {
-    const result = (await transformOntoUML2GUFO(modeExample1, {
-      uriFormatBy: 'id',
-    })).model;
+  it('should transform «kind» class', async () => {
+    const _class = OntoumlFactory.createKind('Person');
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
 
-    expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:Class>');
-    expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:NamedIndividual>');
-    expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdfs:label> "Headache" .');
-    expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdfs:subClassOf> <gufo:IntrinsicMode>');
-    expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <gufo:Kind>');
+    expect(result).toContain('<:Person> <rdfs:subClassOf> <gufo:FunctionalComplex>');
+    expect(result).toContain('<:Person> <rdf:type> <gufo:Kind>');
   });
 
-  it('should transform OntoUML <<mode>> class as ExtrinsicMode', async () => {
-    const result = (await transformOntoUML2GUFO(modeExample2, {
-      uriFormatBy: 'id',
-    })).model;
+  it('should transform «collective» class { isExtensional=false }', async () => {
+    const _class = OntoumlFactory.createCollective('Group');
+    _class.isExtensional = false;
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
 
-    expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:Class>');
-    expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <owl:NamedIndividual>');
-    expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdfs:label> "Love" .');
-    expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdfs:subClassOf> <gufo:ExtrinsicMode>');
-    expect(result).toContain('<:qJdeWA6AUB0UtAWm> <rdf:type> <gufo:Kind>');
+    expect(result).toContain('<:Group> <rdfs:subClassOf> <gufo:VariableCollection>');
+    expect(result).toContain('<:Group> <rdf:type> <gufo:Kind>');
   });
 
-  it('should transform OntoUML <<relator>> class', async () => {
-    const result = (await transformOntoUML2GUFO(relatorExample1, {
-      uriFormatBy: 'id',
-    })).model;
+  it('should transform «collective» class { isExtensional=true }', async () => {
+    const _class = OntoumlFactory.createCollective('FixedGroup');
+    _class.isExtensional = true;
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
 
-    expect(result).toContain('<:SzOFmg6DAAAAQuF> <rdf:type> <owl:Class>');
-    expect(result).toContain('<:SzOFmg6DAAAAQuF> <rdf:type> <owl:NamedIndividual>');
-    expect(result).toContain('<:SzOFmg6DAAAAQuF> <rdfs:label> "Marriage"');
-    expect(result).toContain('<:SzOFmg6DAAAAQuF> <rdfs:subClassOf> <gufo:Relator>');
-    expect(result).toContain('<:SzOFmg6DAAAAQuF> <rdf:type> <gufo:Kind>');
+    expect(result).toContain('<:FixedGroup> <rdfs:subClassOf> <gufo:FixedCollection>');
+    expect(result).toContain('<:FixedGroup> <rdf:type> <gufo:Kind>');
   });
 
-  it('should transform OntoUML <<role>> class', async () => {
-    const result = (await transformOntoUML2GUFO(roleExample1, {
-      uriFormatBy: 'id',
-    })).model;
+  it('should transform «quantity» class', async () => {
+    const _class = OntoumlFactory.createQuantity('Wine');
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
 
-    // it's Husband a <<role>>
-    expect(result).toContain('<:zT5mg6DAAAAQsY> <rdf:type> <owl:Class>');
-    expect(result).toContain('<:zT5mg6DAAAAQsY> <rdf:type> <owl:NamedIndividual>');
-    expect(result).toContain('<:zT5mg6DAAAAQsY> <rdfs:label> "Husband"');
-    expect(result).toContain('<:zT5mg6DAAAAQsY> <rdf:type> <gufo:Role>');
-
-    // <<role>> Husband subclass of <<subkind>> Man
-    expect(result).toContain('<:zT5mg6DAAAAQsY> <rdfs:subClassOf> <:ech5mg6DAAAAQqj>');
-    expect(result).toContain('<:ech5mg6DAAAAQqj> <rdf:type> <gufo:SubKind> ');
-    expect(result).toContain('<:ech5mg6DAAAAQqj> <rdfs:label> "Man"');
-
-    // <<subkind>> Man is subclass of <<kind>> Person
-    expect(result).toContain('<:ech5mg6DAAAAQqj> <rdfs:subClassOf> <:IsW5mg6DAAAAQqE>');
-    expect(result).toContain('<:IsW5mg6DAAAAQqE> <rdf:type> <gufo:Kind>');
-    expect(result).toContain('<:IsW5mg6DAAAAQqE> <rdfs:subClassOf> <gufo:FunctionalComplex>');
-    expect(result).toContain('<:IsW5mg6DAAAAQqE> <rdfs:label> "Person"');
+    expect(result).toContain('<:Wine> <rdfs:subClassOf> <gufo:Quantity>');
+    expect(result).toContain('<:Wine> <rdf:type> <gufo:Kind>');
   });
 
-  it('should transform <<enumeration>> class', async () => {
-    const result = (await transformOntoUML2GUFO(alpinebits)).model;
+  it('should transform «relator» class', async () => {
+    const _class = OntoumlFactory.createRelator('Marriage');
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
 
-    expect(result).toContain(
-      `<:SnowparkDifficulty> <owl:equivalentClass> [
-      <rdf:type> <owl:Class>;
-      <owl:oneOf> (<:S> <:M> <:L> <:XL>)
-    ] .`.replace(/ {4}/gm, ''),
-    );
+    expect(result).toContain('<:Marriage> <rdfs:subClassOf> <gufo:Relator>');
+    expect(result).toContain('<:Marriage> <rdf:type> <gufo:Kind>');
   });
 
-  it('should generate custom labels', async () => {
-    const result = (await transformOntoUML2GUFO(alpinebits, {
-      customElementMapping: {
-        JoK2ZeaGAqACBxS5: {
-          uri: 'OWLPerson',
-          label: { default: 'OWLPerson', en: 'Person', pt: 'Pessoa' },
-        },
-        Organization: { uri: 'OWLOrganization' },
-        'Event Plan': { uri: 'OWLEventPlan' },
-      },
-    })).model;
+  it('should transform «mode» class { allowed=[intrinsic-mode] }', async () => {
+    const _class = OntoumlFactory.createMode('Skill');
+    _class.allowed = [OntologicalNature.intrinsic_mode];
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
 
-    expect(result).toContain('<:OWLPerson> <rdf:type> <owl:Class>');
-    expect(result).toContain('<:OWLPerson> <rdfs:label> "Person"@en');
-    expect(result).toContain('<:OWLPerson> <rdfs:label> "Pessoa"@pt');
-    expect(result).toContain('<:OWLOrganization> <rdf:type> <owl:Class>');
-    expect(result).toContain('<:OWLEventPlan> <rdf:type> <owl:Class>');
+    expect(result).toContain('<:Skill> <rdfs:subClassOf> <gufo:IntrinsicMode>');
+    expect(result).toContain('<:Skill> <rdf:type> <gufo:Kind>');
+  });
+
+  it('should transform «mode» class { allowed=[extrinsic-mode] }', async () => {
+    const _class = OntoumlFactory.createMode('Love');
+    _class.allowed = [OntologicalNature.extrinsic_mode];
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
+
+    expect(result).toContain('<:Love> <rdfs:subClassOf> <gufo:ExtrinsicMode>');
+    expect(result).toContain('<:Love> <rdf:type> <gufo:Kind>');
+  });
+
+  it('should transform «mode» class { allowed=[intrinsic-mode, extrinsic-mode] }', async () => {
+    const _class = OntoumlFactory.createMode('Belief');
+    _class.allowed = [OntologicalNature.intrinsic_mode, OntologicalNature.extrinsic_mode];
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
+
+    expect(result).toContain('<:Belief> <rdfs:subClassOf> [');
+    expect(result).toContain('<owl:unionOf> (<gufo:IntrinsicMode> <gufo:ExtrinsicMode>)');
+    expect(result).toContain('<:Belief> <rdf:type> <gufo:Kind>');
+  });
+
+  it('should transform «role» class', async () => {
+    const _class = OntoumlFactory.createRole('Student');
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
+
+    expect(result).toContain('<:Student> <rdf:type> <gufo:Role>');
+  });
+
+  it('should transform «phase» class', async () => {
+    const _class = OntoumlFactory.createPhase('Child');
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
+
+    expect(result).toContain('<:Child> <rdf:type> <gufo:Phase>');
+  });
+
+  it('should transform «roleMixin» class', async () => {
+    const _class = OntoumlFactory.createRoleMixin('Customer');
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
+
+    expect(result).toContain('<:Customer> <rdf:type> <gufo:RoleMixin>');
+  });
+
+  it('should transform «phaseMixin» class', async () => {
+    const _class = OntoumlFactory.createPhaseMixin('Infant');
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
+
+    expect(result).toContain('<:Infant> <rdf:type> <gufo:PhaseMixin>');
+  });
+
+  it('should transform «mixin» class', async () => {
+    const _class = OntoumlFactory.createMixin('Seatable');
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
+
+    expect(result).toContain('<:Seatable> <rdf:type> <gufo:Mixin>');
+  });
+
+  it('should transform «event» class', async () => {
+    const _class = OntoumlFactory.createEvent('Wedding');
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
+
+    expect(result).toContain('<:Wedding> <rdfs:subClassOf> <gufo:Event>');
+    expect(result).toContain('<:Wedding> <rdf:type> <gufo:EventType>');
+  });
+
+  it('should transform «situation» class', async () => {
+    const _class = OntoumlFactory.createSituation('Hazard');
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
+
+    expect(result).toContain('<:Hazard> <rdfs:subClassOf> <gufo:Situation>');
+    expect(result).toContain('<:Hazard> <rdf:type> <gufo:SituationType>');
+  });
+
+  it('should transform «abstract» class', async () => {
+    const _class = OntoumlFactory.createAbstract('Goal');
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
+
+    expect(result).toContain('<:Goal> <rdfs:subClassOf> <gufo:AbstractIndividual>');
+    expect(result).toContain('<:Goal> <rdf:type> <gufo:AbstractIndividualType>');
+  });
+
+  it('should transform «datatype» class with attributes (complex datatype)', async () => {
+    const complexDatatype = OntoumlFactory.createDatatype('Date');
+    const string = OntoumlFactory.createDatatype('String');
+    OntoumlFactory.addAttribute(complexDatatype, 'day', string);
+    OntoumlFactory.addAttribute(complexDatatype, 'month', string);
+    OntoumlFactory.addAttribute(complexDatatype, 'year', string);
+    const model = OntoumlFactory.createPackage(null, [complexDatatype, string]);
+    const result = generateGufo(model);
+
+    expect(result).toContain('<:Date> <rdfs:subClassOf> <gufo:QualityValue>');
+    expect(result).toContain('<:Date> <rdf:type> <gufo:AbstractIndividualType>');
+  });
+
+  it('should NOT transform «datatype» class without attributes (primitive datatype)', async () => {
+    const primitiveDatatype = OntoumlFactory.createDatatype('Date');
+    const model = OntoumlFactory.createPackage(null, [primitiveDatatype]);
+    const result = generateGufo(model);
+
+    expect(result).not.toContain('<:Date> <rdfs:subClassOf> <gufo:QualityValue>');
+    expect(result).not.toContain('<:Date> <rdf:type> <gufo:AbstractIndividualType>');
+  });
+
+  it('should transform «type» class', async () => {
+    const _class = OntoumlFactory.createType('Gender');
+    const model = OntoumlFactory.createPackage(null, [_class]);
+    const result = generateGufo(model);
+
+    expect(result).toContain('<:Gender> <rdfs:subClassOf> <gufo:ConcreteIndividualType>');
   });
 });

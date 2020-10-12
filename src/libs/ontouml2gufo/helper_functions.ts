@@ -1,234 +1,182 @@
-import memoizee from 'memoizee';
-import { IElement, IRelation, IPackage, IOntoUML2GUFOOptions } from '@types';
-import { OntoUMLType } from '@constants/.';
-import { NormalRelationStereotypeMapping, InverseRelationStereotypeMapping } from './constants';
+import { ClassStereotype, AbstractTypes, RigidTypes, OntoumlType, RelationStereotype, PropertyStereotype } from '@constants/.';
+import { IClass, IDecoratable, IElement, IGeneralization, IGeneralizationSet, IPackage, IProperty, IRelation } from '@types';
+import { getXsdUri } from './uri_manager';
 
-type GetURI = {
-  element: IElement;
-  options?: IOntoUML2GUFOOptions;
-};
+export const getText = (element: IElement, field: string, languagePreference?: string[]): string => {
+  if (!element || element.name == null) return null;
 
-export const getBasePrefix = memoizee(async (options: IOntoUML2GUFOOptions) => {
-  const { baseIRI, basePrefix } = options;
-  let prefix = {};
+  if (typeof element.name === 'string') return element.name as string;
 
-  if (basePrefix && basePrefix.trim().length > 0) {
-    prefix[basePrefix] = `${baseIRI}#`;
-  } else {
-    prefix[''] = `${baseIRI}#`;
-  }
+  if (!languagePreference) languagePreference = ['en'];
 
-  return prefix;
-});
-
-export const getPackagePrefixes = memoizee(async (packages: IPackage[], options: IOntoUML2GUFOOptions) => {
-  const { baseIRI, prefixPackages, uriManager } = options;
-  const prefixes = {};
-
-  if (prefixPackages) {
-    for (let i = 0; i < packages.length; i += 1) {
-      const { id, name } = packages[i];
-      const { customUri, customPrefix } = getCustomPackageData(packages[i], options);
-
-      if (customUri && customPrefix) {
-        prefixes[customPrefix] = customUri;
-      } else if (prefixPackages) {
-        const packageUri = uriManager.generateUniqueURI({
-          id,
-          name,
-        });
-        const uri = normalizeName(packageUri);
-
-        prefixes[uri] = `${baseIRI}/${uri}#`;
-      }
+  for (const lang of languagePreference) {
+    if (element[field][lang]) {
+      return element[field][lang];
     }
   }
 
-  return prefixes;
-});
-
-type CustomPrefixData = { customPrefix?: string; customUri: string };
-
-export const getCustomPackageData = (
-  packageEl: IPackage,
-  options: IOntoUML2GUFOOptions,
-): CustomPrefixData => {
-  const { id, name } = packageEl;
-  const { customPackageMapping } = options;
-  let customPrefix;
-  let customUri;
-
-  if (customPackageMapping[id]) {
-    customPrefix = customPackageMapping[id].prefix;
-    customUri = customPackageMapping[id].uri;
-  } else if (customPackageMapping[name]) {
-    customPrefix = customPackageMapping[name].prefix;
-    customUri = customPackageMapping[name].uri;
-  }
-
-  return { customPrefix, customUri };
+  return null;
 };
 
-type CustomElementData = {
-  customLabel?: { [key: string]: string };
-  customUri: string;
+export const getName = (element: IElement, languagePreference?: string[]): string => {
+  return getText(element, 'name', languagePreference);
 };
 
-export const getCustomElementData = (element: IElement, options: IOntoUML2GUFOOptions): CustomElementData => {
-  const { id, name, type } = element;
-  const { customElementMapping } = options;
-  let customLabel;
-  let customUri;
-
-  if (customElementMapping[id]) {
-    customLabel = customElementMapping[id].label;
-    customUri = customElementMapping[id].uri;
-  } else if (customElementMapping[name]) {
-    customLabel = customElementMapping[name].label;
-    customUri = customElementMapping[name].uri;
-  }
-
-  // check target association end id/name
-  if (type === OntoUMLType.RELATION_TYPE) {
-    const { properties } = element as IRelation;
-    const targetAssociationId = properties[1].id;
-    const targetAssociationName = properties[1].name;
-
-    if (customElementMapping[targetAssociationId]) {
-      customLabel = customElementMapping[targetAssociationId].label;
-      customUri = customElementMapping[targetAssociationId].uri;
-    } else if (customElementMapping[targetAssociationName]) {
-      customLabel = customElementMapping[targetAssociationName].label;
-      customUri = customElementMapping[targetAssociationName].uri;
-    }
-  }
-
-  return { customLabel, customUri };
+export const getDescription = (element: IElement, languagePreference?: string[]): string => {
+  return getText(element, 'name', languagePreference);
 };
 
-export const getPackagePrefix = memoizee((packageEl: IPackage, options: IOntoUML2GUFOOptions): string => {
-  const { id, name } = packageEl;
-  const { uriManager, prefixPackages } = options;
-  const { customPrefix } = getCustomPackageData(packageEl, options);
+//TODO: Move this method to the core API
+export function areClasses(elements: IElement[]): boolean {
+  const reducer = (accumulator, currentElement) => accumulator && isClass(currentElement);
+  return elements.reduce(reducer, true);
+}
 
-  if (customPrefix) {
-    return `${customPrefix}:`;
-  } else if (prefixPackages) {
-    const packagePrefix = uriManager.generateUniqueURI({ id, name });
-    const prefix = normalizeName(packagePrefix);
+//TODO: Move this method to the core API
+export function isClass(element: IElement): boolean {
+  return element != null && element.type === OntoumlType.CLASS_TYPE;
+}
 
-    return `${prefix}:`;
-  }
+//TODO: Move this method to the core API
+export function isRelation(element: IElement): boolean {
+  return element != null && element.type === OntoumlType.RELATION_TYPE;
+}
 
-  return ':';
-});
+//TODO: Move this method to the core API
+export function isProperty(element: IElement): boolean {
+  return element != null && element.type === OntoumlType.PROPERTY_TYPE;
+}
 
-export const getAssignedUri = (element: IElement): string => {
-  const propertyAssignments = element.propertyAssignments;
-  return propertyAssignments && propertyAssignments.uri ? propertyAssignments.uri : null;
-};
+//TODO: Move this method to the core API
+export function isDecoratable(element: IElement): boolean {
+  return [OntoumlType.RELATION_TYPE, OntoumlType.CLASS_TYPE, OntoumlType.PROPERTY_TYPE].includes(element.type);
+}
 
-export const hasAssignedUri = (element: IElement): boolean => {
-  return getAssignedUri(element) !== null;
-};
+//TODO: Move this method to the core API
+export function areRigid(classes: IClass[]): boolean {
+  const reducer = (accumulator, currentClass) => accumulator && isRigid(currentClass);
+  return classes.reduce(reducer, true);
+}
 
-//TODO: Properly test this method
-export const getURI = memoizee(({ element, options }: GetURI): string => {
-  if (hasAssignedUri(element)) {
-    return getAssignedUri(element);
-  }
+//TODO: Move this method to the core API
+export function isRigid(element: IElement): boolean {
+  if (!isClass(element)) return false;
+  const stereotype = getStereotype(element as IClass);
+  return RigidTypes.includes(stereotype as ClassStereotype);
+}
 
-  let suggestedName;
+//TODO: Move this method to the core API
+export function areAbstract(classes: IClass[]): boolean {
+  const reducer = (accumulator, currentClass) => accumulator && isAbstract(currentClass);
+  return classes.reduce(reducer, true);
+}
 
-  const isRelation = element.type === OntoUMLType.RELATION_TYPE;
-  if (isRelation && options.uriFormatBy === 'name') {
-    suggestedName = getRelationName(element as IRelation);
-  } else {
-    suggestedName = element.name;
-  }
+export function arePrimitiveDatatype(classes: IClass[]): boolean {
+  const reducer = (accumulator, currentClass) => accumulator && isPrimitiveDatatype(currentClass);
+  return classes.reduce(reducer, true);
+}
 
-  let formattedName;
+//TODO: Move this method to the core API
+export function isAbstract(element: IElement): boolean {
+  if (!isClass(element)) return false;
+  const stereotype = getStereotype(element as IClass);
+  return AbstractTypes.includes(stereotype as ClassStereotype);
+}
 
-  if (isRelation) {
-    formattedName = suggestedName;
-  } else {
-    formattedName = element.name ? normalizeName(element.name) : null;
-  }
+export function isConcrete(element: IElement): boolean {
+  return isClass(element) && hasOntoumlStereotype(element) && !isAbstract(element) && !isType(element);
+}
 
-  const isInverseRelation = isRelation && element.propertyAssignments.isInverseRelation;
-  const formattedId = element.id
-    ? `${isInverseRelation ? 'inverse_' : ''}${normalizeName(element.id)}`
-    : null;
-  const { customUri } = getCustomElementData(element, options);
+export function isType(element: IElement): boolean {
+  return isClass(element) && getStereotype(element) === ClassStereotype.TYPE;
+}
 
-  const elementUri =
-    customUri ||
-    options.uriManager.generateUniqueURI({
-      id: formattedId,
-      name: formattedName,
-    });
+//TODO: Move this method to the core API
+export function isDatatype(element: IElement): boolean {
+  return isClass(element) && getStereotype(element) === ClassStereotype.DATATYPE;
+}
 
-  let uri = options.uriFormatBy === 'id' ? formattedId || elementUri : elementUri || formattedId;
+//TODO: Move this method to the core API
+export function isEnumeration(element: IClass): boolean {
+  return isClass(element) && getStereotype(element) === ClassStereotype.ENUMERATION;
+}
 
-  if (!uri) {
-    return null;
-  }
+//TODO: Move this method to the core API
+export function isPrimitiveDatatype(element: IElement): boolean {
+  return isDatatype(element) && !hasAttributes(element as IClass) && getXsdUri(element) !== null;
+}
 
-  const hasCustomPackage =
-    options.customPackageMapping && Object.keys(options.customPackageMapping).length > 0;
-  if (options.prefixPackages || hasCustomPackage) {
-    const root = element.getRootPackage ? element.getRootPackage() : null;
-    const packageEl = element._container as IPackage;
+//TODO: Move this method to the core API
+export function isComplexDatatype(element: IElement): boolean {
+  return isDatatype(element) && hasAttributes(element as IClass);
+}
 
-    if (packageEl && packageEl.id && packageEl.name) {
-      const isRoot = root && root.id === packageEl.id;
-      const prefix = getPackagePrefix(packageEl, options);
+//TODO: Move this method to the core API
+export function hasAttributes(_class: IClass): boolean {
+  return _class.properties && _class.properties.length > 0;
+}
 
-      return isRoot ? `:${uri}` : `${prefix}${uri}`;
-    }
-  }
+//TODO: Move this method to the core API
+export function getStereotype(element: IElement): string {
+  if (!isDecoratable(element)) return null;
 
-  let basePrefix = options.basePrefix || '';
-  return `${basePrefix}:${uri}`;
-});
+  const decoratable: IDecoratable = element as IDecoratable;
+  const stereotypes = decoratable.stereotypes;
 
-export const getRelationName = (relation: IRelation): string => {
-  const { id, name, stereotypes, properties, propertyAssignments } = relation;
-  const stereotype = stereotypes ? stereotypes[0] : null;
-  const { isInverseRelation, isPartWholeRelation } = propertyAssignments;
-  const RelationStereotypeMapping = isInverseRelation
-    ? InverseRelationStereotypeMapping
-    : NormalRelationStereotypeMapping;
-  const target = relation.getTarget();
-  const targetAssociationName = properties[1].name;
-  const hasAssociationName = !!targetAssociationName;
-  const targetName = normalizeName(targetAssociationName) || normalizeName(target.name) || normalizeName(id);
-  let formattedElementName = targetName;
-  const stereotypeName = RelationStereotypeMapping[stereotype];
-  const associationName =
-    formattedElementName.charAt(0).toLocaleLowerCase() + formattedElementName.substring(1);
-  let prefixName = stereotypeName;
-  if (isPartWholeRelation && !stereotypeName) {
-    prefixName = RelationStereotypeMapping['isProperPartOf'];
-  }
-  let relationName = prefixName ? `${prefixName}${formattedElementName}` : associationName;
-  if (name && !isInverseRelation) {
-    relationName = normalizeName(name);
-  }
-  if (hasAssociationName) {
-    relationName = associationName;
-  }
-  return relationName;
-};
+  if (!stereotypes || stereotypes.length !== 1) return null;
+  const stereotype = stereotypes[0];
 
-export const normalizeName = memoizee((name: string): string => {
-  if (!name) {
-    return null;
-  }
+  if (
+    (isClass(decoratable) && isClassStereotype(stereotype)) ||
+    (isRelation(decoratable) && isRelationStereotype(stereotype)) ||
+    (isProperty(decoratable) && isPropertyStereotype(stereotype))
+  )
+    return stereotype;
 
-  name = name.replace(/[\s-](\w)/g, (_match, $1) => {
-    return $1.toUpperCase();
-  });
+  return null;
+}
 
-  return name.replace(/[^a-zA-Z0-9_]/g, '');
-});
+//TODO: Move this method to the core API
+export function hasOntoumlStereotype(element: IElement): boolean {
+  const stereotype = getStereotype(element);
+  return stereotype !== null;
+}
+
+//TODO: Move this method to the core API
+function isClassStereotype(stereotype: string): boolean {
+  return Object.values(ClassStereotype).includes(stereotype as ClassStereotype);
+}
+
+//TODO: Move this method to the core API
+function isRelationStereotype(stereotype: string): boolean {
+  return Object.values(RelationStereotype).includes(stereotype as RelationStereotype);
+}
+
+//TODO: Move this method to the core API
+function isPropertyStereotype(stereotype: string): boolean {
+  return Object.values(PropertyStereotype).includes(stereotype as PropertyStereotype);
+}
+
+export function getAllClasses(model: IPackage): IClass[] {
+  return model.getAllContentsByType([OntoumlType.CLASS_TYPE]) as IClass[];
+}
+
+export function getAllRelations(model: IPackage): IRelation[] {
+  return model.getAllContentsByType([OntoumlType.RELATION_TYPE]) as IRelation[];
+}
+
+export function getAllGeneralizations(model: IPackage): IGeneralization[] {
+  return model.getAllContentsByType([OntoumlType.GENERALIZATION_TYPE]) as IGeneralization[];
+}
+
+export function getAllGeneralizationSets(model: IPackage): IGeneralizationSet[] {
+  return model.getAllContentsByType([OntoumlType.GENERALIZATION_SET_TYPE]) as IGeneralizationSet[];
+}
+
+export function getAllPackages(model: IPackage): IPackage[] {
+  return model.getAllContentsByType([OntoumlType.PACKAGE_TYPE]) as IPackage[];
+}
+
+export function isTypeDefined(attribute: IProperty): boolean {
+  return attribute.propertyType !== null;
+}

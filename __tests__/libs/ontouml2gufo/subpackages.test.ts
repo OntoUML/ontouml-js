@@ -1,79 +1,83 @@
-import { packages } from '@test-models/valids';
-import { transformOntoUML2GUFO } from './helpers';
+import { IPackage } from '@types';
+import { generateGufo, OntoumlFactory } from './helpers';
 
 describe('Subpackages', () => {
-  let owlContent;
-  let customPackages;
+  let model: IPackage;
 
-  beforeAll(async () => {
-    owlContent = (await transformOntoUML2GUFO(packages, {
-      format: 'Turtle',
-      prefixPackages: true,
-    })).model;
-
-    customPackages = (await transformOntoUML2GUFO(packages, {
-      format: 'Turtle',
-      prefixPackages: true,
-      customPackageMapping: {
-        ZPFjgI6GAqACCQyA: {
-          prefix: 'customPerson',
-          uri: 'https://custom.com/person#',
-        },
-        School: {
-          prefix: 'customSchool',
-          uri: 'https://custom.com/school#',
-        },
-      },
-    })).model;
+  beforeAll(() => {
+    const personClass = OntoumlFactory.createKind('Person');
+    const universityPkg = OntoumlFactory.createPackage('University', [personClass]);
+    model = OntoumlFactory.createPackage('Model', [personClass, universityPkg]);
   });
 
-  it('should generate subpackages prefixes', () => {
-    const data = [
-      '@prefix Person: <https://example.com/Person#>.',
-      '@prefix School: <https://example.com/School#>.',
-      '@prefix Job: <https://example.com/Job#>.',
-      '@prefix EmptyPackage: <https://example.com/EmptyPackage#>.',
-      '@prefix DuplicateNamePackage: <https://example.com/DuplicateNamePackage#>.',
-      '@prefix DuplicateNamePackage_zR3gI6GAqACCRGT: <https://example.com/DuplicateNamePackage_zR3gI6GAqACCRGT#>.',
-      '@prefix UniversityJob: <https://example.com/UniversityJob#>.',
-    ];
+  describe('When { prefixPackages = true }', () => {
+    it("should generate subpackage prefix based on the package's name", () => {
+      const owlCode = generateGufo(model, { format: 'Turtle', prefixPackages: true });
+      expect(owlCode).toContain('@prefix university:');
+    });
 
-    for (const value of data) {
-      expect(owlContent).toContain(value);
-    }
+    it("should generate subpackage URI based on the package's name and the supplied baseIri", () => {
+      const owlCode = generateGufo(model, { format: 'Turtle', prefixPackages: true, baseIri: 'http://ontouml.org' });
+      expect(owlCode).toContain('@prefix university: <http://ontouml.org/university#>');
+    });
+
+    it('should use the generated subpackage prefix for the elements the subpackage contains', () => {
+      const owlCode = generateGufo(model, { format: 'Turtle', prefixPackages: true });
+      expect(owlCode).toContain('university:Person');
+    });
   });
 
-  it('should have elements with subpackage prefixes', () => {
-    const data = [
-      'Person:Father rdf:type owl:Class',
-      'School:Student rdf:type owl:Class',
-      'Job:Employee rdf:type owl:Class',
-      'UniversityJob:Professor rdf:type owl:Class',
-      'DuplicateNamePackage:Ship rdf:type owl:Class',
-      'DuplicateNamePackage_zR3gI6GAqACCRGT:Car rdf:type owl:Class',
-    ];
+  describe('When { prefixPackages = false }', () => {
+    it("should NOT generate subpackage prefix based on the package's name", () => {
+      const owlCode = generateGufo(model, { format: 'Turtle', prefixPackages: false });
+      expect(owlCode).not.toContain('@prefix university:');
+    });
 
-    for (const value of data) {
-      expect(owlContent).toContain(value);
-    }
+    it('should use the default prefix for the elements the subpackage contains', () => {
+      const owlCode = generateGufo(model, { format: 'Turtle', prefixPackages: false });
+      expect(owlCode).toContain(':Person');
+      expect(owlCode).not.toContain('university:Person');
+    });
   });
 
-  it('should generate custom subpackages prefixes', () => {
-    const data = [
-      '@prefix customPerson: <https://custom.com/person#>.',
-      '@prefix customSchool: <https://custom.com/school#>.',
-    ];
+  describe('When { prefixPackages = true } and there are custom mappings for packages', () => {
+    it('should generate subpackage prefix equal to the provided value', () => {
+      const owlCode = generateGufo(model, {
+        format: 'Turtle',
+        prefixPackages: true,
+        customPackageMapping: {
+          University: {
+            prefix: 'uni'
+          }
+        }
+      });
+      expect(owlCode).toContain('@prefix uni:');
+    });
 
-    for (const value of data) {
-      expect(customPackages).toContain(value);
-    }
-  });
+    it('should generate subpackage URI equal to the provided value', () => {
+      const owlCode = generateGufo(model, {
+        format: 'Turtle',
+        prefixPackages: true,
+        customPackageMapping: {
+          University: {
+            uri: 'http://university.org/'
+          }
+        }
+      });
+      expect(owlCode).toContain('@prefix university: <http://university.org/');
+    });
 
-  it('should have elements with custom subpackage prefixes', () => {
-    const data = ['customPerson:Father rdf:type owl:Class', 'customSchool:Student rdf:type owl:Class'];
-
-    for (const value of data) {
-      expect(customPackages).toContain(value);
-    }
+    it('should use the custom prefix for the elements the subpackage contains', () => {
+      const owlCode = generateGufo(model, {
+        format: 'Turtle',
+        prefixPackages: true,
+        customPackageMapping: {
+          University: {
+            prefix: 'uni'
+          }
+        }
+      });
+      expect(owlCode).toContain('uni:Person');
+    });
   });
 });

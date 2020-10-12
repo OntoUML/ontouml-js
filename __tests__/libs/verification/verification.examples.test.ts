@@ -2,7 +2,7 @@ import { ModelManager } from '@libs/model';
 import { alpinebits } from '@test-models/valids';
 import { OntoUML2Verification } from '@libs/verification';
 import { VerificationIssue } from '@libs/verification/issues';
-import { OntoUML2GUFO } from '@libs/ontouml2gufo';
+import { Ontouml2Gufo } from '@libs/ontouml2gufo';
 
 describe('Model deserializing', () => {
   const inputModel = alpinebits;
@@ -19,6 +19,6 @@ describe('Model deserializing', () => {
     verification = new OntoUML2Verification(modelManager);
     issues = await verification.run();
 
-    let service = new OntoUML2GUFO(modelManager);
+    let service = new Ontouml2Gufo(modelManager);
   });
 });

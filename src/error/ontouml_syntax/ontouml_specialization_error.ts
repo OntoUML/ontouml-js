@@ -7,9 +7,9 @@ class OntoUMLSpecializationError extends OntoUMLError {
       code: 'ontouml_specialization_error',
       detail,
       links: {
-        self: 'https://github.com/OntoUML/ontouml-js/wiki/OntoUML-Specialization-Table',
+        self: 'https://github.com/OntoUML/ontouml-js/wiki/OntoUML-Specialization-Table'
       },
-      meta,
+      meta
     });
   }
 }

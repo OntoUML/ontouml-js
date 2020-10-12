@@ -5,7 +5,7 @@ import { allAllowedNatures } from './class.verification';
 
 export enum IssueSeverity {
   error = 'error',
-  warning = 'warning',
+  warning = 'warning'
 }
 
 export enum VerificationIssueCode {
@@ -30,7 +30,7 @@ export enum VerificationIssueCode {
   generalization_incompatible_class_sortality = 'generalization_incompatible_class_sortality',
   generalization_incompatible_relation_type = 'generalization_incompatible_relation_type',
   relation_multiple_stereotypes = 'relation_multiple_stereotypes',
-  relation_improper_derivation = 'relation_improper_derivation',
+  relation_improper_derivation = 'relation_improper_derivation'
 }
 
 /**
@@ -54,7 +54,7 @@ export class VerificationIssue {
     this.description = null;
     this.source = {
       type: source.type,
-      id: source.id,
+      id: source.id
     };
     this.context = context
       ? context.map((element: IElement) => {

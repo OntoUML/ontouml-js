@@ -3,7 +3,7 @@ export const DefaultPrefixes = {
   rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
   rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
   owl: 'http://www.w3.org/2002/07/owl#',
-  xsd: 'http://www.w3.org/2001/XMLSchema#',
+  xsd: 'http://www.w3.org/2001/XMLSchema#'
 };
 
 export const RelationsAsPredicate = ['instantiation', 'derivation'];
@@ -17,15 +17,10 @@ export const HideObjectPropertyCreationList = [
   'mediation',
   'participation',
   'participational',
-  'termination',
+  'termination'
 ];
 
-export const HideReadOnlyObjectPropertyCreationList = [
-  'componentOf',
-  'memberOf',
-  'subCollectionOf',
-  'subQuantityOf',
-];
+export const HideReadOnlyObjectPropertyCreationList = ['componentOf', 'memberOf', 'subCollectionOf', 'subQuantityOf'];
 
 export const AspectProperPartClassStereotypeList = ['relator', 'mode', 'quality'];
 
@@ -56,7 +51,7 @@ export const NormalRelationStereotypeMapping = {
   subCollectionOf: 'isSubCollectionOf',
   subQuantityOf: 'isSubQuantityOf',
   termination: 'wasTerminatedIn',
-  triggers: 'contributedToTrigger',
+  triggers: 'contributedToTrigger'
 };
 
 export const IgonoredInverseRelations = ['derivation', 'instantiation'];
@@ -84,7 +79,7 @@ export const InverseRelationStereotypeMapping = {
   isProperPartOf: 'hasProperPart',
   isEventProperPartOf: 'hasEventProperPart',
   isAspectProperPartOf: 'hasAspectProperPart',
-  isObjectProperPartOf: 'hasObjectProperPart',
+  isObjectProperPartOf: 'hasObjectProperPart'
 };
 
 export const AvailableLanguages = ['en', 'pt', 'it', 'de', 'nl'];

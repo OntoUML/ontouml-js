@@ -9,15 +9,17 @@ import {
   derivation,
   inverseRelations,
   preAnalysis,
+  ontouml2dbExample,
   referenceOntologyTrust,
+  schoolTransportation
 } from '@test-models/valids';
-import { transformOntoUML2GUFO } from './helpers';
-import { IPackage, IOntoUML2GUFOOptions } from '@types';
+import { generateGufo } from './helpers';
+import { IPackage, Options } from '@types';
 
 type File = {
   name: string;
   model: IPackage;
-  options?: Partial<IOntoUML2GUFOOptions>;
+  options?: Partial<Options>;
   preAnalysisFile?: string;
 };
 
@@ -190,25 +192,51 @@ describe('Examples', () => {
       //     },
       //   },
       // },
+      // {
+      //   name: 'referenceOntologyTrust.ttl',
+      //   model: referenceOntologyTrust,
+      //   options: {
+      //     baseIRI: 'https://purl.org/krdb-core/rot',
+      //     basePrefix: 'rot',
+      //     format: 'Turtle',
+      //     createObjectProperty: true,
+      //     createInverses: false,
+      //     preAnalysis: false,
+      //     prefixPackages: false,
+      //   },
+      // },
+      // {
+      //   name: 'schoolTransportation.ttl',
+      //   model: schoolTransportation,
+      //   options: {
+      //     baseIRI: 'https://ontouml.org/example/school',
+      //     basePrefix: 'school',
+      //     format: 'Turtle',
+      //     createObjectProperty: true,
+      //     createInverses: false,
+      //     preAnalysis: false,
+      //     prefixPackages: false,
+      //   },
+      // },
       {
-        name: 'referenceOntologyTrust.ttl',
-        model: referenceOntologyTrust,
+        name: 'ontouml2dbExample.ttl',
+        model: ontouml2dbExample,
         options: {
-          baseIRI: 'https://purl.org/krdb-core/rot',
-          basePrefix: 'rot',
+          baseIRI: 'https://ontouml.org/example/ontouml2db',
+          basePrefix: 'org',
           format: 'Turtle',
           createObjectProperty: true,
           createInverses: false,
           preAnalysis: false,
-          prefixPackages: false,
-        },
-      },
+          prefixPackages: false
+        }
+      }
     ];
 
     for (let file of files) {
       const path = '__tests__/libs/ontouml2gufo/examples/';
 
-      const result = await transformOntoUML2GUFO(file.model, file.options);
+      const result = await generateGufo(file.model, file.options);
       const modelFilepath = path + file.name;
       fs.writeFileSync(modelFilepath, result.model);
 

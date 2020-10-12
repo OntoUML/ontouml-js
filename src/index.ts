@@ -3,7 +3,7 @@ import { ModelManager } from '@libs/model';
 import { OntoUML2Verification } from '@libs/verification';
 import { VerificationIssue, VerificationIssueCode } from '@libs/verification/issues';
 import { VerificationAlternative, VerificationAlternativeCode } from '@libs/verification/alternatives';
-import { OntoUML2GUFO } from '@libs/ontouml2gufo';
+import { Ontouml2Gufo } from '@libs/ontouml2gufo';
 
 export {
   ModelManager,
@@ -12,5 +12,5 @@ export {
   VerificationIssueCode,
   VerificationAlternative,
   VerificationAlternativeCode,
-  OntoUML2GUFO,
+  Ontouml2Gufo
 };

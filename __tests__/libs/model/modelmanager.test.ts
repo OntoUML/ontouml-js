@@ -1,5 +1,5 @@
 import { ModelManager } from '@libs/model';
-import { OntoUMLType } from '@constants/.';
+import { OntoumlType } from '@constants/.';
 import { IElement, IClassifier } from '@types';
 import { genericExample1 } from '@test-models/valids';
 
@@ -16,7 +16,7 @@ describe('Model deserializing', () => {
       const rootPackage = element.getRootPackage();
       expect(rootPackage).toBe(modelManager.rootPackage);
 
-      if (element.type === OntoUMLType.PROPERTY_TYPE) {
+      if (element.type === OntoumlType.PROPERTY_TYPE) {
         expect((element._container as IElement).hasIClassifierType).toBeTruthy();
       }
     });
@@ -34,8 +34,8 @@ describe('Model deserializing', () => {
 
   it('Check getAllContentsByType()', () => {
     const selectedContents = modelManager.rootPackage.getAllContentsByType([
-      OntoUMLType.CLASS_TYPE,
-      OntoUMLType.RELATION_TYPE,
+      OntoumlType.CLASS_TYPE,
+      OntoumlType.RELATION_TYPE,
     ]);
     expect(selectedContents.length).toBeGreaterThan(0);
     expect(selectedContents.filter((element: IElement) => !element.hasIClassifierType()).length).toBe(0);

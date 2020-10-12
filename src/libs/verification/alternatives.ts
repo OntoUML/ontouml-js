@@ -1,11 +1,11 @@
 import { IElement } from '@types';
-import { OntoUMLType, ClassStereotype, RelationStereotype } from '@constants/.';
+import { OntoumlType, ClassStereotype, RelationStereotype } from '@constants/.';
 
 export enum VerificationAlternativeCode {
   replace_ontouml_class_stereotype = 'replace_ontouml_class_stereotype',
   remove_literals = 'remove_literals',
   replace_ontouml_class_stereotype_to_enumeration = 'replace_ontouml_class_stereotype_to_enumeration',
-  remove_properties = 'remove_properties',
+  remove_properties = 'remove_properties'
 }
 
 /**
@@ -30,8 +30,9 @@ export class VerificationAlternative {
     switch (code) {
       case VerificationAlternativeCode.replace_ontouml_class_stereotype:
         this.title = "Replace element's stereotypes.";
-        this.description = `Apply to ${source.name ||
-          source.id} a unique stereotype from the set {${getElementStereotypes(source).join(', ')}}.`;
+        this.description = `Apply to ${source.name || source.id} a unique stereotype from the set {${getElementStereotypes(
+          source
+        ).join(', ')}}.`;
         this.elements = null;
         break;
       case VerificationAlternativeCode.remove_literals:
@@ -57,9 +58,9 @@ export class VerificationAlternative {
 
 function getElementStereotypes(element: IElement): string[] {
   switch (element.type) {
-    case OntoUMLType.CLASS_TYPE:
+    case OntoumlType.CLASS_TYPE:
       return Object.values(ClassStereotype);
-    case OntoUMLType.RELATION_TYPE:
+    case OntoumlType.RELATION_TYPE:
       return Object.values(RelationStereotype);
   }
   return null;

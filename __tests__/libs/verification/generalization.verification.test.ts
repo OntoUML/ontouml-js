@@ -26,13 +26,11 @@ describe('Model deserializing', () => {
 
     const incompatibleIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
-        issue.source.id === incompatible.id &&
-        issue.code === VerificationIssueCode.generalization_incompatible_class_sortality,
+        issue.source.id === incompatible.id && issue.code === VerificationIssueCode.generalization_incompatible_class_sortality
     );
     const otherIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
-        issue.source.id === compatible.id &&
-        issue.code === VerificationIssueCode.generalization_incompatible_class_sortality,
+        issue.source.id === compatible.id && issue.code === VerificationIssueCode.generalization_incompatible_class_sortality
     );
 
     expect(incompatibleIssue).toBeDefined();
@@ -46,18 +44,15 @@ describe('Model deserializing', () => {
 
     const incompatibleIssue1: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
-        issue.source.id === incompatible1.id &&
-        issue.code === VerificationIssueCode.generalization_incompatible_class_rigidity,
+        issue.source.id === incompatible1.id && issue.code === VerificationIssueCode.generalization_incompatible_class_rigidity
     );
     const incompatibleIssue2: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
-        issue.source.id === incompatible2.id &&
-        issue.code === VerificationIssueCode.generalization_incompatible_class_rigidity,
+        issue.source.id === incompatible2.id && issue.code === VerificationIssueCode.generalization_incompatible_class_rigidity
     );
     const otherIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
-        issue.source.id === compatible.id &&
-        issue.code === VerificationIssueCode.generalization_incompatible_class_rigidity,
+        issue.source.id === compatible.id && issue.code === VerificationIssueCode.generalization_incompatible_class_rigidity
     );
 
     expect(incompatibleIssue1).toBeDefined();
@@ -71,13 +66,11 @@ describe('Model deserializing', () => {
 
     const incompatibleIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
-        issue.source.id === incompatible.id &&
-        issue.code === VerificationIssueCode.generalization_incompatible_natures,
+        issue.source.id === incompatible.id && issue.code === VerificationIssueCode.generalization_incompatible_natures
     );
     const otherIssue: VerificationIssue = issues.find(
       (issue: VerificationIssue) =>
-        issue.source.id === compatible.id &&
-        issue.code === VerificationIssueCode.generalization_incompatible_natures,
+        issue.source.id === compatible.id && issue.code === VerificationIssueCode.generalization_incompatible_natures
     );
 
     expect(incompatibleIssue).toBeDefined();

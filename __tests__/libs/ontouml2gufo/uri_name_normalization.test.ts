@@ -1,4 +1,4 @@
-import { normalizeName } from '@libs/ontouml2gufo/helper_functions';
+import { normalizeName } from '@libs/ontouml2gufo/uri_manager';
 
 describe('Original case is kept when there are no spaces', () => {
   it('Person -> Person', async () => {

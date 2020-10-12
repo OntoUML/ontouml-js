@@ -1,8 +1,5 @@
-import {
-  alpinebits as alpinebitsModel,
-  inverseRelations as inverseRelationsModel,
-} from '@test-models/valids';
-import { transformOntoUML2GUFO } from './helpers';
+import { alpinebits as alpinebitsModel, inverseRelations as inverseRelationsModel } from '@test-models/valids';
+import { generateGufo } from './helpers';
 
 describe('InverseRelations', () => {
   let alpinebits;
@@ -10,24 +7,24 @@ describe('InverseRelations', () => {
   let inverseRelationsHideOP;
 
   beforeAll(async () => {
-    alpinebits = (await transformOntoUML2GUFO(alpinebitsModel, {
-      createInverses: true,
-    })).model;
+    alpinebits = generateGufo(alpinebitsModel, {
+      createInverses: true
+    });
 
-    inverseRelations = (await transformOntoUML2GUFO(inverseRelationsModel, {
-      createInverses: true,
-    })).model;
+    inverseRelations = generateGufo(inverseRelationsModel, {
+      createInverses: true
+    });
 
-    inverseRelationsHideOP = (await transformOntoUML2GUFO(inverseRelationsModel, {
+    inverseRelationsHideOP = generateGufo(inverseRelationsModel, {
       createInverses: true,
-      createObjectProperty: false,
-    })).model;
+      createObjectProperty: false
+    });
   });
 
   it('should generate an uri automatically using association end', async () => {
     const data = [
       '<:snowparkFeature> <owl:inverseOf> <:snowparkContainer>',
-      '<:snowparkContainer> <rdf:type> <owl:ObjectProperty>',
+      '<:snowparkContainer> <rdf:type> <owl:ObjectProperty>'
     ];
 
     for (const value of data) {
@@ -36,10 +33,7 @@ describe('InverseRelations', () => {
   });
 
   it('should generate an uri automatically using stereotype', async () => {
-    const data = [
-      '<:organizedEvent> <owl:inverseOf> <:organizer>',
-      '<:organizer> <rdf:type> <owl:ObjectProperty>',
-    ];
+    const data = ['<:organizedEvent> <owl:inverseOf> <:organizer>', '<:organizer> <rdf:type> <owl:ObjectProperty>'];
 
     for (const value of data) {
       expect(alpinebits).toContain(value);
@@ -51,7 +45,7 @@ describe('InverseRelations', () => {
       '<:organizer> <rdfs:domain> <:EventPlan>',
       '<:organizer> <rdfs:range> <:Organizer>',
       '<:organizedEvent> <rdfs:domain> <:Organizer>',
-      '<:organizedEvent> <rdfs:range> <:EventPlan>',
+      '<:organizedEvent> <rdfs:range> <:EventPlan>'
     ];
 
     for (const value of data) {
@@ -66,7 +60,7 @@ describe('InverseRelations', () => {
         <owl:onProperty> <:subArea>;
         <owl:minQualifiedCardinality> "2"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:MountainArea>
-      ] .`.replace(/ {6}/gm, ''),
+      ] .`.replace(/ {6}/gm, '')
     );
 
     expect(alpinebits).toContain(
@@ -75,7 +69,7 @@ describe('InverseRelations', () => {
         <owl:onProperty> <:superArea>;
         <owl:maxQualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;
         <owl:onClass> <:CompositeArea>
-      ] .`.replace(/ {6}/gm, ''),
+      ] .`.replace(/ {6}/gm, '')
     );
   });
 
@@ -94,7 +88,7 @@ describe('InverseRelations', () => {
       '<rdfs:subPropertyOf> <:hasSubCollection>',
       '<rdfs:subPropertyOf> <:hasSubQuantity>',
       '<rdfs:subPropertyOf> <:terminated>',
-      '<rdfs:subPropertyOf> <:hasProperPart>',
+      '<rdfs:subPropertyOf> <:hasProperPart>'
     ];
 
     for (const value of data) {
@@ -103,10 +97,7 @@ describe('InverseRelations', () => {
   });
 
   it('should not generate inverse relation for comparative and material stereotypes', async () => {
-    const data = [
-      '<rdfs:subPropertyOf> <:comparativeRelationshipType>',
-      '<rdfs:subPropertyOf> <:materialRelationshipType>',
-    ];
+    const data = ['<rdfs:subPropertyOf> <:comparativeRelationshipType>', '<rdfs:subPropertyOf> <:materialRelationshipType>'];
 
     for (const value of data) {
       expect(inverseRelations).not.toContain(value);
@@ -116,7 +107,7 @@ describe('InverseRelations', () => {
   it('should generate part-whole cardinality with name when create object property is true', async () => {
     const data = [
       '<owl:onProperty> <:hasEventProperPartPartipationalClassSource>',
-      '<owl:onProperty> <:hasProperPartClassSource>',
+      '<owl:onProperty> <:hasProperPartClassSource>'
     ];
     const data2 = ['<owl:onProperty> <:hasEventProperPart>', '<owl:onProperty> <:hasProperPart>'];
 
@@ -132,7 +123,7 @@ describe('InverseRelations', () => {
   it('should generate cardinality with stereotype property when create object property is false', async () => {
     const data = [
       '<owl:onProperty> <:hasEventProperPartPartipationalClassSource>',
-      '<owl:onProperty> <:hasProperPartClassSource>',
+      '<owl:onProperty> <:hasProperPartClassSource>'
     ];
     const data2 = ['<owl:onProperty> <:hasEventProperPart>', '<owl:onProperty> <:hasProperPart>'];
 

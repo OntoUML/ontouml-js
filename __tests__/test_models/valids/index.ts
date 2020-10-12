@@ -16,6 +16,8 @@ const packages = require('./packages.json');
 const derivation = require('./derivation.json');
 const inverseRelations = require('./inverseRelations.json');
 const referenceOntologyTrust = require('./referenceOntologyTrust.json');
+const schoolTransportation = require('./schoolTransportation.json');
+const ontouml2dbExample = require('./ontouml2dbExample.json');
 
 export {
   genericExample1,
@@ -36,4 +38,6 @@ export {
   derivation,
   inverseRelations,
   referenceOntologyTrust,
+  schoolTransportation,
+  ontouml2dbExample,
 };

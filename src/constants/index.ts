@@ -1,28 +1,28 @@
 export enum Rigidity {
   RIGID = 'RIGID',
   ANTI_RIGID = 'ANTI_RIGID',
-  SEMI_RIGID = 'SEMI_RIGID',
+  SEMI_RIGID = 'SEMI_RIGID'
 }
 
 export enum Sortality {
   SORTAL = 'SORTAL',
-  NON_SORTAL = 'NON_SORTAL',
+  NON_SORTAL = 'NON_SORTAL'
 }
 
-export enum OntoUMLType {
+export enum OntoumlType {
   PACKAGE_TYPE = 'Package',
   CLASS_TYPE = 'Class',
   RELATION_TYPE = 'Relation',
   GENERALIZATION_TYPE = 'Generalization',
   GENERALIZATION_SET_TYPE = 'GeneralizationSet',
   PROPERTY_TYPE = 'Property',
-  LITERAL_TYPE = 'Literal',
+  LITERAL_TYPE = 'Literal'
 }
 
 export enum AggregationKind {
   NONE = 'NONE',
   SHARED = 'SHARED',
-  COMPOSITE = 'COMPOSITE',
+  COMPOSITE = 'COMPOSITE'
 }
 
 export enum ClassStereotype {
@@ -44,9 +44,37 @@ export enum ClassStereotype {
   SITUATION = 'situation',
   HISTORICAL_ROLE = 'historicalRole',
   HISTORICAL_ROLE_MIXIN = 'historicalRoleMixin',
+  ABSTRACT = 'abstract',
   DATATYPE = 'datatype',
-  ENUMERATION = 'enumeration',
+  ENUMERATION = 'enumeration'
 }
+
+export const RigidTypes = [
+  ClassStereotype.KIND,
+  ClassStereotype.QUANTITY,
+  ClassStereotype.COLLECTIVE,
+  ClassStereotype.MODE,
+  ClassStereotype.QUALITY,
+  ClassStereotype.RELATOR,
+  ClassStereotype.SUBKIND,
+  ClassStereotype.CATEGORY,
+  ClassStereotype.EVENT,
+  ClassStereotype.SITUATION,
+  ClassStereotype.TYPE
+];
+
+export const AntiRigidTypes = [
+  ClassStereotype.ROLE,
+  ClassStereotype.ROLE_MIXIN,
+  ClassStereotype.HISTORICAL_ROLE,
+  ClassStereotype.HISTORICAL_ROLE_MIXIN,
+  ClassStereotype.PHASE,
+  ClassStereotype.PHASE_MIXIN
+];
+
+export const SemiRigidTypes = [ClassStereotype.MIXIN];
+
+export const AbstractTypes = [ClassStereotype.ABSTRACT, ClassStereotype.DATATYPE, ClassStereotype.ENUMERATION];
 
 export enum RelationStereotype {
   BRINGS_ABOUT = 'bringsAbout',
@@ -67,7 +95,12 @@ export enum RelationStereotype {
   SUBCOLLECTION_OF = 'subCollectionOf',
   SUBQUANTITY_OF = 'subQuantityOf',
   TERMINATION = 'termination',
-  TRIGGERS = 'triggers',
+  TRIGGERS = 'triggers'
+}
+
+export enum PropertyStereotype {
+  BEGIN = 'begin',
+  END = 'end'
 }
 
 export enum OntologicalNature {
@@ -81,5 +114,19 @@ export enum OntologicalNature {
   type = 'type',
   event = 'event',
   situation = 'situation',
-  abstract = 'abstract',
+  abstract = 'abstract'
 }
+
+export default {
+  ClassStereotype,
+  RelationStereotype,
+  PropertyStereotype,
+  OntologicalNature,
+  Rigidity,
+  Sortality,
+  OntoumlType,
+  AggregationKind,
+  RigidTypes,
+  AntiRigidTypes,
+  SemiRigidTypes
+};

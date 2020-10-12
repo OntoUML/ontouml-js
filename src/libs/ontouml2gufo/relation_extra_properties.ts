@@ -1,14 +1,15 @@
-import { IRelation, IOntoUML2GUFOOptions } from '@types';
+import { IRelation } from '@types';
 import { AggregationKind, ClassStereotype } from '@constants/.';
+import Options from './options';
 import {
   HideObjectPropertyCreationList,
   HideReadOnlyObjectPropertyCreationList,
   AspectProperPartClassStereotypeList,
-  ObjectProperPartClassStereotypeList,
+  ObjectProperPartClassStereotypeList
 } from './constants';
 
 // generated relation properties to be used in the transformation
-export function generateExtraPropertyAssignments(relation: IRelation, options: IOntoUML2GUFOOptions) {
+export function generateExtraPropertyAssignments(relation: IRelation, options: Options) {
   const { createObjectProperty } = options;
   const { stereotypes } = relation;
   const stereotype = stereotypes ? stereotypes[0] : null;
@@ -25,13 +26,10 @@ export function generateExtraPropertyAssignments(relation: IRelation, options: I
   const partWholeKinds = [AggregationKind.SHARED, AggregationKind.COMPOSITE];
 
   const isPartWholeRelation =
-    partWholeKinds.includes(properties[0].aggregationKind) ||
-    partWholeKinds.includes(properties[1].aggregationKind);
+    partWholeKinds.includes(properties[0].aggregationKind) || partWholeKinds.includes(properties[1].aggregationKind);
 
   const isPartWholeRelationBetweenEvents =
-    isPartWholeRelation &&
-    sourceStereotype === ClassStereotype.EVENT &&
-    targetStereotype === ClassStereotype.EVENT;
+    isPartWholeRelation && sourceStereotype === ClassStereotype.EVENT && targetStereotype === ClassStereotype.EVENT;
   const isPartWholeRelationBetweenAspects =
     isPartWholeRelation &&
     AspectProperPartClassStereotypeList.includes(sourceStereotype) &&
@@ -50,12 +48,9 @@ export function generateExtraPropertyAssignments(relation: IRelation, options: I
 
   // hideObjectPropertyCreation checking
   const hideNormalBaseCreation =
-    !createObjectProperty &&
-    (HideObjectPropertyCreationList.includes(stereotype) || isPartWholeRelationWithoutStereotype);
+    !createObjectProperty && (HideObjectPropertyCreationList.includes(stereotype) || isPartWholeRelationWithoutStereotype);
   const hideReadOnlyBaseCreation =
-    !createObjectProperty &&
-    isReadOnlyRelation &&
-    HideReadOnlyObjectPropertyCreationList.includes(stereotype);
+    !createObjectProperty && isReadOnlyRelation && HideReadOnlyObjectPropertyCreationList.includes(stereotype);
   const hideBaseCreation = hideNormalBaseCreation || hideReadOnlyBaseCreation;
 
   // add extra properties
@@ -67,6 +62,6 @@ export function generateExtraPropertyAssignments(relation: IRelation, options: I
     isPartWholeRelationWithoutStereotype,
     isPartWholeRelationBetweenEventsWithoutStereotype,
     isInvertedRelation,
-    hideBaseCreation,
+    hideBaseCreation
   };
 }

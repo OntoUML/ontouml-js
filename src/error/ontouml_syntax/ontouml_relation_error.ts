@@ -7,9 +7,9 @@ class OntoUMLRelationError extends OntoUMLError {
       code: 'ontouml_relation_error',
       detail,
       links: {
-        self: 'https://github.com/OntoUML/ontouml-js/wiki/OntoUML-Relationship-Table',
+        self: 'https://github.com/OntoUML/ontouml-js/wiki/OntoUML-Relationship-Table'
       },
-      meta,
+      meta
     });
   }
 }
