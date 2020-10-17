@@ -49,6 +49,10 @@ export enum ClassStereotype {
   ENUMERATION = 'enumeration'
 }
 
+export const MomentTypes = [ClassStereotype.MODE, ClassStereotype.QUALITY, ClassStereotype.RELATOR];
+
+export const ObjectTypes = [ClassStereotype.KIND, ClassStereotype.QUANTITY, ClassStereotype.COLLECTIVE];
+
 export const RigidTypes = [
   ClassStereotype.KIND,
   ClassStereotype.QUANTITY,
@@ -117,6 +121,15 @@ export enum OntologicalNature {
   abstract = 'abstract'
 }
 
+export const MomentNatures = [
+  OntologicalNature.intrinsic_mode,
+  OntologicalNature.extrinsic_mode,
+  OntologicalNature.quality,
+  OntologicalNature.relator
+];
+
+export const ObjectNatures = [OntologicalNature.functional_complex, OntologicalNature.collective, OntologicalNature.quantity];
+
 export default {
   ClassStereotype,
   RelationStereotype,
@@ -128,5 +141,9 @@ export default {
   AggregationKind,
   RigidTypes,
   AntiRigidTypes,
-  SemiRigidTypes
+  SemiRigidTypes,
+  MomentTypes,
+  ObjectTypes,
+  MomentNatures,
+  ObjectNatures
 };

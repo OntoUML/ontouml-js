@@ -13,8 +13,9 @@ import {
   referenceOntologyTrust,
   schoolTransportation
 } from '@test-models/valids';
-import { generateGufo } from './helpers';
-import { IPackage, Options } from '@types';
+import { generateGufo, getIssues } from './helpers';
+import { IPackage } from '@types';
+import Options from '@libs/ontouml2gufo/options';
 
 type File = {
   name: string;
@@ -222,12 +223,11 @@ describe('Examples', () => {
         name: 'ontouml2dbExample.ttl',
         model: ontouml2dbExample,
         options: {
-          baseIRI: 'https://ontouml.org/example/ontouml2db',
+          baseIri: 'https://ontouml.org/example/ontouml2db',
           basePrefix: 'org',
           format: 'Turtle',
           createObjectProperty: true,
           createInverses: false,
-          preAnalysis: false,
           prefixPackages: false
         }
       }
@@ -236,13 +236,14 @@ describe('Examples', () => {
     for (let file of files) {
       const path = '__tests__/libs/ontouml2gufo/examples/';
 
-      const result = await generateGufo(file.model, file.options);
+      const result = generateGufo(file.model, file.options);
       const modelFilepath = path + file.name;
-      fs.writeFileSync(modelFilepath, result.model);
+      fs.writeFileSync(modelFilepath, result);
 
       if (file.preAnalysisFile) {
+        const issues = getIssues(file.model, file.options);
         const analysisFilepath = path + file.preAnalysisFile;
-        const jsonContent = JSON.stringify(result.preAnalysis, null, 2);
+        const jsonContent = JSON.stringify(issues, null, 2);
         fs.writeFileSync(analysisFilepath, jsonContent);
       }
     }

@@ -1,10 +1,23 @@
 import memoizee from 'memoizee';
-import { IElement, IRelation, IPackage, IClass } from '@types';
-import { OntoumlType } from '@constants/.';
-import { NormalRelationStereotypeMapping, InverseRelationStereotypeMapping } from './constants';
 import Options from './options';
-import { getCustomElementData, getPackagePrefix } from './prefix_functions';
-import { getName, hasAttributes, isDatatype } from './helper_functions';
+import { IElement, IRelation, IPackage, IClass, IClassifier, IProperty } from '@types';
+import { getSuperProperty } from './relation_functions';
+import { OntoumlType } from '@constants/.';
+import { getPackagePrefix } from './prefix_functions';
+import {
+  getName,
+  hasAttributes,
+  hasOntoumlStereotype,
+  isComparative,
+  isDatatype,
+  isDerivation,
+  isInstantiation,
+  isMaterial,
+  isPartWholeRelation,
+  isRelation
+} from './helper_functions';
+
+import _ from 'lodash';
 
 export default class UriManager {
   uris: { [key: string]: string };
@@ -33,6 +46,29 @@ export default class UriManager {
     return this.uris[id];
   }
 }
+
+export const getUri = memoizee((element: IElement, options: Options): string => {
+  const fixedUri = getAssignedUri(element);
+  if (fixedUri) {
+    return fixedUri;
+  }
+
+  const customUri = getCustomUri(element, options);
+  if (customUri) {
+    return customUri;
+  }
+
+  const xsdUri = getXsdUri(element);
+  if (xsdUri) {
+    return xsdUri;
+  }
+
+  if (options.uriFormatBy === 'id') {
+    return getIdBasedUri(element, options);
+  }
+
+  return getNameBasedUri(element, options);
+});
 
 export const getXsdUri = (element: IElement): string => {
   if (!isDatatype(element) || hasAttributes(element as IClass)) return null;
@@ -103,99 +139,11 @@ export const getAssignedUri = (element: IElement): string => {
   const assignments = element.propertyAssignments;
   if (assignments && assignments.uri) return assignments.uri;
 
-  let xsdUri = getXsdUri(element);
-  if (xsdUri) return xsdUri;
-
   return null;
 };
 
 export const hasAssignedUri = (element: IElement): boolean => {
   return getAssignedUri(element) !== null;
-};
-
-// const getRelationUri = (relation: IRelation, opts: Options): string => {
-//   if (options.uriFormatBy === 'name') {
-//     suggestedName = getRelationName(element as IRelation);
-//   }
-// };
-
-//TODO: Properly test this method
-
-export const getUri = memoizee((element: IElement, options: Options): string => {
-  if (hasAssignedUri(element)) {
-    return getAssignedUri(element);
-  }
-
-  let suggestedName;
-  const isRelation = element.type === OntoumlType.RELATION_TYPE;
-  if (isRelation && options.uriFormatBy === 'name') {
-    suggestedName = getRelationName(element as IRelation);
-  } else {
-    suggestedName = element.name;
-  }
-  let formattedName;
-  if (isRelation) {
-    formattedName = suggestedName;
-  } else {
-    formattedName = element.name ? normalizeName(element.name) : null;
-  }
-
-  const isInverseRelation = isRelation && element.propertyAssignments && element.propertyAssignments.isInverseRelation;
-  const formattedId = element.id ? `${isInverseRelation ? 'inverse_' : ''}${normalizeName(element.id)}` : null;
-  const { customUri } = getCustomElementData(element, options);
-  const elementUri =
-    customUri ||
-    options.uriManager.generateUniqueURI({
-      id: formattedId,
-      name: formattedName
-    });
-
-  let uri = options.uriFormatBy === 'id' ? formattedId || elementUri : elementUri || formattedId;
-
-  if (!uri) {
-    return null;
-  }
-  const hasCustomPackage = options.customPackageMapping && Object.keys(options.customPackageMapping).length > 0;
-  if (options.prefixPackages || hasCustomPackage) {
-    const root = element.getRootPackage ? element.getRootPackage() : null;
-    const packageEl = element._container as IPackage;
-
-    if (packageEl && packageEl.id && packageEl.name) {
-      const isRoot = root && root.id === packageEl.id;
-      const prefix = getPackagePrefix(packageEl, options);
-
-      return isRoot ? `:${uri}` : `${prefix}:${uri}`;
-    }
-  }
-  let basePrefix = options.basePrefix || '';
-  return `${basePrefix}:${uri}`;
-});
-
-export const getRelationName = (relation: IRelation): string => {
-  const { id, name, stereotypes, properties, propertyAssignments } = relation;
-  const stereotype = stereotypes ? stereotypes[0] : null;
-  const { isInverseRelation, isPartWholeRelation } = propertyAssignments;
-  const RelationStereotypeMapping = isInverseRelation ? InverseRelationStereotypeMapping : NormalRelationStereotypeMapping;
-  const target = relation.getTarget();
-  const targetAssociationName = properties[1].name;
-  const hasAssociationName = !!targetAssociationName;
-  const targetName = normalizeName(targetAssociationName) || normalizeName(target.name) || normalizeName(id);
-  let formattedElementName = targetName;
-  const stereotypeName = RelationStereotypeMapping[stereotype];
-  const associationName = formattedElementName.charAt(0).toLocaleLowerCase() + formattedElementName.substring(1);
-  let prefixName = stereotypeName;
-
-  if (isPartWholeRelation && !stereotypeName) {
-    prefixName = RelationStereotypeMapping['isProperPartOf'];
-  }
-  let relationName = prefixName ? `${prefixName}${formattedElementName}` : associationName;
-  if (name && !isInverseRelation) {
-    relationName = normalizeName(name);
-  }
-  if (hasAssociationName) {
-    relationName = associationName;
-  }
-  return relationName;
 };
 
 export const normalizeName = memoizee((name: string): string => {
@@ -209,3 +157,209 @@ export const normalizeName = memoizee((name: string): string => {
 
   return name.replace(/[^a-zA-Z0-9_]/g, '');
 });
+
+export const getPrefix = (element: IElement, options: Options): string => {
+  const hasCustomPackage = options.customPackageMapping && Object.keys(options.customPackageMapping).length > 0;
+  if (options.prefixPackages || hasCustomPackage) {
+    const root = element.getRootPackage ? element.getRootPackage() : null;
+    const packageEl = element._container as IPackage;
+
+    if (packageEl && packageEl.id && packageEl.name) {
+      const isRoot = root && root.id === packageEl.id;
+      const prefix = getPackagePrefix(packageEl, options);
+
+      return isRoot ? '' : prefix;
+    }
+  }
+
+  return options.basePrefix || '';
+};
+
+export const getNormalizedName = (element: IElement) => {
+  let name = getName(element);
+  return normalizeName(name);
+};
+
+const getRelationNameBasedUri = (relation: IRelation, options: Options): string => {
+  if (isInstantiation(relation) || isDerivation(relation)) {
+    throw new Error('Instantiation and derivation relations do not have URIs');
+  }
+
+  const prefix = getPrefix(relation, options);
+
+  let normalizedRelationName = getNormalizedName(relation);
+  if (normalizedRelationName) {
+    return prefix + ':' + normalizedRelationName;
+  }
+
+  let normalizedTargetRoleName = getNormalizedName(relation.properties[1] as IProperty);
+  if (normalizedTargetRoleName) {
+    return prefix + ':' + normalizedTargetRoleName;
+  }
+
+  let sourceType = relation.properties[0].propertyType as IClassifier;
+  let sourceTypeName = getName(sourceType) || sourceType.id;
+
+  let targetType = relation.properties[1].propertyType as IClassifier;
+  let targetTypeName = getName(targetType) || sourceType.id;
+
+  let middleUriSegment;
+
+  if (isMaterial(relation) || isComparative(relation)) {
+    middleUriSegment = 'has';
+  } else if (hasOntoumlStereotype(relation) || isPartWholeRelation(relation)) {
+    let gufoPropertyUri = getSuperProperty(relation);
+    middleUriSegment = gufoPropertyUri.replace('gufo:', '');
+  } else {
+    middleUriSegment = 'has';
+  }
+
+  let relationName = _.camelCase(sourceTypeName + ' ' + middleUriSegment + ' ' + targetTypeName);
+  return prefix + ':' + normalizeName(relationName);
+};
+
+export const getInverseRelationUri = (relation: IRelation, options: Options) => {
+  if (options.uriFormatBy === 'id') {
+    return getPrefix(relation, options) + ':inverse_' + relation.id;
+  }
+
+  return getInverseRelationNameBasedUri(relation, options);
+};
+
+export const getInverseRelationNameBasedUri = (relation: IRelation, options: Options) => {
+  if (isInstantiation(relation) || isDerivation(relation)) {
+    throw new Error('Instantiation and derivation relations do not have URIs');
+  }
+
+  const prefix = getPrefix(relation, options);
+
+  let normalizedTargetRoleName = getNormalizedName(relation.properties[0] as IProperty);
+  if (normalizedTargetRoleName) {
+    return prefix + ':' + normalizedTargetRoleName;
+  }
+
+  let sourceType = relation.properties[0].propertyType as IClassifier;
+  let sourceTypeName = getName(sourceType) || sourceType.id;
+
+  let targetType = relation.properties[1].propertyType as IClassifier;
+  let targetTypeName = getName(targetType) || sourceType.id;
+
+  let middleUriSegment;
+
+  if (isMaterial(relation) || isComparative(relation)) {
+    middleUriSegment = 'has';
+  } else if (hasOntoumlStereotype(relation) || isPartWholeRelation(relation)) {
+    let gufoPropertyUri = getSuperProperty(relation);
+    middleUriSegment = gufoPropertyUri.replace('gufo:', '');
+  } else {
+    middleUriSegment = 'has';
+  }
+
+  let relationName = _.camelCase(sourceTypeName + ' ' + middleUriSegment + ' ' + targetTypeName);
+  return prefix + ':' + normalizeName(relationName);
+};
+
+export const getNameBasedUri = (element: IElement, options: Options): string => {
+  if (isRelation(element)) {
+    return getRelationNameBasedUri(element as IRelation, options);
+  }
+
+  let elementName = getNormalizedName(element) || normalizeName(element.id);
+  return getPrefix(element, options) + ':' + elementName;
+};
+
+export const getIdBasedUri = (element: IElement, options: Options): string => {
+  return getPrefix(element, options) + ':' + element.id;
+};
+
+export function getSourceUri(relation: IRelation, options: Options): string {
+  const source = relation.properties[0].propertyType;
+
+  if (!source || !source.id) return null;
+
+  return getUri(source, options);
+}
+
+export function getTargetUri(relation: IRelation, options: Options): string {
+  const target = relation.properties[1].propertyType;
+  if (!target || !target.id) return null;
+
+  return getUri(target, options);
+}
+
+type CustomElementData = {
+  customLabel?: { [key: string]: string };
+  customUri: string;
+};
+
+export const getCustomElementData = (element: IElement, options: Options): CustomElementData => {
+  const { id, type } = element;
+  const name = getName(element);
+
+  const { customElementMapping } = options;
+  let customLabel;
+  let customUri;
+
+  if (customElementMapping[id]) {
+    customLabel = customElementMapping[id].label;
+    customUri = customElementMapping[id].uri;
+  } else if (customElementMapping[name]) {
+    customLabel = customElementMapping[name].label;
+    customUri = customElementMapping[name].uri;
+  }
+  // check target association end id/name
+  if (type === OntoumlType.RELATION_TYPE) {
+    const { properties } = element as IRelation;
+    const targetAssociationId = properties[1].id;
+    const targetAssociationName = getName(properties[1]);
+
+    if (customElementMapping[targetAssociationId]) {
+      customLabel = customElementMapping[targetAssociationId].label;
+      customUri = customElementMapping[targetAssociationId].uri;
+    } else if (customElementMapping[targetAssociationName]) {
+      customLabel = customElementMapping[targetAssociationName].label;
+      customUri = customElementMapping[targetAssociationName].uri;
+    }
+  }
+
+  return {
+    customLabel,
+    customUri: getPrefix(element, options) + ':' + customUri
+  };
+};
+
+export const getCustomUri = (element: IElement, options: Options): string => {
+  const allMappings = options.customElementMapping;
+
+  let elementCustomMapping = allMappings[element.id];
+
+  if (elementCustomMapping && elementCustomMapping.uri) {
+    return getPrefix(element, options) + ':' + elementCustomMapping.uri;
+  }
+
+  elementCustomMapping = allMappings[getName(element)];
+
+  if (elementCustomMapping && elementCustomMapping.uri) {
+    return getPrefix(element, options) + ':' + elementCustomMapping.uri;
+  }
+
+  return null;
+};
+
+export const getCustomLabels = (element: IElement, options: Options) => {
+  const allMappings = options.customElementMapping;
+
+  let elementCustomMapping = allMappings[element.id];
+
+  if (elementCustomMapping && elementCustomMapping.label) {
+    return elementCustomMapping.label;
+  }
+
+  elementCustomMapping = allMappings[getName(element)];
+
+  if (elementCustomMapping && elementCustomMapping.label) {
+    return elementCustomMapping.label;
+  }
+
+  return null;
+};

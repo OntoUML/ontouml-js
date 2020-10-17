@@ -4,7 +4,7 @@ import { generateGufo, OntoumlFactory } from './helpers';
 describe('Subpackages', () => {
   let model: IPackage;
 
-  beforeAll(() => {
+  beforeEach(() => {
     const personClass = OntoumlFactory.createKind('Person');
     const universityPkg = OntoumlFactory.createPackage('University', [personClass]);
     model = OntoumlFactory.createPackage('Model', [personClass, universityPkg]);

@@ -1,6 +1,21 @@
-import { ClassStereotype, AbstractTypes, RigidTypes, OntoumlType, RelationStereotype, PropertyStereotype } from '@constants/.';
+import {
+  ClassStereotype,
+  AbstractTypes,
+  RigidTypes,
+  OntoumlType,
+  RelationStereotype,
+  PropertyStereotype,
+  AggregationKind,
+  MomentTypes,
+  MomentNatures,
+  ObjectTypes,
+  ObjectNatures
+} from '@constants/.';
 import { IClass, IDecoratable, IElement, IGeneralization, IGeneralizationSet, IPackage, IProperty, IRelation } from '@types';
 import { getXsdUri } from './uri_manager';
+import _ from 'lodash';
+import memoizee from 'memoizee';
+import tags from 'language-tags';
 
 export const getText = (element: IElement, field: string, languagePreference?: string[]): string => {
   if (!element || element.name == null) return null;
@@ -14,6 +29,13 @@ export const getText = (element: IElement, field: string, languagePreference?: s
       return element[field][lang];
     }
   }
+
+  if (typeof element.name !== 'object') return null;
+
+  const languages = Object.keys(element.name)
+    .filter(lang => tags.check(lang))
+    .sort();
+  if (languages.length > 0) return element.name[languages[0]];
 
   return null;
 };
@@ -87,8 +109,64 @@ export function isConcrete(element: IElement): boolean {
   return isClass(element) && hasOntoumlStereotype(element) && !isAbstract(element) && !isType(element);
 }
 
+export function isMoment(element: IElement): boolean {
+  if (!isClass(element)) {
+    return false;
+  }
+
+  const stereotype = getStereotype(element);
+  if (MomentTypes.includes(stereotype as ClassStereotype)) {
+    return true;
+  }
+
+  return hasMomentNature(element);
+}
+
+export function hasMomentNature(element: IElement): boolean {
+  if (!isClass(element)) {
+    return false;
+  }
+
+  const classNatures = (element as IClass).allowed;
+  return includesAll(MomentNatures, classNatures);
+}
+
+export function isObject(element: IElement): boolean {
+  if (!isClass(element)) {
+    return false;
+  }
+
+  const stereotype = getStereotype(element);
+  if (ObjectTypes.includes(stereotype as ClassStereotype)) {
+    return true;
+  }
+
+  return hasObjectNature(element);
+}
+
+export function hasObjectNature(element: IElement): boolean {
+  if (!isClass(element)) {
+    return false;
+  }
+
+  const classNatures = (element as IClass).allowed;
+  return includesAll(ObjectNatures, classNatures);
+}
+
+function includesAll(superset: any[], subset: any[]): boolean {
+  return _.difference(subset, superset).length === 0;
+}
+
 export function isType(element: IElement): boolean {
   return isClass(element) && getStereotype(element) === ClassStereotype.TYPE;
+}
+
+export function isEvent(element: IElement): boolean {
+  return isClass(element) && getStereotype(element) === ClassStereotype.EVENT;
+}
+
+export function isSituation(element: IElement): boolean {
+  return isClass(element) && getStereotype(element) === ClassStereotype.SITUATION;
 }
 
 //TODO: Move this method to the core API
@@ -123,7 +201,10 @@ export function getStereotype(element: IElement): string {
   const decoratable: IDecoratable = element as IDecoratable;
   const stereotypes = decoratable.stereotypes;
 
-  if (!stereotypes || stereotypes.length !== 1) return null;
+  if (!stereotypes || stereotypes.length !== 1) {
+    return null;
+  }
+
   const stereotype = stereotypes[0];
 
   if (
@@ -143,18 +224,34 @@ export function hasOntoumlStereotype(element: IElement): boolean {
 }
 
 //TODO: Move this method to the core API
-function isClassStereotype(stereotype: string): boolean {
+export function isClassStereotype(stereotype: string): boolean {
   return Object.values(ClassStereotype).includes(stereotype as ClassStereotype);
 }
 
 //TODO: Move this method to the core API
-function isRelationStereotype(stereotype: string): boolean {
+export function isRelationStereotype(stereotype: string): boolean {
   return Object.values(RelationStereotype).includes(stereotype as RelationStereotype);
 }
 
 //TODO: Move this method to the core API
-function isPropertyStereotype(stereotype: string): boolean {
+export function isPropertyStereotype(stereotype: string): boolean {
   return Object.values(PropertyStereotype).includes(stereotype as PropertyStereotype);
+}
+
+export function isInstantiation(relation: IRelation): boolean {
+  return getStereotype(relation) === RelationStereotype.INSTANTIATION;
+}
+
+export function isDerivation(relation: IRelation): boolean {
+  return getStereotype(relation) === RelationStereotype.DERIVATION;
+}
+
+export function isMaterial(relation: IRelation): boolean {
+  return getStereotype(relation) === RelationStereotype.MATERIAL;
+}
+
+export function isComparative(relation: IRelation): boolean {
+  return getStereotype(relation) === RelationStereotype.COMPARATIVE;
 }
 
 export function getAllClasses(model: IPackage): IClass[] {
@@ -180,3 +277,99 @@ export function getAllPackages(model: IPackage): IPackage[] {
 export function isTypeDefined(attribute: IProperty): boolean {
   return attribute.propertyType !== null;
 }
+
+export function isPartWholeRelation(relation: IRelation) {
+  const partWholeKinds = [AggregationKind.SHARED, AggregationKind.COMPOSITE];
+  return (
+    partWholeKinds.includes(relation.properties[0].aggregationKind) ||
+    partWholeKinds.includes(relation.properties[1].aggregationKind)
+  );
+}
+
+export function getSourceStereotype(relation: IRelation) {
+  const sourceClass = relation.getSource();
+  return getStereotype(sourceClass);
+}
+
+export function getTargetStereotype(relation: IRelation) {
+  const targetClass = relation.getTarget();
+  return getStereotype(targetClass);
+}
+
+export function holdsBetweenEvents(relation: IRelation) {
+  return isEvent(relation.getSource()) && isEvent(relation.getTarget());
+}
+
+export function holdsBetweenAspects(relation: IRelation) {
+  return isMoment(relation.getSource()) && isMoment(relation.getTarget());
+}
+
+export function holdsBetweenObjects(relation: IRelation) {
+  return isObject(relation.getSource()) && isObject(relation.getTarget());
+}
+
+export function isExistentialDependency(relation: IRelation) {
+  return relation.properties[0].isReadOnly || relation.properties[1].isReadOnly;
+}
+
+export function isBounded(property: IProperty): boolean {
+  return property.cardinality !== '*' && property.cardinality !== '0..*';
+}
+
+export function isBinary(relation: IRelation): boolean {
+  return relation.properties.length == 2;
+}
+
+export function sourceExistentiallyDependsOnTarget(relation: IRelation): boolean {
+  const sourceProperty = relation.properties[0];
+
+  const stereotype = getStereotype(relation);
+  const existentialDependecyOnSource: string[] = [
+    RelationStereotype.BRINGS_ABOUT,
+    RelationStereotype.CREATION,
+    RelationStereotype.MANIFESTATION,
+    RelationStereotype.PARTICIPATION,
+    RelationStereotype.PARTICIPATIONAL,
+    RelationStereotype.TERMINATION,
+    RelationStereotype.TRIGGERS
+  ];
+
+  return sourceProperty.isReadOnly || existentialDependecyOnSource.includes(stereotype);
+}
+
+export function targetExistentiallyDependsOnSource(relation: IRelation): boolean {
+  const targetProperty = relation.properties[1];
+
+  const stereotype = getStereotype(relation);
+  const existentialDependecyOnTarget: string[] = [
+    RelationStereotype.BRINGS_ABOUT,
+    RelationStereotype.CHARACTERIZATION,
+    RelationStereotype.CREATION,
+    RelationStereotype.EXTERNAL_DEPENDENCE,
+    RelationStereotype.HISTORICAL_DEPENDENCE,
+    RelationStereotype.MEDIATION,
+    RelationStereotype.PARTICIPATIONAL
+  ];
+
+  return targetProperty.isReadOnly || existentialDependecyOnTarget.includes(stereotype);
+}
+
+export function impliesExistentialDependency(relation: IRelation): boolean {
+  return sourceExistentiallyDependsOnTarget(relation) || targetExistentiallyDependsOnSource(relation);
+}
+
+export const getLowerboundCardinality = memoizee((cardinality: string): number => {
+  const cardinalities = cardinality.split('..');
+  const lowerbound = cardinalities[0];
+
+  return lowerbound === '*' ? 0 : Number(lowerbound);
+});
+
+export const UNBOUNDED_CARDINALITY = 99999;
+
+export const getUpperboundCardinality = memoizee((cardinality: string): number => {
+  const cardinalities = cardinality.split('..');
+  const upperbound = cardinalities[1] || cardinalities[0];
+
+  return upperbound === '*' ? UNBOUNDED_CARDINALITY : Number(upperbound);
+});

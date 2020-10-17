@@ -1,11 +1,17 @@
 import memoizee from 'memoizee';
-import { OntoumlType } from '@constants/.';
-import { IElement, IPackage, IRelation } from '@types';
+import { IPackage } from '@types';
 import { getAllPackages, getName } from './helper_functions';
 import Options from './options';
-import { DefaultPrefixes } from './constants';
 import { normalizeName } from './uri_manager';
 import _ from 'lodash';
+
+export const DefaultPrefixes = {
+  gufo: 'http://purl.org/nemo/gufo#',
+  rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+  rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+  owl: 'http://www.w3.org/2002/07/owl#',
+  xsd: 'http://www.w3.org/2001/XMLSchema#'
+};
 
 export const getPrefixes = (model: IPackage, options: Options) => {
   let prefixes = [];
@@ -98,42 +104,4 @@ export const getCustomPackageData = (pkg: IPackage, options: Options): CustomPre
   }
 
   return { customPrefix, customUri };
-};
-
-type CustomElementData = {
-  customLabel?: { [key: string]: string };
-  customUri: string;
-};
-
-export const getCustomElementData = (element: IElement, options: Options): CustomElementData => {
-  const { id, type } = element;
-  const name = getName(element);
-
-  const { customElementMapping } = options;
-  let customLabel;
-  let customUri;
-
-  if (customElementMapping[id]) {
-    customLabel = customElementMapping[id].label;
-    customUri = customElementMapping[id].uri;
-  } else if (customElementMapping[name]) {
-    customLabel = customElementMapping[name].label;
-    customUri = customElementMapping[name].uri;
-  }
-  // check target association end id/name
-  if (type === OntoumlType.RELATION_TYPE) {
-    const { properties } = element as IRelation;
-    const targetAssociationId = properties[1].id;
-    const targetAssociationName = getName(properties[1]);
-
-    if (customElementMapping[targetAssociationId]) {
-      customLabel = customElementMapping[targetAssociationId].label;
-      customUri = customElementMapping[targetAssociationId].uri;
-    } else if (customElementMapping[targetAssociationName]) {
-      customLabel = customElementMapping[targetAssociationName].label;
-      customUri = customElementMapping[targetAssociationName].uri;
-    }
-  }
-
-  return { customLabel, customUri };
 };

@@ -13,7 +13,7 @@ export default class Options {
       label?: {
         [key: string]: string;
       };
-      uri: string;
+      uri?: string;
     };
   };
   customPackageMapping?: {

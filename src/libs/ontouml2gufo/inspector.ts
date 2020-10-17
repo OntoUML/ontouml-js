@@ -1,6 +1,6 @@
 import isURI from 'validate.io-uri';
 import { IPackage, IRelation, IElement, IClass, IProperty } from '@types';
-import { DefaultPrefixes } from './constants';
+import { DefaultPrefixes } from './prefix_functions';
 import { getAllClasses, getAllPackages, getAllRelations, getName } from './helper_functions';
 import { getPackagePrefixes } from './prefix_functions';
 import Options from './options';

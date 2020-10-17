@@ -3,13 +3,23 @@ import { ModelManager } from '@libs/model';
 import { Ontouml2Gufo } from '@libs/ontouml2gufo';
 import uniqid from 'uniqid';
 
-import { IPackage, IClass, IRelation, IProperty, IGeneralization, IGeneralizationSet, IElement, ILiteral } from '@types';
+import {
+  IPackage,
+  IClass,
+  IRelation,
+  IProperty,
+  IGeneralization,
+  IGeneralizationSet,
+  IElement,
+  ILiteral,
+  IClassifier
+} from '@types';
 import Options from '@libs/ontouml2gufo/options';
 import Issue from '@libs/ontouml2gufo/issue';
 
 export function generateGufo(model: IPackage, options?: Partial<Options>): string {
-  const clonedModel = JSON.parse(JSON.stringify(model));
-  const modelManager = new ModelManager(clonedModel);
+  // const clonedModel = JSON.parse(JSON.stringify(model));
+  const modelManager = new ModelManager(model);
   const ontouml2gufo = new Ontouml2Gufo(modelManager, {
     baseIri: 'https://example.com',
     format: 'N-Triple',
@@ -22,8 +32,8 @@ export function generateGufo(model: IPackage, options?: Partial<Options>): strin
 }
 
 export function getIssues(model: IPackage, options?: Partial<Options>): Issue[] {
-  const clonedModel = JSON.parse(JSON.stringify(model));
-  const modelManager = new ModelManager(clonedModel);
+  // const clonedModel = JSON.parse(JSON.stringify(model));
+  const modelManager = new ModelManager(model);
   const ontouml2gufo = new Ontouml2Gufo(modelManager, {
     baseIri: 'https://example.com',
     format: 'Turtle',
@@ -44,7 +54,7 @@ export function createClass(name: string, stereotype: ClassStereotype, nature: O
     properties: null,
     literals: null,
     propertyAssignments: null,
-    stereotypes: [stereotype],
+    stereotypes: stereotype ? [stereotype] : null,
     isAbstract: false,
     isDerived: false,
     allowed: [...nature],
@@ -169,21 +179,87 @@ export function createLiteral(name: string): ILiteral {
   };
 }
 
-export function createRelation(name: string, stereotype: RelationStereotype, source: IClass, target: IClass): IRelation {
-  return {
+export function createRelation(
+  name: string,
+  stereotype: RelationStereotype,
+  source: IClassifier,
+  target: IClassifier,
+  shouldResolveReferences: boolean = false
+): IRelation {
+  let relation: IRelation = {
     type: OntoumlType.RELATION_TYPE,
     id: uniqid(),
     name: name,
     description: null,
     properties: [createProperty(null, source), createProperty(null, target)],
     propertyAssignments: null,
-    stereotypes: [stereotype],
+    stereotypes: stereotype ? [stereotype] : null,
     isAbstract: false,
     isDerived: false
   };
+
+  if (shouldResolveReferences) {
+    relation.properties[0].propertyType = source;
+    relation.properties[1].propertyType = target;
+  }
+
+  return relation;
 }
 
-export function createProperty(name: string, type?: IClass): IProperty {
+export function createMediation(
+  name: string,
+  relator: IClass,
+  mediated: IClass,
+  shouldResolveReferences: boolean = false
+): IRelation {
+  const mediation = createRelation(name, RelationStereotype.MATERIAL, relator, mediated, shouldResolveReferences);
+  mediation.properties[1].isReadOnly = true;
+  mediation.properties[1].cardinality = '1';
+  return mediation;
+}
+
+export function createCharacterization(
+  name: string,
+  aspect: IClass,
+  bearer: IClass,
+  shouldResolveReferences: boolean = false
+): IRelation {
+  const characterization = createRelation(name, RelationStereotype.CHARACTERIZATION, aspect, bearer, shouldResolveReferences);
+  characterization.properties[1].isReadOnly = true;
+  characterization.properties[1].cardinality = '1';
+  return characterization;
+}
+
+export function createTermination(
+  name: string,
+  endurant: IClass,
+  event: IClass,
+  shouldResolveReferences: boolean = false
+): IRelation {
+  const characterization = createRelation(name, RelationStereotype.TERMINATION, endurant, event, shouldResolveReferences);
+  characterization.properties[0].isReadOnly = true;
+  return characterization;
+}
+
+export function createCreation(
+  name: string,
+  endurant: IClass,
+  event: IClass,
+  shouldResolveReferences: boolean = false
+): IRelation {
+  const characterization = createRelation(name, RelationStereotype.CREATION, endurant, event, shouldResolveReferences);
+  characterization.properties[0].isReadOnly = true;
+  characterization.properties[1].isReadOnly = true;
+  return characterization;
+}
+
+export function createPartWhole(name: string, source: IClassifier, target: IClassifier) {
+  const relation: IRelation = createRelation(name, null, source, target);
+  relation.properties[1].aggregationKind = AggregationKind.COMPOSITE;
+  return relation;
+}
+
+export function createProperty(name: string, type?: IClassifier): IProperty {
   return {
     type: OntoumlType.PROPERTY_TYPE,
     id: uniqid(),
@@ -191,7 +267,7 @@ export function createProperty(name: string, type?: IClass): IProperty {
     description: null,
     propertyType: type
       ? {
-          type: OntoumlType.CLASS_TYPE,
+          type: type.type,
           id: type.id
         }
       : null,
@@ -275,7 +351,9 @@ export const OntoumlFactory = {
   cloneKind,
   createAbstract,
   createCategory,
+  createCharacterization,
   createClass,
+  createCreation,
   createCollective,
   createDatatype,
   createEnumeration,
@@ -284,6 +362,7 @@ export const OntoumlFactory = {
   createGeneralizationSet,
   createKind,
   createLiteral,
+  createMediation,
   createMixin,
   createMode,
   createPackage,
@@ -293,11 +372,13 @@ export const OntoumlFactory = {
   createProperty,
   createQuality,
   createQuantity,
+  createPartWhole,
   createRelation,
   createRelator,
   createRole,
   createRoleMixin,
   createSituation,
   createSubkind,
+  createTermination,
   createType
 };

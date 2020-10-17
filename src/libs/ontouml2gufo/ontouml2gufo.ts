@@ -17,6 +17,8 @@ import { getPrefixes } from './prefix_functions';
 import { transformGeneralization } from './generalization_functions';
 import { transformAttribute } from './attribute_functions';
 import { transformGeneralizationSet } from './generalization_set_functions';
+import { transformRelationCardinalities } from './cardinality_functions';
+import { transformInverseRelation } from './relations_inverse_functions';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -65,6 +67,7 @@ export class Ontouml2Gufo {
       this.transformGeneralizationSets();
       this.transformAttributes();
       this.transformRelations();
+      this.transformCardinalities();
       this.writer.end((error, result) => {
         if (error) throw error;
         this.owlCode = result;
@@ -72,7 +75,7 @@ export class Ontouml2Gufo {
     } catch (error) {
       console.log(error);
       console.log('An error occurred while transforming the model to gufo.');
-      return false;
+      throw error;
     }
 
     return true;
@@ -121,7 +124,25 @@ export class Ontouml2Gufo {
 
     for (const relation of relations) {
       transformRelation(this.writer, relation, this.options);
+
+      if (this.options.createInverses) {
+        transformInverseRelation(this.writer, relation, this.options);
+      }
     }
+  }
+
+  transformCardinalities() {
+    const relations = getAllRelations(this.model);
+    for (const relation of relations) {
+      transformRelationCardinalities(this.writer, relation, this.options);
+    }
+    // const classes = getAllClasses(this.model);
+    // for (const _class of classes) {
+    //   if (!hasAttributes(_class)) return;
+    //   for (const attribute of _class.properties) {
+    //     transformAttributeCardinality(this.writer, _class, attribute, this.options);
+    //   }
+    // }
   }
 
   transformGeneralizations() {
