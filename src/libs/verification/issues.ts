@@ -216,6 +216,7 @@ export class VerificationIssue {
         aux[0] = context[0] && context[0].name ? context[0].name : context[0].id;
         aux[1] = context[1] && context[1].name ? context[1].name : context[1].id;
         this.description = `The allowed ontological natures of instances of ${aux[1]} are not among the allowed ontological natures of its superclass ${aux[0]}.`;
+        this.severity = IssueSeverity.error;
         break;
       case VerificationIssueCode.generalization_incompatible_enumeration:
         // The case of an enumeration specializing a non-enumeration class
@@ -237,6 +238,7 @@ export class VerificationIssue {
         aux[0] = context[0] && context[0].name ? context[0].name : context[0].id;
         aux[1] = context[1] && context[1].name ? context[1].name : context[1].id;
         this.description = `The rigid/semi-rigid class ${aux[0]} cannot specialize the anti-rigid class ${aux[1]}.`;
+        this.severity = IssueSeverity.error;
         break;
       case VerificationIssueCode.generalization_incompatible_class_sortality:
         // The case of a non-sortal class specializing an sortal one

@@ -261,7 +261,8 @@ function isSortal(): boolean {
       ClassStereotype.QUALITY,
       ClassStereotype.SUBKIND,
       ClassStereotype.ROLE,
-      ClassStereotype.PHASE
+      ClassStereotype.PHASE,
+      ClassStereotype.HISTORICAL_ROLE
     ];
     return strs.includes(self.stereotypes[0]);
   }
@@ -277,7 +278,8 @@ function isNonSortal(): boolean {
       ClassStereotype.CATEGORY,
       ClassStereotype.MIXIN,
       ClassStereotype.ROLE_MIXIN,
-      ClassStereotype.PHASE_MIXIN
+      ClassStereotype.PHASE_MIXIN,
+      ClassStereotype.HISTORICAL_ROLE_MIXIN
     ];
     return strs.includes(self.stereotypes[0]);
   }
@@ -315,7 +317,8 @@ function isRigid(): boolean {
       ClassStereotype.MODE,
       ClassStereotype.QUALITY,
       ClassStereotype.SUBKIND,
-      ClassStereotype.CATEGORY
+      ClassStereotype.CATEGORY,
+      ClassStereotype.TYPE
     ];
     return strs.includes(self.stereotypes[0]);
   }
@@ -338,7 +341,14 @@ function isAntiRigid(): boolean {
   const self = this as IClass;
 
   if (self.stereotypes && self.stereotypes.length === 1) {
-    const strs: string[] = [ClassStereotype.ROLE_MIXIN, ClassStereotype.PHASE_MIXIN, ClassStereotype.ROLE, ClassStereotype.PHASE];
+    const strs: string[] = [
+      ClassStereotype.ROLE_MIXIN,
+      ClassStereotype.PHASE_MIXIN,
+      ClassStereotype.ROLE,
+      ClassStereotype.PHASE,
+      ClassStereotype.HISTORICAL_ROLE,
+      ClassStereotype.HISTORICAL_ROLE_MIXIN
+    ];
     return strs.includes(self.stereotypes[0]);
   }
 

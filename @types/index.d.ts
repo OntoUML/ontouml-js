@@ -159,8 +159,6 @@ interface IPackage extends IElement, IContainer {
 interface IClass extends IElement, IContainer, IDecoratable, IClassifier {
   type: OntoumlType.CLASS_TYPE;
   literals: ILiteral[] | null;
-  allowed: OntologicalNature[] | null;
-  isExtensional: boolean | null;
   isPowertype: boolean | null;
   order: number | null;
 

@@ -14,23 +14,48 @@ export const allNatures = [
   OntologicalNature.type
 ];
 
+export const allowedNaturesForSortals = [
+  OntologicalNature.collective,
+  OntologicalNature.functional_complex,
+  OntologicalNature.mode,
+  OntologicalNature.quality,
+  OntologicalNature.quantity,
+  OntologicalNature.relator,
+  OntologicalNature.type
+];
+
+export const allowedNaturesForNonSortals = [
+  OntologicalNature.collective,
+  OntologicalNature.functional_complex,
+  OntologicalNature.mode,
+  OntologicalNature.quality,
+  OntologicalNature.quantity,
+  OntologicalNature.relator,
+  OntologicalNature.type
+];
+
 export const allAllowedNatures = {};
-allAllowedNatures[ClassStereotype.CATEGORY] = allNatures;
-allAllowedNatures[ClassStereotype.MIXIN] = allNatures;
-allAllowedNatures[ClassStereotype.ROLE_MIXIN] = allNatures;
-allAllowedNatures[ClassStereotype.PHASE_MIXIN] = allNatures;
+
+allAllowedNatures[ClassStereotype.CATEGORY] = allowedNaturesForNonSortals;
+allAllowedNatures[ClassStereotype.MIXIN] = allowedNaturesForNonSortals;
+allAllowedNatures[ClassStereotype.ROLE_MIXIN] = allowedNaturesForNonSortals;
+allAllowedNatures[ClassStereotype.PHASE_MIXIN] = allowedNaturesForNonSortals;
+allAllowedNatures[ClassStereotype.HISTORICAL_ROLE_MIXIN] = allowedNaturesForNonSortals;
+
 allAllowedNatures[ClassStereotype.KIND] = [OntologicalNature.functional_complex];
 allAllowedNatures[ClassStereotype.QUANTITY] = [OntologicalNature.quantity];
 allAllowedNatures[ClassStereotype.COLLECTIVE] = [OntologicalNature.collective];
 allAllowedNatures[ClassStereotype.RELATOR] = [OntologicalNature.relator];
 allAllowedNatures[ClassStereotype.MODE] = [OntologicalNature.intrinsic_mode];
 allAllowedNatures[ClassStereotype.QUALITY] = [OntologicalNature.quality];
-allAllowedNatures[ClassStereotype.SUBKIND] = allNatures;
-allAllowedNatures[ClassStereotype.ROLE] = allNatures;
-allAllowedNatures[ClassStereotype.PHASE] = allNatures;
 allAllowedNatures[ClassStereotype.TYPE] = [OntologicalNature.type];
+
+allAllowedNatures[ClassStereotype.SUBKIND] = allowedNaturesForSortals;
+allAllowedNatures[ClassStereotype.ROLE] = allowedNaturesForSortals;
+allAllowedNatures[ClassStereotype.PHASE] = allowedNaturesForSortals;
+allAllowedNatures[ClassStereotype.HISTORICAL_ROLE] = allowedNaturesForSortals;
+
 allAllowedNatures[ClassStereotype.EVENT] = [OntologicalNature.event];
-allAllowedNatures[ClassStereotype.HISTORICAL_ROLE] = [OntologicalNature.event];
 allAllowedNatures[ClassStereotype.DATATYPE] = [OntologicalNature.abstract];
 allAllowedNatures[ClassStereotype.ENUMERATION] = [OntologicalNature.abstract];
 
@@ -82,7 +107,7 @@ export const ClassVerification = {
         return new VerificationIssue(VerificationIssueCode.class_identity_provider_specialization, _class, kindAncestors);
       } else if (!_class.isUltimateSortal() && kindAncestors.length > 1) {
         return new VerificationIssue(VerificationIssueCode.class_multiple_identity_provider, _class, kindAncestors);
-      } else if (!_class.isUltimateSortal() && kindAncestors.length === 0) {
+      } else if (!_class.isUltimateSortal() && kindAncestors.length === 0 && !_class.allowsInstances([OntologicalNature.type])) {
         return new VerificationIssue(VerificationIssueCode.class_missing_identity_provider, _class);
       }
     }
