@@ -17,7 +17,7 @@ export const allNatures = [
 export const allowedNaturesForSortals = [
   OntologicalNature.collective,
   OntologicalNature.functional_complex,
-  OntologicalNature.mode,
+  OntologicalNature.intrinsic_mode,
   OntologicalNature.quality,
   OntologicalNature.quantity,
   OntologicalNature.relator,
@@ -27,7 +27,7 @@ export const allowedNaturesForSortals = [
 export const allowedNaturesForNonSortals = [
   OntologicalNature.collective,
   OntologicalNature.functional_complex,
-  OntologicalNature.mode,
+  OntologicalNature.intrinsic_mode,
   OntologicalNature.quality,
   OntologicalNature.quantity,
   OntologicalNature.relator,
