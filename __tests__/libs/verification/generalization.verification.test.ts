@@ -1,11 +1,11 @@
 import { ModelManager } from '@libs/model';
-import { classVerification } from '@test-models/verification';
+// import { classVerification } from '@test-models/verification';
 import { OntoUML2Verification } from '@libs/verification';
 import { VerificationIssue, VerificationIssueCode } from '@libs/verification/issues';
 import { IGeneralization } from '@types';
 
 describe('Model deserializing', () => {
-  const inputModel = classVerification;
+  const inputModel = require('./test_resources/old_verification_test_models.json');
   let modelManager: ModelManager;
 
   it('Check input model against OntoUML Schema', () => {

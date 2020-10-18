@@ -8,56 +8,52 @@ export const allNatures = [
   OntologicalNature.event,
   OntologicalNature.functional_complex,
   OntologicalNature.intrinsic_mode,
+  OntologicalNature.extrinsic_mode,
   OntologicalNature.quality,
   OntologicalNature.quantity,
   OntologicalNature.relator,
+  OntologicalNature.situation,
   OntologicalNature.type
 ];
 
-export const allowedNaturesForSortals = [
+export const substantialAndMomentNatures = [
   OntologicalNature.collective,
   OntologicalNature.functional_complex,
   OntologicalNature.intrinsic_mode,
+  OntologicalNature.extrinsic_mode,
   OntologicalNature.quality,
   OntologicalNature.quantity,
-  OntologicalNature.relator,
-  OntologicalNature.type
+  OntologicalNature.relator
 ];
 
-export const allowedNaturesForNonSortals = [
-  OntologicalNature.collective,
-  OntologicalNature.functional_complex,
-  OntologicalNature.intrinsic_mode,
-  OntologicalNature.quality,
-  OntologicalNature.quantity,
-  OntologicalNature.relator,
-  OntologicalNature.type
-];
+export const allAllowedNatures = {
+  [ClassStereotype.ABSTRACT]: [OntologicalNature.abstract],
+  [ClassStereotype.DATATYPE]: [OntologicalNature.abstract],
+  [ClassStereotype.ENUMERATION]: [OntologicalNature.abstract],
 
-export const allAllowedNatures = {};
+  [ClassStereotype.EVENT]: [OntologicalNature.event],
+  [ClassStereotype.SITUATION]: [OntologicalNature.situation],
 
-allAllowedNatures[ClassStereotype.CATEGORY] = allowedNaturesForNonSortals;
-allAllowedNatures[ClassStereotype.MIXIN] = allowedNaturesForNonSortals;
-allAllowedNatures[ClassStereotype.ROLE_MIXIN] = allowedNaturesForNonSortals;
-allAllowedNatures[ClassStereotype.PHASE_MIXIN] = allowedNaturesForNonSortals;
-allAllowedNatures[ClassStereotype.HISTORICAL_ROLE_MIXIN] = allowedNaturesForNonSortals;
+  [ClassStereotype.CATEGORY]: substantialAndMomentNatures,
+  [ClassStereotype.MIXIN]: substantialAndMomentNatures,
+  [ClassStereotype.ROLE_MIXIN]: substantialAndMomentNatures,
+  [ClassStereotype.PHASE_MIXIN]: substantialAndMomentNatures,
+  [ClassStereotype.HISTORICAL_ROLE_MIXIN]: substantialAndMomentNatures,
 
-allAllowedNatures[ClassStereotype.KIND] = [OntologicalNature.functional_complex];
-allAllowedNatures[ClassStereotype.QUANTITY] = [OntologicalNature.quantity];
-allAllowedNatures[ClassStereotype.COLLECTIVE] = [OntologicalNature.collective];
-allAllowedNatures[ClassStereotype.RELATOR] = [OntologicalNature.relator];
-allAllowedNatures[ClassStereotype.MODE] = [OntologicalNature.intrinsic_mode];
-allAllowedNatures[ClassStereotype.QUALITY] = [OntologicalNature.quality];
-allAllowedNatures[ClassStereotype.TYPE] = [OntologicalNature.type];
+  [ClassStereotype.KIND]: [OntologicalNature.functional_complex],
+  [ClassStereotype.COLLECTIVE]: [OntologicalNature.collective],
+  [ClassStereotype.QUANTITY]: [OntologicalNature.quantity],
+  [ClassStereotype.RELATOR]: [OntologicalNature.relator],
+  [ClassStereotype.MODE]: [OntologicalNature.extrinsic_mode, OntologicalNature.intrinsic_mode],
+  [ClassStereotype.QUALITY]: [OntologicalNature.quality],
 
-allAllowedNatures[ClassStereotype.SUBKIND] = allowedNaturesForSortals;
-allAllowedNatures[ClassStereotype.ROLE] = allowedNaturesForSortals;
-allAllowedNatures[ClassStereotype.PHASE] = allowedNaturesForSortals;
-allAllowedNatures[ClassStereotype.HISTORICAL_ROLE] = allowedNaturesForSortals;
+  [ClassStereotype.SUBKIND]: substantialAndMomentNatures,
+  [ClassStereotype.ROLE]: substantialAndMomentNatures,
+  [ClassStereotype.PHASE]: substantialAndMomentNatures,
+  [ClassStereotype.HISTORICAL_ROLE]: substantialAndMomentNatures,
 
-allAllowedNatures[ClassStereotype.EVENT] = [OntologicalNature.event];
-allAllowedNatures[ClassStereotype.DATATYPE] = [OntologicalNature.abstract];
-allAllowedNatures[ClassStereotype.ENUMERATION] = [OntologicalNature.abstract];
+  [ClassStereotype.TYPE]: [OntologicalNature.type]
+};
 
 /**
  * Functions for syntactical verification of classes
@@ -66,6 +62,20 @@ allAllowedNatures[ClassStereotype.ENUMERATION] = [OntologicalNature.abstract];
  * @author Lucas Bassetti
  */
 export const ClassVerification = {
+  check(_class: IClass): VerificationIssue[] {
+    const potentialIssues: VerificationIssue[] = [
+      // each verification goes here
+      this.checkKindSpecialization(_class),
+      this.checkCompatibleNatures(_class),
+      this.checkMissingNatures(_class),
+      this.checkMissingIsExtensional(_class),
+      this.checkMissingIsPowertype(_class),
+      this.checkMissingOrder(_class)
+    ];
+
+    return potentialIssues;
+  },
+
   checkMinimalConsistency(_class: IClass): VerificationIssue[] {
     const consistencyIssues: VerificationIssue[] = [];
     const classStereotypes = Object.values(ClassStereotype) as string[];
@@ -83,20 +93,6 @@ export const ClassVerification = {
     }
 
     return consistencyIssues;
-  },
-
-  check(_class: IClass): VerificationIssue[] {
-    const potentialIssues: VerificationIssue[] = [
-      // each verification goes here
-      this.checkKindSpecialization(_class),
-      this.checkCompatibleNatures(_class),
-      this.checkMissingNatures(_class),
-      this.checkMissingIsExtensional(_class),
-      this.checkMissingIsPowertype(_class),
-      this.checkMissingOrder(_class)
-    ];
-
-    return potentialIssues;
   },
 
   checkKindSpecialization(_class: IClass): VerificationIssue {
