@@ -1,7 +1,7 @@
 import { RelationStereotype } from '@constants/.';
 import Options from '@libs/ontouml2gufo/options';
 import { getUri } from '@libs/ontouml2gufo/uri_manager';
-import { OntoumlFactory } from './helpers';
+import OntoumlFactory from './ontouml_factory';
 
 const createFormatByIdOption = (): Options => {
   return new Options({ uriFormatBy: 'id' });

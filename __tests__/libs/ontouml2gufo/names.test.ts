@@ -1,5 +1,6 @@
 import { RelationStereotype } from '@constants/.';
-import { OntoumlFactory, generateGufo } from './helpers';
+import { generateGufo } from './helpers';
+import OntoumlFactory from './ontouml_factory';
 
 describe('Names to labels', () => {
   it('should generate labels without language tags when names are simple strings', async () => {

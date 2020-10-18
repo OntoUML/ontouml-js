@@ -1,4 +1,5 @@
-import { OntoumlFactory, generateGufo } from './helpers';
+import { generateGufo } from './helpers';
+import OntoumlFactory from './ontouml_factory';
 
 describe('Generalization Sets', () => {
   describe('Should add disjointness constraint from a disjoint GS involving only rigid children classes...', () => {

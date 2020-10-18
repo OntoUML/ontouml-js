@@ -22,7 +22,8 @@
     "build:watch": "TS_NODE_FILES=true tsc -w -p tsconfig.release.json",
     "bundle": "webpack",
     "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'",
-    "test": "jest --coverage",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
     "test:clear": "jest --clearCache",
     "test:watch": "jest --watch"
   },

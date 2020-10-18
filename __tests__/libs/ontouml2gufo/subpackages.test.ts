@@ -1,5 +1,6 @@
 import { IPackage } from '@types';
-import { generateGufo, OntoumlFactory } from './helpers';
+import { generateGufo } from './helpers';
+import OntoumlFactory from './ontouml_factory';
 
 describe('Subpackages', () => {
   let model: IPackage;

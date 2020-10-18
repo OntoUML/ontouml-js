@@ -1,5 +1,6 @@
 import { OntologicalNature } from '@constants/.';
-import { OntoumlFactory, generateGufo } from './helpers';
+import { generateGufo } from './helpers';
+import OntoumlFactory from './ontouml_factory';
 
 describe('Classes', () => {
   it('should generate a label with the original name of the class', () => {

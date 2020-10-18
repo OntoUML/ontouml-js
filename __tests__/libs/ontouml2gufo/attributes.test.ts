@@ -1,4 +1,5 @@
-import { generateGufo, OntoumlFactory } from './helpers';
+import { generateGufo } from './helpers';
+import OntoumlFactory from './ontouml_factory';
 
 describe('An attribute', () => {
   describe('of a concrete class (e.g. «kind» Person) with a PRIMITIVE TYPE (e.g. name: string, age: int, start: date)', () => {

@@ -1,5 +1,6 @@
 import { RelationStereotype } from '@constants/.';
-import { generateGufo, OntoumlFactory } from './helpers';
+import { generateGufo } from './helpers';
+import OntoumlFactory from './ontouml_factory';
 
 describe('Custom labels', () => {
   it("should use the labels defined in the transformation's options to generate class' labels", () => {

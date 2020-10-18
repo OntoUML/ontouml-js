@@ -1,5 +1,6 @@
 import { RelationStereotype } from '@constants/.';
-import { OntoumlFactory, generateGufo } from './helpers';
+import { generateGufo } from './helpers';
+import OntoumlFactory from './ontouml_factory';
 
 describe('Descriptions to rdfs:comments', () => {
   it('should generate class "description" as a rdfs:comment', async () => {

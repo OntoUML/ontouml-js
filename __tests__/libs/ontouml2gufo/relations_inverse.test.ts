@@ -1,5 +1,6 @@
 import { RelationStereotype } from '@constants/.';
-import { generateGufo, OntoumlFactory } from './helpers';
+import { generateGufo } from './helpers';
+import OntoumlFactory from './ontouml_factory';
 
 describe('Inverse relations', () => {
   describe('Basic inverse relation mapping: stereotypeless relation', () => {

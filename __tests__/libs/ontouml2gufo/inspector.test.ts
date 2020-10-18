@@ -1,6 +1,7 @@
 import { RelationStereotype } from '@constants/.';
 import { IssueType } from '@libs/ontouml2gufo/issue';
-import { getIssues, OntoumlFactory } from './helpers';
+import { getIssues } from './helpers';
+import OntoumlFactory from './ontouml_factory';
 
 describe('PreAnalysis', () => {
   it('should return invalid base IRI error', () => {
