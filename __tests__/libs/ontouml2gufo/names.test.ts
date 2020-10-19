@@ -3,7 +3,7 @@ import { generateGufo } from './helpers';
 import OntoumlFactory from './ontouml_factory';
 
 describe('Names to labels', () => {
-  it('should generate labels without language tags when names are simple strings', async () => {
+  it('should generate labels without language tags when names are simple strings', () => {
     const _class = OntoumlFactory.createKind('Person');
     const model = OntoumlFactory.createPackage(null, [_class]);
     const result = generateGufo(model);
@@ -11,7 +11,7 @@ describe('Names to labels', () => {
     expect(result).toContain('<:Person> <rdfs:label> "Person"');
   });
 
-  it('should generate language labels on classess using 2-letter IANA language tags (e.g. en, it)', async () => {
+  it('should generate language labels on classess using 2-letter IANA language tags (e.g. en, it)', () => {
     const _class = OntoumlFactory.createKind('Person');
     _class.name = {
       en: 'Person',
@@ -25,7 +25,7 @@ describe('Names to labels', () => {
     expect(result).toContain('<:Person> <rdfs:label> "Persona"@it');
   });
 
-  it('should generate language labels on classess using composed IANA language tags (e.g. en-us, pt-br)', async () => {
+  it('should generate language labels on classess using composed IANA language tags (e.g. en-us, pt-br)', () => {
     const _class = OntoumlFactory.createKind('Person');
     _class.name = {
       'en-us': 'Person',
@@ -39,7 +39,7 @@ describe('Names to labels', () => {
     expect(result).toContain('<:Person> <rdfs:label> "Pessoa"@pt-br');
   });
 
-  it('should NOT generate language labels for invalid IANA language tags (e.g. ens, it-trento, xyz)', async () => {
+  it('should NOT generate language labels for invalid IANA language tags (e.g. ens, it-trento, xyz)', () => {
     const _class = OntoumlFactory.createKind('Person');
     _class.id = '123';
     _class.name = {
@@ -56,7 +56,7 @@ describe('Names to labels', () => {
     expect(result).not.toContain('<:123> <rdfs:label> "Persoon"@xyz');
   });
 
-  it('should generate language labels on attributes (e.g. nl, pt)', async () => {
+  it('should generate language labels on attributes (e.g. nl, pt)', () => {
     const _class = OntoumlFactory.createKind('Person');
     const datatype = OntoumlFactory.createKind('string');
     const attr = OntoumlFactory.addAttribute(_class, 'name', datatype);
@@ -72,7 +72,7 @@ describe('Names to labels', () => {
     expect(result).toContain('<:naam> <rdfs:label> "nome"@pt');
   });
 
-  it('should generate language labels on relations (e.g. de, sv)', async () => {
+  it('should generate language labels on relations (e.g. de, sv)', () => {
     const _class = OntoumlFactory.createKind('Person');
     const relation = OntoumlFactory.createRelation('knows', RelationStereotype.MATERIAL, _class, _class);
     relation.name = {

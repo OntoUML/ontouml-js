@@ -3,7 +3,7 @@ import { generateGufo } from './helpers';
 import OntoumlFactory from './ontouml_factory';
 
 describe('Descriptions to rdfs:comments', () => {
-  it('should generate class "description" as a rdfs:comment', async () => {
+  it('should generate class "description" as a rdfs:comment', () => {
     const _class = OntoumlFactory.createKind('Person');
 
     const description = 'This is a description of the person class.';
@@ -15,7 +15,7 @@ describe('Descriptions to rdfs:comments', () => {
     expect(result).toContain('<:Person> <rdfs:comment> "' + description + '"');
   });
 
-  it('should generate attribute "description" as a rdfs:comment', async () => {
+  it('should generate attribute "description" as a rdfs:comment', () => {
     const _class = OntoumlFactory.createKind('Person');
     const datatype = OntoumlFactory.createDatatype('string');
     const attr = OntoumlFactory.addAttribute(_class, 'name', datatype);
@@ -29,7 +29,7 @@ describe('Descriptions to rdfs:comments', () => {
     expect(result).toContain('<:name> <rdfs:comment> "' + description + '"');
   });
 
-  it('should generate association "description" as a rdfs:comment', async () => {
+  it('should generate association "description" as a rdfs:comment', () => {
     const _class = OntoumlFactory.createKind('Person');
     const relation = OntoumlFactory.createRelation('knows', RelationStereotype.MATERIAL, _class, _class);
 
