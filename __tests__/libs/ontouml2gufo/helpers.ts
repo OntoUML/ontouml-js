@@ -7,7 +7,6 @@ import Issue from '@libs/ontouml2gufo/issue';
 import UriManager from '@libs/ontouml2gufo/uri_manager';
 
 export function generateGufo(model: IPackage, options?: Partial<Options>): string {
-  // const clonedModel = JSON.parse(JSON.stringify(model));
   const modelManager = new ModelManager(model);
   const ontouml2gufo = new Ontouml2Gufo(modelManager, {
     baseIri: 'https://example.com',
@@ -21,7 +20,6 @@ export function generateGufo(model: IPackage, options?: Partial<Options>): strin
 }
 
 export function getIssues(model: IPackage, options?: Partial<Options>): Issue[] {
-  // const clonedModel = JSON.parse(JSON.stringify(model));
   const modelManager = new ModelManager(model);
   const ontouml2gufo = new Ontouml2Gufo(modelManager, {
     baseIri: 'https://example.com',
@@ -35,7 +33,6 @@ export function getIssues(model: IPackage, options?: Partial<Options>): Issue[] 
 }
 
 export function getUriManager(model: IPackage, options?: Partial<Options>): UriManager {
-  // const clonedModel = JSON.parse(JSON.stringify(model));
   const modelManager = new ModelManager(model);
   const ontouml2gufo = new Ontouml2Gufo(modelManager, {
     baseIri: 'https://example.com',
