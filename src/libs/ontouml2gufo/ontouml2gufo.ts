@@ -31,7 +31,7 @@ const { namedNode, quad, literal } = N3.DataFactory;
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
-export class Ontouml2Gufo {
+export default class Ontouml2Gufo {
   model: IPackage;
   options: Options;
   inspector: Inspector;
@@ -193,5 +193,14 @@ export class Ontouml2Gufo {
     for (const genSet of generalizationSets) {
       transformGeneralizationSet(this, genSet);
     }
+  }
+
+  static run(_package: IPackage, options?: Partial<Options>) : { output: string, issues: Issue[] } {
+    const modelManager = new ModelManager(_package);
+    const ontouml2gufo = new Ontouml2Gufo(modelManager, options);
+
+    ontouml2gufo.transform();
+
+    return { output: ontouml2gufo.getOwlCode(), issues: ontouml2gufo.getIssues() }
   }
 }

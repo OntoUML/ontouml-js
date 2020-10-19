@@ -73,25 +73,13 @@ export default class Issue {
   severity?: 'error' | 'warning';
   data?: any;
 
-  static createIssue(base: Partial<Issue>): Issue {
-    return {
-      id: base.id || uniqid(),
-      code: base.code,
-      severity: base.severity,
-      title: base.title,
-      description: base.description,
-      data: base.data
-    };
-  }
-
-  static createError(base: Partial<Issue>): Issue {
-    const errorBase = { ...base, severity: Severity.ERROR };
-    return Issue.createIssue(errorBase);
-  }
-
-  static createWarning(base: Partial<Issue>): Issue {
-    const warningBase = { ...base, severity: Severity.WARNING };
-    return Issue.createIssue(warningBase);
+  constructor(base: Partial<Issue>) {
+    this.id = base.id || uniqid(),
+    this.code = base.code,
+    this.severity = base.severity,
+    this.title = base.title,
+    this.description = base.description,
+    this.data = base.data
   }
 
   static createInvalidBaseIri(baseIri: string): Issue {
@@ -101,7 +89,7 @@ export default class Issue {
       data: { baseIri }
     };
 
-    return this.createIssue(warning);
+    return new Issue(warning);
   }
 
   static createInvalidCustomPackagePrefix(prefix: string, forbiddenPrefixes: string[], packageEl): Issue {
@@ -115,7 +103,7 @@ export default class Issue {
       }
     };
 
-    return this.createIssue(warning);
+    return new Issue(warning);
   }
 
   static createInvalidCustomPackageUri(uri: string, packageEl): Issue {
@@ -128,7 +116,7 @@ export default class Issue {
       }
     };
 
-    return this.createIssue(warning);
+    return new Issue(warning);
   }
 
   static createInvalidPackagePrefix(prefix: string, forbiddenPrefixes: string[]): Issue {
@@ -138,7 +126,7 @@ export default class Issue {
         ${forbiddenPrefixes.join(', ')}.`,
       data: { prefix }
     };
-    return this.createIssue(warning);
+    return new Issue(warning);
   }
 
   static createInvalidPackageUri(uri: string): Issue {
@@ -148,7 +136,7 @@ export default class Issue {
       data: { uri }
     };
 
-    return this.createIssue(warning);
+    return new Issue(warning);
   }
 
   static createMissingRelationName(relation: IRelation): Issue {
@@ -162,7 +150,7 @@ export default class Issue {
       data: { ...this.getElementData(relation) }
     };
 
-    return this.createIssue(warning);
+    return new Issue(warning);
   }
 
   static createMissingInverseRelationName(relation: IRelation): Issue {
@@ -176,7 +164,7 @@ export default class Issue {
       data: { ...this.getElementData(relation) }
     };
 
-    return this.createIssue(warning);
+    return new Issue(warning);
   }
 
   static createMissingSourceCardinality(relation: IRelation): Issue {
@@ -189,7 +177,7 @@ export default class Issue {
       data: { ...this.getElementData(relation) }
     };
 
-    return this.createIssue(warning);
+    return new Issue(warning);
   }
 
   static createMissingTargetCardinality(relation: IRelation): Issue {
@@ -202,7 +190,7 @@ export default class Issue {
       data: { ...this.getElementData(relation) }
     };
 
-    return this.createIssue(warning);
+    return new Issue(warning);
   }
 
   static createDuplicateNames(repeatedElements: IElement[], duplicateName: string): Issue {
@@ -243,7 +231,7 @@ export default class Issue {
       }
     };
 
-    return this.createIssue(warning);
+    return new Issue(warning);
   }
 
   static createMissingAttributeType(classEl: IClass, attribute: IProperty): Issue {
@@ -256,7 +244,7 @@ export default class Issue {
       }
     };
 
-    return this.createIssue(warning);
+    return new Issue(warning);
   }
 
   static getElementData(element) {
