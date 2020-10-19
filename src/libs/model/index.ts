@@ -24,14 +24,15 @@ import schemas from 'ontouml-schema';
  *
  * @todo Create function to access this.sourceElements that throws an exception when the element is not found.
  */
+
+const validator = new Ajv().compile(schemas.getSchema(schemas.ONTOUML_2));
+
 export class ModelManager {
   rootPackage: IPackage;
   allElements: { [key: string]: IElement };
 
   constructor(model: IPackage) {
-    const validator = new Ajv().compile(schemas.getSchema(schemas.ONTOUML_2));
     const isValid = validator(model);
-
     // Check input validity
     if (!isValid) {
       throw {

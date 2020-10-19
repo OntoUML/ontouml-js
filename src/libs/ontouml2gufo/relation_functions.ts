@@ -1,8 +1,7 @@
-import { Writer } from 'n3';
 import { IRelation } from '@types';
-import { getSourceUri, getTargetUri, getUri } from './uri_manager';
+
+import { Ontouml2Gufo } from './ontouml2gufo';
 import { transformAnnotations } from './annotation_function';
-import Options from './options';
 import {
   getStereotype,
   isDerivation,
@@ -16,54 +15,50 @@ import {
   hasOntoumlStereotype
 } from './helper_functions';
 
-const N3 = require('n3');
-const { DataFactory } = N3;
-const { namedNode, quad } = DataFactory;
-
-export function transformRelation(writer: Writer, relation: IRelation, options: Options) {
+export function transformRelation(transformer: Ontouml2Gufo, relation: IRelation) {
   if (isInstantiation(relation)) {
-    transformInstantiation(writer, relation, options);
+    transformInstantiation(transformer, relation);
     return;
   }
 
   if (isDerivation(relation)) {
-    transformDerivation(writer, relation, options);
+    transformDerivation(transformer, relation);
     return;
   }
 
   if (isMaterial(relation) || isComparative(relation)) {
-    writeBaseRelationAxioms(writer, relation, options);
-    transformAnnotations(writer, relation, options);
-    writeRelationTypeAxiom(writer, relation, options);
+    writeBaseRelationAxioms(transformer, relation);
+    transformAnnotations(transformer, relation);
+    writeRelationTypeAxiom(transformer, relation);
     return;
   }
 
   if (!isPartWholeRelation(relation) && !hasOntoumlStereotype(relation)) {
-    writeBaseRelationAxioms(writer, relation, options);
-    transformAnnotations(writer, relation, options);
+    writeBaseRelationAxioms(transformer, relation);
+    transformAnnotations(transformer, relation);
     return;
   }
 
-  if (options.createObjectProperty) {
-    writeBaseRelationAxioms(writer, relation, options);
-    transformAnnotations(writer, relation, options);
-    writeSubPropertyAxiom(writer, relation, options);
+  if (transformer.options.createObjectProperty) {
+    writeBaseRelationAxioms(transformer, relation);
+    transformAnnotations(transformer, relation);
+    writeSubPropertyAxiom(transformer, relation);
     return;
   }
 }
 
-function writeBaseRelationAxioms(writer: Writer, relation: IRelation, options: Options) {
-  const relationUri = getUri(relation, options);
-  writer.addQuad(quad(namedNode(relationUri), namedNode('rdf:type'), namedNode('owl:ObjectProperty')));
+function writeBaseRelationAxioms(transformer: Ontouml2Gufo, relation: IRelation) {
+  const relationUri = transformer.getUri(relation);
+  transformer.addQuad(relationUri, 'rdf:type', 'owl:ObjectProperty');
 
-  const domainUri = getSourceUri(relation, options);
+  const domainUri = transformer.getSourceUri(relation);
   if (domainUri) {
-    writer.addQuad(quad(namedNode(relationUri), namedNode('rdfs:domain'), namedNode(domainUri)));
+    transformer.addQuad(relationUri, 'rdfs:domain', domainUri);
   }
 
-  const rangeUri = getTargetUri(relation, options);
+  const rangeUri = transformer.getTargetUri(relation);
   if (rangeUri) {
-    writer.addQuad(quad(namedNode(relationUri), namedNode('rdfs:range'), namedNode(rangeUri)));
+    transformer.addQuad(relationUri, 'rdfs:range', rangeUri);
   }
 }
 
@@ -104,19 +99,19 @@ export function getSuperProperty(relation: IRelation): string {
   return getSuperPropertyFromStereotype(relation) || getPartWholeSuperProperty(relation);
 }
 
-function writeSubPropertyAxiom(writer: Writer, relation: IRelation, options: Options) {
+function writeSubPropertyAxiom(transformer: Ontouml2Gufo, relation: IRelation) {
   let superProperty = getSuperProperty(relation);
 
   if (!superProperty) {
     return;
   }
 
-  const relationUri = getUri(relation, options);
-  writer.addQuad(quad(namedNode(relationUri), namedNode('rdfs:subPropertyOf'), namedNode(superProperty)));
+  const relationUri = transformer.getUri(relation);
+  transformer.addQuad(relationUri, 'rdfs:subPropertyOf', superProperty);
 }
 
-function writeRelationTypeAxiom(writer: Writer, relation: IRelation, options: Options) {
-  const relationUri = getUri(relation, options);
+function writeRelationTypeAxiom(transformer: Ontouml2Gufo, relation: IRelation) {
+  const relationUri = transformer.getUri(relation);
 
   const relationTypeMap = {
     material: 'gufo:MaterialRelationshipType',
@@ -126,26 +121,30 @@ function writeRelationTypeAxiom(writer: Writer, relation: IRelation, options: Op
   const stereotype = getStereotype(relation);
   const typeUri = relationTypeMap[stereotype];
 
-  writer.addQuad(quad(namedNode(relationUri), namedNode('rdf:type'), namedNode(typeUri)));
+  transformer.addQuad(relationUri, 'rdf:type', typeUri);
 }
 
-function transformInstantiation(writer: Writer, relation: IRelation, options: Options): boolean {
-  const domainUri = getTargetUri(relation, options);
-  const rangeUri = getSourceUri(relation, options);
+function transformInstantiation(transformer: Ontouml2Gufo, relation: IRelation): boolean {
+  const domainUri = transformer.getTargetUri(relation);
+  const rangeUri = transformer.getSourceUri(relation);
 
-  if (!domainUri || !rangeUri) return false;
+  if (!domainUri || !rangeUri) {
+    return false;
+  }
 
-  writer.addQuad(quad(namedNode(domainUri), namedNode('gufo:categorizes'), namedNode(rangeUri)));
+  transformer.addQuad(domainUri, 'gufo:categorizes', rangeUri);
   return true;
 }
 
-function transformDerivation(writer: Writer, relation: IRelation, options: Options): boolean {
-  const domainUri = getSourceUri(relation, options);
-  const rangeUri = getTargetUri(relation, options);
+function transformDerivation(transformer: Ontouml2Gufo, relation: IRelation): boolean {
+  const domainUri = transformer.getSourceUri(relation);
+  const rangeUri = transformer.getTargetUri(relation);
 
-  if (!domainUri || !rangeUri) return false;
+  if (!domainUri || !rangeUri) {
+    return false;
+  }
 
-  writer.addQuad(quad(namedNode(domainUri), namedNode('gufo:isDerivedFrom'), namedNode(rangeUri)));
+  transformer.addQuad(domainUri, 'gufo:isDerivedFrom', rangeUri);
 
   return true;
 }

@@ -1,9 +1,7 @@
-import Options from './options';
 import { IRelation } from '@types';
-import { Writer } from 'n3';
-import { transformInverseAnnotations } from './annotation_function';
-import { getInverseRelationUri, getSourceUri, getTargetUri } from './uri_manager';
 
+import { Ontouml2Gufo } from './ontouml2gufo';
+import { transformInverseAnnotations } from './annotation_function';
 import {
   getStereotype,
   hasOntoumlStereotype,
@@ -16,10 +14,6 @@ import {
   isMaterial,
   isPartWholeRelation
 } from './helper_functions';
-
-const N3 = require('n3');
-const { DataFactory } = N3;
-const { namedNode, quad } = DataFactory;
 
 export function getPartWholeSuperProperty(relation: IRelation): string {
   if (!isPartWholeRelation(relation)) return null;
@@ -57,34 +51,34 @@ export function getInverseSuperProperty(relation: IRelation): string {
   return getSuperPropertyFromStereotype(relation) || getPartWholeSuperProperty(relation);
 }
 
-export function transformInverseRelation(writer: Writer, relation: IRelation, options: Options) {
+export function transformInverseRelation(transformer: Ontouml2Gufo, relation: IRelation) {
   if (isInstantiation(relation) || isDerivation(relation)) {
     return;
   }
 
   if (isMaterial(relation) || isComparative(relation)) {
-    writeInverseBaseRelationAxioms(writer, relation, options);
-    transformInverseAnnotations(writer, relation, options);
-    writeInverseRelationTypeAxiom(writer, relation, options);
+    writeInverseBaseRelationAxioms(transformer, relation);
+    transformInverseAnnotations(transformer, relation);
+    writeInverseRelationTypeAxiom(transformer, relation);
     return;
   }
 
   if (!isPartWholeRelation(relation) && !hasOntoumlStereotype(relation)) {
-    writeInverseBaseRelationAxioms(writer, relation, options);
-    transformInverseAnnotations(writer, relation, options);
+    writeInverseBaseRelationAxioms(transformer, relation);
+    transformInverseAnnotations(transformer, relation);
     return;
   }
 
-  if (options.createObjectProperty && options.createInverses) {
-    writeInverseBaseRelationAxioms(writer, relation, options);
-    transformInverseAnnotations(writer, relation, options);
-    writeInverseSubPropertyAxiom(writer, relation, options);
+  if (transformer.options.createObjectProperty && transformer.options.createInverses) {
+    writeInverseBaseRelationAxioms(transformer, relation);
+    transformInverseAnnotations(transformer, relation);
+    writeInverseSubPropertyAxiom(transformer, relation);
     return;
   }
 }
 
-function writeInverseRelationTypeAxiom(writer: Writer, relation: IRelation, options: Options) {
-  const relationUri = getInverseRelationUri(relation, options);
+function writeInverseRelationTypeAxiom(transformer: Ontouml2Gufo, relation: IRelation) {
+  const relationUri = transformer.getInverseRelationUri(relation);
 
   const relationTypeMap = {
     material: 'gufo:MaterialRelationshipType',
@@ -94,32 +88,32 @@ function writeInverseRelationTypeAxiom(writer: Writer, relation: IRelation, opti
   const stereotype = getStereotype(relation);
   const typeUri = relationTypeMap[stereotype];
 
-  writer.addQuad(quad(namedNode(relationUri), namedNode('rdf:type'), namedNode(typeUri)));
+  transformer.addQuad(relationUri, 'rdf:type', typeUri);
 }
 
-function writeInverseBaseRelationAxioms(writer: Writer, relation: IRelation, options: Options) {
-  const relationUri = getInverseRelationUri(relation, options);
+function writeInverseBaseRelationAxioms(transformer: Ontouml2Gufo, relation: IRelation) {
+  const relationUri = transformer.getInverseRelationUri(relation);
 
-  writer.addQuad(quad(namedNode(relationUri), namedNode('rdf:type'), namedNode('owl:ObjectProperty')));
+  transformer.addQuad(relationUri, 'rdf:type', 'owl:ObjectProperty');
 
-  const domainUri = getSourceUri(relation, options);
+  const domainUri = transformer.getSourceUri(relation);
   if (domainUri) {
-    writer.addQuad(quad(namedNode(relationUri), namedNode('rdfs:range'), namedNode(domainUri)));
+    transformer.addQuad(relationUri, 'rdfs:range', domainUri);
   }
 
-  const rangeUri = getTargetUri(relation, options);
+  const rangeUri = transformer.getTargetUri(relation);
   if (rangeUri) {
-    writer.addQuad(quad(namedNode(relationUri), namedNode('rdfs:domain'), namedNode(rangeUri)));
+    transformer.addQuad(relationUri, 'rdfs:domain', rangeUri);
   }
 }
 
-function writeInverseSubPropertyAxiom(writer: Writer, relation: IRelation, options: Options) {
+function writeInverseSubPropertyAxiom(transformer: Ontouml2Gufo, relation: IRelation) {
   let superProperty = getInverseSuperProperty(relation);
 
   if (!superProperty) {
     return;
   }
 
-  const relationUri = getInverseRelationUri(relation, options);
-  writer.addQuad(quad(namedNode(relationUri), namedNode('rdfs:subPropertyOf'), namedNode(superProperty)));
+  const relationUri = transformer.getInverseRelationUri(relation);
+  transformer.addQuad(relationUri, 'rdfs:subPropertyOf', superProperty);
 }

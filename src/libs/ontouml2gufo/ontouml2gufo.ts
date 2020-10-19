@@ -1,6 +1,6 @@
 import { ModelManager } from '@libs/model';
-import { Writer } from 'n3';
-import { IPackage } from '@types';
+import { Quad, Writer } from 'n3';
+import { IPackage, IRelation } from '@types';
 import { writeDisjointnessAxioms, transformClass } from './class_functions';
 import { transformRelation } from './relation_functions';
 import {
@@ -22,14 +22,14 @@ import { transformInverseRelation } from './relations_inverse_functions';
 import UriManager from './uri_manager';
 
 const N3 = require('n3');
-const { DataFactory } = N3;
-const { namedNode, quad } = DataFactory;
+const { namedNode, quad, literal } = N3.DataFactory;
+
 /**
- * Utility class for transform OntoUML models in OWL using the gUFO ontology
+ * Class that transforms OntoUML models in OWL ontologies aligned with the gUFO ontology.
  *
+ * @author Tiago Prince Sales
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
- * @author Tiago Prince Sales
  */
 export class Ontouml2Gufo {
   model: IPackage;
@@ -42,8 +42,8 @@ export class Ontouml2Gufo {
   constructor(model: ModelManager, options?: Partial<Options>) {
     this.model = model.rootPackage;
     this.options = options ? new Options(options) : new Options();
-    this.inspector = new Inspector(this.model, this.options);
-    this.uriManager = new UriManager(this.model, this.options);
+    this.inspector = new Inspector(this);
+    this.uriManager = new UriManager(this);
   }
 
   getIssues(): Issue[] {
@@ -52,6 +52,43 @@ export class Ontouml2Gufo {
 
   getOwlCode(): string {
     return this.owlCode;
+  }
+
+  getUri(element): string {
+    return this.uriManager.getUri(element);
+  }
+
+  getInverseRelationUri(element): string {
+    return this.uriManager.getInverseRelationUri(element);
+  }
+
+  getSourceUri(relation: IRelation): string {
+    return this.uriManager.getSourceUri(relation);
+  }
+
+  getTargetUri(relation: IRelation): string {
+    return this.uriManager.getTargetUri(relation);
+  }
+
+  addQuad(subject, predicate?, object?) {
+    if (subject && predicate && object) {
+      if (typeof subject === 'string') subject = namedNode(subject);
+      if (typeof predicate === 'string') predicate = namedNode(predicate);
+      if (typeof object === 'string') object = namedNode(object);
+
+      this.writer.addQuad(subject, predicate, object);
+    } else {
+      this.writer.addQuad(subject as Quad);
+    }
+  }
+
+  addLiteralQuad(subject: string, predicate: string, literalValue: string, language?: string) {
+    const literalNode = language ? literal(literalValue, language) : literal(literalValue);
+    this.addQuad(namedNode(subject), namedNode(predicate), literalNode);
+  }
+
+  addQuads(quads: Quad[]) {
+    this.writer.addQuads(quads);
   }
 
   transform(): boolean {
@@ -87,7 +124,7 @@ export class Ontouml2Gufo {
   initializeWriter() {
     this.writer = new N3.Writer({
       format: this.options.format,
-      prefixes: getPrefixes(this.model, this.options)
+      prefixes: getPrefixes(this)
     });
   }
 
@@ -102,10 +139,10 @@ export class Ontouml2Gufo {
     const classes = getAllClasses(this.model);
 
     for (const _class of classes) {
-      transformClass(this.writer, _class, this.options);
+      transformClass(this, _class);
     }
 
-    writeDisjointnessAxioms(this.writer, classes, this.options);
+    writeDisjointnessAxioms(this, classes);
 
     return true;
   }
@@ -114,7 +151,7 @@ export class Ontouml2Gufo {
     const attributes = getAllAttributes(this.model);
 
     for (const attribute of attributes) {
-      transformAttribute(this.writer, attribute, this.options);
+      transformAttribute(this, attribute);
     }
   }
 
@@ -122,10 +159,10 @@ export class Ontouml2Gufo {
     const relations = getAllRelations(this.model);
 
     for (const relation of relations) {
-      transformRelation(this.writer, relation, this.options);
+      transformRelation(this, relation);
 
       if (this.options.createInverses) {
-        transformInverseRelation(this.writer, relation, this.options);
+        transformInverseRelation(this, relation);
       }
     }
   }
@@ -133,14 +170,12 @@ export class Ontouml2Gufo {
   transformCardinalities() {
     const relations = getAllRelations(this.model);
     for (const relation of relations) {
-      transformRelationCardinalities(this.writer, relation, this.options);
+      transformRelationCardinalities(this, relation);
     }
-    // const classes = getAllClasses(this.model);
-    // for (const _class of classes) {
-    //   if (!hasAttributes(_class)) return;
-    //   for (const attribute of _class.properties) {
-    //     transformAttributeCardinality(this.writer, _class, attribute, this.options);
-    //   }
+
+    // const attributes = getAllAttributes(this.model);
+    // for (const attribute of attributes) {
+    //   transformAttributeCardinality(this, attribute);
     // }
   }
 
@@ -148,7 +183,7 @@ export class Ontouml2Gufo {
     const generalizations = getAllGeneralizations(this.model);
 
     for (const gen of generalizations) {
-      transformGeneralization(this.writer, gen, this.options);
+      transformGeneralization(this, gen);
     }
   }
 
@@ -156,7 +191,7 @@ export class Ontouml2Gufo {
     const generalizationSets = getAllGeneralizationSets(this.model);
 
     for (const genSet of generalizationSets) {
-      transformGeneralizationSet(this.writer, genSet, this.options);
+      transformGeneralizationSet(this, genSet);
     }
   }
 }

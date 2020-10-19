@@ -1,16 +1,10 @@
-import { Writer } from 'n3';
 import { IClass, IProperty } from '@types';
-import { getUri } from './uri_manager';
 import { transformAnnotations } from './annotation_function';
-import Options from './options';
 import { isComplexDatatype, isConcrete, isDatatype, isEnumeration, isPrimitiveDatatype, isTypeDefined } from './helper_functions';
 import { OntoumlType } from '@constants/.';
+import { Ontouml2Gufo } from './ontouml2gufo';
 
-const N3 = require('n3');
-const { DataFactory } = N3;
-const { namedNode, quad } = DataFactory;
-
-export function transformAttribute(writer: Writer, attribute: IProperty, options: Options): boolean {
+export function transformAttribute(transformer: Ontouml2Gufo, attribute: IProperty): boolean {
   const container = attribute._container;
 
   if (container.type !== OntoumlType.CLASS_TYPE) {
@@ -19,8 +13,8 @@ export function transformAttribute(writer: Writer, attribute: IProperty, options
 
   const containerClass: IClass = container as IClass;
 
-  const attributeUri = getUri(attribute, options);
-  const containerUri = getUri(containerClass, options);
+  const attributeUri = transformer.getUri(attribute);
+  const containerUri = transformer.getUri(containerClass);
 
   const containerIsDatatype = isDatatype(containerClass);
   const containerIsConcreteIndividual = isConcrete(containerClass);
@@ -28,33 +22,33 @@ export function transformAttribute(writer: Writer, attribute: IProperty, options
   const isTypelessAttribute = !isTypeDefined(attribute);
   const isPrimitiveAttribute = isPrimitiveDatatype(attribute.propertyType as IClass);
 
-  writer.addQuad(quad(namedNode(attributeUri), namedNode('rdfs:domain'), namedNode(containerUri)));
+  transformer.addQuad(attributeUri, 'rdfs:domain', containerUri);
 
   if (!isTypelessAttribute) {
-    const attributeTypeUri = getUri(attribute.propertyType, options);
-    writer.addQuad(quad(namedNode(attributeUri), namedNode('rdfs:range'), namedNode(attributeTypeUri)));
+    const attributeTypeUri = transformer.getUri(attribute.propertyType);
+    transformer.addQuad(attributeUri, 'rdfs:range', attributeTypeUri);
   }
 
   if (isTypelessAttribute || isPrimitiveAttribute) {
-    writer.addQuad(quad(namedNode(attributeUri), namedNode('rdf:type'), namedNode('owl:DatatypeProperty')));
+    transformer.addQuad(attributeUri, 'rdf:type', 'owl:DatatypeProperty');
 
     if (containerIsDatatype) {
-      writer.addQuad(quad(namedNode(attributeUri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:hasValueComponent')));
+      transformer.addQuad(attributeUri, 'rdfs:subPropertyOf', 'gufo:hasValueComponent');
     } else if (containerIsConcreteIndividual) {
-      writer.addQuad(quad(namedNode(attributeUri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:hasQualityValue')));
+      transformer.addQuad(attributeUri, 'rdfs:subPropertyOf', 'gufo:hasQualityValue');
     }
   } else {
-    writer.addQuad(quad(namedNode(attributeUri), namedNode('rdf:type'), namedNode('owl:ObjectProperty')));
+    transformer.addQuad(attributeUri, 'rdf:type', 'owl:ObjectProperty');
 
     const isComplexAttribute = isComplexDatatype(attribute.propertyType as IClass);
     const isEnumeratedAttribute = isEnumeration(attribute.propertyType as IClass);
 
     if (containerIsConcreteIndividual && (isComplexAttribute || isEnumeratedAttribute)) {
-      writer.addQuad(quad(namedNode(attributeUri), namedNode('rdfs:subPropertyOf'), namedNode('gufo:hasReifiedQualityValue')));
+      transformer.addQuad(attributeUri, 'rdfs:subPropertyOf', 'gufo:hasReifiedQualityValue');
     }
   }
 
-  transformAnnotations(writer, attribute, options);
+  transformAnnotations(transformer, attribute);
 
   return true;
 }

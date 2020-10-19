@@ -1,33 +1,32 @@
-import { Writer } from 'n3';
 import { IClass } from '@types';
 import { OntoumlType, ClassStereotype, OntologicalNature } from '@constants/.';
-import { getUri, hasAssignedUri } from './uri_manager';
 import { transformAnnotations } from './annotation_function';
-import Options from './options';
 import { isPrimitiveDatatype, isEnumeration, getStereotype } from './helper_functions';
+import { Ontouml2Gufo } from './ontouml2gufo';
+import { getdUriFromXsdMapping } from './uri_manager';
 
 const N3 = require('n3');
-const { DataFactory } = N3;
-const { namedNode, quad, literal } = DataFactory;
+const { namedNode, literal } = N3.DataFactory;
 
-export function transformClass(writer: Writer, classElement: IClass, options: Options): boolean {
-  if (hasAssignedUri(classElement) || isPrimitiveDatatype(classElement)) {
+export function transformClass(transformer: Ontouml2Gufo, _class: IClass): boolean {
+  const { uriManager } = transformer;
+  if (uriManager.getUriFromTaggedValues(_class) || getdUriFromXsdMapping(_class) || isPrimitiveDatatype(_class)) {
     return true;
   }
 
-  transformClassAsIndividual(writer, classElement, options);
-  transformClassAsClass(writer, classElement, options);
+  transformClassAsIndividual(transformer, _class);
+  transformClassAsClass(transformer, _class);
 
-  if (isEnumeration(classElement)) {
-    transformEnumeration(writer, classElement, options);
+  if (isEnumeration(_class)) {
+    transformEnumeration(transformer, _class);
   }
 
-  transformAnnotations(writer, classElement, options);
+  transformAnnotations(transformer, _class);
 
   return true;
 }
 
-export function transformClassAsIndividual(writer: Writer, _class: IClass, options: Options): boolean {
+export function transformClassAsIndividual(transformer: Ontouml2Gufo, _class: IClass): boolean {
   const classTypeMap = {
     [ClassStereotype.KIND]: 'gufo:Kind',
     [ClassStereotype.QUANTITY]: 'gufo:Kind',
@@ -52,88 +51,81 @@ export function transformClassAsIndividual(writer: Writer, _class: IClass, optio
     [ClassStereotype.ENUMERATION]: 'gufo:AbstractIndividualType'
   };
 
-  const classType = classTypeMap[getStereotype(_class)];
+  const classTypeUri = classTypeMap[getStereotype(_class)];
 
-  if (!classType) return false;
+  if (!classTypeUri) return false;
 
-  const uri = getUri(_class, options);
-  writer.addQuads([
-    quad(namedNode(uri), namedNode('rdf:type'), namedNode('owl:Class')),
-    quad(namedNode(uri), namedNode('rdf:type'), namedNode(classType))
-  ]);
+  const classUri = transformer.getUri(_class);
+  transformer.addQuad(classUri, 'rdf:type', 'owl:Class');
+  transformer.addQuad(classUri, 'rdf:type', classTypeUri);
 
   return true;
 }
 
-export function transformClassAsClass(writer: Writer, classElement: IClass, options: Options) {
-  const uri = getUri(classElement, options);
-
-  writer.addQuad(quad(namedNode(uri), namedNode('rdf:type'), namedNode('owl:NamedIndividual')));
+export function transformClassAsClass(transformer: Ontouml2Gufo, classElement: IClass) {
+  const classUri = transformer.getUri(classElement);
+  transformer.addQuad(classUri, 'rdf:type', 'owl:NamedIndividual');
 
   // Add subClassOf from allowed nature
   const parentSettings = getGufoParents(classElement);
   if (parentSettings && parentSettings.parentUri) {
-    writer.addQuad(namedNode(uri), namedNode('rdfs:subClassOf'), namedNode(parentSettings.parentUri));
+    transformer.addQuad(classUri, 'rdfs:subClassOf', parentSettings.parentUri);
   }
 
   if (parentSettings && parentSettings.unionOf && parentSettings.unionOf.length > 1) {
-    writer.addQuad(
-      namedNode(uri),
+    transformer.addQuad(
+      namedNode(classUri),
       namedNode('rdfs:subClassOf'),
-      writer.blank([
+      transformer.writer.blank([
         {
           predicate: namedNode('rdf:type'),
           object: namedNode('owl:Class')
         },
         {
           predicate: namedNode('owl:unionOf'),
-          object: writer.list(parentSettings.unionOf.map(parentUri => namedNode(parentUri)))
+          object: transformer.writer.list(parentSettings.unionOf.map(parentUri => namedNode(parentUri)))
         }
       ])
     );
   }
 }
 
-export function transformEnumeration(writer: Writer, classElement: IClass, options: Options) {
+export function transformEnumeration(transformer: Ontouml2Gufo, classElement: IClass) {
   const { literals } = classElement;
 
   if (!literals) {
     return;
   }
 
-  const uri = getUri(classElement, options);
-  const literalUris = literals.map(literal => namedNode(getUri(literal, options)));
+  const uri = transformer.getUri(classElement);
+  const literalUris = literals.map(literal => namedNode(transformer.getUri(literal)));
 
-  writer.addQuad(
-    quad(
-      namedNode(uri),
-      namedNode('owl:equivalentClass'),
-      writer.blank([
-        {
-          predicate: namedNode('rdf:type'),
-          object: namedNode('owl:Class')
-        },
-        {
-          predicate: namedNode('owl:oneOf'),
-          object: writer.list(literalUris)
-        }
-      ])
-    )
+  transformer.addQuad(
+    namedNode(uri),
+    namedNode('owl:equivalentClass'),
+    transformer.writer.blank([
+      {
+        predicate: namedNode('rdf:type'),
+        object: namedNode('owl:Class')
+      },
+      {
+        predicate: namedNode('owl:oneOf'),
+        object: transformer.writer.list(literalUris)
+      }
+    ])
   );
 
   for (let i = 0; i < literalUris.length; i += 1) {
     const literalUri = literalUris[i];
 
-    writer.addQuad(quad(literalUri, namedNode('rdf:type'), namedNode(uri)));
-    writer.addQuad(quad(literalUri, namedNode('rdf:label'), literal(literals[i].name)));
+    transformer.addQuad(literalUri, 'rdf:type', uri);
+    transformer.addQuad(literalUri, 'rdf:label', literal(literals[i].name));
   }
 }
 
 export function getCollectiveGufoParent(classElement: IClass): string {
   if (classElement.isExtensional === null) return 'gufo:Collection';
-
   if (classElement.isExtensional) return 'gufo:FixedCollection';
-
   return 'gufo:VariableCollection';
 }
 
@@ -246,7 +238,7 @@ export function getGufoParents(classElement: IClass): GufoParentSettings {
 /**
  * Transform classes of same stereotype using owl:AllDisjointClasses
  */
-export function writeDisjointnessAxioms(writer: Writer, classes: IClass[], options: Options): boolean {
+export function writeDisjointnessAxioms(transformer: Ontouml2Gufo, classes: IClass[]): boolean {
   const ultimateSortalStereotypes = [
     ClassStereotype.KIND,
     ClassStereotype.QUANTITY,
@@ -263,16 +255,16 @@ export function writeDisjointnessAxioms(writer: Writer, classes: IClass[], optio
     const stereotypeClasses = classes
       .filter(({ stereotypes }: IClass) => stereotypes && stereotypes[0] === stereotype)
       .map((classElement: IClass) => {
-        const uri = getUri(classElement, options);
+        const uri = transformer.getUri(classElement);
         return namedNode(uri);
       });
 
     // Checks if there are at least 2 classes with the stereotype to avoid generating useless and potentially inconsistent expressions
     if (stereotypeClasses.length > 1) {
-      writer.addQuad(
-        writer.blank(namedNode('rdf:type'), namedNode('owl:AllDisjointClasses')),
+      transformer.addQuad(
+        transformer.writer.blank(namedNode('rdf:type'), namedNode('owl:AllDisjointClasses')),
         namedNode('owl:members'),
-        writer.list(stereotypeClasses)
+        transformer.writer.list(stereotypeClasses)
       );
     }
   }

@@ -3,18 +3,16 @@ import { IPackage, IRelation, IElement, IClass, IProperty } from '@types';
 import { DefaultPrefixes } from './prefix_functions';
 import { getAllClasses, getAllPackages, getAllRelations, getName } from './helper_functions';
 import { getPackagePrefixes } from './prefix_functions';
-import Options from './options';
 import Issue from './issue';
+import { Ontouml2Gufo } from '.';
 
 export default class Inspector {
-  model: IPackage;
-  options: Options;
+  transformer: Ontouml2Gufo;
   issues: Issue[];
 
-  constructor(model: IPackage, options: Options) {
+  constructor(transformer: Ontouml2Gufo) {
     this.issues = [];
-    this.model = model;
-    this.options = options;
+    this.transformer = transformer;
   }
 
   /* 
@@ -40,7 +38,7 @@ export default class Inspector {
   }
 
   checkBaseIri() {
-    const { baseIri } = this.options;
+    const { baseIri } = this.transformer.options;
 
     if (!isURI(baseIri)) {
       this.issues.push(Issue.createInvalidBaseIri(baseIri));
@@ -48,9 +46,9 @@ export default class Inspector {
   }
 
   checkPackagePrefixes() {
-    const packages = getAllPackages(this.model);
+    const packages = getAllPackages(this.transformer.model);
 
-    const { customPackageMapping, prefixPackages } = this.options;
+    const { customPackageMapping, prefixPackages } = this.transformer.options;
     const defaultPrefixKeys = Object.keys(DefaultPrefixes);
     const defaultPrefixUris = Object.values(DefaultPrefixes);
 
@@ -73,7 +71,7 @@ export default class Inspector {
     }
 
     if (prefixPackages) {
-      const prefixes = getPackagePrefixes(this.model, this.options);
+      const prefixes = getPackagePrefixes(this.transformer);
 
       for (const prefix of Object.keys(prefixes)) {
         const uri = prefixes[prefix];
@@ -92,7 +90,7 @@ export default class Inspector {
   }
 
   checkRelationNames() {
-    const relations = getAllRelations(this.model);
+    const relations = getAllRelations(this.transformer.model);
 
     relations.forEach((relation: IRelation) => {
       const sourceAssociationName = relation.properties[0].name;
@@ -103,7 +101,7 @@ export default class Inspector {
         this.issues.push(issue);
       }
 
-      if (this.options.createInverses && !sourceAssociationName) {
+      if (this.transformer.options.createInverses && !sourceAssociationName) {
         const issue = Issue.createMissingInverseRelationName(relation);
         this.issues.push(issue);
       }
@@ -111,7 +109,7 @@ export default class Inspector {
   }
 
   checkRepeatedNames() {
-    const elements = this.model.getAllContents();
+    const elements = this.transformer.model.getAllContents();
     const elementNames = {};
 
     elements.forEach((element: IElement) => {
@@ -137,7 +135,7 @@ export default class Inspector {
   }
 
   checkCardinality() {
-    const relations = getAllRelations(this.model);
+    const relations = getAllRelations(this.transformer.model);
 
     relations.forEach((relation: IRelation) => {
       const { properties } = relation;
@@ -157,7 +155,7 @@ export default class Inspector {
   }
 
   checkAttributeType() {
-    const classes = getAllClasses(this.model);
+    const classes = getAllClasses(this.transformer.model);
 
     classes.forEach((classEl: IClass) => {
       (classEl.properties || []).forEach((attribute: IProperty) => {

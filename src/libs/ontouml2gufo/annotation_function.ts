@@ -1,21 +1,15 @@
-import { Writer } from 'n3';
-import { IElement, IRelation } from '@types';
-import Options from './options';
-import { getUri } from './uri_manager';
 import tags from 'language-tags';
 
-const N3 = require('n3');
-const { DataFactory } = N3;
-const { namedNode, literal, quad } = DataFactory;
+import { IElement, IRelation } from '@types';
+import { Ontouml2Gufo } from './ontouml2gufo';
 
-export function transformAnnotations(writer: Writer, element: IElement, options: Options): boolean {
-  const labels = options.getCustomLabels(element) || {};
-  const uri = getUri(element, options);
-  const quads = [];
+export function transformAnnotations(transformer: Ontouml2Gufo, element: IElement): boolean {
+  const labels = transformer.options.getCustomLabels(element) || {};
+  const uri = transformer.getUri(element);
 
   for (const language of Object.keys(labels)) {
     if (tags.check(language)) {
-      quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(labels[language], language)));
+      transformer.addLiteralQuad(uri, 'rdfs:label', labels[language], language);
     }
   }
 
@@ -24,23 +18,23 @@ export function transformAnnotations(writer: Writer, element: IElement, options:
   if (propertyAssignments) {
     for (const language of Object.keys(propertyAssignments)) {
       if (tags.check(language)) {
-        quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(propertyAssignments[language], language)));
+        transformer.addLiteralQuad(uri, 'rdfs:label', propertyAssignments[language], language);
       }
     }
   }
 
   if (labels.default) {
-    quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(labels.default)));
+    transformer.addLiteralQuad(uri, 'rdfs:label', labels.default);
   }
 
   const { name } = element;
   if (name) {
     if (typeof name === 'string' || name instanceof String) {
-      quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(name)));
+      transformer.addLiteralQuad(uri, 'rdfs:label', name as string);
     } else if (typeof name === 'object') {
       for (const language of Object.keys(name)) {
         if (tags.check(language)) {
-          quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(name[language], language)));
+          transformer.addLiteralQuad(uri, 'rdfs:label', name[language], language);
         }
       }
     }
@@ -48,16 +42,20 @@ export function transformAnnotations(writer: Writer, element: IElement, options:
 
   const { description } = element;
   if (description) {
-    quads.push(quad(namedNode(uri), namedNode('rdfs:comment'), literal(description)));
-  }
-
-  if (quads.length > 0) {
-    writer.addQuads(quads);
+    if (typeof description === 'string' || description instanceof String) {
+      transformer.addLiteralQuad(uri, 'rdfs:comment', description as string);
+    } else if (typeof description === 'object') {
+      for (const language of Object.keys(description)) {
+        if (tags.check(language)) {
+          transformer.addLiteralQuad(uri, 'rdfs:comment', description[language], language);
+        }
+      }
+    }
   }
 
   return true;
 }
 
-export function transformInverseAnnotations(writer: Writer, relation: IRelation, options: Options) {
-  transformAnnotations(writer, relation.properties[0], options);
+export function transformInverseAnnotations(transformer: Ontouml2Gufo, relation: IRelation) {
+  transformAnnotations(transformer, relation.properties[0]);
 }

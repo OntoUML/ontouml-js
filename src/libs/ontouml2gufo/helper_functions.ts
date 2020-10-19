@@ -1,3 +1,7 @@
+import _ from 'lodash';
+import memoizee from 'memoizee';
+import tags from 'language-tags';
+
 import {
   ClassStereotype,
   AbstractTypes,
@@ -11,11 +15,18 @@ import {
   ObjectTypes,
   ObjectNatures
 } from '@constants/.';
-import { IClass, IDecoratable, IElement, IGeneralization, IGeneralizationSet, IPackage, IProperty, IRelation } from '@types';
-import { getXsdUri } from './uri_manager';
-import _ from 'lodash';
-import memoizee from 'memoizee';
-import tags from 'language-tags';
+import {
+  IClass,
+  IDecoratable,
+  IElement,
+  IGeneralization,
+  IGeneralizationSet,
+  ILiteral,
+  IPackage,
+  IProperty,
+  IRelation
+} from '@types';
+import { getdUriFromXsdMapping } from './uri_manager';
 
 export const getText = (element: IElement, field: string, languagePreference?: string[]): string => {
   if (!element || element.name == null) return null;
@@ -179,9 +190,9 @@ export function isEnumeration(element: IClass): boolean {
   return isClass(element) && getStereotype(element) === ClassStereotype.ENUMERATION;
 }
 
-//TODO: Move this method to the core API
+//THIS FUNCTION SHOULD NOT BE MOVED TO THE CORE API
 export function isPrimitiveDatatype(element: IElement): boolean {
-  return isDatatype(element) && !hasAttributes(element as IClass) && getXsdUri(element) !== null;
+  return isDatatype(element) && !hasAttributes(element as IClass) && getdUriFromXsdMapping(element) !== null;
 }
 
 //TODO: Move this method to the core API
@@ -284,6 +295,16 @@ export function getAllGeneralizationSets(model: IPackage): IGeneralizationSet[] 
 
 export function getAllPackages(model: IPackage): IPackage[] {
   return model.getAllContentsByType([OntoumlType.PACKAGE_TYPE]) as IPackage[];
+}
+
+export function getAllEnumerations(model: IPackage): IClass[] {
+  return (model.getAllContentsByType([OntoumlType.CLASS_TYPE]) as IClass[]).filter(c => isEnumeration(c));
+}
+
+export function getAllLiterals(model: IPackage): ILiteral[] {
+  let literals: ILiteral[] = [];
+  getAllEnumerations(model).forEach(e => (literals = literals.concat(e.literals)));
+  return literals;
 }
 
 export function isTypeDefined(attribute: IProperty): boolean {

@@ -1,4 +1,4 @@
-import { IElement } from '@types';
+import { IElement, IPackage } from '@types';
 import { getName } from './helper_functions';
 
 export default class Options {
@@ -68,6 +68,40 @@ export default class Options {
 
     if (elementCustomMapping && elementCustomMapping.label) {
       return elementCustomMapping.label;
+    }
+
+    return null;
+  }
+
+  // type CustomPrefixData = { customPrefix?: string; customUri: string };
+
+  getCustomPackagePrefix(pkg: IPackage): string {
+    const idMapping = this.customPackageMapping[pkg.id];
+
+    if (idMapping && idMapping.prefix) {
+      return idMapping.prefix;
+    }
+
+    const packageName = getName(pkg);
+    const nameMapping = this.customPackageMapping[packageName];
+    if (nameMapping && nameMapping.prefix) {
+      return nameMapping.prefix;
+    }
+
+    return null;
+  }
+
+  getCustomPackageUri(pkg: IPackage): string {
+    const idMapping = this.customPackageMapping[pkg.id];
+
+    if (idMapping && idMapping.uri) {
+      return idMapping.uri;
+    }
+
+    const packageName = getName(pkg);
+    const nameMapping = this.customPackageMapping[packageName];
+    if (nameMapping && nameMapping.uri) {
+      return nameMapping.uri;
     }
 
     return null;

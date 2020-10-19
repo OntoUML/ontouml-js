@@ -1,8 +1,8 @@
 import { IClass, IProperty, IRelation } from '@types';
-import { Writer } from 'n3';
-import Options from './options';
-import { getInverseRelationUri, getUri } from './uri_manager';
 
+import { Ontouml2Gufo } from './ontouml2gufo';
+import { getSuperProperty } from './relation_functions';
+import { getInverseSuperProperty } from './relations_inverse_functions';
 import {
   isDerivation,
   isInstantiation,
@@ -20,57 +20,11 @@ import {
   sourceExistentiallyDependsOnTarget,
   isClass
 } from './helper_functions';
-import { getSuperProperty } from './relation_functions';
-import { getInverseSuperProperty } from './relations_inverse_functions';
 
 const N3 = require('n3');
-const { DataFactory } = N3;
-const { namedNode, literal } = DataFactory;
+const { namedNode, literal } = N3.DataFactory;
 
-function getObjectPropertyNodes(writer: Writer, relation: IRelation, propertyPosition, options: Options) {
-  if (isInstantiation(relation) || isDerivation(relation) || relation.properties.length > 2) {
-    throw new Error('Cannot get property nodes for n-ary, «instantation», or «derivation» relations');
-  }
-
-  if (propertyPosition === 0) {
-    if (
-      isMaterial(relation) ||
-      isComparative(relation) ||
-      (!hasOntoumlStereotype(relation) && !isPartWholeRelation(relation)) ||
-      options.createObjectProperty
-    ) {
-      return options.createInverses
-        ? namedNode(getInverseRelationUri(relation, options))
-        : writer.blank(namedNode('owl:inverseOf'), namedNode(getUri(relation, options)));
-    }
-
-    return options.createInverses
-      ? namedNode(getInverseSuperProperty(relation))
-      : writer.blank(namedNode('owl:inverseOf'), namedNode(getSuperProperty(relation)));
-  }
-
-  if (propertyPosition === 1) {
-    if (
-      isMaterial(relation) ||
-      isComparative(relation) ||
-      (!hasOntoumlStereotype(relation) && !isPartWholeRelation(relation)) ||
-      options.createObjectProperty
-    ) {
-      return namedNode(getUri(relation, options));
-    }
-
-    return namedNode(getSuperProperty(relation));
-  }
-
-  return null;
-}
-
-enum Direction {
-  SOURCE_TO_TARGET = 1,
-  TARGET_TO_SOURCE = 2
-}
-
-export function transformRelationCardinalities(writer: Writer, relation: IRelation, options: Options) {
+export function transformRelationCardinalities(transformer: Ontouml2Gufo, relation: IRelation) {
   if (
     !isClass(relation.getSource()) ||
     !isClass(relation.getTarget()) ||
@@ -84,16 +38,61 @@ export function transformRelationCardinalities(writer: Writer, relation: IRelati
 
   const sourceProperty = relation.properties[0];
   if (isBounded(sourceProperty)) {
-    writerCardinalityAxiom(writer, relation, Direction.TARGET_TO_SOURCE, options);
+    writerCardinalityAxiom(transformer, relation, Direction.TARGET_TO_SOURCE);
   }
 
   const targetProperty = relation.properties[1];
   if (isBounded(targetProperty)) {
-    writerCardinalityAxiom(writer, relation, Direction.SOURCE_TO_TARGET, options);
+    writerCardinalityAxiom(transformer, relation, Direction.SOURCE_TO_TARGET);
   }
 }
 
-function writerCardinalityAxiom(writer: Writer, relation: IRelation, direction: Direction, options: Options) {
+function getObjectPropertyNodes(transformer: Ontouml2Gufo, relation: IRelation, propertyPosition) {
+  const { options } = transformer;
+
+  if (isInstantiation(relation) || isDerivation(relation) || relation.properties.length > 2) {
+    throw new Error('Cannot get property nodes for n-ary, «instantation», or «derivation» relations');
+  }
+
+  if (propertyPosition === 0) {
+    if (
+      isMaterial(relation) ||
+      isComparative(relation) ||
+      (!hasOntoumlStereotype(relation) && !isPartWholeRelation(relation)) ||
+      options.createObjectProperty
+    ) {
+      return options.createInverses
+        ? namedNode(transformer.getInverseRelationUri(relation))
+        : transformer.writer.blank(namedNode('owl:inverseOf'), namedNode(transformer.getUri(relation)));
+    }
+
+    return options.createInverses
+      ? namedNode(getInverseSuperProperty(relation))
+      : transformer.writer.blank(namedNode('owl:inverseOf'), namedNode(getSuperProperty(relation)));
+  }
+
+  if (propertyPosition === 1) {
+    if (
+      isMaterial(relation) ||
+      isComparative(relation) ||
+      (!hasOntoumlStereotype(relation) && !isPartWholeRelation(relation)) ||
+      options.createObjectProperty
+    ) {
+      return namedNode(transformer.getUri(relation));
+    }
+
+    return namedNode(getSuperProperty(relation));
+  }
+
+  return null;
+}
+
+enum Direction {
+  SOURCE_TO_TARGET = 1,
+  TARGET_TO_SOURCE = 2
+}
+
+function writerCardinalityAxiom(transformer: Ontouml2Gufo, relation: IRelation, direction: Direction) {
   if (!direction) return;
 
   let sourceClass: IClass;
@@ -104,12 +103,12 @@ function writerCardinalityAxiom(writer: Writer, relation: IRelation, direction: 
   if (direction === Direction.SOURCE_TO_TARGET) {
     sourceClass = relation.properties[0].propertyType as IClass;
     targetAssociationEnd = relation.properties[1];
-    objectPropertyNode = getObjectPropertyNodes(writer, relation, 1, options);
+    objectPropertyNode = getObjectPropertyNodes(transformer, relation, 1);
     isExistentialDependency = sourceExistentiallyDependsOnTarget(relation);
   } else {
     sourceClass = relation.properties[1].propertyType as IClass;
     targetAssociationEnd = relation.properties[0];
-    objectPropertyNode = getObjectPropertyNodes(writer, relation, 0, options);
+    objectPropertyNode = getObjectPropertyNodes(transformer, relation, 0);
     isExistentialDependency = targetExistentiallyDependsOnSource(relation);
   }
 
@@ -117,7 +116,7 @@ function writerCardinalityAxiom(writer: Writer, relation: IRelation, direction: 
 
   const lowerBound = getLowerboundCardinality(targetAssociationEnd.cardinality);
   const upperBound = getUpperboundCardinality(targetAssociationEnd.cardinality);
-  const targetClassNode = namedNode(getUri(targetAssociationEnd.propertyType, options));
+  const targetClassNode = namedNode(transformer.getUri(targetAssociationEnd.propertyType));
 
   if (lowerBound === 1 && upperBound === UNBOUNDED_CARDINALITY) {
     restrictionNodes.push([
@@ -197,8 +196,8 @@ function writerCardinalityAxiom(writer: Writer, relation: IRelation, direction: 
     }
   }
 
-  const sourceClassNode = namedNode(getUri(sourceClass, options));
+  const sourceClassNode = namedNode(transformer.getUri(sourceClass));
   restrictionNodes.forEach(restriction => {
-    writer.addQuad(sourceClassNode, namedNode('rdfs:subClassOf'), writer.blank(restriction));
+    transformer.addQuad(sourceClassNode, namedNode('rdfs:subClassOf'), transformer.writer.blank(restriction));
   });
 }

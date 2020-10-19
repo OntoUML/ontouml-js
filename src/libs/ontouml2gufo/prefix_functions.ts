@@ -1,9 +1,8 @@
-import memoizee from 'memoizee';
 import { IPackage } from '@types';
 import { getAllPackages, getName } from './helper_functions';
-import Options from './options';
 import { normalizeName } from './uri_manager';
 import _ from 'lodash';
+import { Ontouml2Gufo } from '.';
 
 export const DefaultPrefixes = {
   gufo: 'http://purl.org/nemo/gufo#',
@@ -13,19 +12,16 @@ export const DefaultPrefixes = {
   xsd: 'http://www.w3.org/2001/XMLSchema#'
 };
 
-export const getPrefixes = (model: IPackage, options: Options) => {
-  let prefixes = [];
-  prefixes = {
-    ...getBasePrefix(options),
-    ...getPackagePrefixes(model, options),
+export const getPrefixes = (ontouml2gufo: Ontouml2Gufo) => {
+  return {
+    ...getBasePrefix(ontouml2gufo),
+    ...getPackagePrefixes(ontouml2gufo),
     ...DefaultPrefixes
   };
-
-  return prefixes;
 };
 
-export const getBasePrefix = memoizee((options: Options) => {
-  const { baseIri, basePrefix } = options;
+export const getBasePrefix = (ontouml2gufo: Ontouml2Gufo) => {
+  const { baseIri, basePrefix } = ontouml2gufo.options;
   let prefix = {};
 
   if (basePrefix && basePrefix.trim().length > 0) {
@@ -35,45 +31,47 @@ export const getBasePrefix = memoizee((options: Options) => {
   }
 
   return prefix;
-});
+};
 
-export const getPackagePrefixes = memoizee((model: IPackage, options: Options) => {
-  const packages = getAllPackages(model);
+export const getPackagePrefixes = (ontouml2gufo: Ontouml2Gufo) => {
+  if (!ontouml2gufo.options.prefixPackages) {
+    return {};
+  }
+
   const prefixes = {};
-
-  if (!options.prefixPackages) return prefixes;
+  const packages = getAllPackages(ontouml2gufo.model);
 
   for (const pkg of packages) {
-    const prefix = getPackagePrefix(pkg, options);
-    const uri = getPackageUri(pkg, options);
+    const prefix = getPackagePrefix(ontouml2gufo, pkg);
+    const uri = getPackageUri(ontouml2gufo, pkg);
     prefixes[prefix] = uri;
   }
 
   return prefixes;
-});
+};
 
-export const getPackagePrefix = memoizee((pkg: IPackage, options: Options): string => {
-  const { customPrefix } = getCustomPackageData(pkg, options);
-
+export const getPackagePrefix = (ontouml2gufo: Ontouml2Gufo, pkg: IPackage): string => {
+  const customPrefix = ontouml2gufo.options.getCustomPackagePrefix(pkg);
   if (customPrefix) {
     return customPrefix;
   }
 
-  if (options.prefixPackages) {
+  if (ontouml2gufo.options.prefixPackages) {
     let prefix: string = normalizeName(getName(pkg));
     prefix = prefix.charAt(0).toLowerCase() + prefix.slice(1);
     return prefix;
   }
 
   return '';
-});
+};
 
-export const getPackageUri = memoizee((pkg: IPackage, options: Options): string => {
-  const { customUri } = getCustomPackageData(pkg, options);
-
+export const getPackageUri = (ontouml2gufo: Ontouml2Gufo, pkg: IPackage): string => {
+  const customUri = ontouml2gufo.options.getCustomPackageUri(pkg);
   if (customUri) {
     return customUri;
   }
+
+  const { options } = ontouml2gufo;
 
   if (options.prefixPackages) {
     let uriSuffix: string = getName(pkg);
@@ -83,25 +81,4 @@ export const getPackageUri = memoizee((pkg: IPackage, options: Options): string 
   }
 
   return '';
-});
-
-type CustomPrefixData = { customPrefix?: string; customUri: string };
-
-export const getCustomPackageData = (pkg: IPackage, options: Options): CustomPrefixData => {
-  const id = pkg.id;
-  const name = getName(pkg);
-
-  const { customPackageMapping } = options;
-  let customPrefix;
-  let customUri;
-
-  if (customPackageMapping[id]) {
-    customPrefix = customPackageMapping[id].prefix;
-    customUri = customPackageMapping[id].uri;
-  } else if (customPackageMapping[name]) {
-    customPrefix = customPackageMapping[name].prefix;
-    customUri = customPackageMapping[name].uri;
-  }
-
-  return { customPrefix, customUri };
 };
