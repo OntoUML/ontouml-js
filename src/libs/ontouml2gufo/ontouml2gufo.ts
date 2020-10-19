@@ -101,7 +101,7 @@ export class Ontouml2Gufo {
 
     try {
       this.initializeWriter();
-      this.writePreable();
+      this.writePreamble();
       this.transformClasses();
       this.transformGeneralizations();
       this.transformGeneralizationSets();
@@ -128,7 +128,7 @@ export class Ontouml2Gufo {
     });
   }
 
-  writePreable() {
+  writePreamble() {
     this.writer.addQuads([
       quad(namedNode(this.options.baseIri), namedNode('rdf:type'), namedNode('owl:Ontology')),
       quad(namedNode(this.options.baseIri), namedNode('owl:imports'), namedNode('gufo:'))
