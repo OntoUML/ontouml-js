@@ -14,7 +14,7 @@
       "literals": null,
       "propertyAssignments": null,
       "stereotypes": ["mode"],
-      "allowed": ["mode"],
+      "allowed": ["extrinsic-mode"],
       "isAbstract": false,
       "isDerived": false,
       "isExtensional": null,

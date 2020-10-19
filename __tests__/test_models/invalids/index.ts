@@ -19,5 +19,5 @@ export {
   modelInvalidExample7,
   modelInvalidExample8,
   modelInvalidExample9,
-  modelInvalidExample10,
+  modelInvalidExample10
 };

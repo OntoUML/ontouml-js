@@ -28,7 +28,7 @@ class OntoUMLError {
       title,
       detail,
       links,
-      meta,
+      meta
     });
   }
 }

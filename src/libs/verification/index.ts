@@ -2,14 +2,14 @@ import {
   IPackage,
   IElement,
   IClass,
-  IGeneralization,
+  IGeneralization
   // IRelation,
   // IGeneralization,
   // IGeneralizationSet,
   // IProperty,
   // ILiteral,
 } from '@types';
-import { OntoUMLType } from '@constants/.';
+import { OntoumlType } from '@constants/.';
 import { ClassVerification } from './class.verification';
 import { VerificationIssue, IssueSeverity } from './issues';
 import { ModelManager } from '@libs/model';
@@ -34,24 +34,19 @@ export class OntoUML2Verification {
 
     allElements.forEach((element: IElement) => {
       switch (element.type) {
-        case OntoUMLType.PACKAGE_TYPE:
+        case OntoumlType.PACKAGE_TYPE:
           // const _package = element as IPackage;
           // const _package: IPackage = element as IPackage;
           break;
 
-        case OntoUMLType.CLASS_TYPE:
+        case OntoumlType.CLASS_TYPE:
           const _class: IClass = element as IClass;
-          const classConsistencyIssues: VerificationIssue[] = ClassVerification.checkMinimalConsistency(
-            _class,
-          );
+          const classConsistencyIssues: VerificationIssue[] = ClassVerification.checkMinimalConsistency(_class);
           issues = [...issues, ...classConsistencyIssues];
 
           if (
             classConsistencyIssues &&
-            classConsistencyIssues.find(
-              (issue: VerificationIssue) =>
-                issue.severity === IssueSeverity.error,
-            )
+            classConsistencyIssues.find((issue: VerificationIssue) => issue.severity === IssueSeverity.error)
           ) {
             break;
           } else {
@@ -59,46 +54,38 @@ export class OntoUML2Verification {
           }
           break;
 
-        case OntoUMLType.RELATION_TYPE:
+        case OntoumlType.RELATION_TYPE:
           // const relation = element as IRelation;
           // const relation: IRelation = element as IRelation;
           break;
 
-        case OntoUMLType.GENERALIZATION_TYPE:
+        case OntoumlType.GENERALIZATION_TYPE:
           // const generalization = element as IGeneralization;
           const generalization: IGeneralization = element as IGeneralization;
-          const genConsistencyIssues: VerificationIssue[] = GeneralizationVerification.checkMinimalConsistency(
-            generalization,
-          );
+          const genConsistencyIssues: VerificationIssue[] = GeneralizationVerification.checkMinimalConsistency(generalization);
           issues = [...issues, ...genConsistencyIssues];
 
           if (
             genConsistencyIssues &&
-            genConsistencyIssues.find(
-              (issue: VerificationIssue) =>
-                issue.severity === IssueSeverity.error,
-            )
+            genConsistencyIssues.find((issue: VerificationIssue) => issue.severity === IssueSeverity.error)
           ) {
             break;
           } else {
-            issues = [
-              ...issues,
-              ...GeneralizationVerification.check(generalization),
-            ];
+            issues = [...issues, ...GeneralizationVerification.check(generalization)];
           }
           break;
 
-        case OntoUMLType.GENERALIZATION_SET_TYPE:
+        case OntoumlType.GENERALIZATION_SET_TYPE:
           // const generalizationSet = element as IGeneralizationSet;
           // const generalizationSet: IGeneralizationSet = element as IGeneralizationSet;
           break;
 
-        case OntoUMLType.PROPERTY_TYPE:
+        case OntoumlType.PROPERTY_TYPE:
           // const property = element as IProperty;
           // const property: IProperty = element as IProperty;
           break;
 
-        case OntoUMLType.LITERAL_TYPE:
+        case OntoumlType.LITERAL_TYPE:
           // const literal = element as ILiteral;
           // const literal: ILiteral = element as ILiteral;
           break;

@@ -5,7 +5,7 @@ import { allAllowedNatures } from './class.verification';
 
 export enum IssueSeverity {
   error = 'error',
-  warning = 'warning',
+  warning = 'warning'
 }
 
 export enum VerificationIssueCode {
@@ -30,7 +30,7 @@ export enum VerificationIssueCode {
   generalization_incompatible_class_sortality = 'generalization_incompatible_class_sortality',
   generalization_incompatible_relation_type = 'generalization_incompatible_relation_type',
   relation_multiple_stereotypes = 'relation_multiple_stereotypes',
-  relation_improper_derivation = 'relation_improper_derivation',
+  relation_improper_derivation = 'relation_improper_derivation'
 }
 
 /**
@@ -48,17 +48,13 @@ export class VerificationIssue {
   severity: IssueSeverity;
   alternatives: VerificationAlternative[] | null;
 
-  constructor(
-    code: VerificationIssueCode,
-    source: IElement,
-    context?: IElement[],
-  ) {
+  constructor(code: VerificationIssueCode, source: IElement, context?: IElement[]) {
     this.code = code;
     this.title = null;
     this.description = null;
     this.source = {
       type: source.type,
-      id: source.id,
+      id: source.id
     };
     this.context = context
       ? context.map((element: IElement) => {
@@ -154,28 +150,21 @@ export class VerificationIssue {
         break;
       case VerificationIssueCode.class_missing_identity_provider:
         // The case of a sortal class missing an specialization towards a kind or type
-        this.title =
-          'Every sortal class must specialize a unique ultimate sortal.';
+        this.title = 'Every sortal class must specialize a unique ultimate sortal.';
         this.description = `The class ${source.name} must specialize (directly or indirectly) a unique class decorated as one of the following: «kind», «collective», «quantity», «relator», «mode», «quality», «type».`;
         this.severity = IssueSeverity.error;
         break;
       case VerificationIssueCode.class_multiple_identity_provider:
         // The case of a sortal class specializing multiple kinds or types
-        aux = context
-          .map((element: IElement) => `«${element.name}»`)
-          .join(', ');
-        this.title =
-          'Every sortal class must specialize a unique ultimate sortal.';
+        aux = context.map((element: IElement) => `«${element.name}»`).join(', ');
+        this.title = 'Every sortal class must specialize a unique ultimate sortal.';
         this.description = `The class ${source.name} is specializing multiple classes that represent ultimate sortals: ${aux}.`;
         this.severity = IssueSeverity.error;
         break;
       case VerificationIssueCode.class_identity_provider_specialization:
         // The case of a KIND class specializing other kinds
-        aux = context
-          .map((element: IElement) => `«${element.name}»`)
-          .join(', ');
-        this.title =
-          'Classes representing ultimate sortals cannot specialize other ultimate sortals.';
+        aux = context.map((element: IElement) => `«${element.name}»`).join(', ');
+        this.title = 'Classes representing ultimate sortals cannot specialize other ultimate sortals.';
         this.description = `The class ${source.name} is specializing other classes that represent ultimate sortals: ${aux}.`;
         this.severity = IssueSeverity.error;
         break;
@@ -224,10 +213,8 @@ export class VerificationIssue {
         // The case of a class specializing a class of an incompatible nature
         this.title = `Prohibited specialization: incompatible natures.`;
         aux = [];
-        aux[0] =
-          context[0] && context[0].name ? context[0].name : context[0].id;
-        aux[1] =
-          context[1] && context[1].name ? context[1].name : context[1].id;
+        aux[0] = context[0] && context[0].name ? context[0].name : context[0].id;
+        aux[1] = context[1] && context[1].name ? context[1].name : context[1].id;
         this.description = `The allowed ontological natures of instances of ${aux[1]} are not among the allowed ontological natures of its superclass ${aux[0]}.`;
         this.severity = IssueSeverity.error;
         break;
@@ -248,10 +235,8 @@ export class VerificationIssue {
         // The case of a rigid or semi-rigid class specializing an anti-rigid one
         this.title = `Prohibited specialization: rigid/semi-rigid specializing an anti-rigid.`;
         aux = [];
-        aux[0] =
-          context[0] && context[0].name ? context[0].name : context[0].id;
-        aux[1] =
-          context[1] && context[1].name ? context[1].name : context[1].id;
+        aux[0] = context[0] && context[0].name ? context[0].name : context[0].id;
+        aux[1] = context[1] && context[1].name ? context[1].name : context[1].id;
         this.description = `The rigid/semi-rigid class ${aux[0]} cannot specialize the anti-rigid class ${aux[1]}.`;
         this.severity = IssueSeverity.error;
         break;
@@ -259,10 +244,8 @@ export class VerificationIssue {
         // The case of a non-sortal class specializing an sortal one
         this.title = `Prohibited specialization: non-sortal specializing a sortal.`;
         aux = [];
-        aux[0] =
-          context[0] && context[0].name ? context[0].name : context[0].id;
-        aux[1] =
-          context[1] && context[1].name ? context[1].name : context[1].id;
+        aux[0] = context[0] && context[0].name ? context[0].name : context[0].id;
+        aux[1] = context[1] && context[1].name ? context[1].name : context[1].id;
         this.description = `The non-sortal class ${aux[0]} cannot specialize the sortal class ${aux[1]}.`;
         this.severity = IssueSeverity.error;
         break;
