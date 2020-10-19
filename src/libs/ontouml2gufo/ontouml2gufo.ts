@@ -4,11 +4,11 @@ import { IPackage } from '@types';
 import { writeDisjointnessAxioms, transformClass } from './class_functions';
 import { transformRelation } from './relation_functions';
 import {
+  getAllAttributes,
   getAllClasses,
   getAllGeneralizations,
   getAllGeneralizationSets,
-  getAllRelations,
-  hasAttributes
+  getAllRelations
 } from './helper_functions';
 import Inspector from './inspector';
 import Options from './options';
@@ -19,6 +19,7 @@ import { transformAttribute } from './attribute_functions';
 import { transformGeneralizationSet } from './generalization_set_functions';
 import { transformRelationCardinalities } from './cardinality_functions';
 import { transformInverseRelation } from './relations_inverse_functions';
+import UriManager from './uri_manager';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
@@ -36,11 +37,13 @@ export class Ontouml2Gufo {
   inspector: Inspector;
   owlCode: string;
   writer: Writer;
+  uriManager: UriManager;
 
   constructor(model: ModelManager, options?: Partial<Options>) {
     this.model = model.rootPackage;
     this.options = options ? new Options(options) : new Options();
     this.inspector = new Inspector(this.model, this.options);
+    this.uriManager = new UriManager(this.model, this.options);
   }
 
   getIssues(): Issue[] {
@@ -108,14 +111,10 @@ export class Ontouml2Gufo {
   }
 
   transformAttributes() {
-    const classes = getAllClasses(this.model);
+    const attributes = getAllAttributes(this.model);
 
-    for (const _class of classes) {
-      if (!hasAttributes(_class)) return;
-
-      for (const attribute of _class.properties) {
-        transformAttribute(this.writer, _class, attribute, this.options);
-      }
+    for (const attribute of attributes) {
+      transformAttribute(this.writer, attribute, this.options);
     }
   }
 

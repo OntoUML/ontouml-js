@@ -258,6 +258,18 @@ export function getAllClasses(model: IPackage): IClass[] {
   return model.getAllContentsByType([OntoumlType.CLASS_TYPE]) as IClass[];
 }
 
+export function getAllAttributes(model: IPackage): IProperty[] {
+  const properties = model.getAllContentsByType([OntoumlType.PROPERTY_TYPE]) as IProperty[];
+  const attributes = properties.filter(prop => prop._container.type === OntoumlType.CLASS_TYPE);
+  return attributes;
+}
+
+export function getAllAssociationEnds(model: IPackage): IProperty[] {
+  const properties = model.getAllContentsByType([OntoumlType.PROPERTY_TYPE]) as IProperty[];
+  const relationEnds = properties.filter(prop => prop._container.type === OntoumlType.RELATION_TYPE);
+  return relationEnds;
+}
+
 export function getAllRelations(model: IPackage): IRelation[] {
   return model.getAllContentsByType([OntoumlType.RELATION_TYPE]) as IRelation[];
 }

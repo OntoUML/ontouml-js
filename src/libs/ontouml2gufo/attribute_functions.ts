@@ -4,12 +4,21 @@ import { getUri } from './uri_manager';
 import { transformAnnotations } from './annotation_function';
 import Options from './options';
 import { isComplexDatatype, isConcrete, isDatatype, isEnumeration, isPrimitiveDatatype, isTypeDefined } from './helper_functions';
+import { OntoumlType } from '@constants/.';
 
 const N3 = require('n3');
 const { DataFactory } = N3;
 const { namedNode, quad } = DataFactory;
 
-export function transformAttribute(writer: Writer, containerClass: IClass, attribute: IProperty, options: Options) {
+export function transformAttribute(writer: Writer, attribute: IProperty, options: Options): boolean {
+  const container = attribute._container;
+
+  if (container.type !== OntoumlType.CLASS_TYPE) {
+    return false;
+  }
+
+  const containerClass: IClass = container as IClass;
+
   const attributeUri = getUri(attribute, options);
   const containerUri = getUri(containerClass, options);
 

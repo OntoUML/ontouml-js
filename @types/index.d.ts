@@ -1,5 +1,4 @@
 import { OntoumlType, AggregationKind, OntologicalNature } from '@constants/.';
-import UriManager from '@libs/ontouml2gufo/uri_manager';
 
 /**
  * Interface that captures common properties of objects in `ontouml-schema`. Whenever necessary, stereotypes are captured as regular string arrays.

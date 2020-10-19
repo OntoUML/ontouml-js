@@ -1,4 +1,5 @@
-import UriManager from './uri_manager';
+import { IElement } from '@types';
+import { getName } from './helper_functions';
 
 export default class Options {
   format: string;
@@ -22,7 +23,6 @@ export default class Options {
       uri?: string;
     };
   };
-  uriManager: UriManager;
 
   constructor(base: Partial<Options> = {}) {
     this.format = 'Turtle';
@@ -35,6 +35,41 @@ export default class Options {
     this.customPackageMapping = {};
 
     Object.keys(base).forEach(key => (this[key] = base[key]));
-    this.uriManager = new UriManager();
+  }
+
+  getCustomUri(element: IElement): string {
+    const allMappings = this.customElementMapping;
+
+    let elementCustomMapping = allMappings[element.id];
+
+    if (elementCustomMapping && elementCustomMapping.uri) {
+      return elementCustomMapping.uri;
+    }
+
+    elementCustomMapping = allMappings[getName(element)];
+
+    if (elementCustomMapping && elementCustomMapping.uri) {
+      return elementCustomMapping.uri;
+    }
+
+    return null;
+  }
+
+  getCustomLabels(element: IElement) {
+    const allMappings = this.customElementMapping;
+
+    let elementCustomMapping = allMappings[element.id];
+
+    if (elementCustomMapping && elementCustomMapping.label) {
+      return elementCustomMapping.label;
+    }
+
+    elementCustomMapping = allMappings[getName(element)];
+
+    if (elementCustomMapping && elementCustomMapping.label) {
+      return elementCustomMapping.label;
+    }
+
+    return null;
   }
 }

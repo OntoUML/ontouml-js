@@ -1,7 +1,7 @@
 import { Writer } from 'n3';
 import { IElement, IRelation } from '@types';
 import Options from './options';
-import { getUri, getCustomLabels } from './uri_manager';
+import { getUri } from './uri_manager';
 import tags from 'language-tags';
 
 const N3 = require('n3');
@@ -9,7 +9,7 @@ const { DataFactory } = N3;
 const { namedNode, literal, quad } = DataFactory;
 
 export function transformAnnotations(writer: Writer, element: IElement, options: Options): boolean {
-  const labels = getCustomLabels(element, options) || {};
+  const labels = options.getCustomLabels(element) || {};
   const uri = getUri(element, options);
   const quads = [];
 
