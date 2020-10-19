@@ -3,14 +3,14 @@ import { OntoumlType, ClassStereotype, OntologicalNature } from '@constants/.';
 import { transformAnnotations } from './annotation_function';
 import { isPrimitiveDatatype, isEnumeration, getStereotype } from './helper_functions';
 import Ontouml2Gufo from './ontouml2gufo';
-import { getdUriFromXsdMapping } from './uri_manager';
+import { getUriFromXsdMapping } from './uri_manager';
 
 const N3 = require('n3');
 const { namedNode, literal } = N3.DataFactory;
 
 export function transformClass(transformer: Ontouml2Gufo, _class: IClass): boolean {
   const { uriManager } = transformer;
-  if (uriManager.getUriFromTaggedValues(_class) || getdUriFromXsdMapping(_class) || isPrimitiveDatatype(_class)) {
+  if (uriManager.getUriFromTaggedValues(_class) || getUriFromXsdMapping(_class) || isPrimitiveDatatype(_class)) {
     return true;
   }
 

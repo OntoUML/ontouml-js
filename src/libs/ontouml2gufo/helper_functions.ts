@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import memoizee from 'memoizee';
 import tags from 'language-tags';
 
 import {
@@ -26,7 +25,7 @@ import {
   IProperty,
   IRelation
 } from '@types';
-import { getdUriFromXsdMapping } from './uri_manager';
+import { getUriFromXsdMapping } from './uri_manager';
 
 export const getText = (element: IElement, field: string, languagePreference?: string[]): string => {
   if (!element || element.name == null) return null;
@@ -192,7 +191,7 @@ export function isEnumeration(element: IClass): boolean {
 
 //THIS FUNCTION SHOULD NOT BE MOVED TO THE CORE API
 export function isPrimitiveDatatype(element: IElement): boolean {
-  return isDatatype(element) && !hasAttributes(element as IClass) && getdUriFromXsdMapping(element) !== null;
+  return isDatatype(element) && !hasAttributes(element as IClass) && getUriFromXsdMapping(element) !== null;
 }
 
 //TODO: Move this method to the core API
@@ -391,18 +390,18 @@ export function impliesExistentialDependency(relation: IRelation): boolean {
   return sourceExistentiallyDependsOnTarget(relation) || targetExistentiallyDependsOnSource(relation);
 }
 
-export const getLowerboundCardinality = memoizee((cardinality: string): number => {
+export function getLowerboundCardinality(cardinality: string): number {
   const cardinalities = cardinality.split('..');
   const lowerbound = cardinalities[0];
 
   return lowerbound === '*' ? 0 : Number(lowerbound);
-});
+}
 
 export const UNBOUNDED_CARDINALITY = 99999;
 
-export const getUpperboundCardinality = memoizee((cardinality: string): number => {
+export function getUpperboundCardinality(cardinality: string): number {
   const cardinalities = cardinality.split('..');
   const upperbound = cardinalities[1] || cardinalities[0];
 
   return upperbound === '*' ? UNBOUNDED_CARDINALITY : Number(upperbound);
-});
+}

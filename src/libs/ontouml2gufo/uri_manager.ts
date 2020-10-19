@@ -1,4 +1,3 @@
-import memoizee from 'memoizee';
 import _ from 'lodash';
 
 import { IElement, IRelation, IPackage, IClass, IClassifier, IProperty } from '@types';
@@ -128,7 +127,7 @@ export default class UriManager {
   }
 
   getFixedUri(element: IElement) {
-    return this.getUriFromTaggedValues(element) || this.getUriFromOptions(element) || getdUriFromXsdMapping(element);
+    return this.getUriFromTaggedValues(element) || this.getUriFromOptions(element) || getUriFromXsdMapping(element);
   }
 
   getUriFromTaggedValues(element) {
@@ -249,7 +248,7 @@ export default class UriManager {
   }
 }
 
-export const normalizeName = memoizee((name: string): string => {
+export function normalizeName(name: string): string {
   if (!name) {
     return null;
   }
@@ -259,14 +258,14 @@ export const normalizeName = memoizee((name: string): string => {
   });
 
   return name.replace(/[^a-zA-Z0-9_]/g, '');
-});
+}
 
 export const getNormalizedName = (element: IElement) => {
   let name = getName(element);
   return normalizeName(name);
 };
 
-export const getdUriFromXsdMapping = (element: IElement): string => {
+export const getUriFromXsdMapping = (element: IElement): string => {
   if (!isDatatype(element) || hasAttributes(element as IClass)) return null;
 
   const xsdTypes: string[] = [
