@@ -1,6 +1,6 @@
 {
   "name": "ontouml-js",
-  "version": "0.1.10",
+  "version": "0.2.0",
   "description": "Javascript library utility for manipulating OntoUML models.",
   "license": "Apache-2.0",
   "engines": {
