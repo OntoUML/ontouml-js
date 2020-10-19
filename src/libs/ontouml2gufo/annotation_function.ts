@@ -1,7 +1,7 @@
 import tags from 'language-tags';
 
 import { IElement, IRelation } from '@types';
-import { Ontouml2Gufo } from './ontouml2gufo';
+import Ontouml2Gufo from './ontouml2gufo';
 
 export function transformAnnotations(transformer: Ontouml2Gufo, element: IElement): boolean {
   const labels = transformer.options.getCustomLabels(element) || {};

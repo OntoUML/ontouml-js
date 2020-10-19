@@ -74,12 +74,12 @@ export default class Issue {
   data?: any;
 
   constructor(base: Partial<Issue>) {
-    this.id = base.id || uniqid(),
-    this.code = base.code,
-    this.severity = base.severity,
-    this.title = base.title,
-    this.description = base.description,
-    this.data = base.data
+    (this.id = base.id || uniqid()),
+      (this.code = base.code),
+      (this.severity = base.severity),
+      (this.title = base.title),
+      (this.description = base.description),
+      (this.data = base.data);
   }
 
   static createInvalidBaseIri(baseIri: string): Issue {

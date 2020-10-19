@@ -1,6 +1,6 @@
 import { IClass, IProperty, IRelation } from '@types';
 
-import { Ontouml2Gufo } from './ontouml2gufo';
+import Ontouml2Gufo from './ontouml2gufo';
 import { getSuperProperty } from './relation_functions';
 import { getInverseSuperProperty } from './relations_inverse_functions';
 import {

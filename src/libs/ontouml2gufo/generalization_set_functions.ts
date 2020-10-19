@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { IClass, IGeneralization, IGeneralizationSet } from '@types';
 import { OntoumlType } from '@constants/.';
 
-import { Ontouml2Gufo } from './ontouml2gufo';
+import Ontouml2Gufo from './ontouml2gufo';
 import { isAbstract, isPrimitiveDatatype, isRigid } from './helper_functions';
 
 const N3 = require('n3');

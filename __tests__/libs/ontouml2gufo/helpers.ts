@@ -17,6 +17,7 @@ export function generateGufo(model: IPackage, options?: Partial<Options>): strin
   ontouml2gufo.transform();
 
   return ontouml2gufo.getOwlCode();
+  // TODO: replace with static method
 }
 
 export function getIssues(model: IPackage, options?: Partial<Options>): Issue[] {

@@ -2,7 +2,7 @@ import { IClass } from '@types';
 import { OntoumlType, ClassStereotype, OntologicalNature } from '@constants/.';
 import { transformAnnotations } from './annotation_function';
 import { isPrimitiveDatatype, isEnumeration, getStereotype } from './helper_functions';
-import { Ontouml2Gufo } from './ontouml2gufo';
+import Ontouml2Gufo from './ontouml2gufo';
 import { getdUriFromXsdMapping } from './uri_manager';
 
 const N3 = require('n3');

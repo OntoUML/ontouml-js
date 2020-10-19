@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 import { IElement, IRelation, IPackage, IClass, IClassifier, IProperty } from '@types';
 
-import { Ontouml2Gufo } from './ontouml2gufo';
+import Ontouml2Gufo from './ontouml2gufo';
 import { getSuperProperty } from './relation_functions';
 import { getPackagePrefix } from './prefix_functions';
 import {

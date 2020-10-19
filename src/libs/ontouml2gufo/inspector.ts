@@ -4,7 +4,7 @@ import { DefaultPrefixes } from './prefix_functions';
 import { getAllClasses, getAllPackages, getAllRelations, getName } from './helper_functions';
 import { getPackagePrefixes } from './prefix_functions';
 import Issue from './issue';
-import { Ontouml2Gufo } from '.';
+import Ontouml2Gufo from './ontouml2gufo';
 
 export default class Inspector {
   transformer: Ontouml2Gufo;

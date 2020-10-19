@@ -1,6 +1,6 @@
 import { IRelation } from '@types';
 
-import { Ontouml2Gufo } from './ontouml2gufo';
+import Ontouml2Gufo from './ontouml2gufo';
 import { transformAnnotations } from './annotation_function';
 import {
   getStereotype,

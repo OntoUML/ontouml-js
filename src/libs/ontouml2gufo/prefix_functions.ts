@@ -2,7 +2,7 @@ import { IPackage } from '@types';
 import { getAllPackages, getName } from './helper_functions';
 import { normalizeName } from './uri_manager';
 import _ from 'lodash';
-import { Ontouml2Gufo } from '.';
+import Ontouml2Gufo from '.';
 
 export const DefaultPrefixes = {
   gufo: 'http://purl.org/nemo/gufo#',

@@ -1,5 +1,5 @@
 import { IClassifier, IGeneralization } from '@types';
-import { Ontouml2Gufo } from '.';
+import Ontouml2Gufo from '.';
 import { isClass, isRelation } from './helper_functions';
 
 export function transformGeneralization(transformer: Ontouml2Gufo, generalization: IGeneralization) {

@@ -2,7 +2,7 @@ import { IClass, IProperty } from '@types';
 import { transformAnnotations } from './annotation_function';
 import { isComplexDatatype, isConcrete, isDatatype, isEnumeration, isPrimitiveDatatype, isTypeDefined } from './helper_functions';
 import { OntoumlType } from '@constants/.';
-import { Ontouml2Gufo } from './ontouml2gufo';
+import Ontouml2Gufo from './ontouml2gufo';
 
 export function transformAttribute(transformer: Ontouml2Gufo, attribute: IProperty): boolean {
   const container = attribute._container;

@@ -195,12 +195,12 @@ export default class Ontouml2Gufo {
     }
   }
 
-  static run(_package: IPackage, options?: Partial<Options>) : { output: string, issues: Issue[] } {
+  static run(_package: IPackage, options?: Partial<Options>): { output: string; issues: Issue[] } {
     const modelManager = new ModelManager(_package);
     const ontouml2gufo = new Ontouml2Gufo(modelManager, options);
 
     ontouml2gufo.transform();
 
-    return { output: ontouml2gufo.getOwlCode(), issues: ontouml2gufo.getIssues() }
+    return { output: ontouml2gufo.getOwlCode(), issues: ontouml2gufo.getIssues() };
   }
 }
