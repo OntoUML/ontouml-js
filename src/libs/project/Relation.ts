@@ -5,8 +5,7 @@ import { IClassifier } from './Classifier';
 import { IDecoratable } from './IDecoratable';
 import { Class } from './Class';
 
-export class Relation extends ModelElement
-  implements IClassifier, IDecoratable {
+export class Relation extends ModelElement implements IClassifier, IDecoratable {
   properties: Property[];
   isAbstract: boolean;
   isDerived: boolean;

@@ -1,6 +1,6 @@
 import Ajv from 'ajv';
 import memoizee from 'memoizee';
-import { OntoUMLType } from '@constants/.';
+import { OntoumlType } from '@constants/.';
 import {
   IPackage,
   IElement,
@@ -11,7 +11,7 @@ import {
   ILiteral,
   IGeneralization,
   IClassifier,
-  IGeneralizationSet,
+  IGeneralizationSet
 } from '@types';
 import { inject } from '@libs/model/functions';
 import schemas from 'ontouml-schema';
@@ -24,19 +24,20 @@ import schemas from 'ontouml-schema';
  *
  * @todo Create function to access this.sourceElements that throws an exception when the element is not found.
  */
+
+const validator = new Ajv().compile(schemas.getSchema(schemas.ONTOUML_2));
+
 export class ModelManager {
   rootPackage: IPackage;
   allElements: { [key: string]: IElement };
 
   constructor(model: IPackage) {
-    const validator = new Ajv().compile(schemas.getSchema(schemas.ONTOUML_2));
     const isValid = validator(model);
-
     // Check input validity
     if (!isValid) {
       throw {
         message: 'Invalid model input.',
-        errors: validator.errors,
+        errors: validator.errors
       };
     }
 
@@ -78,38 +79,25 @@ export class ModelManager {
     }
 
     current.contents.forEach((element: IElement) => {
-      if (element.type === OntoUMLType.PACKAGE_TYPE) {
+      if (element.type === OntoumlType.PACKAGE_TYPE) {
         contents = [...contents, ...this.getElements(element as IPackage)];
-      } else if (element.type === OntoUMLType.RELATION_TYPE) {
+      } else if (element.type === OntoumlType.RELATION_TYPE) {
         const relation = element as IRelation;
 
         if (relation.properties) {
-          relation.properties.forEach(
-            (property: IProperty) => (property._container = relation),
-          );
+          relation.properties.forEach((property: IProperty) => (property._container = relation));
         }
-        contents = [
-          ...contents,
-          ...(relation.properties ? relation.properties : []),
-        ];
-      } else if (element.type === OntoUMLType.CLASS_TYPE) {
+        contents = [...contents, ...(relation.properties ? relation.properties : [])];
+      } else if (element.type === OntoumlType.CLASS_TYPE) {
         const _class = element as IClass;
 
         if (_class.properties) {
-          _class.properties.forEach(
-            (property: IProperty) => (property._container = _class),
-          );
+          _class.properties.forEach((property: IProperty) => (property._container = _class));
         }
         if (_class.literals) {
-          _class.literals.forEach(
-            (literal: ILiteral) => (literal._container = _class),
-          );
+          _class.literals.forEach((literal: ILiteral) => (literal._container = _class));
         }
-        contents = [
-          ...contents,
-          ...(_class.properties ? _class.properties : []),
-          ...(_class.literals ? _class.literals : []),
-        ];
+        contents = [...contents, ...(_class.properties ? _class.properties : []), ...(_class.literals ? _class.literals : [])];
       }
 
       element._container = { type: current.type, id: current.id };
@@ -124,9 +112,7 @@ export class ModelManager {
    * @param elementId - Desired element's id.
    */
   getElementById(elementId: string): any {
-    return this.getElements().find(
-      (element: IElement) => element.id === elementId,
-    );
+    return this.getElements().find((element: IElement) => element.id === elementId);
   }
 
   replaceReferences(element: IElement): void {
@@ -135,29 +121,25 @@ export class ModelManager {
     });
 
     switch (element.type) {
-      case OntoUMLType.PACKAGE_TYPE:
+      case OntoumlType.PACKAGE_TYPE:
         this.updateReadOnlyReferencesToIPackage(element as IPackage);
         break;
-      case OntoUMLType.CLASS_TYPE:
+      case OntoumlType.CLASS_TYPE:
         this.updateReadOnlyReferencesToIClass(element as IClass);
         break;
-      case OntoUMLType.RELATION_TYPE:
+      case OntoumlType.RELATION_TYPE:
         this.updateReadOnlyReferencesToIRelation(element as IRelation);
         break;
-      case OntoUMLType.GENERALIZATION_TYPE:
-        this.updateReadOnlyReferencesToIGeneralization(
-          element as IGeneralization,
-        );
+      case OntoumlType.GENERALIZATION_TYPE:
+        this.updateReadOnlyReferencesToIGeneralization(element as IGeneralization);
         break;
-      case OntoUMLType.GENERALIZATION_SET_TYPE:
-        this.updateReadOnlyReferencesToIGeneralizationSet(
-          element as IGeneralizationSet,
-        );
+      case OntoumlType.GENERALIZATION_SET_TYPE:
+        this.updateReadOnlyReferencesToIGeneralizationSet(element as IGeneralizationSet);
         break;
-      case OntoUMLType.PROPERTY_TYPE:
+      case OntoumlType.PROPERTY_TYPE:
         this.updateReadOnlyReferencesToIProperty(element as IProperty);
         break;
-      case OntoUMLType.LITERAL_TYPE:
+      case OntoumlType.LITERAL_TYPE:
         this.updateReadOnlyReferencesToILiteral(element as ILiteral);
         break;
     }
@@ -172,13 +154,9 @@ export class ModelManager {
     }
   }
 
-  updateReadOnlyReferencesToIGeneralization(
-    generalization: IGeneralization,
-  ): void {
+  updateReadOnlyReferencesToIGeneralization(generalization: IGeneralization): void {
     const general = this.allElements[generalization.general.id] as IClassifier;
-    const specific = this.allElements[
-      generalization.specific.id
-    ] as IClassifier;
+    const specific = this.allElements[generalization.specific.id] as IClassifier;
 
     general._specificOfGeneralizations = general._specificOfGeneralizations
       ? [...general._specificOfGeneralizations, generalization]
@@ -188,20 +166,13 @@ export class ModelManager {
       : [generalization];
   }
 
-  updateReadOnlyReferencesToIGeneralizationSet(
-    generalizationSet: IGeneralizationSet,
-  ): void {
+  updateReadOnlyReferencesToIGeneralizationSet(generalizationSet: IGeneralizationSet): void {
     if (generalizationSet.generalizations) {
-      generalizationSet.generalizations.forEach(
-        (generalization: IGeneralization) => {
-          generalization._memberOfGeneralizationSets = !generalization._memberOfGeneralizationSets
-            ? []
-            : [
-                ...generalization._memberOfGeneralizationSets,
-                generalizationSet,
-              ];
-        },
-      );
+      generalizationSet.generalizations.forEach((generalization: IGeneralization) => {
+        generalization._memberOfGeneralizationSets = !generalization._memberOfGeneralizationSets
+          ? []
+          : [...generalization._memberOfGeneralizationSets, generalizationSet];
+      });
     }
 
     if (generalizationSet.categorizer) {
@@ -214,10 +185,10 @@ export class ModelManager {
 
   updateReadOnlyReferencesToIProperty(property: IProperty): void {
     switch (property._container.type) {
-      case OntoUMLType.CLASS_TYPE:
+      case OntoumlType.CLASS_TYPE:
         // if(property.type) property.type._typeOfAttributes = Array.isArray(property.type._typeOfAttributes) ? property.type._typeOfAttributes.push(property);
         break;
-      case OntoUMLType.RELATION_TYPE:
+      case OntoumlType.RELATION_TYPE:
         break;
     }
 
@@ -255,7 +226,7 @@ export class ModelManager {
     if (!element || element.type !== reference.type) {
       throw {
         message: 'Bad reference.',
-        reference: reference,
+        reference: reference
       };
     }
 

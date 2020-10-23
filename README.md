@@ -26,7 +26,7 @@ const modelManager = new ModelManager(ontoULMSchemaModel);
 
 const rootPackage = modelManager.rootPackage; // ontoULMSchemaModel root package
 rootPackage.getAllContents() // returns elements recursively contained within the executing package
-rootPackage.getAllContentsByType([ OntoUMLType.GENERALIZATION_TYPE, OntoUMLType.PROPERTY_TYPE ]) // returns elements contained within in the package selected by type
+rootPackage.getAllContentsByType([ OntoumlType.GENERALIZATION_TYPE, OntoumlType.PROPERTY_TYPE ]) // returns elements contained within in the package selected by type
 rootPackage.getContentById('elementId') // returns the element bearering the given id
 
 const student = rootPackage.getAllContents().find(element => element.name === 'Student'); // Student role class

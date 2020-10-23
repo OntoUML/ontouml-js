@@ -5,8 +5,5 @@ export interface IDecoratable {
   stereotypes: null | string[];
 
   hasValidStereotype(): boolean;
-  getUniqueStereotype():
-    | ClassStereotype
-    | RelationStereotype
-    | PropertyStereotype;
+  getUniqueStereotype(): ClassStereotype | RelationStereotype | PropertyStereotype;
 }

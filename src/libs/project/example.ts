@@ -24,13 +24,7 @@ let rel1 = pkg1.addRelation(c1, c2, 'owns', RelationStereotype.MATERIAL);
 c1.createAttribute('name', c4); // c1.createAttribute("name",c4, PropertyStereotype.BEGIN)
 let att = c1.addAttribute('surname', c4); // c1.createAttribute("name",c4, PropertyStereotype.BEGIN)
 
-let gs = pkg1.addGeneralizationSet(
-  [gen1],
-  'Person by Property',
-  false,
-  false,
-  categorizer,
-);
+let gs = pkg1.addGeneralizationSet([gen1], 'Person by Property', false, false, categorizer);
 
 pkg1.addMediation('involves', c1, c2); // with verification
 pkg1.addComparative('involves', c1, c2, c3, c4, c5); // with verification

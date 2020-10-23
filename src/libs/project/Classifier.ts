@@ -38,16 +38,12 @@ export class Classifier extends ModelElement implements IDecoratable {
     throw new Error('Method unimplemented!');
   }
 
-  getFilteredAncestors(
-    filter: (ancestor: Classifier) => boolean,
-  ): Classifier[] {
+  getFilteredAncestors(filter: (ancestor: Classifier) => boolean): Classifier[] {
     // return this.getAncestors().filter(filter);
     throw new Error('Method unimplemented!');
   }
 
-  getFilteredDescendants(
-    filter: (descendent: Classifier) => boolean,
-  ): Classifier[] {
+  getFilteredDescendants(filter: (descendent: Classifier) => boolean): Classifier[] {
     // return this.getDescendants().filter(filter);
     throw new Error('Method unimplemented!');
   }

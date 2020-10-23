@@ -794,15 +794,7 @@
           "stereotypes": ["category"],
           "isAbstract": true,
           "isDerived": false,
-          "allowed": [
-            "collective",
-            "event",
-            "functional-complex",
-            "mode",
-            "quality",
-            "quantity",
-            "relator"
-          ],
+          "allowed": ["collective", "event", "functional-complex", "mode", "quality", "quantity", "relator"],
           "isExtensional": null,
           "isPowertype": null,
           "order": null
@@ -975,12 +967,7 @@
           "stereotypes": ["category"],
           "isAbstract": true,
           "isDerived": false,
-          "allowed": [
-            "collective",
-            "functional-complex",
-            "quantity",
-            "relator"
-          ],
+          "allowed": ["collective", "functional-complex", "quantity", "relator"],
           "isExtensional": null,
           "isPowertype": null,
           "order": null

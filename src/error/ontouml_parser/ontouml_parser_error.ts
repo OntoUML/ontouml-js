@@ -7,9 +7,9 @@ class OntoUMLParserError extends OntoUMLError {
       code: 'ontouml_parser_error',
       detail,
       links: {
-        self: 'https://github.com/OntoUML/ontouml-js/wiki/OntoUML-Parser',
+        self: 'https://github.com/OntoUML/ontouml-js/wiki/OntoUML-Parser'
       },
-      meta: { model },
+      meta: { model }
     });
   }
 }

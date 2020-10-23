@@ -5,7 +5,7 @@ import { allAllowedNatures } from './class.verification';
 
 export enum IssueSeverity {
   error = 'error',
-  warning = 'warning',
+  warning = 'warning'
 }
 
 export enum VerificationIssueCode {
@@ -30,7 +30,7 @@ export enum VerificationIssueCode {
   generalization_incompatible_relation_type = 'generalization_incompatible_relation_type',
   relation_multiple_stereotypes = 'relation_multiple_stereotypes',
   relation_missing_is_read_only = 'relation_missing_is_read_only',
-  relation_improper_derivation = 'relation_improper_derivation',
+  relation_improper_derivation = 'relation_improper_derivation'
 }
 
 /**
@@ -48,17 +48,13 @@ export class VerificationIssue {
   severity: IssueSeverity;
   alternatives: VerificationAlternative[] | null;
 
-  constructor(
-    code: VerificationIssueCode,
-    source: IElement,
-    context?: IElement[],
-  ) {
+  constructor(code: VerificationIssueCode, source: IElement, context?: IElement[]) {
     this.code = code;
     this.title = null;
     this.description = null;
     this.source = {
       type: source.type,
-      id: source.id,
+      id: source.id
     };
     this.context = context
       ? context.map((element: IElement) => {
@@ -128,17 +124,14 @@ export class VerificationIssue {
         // The case of a class missing allowed ontological natures field
         aux = {
           name: source && source.name ? source.name : source.id,
-          stereotype:
-            source && (source as IDecoratable).stereotypes
-              ? (source as IDecoratable).stereotypes[0]
-              : '',
+          stereotype: source && (source as IDecoratable).stereotypes ? (source as IDecoratable).stereotypes[0] : ''
         };
         this.title = `The meta-property 'restrictedTo' is not assigned.`;
         this.description = ![
           ClassStereotype.SUBKIND,
           ClassStereotype.PHASE,
           ClassStereotype.ROLE,
-          ClassStereotype.HISTORICAL_ROLE,
+          ClassStereotype.HISTORICAL_ROLE
         ].includes(aux.stereotype)
           ? `The meta-property 'restrictedTo' of class ${aux.name} must specify the possible ontological natures of its instances.`
           : `The meta-property 'restrictedTo' of class ${aux.name} must specify the possible ontological natures of its instances. Classes decorated with «${aux.stereotype}» must inherit this value through specialization (i.e. they must specify the same value as the ultimate sortal they specialize).`;
@@ -168,35 +161,21 @@ export class VerificationIssue {
         break;
       case VerificationIssueCode.class_missing_identity_provider:
         // The case of a sortal class missing an specialization towards a kind or type
-        aux = (source as IDecoratable).stereotypes
-          ? (source as IDecoratable).stereotypes[0]
-          : null;
-        this.title =
-          'Every sortal class must specialize a unique ultimate sortal.';
-        this.description = `The class ${
-          source.name
-        } must specialize (directly or indirectly) a unique class decorated as one of the following: «kind», «collective», «quantity», «relator», «mode», «quality»${
-          aux === ClassStereotype.SUBKIND ? ', «type»' : ''
-        }).`;
+        this.title = 'Every sortal class must specialize a unique ultimate sortal.';
+        this.description = `The class ${source.name} must specialize (directly or indirectly) a unique class decorated as one of the following: «kind», «collective», «quantity», «relator», «mode», «quality», «type».`;
         this.severity = IssueSeverity.error;
         break;
       case VerificationIssueCode.class_multiple_identity_provider:
         // The case of a sortal class specializing multiple kinds or types
-        aux = context
-          .map((element: IElement) => `«${element.name}»`)
-          .join(', ');
-        this.title =
-          'Every sortal class must specialize a unique ultimate sortal.';
+        aux = context.map((element: IElement) => `«${element.name}»`).join(', ');
+        this.title = 'Every sortal class must specialize a unique ultimate sortal.';
         this.description = `The class ${source.name} is specializing multiple classes that represent ultimate sortals: ${aux}.`;
         this.severity = IssueSeverity.error;
         break;
       case VerificationIssueCode.class_identity_provider_specialization:
         // The case of a KIND class specializing other kinds
-        aux = context
-          .map((element: IElement) => `«${element.name}»`)
-          .join(', ');
-        this.title =
-          'Classes representing ultimate sortals cannot specialize other ultimate sortals.';
+        aux = context.map((element: IElement) => `«${element.name}»`).join(', ');
+        this.title = 'Classes representing ultimate sortals cannot specialize other ultimate sortals.';
         this.description = `The class ${source.name} is specializing other classes that represent ultimate sortals: ${aux}.`;
         this.severity = IssueSeverity.error;
         break;
@@ -245,11 +224,9 @@ export class VerificationIssue {
         // The case of a class specializing a class of an incompatible nature
         this.title = `Prohibited specialization: incompatible 'restrictedTo' values.`;
         aux = [];
-        aux[0] =
-          context[0] && context[0].name ? context[0].name : context[0].id;
-        aux[1] =
-          context[1] && context[1].name ? context[1].name : context[1].id;
-        this.description = `The value of 'restrictedTo' in ${aux[1]} is incompatible the value of 'restrictedTo' in the specialized class ${aux[0]}. Make sure that ${aux[1]} only specializes classes that include its own value for 'restrictedTo'.`;
+        aux[0] = context[0] && context[0].name ? context[0].name : context[0].id;
+        aux[1] = context[1] && context[1].name ? context[1].name : context[1].id;
+        this.description = `The allowed ontological natures of instances of ${aux[1]} are not among the allowed ontological natures of its superclass ${aux[0]}.`;
         this.severity = IssueSeverity.error;
         break;
       case VerificationIssueCode.generalization_incompatible_enumeration:
@@ -269,10 +246,8 @@ export class VerificationIssue {
         // The case of a rigid or semi-rigid class specializing an anti-rigid one
         this.title = `Prohibited specialization: rigid/semi-rigid specializing an anti-rigid.`;
         aux = [];
-        aux[0] =
-          context[0] && context[0].name ? context[0].name : context[0].id;
-        aux[1] =
-          context[1] && context[1].name ? context[1].name : context[1].id;
+        aux[0] = context[0] && context[0].name ? context[0].name : context[0].id;
+        aux[1] = context[1] && context[1].name ? context[1].name : context[1].id;
         this.description = `The rigid/semi-rigid class ${aux[0]} cannot specialize the anti-rigid class ${aux[1]}.`;
         this.severity = IssueSeverity.error;
         break;
@@ -280,10 +255,8 @@ export class VerificationIssue {
         // The case of a non-sortal class specializing an sortal one
         this.title = `Prohibited specialization: non-sortal specializing a sortal.`;
         aux = [];
-        aux[0] =
-          context[0] && context[0].name ? context[0].name : context[0].id;
-        aux[1] =
-          context[1] && context[1].name ? context[1].name : context[1].id;
+        aux[0] = context[0] && context[0].name ? context[0].name : context[0].id;
+        aux[1] = context[1] && context[1].name ? context[1].name : context[1].id;
         this.description = `The non-sortal class ${aux[0]} cannot specialize the sortal class ${aux[1]}.`;
         this.severity = IssueSeverity.error;
         break;
