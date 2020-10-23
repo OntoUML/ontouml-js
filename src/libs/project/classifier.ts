@@ -1,6 +1,6 @@
-import Property from './Property';
-import Generalization from './Generalization';
-import ModelElement from './ModelElement';
+import Property from './property';
+import Generalization from './generalization';
+import ModelElement from './model_element';
 import Decoratable from './decoratable';
 import { OntoumlStereotype } from '@constants/.';
 

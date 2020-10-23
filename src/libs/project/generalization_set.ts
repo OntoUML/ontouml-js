@@ -1,9 +1,9 @@
 import { OntoumlType } from '@constants/.';
-import Relation from './Relation';
-import ModelElement from './ModelElement';
-import Class from './Class';
-import Generalization from './Generalization';
-import Classifier from './Classifier';
+import Relation from './relation';
+import ModelElement from './model_element';
+import Class from './class';
+import Generalization from './generalization';
+import Classifier from './classifier';
 
 export default class GeneralizationSet extends ModelElement {
   type: OntoumlType.GENERALIZATION_SET_TYPE;

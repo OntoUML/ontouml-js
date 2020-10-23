@@ -1,8 +1,8 @@
-import ModelElement from './ModelElement';
-import Property from './Property';
-import Generalization from './Generalization';
-import Classifier from './Classifier';
-import Class from './Class';
+import ModelElement from './model_element';
+import Property from './property';
+import Generalization from './generalization';
+import Classifier from './classifier';
+import Class from './class';
 import { OntoumlStereotype } from '@constants/.';
 
 export default class Relation extends ModelElement implements Classifier {

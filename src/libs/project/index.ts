@@ -1,2 +1,12 @@
-// TODO: centralize all exports in the folder here
-export default {};
+export * from './class';
+export * from './classifier';
+export * from './decoratable';
+export * from './diagram';
+export * from './generalization';
+export * from './generalization_set';
+export * from './literal';
+export * from './model_element';
+export * from './package';
+export * from './project';
+export * from './property';
+export * from './relation';

@@ -1,4 +1,4 @@
-import { Project } from '@libs/project/Project';
+import Project from '@libs/project/project';
 
 describe('Project tests', () => {
   let project: Project;

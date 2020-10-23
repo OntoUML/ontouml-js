@@ -1,4 +1,4 @@
-import ModelElement from './ModelElement';
+import ModelElement from './model_element';
 
 export default class Literal extends ModelElement {
   constructor() {

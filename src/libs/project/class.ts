@@ -1,9 +1,9 @@
 import { OntoumlType, OntologicalNature, ClassStereotype, OntoumlStereotype } from '@constants/.';
-import Relation from './Relation';
-import Property from './Property';
-import Literal from './Literal';
+import Relation from './relation';
+import Property from './property';
+import Literal from './literal';
 import Decoratable from './decoratable';
-import Classifier from './Classifier';
+import Classifier from './classifier';
 
 export default class Class extends Classifier implements Decoratable {
   type: OntoumlType.CLASS_TYPE;

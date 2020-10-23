@@ -1,5 +1,5 @@
 import uniqid from 'uniqid';
-import Project from './Project';
+import Project from './project';
 import { OntoumlType } from '@constants/.';
 
 export default class ModelElement {

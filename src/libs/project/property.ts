@@ -1,6 +1,6 @@
 import { OntoumlType, AggregationKind, OntoumlStereotype } from '@constants/.';
-import ModelElement from './ModelElement';
-import Classifier from './Classifier';
+import ModelElement from './model_element';
+import Classifier from './classifier';
 import Decoratable from './decoratable';
 
 export default class Property extends ModelElement implements Decoratable {

@@ -1,15 +1,15 @@
 import uniqid from 'uniqid';
 
 import { OntoumlType, OntologicalNature } from '@constants/.';
-import Package from './Package';
-import Diagram from './Diagram';
-import Class from './Class';
-import Generalization from './Generalization';
-import GeneralizationSet from './GeneralizationSet';
-import Literal from './Literal';
-import ModelElement from './ModelElement';
-import Property from './Property';
-import Relation from './Relation';
+import Package from './package';
+import Diagram from './diagram';
+import Class from './class';
+import Generalization from './generalization';
+import GeneralizationSet from './generalization_set';
+import Literal from './literal';
+import ModelElement from './model_element';
+import Property from './property';
+import Relation from './relation';
 
 export default class Project {
   type: OntoumlType.PROJECT_TYPE;

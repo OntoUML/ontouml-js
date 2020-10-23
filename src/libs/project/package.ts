@@ -1,5 +1,5 @@
-import ModelElement from './ModelElement';
-import Project from './Project';
+import ModelElement from './model_element';
+import Project from './project';
 import { OntoumlType } from '@constants/.';
 
 export default class Package extends ModelElement {
