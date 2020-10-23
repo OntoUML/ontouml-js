@@ -1,4 +1,4 @@
-export class Diagram {
+export default class Diagram {
   constructor() {
     throw new Error('Class unimplemented');
   }

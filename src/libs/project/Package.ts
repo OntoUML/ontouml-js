@@ -1,13 +1,13 @@
-import { ModelElement } from './ModelElement';
-import { OntoUMLType } from '@constants/.';
-import { Project } from './Project';
+import ModelElement from './ModelElement';
+import Project from './Project';
+import { OntoumlType } from '@constants/.';
 
-export class Package extends ModelElement {
+export default class Package extends ModelElement {
   contents?: ModelElement[];
 
   constructor(project: Project) {
     super(project);
-    this.type = OntoUMLType.PACKAGE_TYPE;
+    this.type = OntoumlType.PACKAGE_TYPE;
   }
 
   getAllContents(match: object): ModelElement[] {

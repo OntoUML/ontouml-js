@@ -1,9 +1,10 @@
-import { Property } from './Property';
-import { Generalization } from './Generalization';
-import { ModelElement } from './ModelElement';
-import { IDecoratable } from './IDecoratable';
+import Property from './Property';
+import Generalization from './Generalization';
+import ModelElement from './ModelElement';
+import Decoratable from './decoratable';
+import { OntoumlStereotype } from '@constants/.';
 
-export class Classifier extends ModelElement implements IDecoratable {
+export default class Classifier extends ModelElement implements Decoratable {
   properties: Property[] = [];
   stereotypes: string[] = [];
   isAbstract: boolean = false;
@@ -12,6 +13,12 @@ export class Classifier extends ModelElement implements IDecoratable {
   constructor() {
     super();
     throw new Error('Class unimplemented');
+  }
+  hasValidStereotype(): boolean {
+    throw new Error('Method not implemented.');
+  }
+  getUniqueStereotype(): OntoumlStereotype {
+    throw new Error('Method not implemented.');
   }
 
   getGeneralizationAsGeneral(): Generalization[] {

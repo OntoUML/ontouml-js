@@ -1,14 +1,12 @@
-import { ModelElement } from './ModelElement';
-import { Generalization } from './Generalization';
-import { Property } from './Property';
-import { OntoUMLType, OntologicalNature, ClassStereotype } from '@constants/.';
-import { Literal } from './Literal';
-import { Relation } from './Relation';
-import { IDecoratable } from './IDecoratable';
-import { Classifier } from './Classifier';
+import { OntoumlType, OntologicalNature, ClassStereotype, OntoumlStereotype } from '@constants/.';
+import Relation from './Relation';
+import Property from './Property';
+import Literal from './Literal';
+import Decoratable from './decoratable';
+import Classifier from './Classifier';
 
-export class Class extends Classifier implements IDecoratable {
-  type: OntoUMLType.CLASS_TYPE;
+export default class Class extends Classifier implements Decoratable {
+  type: OntoumlType.CLASS_TYPE;
   allowed: null | string[]; // The type here needs to be string because of the serialization (same a stereotypes)
   stereotypes: null | string[];
   properties: Property[];
@@ -25,6 +23,12 @@ export class Class extends Classifier implements IDecoratable {
   constructor(ClassStereotype, base?: object) {
     super();
     throw new Error('Class unimplemented');
+  }
+  hasValidStereotype(): boolean {
+    throw new Error('Method not implemented.');
+  }
+  getUniqueStereotype(): OntoumlStereotype {
+    throw new Error('Method not implemented.');
   }
 
   getGeneralizationAsCategorizer(): Class {

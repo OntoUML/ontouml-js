@@ -1,11 +1,11 @@
-import { ModelElement } from './ModelElement';
-import { Property } from './Property';
-import { Generalization } from './Generalization';
-import { IClassifier } from './Classifier';
-import { IDecoratable } from './IDecoratable';
-import { Class } from './Class';
+import ModelElement from './ModelElement';
+import Property from './Property';
+import Generalization from './Generalization';
+import Classifier from './Classifier';
+import Class from './Class';
+import { OntoumlStereotype } from '@constants/.';
 
-export class Relation extends ModelElement implements IClassifier, IDecoratable {
+export default class Relation extends ModelElement implements Classifier {
   properties: Property[];
   isAbstract: boolean;
   isDerived: boolean;
@@ -22,6 +22,18 @@ export class Relation extends ModelElement implements IClassifier, IDecoratable 
   constructor() {
     super();
     throw new Error('Class unimplemented');
+  }
+  hasValidStereotype(): boolean {
+    throw new Error('Method not implemented.');
+  }
+  getUniqueStereotype(): OntoumlStereotype {
+    throw new Error('Method not implemented.');
+  }
+  getFilteredAncestors(filter: (ancestor: Classifier) => boolean): Classifier[] {
+    throw new Error('Method not implemented.');
+  }
+  getFilteredDescendants(filter: (descendent: Classifier) => boolean): Classifier[] {
+    throw new Error('Method not implemented.');
   }
 
   getParents(): Relation[] {

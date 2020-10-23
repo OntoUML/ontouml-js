@@ -1,6 +1,6 @@
-import { ModelElement } from './ModelElement';
+import ModelElement from './ModelElement';
 
-export class Generalization extends ModelElement {
+export default class Generalization extends ModelElement {
   constructor() {
     super();
     throw new Error('Class unimplemented');

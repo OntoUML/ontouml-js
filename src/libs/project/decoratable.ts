@@ -1,7 +1,6 @@
-import { ClassStereotype } from '@constants/';
-import { RelationStereotype } from '@constants/';
+import { ClassStereotype, RelationStereotype, PropertyStereotype } from '@constants/.';
 
-export interface IDecoratable {
+export default interface Decoratable {
   stereotypes: null | string[];
 
   hasValidStereotype(): boolean;

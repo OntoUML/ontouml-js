@@ -1,12 +1,12 @@
-import { ModelElement } from './ModelElement';
-import { OntoUMLType } from '@constants/.';
-import { Class } from './Class';
-import { Generalization } from './Generalization';
-import { Relation } from './Relation';
-import { IClassifier } from './Classifier';
+import { OntoumlType } from '@constants/.';
+import Relation from './Relation';
+import ModelElement from './ModelElement';
+import Class from './Class';
+import Generalization from './Generalization';
+import Classifier from './Classifier';
 
-export class GeneralizationSet extends ModelElement {
-  type: OntoUMLType.GENERALIZATION_SET_TYPE;
+export default class GeneralizationSet extends ModelElement {
+  type: OntoumlType.GENERALIZATION_SET_TYPE;
   isDisjoint: boolean = false;
   isComplete: boolean = false;
   categorizer: null | Class = null;
@@ -28,11 +28,11 @@ export class GeneralizationSet extends ModelElement {
   /**
    * @throws exception if different generals are present
    */
-  getGeneral(): IClassifier {
+  getGeneral(): Classifier {
     throw new Error('Method unimplemented!');
   }
 
-  getSpecifics(): IClassifier[] {
+  getSpecifics(): Classifier[] {
     throw new Error('Method unimplemented!');
   }
 

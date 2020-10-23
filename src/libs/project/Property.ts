@@ -1,12 +1,12 @@
-import { ModelElement } from './ModelElement';
-import { OntoUMLType, AggregationKind } from '@constants/.';
-import { IClassifier } from './Classifier';
-import { IDecoratable } from './IDecoratable';
+import { OntoumlType, AggregationKind, OntoumlStereotype } from '@constants/.';
+import ModelElement from './ModelElement';
+import Classifier from './Classifier';
+import Decoratable from './decoratable';
 
-export class Property extends ModelElement implements IDecoratable {
-  type: OntoUMLType.PROPERTY_TYPE;
+export default class Property extends ModelElement implements Decoratable {
+  type: OntoumlType.PROPERTY_TYPE;
   cardinality: null | string = '0..*';
-  propertyType: null | IClassifier;
+  propertyType: null | Classifier;
   subsettedProperties: Property[] = []; // TODO: update null when deserializing
   redefinedProperties: Property[] = [];
   aggregationKind: AggregationKind = AggregationKind.NONE;
@@ -17,6 +17,13 @@ export class Property extends ModelElement implements IDecoratable {
   constructor() {
     super();
     throw new Error('Class unimplemented');
+  }
+  stereotypes: string[];
+  hasValidStereotype(): boolean {
+    throw new Error('Method not implemented.');
+  }
+  getUniqueStereotype(): OntoumlStereotype {
+    throw new Error('Method not implemented.');
   }
 
   isAttribute(): boolean {

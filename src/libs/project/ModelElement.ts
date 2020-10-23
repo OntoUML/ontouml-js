@@ -1,10 +1,9 @@
-import randomId from 'random-id';
+import uniqid from 'uniqid';
+import Project from './Project';
+import { OntoumlType } from '@constants/.';
 
-import { OntoUMLType } from '@constants/.';
-import { Project } from './Project';
-
-export class ModelElement {
-  type: OntoUMLType;
+export default class ModelElement {
+  type: OntoumlType;
   id: string;
   name?: string | object; // TODO: add support to multilingual textual fields
   description?: string | object;
@@ -14,7 +13,7 @@ export class ModelElement {
   container?: ModelElement; // TODO: should we detail the parent's type as Package or Class, for instance?
 
   constructor(project?: Project) {
-    this.id = randomId();
+    this.id = uniqid();
   }
 
   lock(): void {

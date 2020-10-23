@@ -108,6 +108,9 @@ export enum PropertyStereotype {
   END = 'end'
 }
 
+// TODO: review the usage of 'type' on OntoumlStereotype
+export type OntoumlStereotype = ClassStereotype | RelationStereotype | PropertyStereotype;
+
 export enum OntologicalNature {
   functional_complex = 'functional-complex',
   collective = 'collective',

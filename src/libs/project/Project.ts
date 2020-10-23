@@ -1,20 +1,18 @@
-import schemas from 'ontouml-schema';
-import Ajv from 'ajv';
-import randomId from 'random-id';
+import uniqid from 'uniqid';
 
-import { OntoUMLType, OntologicalNature } from '@constants/.';
-import { Package } from './Package';
-import { Diagram } from './Diagram';
-import { Class } from './Class';
-import { Relation } from './Relation';
-import { Generalization } from './Generalization';
-import { GeneralizationSet } from './GeneralizationSet';
-import { Literal } from './Literal';
-import { Property } from './Property';
-import { ModelElement } from './ModelElement';
+import { OntoumlType, OntologicalNature } from '@constants/.';
+import Package from './Package';
+import Diagram from './Diagram';
+import Class from './Class';
+import Generalization from './Generalization';
+import GeneralizationSet from './GeneralizationSet';
+import Literal from './Literal';
+import ModelElement from './ModelElement';
+import Property from './Property';
+import Relation from './Relation';
 
-export class Project {
-  type: OntoUMLType.PROJECT_TYPE;
+export default class Project {
+  type: OntoumlType.PROJECT_TYPE;
   id: string;
   name?: string | object;
   description?: string | object;
@@ -22,16 +20,16 @@ export class Project {
   diagrams?: Diagram[];
 
   _locked: boolean;
-  _elementsMap: Map<OntoUMLType, Map<string, ModelElement>>;
+  _elementsMap: Map<OntoumlType, Map<string, ModelElement>>;
 
-  constructor(ontoumlSchemaInstance?: object) {
-    this.id = randomId();
+  constructor() {
+    this.id = uniqid();
     this._locked = false;
     this._elementsMap = new Map();
 
-    for (let ontoUmlType in OntoUMLType) {
+    for (let ontoUmlType in OntoumlType) {
       console.log('Initializing map for tyoe: ' + ontoUmlType);
-      this._elementsMap.set(OntoUMLType[ontoUmlType], new Map());
+      this._elementsMap.set(OntoumlType[ontoUmlType], new Map());
     }
 
     this.model = this.createPackage();
@@ -45,7 +43,7 @@ export class Project {
     console.log(selectedMap, type, id, this._elementsMap);
 
     if (!selectedMap) {
-      throw new Error('Invalid OntoUMLType');
+      throw new Error('Invalid OntoumlType');
     } else if (selectedMap.get(element.id)) {
       throw new Error('Model element ID conflict.');
     } else {
