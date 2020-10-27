@@ -3,7 +3,7 @@ import Package from '@libs/project/package';
 import Project from '@libs/project/project';
 
 describe('Container tests', () => {
-  it('Get project contents - empty project', async () => {
+  it('Get project contents - empty project', () => {
     const project: Project = new Project();
     let contents: Set<ModelElement> = project.getContents();
     expect(contents).toBeInstanceOf(Set);
@@ -14,7 +14,7 @@ describe('Container tests', () => {
     expect(contents.size).toEqual(0);
   });
 
-  it('Get project contents - project containing packages', async () => {
+  it('Get project contents - project containing packages', () => {
     const project: Project = new Project();
     const model = new Package();
     const levelOnePackage = new Package();
@@ -35,7 +35,7 @@ describe('Container tests', () => {
     expect(contents.size).toEqual(3);
   });
 
-  it('Bad content hierarchy error', async () => {
+  it('Bad content hierarchy error', () => {
     const model = new Package();
     const levelOnePackage = new Package();
     const levelTwoPackage = new Package();

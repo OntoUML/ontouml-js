@@ -2,13 +2,16 @@ import { OntoumlType, OntologicalNature, ClassStereotype, OntoumlStereotype } fr
 import Relation from './relation';
 import Property from './property';
 import Literal from './literal';
-import Decoratable from './decoratable';
-import Classifier from './classifier';
+import Decoratable, { getUniqueStereotype, hasValidStereotype } from './decoratable';
+// import Classifier from './classifier';
+import Container, { getAllContents, getContents } from './container';
+import ModelElement from './model_element';
 
-export default class Class extends Classifier implements Decoratable {
-  type: OntoumlType.CLASS_TYPE;
+// TODO: implement Classifier
+export default class Class extends ModelElement
+  implements Decoratable<ClassStereotype>, Container<Property | Literal, Property | Literal> {
   allowed: null | string[]; // The type here needs to be string because of the serialization (same a stereotypes)
-  stereotypes: null | string[];
+  stereotypes: null | ClassStereotype[];
   properties: Property[];
   literals: null | Literal[];
   isAbstract: boolean;
@@ -20,15 +23,29 @@ export default class Class extends Classifier implements Decoratable {
 
   _typeOf?: Property[]; // inverse relation to Property.propertyType when it is an attribute
 
-  constructor(ClassStereotype, base?: object) {
+  constructor(base?: Partial<Class>) {
     super();
-    throw new Error('Class unimplemented');
+    Object.defineProperty(this, 'type', { value: OntoumlType.CLASS_TYPE, enumerable: true });
+
+    if (base) {
+      Object.assign(this, base);
+    }
   }
+
+  getContents(): Set<Property | Literal> {
+    return getContents(this, ['properties', 'literals']);
+  }
+
+  getAllContents(): Set<Property | Literal> {
+    return getAllContents(this, ['properties', 'literals']);
+  }
+
   hasValidStereotype(): boolean {
-    throw new Error('Method not implemented.');
+    return hasValidStereotype(this, Object.values(ClassStereotype));
   }
-  getUniqueStereotype(): OntoumlStereotype {
-    throw new Error('Method not implemented.');
+
+  getUniqueStereotype(): ClassStereotype {
+    return getUniqueStereotype(this);
   }
 
   getGeneralizationAsCategorizer(): Class {
