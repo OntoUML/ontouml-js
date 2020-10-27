@@ -10,8 +10,9 @@ import Literal from './literal';
 import ModelElement from './model_element';
 import Property from './property';
 import Relation from './relation';
+import Container, { getContents, getAllContents } from './container';
 
-export default class Project {
+export default class Project implements Container<Package, ModelElement> {
   type: OntoumlType.PROJECT_TYPE;
   id: string;
   name?: string | object;
@@ -28,11 +29,20 @@ export default class Project {
     this._elementsMap = new Map();
 
     for (let ontoUmlType in OntoumlType) {
-      console.log('Initializing map for tyoe: ' + ontoUmlType);
+      // console.log('Initializing map for tyoe: ' + ontoUmlType);
       this._elementsMap.set(OntoumlType[ontoUmlType], new Map());
     }
 
-    this.model = this.createPackage();
+    // this.model = this.createPackage();
+  }
+
+  // TODO: add support to model element
+  getContents(): Set<Package> {
+    return this.model ? new Set([this.model]) : new Set();
+  }
+
+  getAllContents(): Set<ModelElement> {
+    return getAllContents(this, ['model']);
   }
 
   register(element: ModelElement) {
