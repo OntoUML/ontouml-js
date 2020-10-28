@@ -1,19 +1,32 @@
 import uniqid from 'uniqid';
 import Project from './project';
 import { OntoumlType } from '@constants/.';
+import { MultilingualString } from './multilingual_text';
 
-export default class ModelElement {
+const modelElementTemplate = {
+  type: null,
+  id: null,
+  name: null,
+  description: null,
+  propertyAssignments: null
+};
+
+export default abstract class ModelElement {
   type: OntoumlType;
   id: string;
-  name?: string | object; // TODO: add support to multilingual textual fields
-  description?: string | object;
-  propertyAssignments?: object;
+  name: MultilingualString;
+  description: MultilingualString;
+  propertyAssignments: object;
+  project: Project;
+  container: ModelElement | Project;
 
-  project?: Project; // TODO: look for circular dependency issues
-  container?: ModelElement; // TODO: should we detail the parent's type as Package or Class, for instance?
-
-  constructor(project?: Project) {
+  constructor(base?: Partial<ModelElement>) {
     this.id = uniqid();
+
+    // if base has an id, the generated own is overwritten
+    if (base) {
+      Object.assign(this, base);
+    }
   }
 
   lock(): void {
@@ -28,15 +41,21 @@ export default class ModelElement {
     throw new Error('Method unimplemented!');
   }
 
-  toJSON(): object {
-    throw new Error('Method unimplemented!');
+  toJSON(): any {
+    const modelElementSerialization = {};
+
+    Object.assign(modelElementSerialization, modelElementTemplate, this);
+
+    delete modelElementSerialization['project'];
+    delete modelElementSerialization['container'];
+
+    return modelElementSerialization;
   }
 
-  getName(language?: string): string {
-    throw new Error('Method unimplemented!');
-  }
-
-  getDescription(language?: string): string {
-    throw new Error('Method unimplemented!');
+  getReference(): { type: OntoumlType; id: string } {
+    return {
+      type: this.type,
+      id: this.id
+    };
   }
 }

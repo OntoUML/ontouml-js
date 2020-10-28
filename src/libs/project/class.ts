@@ -6,30 +6,46 @@ import Decoratable, { getUniqueStereotype, hasValidStereotype } from './decorata
 // import Classifier from './classifier';
 import Container, { getAllContents, getContents } from './container';
 import ModelElement from './model_element';
+import Package from './package';
 
 // TODO: implement Classifier
+
+const classTemplate = {
+  stereotypes: null,
+  restrictedTo: null,
+  literals: null,
+  properties: null,
+  isAbstract: false,
+  isDerived: false,
+  isExtensional: false,
+  isPowertype: false,
+  order: null
+};
+
 export default class Class extends ModelElement
   implements Decoratable<ClassStereotype>, Container<Property | Literal, Property | Literal> {
-  allowed: null | string[]; // The type here needs to be string because of the serialization (same a stereotypes)
-  stereotypes: null | ClassStereotype[];
+  container: Package;
+  stereotypes: ClassStereotype[];
+  restrictedTo: OntologicalNature[]; // The type here needs to be string because of the serialization (same a stereotypes)
+  literals: Literal[];
   properties: Property[];
-  literals: null | Literal[];
   isAbstract: boolean;
   isDerived: boolean;
-
-  isExtensional: null | boolean;
-  isPowertype: null | boolean;
-  order: null | number;
-
-  _typeOf?: Property[]; // inverse relation to Property.propertyType when it is an attribute
+  isExtensional: boolean;
+  isPowertype: boolean;
+  order: string;
+  // _typeOf?: Property[]; // inverse relation to Property.propertyType when it is an attribute
 
   constructor(base?: Partial<Class>) {
-    super();
+    super(base);
+
     Object.defineProperty(this, 'type', { value: OntoumlType.CLASS_TYPE, enumerable: true });
 
-    if (base) {
-      Object.assign(this, base);
-    }
+    this.isAbstract = this.isAbstract || false;
+    this.isDerived = this.isDerived || false;
+    this.isExtensional = this.isExtensional || false;
+    this.isPowertype = this.isPowertype || false;
+    this.order = this.order || '1';
   }
 
   getContents(): Set<Property | Literal> {
@@ -46,6 +62,14 @@ export default class Class extends ModelElement
 
   getUniqueStereotype(): ClassStereotype {
     return getUniqueStereotype(this);
+  }
+
+  toJSON(): any {
+    const classSerialization = {};
+
+    Object.assign(classSerialization, classTemplate, super.toJSON());
+
+    return classSerialization;
   }
 
   getGeneralizationAsCategorizer(): Class {

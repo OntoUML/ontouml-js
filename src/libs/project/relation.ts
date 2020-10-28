@@ -3,13 +3,56 @@ import Property from './property';
 import Generalization from './generalization';
 import Classifier from './classifier';
 import Class from './class';
-import { OntoumlStereotype } from '@constants/.';
+import { OntoumlType, RelationStereotype } from '@constants/.';
+import Decoratable, { getUniqueStereotype, hasValidStereotype } from './decoratable';
+import Container, { getAllContents, getContents } from './container';
 
-export default class Relation extends ModelElement implements Classifier {
+const relationTemplate = {
+  stereotypes: null,
+  properties: null,
+  isAbstract: false,
+  isDerived: false
+};
+
+export default class Relation extends ModelElement
+  implements Container<Property, Property>, Decoratable<RelationStereotype>, Classifier {
+  stereotypes: RelationStereotype[];
   properties: Property[];
   isAbstract: boolean;
   isDerived: boolean;
-  stereotypes: string[];
+
+  constructor(base?: Partial<Relation>) {
+    super(base);
+
+    Object.defineProperty(this, 'type', { value: OntoumlType.RELATION_TYPE, enumerable: true });
+
+    this.isAbstract = this.isAbstract || false;
+    this.isDerived = this.isDerived || false;
+  }
+
+  getContents(): Set<Property> {
+    return getContents(this, ['properties']);
+  }
+
+  getAllContents(): Set<Property> {
+    return getAllContents(this, ['properties']);
+  }
+
+  getUniqueStereotype(): RelationStereotype {
+    return getUniqueStereotype(this);
+  }
+
+  hasValidStereotype(): boolean {
+    return hasValidStereotype(this, Object.values(RelationStereotype), true);
+  }
+
+  toJSON(): any {
+    const relationSerialization = {};
+
+    Object.assign(relationSerialization, relationTemplate, super.toJSON());
+
+    return relationSerialization;
+  }
 
   getGeneralizationAsGeneral(): Generalization[] {
     throw new Error('Method unimplemented!');
@@ -19,16 +62,6 @@ export default class Relation extends ModelElement implements Classifier {
     throw new Error('Method unimplemented!');
   }
 
-  constructor() {
-    super();
-    throw new Error('Class unimplemented');
-  }
-  hasValidStereotype(): boolean {
-    throw new Error('Method not implemented.');
-  }
-  getUniqueStereotype(): OntoumlStereotype {
-    throw new Error('Method not implemented.');
-  }
   getFilteredAncestors(filter: (ancestor: Classifier) => boolean): Classifier[] {
     throw new Error('Method not implemented.');
   }

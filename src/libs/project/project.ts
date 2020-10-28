@@ -12,6 +12,15 @@ import Property from './property';
 import Relation from './relation';
 import Container, { getContents, getAllContents } from './container';
 
+const projectTemplate = {
+  type: null,
+  id: null,
+  name: null,
+  description: null,
+  model: null,
+  diagrams: null
+};
+
 export default class Project implements Container<Package, ModelElement> {
   type: OntoumlType.PROJECT_TYPE;
   id: string;
@@ -20,20 +29,15 @@ export default class Project implements Container<Package, ModelElement> {
   model?: Package;
   diagrams?: Diagram[];
 
-  _locked: boolean;
-  _elementsMap: Map<OntoumlType, Map<string, ModelElement>>;
-
-  constructor() {
+  constructor(base?: Partial<Project>) {
     this.id = uniqid();
-    this._locked = false;
-    this._elementsMap = new Map();
 
-    for (let ontoUmlType in OntoumlType) {
-      // console.log('Initializing map for tyoe: ' + ontoUmlType);
-      this._elementsMap.set(OntoumlType[ontoUmlType], new Map());
-    }
+    Object.assign(this, base);
 
-    // this.model = this.createPackage();
+    Object.defineProperty(this, 'type', {
+      value: OntoumlType.PROJECT_TYPE,
+      enumerable: true
+    });
   }
 
   // TODO: add support to model element
@@ -45,27 +49,35 @@ export default class Project implements Container<Package, ModelElement> {
     return getAllContents(this, ['model']);
   }
 
-  register(element: ModelElement) {
-    const id = element.id;
-    const type = element.type;
-    const selectedMap = this._elementsMap.get(type);
+  toJSON(): any {
+    const projectSerialization = {} as Project;
 
-    console.log(selectedMap, type, id, this._elementsMap);
+    Object.assign(projectSerialization, projectTemplate, this);
 
-    if (!selectedMap) {
-      throw new Error('Invalid OntoumlType');
-    } else if (selectedMap.get(element.id)) {
-      throw new Error('Model element ID conflict.');
-    } else {
-      selectedMap.set(id, element);
-    }
+    return projectSerialization;
   }
 
-  createPackage(): Package {
-    const pkg = new Package(this);
-    this.register(pkg);
-    return pkg;
-  }
+  // register(element: ModelElement) {
+  //   const id = element.id;
+  //   const type = element.type;
+  //   const selectedMap = this._elementsMap.get(type);
+
+  //   console.log(selectedMap, type, id, this._elementsMap);
+
+  //   if (!selectedMap) {
+  //     throw new Error('Invalid OntoumlType');
+  //   } else if (selectedMap.get(element.id)) {
+  //     throw new Error('Model element ID conflict.');
+  //   } else {
+  //     selectedMap.set(id, element);
+  //   }
+  // }
+
+  // createPackage(): Package {
+  //   const pkg = new Package(this);
+  //   this.register(pkg);
+  //   return pkg;
+  // }
 
   getModelElement(match: object): ModelElement {
     throw new Error('Method unimplemented!');
@@ -111,13 +123,9 @@ export default class Project implements Container<Package, ModelElement> {
     throw new Error('Method unimplemented!');
   }
 
-  toJSON(): object {
-    throw new Error('Method unimplemented!');
-  }
-
-  get locked(): boolean {
-    return this._locked;
-  }
+  // get locked(): boolean {
+  //   return this._locked;
+  // }
 
   set locked(value: boolean) {
     throw new Error('Method unimplemented!');

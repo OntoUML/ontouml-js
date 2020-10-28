@@ -3,11 +3,16 @@ import Project from './project';
 import { OntoumlType } from '@constants/.';
 import Container, { getAllContents, getContents } from './container';
 
-export default class Package extends ModelElement implements Container<ModelElement, ModelElement> {
-  contents?: ModelElement[];
+const packageTemplate = {
+  contents: null
+};
 
-  constructor(project?: Project) {
-    super(project);
+export default class Package extends ModelElement implements Container<ModelElement, ModelElement> {
+  container: Package | Project;
+  contents: ModelElement[];
+
+  constructor(base?: Partial<Package>) {
+    super(base);
     Object.defineProperty(this, 'type', { value: OntoumlType.PACKAGE_TYPE, enumerable: true });
   }
 
@@ -16,6 +21,14 @@ export default class Package extends ModelElement implements Container<ModelElem
   }
   getAllContents(): Set<ModelElement> {
     return getAllContents(this, ['contents']);
+  }
+
+  toJSON(): any {
+    const packageSerialization = {} as Package;
+
+    Object.assign(packageSerialization, packageTemplate, super.toJSON());
+
+    return packageSerialization;
   }
 
   // TODO: do we need some getContent(match) method?

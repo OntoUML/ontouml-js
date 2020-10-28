@@ -1,29 +1,64 @@
-import { OntoumlType, AggregationKind, OntoumlStereotype } from '@constants/.';
+import { OntoumlType, AggregationKind, OntoumlStereotype, PropertyStereotype } from '@constants/.';
 import ModelElement from './model_element';
 import Classifier from './classifier';
-import Decoratable from './decoratable';
+import Decoratable, { getUniqueStereotype, hasValidStereotype } from './decoratable';
+import Class from './class';
+import Relation from './relation';
 
-export default class Property extends ModelElement implements Decoratable {
+const propertyTemplate = {
+  stereotypes: null,
+  cardinality: null,
+  propertyType: null,
+  subsettedProperties: null,
+  redefinedProperties: null,
+  aggregationKind: null,
+  isDerived: false,
+  isOrdered: false,
+  isReadOnly: false
+};
+
+export default class Property extends ModelElement implements Decoratable<PropertyStereotype> {
   type: OntoumlType.PROPERTY_TYPE;
-  cardinality: null | string = '0..*';
-  propertyType: null | Classifier;
-  subsettedProperties: Property[] = []; // TODO: update null when deserializing
-  redefinedProperties: Property[] = [];
-  aggregationKind: AggregationKind = AggregationKind.NONE;
-  isDerived: boolean = false;
-  isOrdered: boolean = false;
-  isReadOnly: boolean = false;
+  container: Class | Relation;
+  stereotypes: PropertyStereotype[];
+  cardinality: string;
+  propertyType: Classifier;
+  subsettedProperties: Property[]; // TODO: update null when deserializing
+  redefinedProperties: Property[];
+  aggregationKind: AggregationKind;
+  isDerived: boolean;
+  isOrdered: boolean;
+  isReadOnly: boolean;
 
-  constructor() {
-    super();
-    throw new Error('Class unimplemented');
+  constructor(base?: Partial<Property>) {
+    super(base);
+
+    Object.defineProperty(this, 'type', { value: OntoumlType.PROPERTY_TYPE, enumerable: true });
+
+    this.cardinality = this.cardinality || '0..*';
+    this.aggregationKind = this.aggregationKind || AggregationKind.NONE;
+    this.isDerived = this.isDerived || false;
+    this.isOrdered = this.isOrdered || false;
+    this.isReadOnly = this.isReadOnly || false;
   }
-  stereotypes: string[];
+
   hasValidStereotype(): boolean {
-    throw new Error('Method not implemented.');
+    return hasValidStereotype(this, Object.values(PropertyStereotype), true);
   }
-  getUniqueStereotype(): OntoumlStereotype {
-    throw new Error('Method not implemented.');
+
+  getUniqueStereotype(): PropertyStereotype {
+    return getUniqueStereotype(this);
+  }
+
+  toJSON(): any {
+    const propertySerialization: any = {};
+
+    Object.assign(propertySerialization, propertyTemplate, super.toJSON());
+
+    const propertyType = this.propertyType as Class | Relation;
+    propertySerialization.propertyType = propertyType.getReference();
+
+    return propertySerialization;
   }
 
   isAttribute(): boolean {

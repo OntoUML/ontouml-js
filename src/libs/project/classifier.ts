@@ -5,22 +5,11 @@ import Decoratable from './decoratable';
 import { OntoumlStereotype } from '@constants/.';
 
 export default interface Classifier {
-  properties: Property[] = [];
-  // stereotypes: string[] = [];
-  isAbstract: boolean = false;
-  isDerived: boolean = false;
+  properties: null | Property[];
+  isAbstract: boolean;
+  isDerived: boolean;
 
-  // constructor() {
-  //   super();
-  //   throw new Error('Class unimplemented');
-  // }
-  // hasValidStereotype(): boolean {
-  //   throw new Error('Method not implemented.');
-  // }
-  // getUniqueStereotype(): OntoumlStereotype {
-  //   throw new Error('Method not implemented.');
-  // }
-
+  // TODO: adds navigation methods
   // getGeneralizationAsGeneral(): Generalization[] {
   //   throw new Error('Method unimplemented!');
   // }

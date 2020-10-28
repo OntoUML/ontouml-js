@@ -1,6 +1,9 @@
+import Class from '@libs/project/class';
+import Literal from '@libs/project/literal';
 import ModelElement from '@libs/project/model_element';
 import Package from '@libs/project/package';
 import Project from '@libs/project/project';
+import Property from '@libs/project/property';
 
 describe('Container tests', () => {
   it('Get project contents - empty project', () => {
@@ -51,5 +54,42 @@ describe('Container tests', () => {
     levelOnePackage.contents = [model];
 
     expect(() => model.getAllContents()).toThrowError();
+  });
+
+  it('Get class contents', () => {
+    const pkg = new Package();
+    const person = new Class();
+    const livingStatus = new Class();
+    const knows = new Property();
+    const status = new Property();
+    const alive = new Literal();
+    const deceased = new Literal();
+
+    pkg.contents = [person, livingStatus];
+    person.properties = [knows, status];
+    livingStatus.literals = [alive, deceased];
+
+    knows.propertyType = person;
+    status.propertyType = livingStatus;
+
+    person.container = pkg;
+    livingStatus.container = pkg;
+    knows.container = person;
+    status.container = person;
+    alive.container = livingStatus;
+    deceased.container = livingStatus;
+
+    let contents = person.getContents();
+    expect(contents).toContain(knows);
+    expect(contents).toContain(status);
+    expect(contents.size).toEqual(2);
+
+    contents = person.getAllContents();
+    expect(contents).toContain(knows);
+    expect(contents).toContain(status);
+    expect(contents.size).toEqual(2);
+
+    contents = pkg.getAllContents();
+    expect(contents.size).toEqual(6);
   });
 });

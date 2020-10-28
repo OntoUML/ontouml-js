@@ -4,18 +4,42 @@ import ModelElement from './model_element';
 import Class from './class';
 import Generalization from './generalization';
 import Classifier from './classifier';
+import Container from './container';
+
+const generalizationSetTemplate = {
+  isDisjoint: false,
+  isComplete: false,
+  categorizer: null,
+  generalizations: null
+};
 
 export default class GeneralizationSet extends ModelElement {
-  type: OntoumlType.GENERALIZATION_SET_TYPE;
-  isDisjoint: boolean = false;
-  isComplete: boolean = false;
-  categorizer: null | Class = null;
-  generalizations: Generalization[] = [];
+  isDisjoint: boolean;
+  isComplete: boolean;
+  categorizer: Class;
+  generalizations: Generalization[];
   // TODO: Double check variable initialization in all classes
 
-  constructor() {
-    super();
-    throw new Error('Class unimplemented');
+  constructor(base?: Partial<GeneralizationSet>) {
+    super(base);
+
+    Object.defineProperty(this, 'type', { value: OntoumlType.GENERALIZATION_SET_TYPE, enumerable: true });
+
+    this.isDisjoint = this.isDisjoint || false;
+    this.isComplete = this.isComplete || false;
+  }
+
+  toJSON(): any {
+    const generalizationSetSerialization: any = {};
+
+    Object.assign(generalizationSetSerialization, generalizationSetTemplate, super.toJSON());
+
+    generalizationSetSerialization.categorizer = this.categorizer && this.categorizer.getReference();
+    generalizationSetSerialization.generalizations = this.generalizations.map((generalization: Generalization) =>
+      generalization.getReference()
+    );
+
+    return generalizationSetSerialization;
   }
 
   /**
