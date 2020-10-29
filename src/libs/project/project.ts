@@ -10,7 +10,7 @@ import Literal from './literal';
 import ModelElement from './model_element';
 import Property from './property';
 import Relation from './relation';
-import Container, { getContents, getAllContents } from './container';
+import Container, { getAllContents } from './container';
 
 const projectTemplate = {
   type: null,
@@ -34,18 +34,15 @@ export default class Project implements Container<Package, ModelElement> {
 
     Object.assign(this, base);
 
-    Object.defineProperty(this, 'type', {
-      value: OntoumlType.PROJECT_TYPE,
-      enumerable: true
-    });
+    Object.defineProperty(this, 'type', { value: OntoumlType.PROJECT_TYPE, enumerable: true });
   }
 
   // TODO: add support to model element
-  getContents(): Set<Package> {
-    return this.model ? new Set([this.model]) : new Set();
+  getContents(): Package[] {
+    return this.model ? [this.model] : [];
   }
 
-  getAllContents(): Set<ModelElement> {
+  getAllContents(): ModelElement[] {
     return getAllContents(this, ['model']);
   }
 
@@ -55,6 +52,15 @@ export default class Project implements Container<Package, ModelElement> {
     Object.assign(projectSerialization, projectTemplate, this);
 
     return projectSerialization;
+  }
+
+  createModel(base?: Partial<Package>): Package {
+    if (this.model) {
+      throw new Error('Model already defined');
+    }
+
+    this.model = new Package({ container: this, project: this, ...base });
+    return this.model;
   }
 
   // register(element: ModelElement) {

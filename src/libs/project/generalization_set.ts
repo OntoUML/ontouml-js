@@ -4,7 +4,6 @@ import ModelElement from './model_element';
 import Class from './class';
 import Generalization from './generalization';
 import Classifier from './classifier';
-import Container from './container';
 
 const generalizationSetTemplate = {
   isDisjoint: false,
@@ -35,7 +34,7 @@ export default class GeneralizationSet extends ModelElement {
     Object.assign(generalizationSetSerialization, generalizationSetTemplate, super.toJSON());
 
     generalizationSetSerialization.categorizer = this.categorizer && this.categorizer.getReference();
-    generalizationSetSerialization.generalizations = this.generalizations.map((generalization: Generalization) =>
+    generalizationSetSerialization.generalizations = [...this.generalizations].map((generalization: Generalization) =>
       generalization.getReference()
     );
 

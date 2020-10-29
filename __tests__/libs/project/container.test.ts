@@ -4,92 +4,108 @@ import ModelElement from '@libs/project/model_element';
 import Package from '@libs/project/package';
 import Project from '@libs/project/project';
 import Property from '@libs/project/property';
+import Relation from '@libs/project/relation';
 
 describe('Container tests', () => {
   it('Get project contents - empty project', () => {
     const project: Project = new Project();
-    let contents: Set<ModelElement> = project.getContents();
-    expect(contents).toBeInstanceOf(Set);
-    expect(contents.size).toEqual(0);
+    let contents: ModelElement[] = project.getContents();
+    expect(contents).toBeInstanceOf(Array);
+    expect(contents.length).toEqual(0);
 
     contents = project.getAllContents();
-    expect(contents).toBeInstanceOf(Set);
-    expect(contents.size).toEqual(0);
+    expect(contents).toBeInstanceOf(Array);
+    expect(contents.length).toEqual(0);
   });
 
-  it('Get project contents - project containing packages', () => {
-    const project: Project = new Project();
-    const model = new Package();
-    const levelOnePackage = new Package();
-    const levelTwoPackage = new Package();
+  it('Get project contents - non-empty project', () => {
+    const project = new Project();
+    const model = project.createModel();
+    const levelOnePackage = model.createPackage();
+    const levelTwoPackage = levelOnePackage.createPackage();
+    levelTwoPackage.createClass();
+    levelTwoPackage.createGeneralization();
+    levelTwoPackage.createGeneralizationSet();
+    levelTwoPackage.createRelation();
 
-    project.model = model;
-    model.contents = [levelOnePackage];
-    levelOnePackage.contents = [levelTwoPackage];
-
-    let contents: Set<ModelElement> = project.getContents();
-    expect(contents).toBeInstanceOf(Set);
-    expect(contents.size).toEqual(1);
+    let contents: ModelElement[] = project.getContents();
+    expect(contents).toBeInstanceOf(Array);
+    expect(contents.length).toEqual(1);
 
     contents = project.getAllContents();
-    expect(contents).toContainEqual(model);
-    expect(contents).toContainEqual(levelOnePackage);
-    expect(contents).toContainEqual(levelTwoPackage);
-    expect(contents.size).toEqual(3);
+    expect(contents).toContain(model);
+    expect(contents).toContain(levelOnePackage);
+    expect(contents).toContain(levelTwoPackage);
+    expect(contents.length).toEqual(7);
   });
 
   it('Bad content hierarchy error', () => {
-    const model = new Package();
-    const levelOnePackage = new Package();
-    const levelTwoPackage = new Package();
+    const packageOne = new Package();
+    const packageTwo = new Package();
+    const packageThree = new Package();
 
     // Multiple container for "levelTwoPackage"
-    model.contents = [levelOnePackage, levelTwoPackage];
-    levelOnePackage.contents = [levelTwoPackage];
+    packageOne.contents = [packageTwo, packageThree];
+    packageTwo.contents = [packageThree];
 
-    expect(() => model.getAllContents()).toThrowError();
+    expect(() => packageOne.getAllContents()).toThrowError();
 
     // Circular containment of "model"
-    model.contents = [levelOnePackage];
-    levelOnePackage.contents = [model];
+    packageOne.contents = [packageTwo];
+    packageTwo.contents = [packageOne];
 
-    expect(() => model.getAllContents()).toThrowError();
+    expect(() => packageOne.getAllContents()).toThrowError();
   });
 
   it('Get class contents', () => {
-    const pkg = new Package();
-    const person = new Class();
+    const text = new Class();
     const livingStatus = new Class();
-    const knows = new Property();
-    const status = new Property();
-    const alive = new Literal();
-    const deceased = new Literal();
+    const alive = livingStatus.createAttribute({ propertyType: text });
+    const deceased = livingStatus.createAttribute({ propertyType: text });
 
-    pkg.contents = [person, livingStatus];
-    person.properties = [knows, status];
-    livingStatus.literals = [alive, deceased];
+    const person = new Class();
+    const knows = person.createAttribute({ propertyType: person });
+    const status = person.createAttribute({ propertyType: livingStatus });
 
-    knows.propertyType = person;
-    status.propertyType = livingStatus;
+    expect(text.getContents().length).toEqual(0);
+    expect(text.getAllContents().length).toEqual(0);
 
-    person.container = pkg;
-    livingStatus.container = pkg;
-    knows.container = person;
-    status.container = person;
-    alive.container = livingStatus;
-    deceased.container = livingStatus;
+    let contents = livingStatus.getContents();
+    expect(contents).toContain(alive);
+    expect(contents).toContain(deceased);
+    expect(contents.length).toEqual(2);
 
-    let contents = person.getContents();
+    contents = livingStatus.getAllContents();
+    expect(contents).toContain(alive);
+    expect(contents).toContain(deceased);
+    expect(contents.length).toEqual(2);
+
+    contents = person.getContents();
     expect(contents).toContain(knows);
     expect(contents).toContain(status);
-    expect(contents.size).toEqual(2);
+    expect(contents.length).toEqual(2);
 
     contents = person.getAllContents();
     expect(contents).toContain(knows);
     expect(contents).toContain(status);
-    expect(contents.size).toEqual(2);
+    expect(contents.length).toEqual(2);
+  });
 
-    contents = pkg.getAllContents();
-    expect(contents.size).toEqual(6);
+  it('Get relation contents', () => {
+    const person = new Class();
+    const admires = new Relation();
+    const admiree = admires.createSourceEnd({ propertyType: person });
+    const admired = admires.createTargetEnd({ propertyType: person });
+
+    // TODO: consider bringing jest-extended into the project for matchers like toIncludeAllMembers([members])
+    let contents: ModelElement[] = admires.getContents();
+    expect(contents).toContain(admiree);
+    expect(contents).toContain(admired);
+    expect(contents.length).toEqual(2);
+
+    contents = admires.getAllContents();
+    expect(contents).toContain(admiree);
+    expect(contents).toContain(admired);
+    expect(contents.length).toEqual(2);
   });
 });

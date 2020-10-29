@@ -45,6 +45,11 @@ export default abstract class ModelElement {
     const modelElementSerialization = {};
 
     Object.assign(modelElementSerialization, modelElementTemplate, this);
+    // Object.entries(modelElementSerialization).forEach(([key, value]) => {
+    //   if (value instanceof Set) {
+    //     modelElementSerialization[key] = [...value];
+    //   }
+    // });
 
     delete modelElementSerialization['project'];
     delete modelElementSerialization['container'];

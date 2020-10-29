@@ -1,11 +1,7 @@
 import Property from './property';
-import Generalization from './generalization';
-import ModelElement from './model_element';
-import Decoratable from './decoratable';
-import { OntoumlStereotype } from '@constants/.';
 
 export default interface Classifier {
-  properties: null | Property[];
+  properties: Property[];
   isAbstract: boolean;
   isDerived: boolean;
 

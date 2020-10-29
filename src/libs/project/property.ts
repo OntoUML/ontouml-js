@@ -1,7 +1,7 @@
 import { OntoumlType, AggregationKind, OntoumlStereotype, PropertyStereotype } from '@constants/.';
 import ModelElement from './model_element';
 import Classifier from './classifier';
-import Decoratable, { getUniqueStereotype, hasValidStereotype } from './decoratable';
+import Decoratable, { getUniqueStereotype, hasValidStereotypeValue } from './decoratable';
 import Class from './class';
 import Relation from './relation';
 
@@ -42,8 +42,8 @@ export default class Property extends ModelElement implements Decoratable<Proper
     this.isReadOnly = this.isReadOnly || false;
   }
 
-  hasValidStereotype(): boolean {
-    return hasValidStereotype(this, Object.values(PropertyStereotype), true);
+  hasValidStereotypeValue(): boolean {
+    return hasValidStereotypeValue(this, Object.values(PropertyStereotype), true);
   }
 
   getUniqueStereotype(): PropertyStereotype {

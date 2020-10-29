@@ -4,7 +4,7 @@ import Generalization from './generalization';
 import Classifier from './classifier';
 import Class from './class';
 import { OntoumlType, RelationStereotype } from '@constants/.';
-import Decoratable, { getUniqueStereotype, hasValidStereotype } from './decoratable';
+import Decoratable, { getUniqueStereotype, hasValidStereotypeValue } from './decoratable';
 import Container, { getAllContents, getContents } from './container';
 
 const relationTemplate = {
@@ -30,11 +30,11 @@ export default class Relation extends ModelElement
     this.isDerived = this.isDerived || false;
   }
 
-  getContents(): Set<Property> {
+  getContents(): Property[] {
     return getContents(this, ['properties']);
   }
 
-  getAllContents(): Set<Property> {
+  getAllContents(): Property[] {
     return getAllContents(this, ['properties']);
   }
 
@@ -42,8 +42,9 @@ export default class Relation extends ModelElement
     return getUniqueStereotype(this);
   }
 
-  hasValidStereotype(): boolean {
-    return hasValidStereotype(this, Object.values(RelationStereotype), true);
+  hasValidStereotypeValue(): boolean {
+    // TODO: create arrays of valid stereotype lists and replace Object.values(OntoumlStereotype)
+    return hasValidStereotypeValue(this, Object.values(RelationStereotype), true);
   }
 
   toJSON(): any {
@@ -52,6 +53,48 @@ export default class Relation extends ModelElement
     Object.assign(relationSerialization, relationTemplate, super.toJSON());
 
     return relationSerialization;
+  }
+
+  createSourceEnd(base?: Partial<Property>): Property {
+    this.properties = this.properties || [];
+
+    if (this.properties[0]) {
+      throw new Error('Source already defined');
+    }
+
+    const sourceEnd = new Property({ container: this, project: this.project, ...base });
+
+    this.properties[0] = sourceEnd;
+
+    return sourceEnd;
+  }
+
+  createTargetEnd(base?: Partial<Property>): Property {
+    this.properties = this.properties || [];
+
+    if (this.properties[1]) {
+      throw new Error('Target already defined');
+    }
+
+    const targetEnd = new Property({ container: this, project: this.project, ...base });
+
+    this.properties[1] = targetEnd;
+
+    return targetEnd;
+  }
+
+  createMemberEnd(base?: Partial<Property>, position: number = 0): Property {
+    this.properties = this.properties || [];
+
+    if (this.properties[position]) {
+      throw new Error('Member already defined in this position');
+    }
+
+    const memberEnd = new Property({ container: this, project: this.project, ...base });
+
+    this.properties[position] = memberEnd;
+
+    return memberEnd;
   }
 
   getGeneralizationAsGeneral(): Generalization[] {

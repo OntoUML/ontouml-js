@@ -1,13 +1,17 @@
 import { OntoumlStereotype } from '@constants/.';
 
-export function hasValidStereotype<T extends OntoumlStereotype>(
+export function hasValidStereotypeValue<T extends OntoumlStereotype>(
   decoratable: Decoratable<T>,
   validStereotypes: OntoumlStereotype[],
   allowsNoStereotype?: boolean
 ): boolean {
-  const uniqueStereotype = getUniqueStereotype(decoratable);
+  try {
+    const uniqueStereotype = decoratable.getUniqueStereotype();
 
-  return validStereotypes.includes(uniqueStereotype) || (!uniqueStereotype && allowsNoStereotype);
+    return validStereotypes.includes(uniqueStereotype) || (!uniqueStereotype && allowsNoStereotype);
+  } catch (error) {
+    return false;
+  }
 }
 
 export function getUniqueStereotype<T extends OntoumlStereotype>(decoratable: Decoratable<T>): T {
@@ -21,8 +25,8 @@ export function getUniqueStereotype<T extends OntoumlStereotype>(decoratable: De
 }
 
 export default interface Decoratable<T extends OntoumlStereotype> {
-  stereotypes?: T[];
+  stereotypes: T[];
 
-  hasValidStereotype(): boolean;
+  hasValidStereotypeValue(): boolean;
   getUniqueStereotype(): T;
 }

@@ -2,19 +2,20 @@ import { OntoumlType, OntologicalNature, ClassStereotype, OntoumlStereotype } fr
 import Relation from './relation';
 import Property from './property';
 import Literal from './literal';
-import Decoratable, { getUniqueStereotype, hasValidStereotype } from './decoratable';
+import Decoratable, { getUniqueStereotype, hasValidStereotypeValue } from './decoratable';
 // import Classifier from './classifier';
-import Container, { getAllContents, getContents } from './container';
+import Container, { addContentToArray, getAllContents, getContents } from './container';
 import ModelElement from './model_element';
 import Package from './package';
+import Classifier from './classifier';
 
 // TODO: implement Classifier
 
 const classTemplate = {
   stereotypes: null,
   restrictedTo: null,
-  literals: null,
   properties: null,
+  literals: null,
   isAbstract: false,
   isDerived: false,
   isExtensional: false,
@@ -23,7 +24,7 @@ const classTemplate = {
 };
 
 export default class Class extends ModelElement
-  implements Decoratable<ClassStereotype>, Container<Property | Literal, Property | Literal> {
+  implements Decoratable<ClassStereotype>, Container<Property | Literal, Property | Literal>, Classifier {
   container: Package;
   stereotypes: ClassStereotype[];
   restrictedTo: OntologicalNature[]; // The type here needs to be string because of the serialization (same a stereotypes)
@@ -48,16 +49,16 @@ export default class Class extends ModelElement
     this.order = this.order || '1';
   }
 
-  getContents(): Set<Property | Literal> {
+  getContents(): (Property | Literal)[] {
     return getContents(this, ['properties', 'literals']);
   }
 
-  getAllContents(): Set<Property | Literal> {
+  getAllContents(): (Property | Literal)[] {
     return getAllContents(this, ['properties', 'literals']);
   }
 
-  hasValidStereotype(): boolean {
-    return hasValidStereotype(this, Object.values(ClassStereotype));
+  hasValidStereotypeValue(): boolean {
+    return hasValidStereotypeValue(this, Object.values(ClassStereotype));
   }
 
   getUniqueStereotype(): ClassStereotype {
@@ -70,6 +71,24 @@ export default class Class extends ModelElement
     Object.assign(classSerialization, classTemplate, super.toJSON());
 
     return classSerialization;
+  }
+
+  createAttribute(base?: Partial<Property>): Property {
+    // TODO: verify if it is a datatype
+    return addContentToArray<ModelElement, Property>(
+      this,
+      'properties',
+      new Property({ container: this, project: this.project, ...base })
+    );
+  }
+
+  createLiteral(base?: Partial<Property>): Property {
+    // TODO: verify if it is a datatype
+    return addContentToArray<ModelElement, Property>(
+      this,
+      'literals',
+      new Property({ container: this, project: this.project, ...base })
+    );
   }
 
   getGeneralizationAsCategorizer(): Class {
