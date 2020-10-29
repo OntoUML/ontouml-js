@@ -1,6 +1,6 @@
-import Property from './property';
+import { Property } from './';
 
-export default interface Classifier {
+export interface Classifier {
   properties: Property[];
   isAbstract: boolean;
   isDerived: boolean;

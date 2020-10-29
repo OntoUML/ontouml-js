@@ -1,9 +1,14 @@
 import { OntoumlType, AggregationKind, PropertyStereotype } from '@constants/.';
-import ModelElement, { setContainer } from './model_element';
-import Classifier from './classifier';
-import Decoratable, { getUniqueStereotype, hasValidStereotypeValue } from './decoratable';
-import Class from './class';
-import Relation from './relation';
+import {
+  Relation,
+  Class,
+  ModelElement,
+  setContainer,
+  Classifier,
+  Decoratable,
+  getUniqueStereotype,
+  hasValidStereotypeValue
+} from './';
 
 const propertyTemplate = {
   stereotypes: null,
@@ -17,7 +22,7 @@ const propertyTemplate = {
   isReadOnly: false
 };
 
-export default class Property extends ModelElement implements Decoratable<PropertyStereotype> {
+export class Property extends ModelElement implements Decoratable<PropertyStereotype> {
   type: OntoumlType.PROPERTY_TYPE;
   container: Class | Relation;
   stereotypes: PropertyStereotype[];

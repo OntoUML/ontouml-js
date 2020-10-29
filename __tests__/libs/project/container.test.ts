@@ -1,8 +1,4 @@
-import Class from '@libs/project/class';
-import ModelElement from '@libs/project/model_element';
-import Package from '@libs/project/package';
-import Project from '@libs/project/project';
-import Relation from '@libs/project/relation';
+import { Class, ModelElement, Package, Project, Relation } from '@libs/project/';
 
 describe('Container tests', () => {
   it('Get project contents - empty project', () => {

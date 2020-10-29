@@ -1,4 +1,4 @@
-import Project from '@libs/project/project';
+import { Project } from '@libs/project/';
 
 describe('Project tests', () => {
   it('Create Project', () => {

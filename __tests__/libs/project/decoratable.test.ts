@@ -1,7 +1,5 @@
 import { ClassStereotype, PropertyStereotype, RelationStereotype } from '@constants/.';
-import Class from '@libs/project/class';
-import Relation from '@libs/project/relation';
-import Property from '@libs/project/property';
+import { Class, Relation, Property } from '@libs/project/';
 
 describe('Decoratable Interface Tests', () => {
   it('Class with no stereotypes', () => {

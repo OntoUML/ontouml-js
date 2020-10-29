@@ -1,16 +1,6 @@
-import Project from './project';
-import { OntoumlType } from '@constants/.';
-import { getText } from './multilingual_text';
-import Class from './class';
-import Relation from './relation';
-import Property from './property';
-import OntoumlElement from './ontouml_element';
+import { Relation, Project, Class, Property, OntoumlElement } from './';
 
 const modelElementTemplate = {
-  type: null,
-  id: null,
-  name: null,
-  description: null,
   propertyAssignments: null
 };
 
@@ -22,11 +12,11 @@ export function setContainer(content: ModelElement, container: ModelElement): vo
   content.container = container;
 }
 
-export default abstract class ModelElement extends OntoumlElement {
-  propertyAssignments: object;
+export abstract class ModelElement extends OntoumlElement {
   // TODO: decide how to avoid people directly setting project and container fields
   project: Project;
   container: ModelElement;
+  propertyAssignments: object;
 
   constructor(base?: Partial<ModelElement>) {
     super(base);

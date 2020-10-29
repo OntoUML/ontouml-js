@@ -1,16 +1,22 @@
-import ModelElement, { setContainer } from './model_element';
 import { OntoumlType } from '@constants/.';
-import Container, { addContentToArray, getAllContents, getContents } from './container';
-import Class from './class';
-import Relation from './relation';
-import Generalization from './generalization';
-import GeneralizationSet from './generalization_set';
+import {
+  setContainer,
+  ModelElement,
+  Container,
+  addContentToArray,
+  getAllContents,
+  getContents,
+  Class,
+  Relation,
+  Generalization,
+  GeneralizationSet
+} from './';
 
 const packageTemplate = {
   contents: null
 };
 
-export default class Package extends ModelElement implements Container<ModelElement, ModelElement> {
+export class Package extends ModelElement implements Container<ModelElement, ModelElement> {
   container: Package;
   contents: ModelElement[];
 

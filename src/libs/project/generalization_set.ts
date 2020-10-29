@@ -1,10 +1,5 @@
 import { OntoumlType } from '@constants/.';
-import Relation from './relation';
-import ModelElement, { setContainer } from './model_element';
-import Class from './class';
-import Generalization from './generalization';
-import Classifier from './classifier';
-import Package from './package';
+import { Relation, ModelElement, setContainer, Class, Generalization, Classifier, Package } from './';
 
 const generalizationSetTemplate = {
   isDisjoint: false,
@@ -13,7 +8,7 @@ const generalizationSetTemplate = {
   generalizations: null
 };
 
-export default class GeneralizationSet extends ModelElement {
+export class GeneralizationSet extends ModelElement {
   isDisjoint: boolean;
   isComplete: boolean;
   categorizer: Class;

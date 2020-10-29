@@ -1,16 +1,12 @@
 import { OntoumlType } from '@constants/.';
-import Class from './class';
-import Classifier from './classifier';
-import ModelElement, { setContainer } from './model_element';
-import Package from './package';
-import Relation from './relation';
+import { Relation, Class, Classifier, ModelElement, setContainer, Package } from './';
 
 const generalizationTemplate = {
   general: null,
   specific: null
 };
 
-export default class Generalization extends ModelElement {
+export class Generalization extends ModelElement {
   general: Classifier;
   specific: Classifier;
 

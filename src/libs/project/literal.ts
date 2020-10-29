@@ -1,8 +1,7 @@
 import { OntoumlType } from '@constants/.';
-import Class from './class';
-import ModelElement, { setContainer } from './model_element';
+import { Class, ModelElement, setContainer } from './';
 
-export default class Literal extends ModelElement {
+export class Literal extends ModelElement {
   constructor(base?: Partial<Literal>) {
     super(base);
 

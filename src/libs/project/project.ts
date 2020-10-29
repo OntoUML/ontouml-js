@@ -1,24 +1,25 @@
-import uniqid from 'uniqid';
-
-import { OntoumlType, OntologicalNature } from '@constants/.';
-import Package from './package';
-import Diagram from './diagram';
-import Class from './class';
-import Generalization from './generalization';
-import GeneralizationSet from './generalization_set';
-import Literal from './literal';
-import ModelElement from './model_element';
-import Property from './property';
-import Relation from './relation';
-import Container, { getAllContents } from './container';
-import OntoumlElement from './ontouml_element';
+import { OntoumlType } from '@constants/.';
+import {
+  Relation,
+  OntoumlElement,
+  Container,
+  getAllContents,
+  Package,
+  Diagram,
+  Class,
+  Generalization,
+  GeneralizationSet,
+  Literal,
+  ModelElement,
+  Property
+} from './';
 
 const projectTemplate = {
   model: null,
   diagrams: null
 };
 
-export default class Project extends OntoumlElement implements Container<Package, ModelElement> {
+export class Project extends OntoumlElement implements Container<Package, ModelElement> {
   type: OntoumlType.PROJECT_TYPE;
   model: Package;
   diagrams: Diagram[];
@@ -55,11 +56,11 @@ export default class Project extends OntoumlElement implements Container<Package
     return this.model;
   }
 
-  getModelElement(match: object): ModelElement {
+  getModelElement(): ModelElement {
     throw new Error('Method unimplemented!');
   }
 
-  getAllModelElement(match: object): ModelElement[] {
+  getAllModelElement(): ModelElement[] {
     throw new Error('Method unimplemented!');
   }
 
@@ -109,7 +110,7 @@ export default class Project extends OntoumlElement implements Container<Package
     // this._locked = value;
   }
 
-  getClassesByNature(nature: OntologicalNature | OntologicalNature[]): Class[] {
+  getClassesByNature(): Class[] {
     throw new Error('Method unimplemented!');
   }
 }

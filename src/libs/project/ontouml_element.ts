@@ -1,11 +1,6 @@
 import { OntoumlType } from '@constants/.';
 import uniqid from 'uniqid';
-import Class from './class';
-import { getText, MultilingualText } from './multilingual_text';
-import Package from './package';
-import Project from './project';
-import Property from './property';
-import Relation from './relation';
+import { Class, getText, MultilingualText, Package, Project, Property, Relation } from './';
 
 const ontoumlElementTemplate = {
   type: null,
@@ -14,7 +9,7 @@ const ontoumlElementTemplate = {
   description: null
 };
 
-export default abstract class OntoumlElement {
+export abstract class OntoumlElement {
   type: OntoumlType;
   id: string;
   name: MultilingualText;
@@ -23,7 +18,7 @@ export default abstract class OntoumlElement {
   constructor(base?: Partial<OntoumlElement>) {
     this.id = uniqid();
 
-    // if base has an id, the generated own is overwritten
+    // if base has an id, the generated one is overwritten
     if (base) {
       Object.assign(this, base);
     }

@@ -23,7 +23,7 @@ export function getUniqueStereotype<T extends OntoumlStereotype>(decoratable: De
   return decoratable.stereotypes && decoratable.stereotypes[0];
 }
 
-export default interface Decoratable<T extends OntoumlStereotype> {
+export interface Decoratable<T extends OntoumlStereotype> {
   stereotypes: T[];
 
   hasValidStereotypeValue(): boolean;

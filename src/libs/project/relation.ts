@@ -1,12 +1,19 @@
-import ModelElement, { setContainer } from './model_element';
-import Property from './property';
-import Generalization from './generalization';
-import Classifier from './classifier';
-import Class from './class';
 import { OntoumlType, RelationStereotype } from '@constants/.';
-import Decoratable, { getUniqueStereotype, hasValidStereotypeValue } from './decoratable';
-import Container, { getAllContents, getContents } from './container';
-import Package from './package';
+import {
+  Property,
+  ModelElement,
+  setContainer,
+  Generalization,
+  Classifier,
+  Class,
+  Decoratable,
+  getUniqueStereotype,
+  hasValidStereotypeValue,
+  Container,
+  getAllContents,
+  getContents,
+  Package
+} from './';
 
 const relationTemplate = {
   stereotypes: null,
@@ -15,8 +22,7 @@ const relationTemplate = {
   isDerived: false
 };
 
-export default class Relation extends ModelElement
-  implements Container<Property, Property>, Decoratable<RelationStereotype>, Classifier {
+export class Relation extends ModelElement implements Container<Property, Property>, Decoratable<RelationStereotype>, Classifier {
   stereotypes: RelationStereotype[];
   properties: Property[];
   isAbstract: boolean;

@@ -1,6 +1,6 @@
-import OntoumlElement from './ontouml_element';
+import { OntoumlElement } from './';
 
-export default class Diagram extends OntoumlElement {
+export class Diagram extends OntoumlElement {
   // type: OntoumlType.DIAGRAM_TYPE;
   constructor() {
     super();

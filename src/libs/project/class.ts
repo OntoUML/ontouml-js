@@ -1,14 +1,20 @@
 import { OntoumlType, OntologicalNature, ClassStereotype } from '@constants/.';
-import Relation from './relation';
-import Property from './property';
-import Literal from './literal';
-import Decoratable, { getUniqueStereotype, hasValidStereotypeValue } from './decoratable';
-// import Classifier from './classifier';
-import Container, { addContentToArray, getAllContents, getContents } from './container';
-import ModelElement, { setContainer } from './model_element';
-import Package from './package';
-import Classifier from './classifier';
-import Project from './project';
+import {
+  Relation,
+  Property,
+  Literal,
+  Decoratable,
+  getUniqueStereotype,
+  hasValidStereotypeValue,
+  Container,
+  addContentToArray,
+  getAllContents,
+  getContents,
+  ModelElement,
+  setContainer,
+  Package,
+  Classifier
+} from './';
 
 // TODO: implement Classifier
 
@@ -24,11 +30,11 @@ const classTemplate = {
   order: null
 };
 
-export default class Class extends ModelElement
+export class Class extends ModelElement
   implements Decoratable<ClassStereotype>, Container<Property | Literal, Property | Literal>, Classifier {
   container: Package;
   stereotypes: ClassStereotype[];
-  restrictedTo: OntologicalNature[]; // The type here needs to be string because of the serialization (same a stereotypes)
+  restrictedTo: OntologicalNature[];
   literals: Literal[];
   properties: Property[];
   isAbstract: boolean;
