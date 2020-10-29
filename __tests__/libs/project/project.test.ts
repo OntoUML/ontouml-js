@@ -18,13 +18,13 @@ describe('Project tests', () => {
     const organization = model.createClass({ name: 'Organization' });
     const text = model.createClass({ name: 'Text' });
 
-    const name = agent.createAttribute({ name: 'name', propertyType: text });
-    const surname = person.createAttribute({ name: 'surname', propertyType: text });
+    agent.createAttribute({ name: 'name', propertyType: text });
+    person.createAttribute({ name: 'surname', propertyType: text });
 
     const worksAt = model.createRelation({ name: 'works-for' });
 
-    const employeeEnd = worksAt.createSourceEnd({ name: 'employee', propertyType: person });
-    const employerEnd = worksAt.createTargetEnd({ name: 'employer', propertyType: organization });
+    worksAt.createSourceEnd({ name: 'employee', propertyType: person });
+    worksAt.createTargetEnd({ name: 'employer', propertyType: organization });
 
     const agentIntoPerson = model.createGeneralization({ name: 'agentIntoPerson', general: agent, specific: person });
     const agentIntoOrganization = model.createGeneralization({
@@ -33,7 +33,7 @@ describe('Project tests', () => {
       specific: organization
     });
 
-    const agentsSet = model.createGeneralizationSet({
+    model.createGeneralizationSet({
       name: 'agentsSet',
       generalizations: [agentIntoPerson, agentIntoOrganization],
       isComplete: true,

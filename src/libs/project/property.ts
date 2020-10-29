@@ -1,5 +1,5 @@
-import { OntoumlType, AggregationKind, OntoumlStereotype, PropertyStereotype } from '@constants/.';
-import ModelElement from './model_element';
+import { OntoumlType, AggregationKind, PropertyStereotype } from '@constants/.';
+import ModelElement, { setContainer } from './model_element';
 import Classifier from './classifier';
 import Decoratable, { getUniqueStereotype, hasValidStereotypeValue } from './decoratable';
 import Class from './class';
@@ -61,13 +61,19 @@ export default class Property extends ModelElement implements Decoratable<Proper
     return propertySerialization;
   }
 
-  isAttribute(): boolean {
-    throw new Error('Method unimplemented!');
+  setContainer(container: Class | Relation): void {
+    setContainer(this, container);
   }
 
-  isRelationEnd(): boolean {
-    throw new Error('Method unimplemented!');
-  }
+  // // TODO: check if we should throw exception when container is not set
+  // isAttribute(): boolean {
+  //   return this.container instanceof Class;
+  // }
+
+  // // TODO: check if we should throw exception when container is not set
+  // isRelationEnd(): boolean {
+  //   return this.container instanceof Relation;
+  // }
 
   /**
    * Only in binary relations

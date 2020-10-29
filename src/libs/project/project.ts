@@ -11,28 +11,20 @@ import ModelElement from './model_element';
 import Property from './property';
 import Relation from './relation';
 import Container, { getAllContents } from './container';
+import OntoumlElement from './ontouml_element';
 
 const projectTemplate = {
-  type: null,
-  id: null,
-  name: null,
-  description: null,
   model: null,
   diagrams: null
 };
 
-export default class Project implements Container<Package, ModelElement> {
+export default class Project extends OntoumlElement implements Container<Package, ModelElement> {
   type: OntoumlType.PROJECT_TYPE;
-  id: string;
-  name?: string | object;
-  description?: string | object;
-  model?: Package;
-  diagrams?: Diagram[];
+  model: Package;
+  diagrams: Diagram[];
 
   constructor(base?: Partial<Project>) {
-    this.id = uniqid();
-
-    Object.assign(this, base);
+    super(base);
 
     Object.defineProperty(this, 'type', { value: OntoumlType.PROJECT_TYPE, enumerable: true });
   }
@@ -49,7 +41,7 @@ export default class Project implements Container<Package, ModelElement> {
   toJSON(): any {
     const projectSerialization = {} as Project;
 
-    Object.assign(projectSerialization, projectTemplate, this);
+    Object.assign(projectSerialization, projectTemplate, super.toJSON());
 
     return projectSerialization;
   }
@@ -59,31 +51,9 @@ export default class Project implements Container<Package, ModelElement> {
       throw new Error('Model already defined');
     }
 
-    this.model = new Package({ container: this, project: this, ...base });
+    this.model = new Package({ container: null, project: this, ...base });
     return this.model;
   }
-
-  // register(element: ModelElement) {
-  //   const id = element.id;
-  //   const type = element.type;
-  //   const selectedMap = this._elementsMap.get(type);
-
-  //   console.log(selectedMap, type, id, this._elementsMap);
-
-  //   if (!selectedMap) {
-  //     throw new Error('Invalid OntoumlType');
-  //   } else if (selectedMap.get(element.id)) {
-  //     throw new Error('Model element ID conflict.');
-  //   } else {
-  //     selectedMap.set(id, element);
-  //   }
-  // }
-
-  // createPackage(): Package {
-  //   const pkg = new Package(this);
-  //   this.register(pkg);
-  //   return pkg;
-  // }
 
   getModelElement(match: object): ModelElement {
     throw new Error('Method unimplemented!');

@@ -1,13 +1,14 @@
-import { OntoumlType, OntologicalNature, ClassStereotype, OntoumlStereotype } from '@constants/.';
+import { OntoumlType, OntologicalNature, ClassStereotype } from '@constants/.';
 import Relation from './relation';
 import Property from './property';
 import Literal from './literal';
 import Decoratable, { getUniqueStereotype, hasValidStereotypeValue } from './decoratable';
 // import Classifier from './classifier';
 import Container, { addContentToArray, getAllContents, getContents } from './container';
-import ModelElement from './model_element';
+import ModelElement, { setContainer } from './model_element';
 import Package from './package';
 import Classifier from './classifier';
+import Project from './project';
 
 // TODO: implement Classifier
 
@@ -89,6 +90,10 @@ export default class Class extends ModelElement
       'literals',
       new Property({ container: this, project: this.project, ...base })
     );
+  }
+
+  setContainer(container: Package): void {
+    setContainer(this, container);
   }
 
   getGeneralizationAsCategorizer(): Class {

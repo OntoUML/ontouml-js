@@ -1,3 +1,7 @@
+import ModelElement from './model_element';
+import Package from './package';
+import Project from './project';
+
 export function getContents<T>(container: Container<T, any>, contentFields: string[]): T[] {
   const contents = new Set<T>();
 
@@ -67,7 +71,7 @@ export function addContentToArray<GeneralContentType, SpecificContentType extend
   return content;
 }
 
-export default interface Container<Content, DeepContent> {
-  getContents(): Content[];
-  getAllContents(): DeepContent[];
+export default interface Container<ContentType, DeepContentType> {
+  getContents(): ContentType[];
+  getAllContents(): DeepContentType[];
 }

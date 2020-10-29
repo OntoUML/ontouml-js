@@ -1,5 +1,4 @@
 import { OntoumlStereotype } from '@constants/.';
-
 export function hasValidStereotypeValue<T extends OntoumlStereotype>(
   decoratable: Decoratable<T>,
   validStereotypes: OntoumlStereotype[],

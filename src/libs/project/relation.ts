@@ -1,4 +1,4 @@
-import ModelElement from './model_element';
+import ModelElement, { setContainer } from './model_element';
 import Property from './property';
 import Generalization from './generalization';
 import Classifier from './classifier';
@@ -6,6 +6,7 @@ import Class from './class';
 import { OntoumlType, RelationStereotype } from '@constants/.';
 import Decoratable, { getUniqueStereotype, hasValidStereotypeValue } from './decoratable';
 import Container, { getAllContents, getContents } from './container';
+import Package from './package';
 
 const relationTemplate = {
   stereotypes: null,
@@ -95,6 +96,10 @@ export default class Relation extends ModelElement
     this.properties[position] = memberEnd;
 
     return memberEnd;
+  }
+
+  setContainer(container: Package): void {
+    setContainer(this, container);
   }
 
   getGeneralizationAsGeneral(): Generalization[] {

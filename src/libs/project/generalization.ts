@@ -1,7 +1,8 @@
 import { OntoumlType } from '@constants/.';
 import Class from './class';
 import Classifier from './classifier';
-import ModelElement from './model_element';
+import ModelElement, { setContainer } from './model_element';
+import Package from './package';
 import Relation from './relation';
 
 const generalizationTemplate = {
@@ -30,5 +31,9 @@ export default class Generalization extends ModelElement {
     generalizationSerialization.specific = specific.getReference();
 
     return generalizationSerialization;
+  }
+
+  setContainer(container: Package): void {
+    setContainer(this, container);
   }
 }

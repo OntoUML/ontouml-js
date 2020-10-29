@@ -1,9 +1,7 @@
 import Class from '@libs/project/class';
-import Literal from '@libs/project/literal';
 import ModelElement from '@libs/project/model_element';
 import Package from '@libs/project/package';
 import Project from '@libs/project/project';
-import Property from '@libs/project/property';
 import Relation from '@libs/project/relation';
 
 describe('Container tests', () => {

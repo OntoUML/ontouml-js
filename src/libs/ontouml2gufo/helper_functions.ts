@@ -27,6 +27,7 @@ import {
 } from '@types';
 import { getUriFromXsdMapping } from './uri_manager';
 
+// TODO: remove after migrating to the core API
 export const getText = (element: IElement, field: string, languagePreference?: string[]): string => {
   if (!element || element.name == null) return null;
 
@@ -40,8 +41,10 @@ export const getText = (element: IElement, field: string, languagePreference?: s
     }
   }
 
+  // TODO: review if the reference to 'name' is intentional
   if (typeof element.name !== 'object') return null;
 
+  // TODO: propose moving tags.check(lang) to verification service
   const languages = Object.keys(element.name)
     .filter(lang => tags.check(lang))
     .sort();
@@ -50,36 +53,38 @@ export const getText = (element: IElement, field: string, languagePreference?: s
   return null;
 };
 
+// TODO: replace by OntoumlElement this.getName()
 export const getName = (element: IElement, languagePreference?: string[]): string => {
   return getText(element, 'name', languagePreference);
 };
 
+// TODO: replace by OntoumlElement this.getDescription()
 export const getDescription = (element: IElement, languagePreference?: string[]): string => {
   return getText(element, 'name', languagePreference);
 };
 
-//TODO: Move this method to the core API
+//TODO: replace by ModelElement.areClasses(modelElements)
 export function areClasses(elements: IElement[]): boolean {
   const reducer = (accumulator, currentElement) => accumulator && isClass(currentElement);
   return elements.reduce(reducer, true);
 }
 
-//TODO: Move this method to the core API
+//TODO: replace by instanceof Class
 export function isClass(element: IElement): boolean {
   return element != null && element.type === OntoumlType.CLASS_TYPE;
 }
 
-//TODO: Move this method to the core API
+//TODO: replace by instanceof Relation
 export function isRelation(element: IElement): boolean {
   return element != null && element.type === OntoumlType.RELATION_TYPE;
 }
 
-//TODO: Move this method to the core API
+//TODO: replace by instanceof Property
 export function isProperty(element: IElement): boolean {
   return element != null && element.type === OntoumlType.PROPERTY_TYPE;
 }
 
-//TODO: Move this method to the core API
+//TODO: replace by ModelElement this.isDecoratable()
 export function isDecoratable(element: IElement): boolean {
   return [OntoumlType.RELATION_TYPE, OntoumlType.CLASS_TYPE, OntoumlType.PROPERTY_TYPE].includes(element.type);
 }

@@ -1,5 +1,4 @@
-import ModelElement from './model_element';
-import Project from './project';
+import ModelElement, { setContainer } from './model_element';
 import { OntoumlType } from '@constants/.';
 import Container, { addContentToArray, getAllContents, getContents } from './container';
 import Class from './class';
@@ -12,7 +11,7 @@ const packageTemplate = {
 };
 
 export default class Package extends ModelElement implements Container<ModelElement, ModelElement> {
-  container: Package | Project;
+  container: Package;
   contents: ModelElement[];
 
   constructor(base?: Partial<Package>) {
@@ -74,6 +73,10 @@ export default class Package extends ModelElement implements Container<ModelElem
       'contents',
       new GeneralizationSet({ container: this, project: this.project, ...base })
     );
+  }
+
+  setContainer(container: Package): void {
+    setContainer(this, container);
   }
 
   // TODO: do we need some getContent(match) method?
