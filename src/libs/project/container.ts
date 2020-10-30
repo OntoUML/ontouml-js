@@ -1,4 +1,8 @@
-export function getContents<T>(container: Container<T, any>, contentFields: string[]): T[] {
+export function getContents<T>(
+  container: Container<T, any>,
+  contentFields: string[],
+  contentsFilter?: (content: T) => boolean
+): T[] {
   const contents = new Set<T>();
 
   contentFields.forEach((fieldName: string) => {
@@ -16,10 +20,14 @@ export function getContents<T>(container: Container<T, any>, contentFields: stri
     }
   });
 
-  return [...contents];
+  return contentsFilter ? [...contents].filter(contentsFilter) : [...contents];
 }
 
-export function getAllContents<T>(container: Container<any, T>, contentFields: string[]): T[] {
+export function getAllContents<T>(
+  container: Container<any, T>,
+  contentFields: string[],
+  contentsFilter?: (content: T) => boolean
+): T[] {
   const contents = new Set<T>();
   const tryAdd = function(value) {
     if (value && contents.has(value)) {
@@ -50,7 +58,7 @@ export function getAllContents<T>(container: Container<any, T>, contentFields: s
     }
   });
 
-  return [...contents];
+  return contentsFilter ? [...contents].filter(contentsFilter) : [...contents];
 }
 
 export function addContentToArray<GeneralContentType, SpecificContentType extends GeneralContentType>(
@@ -68,6 +76,6 @@ export function addContentToArray<GeneralContentType, SpecificContentType extend
 }
 
 export interface Container<ContentType, DeepContentType> {
-  getContents(): ContentType[];
-  getAllContents(): DeepContentType[];
+  getContents(contentsFilter?: (content: ContentType) => boolean): ContentType[];
+  getAllContents(contentsFilter?: (content: DeepContentType) => boolean): DeepContentType[];
 }

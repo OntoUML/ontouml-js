@@ -13,3 +13,5 @@ export * from './package';
 export * from './property';
 export * from './relation';
 export * from './multilingual_text';
+export * from './utils';
+export * from './stereotypes';

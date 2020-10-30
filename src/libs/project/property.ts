@@ -7,7 +7,8 @@ import {
   Classifier,
   Decoratable,
   getUniqueStereotype,
-  hasValidStereotypeValue
+  hasValidStereotypeValue,
+  stereotypes
 } from './';
 
 const propertyTemplate = {
@@ -22,11 +23,14 @@ const propertyTemplate = {
   isReadOnly: false
 };
 
+// Babel did not allow me to make this a static field in Property
+export const UNBOUNDED_CARDINALITY = Infinity;
+
 export class Property extends ModelElement implements Decoratable<PropertyStereotype> {
   type: OntoumlType.PROPERTY_TYPE;
   container: Class | Relation;
   stereotypes: PropertyStereotype[];
-  cardinality: string;
+  cardinality: { lowerBound: number; upperBound: number };
   propertyType: Classifier;
   subsettedProperties: Property[]; // TODO: update null when deserializing
   redefinedProperties: Property[];
@@ -40,7 +44,7 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
 
     Object.defineProperty(this, 'type', { value: OntoumlType.PROPERTY_TYPE, enumerable: true });
 
-    this.cardinality = this.cardinality || '0..*';
+    this.cardinality = this.cardinality || { lowerBound: 0, upperBound: UNBOUNDED_CARDINALITY };
     this.aggregationKind = this.aggregationKind || AggregationKind.NONE;
     this.isDerived = this.isDerived || false;
     this.isOrdered = this.isOrdered || false;
@@ -48,7 +52,7 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
   }
 
   hasValidStereotypeValue(): boolean {
-    return hasValidStereotypeValue(this, Object.values(PropertyStereotype), true);
+    return hasValidStereotypeValue(this, stereotypes.PropertyStereotypes, true);
   }
 
   getUniqueStereotype(): PropertyStereotype {
@@ -62,6 +66,7 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
 
     const propertyType = this.propertyType as Class | Relation;
     propertySerialization.propertyType = propertyType.getReference();
+    // TODO: transform cardinality
 
     return propertySerialization;
   }
@@ -70,15 +75,46 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
     setContainer(this, container);
   }
 
-  // // TODO: check if we should throw exception when container is not set
-  // isAttribute(): boolean {
-  //   return this.container instanceof Class;
-  // }
+  // TODO: check if we should throw exception when container is not set
+  isAttribute(): boolean {
+    return this.container instanceof Class;
+  }
 
-  // // TODO: check if we should throw exception when container is not set
-  // isRelationEnd(): boolean {
-  //   return this.container instanceof Relation;
-  // }
+  // TODO: check if we should throw exception when container is not set
+  isRelationEnd(): boolean {
+    return this.container instanceof Relation;
+  }
+
+  isPropertyTypeDefined(): boolean {
+    return this.propertyType instanceof ModelElement;
+  }
+
+  isSharedAggregationEnd(): boolean {
+    return this.isRelationEnd() && this.aggregationKind === AggregationKind.SHARED;
+  }
+
+  isCompositeAggregationEnd(): boolean {
+    return this.isRelationEnd() && this.aggregationKind === AggregationKind.COMPOSITE;
+  }
+
+  isAggregationEnd(): boolean {
+    return this.isSharedAggregationEnd() || this.isCompositeAggregationEnd();
+  }
+
+  setCardinality(lowerBound: number, upperBound: number) {
+    if (Math.min(lowerBound, upperBound) < 0) {
+      throw new Error('Invalid negative parameter');
+    } else if (lowerBound > upperBound) {
+      throw new Error('Lower bound cannot be greater than upper bound');
+    } else if (lowerBound === UNBOUNDED_CARDINALITY) {
+      throw new Error('Lower bound cannot be unbounded');
+    } else if (Number.isNaN(lowerBound) || Number.isNaN(upperBound)) {
+      throw new Error('Invalid NaN parameter');
+    }
+
+    this.cardinality.lowerBound = lowerBound;
+    this.cardinality.upperBound = upperBound;
+  }
 
   /**
    * Only in binary relations

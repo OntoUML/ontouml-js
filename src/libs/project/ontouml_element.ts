@@ -49,12 +49,6 @@ export abstract class OntoumlElement {
 
   // TODO: add Diagram when supported
   isContainer(): boolean {
-    return (
-      this instanceof Project ||
-      this instanceof Package ||
-      this instanceof Class ||
-      this instanceof Relation ||
-      this instanceof Property
-    );
+    return this instanceof Project || this instanceof Package || this instanceof Class || this instanceof Relation;
   }
 }

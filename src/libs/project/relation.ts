@@ -1,4 +1,4 @@
-import { OntoumlType, RelationStereotype } from '@constants/.';
+import { ClassStereotype, OntoumlType, RelationStereotype } from '@constants/.';
 import {
   Property,
   ModelElement,
@@ -12,8 +12,10 @@ import {
   Container,
   getAllContents,
   getContents,
-  Package
+  Package,
+  stereotypes
 } from './';
+import { UNBOUNDED_CARDINALITY } from './property';
 
 const relationTemplate = {
   stereotypes: null,
@@ -37,12 +39,12 @@ export class Relation extends ModelElement implements Container<Property, Proper
     this.isDerived = this.isDerived || false;
   }
 
-  getContents(): Property[] {
-    return getContents(this, ['properties']);
+  getContents(contentsFilter?: (property: Property) => boolean): Property[] {
+    return getContents(this, ['properties'], contentsFilter);
   }
 
-  getAllContents(): Property[] {
-    return getAllContents(this, ['properties']);
+  getAllContents(contentsFilter?: (property: Property) => boolean): Property[] {
+    return getAllContents(this, ['properties'], contentsFilter);
   }
 
   getUniqueStereotype(): RelationStereotype {
@@ -50,8 +52,7 @@ export class Relation extends ModelElement implements Container<Property, Proper
   }
 
   hasValidStereotypeValue(): boolean {
-    // TODO: create arrays of valid stereotype lists and replace Object.values(OntoumlStereotype)
-    return hasValidStereotypeValue(this, Object.values(RelationStereotype), true);
+    return hasValidStereotypeValue(this, stereotypes.RelationStereotypes, true);
   }
 
   toJSON(): any {
@@ -69,7 +70,7 @@ export class Relation extends ModelElement implements Container<Property, Proper
       throw new Error('Source already defined');
     }
 
-    const sourceEnd = new Property({ container: this, project: this.project, ...base });
+    const sourceEnd = new Property({ ...base, container: this, project: this.project });
 
     this.properties[0] = sourceEnd;
 
@@ -83,7 +84,7 @@ export class Relation extends ModelElement implements Container<Property, Proper
       throw new Error('Target already defined');
     }
 
-    const targetEnd = new Property({ container: this, project: this.project, ...base });
+    const targetEnd = new Property({ ...base, container: this, project: this.project });
 
     this.properties[1] = targetEnd;
 
@@ -97,7 +98,7 @@ export class Relation extends ModelElement implements Container<Property, Proper
       throw new Error('Member already defined in this position');
     }
 
-    const memberEnd = new Property({ container: this, project: this.project, ...base });
+    const memberEnd = new Property({ ...base, container: this, project: this.project });
 
     this.properties[position] = memberEnd;
 
@@ -106,6 +107,185 @@ export class Relation extends ModelElement implements Container<Property, Proper
 
   setContainer(container: Package): void {
     setContainer(this, container);
+  }
+
+  isInstantiation(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.INSTANTIATION;
+  }
+
+  isDerivation(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.DERIVATION;
+  }
+
+  isMaterial(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.MATERIAL;
+  }
+
+  isComparative(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.COMPARATIVE;
+  }
+
+  getSourceEnd(): Property {
+    if (!this.isBinary()) {
+      throw new Error('Unable to retrieve source end on a non-binary relation');
+    }
+    return this.properties[0];
+  }
+
+  getTargetEnd(): Property {
+    if (!this.isBinary()) {
+      throw new Error('Unable to retrieve target end on a non-binary relation');
+    }
+    return this.properties[1];
+  }
+
+  getMemberEnd(position: number): Property {
+    if (!this.isTernary()) {
+      throw new Error('Unable to retrieve member end on a non-ternary relation');
+    }
+    return this.properties[position];
+  }
+
+  getSource(): Classifier {
+    return this.getSourceEnd().propertyType;
+  }
+
+  getTarget(): Classifier {
+    return this.getTargetEnd().propertyType;
+  }
+
+  getMember(position: number): Classifier {
+    return this.getMemberEnd(position).propertyType;
+  }
+
+  getSourceClass(): Class {
+    if (this.isDerivation()) {
+      throw new Error('Unable to retrieve class from derivation relation');
+    }
+    return this.getSource() as Class;
+  }
+
+  getTargetClass(): Class {
+    if (this.isDerivation()) {
+      throw new Error('Unable to retrieve class from derivation relation');
+    }
+    return this.getTarget() as Class;
+  }
+
+  getMemberClass(position: number): Class {
+    if (this.isDerivation()) {
+      throw new Error('Unable to retrieve class from derivation relation');
+    }
+    return this.getMember(position) as Class;
+  }
+
+  getDerivingRelation(): Relation {
+    if (!this.isDerivation()) {
+      throw new Error('Unable to retrieve deriving relation from non-derivation relation');
+    }
+    return this.getSource() as Relation;
+  }
+
+  getDerivedClass(): Class {
+    if (!this.isDerivation()) {
+      throw new Error('Unable to retrieve derived class from non-derivation relation');
+    }
+    return this.getTarget() as Class;
+  }
+
+  getSourceClassStereotype(): ClassStereotype {
+    return this.getSourceClass().getUniqueStereotype();
+  }
+
+  getTargetClassStereotype(): ClassStereotype {
+    return this.getTargetClass().getUniqueStereotype();
+  }
+
+  getMemberClassStereotype(position: number): ClassStereotype {
+    return this.getMemberClass(position).getUniqueStereotype();
+  }
+
+  getDerivingRelationStereotype(): RelationStereotype {
+    return this.getDerivingRelation().getUniqueStereotype();
+  }
+
+  getDerivedClassStereotype(): ClassStereotype {
+    return this.getDerivedClass().getUniqueStereotype();
+  }
+
+  // TODO: check whether isBinaryRelation() is a better name
+  isBinary(): boolean {
+    return this.properties && this.properties.length === 2;
+  }
+
+  // TODO: check whether isTernaryRelation() is a better name
+  isTernary(): boolean {
+    return this.properties && this.properties.length > 2;
+  }
+
+  isPartWholeRelation(): boolean {
+    return this.isBinary() && this.getTargetEnd().isAggregationEnd();
+  }
+
+  holdsBetween(...conditions: ((relationEnd: Property) => boolean)[]): boolean {
+    if (this.properties.length !== conditions.length) {
+      throw new Error('Method requires a same number conditions and relation ends');
+    }
+    return this.properties.every((relationEnd: Property, relationEndIndex: number) => conditions[relationEndIndex](relationEnd));
+  }
+
+  holdsBetweenEvents(): boolean {
+    if (!this.isBinary() || this.isDerivation()) {
+      return false;
+    }
+
+    const isEndTypeAnEvent = (relationEnd: Property) =>
+      relationEnd.propertyType instanceof Class && relationEnd.propertyType.isEvent();
+    return this.holdsBetween(isEndTypeAnEvent, isEndTypeAnEvent);
+  }
+
+  holdsBetweenMoments(): boolean {
+    if (!this.isBinary() || this.isDerivation()) {
+      return false;
+    }
+
+    const isEndTypeAMoment = (relationEnd: Property) =>
+      relationEnd.propertyType instanceof Class && relationEnd.propertyType.isMoment();
+    return this.holdsBetween(isEndTypeAMoment, isEndTypeAMoment);
+  }
+
+  holdsBetweenSubstantials(): boolean {
+    if (!this.isBinary() || this.isDerivation()) {
+      return false;
+    }
+
+    const isEndTypeASubstantial = (relationEnd: Property) =>
+      relationEnd.propertyType instanceof Class && relationEnd.propertyType.isSubstantial();
+    return this.holdsBetween(isEndTypeASubstantial, isEndTypeASubstantial);
+  }
+
+  // TODO: check weather ternary relations may denote existential dependencies
+  isExistentialDependency(): boolean {
+    return this.properties.some((relationEnd: Property) => relationEnd.isReadOnly);
+  }
+
+  isBounded(): boolean {
+    // TODO: change comparison for a regex to allow letters (as variables) in the cardinalities
+    const isBoundedEnd = (relationEnd: Property) =>
+      relationEnd.cardinality && relationEnd.cardinality.upperBound !== UNBOUNDED_CARDINALITY;
+    return this.properties && this.properties.every(isBoundedEnd);
+  }
+
+  isSourceExistentiallyDependent(): boolean {
+    return this.getTargetEnd().isReadOnly;
+  }
+
+  isTargetExistentiallyDependent(): boolean {
+    return this.getSourceEnd().isReadOnly;
+  }
+
+  isExistentialDependenceRelation(): boolean {
+    return this.isSourceExistentiallyDependent() || this.isTargetExistentiallyDependent();
   }
 
   getGeneralizationAsGeneral(): Generalization[] {
@@ -146,27 +326,27 @@ export class Relation extends ModelElement implements Container<Property, Proper
   /**
    * Returns `true` if the relation is binary and relates two IClass objects
    */
-  isBinary?: () => boolean;
+  // isBinary?: () => boolean;
 
   /**
    * Returns `true` if the relation is ternary and relates multiple IClass objects
    */
-  isTernary?: () => boolean;
+  // isTernary?: () => boolean;
 
   /**
    * Returns `true` if the relation is binary and relates an IRelation object to an IClass object
    */
-  isDerivation?: () => boolean;
+  // isDerivation?: () => boolean;
 
   /**
    * Returns the `propertyType` of `properties[0]` if the relation is binary (see `isBinary()`).
    */
-  getSource?: () => Class;
+  // getSource?: () => Class;
 
   /**
    * Returns the `propertyType` of `properties[1]` if the relation is binary (see `isBinary()`).
    */
-  getTarget?: () => Class;
+  // getTarget?: () => Class;
 
   /**
    * Returns the `propertyType` of `properties[0]` if the relation is a derivation relation (see `isDerivation()`).

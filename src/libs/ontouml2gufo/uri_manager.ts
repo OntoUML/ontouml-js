@@ -75,7 +75,7 @@ export default class UriManager {
     const associationEnds = _.sortBy(getAllAssociationEnds(model), ['id', 'name']);
     const literals = _.sortBy(getAllLiterals(model), ['id', 'name']);
 
-    const elements: IElement[] = _.concat(classes, attributes, relations, associationEnds, literals, packages, [model]);
+    const elements: IElement[] = _.concat<IElement>(classes, attributes, relations, associationEnds, literals, packages, [model]);
 
     for (const element of elements) {
       if (!element.id) {

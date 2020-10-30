@@ -1,4 +1,5 @@
-import { OntoumlType, OntologicalNature, ClassStereotype } from '@constants/.';
+import _ from 'lodash';
+import { OntoumlType, OntologicalNature, ClassStereotype, RigidTypes, MomentNatures, ObjectNatures } from '@constants/.';
 import {
   Relation,
   Property,
@@ -13,7 +14,9 @@ import {
   ModelElement,
   setContainer,
   Package,
-  Classifier
+  Classifier,
+  utils,
+  stereotypes
 } from './';
 
 // TODO: implement Classifier
@@ -56,16 +59,16 @@ export class Class extends ModelElement
     this.order = this.order || '1';
   }
 
-  getContents(): (Property | Literal)[] {
-    return getContents(this, ['properties', 'literals']);
+  getContents(contentsFilter?: (content: Property | Literal) => boolean): (Property | Literal)[] {
+    return getContents(this, ['properties', 'literals'], contentsFilter);
   }
 
-  getAllContents(): (Property | Literal)[] {
-    return getAllContents(this, ['properties', 'literals']);
+  getAllContents(contentsFilter?: (content: Property | Literal) => boolean): (Property | Literal)[] {
+    return getAllContents(this, ['properties', 'literals'], contentsFilter);
   }
 
   hasValidStereotypeValue(): boolean {
-    return hasValidStereotypeValue(this, Object.values(ClassStereotype));
+    return hasValidStereotypeValue(this, stereotypes.ClassStereotypes);
   }
 
   getUniqueStereotype(): ClassStereotype {
@@ -85,7 +88,7 @@ export class Class extends ModelElement
     return addContentToArray<ModelElement, Property>(
       this,
       'properties',
-      new Property({ container: this, project: this.project, ...base })
+      new Property({ ...base, container: this, project: this.project })
     );
   }
 
@@ -94,12 +97,85 @@ export class Class extends ModelElement
     return addContentToArray<ModelElement, Property>(
       this,
       'literals',
-      new Property({ container: this, project: this.project, ...base })
+      new Property({ ...base, container: this, project: this.project })
     );
   }
 
   setContainer(container: Package): void {
     setContainer(this, container);
+  }
+
+  isRigid(): boolean {
+    const stereotype = this.getUniqueStereotype();
+    return RigidTypes.includes(stereotype);
+  }
+
+  static areRigid(classes: Class[]): boolean {
+    return classes.every((_class: Class) => _class.isRigid());
+  }
+
+  static areAbstract(classes: Class[]): boolean {
+    return classes.every((_class: Class) => _class.isAbstract);
+  }
+
+  restrictedToOverlaps(natures: OntologicalNature | OntologicalNature[]): boolean {
+    const naturesArray: OntologicalNature[] = Array.isArray(natures) ? natures : [natures];
+    return utils.intersects(this.restrictedTo, naturesArray);
+  }
+
+  restrictedToContainedIn(natures: OntologicalNature | OntologicalNature[]): boolean {
+    const naturesArray: OntologicalNature[] = Array.isArray(natures) ? natures : [natures];
+    return utils.includesAll(naturesArray, this.restrictedTo);
+  }
+
+  restrictedToContains(natures: OntologicalNature | OntologicalNature[]): boolean {
+    const naturesArray: OntologicalNature[] = Array.isArray(natures) ? natures : [natures];
+    return utils.includesAll(this.restrictedTo, naturesArray);
+  }
+
+  restrictedToEquals(natures: OntologicalNature | []): boolean {
+    const naturesArray: OntologicalNature[] = Array.isArray(natures) ? natures : [natures];
+    return _.isEqual(this.restrictedTo, naturesArray);
+  }
+
+  isMoment(): boolean {
+    return this.restrictedToContainedIn(MomentNatures);
+  }
+
+  isSubstantial(): boolean {
+    return this.restrictedToContainedIn(ObjectNatures);
+  }
+
+  isType(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.TYPE;
+  }
+
+  isEvent(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.EVENT;
+  }
+
+  isSituation(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.SITUATION;
+  }
+
+  isDatatype(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.DATATYPE;
+  }
+
+  isEnumeration(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.ENUMERATION;
+  }
+
+  isComplexDatatype(): boolean {
+    return this.isDatatype() && this.hasAttributes();
+  }
+
+  hasAttributes(): boolean {
+    return !_.isEmpty(this.properties);
+  }
+
+  hasLiterals(): boolean {
+    return !_.isEmpty(this.properties);
   }
 
   getGeneralizationAsCategorizer(): Class {
@@ -239,9 +315,9 @@ export class Class extends ModelElement
   /**
    * Returns true iff the class has one of the following stereotypes as its unique stereotype: «kind», «collective», «quantity», «relator», «mode», «quality», «subkind», «category»
    */
-  isRigid(): boolean {
-    throw new Error('Method unimplemented!');
-  }
+  // isRigid(): boolean {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   /**
    * Returns true iff the class has one of the following stereotypes as its unique stereotype: «mixin»
