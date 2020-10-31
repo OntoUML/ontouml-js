@@ -183,6 +183,7 @@ export class Relation extends ModelElement implements Container<Property, Proper
     if (!this.isDerivation()) {
       throw new Error('Unable to retrieve deriving relation from non-derivation relation');
     }
+    // TODO: review code; getSource won't work
     return this.getSource() as Relation;
   }
 
@@ -190,6 +191,7 @@ export class Relation extends ModelElement implements Container<Property, Proper
     if (!this.isDerivation()) {
       throw new Error('Unable to retrieve derived class from non-derivation relation');
     }
+    // TODO: review code; getTarget won't work
     return this.getTarget() as Class;
   }
 

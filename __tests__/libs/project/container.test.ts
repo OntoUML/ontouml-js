@@ -17,20 +17,33 @@ describe('Container tests', () => {
     const model = project.createModel();
     const levelOnePackage = model.createPackage();
     const levelTwoPackage = levelOnePackage.createPackage();
-    levelTwoPackage.createClass();
-    levelTwoPackage.createGeneralization();
-    levelTwoPackage.createGeneralizationSet();
-    levelTwoPackage.createRelation();
+    const classA = levelTwoPackage.createClass();
+    const classB = levelTwoPackage.createClass();
+    const gen = levelTwoPackage.createGeneralization(classA, classB);
+    levelTwoPackage.createGeneralizationSet([gen]);
+    const relation = levelTwoPackage.createBinaryRelation(classA, classB);
+    const sourceEnd = relation.getSourceEnd();
+    const targetEnd = relation.getTargetEnd();
 
     let contents: ModelElement[] = project.getContents();
     expect(contents).toBeInstanceOf(Array);
     expect(contents.length).toEqual(1);
 
+    contents = levelTwoPackage.getContents();
+    expect(contents).toContain(relation);
+    expect(contents.length).toEqual(5);
+
+    contents = levelTwoPackage.getAllContents();
+    expect(contents).toContain(sourceEnd);
+    expect(contents).toContain(targetEnd);
+    expect(contents.length).toEqual(7);
+
     contents = project.getAllContents();
     expect(contents).toContain(model);
     expect(contents).toContain(levelOnePackage);
     expect(contents).toContain(levelTwoPackage);
-    expect(contents.length).toEqual(7);
+
+    expect(contents.length).toEqual(10);
   });
 
   it('Bad content hierarchy error', () => {
@@ -52,14 +65,15 @@ describe('Container tests', () => {
   });
 
   it('Get class contents', () => {
-    const text = new Class();
-    const livingStatus = new Class();
-    const alive = livingStatus.createAttribute({ propertyType: text });
-    const deceased = livingStatus.createAttribute({ propertyType: text });
+    const model = new Package();
+    const text = model.createDatatype();
+    const livingStatus = model.createEnumeration();
+    const alive = livingStatus.createLiteral();
+    const deceased = livingStatus.createLiteral();
 
-    const person = new Class();
-    const knows = person.createAttribute({ propertyType: person });
-    const status = person.createAttribute({ propertyType: livingStatus });
+    const person = model.createClass();
+    const knows = person.createAttribute(person);
+    const status = person.createAttribute(livingStatus);
 
     expect(text.getContents().length).toEqual(0);
     expect(text.getAllContents().length).toEqual(0);

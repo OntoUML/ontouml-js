@@ -2,7 +2,6 @@ import { OntoumlType } from '@constants/.';
 import {
   Relation,
   OntoumlElement,
-  Container,
   getAllContents,
   Package,
   Diagram,
@@ -11,7 +10,8 @@ import {
   GeneralizationSet,
   Literal,
   ModelElement,
-  Property
+  Property,
+  PackageContainer
 } from './';
 
 const projectTemplate = {
@@ -19,7 +19,7 @@ const projectTemplate = {
   diagrams: null
 };
 
-export class Project extends OntoumlElement implements Container<Package, ModelElement> {
+export class Project extends OntoumlElement implements PackageContainer<Package, ModelElement> {
   type: OntoumlType.PROJECT_TYPE;
   model: Package;
   diagrams: Diagram[];
@@ -30,7 +30,7 @@ export class Project extends OntoumlElement implements Container<Package, ModelE
     Object.defineProperty(this, 'type', { value: OntoumlType.PROJECT_TYPE, enumerable: true });
   }
 
-  // TODO: add support to model element
+  // TODO: add support to diagrams element
   getContents(): Package[] {
     return this.model ? [this.model] : [];
   }
@@ -40,30 +40,23 @@ export class Project extends OntoumlElement implements Container<Package, ModelE
   }
 
   getAllAttributes(): Property[] {
-    const attributesFilter = (modelElement: ModelElement) =>
-      modelElement instanceof Property && (modelElement as Property).isAttribute();
-    return this.getAllContents(attributesFilter) as Property[];
+    return this.model.getAllAttributes();
   }
 
   getAllRelationEnds(): Property[] {
-    const relationEndsFilter = (modelElement: ModelElement) =>
-      modelElement instanceof Property && (modelElement as Property).isRelationEnd();
-    return this.getAllContents(relationEndsFilter) as Property[];
+    return this.model.getAllRelationEnds();
   }
 
   getAllRelations(): Relation[] {
-    const relationsFilter = (modelElement: ModelElement) => modelElement instanceof Relation;
-    return this.getAllContents(relationsFilter) as Relation[];
+    return this.model.getAllRelations();
   }
 
   getAllGeneralizations(): Generalization[] {
-    const generalizationsFilter = (modelElement: ModelElement) => modelElement instanceof Generalization;
-    return this.getAllContents(generalizationsFilter) as Generalization[];
+    return this.model.getAllGeneralizations();
   }
 
   getAllGeneralizationSets(): GeneralizationSet[] {
-    const generalizationSetsFilter = (modelElement: ModelElement) => modelElement instanceof GeneralizationSet;
-    return this.getAllContents(generalizationSetsFilter) as GeneralizationSet[];
+    return this.model.getAllGeneralizationSets();
   }
 
   getAllPackages(): Package[] {
@@ -72,19 +65,15 @@ export class Project extends OntoumlElement implements Container<Package, ModelE
   }
 
   getAllClasses(): Class[] {
-    const classesFilter = (modelElement: ModelElement) => modelElement instanceof Class;
-    return this.getAllContents(classesFilter) as Class[];
+    return this.model.getAllClasses();
   }
 
   getAllEnumerations(): Class[] {
-    const classesFilter = (modelElement: ModelElement) =>
-      modelElement instanceof Class && (modelElement as Class).isEnumeration();
-    return this.getAllContents(classesFilter) as Class[];
+    return this.model.getAllEnumerations();
   }
 
   getAllLiterals(): Literal[] {
-    const literalsFilter = (modelElement: ModelElement) => modelElement instanceof Literal;
-    return this.getAllContents(literalsFilter) as Literal[];
+    return this.model.getAllLiterals();
   }
 
   toJSON(): any {
@@ -104,59 +93,31 @@ export class Project extends OntoumlElement implements Container<Package, ModelE
     return this.model;
   }
 
-  getModelElement(): ModelElement {
-    throw new Error('Method unimplemented!');
-  }
-
-  getAllModelElement(): ModelElement[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  // getAllClasses(): Class[] {
+  // getAllProperties(): Property[] {
   //   throw new Error('Method unimplemented!');
   // }
 
-  // getAllRelations(): Relation[] {
+  // getAllBinaryRelations(): Relation[] {
   //   throw new Error('Method unimplemented!');
   // }
 
-  // getAllGeneralizations(): Generalization[] {
+  // getAllTernaryRelations(): Relation[] {
   //   throw new Error('Method unimplemented!');
   // }
 
-  // getAllGeneralizationSets(): GeneralizationSet[] {
+  // getAllDerivationRelations(): Relation[] {
   //   throw new Error('Method unimplemented!');
   // }
-
-  // getAllLiterals(): Literal[] {
-  //   throw new Error('Method unimplemented!');
-  // }
-
-  getAllProperties(): Property[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  getAllBinaryRelations(): Relation[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  getAllTernaryRelations(): Relation[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  getAllDerivationRelations(): Relation[] {
-    throw new Error('Method unimplemented!');
-  }
 
   // get locked(): boolean {
   //   return this._locked;
   // }
 
-  set locked(value: boolean) {
-    throw new Error('Method unimplemented!');
-    // TODO: implement a loop that changes the "isWritable" property in all fields
-    // this._locked = value;
-  }
+  // set locked(value: boolean) {
+  //   throw new Error('Method unimplemented!');
+  //   // TODO: implement a loop that changes the "isWritable" property in all fields
+  //   // this._locked = value;
+  // }
 
   getClassesByNature(): Class[] {
     throw new Error('Method unimplemented!');

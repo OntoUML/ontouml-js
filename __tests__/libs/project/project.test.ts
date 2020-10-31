@@ -13,32 +13,20 @@ describe('Project tests', () => {
     const project = new Project({ name: 'Project' });
     const model = project.createModel({ name: 'Model' });
 
-    const agent = model.createClass({ name: 'Agent' });
-    const person = model.createClass({ name: 'Person' });
-    const organization = model.createClass({ name: 'Organization' });
-    const text = model.createClass({ name: 'Text' });
+    const agent = model.createCategory('Agent');
+    const person = model.createKind('Person');
+    const organization = model.createKind('Organization');
+    const text = model.createDatatype('Text');
 
-    agent.createAttribute({ name: 'name', propertyType: text });
-    person.createAttribute({ name: 'surname', propertyType: text });
+    agent.createAttribute(text, { name: 'name' });
+    person.createAttribute(text, { name: 'surname' });
 
-    const worksAt = model.createRelation({ name: 'works-for' });
+    const worksAt = model.createBinaryRelation(person, organization, 'works-for');
 
-    worksAt.createSourceEnd({ name: 'employee', propertyType: person });
-    worksAt.createTargetEnd({ name: 'employer', propertyType: organization });
+    const agentIntoPerson = model.createGeneralization(agent, person, 'agentIntoPerson');
+    const agentIntoOrganization = model.createGeneralization(agent, organization, 'agentIntoOrganization');
 
-    const agentIntoPerson = model.createGeneralization({ name: 'agentIntoPerson', general: agent, specific: person });
-    const agentIntoOrganization = model.createGeneralization({
-      name: 'agentIntoOrganization',
-      general: agent,
-      specific: organization
-    });
-
-    model.createGeneralizationSet({
-      name: 'agentsSet',
-      generalizations: [agentIntoPerson, agentIntoOrganization],
-      isComplete: true,
-      isDisjoint: true
-    });
+    model.createPartition([agentIntoPerson, agentIntoOrganization], 'agentsSet');
 
     expect(() => JSON.stringify(project)).not.toThrow();
   });

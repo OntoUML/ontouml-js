@@ -16,7 +16,8 @@ import {
   Package,
   Classifier,
   utils,
-  stereotypes
+  stereotypes,
+  MultilingualText
 } from './';
 
 // TODO: implement Classifier
@@ -40,7 +41,7 @@ export class Class extends ModelElement
   restrictedTo: OntologicalNature[];
   literals: Literal[];
   properties: Property[];
-  isAbstract: boolean;
+  isAbstract: boolean; // TODO: review terminology; isAbstract conflicts with «abstract» on isAbstract() or isAbstractClass()
   isDerived: boolean;
   isExtensional: boolean;
   isPowertype: boolean;
@@ -83,21 +84,26 @@ export class Class extends ModelElement
     return classSerialization;
   }
 
-  createAttribute(base?: Partial<Property>): Property {
-    // TODO: verify if it is a datatype
+  createAttribute(propertyType: Class, name?: MultilingualText, base?: Partial<Property>): Property {
+    if (this.isEnumeration()) {
+      throw new Error('Cannot create an attribute on an enumeration class.');
+    }
+
     return addContentToArray<ModelElement, Property>(
       this,
       'properties',
-      new Property({ ...base, container: this, project: this.project })
+      new Property(Object.assign({}, base, { propertyType, name, container: this, project: this.project }))
     );
   }
 
-  createLiteral(base?: Partial<Property>): Property {
-    // TODO: verify if it is a datatype
-    return addContentToArray<ModelElement, Property>(
+  createLiteral(name?: MultilingualText, base?: Partial<Literal>): Literal {
+    if (!this.isEnumeration()) {
+      throw new Error('Cannot create a literal on a non-enumeration class.');
+    }
+    return addContentToArray<ModelElement, Literal>(
       this,
       'literals',
-      new Property({ ...base, container: this, project: this.project })
+      new Literal(Object.assign({}, base, { name, container: this, project: this.project }))
     );
   }
 
@@ -176,6 +182,74 @@ export class Class extends ModelElement
 
   hasLiterals(): boolean {
     return !_.isEmpty(this.properties);
+  }
+
+  isEndurant(): boolean {
+    return this.isSubstantial() || this.isMoment();
+  }
+
+  isKind(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.KIND;
+  }
+
+  isCollective(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.COLLECTIVE;
+  }
+
+  isQuantity(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.QUANTITY;
+  }
+
+  isRelator(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.RELATOR;
+  }
+
+  isQuality(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.QUALITY;
+  }
+
+  isMode(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.MODE;
+  }
+
+  isIntrinsicMode(): boolean {
+    return this.isMode() && this.restrictedToEquals(OntologicalNature.intrinsic_mode);
+  }
+
+  isExtrinsicMode(): boolean {
+    return this.isMode() && this.restrictedToEquals(OntologicalNature.extrinsic_mode);
+  }
+
+  isSubkind(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.SUBKIND;
+  }
+
+  isPhase(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.PHASE;
+  }
+
+  isRole(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.ROLE;
+  }
+
+  isHistoricalRole(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.HISTORICAL_ROLE;
+  }
+
+  isPhaseMixin(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.PHASE_MIXIN;
+  }
+
+  isRoleMixin(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.ROLE_MIXIN;
+  }
+
+  isHistoricalRoleMixin(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.HISTORICAL_ROLE_MIXIN;
+  }
+
+  isMixin(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.MIXIN;
   }
 
   getGeneralizationAsCategorizer(): Class {

@@ -101,9 +101,11 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
     return this.isSharedAggregationEnd() || this.isCompositeAggregationEnd();
   }
 
-  setCardinality(lowerBound: number, upperBound: number) {
-    if (Math.min(lowerBound, upperBound) < 0) {
-      throw new Error('Invalid negative parameter');
+  setCardinality(lowerBound: number, upperBound: number): void {
+    if (lowerBound < 0) {
+      throw new Error('Lower bound must be a positive number');
+    } else if (upperBound < 1) {
+      throw new Error('Upper bound must be a positive number greater than zero');
     } else if (lowerBound > upperBound) {
       throw new Error('Lower bound cannot be greater than upper bound');
     } else if (lowerBound === UNBOUNDED_CARDINALITY) {
@@ -114,6 +116,22 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
 
     this.cardinality.lowerBound = lowerBound;
     this.cardinality.upperBound = upperBound;
+  }
+
+  setCardinalityToZeroToOne(): void {
+    this.setCardinality(0, 1);
+  }
+
+  setCardinalityToMany(): void {
+    this.setCardinality(0, UNBOUNDED_CARDINALITY);
+  }
+
+  setCardinalityToOne(): void {
+    this.setCardinality(1, 1);
+  }
+
+  setCardinalityToOneToMany(): void {
+    this.setCardinality(1, UNBOUNDED_CARDINALITY);
   }
 
   /**
