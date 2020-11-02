@@ -15,3 +15,4 @@ export * from './relation';
 export * from './multilingual_text';
 export * from './utils';
 export * from './stereotypes';
+export * from './natures';

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { OntoumlType, ClassStereotype, OntologicalNature, RelationStereotype, AggregationKind } from '@constants/.';
+import { OntoumlType, AggregationKind } from '@constants/.';
 import {
   setContainer,
   ModelElement,
@@ -17,7 +17,10 @@ import {
   MultilingualText,
   Classifier,
   utils,
-  UNBOUNDED_CARDINALITY
+  UNBOUNDED_CARDINALITY,
+  ClassStereotype,
+  OntologicalNature,
+  RelationStereotype
 } from './';
 
 const packageTemplate = {
@@ -81,7 +84,7 @@ export class Package extends ModelElement
 
   getAllEnumerations(): Class[] {
     const classesFilter = (modelElement: ModelElement) =>
-      modelElement instanceof Class && (modelElement as Class).isEnumeration();
+      modelElement instanceof Class && (modelElement as Class).hasEnumerationStereotype();
     return this.getAllContents(classesFilter) as Class[];
   }
 
@@ -303,13 +306,13 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    if (target.isRole() || target.isRoleMixin()) {
+    if (target.hasRoleStereotype() || target.hasRoleMixinStereotype()) {
       sourceEnd.setCardinalityToOneToMany();
     } else {
       sourceEnd.setCardinalityToMany();
     }
 
-    if (source.isRole() || source.isRoleMixin()) {
+    if (source.hasRoleStereotype() || source.hasRoleMixinStereotype()) {
       targetEnd.setCardinalityToOneToMany();
     } else {
       targetEnd.setCardinalityToMany();
@@ -334,7 +337,7 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    if (target.isRole() || target.isRoleMixin()) {
+    if (target.hasRoleStereotype() || target.hasRoleMixinStereotype()) {
       sourceEnd.setCardinalityToOneToMany();
     } else {
       sourceEnd.setCardinalityToMany();
@@ -464,7 +467,7 @@ export class Package extends ModelElement
     sourceEnd.setCardinalityToZeroToOne();
     sourceEnd.isReadOnly = true;
 
-    if (source.isHistoricalRole() || source.isHistoricalRoleMixin()) {
+    if (source.hasHistoricalRoleStereotype() || source.hasHistoricalRoleMixinStereotype()) {
       targetEnd.setCardinalityToOneToMany();
     } else {
       targetEnd.setCardinalityToMany();

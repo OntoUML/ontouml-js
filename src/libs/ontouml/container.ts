@@ -1,16 +1,4 @@
-import { ClassStereotype, OntologicalNature, RelationStereotype } from '@constants/.';
-import {
-  Package,
-  Class,
-  Property,
-  Literal,
-  Relation,
-  Generalization,
-  GeneralizationSet,
-  MultilingualText,
-  ModelElement,
-  Project
-} from '.';
+import { Package, Class, Property, Literal, Relation, Generalization, GeneralizationSet } from '.';
 
 export function getContents<T>(
   container: Container<T, any>,

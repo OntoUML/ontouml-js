@@ -50,11 +50,33 @@ export enum ClassStereotype {
   ABSTRACT = 'abstract'
 }
 
-export const MomentTypes = [ClassStereotype.MODE, ClassStereotype.QUALITY, ClassStereotype.RELATOR];
+export const NonSortalStereotypes = [
+  ClassStereotype.CATEGORY,
+  ClassStereotype.MIXIN,
+  ClassStereotype.PHASE_MIXIN,
+  ClassStereotype.ROLE_MIXIN,
+  ClassStereotype.HISTORICAL_ROLE_MIXIN
+];
 
-export const ObjectTypes = [ClassStereotype.KIND, ClassStereotype.QUANTITY, ClassStereotype.COLLECTIVE];
+export const UltimateSortalStereotypes = [
+  ClassStereotype.KIND,
+  ClassStereotype.COLLECTIVE,
+  ClassStereotype.QUANTITY,
+  ClassStereotype.RELATOR,
+  ClassStereotype.QUALITY,
+  ClassStereotype.MODE
+];
 
-export const RigidTypes = [
+export const BaseSortalStereotypes = [
+  ClassStereotype.SUBKIND,
+  ClassStereotype.PHASE,
+  ClassStereotype.ROLE,
+  ClassStereotype.HISTORICAL_ROLE
+];
+
+export const SortalStereotypes = [...UltimateSortalStereotypes, ...BaseSortalStereotypes];
+
+export const RigidStereotypes = [
   ClassStereotype.KIND,
   ClassStereotype.QUANTITY,
   ClassStereotype.COLLECTIVE,
@@ -68,7 +90,7 @@ export const RigidTypes = [
   ClassStereotype.TYPE
 ];
 
-export const AntiRigidTypes = [
+export const AntiRigidStereotypes = [
   ClassStereotype.ROLE,
   ClassStereotype.ROLE_MIXIN,
   ClassStereotype.HISTORICAL_ROLE,
@@ -77,9 +99,19 @@ export const AntiRigidTypes = [
   ClassStereotype.PHASE_MIXIN
 ];
 
-export const SemiRigidTypes = [ClassStereotype.MIXIN];
+export const SemiRigidStereotypes = [ClassStereotype.MIXIN];
 
-export const AbstractTypes = [ClassStereotype.ABSTRACT, ClassStereotype.DATATYPE, ClassStereotype.ENUMERATION];
+export const MomentOnlyStereotypes = [ClassStereotype.MODE, ClassStereotype.QUALITY, ClassStereotype.RELATOR];
+
+// TODO: review this name
+export const ObjectOnlyStereotypes = [ClassStereotype.KIND, ClassStereotype.QUANTITY, ClassStereotype.COLLECTIVE];
+
+export const EndurantStereotypes = {
+  ...SortalStereotypes,
+  ...NonSortalStereotypes,
+};
+
+export const AbstractStereotypes = [ClassStereotype.ABSTRACT, ClassStereotype.DATATYPE, ClassStereotype.ENUMERATION];
 
 export enum RelationStereotype {
   MATERIAL = 'material',
@@ -143,11 +175,11 @@ export default {
   Sortality,
   OntoumlType,
   AggregationKind,
-  RigidTypes,
-  AntiRigidTypes,
-  SemiRigidTypes,
-  MomentTypes,
-  ObjectTypes,
+  RigidTypes: RigidStereotypes,
+  AntiRigidTypes: AntiRigidStereotypes,
+  SemiRigidTypes: SemiRigidStereotypes,
+  MomentTypes: MomentOnlyStereotypes,
+  ObjectTypes: ObjectOnlyStereotypes,
   MomentNatures,
   ObjectNatures
 };

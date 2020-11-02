@@ -1,6 +1,6 @@
 import { OntoumlType } from '@constants/.';
 import uniqid from 'uniqid';
-import { Class, getText, MultilingualText, Package, Project, Property, Relation } from './';
+import { Class, getText, MultilingualText, Package, Project, Relation } from './';
 
 const ontoumlElementTemplate = {
   type: null,

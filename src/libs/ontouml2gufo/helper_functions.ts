@@ -3,15 +3,15 @@ import tags from 'language-tags';
 
 import {
   ClassStereotype,
-  AbstractTypes,
-  RigidTypes,
+  AbstractStereotypes,
+  RigidStereotypes,
   OntoumlType,
   RelationStereotype,
   PropertyStereotype,
   AggregationKind,
-  MomentTypes,
+  MomentOnlyStereotypes,
   MomentNatures,
-  ObjectTypes,
+  ObjectOnlyStereotypes,
   ObjectNatures
 } from '@constants/.';
 import {
@@ -99,7 +99,7 @@ export function areRigid(classes: IClass[]): boolean {
 export function isRigid(element: IElement): boolean {
   if (!isClass(element)) return false;
   const stereotype = getStereotype(element as IClass);
-  return RigidTypes.includes(stereotype as ClassStereotype);
+  return RigidStereotypes.includes(stereotype as ClassStereotype);
 }
 
 //TODO: replace with Class.areAbstract(classes:Class[])
@@ -117,7 +117,7 @@ export function arePrimitiveDatatype(classes: IClass[]): boolean {
 export function isAbstract(element: IElement): boolean {
   if (!isClass(element)) return false;
   const stereotype = getStereotype(element as IClass);
-  return AbstractTypes.includes(stereotype as ClassStereotype);
+  return AbstractStereotypes.includes(stereotype as ClassStereotype);
 }
 
 // TODO: review if this is needed in the core API
@@ -133,7 +133,7 @@ export function isMoment(element: IElement): boolean {
   }
 
   const stereotype = getStereotype(element);
-  if (MomentTypes.includes(stereotype as ClassStereotype)) {
+  if (MomentOnlyStereotypes.includes(stereotype as ClassStereotype)) {
     return true;
   }
 
@@ -158,7 +158,7 @@ export function isObject(element: IElement): boolean {
   }
 
   const stereotype = getStereotype(element);
-  if (ObjectTypes.includes(stereotype as ClassStereotype)) {
+  if (ObjectOnlyStereotypes.includes(stereotype as ClassStereotype)) {
     return true;
   }
 

@@ -1,4 +1,4 @@
-import { ClassStereotype, OntoumlType, RelationStereotype } from '@constants/.';
+import { OntoumlType } from '@constants/.';
 import {
   Property,
   ModelElement,
@@ -13,7 +13,9 @@ import {
   getAllContents,
   getContents,
   Package,
-  stereotypes
+  stereotypes,
+  ClassStereotype,
+  RelationStereotype
 } from './';
 import { UNBOUNDED_CARDINALITY } from './property';
 
@@ -109,90 +111,116 @@ export class Relation extends ModelElement implements Container<Property, Proper
     setContainer(this, container);
   }
 
-  isInstantiation(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.INSTANTIATION;
-  }
-
-  isDerivation(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.DERIVATION;
-  }
-
-  isMaterial(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.MATERIAL;
-  }
-
-  isComparative(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.COMPARATIVE;
-  }
-
   getSourceEnd(): Property {
-    if (!this.isBinary()) {
+    if (!this.isBinaryRelation()) {
       throw new Error('Unable to retrieve source end on a non-binary relation');
     }
     return this.properties[0];
   }
 
   getTargetEnd(): Property {
-    if (!this.isBinary()) {
+    if (!this.isBinaryRelation()) {
       throw new Error('Unable to retrieve target end on a non-binary relation');
     }
     return this.properties[1];
   }
 
   getMemberEnd(position: number): Property {
-    if (!this.isTernary()) {
+    if (!this.isTernaryRelation()) {
+      throw new Error('Unable to retrieve member end on a non-ternary relation');
+    }
+    return this.properties[position];
+  }
+
+  getSourceClassEnd(): Property {
+    if (!this.isBinaryClassRelation()) {
+      throw new Error('Unable to retrieve source end on a non-binary relation');
+    }
+    return this.properties[0];
+  }
+
+  getTargetClassEnd(): Property {
+    if (!this.isBinaryClassRelation()) {
+      throw new Error('Unable to retrieve target end on a non-binary relation');
+    }
+    return this.properties[1];
+  }
+
+  getDerivingRelationEnd(): Property {
+    if (!this.isDerivationRelation()) {
+      throw new Error('Unable to retrieve source end on a non-binary relation');
+    }
+    return this.properties[0];
+  }
+
+  getDerivedClassEnd(): Property {
+    if (!this.isDerivationRelation()) {
+      throw new Error('Unable to retrieve target end on a non-binary relation');
+    }
+    return this.properties[1];
+  }
+
+  getMemberClassEnd(position: number): Property {
+    if (!this.isTernaryClassRelation()) {
       throw new Error('Unable to retrieve member end on a non-ternary relation');
     }
     return this.properties[position];
   }
 
   getSource(): Classifier {
+    if (this.hasDerivationStereotype()) {
+      throw new Error('Unable to retrieve class from derivation relation');
+    }
     return this.getSourceEnd().propertyType;
   }
 
   getTarget(): Classifier {
+    if (this.hasDerivationStereotype()) {
+      throw new Error('Unable to retrieve class from derivation relation');
+    }
     return this.getTargetEnd().propertyType;
   }
 
   getMember(position: number): Classifier {
-    return this.getMemberEnd(position).propertyType;
+    if (this.hasDerivationStereotype()) {
+      throw new Error('Unable to retrieve class from derivation relation');
+    }
+    return this.getMemberClassEnd(position).propertyType;
   }
 
   getSourceClass(): Class {
-    if (this.isDerivation()) {
+    if (this.hasDerivationStereotype()) {
       throw new Error('Unable to retrieve class from derivation relation');
     }
-    return this.getSource() as Class;
+    return this.getSourceEnd().propertyType as Class;
   }
 
   getTargetClass(): Class {
-    if (this.isDerivation()) {
+    if (this.hasDerivationStereotype()) {
       throw new Error('Unable to retrieve class from derivation relation');
     }
-    return this.getTarget() as Class;
+    return this.getTargetEnd().propertyType as Class;
   }
 
   getMemberClass(position: number): Class {
-    if (this.isDerivation()) {
+    if (this.hasDerivationStereotype()) {
       throw new Error('Unable to retrieve class from derivation relation');
     }
-    return this.getMember(position) as Class;
+    return this.getMemberClassEnd(position).propertyType as Class;
   }
 
   getDerivingRelation(): Relation {
-    if (!this.isDerivation()) {
+    if (!this.hasDerivationStereotype()) {
       throw new Error('Unable to retrieve deriving relation from non-derivation relation');
     }
-    // TODO: review code; getSource won't work
-    return this.getSource() as Relation;
+    return this.getDerivingRelationEnd().propertyType as Relation;
   }
 
   getDerivedClass(): Class {
-    if (!this.isDerivation()) {
+    if (!this.hasDerivationStereotype()) {
       throw new Error('Unable to retrieve derived class from non-derivation relation');
     }
-    // TODO: review code; getTarget won't work
-    return this.getTarget() as Class;
+    return this.getDerivedClassEnd().propertyType as Class;
   }
 
   getSourceClassStereotype(): ClassStereotype {
@@ -216,54 +244,40 @@ export class Relation extends ModelElement implements Container<Property, Proper
   }
 
   // TODO: check whether isBinaryRelation() is a better name
-  isBinary(): boolean {
-    return this.properties && this.properties.length === 2;
+  isBinaryRelation(): boolean {
+    return this.properties[0].propertyType instanceof Class && this.properties[1].propertyType instanceof Class;
   }
 
   // TODO: check whether isTernaryRelation() is a better name
-  isTernary(): boolean {
+  isTernaryRelation(): boolean {
     return this.properties && this.properties.length > 2;
   }
 
+  isBinaryClassRelation(): boolean {
+    return (
+      this.isBinaryRelation() &&
+      this.properties[0].propertyType instanceof Class &&
+      this.properties[1].propertyType instanceof Class
+    );
+  }
+
+  // TODO: check whether isDerivationRelation() is a better name
+  isDerivationRelation(): boolean {
+    return (
+      this.isBinaryRelation() &&
+      this.properties[0].propertyType instanceof Relation &&
+      this.properties[1].propertyType instanceof Class
+    );
+  }
+
+  isTernaryClassRelation(): boolean {
+    return (
+      this.isTernaryRelation() && this.properties.every((relationEnd: Property) => relationEnd.propertyType instanceof Class)
+    );
+  }
+
   isPartWholeRelation(): boolean {
-    return this.isBinary() && this.getTargetEnd().isAggregationEnd();
-  }
-
-  holdsBetween(...conditions: ((relationEnd: Property) => boolean)[]): boolean {
-    if (this.properties.length !== conditions.length) {
-      throw new Error('Method requires a same number conditions and relation ends');
-    }
-    return this.properties.every((relationEnd: Property, relationEndIndex: number) => conditions[relationEndIndex](relationEnd));
-  }
-
-  holdsBetweenEvents(): boolean {
-    if (!this.isBinary() || this.isDerivation()) {
-      return false;
-    }
-
-    const isEndTypeAnEvent = (relationEnd: Property) =>
-      relationEnd.propertyType instanceof Class && relationEnd.propertyType.isEvent();
-    return this.holdsBetween(isEndTypeAnEvent, isEndTypeAnEvent);
-  }
-
-  holdsBetweenMoments(): boolean {
-    if (!this.isBinary() || this.isDerivation()) {
-      return false;
-    }
-
-    const isEndTypeAMoment = (relationEnd: Property) =>
-      relationEnd.propertyType instanceof Class && relationEnd.propertyType.isMoment();
-    return this.holdsBetween(isEndTypeAMoment, isEndTypeAMoment);
-  }
-
-  holdsBetweenSubstantials(): boolean {
-    if (!this.isBinary() || this.isDerivation()) {
-      return false;
-    }
-
-    const isEndTypeASubstantial = (relationEnd: Property) =>
-      relationEnd.propertyType instanceof Class && relationEnd.propertyType.isSubstantial();
-    return this.holdsBetween(isEndTypeASubstantial, isEndTypeASubstantial);
+    return this.isBinaryRelation() && this.getTargetEnd().isAggregationEnd();
   }
 
   // TODO: check weather ternary relations may denote existential dependencies
@@ -288,6 +302,129 @@ export class Relation extends ModelElement implements Container<Property, Proper
 
   isExistentialDependenceRelation(): boolean {
     return this.isSourceExistentiallyDependent() || this.isTargetExistentiallyDependent();
+  }
+
+  hasExistentialDependenceStereotype(): boolean {
+    const stereotype = this.getUniqueStereotype();
+    return stereotypes.ExistentialDependencyRelationStereotypes.includes(stereotype);
+  }
+
+  hasPartWholeStereotype(): boolean {
+    const stereotype = this.getUniqueStereotype();
+    return stereotypes.ExistentialDependencyRelationStereotypes.includes(stereotype);
+  }
+
+  hasMaterialStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.MATERIAL;
+  }
+
+  hasDerivationStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.DERIVATION;
+  }
+
+  hasComparativeStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.COMPARATIVE;
+  }
+
+  hasMediationStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.MEDIATION;
+  }
+
+  hasCharacterizationStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.CHARACTERIZATION;
+  }
+
+  hasExternalDependenceStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.EXTERNAL_DEPENDENCE;
+  }
+
+  hasComponentOfStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.COMPONENT_OF;
+  }
+
+  hasMemberOfStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.MEMBER_OF;
+  }
+
+  hasSubCollectionOfStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.SUBCOLLECTION_OF;
+  }
+
+  hasSubQuantityOfStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.SUBQUANTITY_OF;
+  }
+
+  hasInstantiationStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.INSTANTIATION;
+  }
+
+  hasTerminationStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.TERMINATION;
+  }
+
+  hasParticipationalStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.PARTICIPATIONAL;
+  }
+
+  hasParticipationStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.PARTICIPATION;
+  }
+
+  hasHistoricalDependenceStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.HISTORICAL_DEPENDENCE;
+  }
+
+  hasCreationStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.CREATION;
+  }
+
+  hasManifestationStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.MANIFESTATION;
+  }
+
+  hasBringsAboutStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.BRINGS_ABOUT;
+  }
+
+  hasTriggersStereotype(): boolean {
+    return this.getUniqueStereotype() === RelationStereotype.TRIGGERS;
+  }
+
+  holdsBetween(...conditions: ((relationEnd: Property) => boolean)[]): boolean {
+    if (this.properties.length !== conditions.length) {
+      throw new Error('Method requires a same number conditions and relation ends');
+    }
+    return this.properties.every((relationEnd: Property, relationEndIndex: number) => conditions[relationEndIndex](relationEnd));
+  }
+
+  holdsBetweenEvents(): boolean {
+    if (!this.isBinaryClassRelation() || this.isDerivationRelation()) {
+      return false;
+    }
+
+    const isEndTypeAnEvent = (relationEnd: Property) =>
+      relationEnd.propertyType instanceof Class && relationEnd.propertyType.isRestrictedToEvent();
+    return this.holdsBetween(isEndTypeAnEvent, isEndTypeAnEvent);
+  }
+
+  holdsBetweenMoments(): boolean {
+    if (!this.isBinaryClassRelation() || this.isDerivationRelation()) {
+      return false;
+    }
+
+    const isEndTypeAMoment = (relationEnd: Property) =>
+      relationEnd.propertyType instanceof Class && relationEnd.propertyType.isRestrictedToMoment();
+    return this.holdsBetween(isEndTypeAMoment, isEndTypeAMoment);
+  }
+
+  holdsBetweenSubstantials(): boolean {
+    if (!this.isBinaryClassRelation() || this.isDerivationRelation()) {
+      return false;
+    }
+
+    const isEndTypeASubstantial = (relationEnd: Property) =>
+      relationEnd.propertyType instanceof Class && relationEnd.propertyType.isRestrictedToSubstantial();
+    return this.holdsBetween(isEndTypeASubstantial, isEndTypeASubstantial);
   }
 
   getGeneralizationAsGeneral(): Generalization[] {

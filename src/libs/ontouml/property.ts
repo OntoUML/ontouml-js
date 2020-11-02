@@ -1,4 +1,4 @@
-import { OntoumlType, AggregationKind, PropertyStereotype } from '@constants/.';
+import { OntoumlType, AggregationKind } from '@constants/.';
 import {
   Relation,
   Class,
@@ -8,7 +8,8 @@ import {
   Decoratable,
   getUniqueStereotype,
   hasValidStereotypeValue,
-  stereotypes
+  stereotypes,
+  PropertyStereotype
 } from './';
 
 const propertyTemplate = {
@@ -26,11 +27,13 @@ const propertyTemplate = {
 // Babel did not allow me to make this a static field in Property
 export const UNBOUNDED_CARDINALITY = Infinity;
 
+export type Cardinality = { lowerBound: number; upperBound: number };
+
 export class Property extends ModelElement implements Decoratable<PropertyStereotype> {
   type: OntoumlType.PROPERTY_TYPE;
   container: Class | Relation;
   stereotypes: PropertyStereotype[];
-  cardinality: { lowerBound: number; upperBound: number };
+  cardinality: Cardinality;
   propertyType: Classifier;
   subsettedProperties: Property[]; // TODO: update null when deserializing
   redefinedProperties: Property[];
@@ -138,61 +141,67 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
    * Only in binary relations
    */
   getOppositeEnd(): Property {
-    throw new Error('Method unimplemented!');
+    const container = this.container;
+    if (container instanceof Relation && container.isBinaryRelation()) {
+      return this !== container.getSourceEnd() ? container.getSourceEnd() : container.getTargetEnd();
+    } else {
+      throw new Error('Invalid method on non-binary relations');
+    }
   }
 
   /**
    * Only in Nary relations
    */
   getOtherEnds(): Property[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  getLowerBound(): string {
-    throw new Error('Method unimplemented!');
-  }
-
-  getUpperBound(): string {
-    throw new Error('Method unimplemented!');
+    const container = this.container;
+    if (container instanceof Relation && container.isTernaryRelation()) {
+      return container.properties.filter((relationEnd: Property) => relationEnd !== this);
+    } else {
+      throw new Error('Invalid method on non-ternary relations');
+    }
   }
 
   isOptional(): boolean {
-    throw new Error('Method unimplemented!');
+    return this.cardinality.lowerBound === 0;
   }
 
   isMandatory(): boolean {
-    throw new Error('Method unimplemented!');
+    return !this.isOptional();
   }
 
-  toOne(): boolean {
-    throw new Error('Method unimplemented!');
-  }
-
-  toSome(): boolean {
-    throw new Error('Method unimplemented!');
-  }
-
-  toMany(): boolean {
-    throw new Error('Method unimplemented!');
-  }
-
-  isZeroToOne(): boolean {
-    throw new Error('Method unimplemented!');
+  isCardinalityZeroToOne(): boolean {
+    const card = this.cardinality;
+    return card.lowerBound === 0 && card.upperBound === 1;
   }
 
   isZeroToMany(): boolean {
-    throw new Error('Method unimplemented!');
+    const card = this.cardinality;
+    return card.lowerBound === 0 && card.upperBound === UNBOUNDED_CARDINALITY;
   }
 
   isOneToOne(): boolean {
-    throw new Error('Method unimplemented!');
+    const card = this.cardinality;
+    return card.lowerBound === 1 && card.upperBound === 1;
   }
 
   isOneToMany(): boolean {
-    throw new Error('Method unimplemented!');
+    const card = this.cardinality;
+    return card.lowerBound === 1 && card.upperBound === UNBOUNDED_CARDINALITY;
   }
 
   hasValidCardinality(): boolean {
-    throw new Error('Method unimplemented!');
+    return Property.isCardinalityValid(this.cardinality);
+  }
+
+  static isCardinalityValid(cardinality: Cardinality): boolean {
+    const { lowerBound, upperBound } = cardinality;
+    return !(
+      lowerBound < 0 ||
+      upperBound < 0 ||
+      lowerBound > upperBound ||
+      lowerBound === UNBOUNDED_CARDINALITY ||
+      isNaN(lowerBound) ||
+      isNaN(upperBound)
+    );
   }
 }

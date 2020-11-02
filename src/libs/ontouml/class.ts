@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { OntoumlType, OntologicalNature, ClassStereotype, RigidTypes, MomentNatures, ObjectNatures } from '@constants/.';
+import { OntoumlType } from '@constants/.';
 import {
   Relation,
   Property,
@@ -17,7 +17,10 @@ import {
   Classifier,
   utils,
   stereotypes,
-  MultilingualText
+  natures,
+  MultilingualText,
+  ClassStereotype,
+  OntologicalNature
 } from './';
 
 // TODO: implement Classifier
@@ -85,7 +88,7 @@ export class Class extends ModelElement
   }
 
   createAttribute(propertyType: Class, name?: MultilingualText, base?: Partial<Property>): Property {
-    if (this.isEnumeration()) {
+    if (this.hasEnumerationStereotype()) {
       throw new Error('Cannot create an attribute on an enumeration class.');
     }
 
@@ -97,7 +100,7 @@ export class Class extends ModelElement
   }
 
   createLiteral(name?: MultilingualText, base?: Partial<Literal>): Literal {
-    if (!this.isEnumeration()) {
+    if (!this.hasEnumerationStereotype()) {
       throw new Error('Cannot create a literal on a non-enumeration class.');
     }
     return addContentToArray<ModelElement, Literal>(
@@ -111,17 +114,16 @@ export class Class extends ModelElement
     setContainer(this, container);
   }
 
-  isRigid(): boolean {
-    const stereotype = this.getUniqueStereotype();
-    return RigidTypes.includes(stereotype);
-  }
-
-  static areRigid(classes: Class[]): boolean {
-    return classes.every((_class: Class) => _class.isRigid());
-  }
-
   static areAbstract(classes: Class[]): boolean {
     return classes.every((_class: Class) => _class.isAbstract);
+  }
+
+  hasAttributes(): boolean {
+    return !_.isEmpty(this.properties);
+  }
+
+  hasLiterals(): boolean {
+    return !_.isEmpty(this.properties);
   }
 
   restrictedToOverlaps(natures: OntologicalNature | OntologicalNature[]): boolean {
@@ -144,111 +146,210 @@ export class Class extends ModelElement
     return _.isEqual(this.restrictedTo, naturesArray);
   }
 
-  isMoment(): boolean {
-    return this.restrictedToContainedIn(MomentNatures);
+  isRestrictedToEndurant(): boolean {
+    return this.restrictedToContainedIn(natures.EndurantNatures);
   }
 
-  isSubstantial(): boolean {
-    return this.restrictedToContainedIn(ObjectNatures);
+  isRestrictedToSubstantial(): boolean {
+    return this.restrictedToContainedIn(natures.SubstantialNatures);
   }
 
-  isType(): boolean {
+  isRestrictedToFunctionalComplex(): boolean {
+    return this.restrictedToContainedIn(OntologicalNature.functional_complex);
+  }
+
+  isRestrictedToCollective(): boolean {
+    return this.restrictedToContainedIn(OntologicalNature.collective);
+  }
+
+  isRestrictedToQuantity(): boolean {
+    return this.restrictedToContainedIn(OntologicalNature.quantity);
+  }
+
+  isRestrictedToMoment(): boolean {
+    return this.restrictedToContainedIn(natures.MomentNatures);
+  }
+
+  isRestrictedToIntrinsicMoment(): boolean {
+    return this.restrictedToContainedIn(natures.IntrinsicMomentNatures);
+  }
+
+  isRestrictedToExtrinsicMoment(): boolean {
+    return this.restrictedToContainedIn(natures.ExtrinsicMomentNatures);
+  }
+
+  isRestrictedToRelator(): boolean {
+    return this.restrictedToContainedIn(OntologicalNature.relator);
+  }
+
+  isRestrictedToIntrinsicMode(): boolean {
+    return this.restrictedToContainedIn(OntologicalNature.intrinsic_mode);
+  }
+
+  isRestrictedToExtrinsicMode(): boolean {
+    return this.restrictedToContainedIn(OntologicalNature.extrinsic_mode);
+  }
+
+  isRestrictedToQuality(): boolean {
+    return this.restrictedToContainedIn(OntologicalNature.quality);
+  }
+
+  isRestrictedToEvent(): boolean {
+    return this.restrictedToContainedIn(OntologicalNature.event);
+  }
+
+  isRestrictedToSituation(): boolean {
+    return this.restrictedToContainedIn(OntologicalNature.situation);
+  }
+
+  isRestrictedToType(): boolean {
+    return this.restrictedToContainedIn(OntologicalNature.type);
+  }
+
+  isRestrictedToAbstract(): boolean {
+    return this.restrictedToContainedIn(OntologicalNature.abstract);
+  }
+
+  hasTypeStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.TYPE;
   }
 
-  isEvent(): boolean {
+  hasEventStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.EVENT;
   }
 
-  isSituation(): boolean {
+  hasSituationStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.SITUATION;
   }
 
-  isDatatype(): boolean {
+  hasAbstractStereotype(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.ABSTRACT;
+  }
+
+  hasDatatypeStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.DATATYPE;
   }
 
-  isEnumeration(): boolean {
+  hasEnumerationStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.ENUMERATION;
   }
 
   isComplexDatatype(): boolean {
-    return this.isDatatype() && this.hasAttributes();
+    return this.hasDatatypeStereotype() && this.hasAttributes();
   }
 
-  hasAttributes(): boolean {
-    return !_.isEmpty(this.properties);
+  hasEndurantOnlyStereotype(): boolean {
+    const stereotype = this.getUniqueStereotype();
+    return stereotypes.EndurantStereotypes.includes(stereotype);
   }
 
-  hasLiterals(): boolean {
-    return !_.isEmpty(this.properties);
+  hasMomentOnlyStereotype(): boolean {
+    const stereotype = this.getUniqueStereotype();
+    return stereotypes.MomentOnlyStereotypes.includes(stereotype);
   }
 
-  isEndurant(): boolean {
-    return this.isSubstantial() || this.isMoment();
+  hasSubstantialOnlyStereotype(): boolean {
+    const stereotype = this.getUniqueStereotype();
+    return stereotypes.SubstantialOnlyStereotypes.includes(stereotype);
   }
 
-  isKind(): boolean {
+  // TODO: expand support
+  static haveRigidStereotypes(classes: Class[]): boolean {
+    return classes.every((_class: Class) => _class.hasRigidStereotype());
+  }
+
+  hasRigidStereotype(): boolean {
+    const stereotype = this.getUniqueStereotype();
+    return stereotypes.RigidStereotypes.includes(stereotype);
+  }
+
+  hasSemiRigidStereotype(): boolean {
+    const stereotype = this.getUniqueStereotype();
+    return stereotypes.SemiRigidStereotypes.includes(stereotype);
+  }
+
+  hasAntiRigidStereotype(): boolean {
+    const stereotype = this.getUniqueStereotype();
+    return stereotypes.AntiRigidStereotypes.includes(stereotype);
+  }
+
+  hasNonSortalStereotype(): boolean {
+    const stereotype = this.getUniqueStereotype();
+    return stereotypes.NonSortalStereotypes.includes(stereotype);
+  }
+
+  hasSortalStereotype(): boolean {
+    const stereotype = this.getUniqueStereotype();
+    return stereotypes.SortalStereotypes.includes(stereotype);
+  }
+
+  hasUltimateSortalStereotype(): boolean {
+    const stereotype = this.getUniqueStereotype();
+    return stereotypes.UltimateSortalStereotypes.includes(stereotype);
+  }
+
+  hasBaseSortalStereotype(): boolean {
+    const stereotype = this.getUniqueStereotype();
+    return stereotypes.BaseSortalStereotypes.includes(stereotype);
+  }
+
+  hasKindStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.KIND;
   }
 
-  isCollective(): boolean {
+  hasCollectiveStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.COLLECTIVE;
   }
 
-  isQuantity(): boolean {
+  hasQuantityStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.QUANTITY;
   }
 
-  isRelator(): boolean {
+  hasRelatorStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.RELATOR;
   }
 
-  isQuality(): boolean {
+  hasQualityStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.QUALITY;
   }
 
-  isMode(): boolean {
+  hasModeStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.MODE;
   }
 
-  isIntrinsicMode(): boolean {
-    return this.isMode() && this.restrictedToEquals(OntologicalNature.intrinsic_mode);
-  }
-
-  isExtrinsicMode(): boolean {
-    return this.isMode() && this.restrictedToEquals(OntologicalNature.extrinsic_mode);
-  }
-
-  isSubkind(): boolean {
+  hasSubkindStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.SUBKIND;
   }
 
-  isPhase(): boolean {
+  hasPhaseStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.PHASE;
   }
 
-  isRole(): boolean {
+  hasRoleStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.ROLE;
   }
 
-  isHistoricalRole(): boolean {
+  hasHistoricalRoleStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.HISTORICAL_ROLE;
   }
 
-  isPhaseMixin(): boolean {
+  hasCategoryStereotype(): boolean {
+    return this.getUniqueStereotype() === ClassStereotype.CATEGORY;
+  }
+
+  hasPhaseMixinStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.PHASE_MIXIN;
   }
 
-  isRoleMixin(): boolean {
+  hasRoleMixinStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.ROLE_MIXIN;
   }
 
-  isHistoricalRoleMixin(): boolean {
+  hasHistoricalRoleMixinStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.HISTORICAL_ROLE_MIXIN;
   }
 
-  isMixin(): boolean {
+  hasMixinStereotype(): boolean {
     return this.getUniqueStereotype() === ClassStereotype.MIXIN;
   }
 
@@ -338,53 +439,53 @@ export class Class extends ModelElement
    *
    * @param nature Exact match
    */
-  hasKindStereotype(): boolean {
-    throw new Error('Method unimplemented!');
-  }
+  // hasKindStereotype(): boolean {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   /**
    *
    * @param nature Exact match
    */
-  hasRoleStereotype(): boolean {
-    throw new Error('Method unimplemented!');
-  }
+  // hasRoleStereotype(): boolean {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   /**
    *
    * @param nature Exact match
    */
-  hasRelatorStereotype(): boolean {
-    throw new Error('Method unimplemented!');
-  }
+  // hasRelatorStereotype(): boolean {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   /**
    * Returns true iff the class has one of the following stereotypes as its unique stereotype: «kind», «collective», «quantity», «relator», «mode», «quality», «subkind», «role», «phase»
    */
-  isSortal(): boolean {
-    throw new Error('Method unimplemented!');
-  }
+  // isSortal(): boolean {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   /**
    * Returns true if the class has one of the following stereotypes as its unique stereotype: «category», «roleMixin», «phaseMixin», «mixin»
    */
-  isNonSortal(): boolean {
-    throw new Error('Method unimplemented!');
-  }
+  // isNonSortal(): boolean {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   /**
    * Returns true if the class has one of the following stereotypes as its unique stereotype: «kind», «collective», «quantity», «relator», «mode», «quality»
    */
-  isUltimateSortal(): boolean {
-    throw new Error('Method unimplemented!');
-  }
+  // isUltimateSortal(): boolean {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   /**
    * Returns true for «subkind», «role», «phase», and «historicalRole»
    */
-  isBaseSortal(): boolean {
-    throw new Error('Method unimplemented!');
-  }
+  // isBaseSortal(): boolean {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   /**
    * Returns true iff the class has one of the following stereotypes as its unique stereotype: «kind», «collective», «quantity», «relator», «mode», «quality», «subkind», «category»
