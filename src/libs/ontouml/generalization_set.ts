@@ -45,26 +45,90 @@ export class GeneralizationSet extends ModelElement {
    * A disjoint complete set of phase subclasses
    */
   isPhasePartition(): boolean {
-    throw new Error('Method unimplemented!');
+    return this.isComplete && this.isDisjoint;
   }
 
   /**
    * @throws exception if different generals are present
    */
-  getGeneral(): Classifier {
-    throw new Error('Method unimplemented!');
+  getGeneral(): Classifier<Class | Relation> {
+    if (!this.generalizations) {
+      return null;
+    }
+
+    let general = this.generalizations[0].general;
+
+    if (this.generalizations.some((gen: Generalization) => gen.general !== general)) {
+      throw new Error('Generalization set involving distinct general classifiers');
+    }
+
+    return general;
   }
 
-  getSpecifics(): Classifier[] {
-    throw new Error('Method unimplemented!');
+  getSpecifics(): Classifier<Class | Relation>[] {
+    if (this.generalizations) {
+      return this.generalizations.map((gen: Generalization) => gen.specific);
+    }
+
+    return [];
+  }
+
+  getGeneralClass(): Class {
+    if (!this.involvesClasses()) {
+      throw new Error('Generalization set does not involve classes');
+    }
+
+    return this.getGeneral() as Class;
+  }
+
+  getSpecificClasses(): Classifier<Class | Relation>[] {
+    if (!this.involvesClasses()) {
+      throw new Error('Generalization set does not involve classes');
+    }
+
+    return this.getSpecifics() as Class[];
+  }
+
+  getGeneralRelation(): Relation {
+    if (!this.involvesRelations()) {
+      throw new Error('Generalization set does not involve relations');
+    }
+
+    return this.getGeneral() as Relation;
+  }
+
+  getSpecificRelations(): Relation[] {
+    if (!this.involvesRelations()) {
+      throw new Error('Generalization set does not involve relations');
+    }
+
+    return this.getSpecifics() as Relation[];
+  }
+
+  getInvolvedClassifiers(): Classifier<Class | Relation>[] {
+    let involvedClassifiers: Classifier<Class | Relation>[] = [];
+    const general = this.getGeneral();
+    const specifics = this.getSpecifics();
+
+    if (this.categorizer) {
+      involvedClassifiers.push(this.categorizer);
+    }
+    if (general) {
+      involvedClassifiers.push(general);
+    }
+    if (specifics) {
+      involvedClassifiers.push(...specifics);
+    }
+
+    return involvedClassifiers;
   }
 
   involvesClasses(): boolean {
-    throw new Error('Method unimplemented!');
+    return this.generalizations && this.generalizations.every((gen: Generalization) => gen.involvesClasses());
   }
 
   involvesRelations(): boolean {
-    throw new Error('Method unimplemented!');
+    return this.generalizations && this.generalizations.every((gen: Generalization) => gen.involvesRelations());
   }
 
   /** Get instantiation relations where the categorizer (or one of its ancestors) is the source */

@@ -34,7 +34,7 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
   container: Class | Relation;
   stereotypes: PropertyStereotype[];
   cardinality: Cardinality;
-  propertyType: Classifier;
+  propertyType: Classifier<any>;
   subsettedProperties: Property[]; // TODO: update null when deserializing
   redefinedProperties: Property[];
   aggregationKind: AggregationKind;

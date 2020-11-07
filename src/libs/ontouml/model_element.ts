@@ -1,4 +1,4 @@
-import { Relation, Project, Class, Property, OntoumlElement } from './';
+import { Relation, Project, Class, Property, OntoumlElement, Package } from './';
 
 const modelElementTemplate = {
   propertyAssignments: null
@@ -54,6 +54,27 @@ export abstract class ModelElement extends OntoumlElement {
 
     if (typeof (this as any).getContents === 'function') {
       (this as any).getContents().forEach((content: ModelElement) => content.setProject(project));
+    }
+  }
+
+  getModelOrRootPackage(): Package {
+    if (this.project) {
+      return this.project.model;
+    }
+
+    let packageReference = this.container;
+
+    while (packageReference && packageReference.container) {
+      packageReference = packageReference.container;
+    }
+
+    if (packageReference instanceof Package) {
+      return packageReference;
+    } else if (this instanceof Package) {
+      return this;
+    } else {
+      // TODO: should we throw an error instead?
+      return null;
     }
   }
 

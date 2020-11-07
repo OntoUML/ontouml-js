@@ -1,5 +1,5 @@
 import { OntoumlType } from '@constants/.';
-import { Relation, Class, Classifier, ModelElement, setContainer, Package } from './';
+import { Relation, Class, Classifier, ModelElement, setContainer, Package, GeneralizationSet } from './';
 
 const generalizationTemplate = {
   general: null,
@@ -7,8 +7,8 @@ const generalizationTemplate = {
 };
 
 export class Generalization extends ModelElement {
-  general: Classifier;
-  specific: Classifier;
+  general: Classifier<Class | Relation>;
+  specific: Classifier<Class | Relation>;
 
   constructor(base?: Partial<Generalization>) {
     super(base);
@@ -31,5 +31,19 @@ export class Generalization extends ModelElement {
 
   setContainer(container: Package): void {
     setContainer(this, container);
+  }
+
+  getGeneralizationSets(): GeneralizationSet[] {
+    return this.getModelOrRootPackage()
+      .getAllGeneralizationSets()
+      .filter((genset: GeneralizationSet) => genset.generalizations && genset.generalizations.includes(this));
+  }
+
+  involvesClasses(): boolean {
+    return this.general instanceof Class && this.specific instanceof Class;
+  }
+
+  involvesRelations(): boolean {
+    return this.general instanceof Relation && this.specific instanceof Relation;
   }
 }

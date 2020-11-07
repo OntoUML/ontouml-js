@@ -108,7 +108,7 @@ export const ObjectOnlyStereotypes = [ClassStereotype.KIND, ClassStereotype.QUAN
 
 export const EndurantStereotypes = {
   ...SortalStereotypes,
-  ...NonSortalStereotypes,
+  ...NonSortalStereotypes
 };
 
 export const AbstractStereotypes = [ClassStereotype.ABSTRACT, ClassStereotype.DATATYPE, ClassStereotype.ENUMERATION];

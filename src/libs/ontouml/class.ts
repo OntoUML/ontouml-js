@@ -20,7 +20,22 @@ import {
   natures,
   MultilingualText,
   ClassStereotype,
-  OntologicalNature
+  OntologicalNature,
+  Generalization,
+  GeneralizationSet,
+  getGeneralizationSetsInvolvingClassifier,
+  getGeneralizationSetsWhereCategorizer,
+  getGeneralizationSetsWhereGeneral,
+  getGeneralizationSetsWhereSpecific,
+  getGeneralizationsInvolvingClassifier,
+  getGeneralizationsWhereGeneral,
+  getGeneralizationsWhereSpecific,
+  getParents,
+  getChildren,
+  getAncestors,
+  getDescendants,
+  getFilteredAncestors,
+  getFilteredDescendants
 } from './';
 
 // TODO: implement Classifier
@@ -38,7 +53,7 @@ const classTemplate = {
 };
 
 export class Class extends ModelElement
-  implements Decoratable<ClassStereotype>, Container<Property | Literal, Property | Literal>, Classifier {
+  implements Decoratable<ClassStereotype>, Container<Property | Literal, Property | Literal>, Classifier<Class> {
   container: Package;
   stereotypes: ClassStereotype[];
   restrictedTo: OntologicalNature[];
@@ -61,6 +76,58 @@ export class Class extends ModelElement
     this.isExtensional = this.isExtensional || false;
     this.isPowertype = this.isPowertype || false;
     this.order = this.order || '1';
+  }
+
+  getGeneralizations(): Generalization[] {
+    return getGeneralizationsInvolvingClassifier(this);
+  }
+
+  getGeneralizationSets(): GeneralizationSet[] {
+    return getGeneralizationSetsInvolvingClassifier(this);
+  }
+
+  getGeneralizationsWhereGeneral(): Generalization[] {
+    return getGeneralizationsWhereGeneral(this);
+  }
+
+  getGeneralizationsWhereSpecific(): Generalization[] {
+    return getGeneralizationsWhereSpecific(this);
+  }
+
+  getGeneralizationSetsWhereGeneral(): GeneralizationSet[] {
+    return getGeneralizationSetsWhereGeneral(this);
+  }
+
+  getGeneralizationSetsWhereSpecific(): GeneralizationSet[] {
+    return getGeneralizationSetsWhereSpecific(this);
+  }
+
+  getGeneralizationSetsWhereCategorizer(): GeneralizationSet[] {
+    return getGeneralizationSetsWhereCategorizer(this);
+  }
+
+  getParents(): Class[] {
+    return getParents(this);
+  }
+
+  getChildren(): Class[] {
+    return getChildren(this);
+  }
+
+  getAncestors(): Class[] {
+    return getAncestors(this);
+  }
+
+  getDescendants(): Class[] {
+    return getDescendants(this);
+  }
+
+  getFilteredAncestors(filter: (ancestor: Class) => boolean): Class[] {
+    return getFilteredAncestors(this, filter);
+  }
+
+  getFilteredDescendants(filter: (descendent: Class) => boolean): Class[] {
+    return getFilteredDescendants(this, filter);
   }
 
   getContents(contentsFilter?: (content: Property | Literal) => boolean): (Property | Literal)[] {
@@ -353,79 +420,79 @@ export class Class extends ModelElement
     return this.getUniqueStereotype() === ClassStereotype.MIXIN;
   }
 
-  getGeneralizationAsCategorizer(): Class {
-    throw new Error('Method unimplemented!');
-  }
+  // getGeneralizationAsCategorizer(): Class {
+  //   throw new Error('Method unimplemented!');
+  // }
 
-  getParents(): Class[] {
-    // return super.getParents() as Class[];
-    throw new Error('Method unimplemented!');
-  }
+  // getParents(): Class[] {
+  //   // return super.getParents() as Class[];
+  //   throw new Error('Method unimplemented!');
+  // }
 
-  getChildren(): Class[] {
-    // return super.getChildren() as Class[];
-    throw new Error('Method unimplemented!');
-  }
+  // getChildren(): Class[] {
+  //   // return super.getChildren() as Class[];
+  //   throw new Error('Method unimplemented!');
+  // }
 
-  getAncestors(knownAncestors?: Class[]): Class[] {
-    // return super.getAncestors() as Class[];
-    throw new Error('Method unimplemented!');
-  }
+  // getAncestors(knownAncestors?: Class[]): Class[] {
+  //   // return super.getAncestors() as Class[];
+  //   throw new Error('Method unimplemented!');
+  // }
 
-  getDescendants(knownDescendants?: Class[]): Class[] {
-    // return super.getDescendants() as Class[];
-    throw new Error('Method unimplemented!');
-  }
+  // getDescendants(knownDescendants?: Class[]): Class[] {
+  //   // return super.getDescendants() as Class[];
+  //   throw new Error('Method unimplemented!');
+  // }
 
-  getFilteredAncestors(filter: (ancestor: Class) => boolean): Class[] {
-    // return super.getFilteredAncestors(filter) as Class[]
-    throw new Error('Method unimplemented!');
-  }
+  // getFilteredAncestors(filter: (ancestor: Class) => boolean): Class[] {
+  //   // return super.getFilteredAncestors(filter) as Class[]
+  //   throw new Error('Method unimplemented!');
+  // }
 
-  getFilteredDescendants(filter: (descendent: Class) => boolean): Class[] {
-    // return super.getFilteredDescendants(filter) as Class[]
-    throw new Error('Method unimplemented!');
-  }
+  // getFilteredDescendants(filter: (descendent: Class) => boolean): Class[] {
+  //   // return super.getFilteredDescendants(filter) as Class[]
+  //   throw new Error('Method unimplemented!');
+  // }
 
   /**
    *
    * @param nature Exact match
    */
-  hasNature(nature: OntologicalNature | OntologicalNature[]): boolean {
-    throw new Error('Method unimplemented!');
-  }
+  // hasNature(nature: OntologicalNature | OntologicalNature[]): boolean {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   /**
    *
    * @param nature Includes all
    */
-  allowsNature(nature: OntologicalNature | OntologicalNature[]): boolean {
-    throw new Error('Method unimplemented!');
-  }
+  // allowsNature(nature: OntologicalNature | OntologicalNature[]): boolean {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   /**
    *
    * @param nature Exact match
    */
-  hasRelatorNature(): boolean {
-    throw new Error('Method unimplemented!');
-  }
+  // hasRelatorNature(): boolean {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   /**
    *
    * @param nature Includes relator
    */
-  allowsRelatorNature(): boolean {
-    throw new Error('Method unimplemented!');
-  }
+  // allowsRelatorNature(): boolean {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   /**
    *
    * @param nature Exact match (unique stereotypes only)
    */
-  hasStereotype(stereotype: ClassStereotype): boolean {
-    throw new Error('Method unimplemented!');
-  }
+  // hasStereotype(stereotype: ClassStereotype): boolean {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   /**
    *
@@ -497,16 +564,16 @@ export class Class extends ModelElement
   /**
    * Returns true iff the class has one of the following stereotypes as its unique stereotype: «mixin»
    */
-  isSemiRigid(): boolean {
-    throw new Error('Method unimplemented!');
-  }
+  // isSemiRigid(): boolean {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   /**
    * Returns true iff the class has one of the following stereotypes as its unique stereotype: «roleMixin», «phaseMixin», «role», «phase»
    */
-  isAntiRigid(): boolean {
-    throw new Error('Method unimplemented!');
-  }
+  // isAntiRigid(): boolean {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   getUltimateSortalAncestors(): Class[] {
     throw new Error('Method unimplemented!');

@@ -551,8 +551,8 @@ export class Package extends ModelElement
   }
 
   createGeneralization(
-    general: Classifier,
-    specific: Classifier,
+    general: Classifier<any>,
+    specific: Classifier<any>,
     name?: MultilingualText,
     base?: Partial<Generalization>
   ): Generalization {

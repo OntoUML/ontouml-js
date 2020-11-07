@@ -15,9 +15,22 @@ import {
   Package,
   stereotypes,
   ClassStereotype,
-  RelationStereotype
+  RelationStereotype,
+  getAncestors,
+  getChildren,
+  getDescendants,
+  getFilteredAncestors,
+  getFilteredDescendants,
+  getGeneralizationSetsInvolvingClassifier,
+  getGeneralizationSetsWhereGeneral,
+  getGeneralizationSetsWhereSpecific,
+  getGeneralizationsInvolvingClassifier,
+  getGeneralizationsWhereGeneral,
+  getGeneralizationsWhereSpecific,
+  getParents,
+  GeneralizationSet,
+  UNBOUNDED_CARDINALITY
 } from './';
-import { UNBOUNDED_CARDINALITY } from './property';
 
 const relationTemplate = {
   stereotypes: null,
@@ -26,7 +39,8 @@ const relationTemplate = {
   isDerived: false
 };
 
-export class Relation extends ModelElement implements Container<Property, Property>, Decoratable<RelationStereotype>, Classifier {
+export class Relation extends ModelElement
+  implements Container<Property, Property>, Decoratable<RelationStereotype>, Classifier<Relation> {
   stereotypes: RelationStereotype[];
   properties: Property[];
   isAbstract: boolean;
@@ -39,6 +53,54 @@ export class Relation extends ModelElement implements Container<Property, Proper
 
     this.isAbstract = this.isAbstract || false;
     this.isDerived = this.isDerived || false;
+  }
+
+  getGeneralizations(): Generalization[] {
+    return getGeneralizationsInvolvingClassifier(this);
+  }
+
+  getGeneralizationSets(): GeneralizationSet[] {
+    return getGeneralizationSetsInvolvingClassifier(this);
+  }
+
+  getGeneralizationsWhereGeneral(): Generalization[] {
+    return getGeneralizationsWhereGeneral(this);
+  }
+
+  getGeneralizationsWhereSpecific(): Generalization[] {
+    return getGeneralizationsWhereSpecific(this);
+  }
+
+  getGeneralizationSetsWhereGeneral(): GeneralizationSet[] {
+    return getGeneralizationSetsWhereGeneral(this);
+  }
+
+  getGeneralizationSetsWhereSpecific(): GeneralizationSet[] {
+    return getGeneralizationSetsWhereSpecific(this);
+  }
+
+  getParents(): Relation[] {
+    return getParents(this);
+  }
+
+  getChildren(): Relation[] {
+    return getChildren(this);
+  }
+
+  getAncestors(): Relation[] {
+    return getAncestors(this);
+  }
+
+  getDescendants(): Relation[] {
+    return getDescendants(this);
+  }
+
+  getFilteredAncestors(filter: (ancestor: Relation) => boolean): Relation[] {
+    return getFilteredAncestors(this, filter);
+  }
+
+  getFilteredDescendants(filter: (descendent: Relation) => boolean): Relation[] {
+    return getFilteredDescendants(this, filter);
   }
 
   getContents(contentsFilter?: (property: Property) => boolean): Property[] {
@@ -167,21 +229,21 @@ export class Relation extends ModelElement implements Container<Property, Proper
     return this.properties[position];
   }
 
-  getSource(): Classifier {
+  getSource(): Classifier<any> {
     if (this.hasDerivationStereotype()) {
       throw new Error('Unable to retrieve class from derivation relation');
     }
     return this.getSourceEnd().propertyType;
   }
 
-  getTarget(): Classifier {
+  getTarget(): Classifier<any> {
     if (this.hasDerivationStereotype()) {
       throw new Error('Unable to retrieve class from derivation relation');
     }
     return this.getTargetEnd().propertyType;
   }
 
-  getMember(position: number): Classifier {
+  getMember(position: number): Classifier<any> {
     if (this.hasDerivationStereotype()) {
       throw new Error('Unable to retrieve class from derivation relation');
     }
@@ -427,36 +489,36 @@ export class Relation extends ModelElement implements Container<Property, Proper
     return this.holdsBetween(isEndTypeASubstantial, isEndTypeASubstantial);
   }
 
-  getGeneralizationAsGeneral(): Generalization[] {
-    throw new Error('Method unimplemented!');
-  }
+  // getGeneralizationAsGeneral(): Generalization[] {
+  //   throw new Error('Method unimplemented!');
+  // }
 
-  getGeneralizationAsSpecific(): Generalization[] {
-    throw new Error('Method unimplemented!');
-  }
+  // getGeneralizationAsSpecific(): Generalization[] {
+  //   throw new Error('Method unimplemented!');
+  // }
 
-  getFilteredAncestors(filter: (ancestor: Classifier) => boolean): Classifier[] {
-    throw new Error('Method not implemented.');
-  }
-  getFilteredDescendants(filter: (descendent: Classifier) => boolean): Classifier[] {
-    throw new Error('Method not implemented.');
-  }
+  // getFilteredAncestors(filter: (ancestor: Classifier) => boolean): Classifier[] {
+  //   throw new Error('Method not implemented.');
+  // }
+  // getFilteredDescendants(filter: (descendent: Classifier) => boolean): Classifier[] {
+  //   throw new Error('Method not implemented.');
+  // }
 
-  getParents(): Relation[] {
-    throw new Error('Method unimplemented!');
-  }
+  // getParents(): Relation[] {
+  //   throw new Error('Method unimplemented!');
+  // }
 
-  getChildren(): Relation[] {
-    throw new Error('Method unimplemented!');
-  }
+  // getChildren(): Relation[] {
+  //   throw new Error('Method unimplemented!');
+  // }
 
-  getAncestors(knownAncestors: Relation[]): Relation[] {
-    throw new Error('Method unimplemented!');
-  }
+  // getAncestors(knownAncestors: Relation[]): Relation[] {
+  //   throw new Error('Method unimplemented!');
+  // }
 
-  getDescendants(knownDescendants: Relation[]): Relation[] {
-    throw new Error('Method unimplemented!');
-  }
+  // getDescendants(knownDescendants: Relation[]): Relation[] {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   // getRelations(): Relation[] {
   //   throw new Error('Method unimplemented!');
@@ -490,14 +552,14 @@ export class Relation extends ModelElement implements Container<Property, Proper
   /**
    * Returns the `propertyType` of `properties[0]` if the relation is a derivation relation (see `isDerivation()`).
    */
-  getDerivedRelation?: () => Relation;
+  // getDerivedRelation?: () => Relation;
 
   /**
    * Returns the `propertyType` of `properties[1]` if the relation is a derivation relation (see `isDerivation()`).
    */
-  getTruthmakerClass(): Class {
-    throw new Error('Method unimplemented!');
-  }
+  // getTruthmakerClass(): Class {
+  //   throw new Error('Method unimplemented!');
+  // }
 
   // TODO: support specific methods for binary, nary, and derivations, throwing exception when otherwise
 
