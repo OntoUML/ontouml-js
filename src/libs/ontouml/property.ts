@@ -1,4 +1,3 @@
-import { OntoumlType, AggregationKind } from '@constants/.';
 import {
   Relation,
   Class,
@@ -9,20 +8,17 @@ import {
   getUniqueStereotype,
   hasValidStereotypeValue,
   stereotypes,
-  PropertyStereotype
+  PropertyStereotype,
+  hasStereotypeContainedIn,
+  OntoumlType,
+  ClassifierType
 } from './';
 
-const propertyTemplate = {
-  stereotypes: null,
-  cardinality: null,
-  propertyType: null,
-  subsettedProperties: null,
-  redefinedProperties: null,
-  aggregationKind: null,
-  isDerived: false,
-  isOrdered: false,
-  isReadOnly: false
-};
+export enum AggregationKind {
+  NONE = 'NONE',
+  SHARED = 'SHARED',
+  COMPOSITE = 'COMPOSITE'
+}
 
 // Babel did not allow me to make this a static field in Property
 export const UNBOUNDED_CARDINALITY = Infinity;
@@ -31,7 +27,7 @@ export type Cardinality = { lowerBound: number; upperBound: number };
 
 export class Property extends ModelElement implements Decoratable<PropertyStereotype> {
   type: OntoumlType.PROPERTY_TYPE;
-  container: Class | Relation;
+  container: ClassifierType;
   stereotypes: PropertyStereotype[];
   cardinality: Cardinality;
   propertyType: Classifier<any>;
@@ -54,27 +50,41 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
     this.isReadOnly = this.isReadOnly || false;
   }
 
+  hasStereotypeContainedIn(stereotypes: PropertyStereotype | PropertyStereotype[]): boolean {
+    return hasStereotypeContainedIn<PropertyStereotype>(this, stereotypes);
+  }
+
   hasValidStereotypeValue(): boolean {
     return hasValidStereotypeValue(this, stereotypes.PropertyStereotypes, true);
   }
 
   getUniqueStereotype(): PropertyStereotype {
-    return getUniqueStereotype(this);
+    return getUniqueStereotype<PropertyStereotype>(this);
   }
 
   toJSON(): any {
-    const propertySerialization: any = {};
+    const propertySerialization = {
+      stereotypes: null,
+      cardinality: null,
+      propertyType: null,
+      subsettedProperties: null,
+      redefinedProperties: null,
+      aggregationKind: null,
+      isDerived: false,
+      isOrdered: false,
+      isReadOnly: false
+    };
 
-    Object.assign(propertySerialization, propertyTemplate, super.toJSON());
+    Object.assign(propertySerialization, super.toJSON());
 
-    const propertyType = this.propertyType as Class | Relation;
+    const propertyType = this.propertyType as ClassifierType;
     propertySerialization.propertyType = propertyType.getReference();
     // TODO: transform cardinality
 
     return propertySerialization;
   }
 
-  setContainer(container: Class | Relation): void {
+  setContainer(container: ClassifierType): void {
     setContainer(this, container);
   }
 
@@ -203,5 +213,31 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
       isNaN(lowerBound) ||
       isNaN(upperBound)
     );
+  }
+
+  clone(): Property {
+    return new Property(this);
+  }
+
+  replace(originalElement: ModelElement, newElement: ModelElement): void {
+    if (this.container === originalElement) {
+      this.container = newElement as ClassifierType;
+    }
+
+    if (this.propertyType === (originalElement as ClassifierType)) {
+      this.propertyType = newElement as ClassifierType;
+    }
+
+    if (this.subsettedProperties && this.subsettedProperties.includes(originalElement as any)) {
+      this.subsettedProperties = this.subsettedProperties.map((subsettedProperty: Property) =>
+        subsettedProperty === originalElement ? (newElement as Property) : subsettedProperty
+      );
+    }
+
+    if (this.redefinedProperties && this.redefinedProperties.includes(originalElement as any)) {
+      this.redefinedProperties = this.redefinedProperties.map((redefinedProperty: Property) =>
+        redefinedProperty === originalElement ? (newElement as Property) : redefinedProperty
+      );
+    }
   }
 }

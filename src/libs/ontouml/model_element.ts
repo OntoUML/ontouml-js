@@ -1,9 +1,5 @@
 import { Relation, Project, Class, Property, OntoumlElement, Package } from './';
 
-const modelElementTemplate = {
-  propertyAssignments: null
-};
-
 export function setContainer(content: ModelElement, container: ModelElement): void {
   if (content.project !== container.project) {
     throw new Error('Container and content projects do not match');
@@ -35,9 +31,11 @@ export abstract class ModelElement extends OntoumlElement {
   }
 
   toJSON(): any {
-    const modelElementSerialization = {};
+    const modelElementSerialization = {
+      propertyAssignments: null
+    };
 
-    Object.assign(modelElementSerialization, modelElementTemplate, this);
+    Object.assign(modelElementSerialization, this);
 
     delete modelElementSerialization['project'];
     delete modelElementSerialization['container'];
@@ -57,6 +55,7 @@ export abstract class ModelElement extends OntoumlElement {
     }
   }
 
+  // TODO: add documentation
   getModelOrRootPackage(): Package {
     if (this.project) {
       return this.project.model;
@@ -73,12 +72,18 @@ export abstract class ModelElement extends OntoumlElement {
     } else if (this instanceof Package) {
       return this;
     } else {
-      // TODO: should we throw an error instead?
       return null;
     }
   }
 
   abstract setContainer(container: ModelElement): void;
+
+  /** Clones the model element and all its contents. Replaces all references to original contents with references to cloned elements. */
+  abstract clone(): ModelElement;
+
+  // TODO: replace references in property assignments
+  /** Replaces of references to `originalElement` with references to `newElement`. Designed to be used within clone(). */
+  abstract replace(originalElement: ModelElement, newElement: ModelElement): void;
 
   isDecoratable(): boolean {
     return this instanceof Class || this instanceof Relation || this instanceof Property;

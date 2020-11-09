@@ -1,4 +1,5 @@
 import tags from 'language-tags';
+import _ from 'lodash';
 
 export type MultilingualText = string | { [bcpLanguageTag: string]: string };
 
@@ -19,5 +20,6 @@ export function getText(multilingualText: MultilingualText, orderedLanguagePrefe
     }
   }
 
-  return Object.values(multilingualText)[0] || null;
+  let keys = Object.keys(multilingualText).sort();
+  return multilingualText[keys[0]] || null;
 }

@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { OntoumlType, AggregationKind } from '@constants/.';
 import {
   setContainer,
   ModelElement,
@@ -20,12 +19,10 @@ import {
   UNBOUNDED_CARDINALITY,
   ClassStereotype,
   OntologicalNature,
-  RelationStereotype
+  RelationStereotype,
+  OntoumlType,
+  AggregationKind
 } from './';
-
-const packageTemplate = {
-  contents: null
-};
 
 export class Package extends ModelElement
   implements Container<ModelElement, ModelElement>, PackageContainer<ModelElement, ModelElement> {
@@ -33,6 +30,7 @@ export class Package extends ModelElement
   contents: ModelElement[];
 
   constructor(base?: Partial<Package>) {
+    // TODO: deep clone; stringify/_.clone
     super(base);
     Object.defineProperty(this, 'type', { value: OntoumlType.PACKAGE_TYPE, enumerable: true });
   }
@@ -94,9 +92,11 @@ export class Package extends ModelElement
   }
 
   toJSON(): any {
-    const packageSerialization = {} as Package;
+    const packageSerialization = {
+      contents: null
+    };
 
-    Object.assign(packageSerialization, packageTemplate, super.toJSON());
+    Object.assign(packageSerialization, super.toJSON());
 
     return packageSerialization;
   }
@@ -109,6 +109,8 @@ export class Package extends ModelElement
     );
   }
 
+  // TODO: documentation
+  // TODO: add clone method
   createClass(
     name?: MultilingualText,
     stereotype?: ClassStereotype,
@@ -118,6 +120,7 @@ export class Package extends ModelElement
     return addContentToArray<ModelElement, Class>(
       this,
       'contents',
+      // TODO: use Object.assign
       new Class({
         ...base,
         name: name,
@@ -179,6 +182,7 @@ export class Package extends ModelElement
     );
   }
 
+  // TODO: move default
   createRoleMixin(name?: MultilingualText, natures?: OntologicalNature | OntologicalNature[], base?: Partial<Class>): Class {
     const isAbstract = true;
     return this.createClass(
@@ -268,6 +272,7 @@ export class Package extends ModelElement
     );
   }
 
+  // TODO: update names
   createBinaryRelation(
     source: Class,
     target: Class,
@@ -607,5 +612,39 @@ export class Package extends ModelElement
     setContainer(this, container);
   }
 
-  // TODO: do we need some getContent(match) method?
+  clone(): Package {
+    const clone = new Package(this);
+
+    if (clone.contents) {
+      clone.contents = clone.contents.map((content: ModelElement) => content.clone());
+    }
+
+    const replacementsMap = new Map<string, { originalContent: ModelElement; newContent: ModelElement }>();
+
+    this.getAllContents().forEach((content: ModelElement) => {
+      replacementsMap.set(content.id, { originalContent: content, newContent: null });
+    });
+
+    clone.getAllContents().forEach((content: ModelElement) => {
+      const id = content.id;
+      const entry = { ...replacementsMap.get(id), newContent: content };
+      replacementsMap.set(id, entry);
+    });
+
+    clone
+      .getContents()
+      .forEach((content: ModelElement) =>
+        replacementsMap.forEach(({ originalContent, newContent }) => content.replace(originalContent, newContent))
+      );
+
+    return clone;
+  }
+
+  replace(originalElement: ModelElement, newElement: ModelElement): void {
+    if (this.container === originalElement) {
+      this.container = newElement as Package;
+    }
+
+    this.getContents().forEach((content: ModelElement) => content.replace(originalElement, newElement));
+  }
 }

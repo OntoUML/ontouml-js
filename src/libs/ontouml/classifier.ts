@@ -1,24 +1,24 @@
 import _ from 'lodash';
 import { Property, Generalization, GeneralizationSet, Class, Relation, ModelElement } from './';
 
-type ClassifierTypes = Class | Relation;
+export type ClassifierType = Class | Relation;
 
-export function getGeneralizationsInvolvingClassifier<T extends ClassifierTypes>(classifier: T): Generalization[] {
+export function getGeneralizationsInvolvingClassifier<T extends ClassifierType>(classifier: T): Generalization[] {
   const root = classifier.getModelOrRootPackage();
   return root.getAllGeneralizations().filter((gen: Generalization) => classifier === gen.specific || classifier === gen.general);
 }
 
-export function getGeneralizationsWhereGeneral<T extends ClassifierTypes>(classifier: T): Generalization[] {
+export function getGeneralizationsWhereGeneral<T extends ClassifierType>(classifier: T): Generalization[] {
   const root = classifier.getModelOrRootPackage();
   return root.getAllGeneralizations().filter((gen: Generalization) => classifier === gen.general);
 }
 
-export function getGeneralizationsWhereSpecific<T extends ClassifierTypes>(classifier: T): Generalization[] {
+export function getGeneralizationsWhereSpecific<T extends ClassifierType>(classifier: T): Generalization[] {
   const root = classifier.getModelOrRootPackage();
   return root.getAllGeneralizations().filter((gen: Generalization) => classifier === gen.specific);
 }
 
-export function getGeneralizationSetsInvolvingClassifier<T extends ClassifierTypes>(classifier: T): GeneralizationSet[] {
+export function getGeneralizationSetsInvolvingClassifier<T extends ClassifierType>(classifier: T): GeneralizationSet[] {
   const root = classifier.getModelOrRootPackage();
   const generalizationSets = root.getAllGeneralizationSets();
   const generalizationSetsInvolvingClassifier: GeneralizationSet[] = [];
@@ -34,7 +34,7 @@ export function getGeneralizationSetsInvolvingClassifier<T extends ClassifierTyp
   return generalizationSetsInvolvingClassifier;
 }
 
-export function getGeneralizationSetsWhereGeneral<T extends ClassifierTypes>(classifier: T): GeneralizationSet[] {
+export function getGeneralizationSetsWhereGeneral<T extends ClassifierType>(classifier: T): GeneralizationSet[] {
   const root = classifier.getModelOrRootPackage();
   const generalizationSets = root.getAllGeneralizationSets();
   const generalizationSetsInvolvingClassifier: GeneralizationSet[] = [];
@@ -50,7 +50,7 @@ export function getGeneralizationSetsWhereGeneral<T extends ClassifierTypes>(cla
   return generalizationSetsInvolvingClassifier;
 }
 
-export function getGeneralizationSetsWhereSpecific<T extends ClassifierTypes>(classifier: T): GeneralizationSet[] {
+export function getGeneralizationSetsWhereSpecific<T extends ClassifierType>(classifier: T): GeneralizationSet[] {
   const root = classifier.getModelOrRootPackage();
   const generalizationSets = root.getAllGeneralizationSets();
   const generalizationSetsInvolvingClassifier: GeneralizationSet[] = [];
@@ -66,7 +66,7 @@ export function getGeneralizationSetsWhereSpecific<T extends ClassifierTypes>(cl
   return generalizationSetsInvolvingClassifier;
 }
 
-export function getGeneralizationSetsWhereCategorizer<T extends ClassifierTypes>(classifier: T): GeneralizationSet[] {
+export function getGeneralizationSetsWhereCategorizer<T extends ClassifierType>(classifier: T): GeneralizationSet[] {
   const root = classifier.getModelOrRootPackage();
   const generalizationSets = root.getAllGeneralizationSets();
   const generalizationSetsInvolvingClassifier: GeneralizationSet[] = [];
@@ -82,7 +82,7 @@ export function getGeneralizationSetsWhereCategorizer<T extends ClassifierTypes>
   return generalizationSetsInvolvingClassifier;
 }
 
-export function getParents<T extends ClassifierTypes>(classifier: T): T[] {
+export function getParents<T extends ClassifierType>(classifier: T): T[] {
   const root = classifier.getModelOrRootPackage();
 
   return root
@@ -91,7 +91,7 @@ export function getParents<T extends ClassifierTypes>(classifier: T): T[] {
     .map((gen: Generalization) => gen.general) as T[];
 }
 
-export function getChildren<T extends ClassifierTypes>(classifier: T): T[] {
+export function getChildren<T extends ClassifierType>(classifier: T): T[] {
   const root = classifier.getModelOrRootPackage();
 
   return root
@@ -100,10 +100,10 @@ export function getChildren<T extends ClassifierTypes>(classifier: T): T[] {
     .map((gen: Generalization) => gen.specific) as T[];
 }
 
-export function getAncestors<T extends ClassifierTypes>(classifier: T, knownAncestors: T[] = []): T[] {
+export function getAncestors<T extends ClassifierType>(classifier: T, knownAncestors: T[] = []): T[] {
   const ancestors = new Set<ModelElement>(knownAncestors);
 
-  classifier.getParents().forEach((parent: ClassifierTypes) => {
+  classifier.getParents().forEach((parent: ClassifierType) => {
     if (!ancestors.has(classifier)) {
       parent.getAncestors().forEach(ancestors.add);
       ancestors.add(parent);
@@ -113,10 +113,10 @@ export function getAncestors<T extends ClassifierTypes>(classifier: T, knownAnce
   return [...ancestors] as T[];
 }
 
-export function getDescendants<T extends ClassifierTypes>(classifier: T, knownDescendants: T[] = []): T[] {
+export function getDescendants<T extends ClassifierType>(classifier: T, knownDescendants: T[] = []): T[] {
   const descendants = new Set<ModelElement>(knownDescendants);
 
-  classifier.getChildren().forEach((child: ClassifierTypes) => {
+  classifier.getChildren().forEach((child: ClassifierType) => {
     if (!descendants.has(classifier)) {
       child.getDescendants().forEach(descendants.add);
       descendants.add(child);
@@ -126,15 +126,15 @@ export function getDescendants<T extends ClassifierTypes>(classifier: T, knownDe
   return [...descendants] as T[];
 }
 
-export function getFilteredAncestors<T extends ClassifierTypes>(classifier: T, filter: (ancestor: T) => boolean): T[] {
+export function getFilteredAncestors<T extends ClassifierType>(classifier: T, filter: (ancestor: T) => boolean): T[] {
   return getAncestors(classifier).filter(filter);
 }
 
-export function getFilteredDescendants<T extends ClassifierTypes>(classifier: T, filter: (descendent: T) => boolean): T[] {
+export function getFilteredDescendants<T extends ClassifierType>(classifier: T, filter: (descendent: T) => boolean): T[] {
   return getAncestors(classifier).filter(filter);
 }
 
-export interface Classifier<ClassifierType> {
+export interface Classifier<T> {
   properties: Property[];
   isAbstract: boolean;
   isDerived: boolean;
@@ -143,6 +143,7 @@ export interface Classifier<ClassifierType> {
 
   getGeneralizationSets(): GeneralizationSet[];
 
+  // TODO: add documentation
   getGeneralizationsWhereGeneral(): Generalization[];
 
   getGeneralizationsWhereSpecific(): Generalization[];
@@ -151,15 +152,15 @@ export interface Classifier<ClassifierType> {
 
   getGeneralizationSetsWhereSpecific(): GeneralizationSet[];
 
-  getParents(): ClassifierType[];
+  getParents(): T[];
 
-  getChildren(): ClassifierType[];
+  getChildren(): T[];
 
-  getAncestors(): ClassifierType[];
+  getAncestors(): T[];
 
-  getDescendants(): ClassifierType[];
+  getDescendants(): T[];
 
-  getFilteredAncestors(filter: (ancestor: ClassifierType) => boolean): ClassifierType[];
+  getFilteredAncestors(filter: (ancestor: T) => boolean): T[];
 
-  getFilteredDescendants(filter: (descendent: ClassifierType) => boolean): ClassifierType[];
+  getFilteredDescendants(filter: (descendent: T) => boolean): T[];
 }

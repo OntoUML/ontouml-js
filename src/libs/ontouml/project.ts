@@ -1,4 +1,3 @@
-import { OntoumlType } from '@constants/.';
 import {
   Relation,
   OntoumlElement,
@@ -11,13 +10,9 @@ import {
   Literal,
   ModelElement,
   Property,
-  PackageContainer
+  PackageContainer,
+  OntoumlType
 } from './';
-
-const projectTemplate = {
-  model: null,
-  diagrams: null
-};
 
 export class Project extends OntoumlElement implements PackageContainer<Package, ModelElement> {
   type: OntoumlType.PROJECT_TYPE;
@@ -77,9 +72,12 @@ export class Project extends OntoumlElement implements PackageContainer<Package,
   }
 
   toJSON(): any {
-    const projectSerialization = {} as Project;
+    const projectSerialization = {
+      model: null,
+      diagrams: null
+    };
 
-    Object.assign(projectSerialization, projectTemplate, super.toJSON());
+    Object.assign(projectSerialization, super.toJSON());
 
     return projectSerialization;
   }

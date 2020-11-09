@@ -1,4 +1,4 @@
-import { OntoumlStereotype } from '@constants/.';
+import { OntoumlStereotype, ClassStereotype, RelationStereotype, PropertyStereotype } from './';
 
 export function hasValidStereotypeValue<T extends OntoumlStereotype>(
   decoratable: Decoratable<T>,
@@ -14,7 +14,9 @@ export function hasValidStereotypeValue<T extends OntoumlStereotype>(
   }
 }
 
-export function getUniqueStereotype<T extends OntoumlStereotype>(decoratable: Decoratable<T>): T {
+export function getUniqueStereotype<Stereotype extends ClassStereotype | RelationStereotype | PropertyStereotype>(
+  decoratable: Decoratable<Stereotype>
+): Stereotype {
   const nStereotypes = decoratable.stereotypes && decoratable.stereotypes.length;
 
   if (nStereotypes > 1) {
@@ -24,9 +26,23 @@ export function getUniqueStereotype<T extends OntoumlStereotype>(decoratable: De
   return decoratable.stereotypes && decoratable.stereotypes[0];
 }
 
-export interface Decoratable<T extends OntoumlStereotype> {
-  stereotypes: T[];
+export function hasStereotypeContainedIn<Stereotype extends ClassStereotype | RelationStereotype | PropertyStereotype>(
+  decoratable: Decoratable<Stereotype>,
+  stereotypes: Stereotype | Stereotype[]
+): boolean {
+  const decoratableStereotype: Stereotype = decoratable.getUniqueStereotype();
+
+  if (Array.isArray(stereotypes)) {
+    return stereotypes.includes(decoratableStereotype);
+  } else {
+    return decoratableStereotype === stereotypes;
+  }
+}
+
+export interface Decoratable<Stereotype extends ClassStereotype | RelationStereotype | PropertyStereotype> {
+  stereotypes: Stereotype[];
 
   hasValidStereotypeValue(): boolean;
-  getUniqueStereotype(): T;
+  hasStereotypeContainedIn(stereotypes: Stereotype | Stereotype[]): boolean;
+  getUniqueStereotype(): Stereotype;
 }

@@ -102,6 +102,7 @@ describe('Container tests', () => {
   it('Get relation contents', () => {
     const person = new Class();
     const admires = new Relation();
+    // TODO: review creation of relations
     const admiree = admires.createSourceEnd({ propertyType: person });
     const admired = admires.createTargetEnd({ propertyType: person });
 

@@ -1,13 +1,16 @@
-import { OntoumlType } from '@constants/.';
 import uniqid from 'uniqid';
 import { Class, getText, MultilingualText, Package, Project, Relation } from './';
 
-const ontoumlElementTemplate = {
-  type: null,
-  id: null,
-  name: null,
-  description: null
-};
+export enum OntoumlType {
+  PROJECT_TYPE = 'Project',
+  PACKAGE_TYPE = 'Package',
+  CLASS_TYPE = 'Class',
+  RELATION_TYPE = 'Relation',
+  GENERALIZATION_TYPE = 'Generalization',
+  GENERALIZATION_SET_TYPE = 'GeneralizationSet',
+  PROPERTY_TYPE = 'Property',
+  LITERAL_TYPE = 'Literal'
+}
 
 export abstract class OntoumlElement {
   type: OntoumlType;
@@ -40,9 +43,14 @@ export abstract class OntoumlElement {
   }
 
   toJSON(): any {
-    const ontoumlElementSerialization = {};
+    const ontoumlElementSerialization = {
+      type: null,
+      id: null,
+      name: null,
+      description: null
+    };
 
-    Object.assign(ontoumlElementSerialization, ontoumlElementTemplate, this);
+    Object.assign(ontoumlElementSerialization, this);
 
     return ontoumlElementSerialization;
   }

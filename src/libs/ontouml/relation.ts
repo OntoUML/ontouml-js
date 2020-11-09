@@ -1,4 +1,3 @@
-import { OntoumlType } from '@constants/.';
 import {
   Property,
   ModelElement,
@@ -29,15 +28,10 @@ import {
   getGeneralizationsWhereSpecific,
   getParents,
   GeneralizationSet,
-  UNBOUNDED_CARDINALITY
+  UNBOUNDED_CARDINALITY,
+  hasStereotypeContainedIn,
+  OntoumlType
 } from './';
-
-const relationTemplate = {
-  stereotypes: null,
-  properties: null,
-  isAbstract: false,
-  isDerived: false
-};
 
 export class Relation extends ModelElement
   implements Container<Property, Property>, Decoratable<RelationStereotype>, Classifier<Relation> {
@@ -119,10 +113,19 @@ export class Relation extends ModelElement
     return hasValidStereotypeValue(this, stereotypes.RelationStereotypes, true);
   }
 
-  toJSON(): any {
-    const relationSerialization = {};
+  hasStereotypeContainedIn(stereotypes: RelationStereotype | RelationStereotype[]): boolean {
+    return hasStereotypeContainedIn<RelationStereotype>(this, stereotypes);
+  }
 
-    Object.assign(relationSerialization, relationTemplate, super.toJSON());
+  toJSON(): any {
+    const relationSerialization = {
+      stereotypes: null,
+      properties: null,
+      isAbstract: false,
+      isDerived: false
+    };
+
+    Object.assign(relationSerialization, super.toJSON());
 
     return relationSerialization;
   }
@@ -487,6 +490,24 @@ export class Relation extends ModelElement
     const isEndTypeASubstantial = (relationEnd: Property) =>
       relationEnd.propertyType instanceof Class && relationEnd.propertyType.isRestrictedToSubstantial();
     return this.holdsBetween(isEndTypeASubstantial, isEndTypeASubstantial);
+  }
+
+  clone(): Relation {
+    const clone = new Relation(this);
+
+    if (clone.properties) {
+      clone.properties = clone.properties.map((attribute: Property) => attribute.clone());
+    }
+
+    return clone;
+  }
+
+  replace(originalElement: ModelElement, newElement: ModelElement): void {
+    if (this.container === originalElement) {
+      this.container = newElement as Package;
+    }
+
+    this.getContents().forEach((content: ModelElement) => content.replace(originalElement, newElement));
   }
 
   // getGeneralizationAsGeneral(): Generalization[] {

@@ -1,5 +1,4 @@
-import { OntoumlType } from '@constants/.';
-import { Class, ModelElement, setContainer } from './';
+import { Class, ModelElement, setContainer, OntoumlType } from './';
 
 export class Literal extends ModelElement {
   constructor(base?: Partial<Literal>) {
@@ -10,5 +9,15 @@ export class Literal extends ModelElement {
 
   setContainer(container: Class): void {
     setContainer(this, container);
+  }
+
+  clone(): Literal {
+    return new Literal(this);
+  }
+
+  replace(originalElement: ModelElement, newElement: ModelElement): void {
+    if (this.container === originalElement) {
+      this.container = newElement;
+    }
   }
 }

@@ -1,5 +1,4 @@
 // import { Class } from './Class';
-// import { OntoUMLType, ClassStereotype, RelationStereotype } from '@constants/.';
 
 // let c1, c2;
 // c1 = new Class({ name: 'Person' });

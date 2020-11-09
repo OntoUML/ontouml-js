@@ -1,19 +1,11 @@
-import { OntoumlType } from '@constants/.';
-import { Relation, ModelElement, setContainer, Class, Generalization, Classifier, Package } from './';
-
-const generalizationSetTemplate = {
-  isDisjoint: false,
-  isComplete: false,
-  categorizer: null,
-  generalizations: null
-};
+import { Relation, ModelElement, setContainer, Class, Generalization, Classifier, Package, OntoumlType } from './';
 
 export class GeneralizationSet extends ModelElement {
+  container: Package;
   isDisjoint: boolean;
   isComplete: boolean;
   categorizer: Class;
   generalizations: Generalization[];
-  // TODO: Double check variable initialization in all classes
 
   constructor(base?: Partial<GeneralizationSet>) {
     super(base);
@@ -25,9 +17,14 @@ export class GeneralizationSet extends ModelElement {
   }
 
   toJSON(): any {
-    const generalizationSetSerialization: any = {};
+    const generalizationSetSerialization: any = {
+      isDisjoint: false,
+      isComplete: false,
+      categorizer: null,
+      generalizations: null
+    };
 
-    Object.assign(generalizationSetSerialization, generalizationSetTemplate, super.toJSON());
+    Object.assign(generalizationSetSerialization, super.toJSON());
 
     generalizationSetSerialization.categorizer = this.categorizer && this.categorizer.getReference();
     generalizationSetSerialization.generalizations = [...this.generalizations].map((generalization: Generalization) =>
@@ -129,6 +126,26 @@ export class GeneralizationSet extends ModelElement {
 
   involvesRelations(): boolean {
     return this.generalizations && this.generalizations.every((gen: Generalization) => gen.involvesRelations());
+  }
+
+  clone(): GeneralizationSet {
+    return new GeneralizationSet(this);
+  }
+
+  replace(originalElement: ModelElement, newElement: ModelElement): void {
+    if (this.container === originalElement) {
+      this.container = newElement as Package;
+    }
+
+    if (this.categorizer === originalElement) {
+      this.categorizer = newElement as Class;
+    }
+
+    if (this.generalizations && this.generalizations.includes(originalElement as any)) {
+      this.generalizations = this.generalizations.map((gen: Generalization) =>
+        gen === originalElement ? (newElement as Generalization) : gen
+      );
+    }
   }
 
   /** Get instantiation relations where the categorizer (or one of its ancestors) is the source */
