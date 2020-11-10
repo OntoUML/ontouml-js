@@ -1,4 +1,4 @@
-import { Project } from '@libs/project/';
+import { Project } from '@libs/ontouml/';
 
 describe('Project tests', () => {
   it('Create Project', () => {

@@ -16,3 +16,4 @@ export * from './multilingual_text';
 export * from './utils';
 export * from './stereotypes';
 export * from './natures';
+export * from './serialization';

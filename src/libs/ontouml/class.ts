@@ -1,4 +1,3 @@
-import { isEnumeration } from '@libs/ontouml2gufo/helper_functions';
 import _ from 'lodash';
 import {
   Relation,
@@ -40,6 +39,8 @@ import {
   OntoumlType
 } from './';
 
+export const ORDERLESS_LEVEL = Infinity;
+
 export class Class extends ModelElement
   implements Decoratable<ClassStereotype>, Container<Property | Literal, Property | Literal>, Classifier<Class> {
   container: Package;
@@ -51,7 +52,7 @@ export class Class extends ModelElement
   isDerived: boolean;
   isExtensional: boolean;
   isPowertype: boolean;
-  order: string;
+  order: number;
 
   constructor(base?: Partial<Class>) {
     super(base);
@@ -62,59 +63,7 @@ export class Class extends ModelElement
     this.isDerived = this.isDerived || false;
     this.isExtensional = this.isExtensional || false;
     this.isPowertype = this.isPowertype || false;
-    this.order = this.order || '1';
-  }
-
-  getGeneralizations(): Generalization[] {
-    return getGeneralizationsInvolvingClassifier(this);
-  }
-
-  getGeneralizationSets(): GeneralizationSet[] {
-    return getGeneralizationSetsInvolvingClassifier(this);
-  }
-
-  getGeneralizationsWhereGeneral(): Generalization[] {
-    return getGeneralizationsWhereGeneral(this);
-  }
-
-  getGeneralizationsWhereSpecific(): Generalization[] {
-    return getGeneralizationsWhereSpecific(this);
-  }
-
-  getGeneralizationSetsWhereGeneral(): GeneralizationSet[] {
-    return getGeneralizationSetsWhereGeneral(this);
-  }
-
-  getGeneralizationSetsWhereSpecific(): GeneralizationSet[] {
-    return getGeneralizationSetsWhereSpecific(this);
-  }
-
-  getGeneralizationSetsWhereCategorizer(): GeneralizationSet[] {
-    return getGeneralizationSetsWhereCategorizer(this);
-  }
-
-  getParents(): Class[] {
-    return getParents(this);
-  }
-
-  getChildren(): Class[] {
-    return getChildren(this);
-  }
-
-  getAncestors(): Class[] {
-    return getAncestors(this);
-  }
-
-  getDescendants(): Class[] {
-    return getDescendants(this);
-  }
-
-  getFilteredAncestors(filter: (ancestor: Class) => boolean): Class[] {
-    return getFilteredAncestors(this, filter);
-  }
-
-  getFilteredDescendants(filter: (descendent: Class) => boolean): Class[] {
-    return getFilteredDescendants(this, filter);
+    this.order = this.order || 1;
   }
 
   getContents(contentsFilter?: (content: Property | Literal) => boolean): (Property | Literal)[] {
@@ -123,14 +72,6 @@ export class Class extends ModelElement
 
   getAllContents(contentsFilter?: (content: Property | Literal) => boolean): (Property | Literal)[] {
     return getAllContents(this, ['properties', 'literals'], contentsFilter);
-  }
-
-  hasValidStereotypeValue(): boolean {
-    return hasValidStereotypeValue(this, stereotypes.ClassStereotypes);
-  }
-
-  getUniqueStereotype(): ClassStereotype {
-    return getUniqueStereotype(this);
   }
 
   toJSON(): any {
@@ -147,6 +88,10 @@ export class Class extends ModelElement
     };
 
     Object.assign(classSerialization, super.toJSON());
+
+    if (typeof classSerialization.order === 'number') {
+      classSerialization.order = classSerialization.order === ORDERLESS_LEVEL ? '*' : classSerialization.order.toString();
+    }
 
     return classSerialization;
   }
@@ -174,12 +119,25 @@ export class Class extends ModelElement
     );
   }
 
+  // TODO: review other implementations of setContainer
   setContainer(container: Package): void {
+    let oldContainer = this.container;
+
     setContainer(this, container);
+
+    if (oldContainer && oldContainer.contents) {
+      _.remove(oldContainer.contents, (content: ModelElement) => content === this);
+    }
+
+    if (container.contents) {
+      container.contents.push(this);
+    } else {
+      container.contents = [this];
+    }
   }
 
   static areAbstract(classes: Class[]): boolean {
-    return classes.every((_class: Class) => _class.isAbstract);
+    return !_.isEmpty(classes) && classes.every((_class: Class) => _class.isAbstract);
   }
 
   hasAttributes(): boolean {
@@ -187,27 +145,27 @@ export class Class extends ModelElement
   }
 
   hasLiterals(): boolean {
-    return !_.isEmpty(this.properties);
+    return !_.isEmpty(this.literals);
   }
 
   restrictedToOverlaps(natures: OntologicalNature | OntologicalNature[]): boolean {
-    const naturesArray: OntologicalNature[] = Array.isArray(natures) ? natures : [natures];
+    const naturesArray: OntologicalNature[] = utils.arrayFrom(natures);
     return utils.intersects(this.restrictedTo, naturesArray);
   }
 
   restrictedToContainedIn(natures: OntologicalNature | OntologicalNature[]): boolean {
-    const naturesArray: OntologicalNature[] = Array.isArray(natures) ? natures : [natures];
-    return utils.includesAll(naturesArray, this.restrictedTo);
+    const naturesArray: OntologicalNature[] = utils.arrayFrom(natures);
+    return !_.isEmpty(this.restrictedTo) && !_.isEmpty(naturesArray) && utils.includesAll(naturesArray, this.restrictedTo);
   }
 
   restrictedToContains(natures: OntologicalNature | OntologicalNature[]): boolean {
-    const naturesArray: OntologicalNature[] = Array.isArray(natures) ? natures : [natures];
-    return utils.includesAll(this.restrictedTo, naturesArray);
+    const naturesArray: OntologicalNature[] = utils.arrayFrom(natures);
+    return !_.isEmpty(this.restrictedTo) && !_.isEmpty(naturesArray) && utils.includesAll(this.restrictedTo, naturesArray);
   }
 
-  restrictedToEquals(natures: OntologicalNature | []): boolean {
-    const naturesArray: OntologicalNature[] = Array.isArray(natures) ? natures : [natures];
-    return _.isEqual(this.restrictedTo, naturesArray);
+  restrictedToEquals(natures: OntologicalNature | OntologicalNature[]): boolean {
+    const naturesArray: OntologicalNature[] = utils.arrayFrom(natures);
+    return utils.equalContents(this.restrictedTo, naturesArray);
   }
 
   isRestrictedToEndurant(): boolean {
@@ -272,6 +230,14 @@ export class Class extends ModelElement
 
   isRestrictedToAbstract(): boolean {
     return this.restrictedToContainedIn(OntologicalNature.abstract);
+  }
+
+  hasValidStereotypeValue(): boolean {
+    return hasValidStereotypeValue(this, stereotypes.ClassStereotypes);
+  }
+
+  getUniqueStereotype(): ClassStereotype {
+    return getUniqueStereotype(this);
   }
 
   hasStereotypeContainedIn(stereotypes: ClassStereotype | ClassStereotype[]): boolean {
@@ -410,6 +376,58 @@ export class Class extends ModelElement
 
   hasMixinStereotype(): boolean {
     return this.hasStereotypeContainedIn(ClassStereotype.MIXIN);
+  }
+
+  getGeneralizations(): Generalization[] {
+    return getGeneralizationsInvolvingClassifier(this);
+  }
+
+  getGeneralizationSets(): GeneralizationSet[] {
+    return getGeneralizationSetsInvolvingClassifier(this);
+  }
+
+  getGeneralizationsWhereGeneral(): Generalization[] {
+    return getGeneralizationsWhereGeneral(this);
+  }
+
+  getGeneralizationsWhereSpecific(): Generalization[] {
+    return getGeneralizationsWhereSpecific(this);
+  }
+
+  getGeneralizationSetsWhereGeneral(): GeneralizationSet[] {
+    return getGeneralizationSetsWhereGeneral(this);
+  }
+
+  getGeneralizationSetsWhereSpecific(): GeneralizationSet[] {
+    return getGeneralizationSetsWhereSpecific(this);
+  }
+
+  getGeneralizationSetsWhereCategorizer(): GeneralizationSet[] {
+    return getGeneralizationSetsWhereCategorizer(this);
+  }
+
+  getParents(): Class[] {
+    return getParents(this);
+  }
+
+  getChildren(): Class[] {
+    return getChildren(this);
+  }
+
+  getAncestors(): Class[] {
+    return getAncestors(this);
+  }
+
+  getDescendants(): Class[] {
+    return getDescendants(this);
+  }
+
+  getFilteredAncestors(filter: (ancestor: Class) => boolean): Class[] {
+    return getFilteredAncestors(this, filter);
+  }
+
+  getFilteredDescendants(filter: (descendent: Class) => boolean): Class[] {
+    return getFilteredDescendants(this, filter);
   }
 
   getUltimateSortalAncestors(): Class[] {

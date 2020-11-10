@@ -1,5 +1,4 @@
-import { ClassStereotype, PropertyStereotype, RelationStereotype } from '@constants/.';
-import { Class, Relation, Property } from '@libs/project/';
+import { Class, Relation, Property, ClassStereotype, PropertyStereotype, RelationStereotype } from '@libs/ontouml/';
 
 describe('Decoratable Interface Tests', () => {
   it('Class with no stereotypes', () => {

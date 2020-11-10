@@ -1,4 +1,5 @@
 import uniqid from 'uniqid';
+import _ from 'lodash';
 import { Class, getText, MultilingualText, Package, Project, Relation } from './';
 
 export enum OntoumlType {
@@ -25,6 +26,9 @@ export abstract class OntoumlElement {
     if (base) {
       Object.assign(this, base);
     }
+
+    this.name = this.name || null;
+    this.description = this.description || null;
   }
 
   getName(orderedLanguagePreferences: string[] = ['en']): string {
@@ -51,6 +55,12 @@ export abstract class OntoumlElement {
     };
 
     Object.assign(ontoumlElementSerialization, this);
+
+    Object.entries(ontoumlElementSerialization).forEach(([k, v]) => {
+      if (Array.isArray(v) && _.isEmpty(v)) {
+        ontoumlElementSerialization[k] = null;
+      }
+    });
 
     return ontoumlElementSerialization;
   }

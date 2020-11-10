@@ -35,7 +35,7 @@ export abstract class ModelElement extends OntoumlElement {
       propertyAssignments: null
     };
 
-    Object.assign(modelElementSerialization, this);
+    Object.assign(modelElementSerialization, super.toJSON());
 
     delete modelElementSerialization['project'];
     delete modelElementSerialization['container'];
@@ -78,11 +78,13 @@ export abstract class ModelElement extends OntoumlElement {
 
   abstract setContainer(container: ModelElement): void;
 
-  /** Clones the model element and all its contents. Replaces all references to original contents with references to cloned elements. */
+  /** Clones the model element and all its contents. Replaces all references to
+   * original contents with references to cloned elements. */
   abstract clone(): ModelElement;
 
   // TODO: replace references in property assignments
-  /** Replaces of references to `originalElement` with references to `newElement`. Designed to be used within clone(). */
+  /** Replaces references to `originalElement` with references to `newElement`.
+   * Designed to be used within clone(). */
   abstract replace(originalElement: ModelElement, newElement: ModelElement): void;
 
   isDecoratable(): boolean {

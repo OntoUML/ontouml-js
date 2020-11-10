@@ -1,4 +1,4 @@
-import { Class, ModelElement, Package, Project, Relation } from '@libs/project/';
+import { Class, ModelElement, Package, Project, Relation } from '@libs/ontouml/';
 
 describe('Container tests', () => {
   it('Get project contents - empty project', () => {

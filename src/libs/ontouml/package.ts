@@ -105,12 +105,11 @@ export class Package extends ModelElement
     return addContentToArray<ModelElement, Package>(
       this,
       'contents',
-      new Package({ ...base, name: name, container: this, project: this.project })
+      new Package(Object.assign({}, base, { name, container: this, project: this.project }))
     );
   }
 
   // TODO: documentation
-  // TODO: add clone method
   createClass(
     name?: MultilingualText,
     stereotype?: ClassStereotype,
@@ -120,15 +119,15 @@ export class Package extends ModelElement
     return addContentToArray<ModelElement, Class>(
       this,
       'contents',
-      // TODO: use Object.assign
-      new Class({
-        ...base,
-        name: name,
-        stereotypes: utils.arrayFromInputOrInputArray(stereotype),
-        restrictedTo: utils.arrayFromInputOrInputArray(natures),
-        container: this,
-        project: this.project
-      })
+      new Class(
+        Object.assign({}, base, {
+          name,
+          stereotypes: utils.arrayFrom(stereotype),
+          restrictedTo: utils.arrayFrom(natures),
+          container: this,
+          project: this.project
+        })
+      )
     );
   }
 
@@ -586,7 +585,7 @@ export class Package extends ModelElement
           name,
           isDisjoint,
           isComplete,
-          generalizations: utils.arrayFromInputOrInputArray(generalizations),
+          generalizations: utils.arrayFrom(generalizations),
           container: this,
           project: this.project
         })
@@ -612,30 +611,31 @@ export class Package extends ModelElement
     setContainer(this, container);
   }
 
-  clone(): Package {
+  /**
+   * Clones the model element and all its contents. Replaces all references to
+   * original contents with references to their clones if
+   * `replaceReferences = true`. If `replaceReferences = false`, replace() will
+   * not be triggered, but this argument should only be used in recursive calls.
+   *
+   * @param replaceReferences - set to false on recursive calls to avoid
+   * unnecessary call to `replace()`.
+   *  */
+  clone(replaceReferences: boolean = true): Package {
     const clone = new Package(this);
 
     if (clone.contents) {
-      clone.contents = clone.contents.map((content: ModelElement) => content.clone());
+      clone.contents = clone.contents.map((content: ModelElement) => {
+        if (content instanceof Package) {
+          return content.clone(false);
+        } else {
+          return content.clone();
+        }
+      });
     }
 
-    const replacementsMap = new Map<string, { originalContent: ModelElement; newContent: ModelElement }>();
-
-    this.getAllContents().forEach((content: ModelElement) => {
-      replacementsMap.set(content.id, { originalContent: content, newContent: null });
-    });
-
-    clone.getAllContents().forEach((content: ModelElement) => {
-      const id = content.id;
-      const entry = { ...replacementsMap.get(id), newContent: content };
-      replacementsMap.set(id, entry);
-    });
-
-    clone
-      .getContents()
-      .forEach((content: ModelElement) =>
-        replacementsMap.forEach(({ originalContent, newContent }) => content.replace(originalContent, newContent))
-      );
+    if (replaceReferences) {
+      Package.triggersReplaceOnClonedPackage(this, clone);
+    }
 
     return clone;
   }
@@ -646,5 +646,30 @@ export class Package extends ModelElement
     }
 
     this.getContents().forEach((content: ModelElement) => content.replace(originalElement, newElement));
+  }
+
+  /** Triggers `replace()` on `clonedPackage` and all of its contents, removing
+   * references to the contents of `originalPackage` with their references to
+   * their clones. */
+  static triggersReplaceOnClonedPackage(originalPackage: Package, clonedPackage: Package): void {
+    const replacementsMap = new Map<string, { originalContent: ModelElement; newContent: ModelElement }>();
+
+    replacementsMap.set(originalPackage.id, { originalContent: originalPackage, newContent: clonedPackage });
+
+    originalPackage.getAllContents().forEach((content: ModelElement) => {
+      replacementsMap.set(content.id, { originalContent: content, newContent: null });
+    });
+
+    clonedPackage.getAllContents().forEach((content: ModelElement) => {
+      const id = content.id;
+      const entry = { ...replacementsMap.get(id), newContent: content };
+      replacementsMap.set(id, entry);
+    });
+
+    clonedPackage
+      .getContents()
+      .forEach((content: ModelElement) =>
+        replacementsMap.forEach(({ originalContent, newContent }) => content.replace(originalContent, newContent))
+      );
   }
 }

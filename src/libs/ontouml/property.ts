@@ -79,7 +79,13 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
 
     const propertyType = this.propertyType as ClassifierType;
     propertySerialization.propertyType = propertyType.getReference();
-    // TODO: transform cardinality
+
+    if (this.cardinality) {
+      let lowerBound = this.cardinality.lowerBound;
+      let upperBound = this.cardinality.upperBound;
+
+      propertySerialization.cardinality = `${lowerBound}..${upperBound === UNBOUNDED_CARDINALITY ? '*' : upperBound}`;
+    }
 
     return propertySerialization;
   }

@@ -108,10 +108,7 @@ const MomentOnlyStereotypes = [ClassStereotype.MODE, ClassStereotype.QUALITY, Cl
 
 const SubstantialOnlyStereotypes = [ClassStereotype.KIND, ClassStereotype.QUANTITY, ClassStereotype.COLLECTIVE];
 
-const EndurantStereotypes = {
-  ...SortalStereotypes,
-  ...NonSortalStereotypes
-};
+const EndurantStereotypes = [...SortalStereotypes, ...NonSortalStereotypes];
 
 const AbstractStereotypes = [ClassStereotype.ABSTRACT, ClassStereotype.DATATYPE, ClassStereotype.ENUMERATION];
 
