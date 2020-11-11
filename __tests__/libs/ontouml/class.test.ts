@@ -7,7 +7,10 @@ import {
   Literal,
   Project,
   serialization,
-  ORDERLESS_LEVEL
+  ORDERLESS_LEVEL,
+  natures,
+  stereotypes,
+  PropertyStereotype
 } from '@libs/ontouml';
 
 describe(`${Class.name} Tests`, () => {
@@ -413,4 +416,378 @@ describe(`${Class.name} Tests`, () => {
       expect(category.restrictedToEquals([])).toBe(false);
     });
   });
+
+  describe(`Test ${Class.prototype.isRestrictedToEndurant.name}()`, () => {
+    const model = new Project().createModel();
+    const kind = model.createKind('kind');
+    const category = model.createCategory('category', [...natures.EndurantNatures]);
+    const type = model.createType('type');
+    const event = model.createEvent('event');
+    const situation = model.createSituation('situation');
+    const abstract = model.createAbstract('abstract');
+    const datatype = model.createDatatype('datatype');
+    const enumeration = model.createEnumeration('enumeration');
+    const emptyRestrictions = model.createClass('emptyRestrictions');
+
+    it('Test regular kind', () => expect(kind.isRestrictedToEndurant()).toBe(true));
+    it('Test broad category', () => expect(category.isRestrictedToEndurant()).toBe(true));
+    it('Test type', () => expect(type.isRestrictedToEndurant()).toBe(false));
+    it('Test event', () => expect(event.isRestrictedToEndurant()).toBe(false));
+    it('Test situation', () => expect(situation.isRestrictedToEndurant()).toBe(false));
+    it('Test abstract', () => expect(abstract.isRestrictedToEndurant()).toBe(false));
+    it('Test datatype', () => expect(datatype.isRestrictedToEndurant()).toBe(false));
+    it('Test enumeration', () => expect(enumeration.isRestrictedToEndurant()).toBe(false));
+    it('Test class with empty restrictedTo', () => expect(emptyRestrictions.isRestrictedToEndurant()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.isRestrictedToSubstantial.name}()`, () => {
+    const model = new Project().createModel();
+    const categoryOfSubstantials = model.createCategory('categoryOfSubstantials', [...natures.SubstantialNatures]);
+    const kind = model.createKind('kind');
+    const categoryOfEndurants = model.createCategory('categoryOfEndurants', [...natures.EndurantNatures]);
+    const mode = model.createIntrinsicMode('mode');
+
+    it('Test regular kind', () => expect(kind.isRestrictedToSubstantial()).toBe(true));
+    it('Test broad categoryOfSubstantials', () => expect(categoryOfSubstantials.isRestrictedToSubstantial()).toBe(true));
+    it('Test broad mode', () => expect(mode.isRestrictedToSubstantial()).toBe(false));
+    it('Test broad categoryOfEndurants', () => expect(categoryOfEndurants.isRestrictedToSubstantial()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.isRestrictedToMoment.name}()`, () => {
+    const model = new Project().createModel();
+    const categoryOfMoments = model.createCategory('categoryOfMoments', [...natures.MomentNatures]);
+    const mode = model.createIntrinsicMode('mode');
+    const categoryOfEndurants = model.createCategory('categoryOfEndurants', [...natures.EndurantNatures]);
+    const kind = model.createKind('kind');
+
+    it('Test broad mode', () => expect(mode.isRestrictedToMoment()).toBe(true));
+    it('Test broad categoryOfSubstantials', () => expect(categoryOfMoments.isRestrictedToMoment()).toBe(true));
+    it('Test regular kind', () => expect(kind.isRestrictedToMoment()).toBe(false));
+    it('Test broad categoryOfEndurants', () => expect(categoryOfEndurants.isRestrictedToMoment()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.isRestrictedToFunctionalComplex.name}()`, () => {
+    const model = new Project().createModel();
+    const kind = model.createKind('kind');
+    const collective = model.createCollective('kind');
+    const quantity = model.createQuantity('kind');
+
+    it('Test broad kind', () => expect(kind.isRestrictedToFunctionalComplex()).toBe(true));
+    it('Test broad collective', () => expect(collective.isRestrictedToFunctionalComplex()).toBe(false));
+    it('Test broad quantity', () => expect(quantity.isRestrictedToFunctionalComplex()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.isRestrictedToCollective.name}()`, () => {
+    const model = new Project().createModel();
+    const kind = model.createKind('kind');
+    const collective = model.createCollective('kind');
+    const quantity = model.createQuantity('kind');
+
+    it('Test broad kind', () => expect(kind.isRestrictedToCollective()).toBe(false));
+    it('Test broad collective', () => expect(collective.isRestrictedToCollective()).toBe(true));
+    it('Test broad quantity', () => expect(quantity.isRestrictedToCollective()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.isRestrictedToQuantity.name}()`, () => {
+    const model = new Project().createModel();
+    const kind = model.createKind('kind');
+    const collective = model.createCollective('kind');
+    const quantity = model.createQuantity('kind');
+
+    it('Test broad kind', () => expect(kind.isRestrictedToQuantity()).toBe(false));
+    it('Test broad collective', () => expect(collective.isRestrictedToQuantity()).toBe(false));
+    it('Test broad quantity', () => expect(quantity.isRestrictedToQuantity()).toBe(true));
+  });
+
+  describe(`Test ${Class.prototype.isRestrictedToIntrinsicMoment.name}()`, () => {
+    const model = new Project().createModel();
+    const categoryOfIntrinsicMoments = model.createCategory('categoryOfMoments', [...natures.IntrinsicMomentNatures]);
+    const mode = model.createIntrinsicMode('mode');
+    const quality = model.createQuality('quality');
+    const categoryOfExtrinsicMoments = model.createCategory('categoryOfExtrinsicMoments', [...natures.ExtrinsicMomentNatures]);
+    const relator = model.createRelator('relator');
+
+    it('Test broad mode', () => expect(mode.isRestrictedToIntrinsicMoment()).toBe(true));
+    it('Test broad quality', () => expect(quality.isRestrictedToIntrinsicMoment()).toBe(true));
+    it('Test broad categoryOfIntrinsicMoments', () =>
+      expect(categoryOfIntrinsicMoments.isRestrictedToIntrinsicMoment()).toBe(true));
+    it('Test regular relator', () => expect(relator.isRestrictedToIntrinsicMoment()).toBe(false));
+    it('Test broad categoryOfExtrinsicMoments', () =>
+      expect(categoryOfExtrinsicMoments.isRestrictedToIntrinsicMoment()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.isRestrictedToExtrinsicMoment.name}()`, () => {
+    const model = new Project().createModel();
+    const categoryOfExtrinsicMoments = model.createCategory('categoryOfExtrinsicMoments', [...natures.ExtrinsicMomentNatures]);
+    const mode = model.createExtrinsicMode('mode');
+    const relator = model.createRelator('relator');
+    const categoryOfIntrinsicMoments = model.createCategory('categoryOfMoments', [...natures.IntrinsicMomentNatures]);
+    const quality = model.createQuality('quality');
+
+    it('Test broad mode', () => expect(mode.isRestrictedToExtrinsicMoment()).toBe(true));
+    it('Test regular relator', () => expect(relator.isRestrictedToExtrinsicMoment()).toBe(true));
+    it('Test broad categoryOfExtrinsicMoments', () =>
+      expect(categoryOfExtrinsicMoments.isRestrictedToExtrinsicMoment()).toBe(true));
+    it('Test broad quality', () => expect(quality.isRestrictedToExtrinsicMoment()).toBe(false));
+    it('Test broad categoryOfIntrinsicMoments', () =>
+      expect(categoryOfIntrinsicMoments.isRestrictedToExtrinsicMoment()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.isRestrictedToIntrinsicMode.name}()`, () => {
+    const model = new Project().createModel();
+    const quality = model.createQuality('quality');
+    const mode = model.createIntrinsicMode('mode');
+
+    it('Test mode', () => expect(mode.isRestrictedToIntrinsicMode()).toBe(true));
+    it('Test quality', () => expect(quality.isRestrictedToIntrinsicMode()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.isRestrictedToQuality.name}()`, () => {
+    const model = new Project().createModel();
+    const quality = model.createQuality('quality');
+    const mode = model.createIntrinsicMode('mode');
+
+    it('Test quality', () => expect(quality.isRestrictedToQuality()).toBe(true));
+    it('Test mode', () => expect(mode.isRestrictedToQuality()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.isRestrictedToExtrinsicMode.name}()`, () => {
+    const model = new Project().createModel();
+    const mode = model.createExtrinsicMode('mode');
+    const relator = model.createRelator('relator');
+
+    it('Test mode', () => expect(mode.isRestrictedToExtrinsicMode()).toBe(true));
+    it('Test relator', () => expect(relator.isRestrictedToExtrinsicMode()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.isRestrictedToRelator.name}()`, () => {
+    const model = new Project().createModel();
+    const relator = model.createRelator('relator');
+    const mode = model.createExtrinsicMode('mode');
+
+    it('Test relator', () => expect(relator.isRestrictedToRelator()).toBe(true));
+    it('Test mode', () => expect(mode.isRestrictedToRelator()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.isRestrictedToEvent.name}()`, () => {
+    const model = new Project().createModel();
+    const event = model.createEvent('event');
+    const situation = model.createSituation('situation');
+
+    it(`Test ${event.name}`, () => expect(event.isRestrictedToEvent()).toBe(true));
+    it(`Test ${situation.name}`, () => expect(situation.isRestrictedToEvent()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.isRestrictedToSituation.name}()`, () => {
+    const model = new Project().createModel();
+    const situation = model.createSituation('situation');
+    const type = model.createType('type');
+
+    it(`Test ${situation.name}`, () => expect(situation.isRestrictedToSituation()).toBe(true));
+    it(`Test ${type.name}`, () => expect(type.isRestrictedToSituation()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.isRestrictedToType.name}()`, () => {
+    const model = new Project().createModel();
+    const type = model.createType('type');
+    const abstract = model.createAbstract('abstract');
+
+    it(`Test ${type.name}`, () => expect(type.isRestrictedToType()).toBe(true));
+    it(`Test ${abstract.name}`, () => expect(abstract.isRestrictedToType()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.isRestrictedToAbstract.name}()`, () => {
+    const model = new Project().createModel();
+    const abstract = model.createAbstract('abstract');
+    const event = model.createEvent('event');
+
+    it(`Test ${abstract.name}`, () => expect(abstract.isRestrictedToAbstract()).toBe(true));
+    it(`Test ${event.name}`, () => expect(event.isRestrictedToAbstract()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasValidStereotypeValue.name}()`, () => {
+    const model = new Project().createModel();
+    const classWithValidStereotype = model.createClass('classWithValidStereotype');
+    const classWithNonValidStereotype = model.createClass('classWithNonValidStereotype');
+    const classWithoutStereotypes = model.createClass('classWithoutStereotypes');
+    const classWithMultipleStereotypes = model.createClass('classWithMultipleStereotypes');
+
+    stereotypes.ClassStereotypes.forEach((stereotype: ClassStereotype) =>
+      it(`Test class with stereotype '${stereotype}'`, () => {
+        classWithValidStereotype.stereotypes = [stereotype];
+        expect(classWithValidStereotype.hasValidStereotypeValue()).toBe(true);
+      })
+    );
+
+    classWithNonValidStereotype.stereotypes = [PropertyStereotype.BEGIN as any];
+    classWithMultipleStereotypes.stereotypes = [ClassStereotype.ABSTRACT, ClassStereotype.CATEGORY];
+
+    it(`Test ${classWithNonValidStereotype.name}`, () =>
+      expect(classWithNonValidStereotype.hasValidStereotypeValue()).toBe(false));
+    it(`Test ${classWithoutStereotypes.name}`, () => expect(classWithoutStereotypes.hasValidStereotypeValue()).toBe(false));
+    it(`Test ${classWithMultipleStereotypes.name}`, () =>
+      expect(classWithMultipleStereotypes.hasValidStereotypeValue()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.getUniqueStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const classWithoutStereotypes = model.createClass();
+    const classWithUniqueStereotype = model.createKind();
+    const classWithMultipleStereotypes = model.createClass();
+
+    classWithMultipleStereotypes.stereotypes = [ClassStereotype.ABSTRACT, ClassStereotype.CATEGORY];
+
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.getUniqueStereotype()).toBeFalsy());
+    it('Test classWithUniqueStereotype', () =>
+      expect(classWithUniqueStereotype.getUniqueStereotype()).toBe(ClassStereotype.KIND));
+    it('Test classWithMultipleStereotypes', () => expect(() => classWithMultipleStereotypes.getUniqueStereotype()).toThrow());
+  });
+
+  describe(`Test ${Class.prototype.hasStereotypeContainedIn.name}()`, () => {
+    const model = new Project().createModel();
+    const classWithoutStereotypes = model.createClass();
+    const classWithUniqueStereotype = model.createKind();
+    const classWithMultipleStereotypes = model.createClass();
+
+    classWithMultipleStereotypes.stereotypes = [ClassStereotype.ABSTRACT, ClassStereotype.CATEGORY];
+
+    it('Test classWithoutStereotypes', () =>
+      expect(classWithoutStereotypes.hasStereotypeContainedIn(stereotypes.ClassStereotypes)).toBe(false));
+    it('Test classWithUniqueStereotype', () =>
+      expect(classWithUniqueStereotype.hasStereotypeContainedIn(ClassStereotype.KIND)).toBe(true));
+    it('Test classWithMultipleStereotypes', () =>
+      expect(() => classWithMultipleStereotypes.hasStereotypeContainedIn(stereotypes.NonSortalStereotypes)).toThrow());
+  });
+
+  describe(`Test ${Class.prototype.hasTypeStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasEventStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasSituationStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasAbstractStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasDatatypeStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasEnumerationStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.isComplexDatatype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasEndurantOnlyStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasMomentOnlyStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasSubstantialOnlyStereotype.name}()`, () => {});
+
+  describe(`Test Class.${Class.haveRigidStereotypes.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasRigidStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasSemiRigidStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasAntiRigidStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasNonSortalStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasSortalStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasUltimateSortalStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasBaseSortalStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasKindStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasCollectiveStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasQuantityStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasRelatorStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasQualityStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasModeStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasSubkindStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasPhaseStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasRoleStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasHistoricalRoleStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasCategoryStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasPhaseMixinStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasRoleMixinStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasHistoricalRoleMixinStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.hasMixinStereotype.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getGeneralizations.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getGeneralizationSets.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getGeneralizationsWhereGeneral.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getGeneralizationsWhereSpecific.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getGeneralizationSetsWhereGeneral.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getGeneralizationSetsWhereSpecific.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getGeneralizationSetsWhereCategorizer.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getParents.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getChildren.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getAncestors.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getDescendants.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getFilteredAncestors.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getFilteredDescendants.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getUltimateSortalAncestors.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getUltimateSortalsDescendants.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getSortalAncestors.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getSortalDescendants.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getBaseSortalAncestors.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getBaseSortalDescendants.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getNonSortalAncestors.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getNonSortalDescendants.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getRigidAncestors.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getRigidDescendants.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getSemiRigidAncestors.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getSemiRigidDescendants.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getAntiRigidAncestors.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getAntiRigidDescendants.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getOwnAttributes.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getAllAttributes.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getOwnLiterals.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.getAllLiterals.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.clone.name}()`, () => {});
+
+  describe(`Test ${Class.prototype.replace.name}()`, () => {});
 });

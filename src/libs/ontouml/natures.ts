@@ -19,11 +19,7 @@ const EndurantNatures = [
   OntologicalNature.intrinsic_mode,
   OntologicalNature.extrinsic_mode,
   OntologicalNature.quality,
-  OntologicalNature.relator,
-  OntologicalNature.event,
-  OntologicalNature.situation,
-  OntologicalNature.type,
-  OntologicalNature.abstract
+  OntologicalNature.relator
 ];
 
 const SubstantialNatures = [OntologicalNature.functional_complex, OntologicalNature.collective, OntologicalNature.quantity];

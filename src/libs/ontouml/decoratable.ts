@@ -3,7 +3,7 @@ import { OntoumlStereotype, ClassStereotype, RelationStereotype, PropertyStereot
 export function hasValidStereotypeValue<T extends OntoumlStereotype>(
   decoratable: Decoratable<T>,
   validStereotypes: OntoumlStereotype[],
-  allowsNoStereotype?: boolean
+  allowsNoStereotype: boolean = false
 ): boolean {
   try {
     const uniqueStereotype = decoratable.getUniqueStereotype();
@@ -14,6 +14,10 @@ export function hasValidStereotypeValue<T extends OntoumlStereotype>(
   }
 }
 
+/** Returns `this.stereotypes[0]` or throws an exception if multiple
+ * stereotypes are defined.
+ *
+ * @throws error when the class has multiple stereotypes */
 export function getUniqueStereotype<Stereotype extends ClassStereotype | RelationStereotype | PropertyStereotype>(
   decoratable: Decoratable<Stereotype>
 ): Stereotype {
@@ -26,6 +30,11 @@ export function getUniqueStereotype<Stereotype extends ClassStereotype | Relatio
   return decoratable.stereotypes && decoratable.stereotypes[0];
 }
 
+/** Checks if the return of `this.getUniqueStereotype()` is contained in the
+ * set of values in `stereotypes`.
+ *
+ * @throws error when the class has multiple stereotypes
+ * */
 export function hasStereotypeContainedIn<Stereotype extends ClassStereotype | RelationStereotype | PropertyStereotype>(
   decoratable: Decoratable<Stereotype>,
   stereotypes: Stereotype | Stereotype[]

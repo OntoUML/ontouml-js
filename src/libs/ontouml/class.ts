@@ -176,6 +176,11 @@ export class Class extends ModelElement
     return this.restrictedToContainedIn(natures.SubstantialNatures);
   }
 
+  isRestrictedToMoment(): boolean {
+    // console.log(this.name, this.restrictedTo, natures.MomentNatures);
+    return this.restrictedToContainedIn(natures.MomentNatures);
+  }
+
   isRestrictedToFunctionalComplex(): boolean {
     return this.restrictedToContainedIn(OntologicalNature.functional_complex);
   }
@@ -186,10 +191,6 @@ export class Class extends ModelElement
 
   isRestrictedToQuantity(): boolean {
     return this.restrictedToContainedIn(OntologicalNature.quantity);
-  }
-
-  isRestrictedToMoment(): boolean {
-    return this.restrictedToContainedIn(natures.MomentNatures);
   }
 
   isRestrictedToIntrinsicMoment(): boolean {
@@ -236,10 +237,19 @@ export class Class extends ModelElement
     return hasValidStereotypeValue(this, stereotypes.ClassStereotypes);
   }
 
+  /** Returns `this.stereotypes[0]` or throws an exception if multiple
+   * stereotypes are defined.
+   *
+   * @throws error when the class has multiple stereotypes */
   getUniqueStereotype(): ClassStereotype {
     return getUniqueStereotype(this);
   }
 
+  /** Checks if the return of `this.getUniqueStereotype()` is contained in the
+   * set of values in `stereotypes`.
+   *
+   * @throws error when the class has multiple stereotypes
+   * */
   hasStereotypeContainedIn(stereotypes: ClassStereotype | ClassStereotype[]): boolean {
     return hasStereotypeContainedIn(this, stereotypes);
   }
