@@ -26,7 +26,7 @@ describe('Project tests', () => {
     const agentIntoPerson = model.createGeneralization(agent, person, 'agentIntoPerson');
     const agentIntoOrganization = model.createGeneralization(agent, organization, 'agentIntoOrganization');
 
-    model.createPartition([agentIntoPerson, agentIntoOrganization], 'agentsSet');
+    model.createPartition([agentIntoPerson, agentIntoOrganization], null, 'agentsSet');
 
     expect(() => JSON.stringify(project)).not.toThrow();
   });

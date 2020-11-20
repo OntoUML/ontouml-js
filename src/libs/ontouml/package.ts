@@ -571,11 +571,13 @@ export class Package extends ModelElement
     generalizations: Generalization | Generalization[],
     isDisjoint: boolean = false,
     isComplete: boolean = false,
+    categorizer?: Class,
     name?: MultilingualText,
     base?: Partial<GeneralizationSet>
   ): GeneralizationSet {
     isDisjoint = isDisjoint || false; // avoids issues when receiving undefined or null
     isComplete = isComplete || false;
+    categorizer = categorizer || null;
 
     return addContentToArray<ModelElement, GeneralizationSet>(
       this,
@@ -585,6 +587,7 @@ export class Package extends ModelElement
           name,
           isDisjoint,
           isComplete,
+          categorizer,
           generalizations: utils.arrayFrom(generalizations),
           container: this,
           project: this.project
@@ -595,13 +598,17 @@ export class Package extends ModelElement
 
   createPartition(
     generalizations: Generalization | Generalization[],
+    categorizer?: Class,
     name?: MultilingualText,
     base?: Partial<GeneralizationSet>
   ): GeneralizationSet {
+    categorizer = categorizer || null;
+
     return this.createGeneralizationSet(
       generalizations,
       false,
       false,
+      categorizer,
       name,
       Object.assign({}, base, { isDisjoint: true, isComplete: true })
     );

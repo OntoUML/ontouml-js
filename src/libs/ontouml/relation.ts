@@ -15,18 +15,7 @@ import {
   stereotypes,
   ClassStereotype,
   RelationStereotype,
-  getAncestors,
-  getChildren,
-  getDescendants,
-  getFilteredAncestors,
-  getFilteredDescendants,
-  getGeneralizationSetsInvolvingClassifier,
-  getGeneralizationSetsWhereGeneral,
-  getGeneralizationSetsWhereSpecific,
-  getGeneralizationsInvolvingClassifier,
-  getGeneralizationsWhereGeneral,
-  getGeneralizationsWhereSpecific,
-  getParents,
+  classifier,
   GeneralizationSet,
   UNBOUNDED_CARDINALITY,
   hasStereotypeContainedIn,
@@ -50,51 +39,51 @@ export class Relation extends ModelElement
   }
 
   getGeneralizations(): Generalization[] {
-    return getGeneralizationsInvolvingClassifier(this);
+    return classifier.getGeneralizationsInvolvingClassifier(this);
   }
 
   getGeneralizationSets(): GeneralizationSet[] {
-    return getGeneralizationSetsInvolvingClassifier(this);
+    return classifier.getGeneralizationSetsInvolvingClassifier(this);
   }
 
   getGeneralizationsWhereGeneral(): Generalization[] {
-    return getGeneralizationsWhereGeneral(this);
+    return classifier.getGeneralizationsWhereGeneral(this);
   }
 
   getGeneralizationsWhereSpecific(): Generalization[] {
-    return getGeneralizationsWhereSpecific(this);
+    return classifier.getGeneralizationsWhereSpecific(this);
   }
 
   getGeneralizationSetsWhereGeneral(): GeneralizationSet[] {
-    return getGeneralizationSetsWhereGeneral(this);
+    return classifier.getGeneralizationSetsWhereGeneral(this);
   }
 
   getGeneralizationSetsWhereSpecific(): GeneralizationSet[] {
-    return getGeneralizationSetsWhereSpecific(this);
+    return classifier.getGeneralizationSetsWhereSpecific(this);
   }
 
   getParents(): Relation[] {
-    return getParents(this);
+    return classifier.getParents(this);
   }
 
   getChildren(): Relation[] {
-    return getChildren(this);
+    return classifier.getChildren(this);
   }
 
   getAncestors(): Relation[] {
-    return getAncestors(this);
+    return classifier.getAncestors<Relation>(this);
   }
 
   getDescendants(): Relation[] {
-    return getDescendants(this);
+    return classifier.getDescendants<Relation>(this);
   }
 
   getFilteredAncestors(filter: (ancestor: Relation) => boolean): Relation[] {
-    return getFilteredAncestors(this, filter);
+    return classifier.getFilteredAncestors(this, filter);
   }
 
   getFilteredDescendants(filter: (descendent: Relation) => boolean): Relation[] {
-    return getFilteredDescendants(this, filter);
+    return classifier.getFilteredDescendants(this, filter);
   }
 
   getContents(contentsFilter?: (property: Property) => boolean): Property[] {

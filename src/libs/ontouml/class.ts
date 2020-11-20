@@ -22,19 +22,7 @@ import {
   OntologicalNature,
   Generalization,
   GeneralizationSet,
-  getGeneralizationSetsInvolvingClassifier,
-  getGeneralizationSetsWhereCategorizer,
-  getGeneralizationSetsWhereGeneral,
-  getGeneralizationSetsWhereSpecific,
-  getGeneralizationsInvolvingClassifier,
-  getGeneralizationsWhereGeneral,
-  getGeneralizationsWhereSpecific,
-  getParents,
-  getChildren,
-  getAncestors,
-  getDescendants,
-  getFilteredAncestors,
-  getFilteredDescendants,
+  classifier,
   hasStereotypeContainedIn,
   OntoumlType
 } from './';
@@ -388,55 +376,55 @@ export class Class extends ModelElement
   }
 
   getGeneralizations(): Generalization[] {
-    return getGeneralizationsInvolvingClassifier(this);
+    return classifier.getGeneralizationsInvolvingClassifier(this);
   }
 
   getGeneralizationSets(): GeneralizationSet[] {
-    return getGeneralizationSetsInvolvingClassifier(this);
+    return classifier.getGeneralizationSetsInvolvingClassifier(this);
   }
 
   getGeneralizationsWhereGeneral(): Generalization[] {
-    return getGeneralizationsWhereGeneral(this);
+    return classifier.getGeneralizationsWhereGeneral(this);
   }
 
   getGeneralizationsWhereSpecific(): Generalization[] {
-    return getGeneralizationsWhereSpecific(this);
+    return classifier.getGeneralizationsWhereSpecific(this);
   }
 
   getGeneralizationSetsWhereGeneral(): GeneralizationSet[] {
-    return getGeneralizationSetsWhereGeneral(this);
+    return classifier.getGeneralizationSetsWhereGeneral(this);
   }
 
   getGeneralizationSetsWhereSpecific(): GeneralizationSet[] {
-    return getGeneralizationSetsWhereSpecific(this);
+    return classifier.getGeneralizationSetsWhereSpecific(this);
   }
 
   getGeneralizationSetsWhereCategorizer(): GeneralizationSet[] {
-    return getGeneralizationSetsWhereCategorizer(this);
+    return classifier.getGeneralizationSetsWhereCategorizer(this);
   }
 
   getParents(): Class[] {
-    return getParents(this);
+    return classifier.getParents(this);
   }
 
   getChildren(): Class[] {
-    return getChildren(this);
+    return classifier.getChildren(this);
   }
 
   getAncestors(): Class[] {
-    return getAncestors(this);
+    return classifier.getAncestors<Class>(this);
   }
 
   getDescendants(): Class[] {
-    return getDescendants(this);
+    return classifier.getDescendants<Class>(this);
   }
 
   getFilteredAncestors(filter: (ancestor: Class) => boolean): Class[] {
-    return getFilteredAncestors(this, filter);
+    return classifier.getFilteredAncestors(this, filter);
   }
 
   getFilteredDescendants(filter: (descendent: Class) => boolean): Class[] {
-    return getFilteredDescendants(this, filter);
+    return classifier.getFilteredDescendants(this, filter);
   }
 
   getUltimateSortalAncestors(): Class[] {
@@ -446,7 +434,7 @@ export class Class extends ModelElement
 
   getUltimateSortalsDescendants(): Class[] {
     const descendantsFilter = (descendent: Class) => descendent.hasUltimateSortalStereotype();
-    return this.getFilteredAncestors(descendantsFilter);
+    return this.getFilteredDescendants(descendantsFilter);
   }
 
   getSortalAncestors(): Class[] {
@@ -456,7 +444,7 @@ export class Class extends ModelElement
 
   getSortalDescendants(): Class[] {
     const descendantsFilter = (descendent: Class) => descendent.hasSortalStereotype();
-    return this.getFilteredAncestors(descendantsFilter);
+    return this.getFilteredDescendants(descendantsFilter);
   }
 
   getBaseSortalAncestors(): Class[] {
@@ -466,7 +454,7 @@ export class Class extends ModelElement
 
   getBaseSortalDescendants(): Class[] {
     const descendantsFilter = (descendent: Class) => descendent.hasBaseSortalStereotype();
-    return this.getFilteredAncestors(descendantsFilter);
+    return this.getFilteredDescendants(descendantsFilter);
   }
 
   getNonSortalAncestors(): Class[] {
@@ -476,7 +464,7 @@ export class Class extends ModelElement
 
   getNonSortalDescendants(): Class[] {
     const descendantsFilter = (descendent: Class) => descendent.hasNonSortalStereotype();
-    return this.getFilteredAncestors(descendantsFilter);
+    return this.getFilteredDescendants(descendantsFilter);
   }
 
   getRigidAncestors(): Class[] {
@@ -486,7 +474,7 @@ export class Class extends ModelElement
 
   getRigidDescendants(): Class[] {
     const descendantsFilter = (descendent: Class) => descendent.hasRigidStereotype();
-    return this.getFilteredAncestors(descendantsFilter);
+    return this.getFilteredDescendants(descendantsFilter);
   }
 
   getSemiRigidAncestors(): Class[] {
@@ -496,7 +484,7 @@ export class Class extends ModelElement
 
   getSemiRigidDescendants(): Class[] {
     const descendantsFilter = (descendent: Class) => descendent.hasSemiRigidStereotype();
-    return this.getFilteredAncestors(descendantsFilter);
+    return this.getFilteredDescendants(descendantsFilter);
   }
 
   getAntiRigidAncestors(): Class[] {
@@ -506,7 +494,7 @@ export class Class extends ModelElement
 
   getAntiRigidDescendants(): Class[] {
     const descendantsFilter = (descendent: Class) => descendent.hasAntiRigidStereotype();
-    return this.getFilteredAncestors(descendantsFilter);
+    return this.getFilteredDescendants(descendantsFilter);
   }
 
   /** Returns both own attributes, excluding inherited ones */

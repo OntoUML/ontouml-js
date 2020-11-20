@@ -10,7 +10,8 @@ import {
   ORDERLESS_LEVEL,
   natures,
   stereotypes,
-  PropertyStereotype
+  PropertyStereotype,
+  Generalization
 } from '@libs/ontouml';
 
 describe(`${Class.name} Tests`, () => {
@@ -1082,47 +1083,294 @@ describe(`${Class.name} Tests`, () => {
     it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasMixinStereotype()).toBe(false));
   });
 
-  describe(`Test ${Class.prototype.getGeneralizations.name}()`, () => {});
+  describe(`Test ${Class.prototype.getGeneralizations.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createClass();
+    const person = model.createClass();
+    model.createGeneralization(agent, person);
 
-  describe(`Test ${Class.prototype.getGeneralizationSets.name}()`, () => {});
+    it('Test function call', () => expect(agent.getGeneralizations().length).toBe(1));
+  });
 
-  describe(`Test ${Class.prototype.getGeneralizationsWhereGeneral.name}()`, () => {});
+  describe(`Test ${Class.prototype.getGeneralizationSets.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createClass();
+    const person = model.createClass();
+    const agentIntoPerson = model.createGeneralization(agent, person);
+    model.createGeneralizationSet(agentIntoPerson);
 
-  describe(`Test ${Class.prototype.getGeneralizationsWhereSpecific.name}()`, () => {});
+    it('Test function call', () => expect(agent.getGeneralizationSets().length).toBe(1));
+  });
 
-  describe(`Test ${Class.prototype.getGeneralizationSetsWhereGeneral.name}()`, () => {});
+  describe(`Test ${Class.prototype.getGeneralizationsWhereGeneral.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createClass();
+    const person = model.createClass();
+    model.createGeneralization(agent, person);
 
-  describe(`Test ${Class.prototype.getGeneralizationSetsWhereSpecific.name}()`, () => {});
+    it('Test function call', () => expect(agent.getGeneralizationsWhereGeneral().length).toBe(1));
+  });
 
-  describe(`Test ${Class.prototype.getGeneralizationSetsWhereCategorizer.name}()`, () => {});
+  describe(`Test ${Class.prototype.getGeneralizationsWhereSpecific.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createClass();
+    const person = model.createClass();
+    model.createGeneralization(agent, person);
 
-  describe(`Test ${Class.prototype.getParents.name}()`, () => {});
+    it('Test function call', () => expect(agent.getGeneralizationsWhereGeneral().length).toBe(1));
+  });
 
-  describe(`Test ${Class.prototype.getChildren.name}()`, () => {});
+  describe(`Test ${Class.prototype.getGeneralizationSetsWhereGeneral.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createClass();
+    const person = model.createClass();
+    const agentIntoPerson = model.createGeneralization(agent, person);
+    model.createGeneralizationSet(agentIntoPerson);
 
-  describe(`Test ${Class.prototype.getAncestors.name}()`, () => {});
+    it('Test function call', () => expect(agent.getGeneralizationSetsWhereGeneral().length).toBe(1));
+  });
 
-  describe(`Test ${Class.prototype.getDescendants.name}()`, () => {});
+  describe(`Test ${Class.prototype.getGeneralizationSetsWhereSpecific.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createClass();
+    const person = model.createClass();
+    const agentIntoPerson = model.createGeneralization(agent, person);
+    model.createGeneralizationSet(agentIntoPerson);
 
-  describe(`Test ${Class.prototype.getFilteredAncestors.name}()`, () => {});
+    it('Test function call', () => expect(person.getGeneralizationSetsWhereSpecific().length).toBe(1));
+  });
 
-  describe(`Test ${Class.prototype.getFilteredDescendants.name}()`, () => {});
+  describe(`Test ${Class.prototype.getGeneralizationSetsWhereCategorizer.name}()`, () => {
+    const model = new Project().createModel();
+    const pkg = model.createPackage();
+    const agent = model.createClass();
+    const agentType = model.createClass();
+    const person = model.createClass();
+    const organization = pkg.createClass();
+    const agentIntoPerson = model.createGeneralization(agent, person);
+    const agentIntoOrganization = model.createGeneralization(agent, organization);
+    const genSet = pkg.createGeneralizationSet([agentIntoPerson, agentIntoOrganization], false, false, agentType);
 
-  describe(`Test ${Class.prototype.getUltimateSortalAncestors.name}()`, () => {});
+    it('Test agent generalization sets', () => {
+      const agentGeneralizationSets = agent.getGeneralizationSetsWhereCategorizer();
+      expect(agentGeneralizationSets.length).toBe(0);
+    });
 
-  describe(`Test ${Class.prototype.getUltimateSortalsDescendants.name}()`, () => {});
+    it('Test person generalization sets', () => {
+      const personGeneralizationSets = person.getGeneralizationSetsWhereCategorizer();
+      expect(personGeneralizationSets.length).toBe(0);
+    });
 
-  describe(`Test ${Class.prototype.getSortalAncestors.name}()`, () => {});
+    it('Test organization generalization sets', () => {
+      const organizationGeneralizationSets = organization.getGeneralizationSetsWhereCategorizer();
+      expect(organizationGeneralizationSets.length).toBe(0);
+    });
 
-  describe(`Test ${Class.prototype.getSortalDescendants.name}()`, () => {});
+    it('Test agentType generalization sets', () => {
+      const agentTypeGeneralizationSets = agentType.getGeneralizationSetsWhereCategorizer();
+      expect(agentTypeGeneralizationSets).toContain(genSet);
+      expect(agentTypeGeneralizationSets.length).toBe(1);
+    });
+  });
 
-  describe(`Test ${Class.prototype.getBaseSortalAncestors.name}()`, () => {});
+  describe(`Test ${Class.prototype.getParents.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createClass();
+    const person = model.createClass();
+    model.createGeneralization(agent, person);
 
-  describe(`Test ${Class.prototype.getBaseSortalDescendants.name}()`, () => {});
+    it('Test function call', () => expect(person.getParents().length).toBe(1));
+  });
 
-  describe(`Test ${Class.prototype.getNonSortalAncestors.name}()`, () => {});
+  describe(`Test ${Class.prototype.getChildren.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createClass();
+    const person = model.createClass();
+    model.createGeneralization(agent, person);
 
-  describe(`Test ${Class.prototype.getNonSortalDescendants.name}()`, () => {});
+    it('Test function call', () => expect(agent.getChildren().length).toBe(1));
+  });
+
+  describe(`Test ${Class.prototype.getAncestors.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createClass();
+    const person = model.createClass();
+    model.createGeneralization(agent, person);
+
+    it('Test function call', () => expect(person.getAncestors().length).toBe(1));
+  });
+
+  describe(`Test ${Class.prototype.getDescendants.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createClass();
+    const person = model.createClass();
+    model.createGeneralization(agent, person);
+
+    it('Test function call', () => expect(agent.getDescendants().length).toBe(1));
+  });
+
+  describe(`Test ${Class.prototype.getFilteredAncestors.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createClass();
+    const person = model.createClass();
+    const passFilter = () => true;
+    model.createGeneralization(agent, person);
+
+    it('Test function call', () => expect(person.getFilteredAncestors(passFilter).length).toBe(1));
+  });
+
+  describe(`Test ${Class.prototype.getFilteredDescendants.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createClass();
+    const person = model.createClass();
+    const passFilter = () => true;
+    model.createGeneralization(agent, person);
+
+    it('Test function call', () => expect(agent.getFilteredDescendants(passFilter).length).toBe(1));
+  });
+
+  describe(`Test ${Class.prototype.getUltimateSortalAncestors.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createCategory();
+    const person = model.createKind();
+    const student = model.createRole();
+    model.createGeneralization(agent, person);
+    model.createGeneralization(person, student);
+
+    it('Test function call', () => {
+      const studentAncestors = student.getUltimateSortalAncestors();
+      expect(studentAncestors).toContain(person);
+      expect(studentAncestors.length).toBe(1);
+      expect(agent.getUltimateSortalAncestors().length).toBe(0);
+      expect(person.getUltimateSortalAncestors().length).toBe(0);
+    });
+  });
+
+  describe(`Test ${Class.prototype.getUltimateSortalsDescendants.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createCategory();
+    const person = model.createKind();
+    const student = model.createRole();
+    model.createGeneralization(agent, person);
+    model.createGeneralization(person, student);
+
+    it('Test function call', () => {
+      const agentDescendants = agent.getUltimateSortalsDescendants();
+      expect(agentDescendants).toContain(person);
+      expect(agentDescendants.length).toBe(1);
+      expect(person.getUltimateSortalsDescendants().length).toBe(0);
+      expect(student.getUltimateSortalsDescendants().length).toBe(0);
+    });
+  });
+
+  describe(`Test ${Class.prototype.getSortalAncestors.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createCategory();
+    const person = model.createKind();
+    const student = model.createRole();
+    model.createGeneralization(agent, person);
+    model.createGeneralization(person, student);
+
+    it('Test function call', () => {
+      const studentAncestors = student.getSortalAncestors();
+      expect(studentAncestors).toContain(person);
+      expect(studentAncestors.length).toBe(1);
+      expect(agent.getSortalAncestors().length).toBe(0);
+      expect(person.getSortalAncestors().length).toBe(0);
+    });
+  });
+
+  describe(`Test ${Class.prototype.getSortalDescendants.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createCategory();
+    const person = model.createKind();
+    const student = model.createRole();
+    model.createGeneralization(agent, person);
+    model.createGeneralization(person, student);
+
+    it('Test function call', () => {
+      const agentDescendants = agent.getSortalDescendants();
+      expect(agentDescendants).toContain(person);
+      expect(agentDescendants).toContain(student);
+      expect(agentDescendants.length).toBe(2);
+      expect(person.getSortalDescendants().length).toBe(1);
+      expect(student.getSortalDescendants().length).toBe(0);
+    });
+  });
+
+  describe(`Test ${Class.prototype.getBaseSortalAncestors.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createCategory();
+    const person = model.createKind();
+    const student = model.createRole();
+    const phdStudent = model.createRole();
+    model.createGeneralization(agent, person);
+    model.createGeneralization(person, student);
+    model.createGeneralization(student, phdStudent);
+
+    it('Test function call', () => {
+      const phdStudentAncestors = phdStudent.getBaseSortalAncestors();
+      expect(phdStudentAncestors).toContain(student);
+      expect(phdStudentAncestors.length).toBe(1);
+      expect(agent.getBaseSortalAncestors().length).toBe(0);
+      expect(person.getBaseSortalAncestors().length).toBe(0);
+      expect(student.getBaseSortalAncestors().length).toBe(0);
+    });
+  });
+
+  describe(`Test ${Class.prototype.getBaseSortalDescendants.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createCategory();
+    const person = model.createKind();
+    const student = model.createRole();
+    model.createGeneralization(agent, person);
+    model.createGeneralization(person, student);
+
+    it('Test function call', () => {
+      const agentDescendants = agent.getBaseSortalDescendants();
+      expect(agentDescendants).toContain(student);
+      expect(agentDescendants.length).toBe(1);
+      expect(person.getBaseSortalDescendants().length).toBe(1);
+      expect(student.getBaseSortalDescendants().length).toBe(0);
+    });
+  });
+
+  describe(`Test ${Class.prototype.getNonSortalAncestors.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createCategory();
+    const person = model.createKind();
+    const student = model.createRole();
+    model.createGeneralization(agent, person);
+    model.createGeneralization(person, student);
+
+    it('Test function call', () => {
+      const studentAncestors = student.getNonSortalAncestors();
+      expect(studentAncestors).toContain(agent);
+      expect(studentAncestors.length).toBe(1);
+      expect(agent.getNonSortalAncestors().length).toBe(0);
+      expect(person.getNonSortalAncestors().length).toBe(1);
+    });
+  });
+
+  describe(`Test ${Class.prototype.getNonSortalDescendants.name}()`, () => {
+    const model = new Project().createModel();
+    const entity = model.createCategory();
+    const agent = model.createCategory();
+    const person = model.createKind();
+    const student = model.createRole();
+    model.createGeneralization(entity, agent);
+    model.createGeneralization(agent, person);
+    model.createGeneralization(person, student);
+
+    it('Test function call', () => {
+      const entityDescendants = entity.getNonSortalDescendants();
+      expect(entityDescendants).toContain(agent);
+      expect(entityDescendants.length).toBe(1);
+      expect(agent.getNonSortalDescendants().length).toBe(0);
+      expect(person.getNonSortalDescendants().length).toBe(0);
+      expect(student.getNonSortalDescendants().length).toBe(0);
+    });
+  });
 
   describe(`Test ${Class.prototype.getRigidAncestors.name}()`, () => {});
 
