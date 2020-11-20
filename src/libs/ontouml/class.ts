@@ -177,7 +177,6 @@ export class Class extends ModelElement
   }
 
   isRestrictedToMoment(): boolean {
-    // console.log(this.name, this.restrictedTo, natures.MomentNatures);
     return this.restrictedToContainedIn(natures.MomentNatures);
   }
 
@@ -450,13 +449,6 @@ export class Class extends ModelElement
     return this.getFilteredAncestors(descendantsFilter);
   }
 
-  /**
-   * Returns not only ancestors and descendants, but also those reachable through non-disjoint diverging branch in generalization hierarchies
-   */
-  getUltimateSortalsInReach(): Class[] {
-    throw new Error('Method unimplemented!');
-  }
-
   getSortalAncestors(): Class[] {
     const ancestorsFilter = (ancestor: Class) => ancestor.hasSortalStereotype();
     return this.getFilteredAncestors(ancestorsFilter);
@@ -577,6 +569,13 @@ export class Class extends ModelElement
     }
 
     this.getContents().forEach((content: ModelElement) => content.replace(originalElement, newElement));
+  }
+
+  /**
+   * Returns not only ancestors and descendants, but also those reachable through non-disjoint diverging branch in generalization hierarchies
+   */
+  getUltimateSortalsInReach(): Class[] {
+    throw new Error('Method unimplemented!');
   }
 
   getOwnRelations(filter?: Function): Relation[] {

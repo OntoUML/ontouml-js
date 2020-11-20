@@ -659,71 +659,428 @@ describe(`${Class.name} Tests`, () => {
       expect(() => classWithMultipleStereotypes.hasStereotypeContainedIn(stereotypes.NonSortalStereotypes)).toThrow());
   });
 
-  describe(`Test ${Class.prototype.hasTypeStereotype.name}()`, () => {});
+  describe(`Test ${Class.prototype.hasTypeStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const type = model.createType();
+    const anotherClass = model.createKind();
+    const classWithoutStereotypes = model.createClass();
 
-  describe(`Test ${Class.prototype.hasEventStereotype.name}()`, () => {});
+    it('Test type', () => expect(type.hasTypeStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasTypeStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasTypeStereotype()).toBe(false));
+  });
 
-  describe(`Test ${Class.prototype.hasSituationStereotype.name}()`, () => {});
+  describe(`Test ${Class.prototype.hasEventStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const event = model.createEvent();
+    const anotherClass = model.createSituation();
+    const classWithoutStereotypes = model.createClass();
 
-  describe(`Test ${Class.prototype.hasAbstractStereotype.name}()`, () => {});
+    it('Test event', () => expect(event.hasEventStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasEventStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasEventStereotype()).toBe(false));
+  });
 
-  describe(`Test ${Class.prototype.hasDatatypeStereotype.name}()`, () => {});
+  describe(`Test ${Class.prototype.hasSituationStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const situation = model.createSituation();
+    const anotherClass = model.createAbstract();
+    const classWithoutStereotypes = model.createClass();
 
-  describe(`Test ${Class.prototype.hasEnumerationStereotype.name}()`, () => {});
+    it('Test situation', () => expect(situation.hasSituationStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasSituationStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasSituationStereotype()).toBe(false));
+  });
 
-  describe(`Test ${Class.prototype.isComplexDatatype.name}()`, () => {});
+  describe(`Test ${Class.prototype.hasAbstractStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const abstract = model.createAbstract();
+    const anotherClass = model.createDatatype();
+    const classWithoutStereotypes = model.createClass();
 
-  describe(`Test ${Class.prototype.hasEndurantOnlyStereotype.name}()`, () => {});
+    it('Test abstract', () => expect(abstract.hasAbstractStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasAbstractStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasAbstractStereotype()).toBe(false));
+  });
 
-  describe(`Test ${Class.prototype.hasMomentOnlyStereotype.name}()`, () => {});
+  describe(`Test ${Class.prototype.hasDatatypeStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const datatype = model.createDatatype();
+    const anotherClass = model.createEnumeration();
+    const classWithoutStereotypes = model.createClass();
 
-  describe(`Test ${Class.prototype.hasSubstantialOnlyStereotype.name}()`, () => {});
+    it('Test datatype', () => expect(datatype.hasDatatypeStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasDatatypeStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasDatatypeStereotype()).toBe(false));
+  });
 
-  describe(`Test Class.${Class.haveRigidStereotypes.name}()`, () => {});
+  describe(`Test ${Class.prototype.hasEnumerationStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const enumeration = model.createEnumeration();
+    const anotherClass = model.createType();
+    const classWithoutStereotypes = model.createClass();
 
-  describe(`Test ${Class.prototype.hasRigidStereotype.name}()`, () => {});
+    it('Test enumeration', () => expect(enumeration.hasEnumerationStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasEnumerationStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasEnumerationStereotype()).toBe(false));
+  });
 
-  describe(`Test ${Class.prototype.hasSemiRigidStereotype.name}()`, () => {});
+  describe(`Test ${Class.prototype.isComplexDatatype.name}()`, () => {
+    const model = new Project().createModel();
+    const rgbColor = model.createDatatype();
+    const red = model.createDatatype();
+    const green = model.createDatatype();
+    const blue = model.createDatatype();
 
-  describe(`Test ${Class.prototype.hasAntiRigidStereotype.name}()`, () => {});
+    rgbColor.createAttribute(red);
+    rgbColor.createAttribute(green);
+    rgbColor.createAttribute(blue);
 
-  describe(`Test ${Class.prototype.hasNonSortalStereotype.name}()`, () => {});
+    const anotherClass = model.createEnumeration();
+    const classWithoutStereotypes = model.createClass();
 
-  describe(`Test ${Class.prototype.hasSortalStereotype.name}()`, () => {});
+    it('Test complex datatype', () => expect(rgbColor.isComplexDatatype()).toBe(true));
+    it('Test atomic/simple datatype', () => expect(red.isComplexDatatype()).toBe(false));
+    it('Test anotherClass', () => expect(anotherClass.isComplexDatatype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.isComplexDatatype()).toBe(false));
+  });
 
-  describe(`Test ${Class.prototype.hasUltimateSortalStereotype.name}()`, () => {});
+  describe(`Test ${Class.prototype.hasEndurantOnlyStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const category = model.createCategory();
+    const kind = model.createKind();
+    const relator = model.createRelator();
+    const subkind = model.createSubkind();
+    const anotherClass = model.createEvent();
+    const classWithoutStereotypes = model.createClass();
 
-  describe(`Test ${Class.prototype.hasBaseSortalStereotype.name}()`, () => {});
+    it('Test category', () => expect(category.hasEndurantOnlyStereotype()).toBe(true));
+    it('Test kind', () => expect(kind.hasEndurantOnlyStereotype()).toBe(true));
+    it('Test relator', () => expect(relator.hasEndurantOnlyStereotype()).toBe(true));
+    it('Test subkind', () => expect(subkind.hasEndurantOnlyStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasEndurantOnlyStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasEndurantOnlyStereotype()).toBe(false));
+  });
 
-  describe(`Test ${Class.prototype.hasKindStereotype.name}()`, () => {});
+  describe(`Test ${Class.prototype.hasMomentOnlyStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const mode = model.createIntrinsicMode();
+    const relator = model.createRelator();
+    const roleMixin = model.createRoleMixin();
+    const collective = model.createCollective();
+    const role = model.createRole();
+    const anotherClass = model.createEvent();
+    const classWithoutStereotypes = model.createClass();
 
-  describe(`Test ${Class.prototype.hasCollectiveStereotype.name}()`, () => {});
+    it('Test mode', () => expect(mode.hasMomentOnlyStereotype()).toBe(true));
+    it('Test relator', () => expect(relator.hasMomentOnlyStereotype()).toBe(true));
+    it('Test roleMixin', () => expect(roleMixin.hasMomentOnlyStereotype()).toBe(false));
+    it('Test collective', () => expect(collective.hasMomentOnlyStereotype()).toBe(false));
+    it('Test role', () => expect(role.hasMomentOnlyStereotype()).toBe(false));
+    it('Test anotherClass', () => expect(anotherClass.hasMomentOnlyStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasMomentOnlyStereotype()).toBe(false));
+  });
 
-  describe(`Test ${Class.prototype.hasQuantityStereotype.name}()`, () => {});
+  describe(`Test ${Class.prototype.hasSubstantialOnlyStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const collective = model.createCollective();
+    const quantity = model.createQuantity();
+    const phaseMixin = model.createPhaseMixin();
+    const relator = model.createRelator();
+    const phase = model.createPhase();
+    const anotherClass = model.createEvent();
+    const classWithoutStereotypes = model.createClass();
 
-  describe(`Test ${Class.prototype.hasRelatorStereotype.name}()`, () => {});
+    it('Test collective', () => expect(collective.hasSubstantialOnlyStereotype()).toBe(true));
+    it('Test quantity', () => expect(quantity.hasSubstantialOnlyStereotype()).toBe(true));
+    it('Test relator', () => expect(relator.hasSubstantialOnlyStereotype()).toBe(false));
+    it('Test phaseMixin', () => expect(phaseMixin.hasSubstantialOnlyStereotype()).toBe(false));
+    it('Test phase', () => expect(phase.hasSubstantialOnlyStereotype()).toBe(false));
+    it('Test anotherClass', () => expect(anotherClass.hasSubstantialOnlyStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasSubstantialOnlyStereotype()).toBe(false));
+  });
 
-  describe(`Test ${Class.prototype.hasQualityStereotype.name}()`, () => {});
+  describe(`Test Class.${Class.haveRigidStereotypes.name}()`, () => {
+    const model = new Project().createModel();
+    const quality = model.createQuality();
+    const subkind = model.createQuantity();
+    const event = model.createEvent();
+    const mixin = model.createMixin();
+    const phase = model.createPhase();
+    const classWithoutStereotypes = model.createClass();
 
-  describe(`Test ${Class.prototype.hasModeStereotype.name}()`, () => {});
+    it('Test rigid classes', () => expect(Class.haveRigidStereotypes([quality, subkind])).toBe(true));
+    it('Test non-rigid classes', () => expect(Class.haveRigidStereotypes([mixin, phase])).toBe(false));
+    it('Test mixed classes', () => expect(Class.haveRigidStereotypes([classWithoutStereotypes, event])).toBe(false));
+  });
 
-  describe(`Test ${Class.prototype.hasSubkindStereotype.name}()`, () => {});
+  describe(`Test ${Class.prototype.hasRigidStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const quality = model.createQuality();
+    const subkind = model.createQuantity();
+    const mixin = model.createMixin();
+    const phase = model.createPhase();
+    const event = model.createEvent();
+    const abstract = model.createAbstract();
+    const classWithoutStereotypes = model.createClass();
 
-  describe(`Test ${Class.prototype.hasPhaseStereotype.name}()`, () => {});
+    it('Test quality', () => expect(quality.hasRigidStereotype()).toBe(true));
+    it('Test subkind', () => expect(subkind.hasRigidStereotype()).toBe(true));
+    it('Test event', () => expect(event.hasRigidStereotype()).toBe(true));
+    it('Test abstract', () => expect(abstract.hasRigidStereotype()).toBe(true));
+    it('Test mixin', () => expect(mixin.hasRigidStereotype()).toBe(false));
+    it('Test phase', () => expect(phase.hasRigidStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasRigidStereotype()).toBe(false));
+  });
 
-  describe(`Test ${Class.prototype.hasRoleStereotype.name}()`, () => {});
+  describe(`Test ${Class.prototype.hasSemiRigidStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const mixin = model.createMixin();
+    const quality = model.createQuality();
+    const phase = model.createPhase();
+    const event = model.createEvent();
+    const classWithoutStereotypes = model.createClass();
 
-  describe(`Test ${Class.prototype.hasHistoricalRoleStereotype.name}()`, () => {});
+    it('Test mixin', () => expect(mixin.hasSemiRigidStereotype()).toBe(true));
+    it('Test quality', () => expect(quality.hasSemiRigidStereotype()).toBe(false));
+    it('Test event', () => expect(event.hasSemiRigidStereotype()).toBe(false));
+    it('Test phase', () => expect(phase.hasSemiRigidStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasSemiRigidStereotype()).toBe(false));
+  });
 
-  describe(`Test ${Class.prototype.hasCategoryStereotype.name}()`, () => {});
+  describe(`Test ${Class.prototype.hasAntiRigidStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const historicalRole = model.createHistoricalRole();
+    const historicalRoleMixin = model.createHistoricalRoleMixin();
+    const mixin = model.createMixin();
+    const type = model.createType();
+    const classWithoutStereotypes = model.createClass();
 
-  describe(`Test ${Class.prototype.hasPhaseMixinStereotype.name}()`, () => {});
+    it('Test historicalRole', () => expect(historicalRole.hasAntiRigidStereotype()).toBe(true));
+    it('Test historicalRoleMixin', () => expect(historicalRoleMixin.hasAntiRigidStereotype()).toBe(true));
+    it('Test mixin', () => expect(mixin.hasAntiRigidStereotype()).toBe(false));
+    it('Test type', () => expect(type.hasAntiRigidStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasAntiRigidStereotype()).toBe(false));
+  });
 
-  describe(`Test ${Class.prototype.hasRoleMixinStereotype.name}()`, () => {});
+  describe(`Test ${Class.prototype.hasNonSortalStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const historicalRoleMixin = model.createHistoricalRoleMixin();
+    const mixin = model.createMixin();
+    const historicalRole = model.createHistoricalRole();
+    const type = model.createType();
+    const classWithoutStereotypes = model.createClass();
 
-  describe(`Test ${Class.prototype.hasHistoricalRoleMixinStereotype.name}()`, () => {});
+    it('Test historicalRoleMixin', () => expect(historicalRoleMixin.hasNonSortalStereotype()).toBe(true));
+    it('Test mixin', () => expect(mixin.hasNonSortalStereotype()).toBe(true));
+    it('Test historicalRole', () => expect(historicalRole.hasNonSortalStereotype()).toBe(false));
+    it('Test type', () => expect(type.hasNonSortalStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasNonSortalStereotype()).toBe(false));
+  });
 
-  describe(`Test ${Class.prototype.hasMixinStereotype.name}()`, () => {});
+  describe(`Test ${Class.prototype.hasSortalStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const historicalRoleMixin = model.createHistoricalRoleMixin();
+    const mixin = model.createMixin();
+    const historicalRole = model.createHistoricalRole();
+    const type = model.createType();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test historicalRoleMixin', () => expect(historicalRoleMixin.hasNonSortalStereotype()).toBe(true));
+    it('Test mixin', () => expect(mixin.hasNonSortalStereotype()).toBe(true));
+    it('Test historicalRole', () => expect(historicalRole.hasNonSortalStereotype()).toBe(false));
+    it('Test type', () => expect(type.hasNonSortalStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasNonSortalStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasUltimateSortalStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const quality = model.createQuality();
+    const anotherClass = model.createHistoricalRole();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test quality', () => expect(quality.hasUltimateSortalStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasUltimateSortalStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasUltimateSortalStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasBaseSortalStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const subkind = model.createSubkind();
+    const anotherClass = model.createKind();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test subkind', () => expect(subkind.hasBaseSortalStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasBaseSortalStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasBaseSortalStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasKindStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const kind = model.createKind();
+    const anotherClass = model.createCollective();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test kind', () => expect(kind.hasKindStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasKindStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasKindStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasCollectiveStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const collective = model.createCollective();
+    const anotherClass = model.createQuantity();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test collective', () => expect(collective.hasCollectiveStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasCollectiveStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasCollectiveStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasQuantityStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const quantity = model.createQuantity();
+    const anotherClass = model.createRelator();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test quantity', () => expect(quantity.hasQuantityStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasQuantityStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasQuantityStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasRelatorStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const relator = model.createRelator();
+    const anotherClass = model.createIntrinsicMode();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test relator', () => expect(relator.hasRelatorStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasRelatorStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasRelatorStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasQualityStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const quality = model.createQuality();
+    const anotherClass = model.createExtrinsicMode();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test quality', () => expect(quality.hasQualityStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasQualityStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasQualityStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasModeStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const intrinsicMode = model.createIntrinsicMode();
+    const extrinsicMode = model.createExtrinsicMode();
+    const anotherClass = model.createQuality();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test intrinsicMode', () => expect(intrinsicMode.hasModeStereotype()).toBe(true));
+    it('Test extrinsicMode', () => expect(extrinsicMode.hasModeStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasModeStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasModeStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasSubkindStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const subkind = model.createSubkind();
+    const anotherClass = model.createRole();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test subkind', () => expect(subkind.hasSubkindStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasSubkindStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasSubkindStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasPhaseStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const phase = model.createPhase();
+    const anotherClass = model.createHistoricalRole();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test phase', () => expect(phase.hasPhaseStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasPhaseStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasPhaseStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasRoleStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const role = model.createRole();
+    const anotherClass = model.createPhase();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test role', () => expect(role.hasRoleStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasRoleStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasRoleStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasHistoricalRoleStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const historicalRole = model.createHistoricalRole();
+    const anotherClass = model.createHistoricalRoleMixin();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test historicalRole', () => expect(historicalRole.hasHistoricalRoleStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasHistoricalRoleStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasHistoricalRoleStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasCategoryStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const category = model.createCategory();
+    const anotherClass = model.createPhaseMixin();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test category', () => expect(category.hasCategoryStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasCategoryStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasCategoryStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasPhaseMixinStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const phaseMixin = model.createPhaseMixin();
+    const anotherClass = model.createRoleMixin();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test phaseMixin', () => expect(phaseMixin.hasPhaseMixinStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasPhaseMixinStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasPhaseMixinStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasRoleMixinStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const roleMixin = model.createRoleMixin();
+    const anotherClass = model.createHistoricalRoleMixin();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test roleMixin', () => expect(roleMixin.hasRoleMixinStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasRoleMixinStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasRoleMixinStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasHistoricalRoleMixinStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const historicalRoleMixin = model.createHistoricalRoleMixin();
+    const anotherClass = model.createMixin();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test historicalRoleMixin', () => expect(historicalRoleMixin.hasHistoricalRoleMixinStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasHistoricalRoleMixinStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasHistoricalRoleMixinStereotype()).toBe(false));
+  });
+
+  describe(`Test ${Class.prototype.hasMixinStereotype.name}()`, () => {
+    const model = new Project().createModel();
+    const mixin = model.createMixin();
+    const anotherClass = model.createType();
+    const classWithoutStereotypes = model.createClass();
+
+    it('Test mixin', () => expect(mixin.hasMixinStereotype()).toBe(true));
+    it('Test anotherClass', () => expect(anotherClass.hasMixinStereotype()).toBe(false));
+    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.hasMixinStereotype()).toBe(false));
+  });
 
   describe(`Test ${Class.prototype.getGeneralizations.name}()`, () => {});
 

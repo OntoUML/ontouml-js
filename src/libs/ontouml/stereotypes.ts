@@ -90,7 +90,10 @@ const RigidStereotypes = [
   ClassStereotype.CATEGORY,
   ClassStereotype.EVENT,
   ClassStereotype.SITUATION,
-  ClassStereotype.TYPE
+  ClassStereotype.TYPE,
+  ClassStereotype.ABSTRACT,
+  ClassStereotype.DATATYPE,
+  ClassStereotype.ENUMERATION
 ];
 
 const AntiRigidStereotypes = [
