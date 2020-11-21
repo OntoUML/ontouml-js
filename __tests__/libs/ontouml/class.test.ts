@@ -1372,17 +1372,118 @@ describe(`${Class.name} Tests`, () => {
     });
   });
 
-  describe(`Test ${Class.prototype.getRigidAncestors.name}()`, () => {});
+  describe(`Test ${Class.prototype.getRigidAncestors.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createCategory();
+    const person = model.createKind();
+    const student = model.createRole();
+    const phdStudent = model.createRole();
+    model.createGeneralization(agent, person);
+    model.createGeneralization(person, student);
+    model.createGeneralization(student, phdStudent);
 
-  describe(`Test ${Class.prototype.getRigidDescendants.name}()`, () => {});
+    it('Test function call', () => {
+      const phdStudentAncestors = phdStudent.getRigidAncestors();
+      expect(phdStudentAncestors).toContain(agent);
+      expect(phdStudentAncestors.length).toBe(2);
+      expect(agent.getRigidAncestors().length).toBe(0);
+      expect(person.getRigidAncestors().length).toBe(1);
+      expect(student.getRigidAncestors().length).toBe(2);
+    });
+  });
 
-  describe(`Test ${Class.prototype.getSemiRigidAncestors.name}()`, () => {});
+  describe(`Test ${Class.prototype.getRigidDescendants.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createCategory();
+    const person = model.createKind();
+    const student = model.createRole();
+    model.createGeneralization(agent, person);
+    model.createGeneralization(person, student);
 
-  describe(`Test ${Class.prototype.getSemiRigidDescendants.name}()`, () => {});
+    it('Test function call', () => {
+      const agentDescendants = agent.getRigidDescendants();
+      expect(agentDescendants).toContain(person);
+      expect(agentDescendants.length).toBe(1);
+      expect(person.getRigidDescendants().length).toBe(0);
+      expect(student.getRigidDescendants().length).toBe(0);
+    });
+  });
 
-  describe(`Test ${Class.prototype.getAntiRigidAncestors.name}()`, () => {});
+  describe(`Test ${Class.prototype.getSemiRigidAncestors.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createMixin();
+    const person = model.createKind();
+    const student = model.createRole();
+    const phdStudent = model.createRole();
+    model.createGeneralization(agent, person);
+    model.createGeneralization(person, student);
+    model.createGeneralization(student, phdStudent);
 
-  describe(`Test ${Class.prototype.getAntiRigidDescendants.name}()`, () => {});
+    it('Test function call', () => {
+      const phdStudentAncestors = phdStudent.getSemiRigidAncestors();
+      expect(phdStudentAncestors).toContain(agent);
+      expect(phdStudentAncestors.length).toBe(1);
+      expect(agent.getSemiRigidAncestors().length).toBe(0);
+      expect(person.getSemiRigidAncestors().length).toBe(1);
+      expect(student.getSemiRigidAncestors().length).toBe(1);
+    });
+  });
+
+  describe(`Test ${Class.prototype.getSemiRigidDescendants.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createCategory();
+    const diplomaticAgent = model.createMixin();
+    const person = model.createKind();
+    const student = model.createRole();
+    model.createGeneralization(agent, person);
+    model.createGeneralization(agent, diplomaticAgent);
+    model.createGeneralization(person, student);
+
+    it('Test function call', () => {
+      const agentDescendants = agent.getSemiRigidDescendants();
+      expect(agentDescendants).toContain(diplomaticAgent);
+      expect(agentDescendants.length).toBe(1);
+      expect(person.getSemiRigidDescendants().length).toBe(0);
+      expect(student.getSemiRigidDescendants().length).toBe(0);
+    });
+  });
+
+  describe(`Test ${Class.prototype.getAntiRigidAncestors.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createCategory();
+    const person = model.createKind();
+    const student = model.createRole();
+    const phdStudent = model.createRole();
+    model.createGeneralization(agent, person);
+    model.createGeneralization(person, student);
+    model.createGeneralization(student, phdStudent);
+
+    it('Test function call', () => {
+      const phdStudentAncestors = phdStudent.getAntiRigidAncestors();
+      expect(phdStudentAncestors).toContain(student);
+      expect(phdStudentAncestors.length).toBe(1);
+      expect(agent.getAntiRigidAncestors().length).toBe(0);
+      expect(person.getAntiRigidAncestors().length).toBe(0);
+      expect(student.getAntiRigidAncestors().length).toBe(0);
+    });
+  });
+
+  describe(`Test ${Class.prototype.getAntiRigidDescendants.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createCategory();
+    const person = model.createKind();
+    const student = model.createRole();
+    model.createGeneralization(agent, person);
+    model.createGeneralization(person, student);
+
+    it('Test function call', () => {
+      const agentDescendants = agent.getAntiRigidDescendants();
+      expect(agentDescendants).toContain(student);
+      expect(agentDescendants.length).toBe(1);
+      expect(person.getAntiRigidDescendants().length).toBe(1);
+      expect(student.getAntiRigidDescendants().length).toBe(0);
+    });
+  });
 
   describe(`Test ${Class.prototype.getOwnAttributes.name}()`, () => {});
 
