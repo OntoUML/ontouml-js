@@ -10,8 +10,7 @@ import {
   ORDERLESS_LEVEL,
   natures,
   stereotypes,
-  PropertyStereotype,
-  Generalization
+  PropertyStereotype
 } from '@libs/ontouml';
 
 describe(`${Class.name} Tests`, () => {

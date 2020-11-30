@@ -1,7 +1,7 @@
 import {
   Relation,
   OntoumlElement,
-  getAllContents,
+  container,
   Package,
   Diagram,
   Class,
@@ -31,7 +31,7 @@ export class Project extends OntoumlElement implements PackageContainer<Package,
   }
 
   getAllContents(contentsFilter?: (modelElement: ModelElement) => boolean): ModelElement[] {
-    return getAllContents(this, ['model'], contentsFilter);
+    return container.getAllContents(this, ['model'], contentsFilter);
   }
 
   getAllAttributes(): Property[] {

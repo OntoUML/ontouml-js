@@ -5,11 +5,9 @@ import {
   setContainer,
   Classifier,
   Decoratable,
-  getUniqueStereotype,
-  hasValidStereotypeValue,
+  decoratable,
   stereotypes,
   PropertyStereotype,
-  hasStereotypeContainedIn,
   OntoumlType,
   ClassifierType
 } from './';
@@ -51,15 +49,15 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
   }
 
   hasStereotypeContainedIn(stereotypes: PropertyStereotype | PropertyStereotype[]): boolean {
-    return hasStereotypeContainedIn<PropertyStereotype>(this, stereotypes);
+    return decoratable.hasStereotypeContainedIn<PropertyStereotype>(this, stereotypes);
   }
 
   hasValidStereotypeValue(): boolean {
-    return hasValidStereotypeValue(this, stereotypes.PropertyStereotypes, true);
+    return decoratable.hasValidStereotypeValue(this, stereotypes.PropertyStereotypes, true);
   }
 
   getUniqueStereotype(): PropertyStereotype {
-    return getUniqueStereotype<PropertyStereotype>(this);
+    return decoratable.getUniqueStereotype<PropertyStereotype>(this);
   }
 
   toJSON(): any {

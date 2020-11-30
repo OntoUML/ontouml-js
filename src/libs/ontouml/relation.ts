@@ -6,11 +6,9 @@ import {
   Classifier,
   Class,
   Decoratable,
-  getUniqueStereotype,
-  hasValidStereotypeValue,
+  decoratable,
   Container,
-  getAllContents,
-  getContents,
+  container,
   Package,
   stereotypes,
   ClassStereotype,
@@ -18,7 +16,6 @@ import {
   classifier,
   GeneralizationSet,
   UNBOUNDED_CARDINALITY,
-  hasStereotypeContainedIn,
   OntoumlType
 } from './';
 
@@ -87,23 +84,23 @@ export class Relation extends ModelElement
   }
 
   getContents(contentsFilter?: (property: Property) => boolean): Property[] {
-    return getContents(this, ['properties'], contentsFilter);
+    return container.getContents(this, ['properties'], contentsFilter);
   }
 
   getAllContents(contentsFilter?: (property: Property) => boolean): Property[] {
-    return getAllContents(this, ['properties'], contentsFilter);
+    return container.getAllContents(this, ['properties'], contentsFilter);
   }
 
   getUniqueStereotype(): RelationStereotype {
-    return getUniqueStereotype(this);
+    return decoratable.getUniqueStereotype(this);
   }
 
   hasValidStereotypeValue(): boolean {
-    return hasValidStereotypeValue(this, stereotypes.RelationStereotypes, true);
+    return decoratable.hasValidStereotypeValue(this, stereotypes.RelationStereotypes, true);
   }
 
   hasStereotypeContainedIn(stereotypes: RelationStereotype | RelationStereotype[]): boolean {
-    return hasStereotypeContainedIn<RelationStereotype>(this, stereotypes);
+    return decoratable.hasStereotypeContainedIn<RelationStereotype>(this, stereotypes);
   }
 
   toJSON(): any {

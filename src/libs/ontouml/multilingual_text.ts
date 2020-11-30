@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 export type MultilingualText = string | { [bcpLanguageTag: string]: string };
 
-export function getText(multilingualText: MultilingualText, orderedLanguagePreferences: string[] = ['en']): string {
+function getText(multilingualText: MultilingualText, orderedLanguagePreferences: string[] = ['en']): string {
   for (const lang of orderedLanguagePreferences) {
     if (!tags.check(lang)) {
       throw new Error('Invalid language code');
@@ -23,3 +23,7 @@ export function getText(multilingualText: MultilingualText, orderedLanguagePrefe
   let keys = Object.keys(multilingualText).sort();
   return multilingualText[keys[0]] || null;
 }
+
+export const multilingualText = {
+  getText
+};

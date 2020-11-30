@@ -1,10 +1,6 @@
 import { Package, Class, Property, Literal, Relation, Generalization, GeneralizationSet } from '.';
 
-export function getContents<T>(
-  container: Container<T, any>,
-  contentFields: string[],
-  contentsFilter?: (content: T) => boolean
-): T[] {
+function getContents<T>(container: Container<T, any>, contentFields: string[], contentsFilter?: (content: T) => boolean): T[] {
   const contents = new Set<T>();
 
   contentFields.forEach((fieldName: string) => {
@@ -25,11 +21,7 @@ export function getContents<T>(
   return contentsFilter ? [...contents].filter(contentsFilter) : [...contents];
 }
 
-export function getAllContents<T>(
-  container: Container<any, T>,
-  contentFields: string[],
-  contentsFilter?: (content: T) => boolean
-): T[] {
+function getAllContents<T>(container: Container<any, T>, contentFields: string[], contentsFilter?: (content: T) => boolean): T[] {
   const contents = new Set<T>();
   const tryAdd = function(value) {
     if (value && contents.has(value)) {
@@ -63,7 +55,7 @@ export function getAllContents<T>(
   return contentsFilter ? [...contents].filter(contentsFilter) : [...contents];
 }
 
-export function addContentToArray<GeneralContentType, SpecificContentType extends GeneralContentType>(
+function addContentToArray<GeneralContentType, SpecificContentType extends GeneralContentType>(
   container: Container<GeneralContentType, any>,
   arrayField: string,
   content: SpecificContentType
@@ -77,24 +69,25 @@ export function addContentToArray<GeneralContentType, SpecificContentType extend
   return content;
 }
 
+export const container = {
+  getContents,
+  getAllContents,
+  addContentToArray
+};
+
 export interface Container<ContentType, DeepContentType> {
   getContents(contentsFilter?: (content: ContentType) => boolean): ContentType[];
   getAllContents(contentsFilter?: (content: DeepContentType) => boolean): DeepContentType[];
 }
 
 export interface PackageContainer<ContentType, DeepContentType> extends Container<ContentType, DeepContentType> {
-  // Methods of a package container
   getAllPackages(): Package[];
-  // Methods of a classes container
   getAllClasses(): Class[];
   getAllEnumerations(): Class[];
   getAllAttributes(): Property[];
   getAllLiterals(): Literal[];
-  // Methods of a relations container
   getAllRelations(): Relation[];
   getAllRelationEnds(): Property[];
-  // Methods of a generalizations container
   getAllGeneralizations(): Generalization[];
-  // Methods of a generalization sets container
   getAllGeneralizationSets(): GeneralizationSet[];
 }

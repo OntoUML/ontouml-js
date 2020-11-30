@@ -4,12 +4,9 @@ import {
   Property,
   Literal,
   Decoratable,
-  getUniqueStereotype,
-  hasValidStereotypeValue,
+  decoratable,
   Container,
-  addContentToArray,
-  getAllContents,
-  getContents,
+  container,
   ModelElement,
   setContainer,
   Package,
@@ -23,7 +20,6 @@ import {
   Generalization,
   GeneralizationSet,
   classifier,
-  hasStereotypeContainedIn,
   OntoumlType
 } from './';
 
@@ -55,11 +51,11 @@ export class Class extends ModelElement
   }
 
   getContents(contentsFilter?: (content: Property | Literal) => boolean): (Property | Literal)[] {
-    return getContents(this, ['properties', 'literals'], contentsFilter);
+    return container.getContents(this, ['properties', 'literals'], contentsFilter);
   }
 
   getAllContents(contentsFilter?: (content: Property | Literal) => boolean): (Property | Literal)[] {
-    return getAllContents(this, ['properties', 'literals'], contentsFilter);
+    return container.getAllContents(this, ['properties', 'literals'], contentsFilter);
   }
 
   toJSON(): any {
@@ -89,7 +85,7 @@ export class Class extends ModelElement
       throw new Error('Cannot create an attribute on an enumeration class.');
     }
 
-    return addContentToArray<ModelElement, Property>(
+    return container.addContentToArray<ModelElement, Property>(
       this,
       'properties',
       new Property(Object.assign({}, base, { propertyType, name, container: this, project: this.project }))
@@ -100,7 +96,7 @@ export class Class extends ModelElement
     if (!this.hasEnumerationStereotype()) {
       throw new Error('Cannot create a literal on a non-enumeration class.');
     }
-    return addContentToArray<ModelElement, Literal>(
+    return container.addContentToArray<ModelElement, Literal>(
       this,
       'literals',
       new Literal(Object.assign({}, base, { name, container: this, project: this.project }))
@@ -221,7 +217,7 @@ export class Class extends ModelElement
   }
 
   hasValidStereotypeValue(): boolean {
-    return hasValidStereotypeValue(this, stereotypes.ClassStereotypes);
+    return decoratable.hasValidStereotypeValue(this, stereotypes.ClassStereotypes);
   }
 
   /** Returns `this.stereotypes[0]` or throws an exception if multiple
@@ -229,7 +225,7 @@ export class Class extends ModelElement
    *
    * @throws error when the class has multiple stereotypes */
   getUniqueStereotype(): ClassStereotype {
-    return getUniqueStereotype(this);
+    return decoratable.getUniqueStereotype(this);
   }
 
   /** Checks if the return of `this.getUniqueStereotype()` is contained in the
@@ -238,7 +234,7 @@ export class Class extends ModelElement
    * @throws error when the class has multiple stereotypes
    * */
   hasStereotypeContainedIn(stereotypes: ClassStereotype | ClassStereotype[]): boolean {
-    return hasStereotypeContainedIn(this, stereotypes);
+    return decoratable.hasStereotypeContainedIn(this, stereotypes);
   }
 
   hasTypeStereotype(): boolean {

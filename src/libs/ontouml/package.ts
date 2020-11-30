@@ -3,9 +3,7 @@ import {
   setContainer,
   ModelElement,
   Container,
-  addContentToArray,
-  getAllContents,
-  getContents,
+  container,
   Class,
   Relation,
   Property,
@@ -36,11 +34,11 @@ export class Package extends ModelElement
   }
 
   getContents(contentsFilter?: (modelElement: ModelElement) => boolean): ModelElement[] {
-    return getContents(this, ['contents'], contentsFilter);
+    return container.getContents(this, ['contents'], contentsFilter);
   }
 
   getAllContents(contentsFilter?: (modelElement: ModelElement) => boolean): ModelElement[] {
-    return getAllContents(this, ['contents'], contentsFilter);
+    return container.getAllContents(this, ['contents'], contentsFilter);
   }
 
   getAllAttributes(): Property[] {
@@ -102,7 +100,7 @@ export class Package extends ModelElement
   }
 
   createPackage(name?: MultilingualText, base?: Partial<Package>): Package {
-    return addContentToArray<ModelElement, Package>(
+    return container.addContentToArray<ModelElement, Package>(
       this,
       'contents',
       new Package(Object.assign({}, base, { name, container: this, project: this.project }))
@@ -116,7 +114,7 @@ export class Package extends ModelElement
     natures?: OntologicalNature | OntologicalNature[],
     base?: Partial<Class>
   ): Class {
-    return addContentToArray<ModelElement, Class>(
+    return container.addContentToArray<ModelElement, Class>(
       this,
       'contents',
       new Class(
@@ -264,7 +262,7 @@ export class Package extends ModelElement
   }
 
   createRelation(base?: Partial<Relation>): Relation {
-    return addContentToArray<ModelElement, Relation>(
+    return container.addContentToArray<ModelElement, Relation>(
       this,
       'contents',
       new Relation(Object.assign({}, base, { container: this, project: this.project }))
@@ -560,7 +558,7 @@ export class Package extends ModelElement
     name?: MultilingualText,
     base?: Partial<Generalization>
   ): Generalization {
-    return addContentToArray<ModelElement, Generalization>(
+    return container.addContentToArray<ModelElement, Generalization>(
       this,
       'contents',
       new Generalization(Object.assign({}, base, { name, general, specific, container: this, project: this.project }))
@@ -579,7 +577,7 @@ export class Package extends ModelElement
     isComplete = isComplete || false;
     categorizer = categorizer || null;
 
-    return addContentToArray<ModelElement, GeneralizationSet>(
+    return container.addContentToArray<ModelElement, GeneralizationSet>(
       this,
       'contents',
       new GeneralizationSet(
