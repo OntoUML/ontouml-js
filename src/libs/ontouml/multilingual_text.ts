@@ -10,6 +10,10 @@ function getText(multilingualText: MultilingualText, orderedLanguagePreferences:
     }
   }
 
+  if (!multilingualText || (typeof multilingualText !== 'string' && typeof multilingualText !== 'object')) {
+    return null;
+  }
+
   if (typeof multilingualText === 'string') {
     return multilingualText;
   }
