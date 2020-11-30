@@ -202,18 +202,6 @@ const stereotypeArrays = [
 ];
 stereotypeArrays.forEach((array: OntoumlStereotype[]) => Object.freeze(array));
 
-function isClassStereotype(stereotype: OntoumlStereotype): boolean {
-  return ClassStereotypes.includes(stereotype as any);
-}
-
-function isRelationStereotype(stereotype: OntoumlStereotype): boolean {
-  return RelationStereotypes.includes(stereotype as any);
-}
-
-function isPropertyStereotype(stereotype: OntoumlStereotype): boolean {
-  return PropertyStereotypes.includes(stereotype as any);
-}
-
 export const stereotypes = {
   // Class stereotypes arrays
   ClassStereotypes,
@@ -235,9 +223,5 @@ export const stereotypes = {
   ExistentialDependentTargetRelationStereotypes,
   PartWholeRelationStereotypes,
   // Property stereotypes arrays
-  PropertyStereotypes,
-  // Utility functions
-  isClassStereotype,
-  isRelationStereotype,
-  isPropertyStereotype
+  PropertyStereotypes
 };
