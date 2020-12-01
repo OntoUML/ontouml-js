@@ -37,7 +37,6 @@ describe(`${Generalization.name} Tests`, () => {
     const model = new Project().createModel();
     const agent = model.createClass();
     const person = model.createClass();
-    const student = model.createClass();
 
     const knows = model.createBinaryRelation(agent, agent);
     const friendsWith = model.createBinaryRelation(person, person);

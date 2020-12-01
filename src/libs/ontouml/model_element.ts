@@ -1,4 +1,5 @@
 import { Relation, Project, Class, Property, OntoumlElement, Package } from './';
+import { Container } from './container';
 
 export abstract class ModelElement extends OntoumlElement {
   // TODO: decide how to avoid people directly setting project and container fields
@@ -40,11 +41,21 @@ export abstract class ModelElement extends OntoumlElement {
       throw new Error('Project already defined');
     }
 
+    if (!project.model) {
+      throw new Error('Project already defined');
+    }
+
+    if (this.container) {
+      throw new Error('Cannot set a project while a container is defined (setting the project on the container is possible)');
+    }
+
     this.project = project;
 
-    if (typeof (this as any).getContents === 'function') {
-      (this as any).getContents().forEach((content: ModelElement) => content.setProject(project));
+    if (this.isContainer()) {
+      ((this as unknown) as Container<any, any>).getContents().forEach((content: ModelElement) => (content.project = project));
     }
+
+    this.setContainer(project.model);
   }
 
   // TODO: add documentation
