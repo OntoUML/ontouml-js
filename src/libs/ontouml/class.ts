@@ -4,22 +4,21 @@ import {
   Property,
   Literal,
   Decoratable,
-  decoratable,
+  decoratableUtils,
   Container,
-  container,
+  containerUtils,
   ModelElement,
-  setContainer,
   Package,
   Classifier,
   utils,
-  stereotypes,
-  natures,
+  stereotypesUtils,
+  naturesUtils,
   MultilingualText,
   ClassStereotype,
   OntologicalNature,
   Generalization,
   GeneralizationSet,
-  classifier,
+  classifierUtils,
   OntoumlType
 } from './';
 
@@ -51,11 +50,11 @@ export class Class extends ModelElement
   }
 
   getContents(contentsFilter?: (content: Property | Literal) => boolean): (Property | Literal)[] {
-    return container.getContents(this, ['properties', 'literals'], contentsFilter);
+    return containerUtils.getContents(this, ['properties', 'literals'], contentsFilter);
   }
 
   getAllContents(contentsFilter?: (content: Property | Literal) => boolean): (Property | Literal)[] {
-    return container.getAllContents(this, ['properties', 'literals'], contentsFilter);
+    return containerUtils.getAllContents(this, ['properties', 'literals'], contentsFilter);
   }
 
   toJSON(): any {
@@ -85,7 +84,7 @@ export class Class extends ModelElement
       throw new Error('Cannot create an attribute on an enumeration class.');
     }
 
-    return container.addContentToArray<ModelElement, Property>(
+    return containerUtils.addContentToArray<ModelElement, Property>(
       this,
       'properties',
       new Property(Object.assign({}, base, { propertyType, name, container: this, project: this.project }))
@@ -96,7 +95,7 @@ export class Class extends ModelElement
     if (!this.hasEnumerationStereotype()) {
       throw new Error('Cannot create a literal on a non-enumeration class.');
     }
-    return container.addContentToArray<ModelElement, Literal>(
+    return containerUtils.addContentToArray<ModelElement, Literal>(
       this,
       'literals',
       new Literal(Object.assign({}, base, { name, container: this, project: this.project }))
@@ -104,20 +103,8 @@ export class Class extends ModelElement
   }
 
   // TODO: review other implementations of setContainer
-  setContainer(container: Package): void {
-    let oldContainer = this.container;
-
-    setContainer(this, container);
-
-    if (oldContainer && oldContainer.contents) {
-      _.remove(oldContainer.contents, (content: ModelElement) => content === this);
-    }
-
-    if (container.contents) {
-      container.contents.push(this);
-    } else {
-      container.contents = [this];
-    }
+  setContainer(newContainer: Package): void {
+    containerUtils.setContainer(this, newContainer, 'contents', true);
   }
 
   static areAbstract(classes: Class[]): boolean {
@@ -153,15 +140,15 @@ export class Class extends ModelElement
   }
 
   isRestrictedToEndurant(): boolean {
-    return this.restrictedToContainedIn(natures.EndurantNatures);
+    return this.restrictedToContainedIn(naturesUtils.EndurantNatures);
   }
 
   isRestrictedToSubstantial(): boolean {
-    return this.restrictedToContainedIn(natures.SubstantialNatures);
+    return this.restrictedToContainedIn(naturesUtils.SubstantialNatures);
   }
 
   isRestrictedToMoment(): boolean {
-    return this.restrictedToContainedIn(natures.MomentNatures);
+    return this.restrictedToContainedIn(naturesUtils.MomentNatures);
   }
 
   isRestrictedToFunctionalComplex(): boolean {
@@ -177,11 +164,11 @@ export class Class extends ModelElement
   }
 
   isRestrictedToIntrinsicMoment(): boolean {
-    return this.restrictedToContainedIn(natures.IntrinsicMomentNatures);
+    return this.restrictedToContainedIn(naturesUtils.IntrinsicMomentNatures);
   }
 
   isRestrictedToExtrinsicMoment(): boolean {
-    return this.restrictedToContainedIn(natures.ExtrinsicMomentNatures);
+    return this.restrictedToContainedIn(naturesUtils.ExtrinsicMomentNatures);
   }
 
   isRestrictedToRelator(): boolean {
@@ -217,7 +204,7 @@ export class Class extends ModelElement
   }
 
   hasValidStereotypeValue(): boolean {
-    return decoratable.hasValidStereotypeValue(this, stereotypes.ClassStereotypes);
+    return decoratableUtils.hasValidStereotypeValue(this, stereotypesUtils.ClassStereotypes);
   }
 
   /** Returns `this.stereotypes[0]` or throws an exception if multiple
@@ -225,7 +212,7 @@ export class Class extends ModelElement
    *
    * @throws error when the class has multiple stereotypes */
   getUniqueStereotype(): ClassStereotype {
-    return decoratable.getUniqueStereotype(this);
+    return decoratableUtils.getUniqueStereotype(this);
   }
 
   /** Checks if the return of `this.getUniqueStereotype()` is contained in the
@@ -234,7 +221,7 @@ export class Class extends ModelElement
    * @throws error when the class has multiple stereotypes
    * */
   hasStereotypeContainedIn(stereotypes: ClassStereotype | ClassStereotype[]): boolean {
-    return decoratable.hasStereotypeContainedIn(this, stereotypes);
+    return decoratableUtils.hasStereotypeContainedIn(this, stereotypes);
   }
 
   hasTypeStereotype(): boolean {
@@ -266,16 +253,16 @@ export class Class extends ModelElement
   }
 
   hasEndurantOnlyStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypes.EndurantStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.EndurantStereotypes);
   }
 
   hasMomentOnlyStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypes.MomentOnlyStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.MomentOnlyStereotypes);
   }
 
   // TODO: explain substantial
   hasSubstantialOnlyStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypes.SubstantialOnlyStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.SubstantialOnlyStereotypes);
   }
 
   // TODO: expand support
@@ -284,31 +271,31 @@ export class Class extends ModelElement
   }
 
   hasRigidStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypes.RigidStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.RigidStereotypes);
   }
 
   hasSemiRigidStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypes.SemiRigidStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.SemiRigidStereotypes);
   }
 
   hasAntiRigidStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypes.AntiRigidStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.AntiRigidStereotypes);
   }
 
   hasNonSortalStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypes.NonSortalStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.NonSortalStereotypes);
   }
 
   hasSortalStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypes.SortalStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.SortalStereotypes);
   }
 
   hasUltimateSortalStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypes.UltimateSortalStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.UltimateSortalStereotypes);
   }
 
   hasBaseSortalStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypes.BaseSortalStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.BaseSortalStereotypes);
   }
 
   hasKindStereotype(): boolean {
@@ -372,55 +359,55 @@ export class Class extends ModelElement
   }
 
   getGeneralizations(): Generalization[] {
-    return classifier.getGeneralizationsInvolvingClassifier(this);
+    return classifierUtils.getGeneralizationsInvolvingClassifier(this);
   }
 
   getGeneralizationSets(): GeneralizationSet[] {
-    return classifier.getGeneralizationSetsInvolvingClassifier(this);
+    return classifierUtils.getGeneralizationSetsInvolvingClassifier(this);
   }
 
   getGeneralizationsWhereGeneral(): Generalization[] {
-    return classifier.getGeneralizationsWhereGeneral(this);
+    return classifierUtils.getGeneralizationsWhereGeneral(this);
   }
 
   getGeneralizationsWhereSpecific(): Generalization[] {
-    return classifier.getGeneralizationsWhereSpecific(this);
+    return classifierUtils.getGeneralizationsWhereSpecific(this);
   }
 
   getGeneralizationSetsWhereGeneral(): GeneralizationSet[] {
-    return classifier.getGeneralizationSetsWhereGeneral(this);
+    return classifierUtils.getGeneralizationSetsWhereGeneral(this);
   }
 
   getGeneralizationSetsWhereSpecific(): GeneralizationSet[] {
-    return classifier.getGeneralizationSetsWhereSpecific(this);
+    return classifierUtils.getGeneralizationSetsWhereSpecific(this);
   }
 
   getGeneralizationSetsWhereCategorizer(): GeneralizationSet[] {
-    return classifier.getGeneralizationSetsWhereCategorizer(this);
+    return classifierUtils.getGeneralizationSetsWhereCategorizer(this);
   }
 
   getParents(): Class[] {
-    return classifier.getParents(this);
+    return classifierUtils.getParents(this);
   }
 
   getChildren(): Class[] {
-    return classifier.getChildren(this);
+    return classifierUtils.getChildren(this);
   }
 
   getAncestors(): Class[] {
-    return classifier.getAncestors<Class>(this);
+    return classifierUtils.getAncestors<Class>(this);
   }
 
   getDescendants(): Class[] {
-    return classifier.getDescendants<Class>(this);
+    return classifierUtils.getDescendants<Class>(this);
   }
 
   getFilteredAncestors(filter: (ancestor: Class) => boolean): Class[] {
-    return classifier.getFilteredAncestors(this, filter);
+    return classifierUtils.getFilteredAncestors(this, filter);
   }
 
   getFilteredDescendants(filter: (descendent: Class) => boolean): Class[] {
-    return classifier.getFilteredDescendants(this, filter);
+    return classifierUtils.getFilteredDescendants(this, filter);
   }
 
   getUltimateSortalAncestors(): Class[] {

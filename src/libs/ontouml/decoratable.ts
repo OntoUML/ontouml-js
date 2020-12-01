@@ -48,7 +48,7 @@ function hasStereotypeContainedIn<Stereotype extends ClassStereotype | RelationS
   }
 }
 
-export const decoratable = {
+export const decoratableUtils = {
   hasValidStereotypeValue,
   getUniqueStereotype,
   hasStereotypeContainedIn

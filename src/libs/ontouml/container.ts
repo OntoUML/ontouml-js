@@ -1,4 +1,5 @@
-import { Package, Class, Property, Literal, Relation, Generalization, GeneralizationSet } from '.';
+import { Package, Class, Property, Literal, Relation, Generalization, GeneralizationSet, ModelElement } from '.';
+import _ from 'lodash';
 
 function getContents<T>(container: Container<T, any>, contentFields: string[], contentsFilter?: (content: T) => boolean): T[] {
   const contents = new Set<T>();
@@ -69,10 +70,52 @@ function addContentToArray<GeneralContentType, SpecificContentType extends Gener
   return content;
 }
 
-export const container = {
+/**
+ * Set the `container` field in the content element and update the contents of previous and new containers.
+ *
+ * @param content -  content `ModelElement` to have its container updated
+ * @param newContainer -  container `ModelElement` to contain `content`
+ * @param containmentReference -  name of the field to be updated
+ * @param isContainedInArray -  boolean that identifies whether the field represents a `ModelElement` or a `ModelElement[]`
+ * */
+function setContainer(
+  content: ModelElement,
+  newContainer: ModelElement,
+  containmentReference: string,
+  isContainedInArray: boolean
+): void {
+  if (content.project !== newContainer.project) {
+    throw new Error('Container and content projects do not match');
+  }
+
+  const currentContainer = content.container;
+
+  if (currentContainer && currentContainer[containmentReference]) {
+    _.remove(currentContainer[containmentReference], (element: ModelElement) => element === content);
+  }
+
+  if (isContainedInArray) {
+    if (newContainer[containmentReference]) {
+      newContainer[containmentReference].push(content);
+    } else {
+      newContainer[containmentReference] = [content];
+    }
+  } else {
+    if (newContainer[containmentReference]) {
+      throw new Error(`Content field '${containmentReference}' already defined`);
+    } else {
+      newContainer[containmentReference] = content;
+    }
+  }
+
+  content.container = newContainer;
+}
+
+export const containerUtils = {
   getContents,
   getAllContents,
-  addContentToArray
+  addContentToArray,
+  setContainer
 };
 
 export interface Container<ContentType, DeepContentType> {

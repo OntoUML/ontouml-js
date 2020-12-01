@@ -134,7 +134,7 @@ function getFilteredDescendants<T extends Classifier<T>>(classifier: T, filter: 
   return getDescendants(classifier).filter(filter);
 }
 
-export const classifier = {
+export const classifierUtils = {
   getGeneralizationsInvolvingClassifier,
   getGeneralizationsWhereGeneral,
   getGeneralizationsWhereSpecific,

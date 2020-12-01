@@ -6,10 +6,10 @@ import {
   Property,
   Literal,
   Project,
-  serialization,
+  serializationUtils,
   ORDERLESS_LEVEL,
-  natures,
-  stereotypes,
+  naturesUtils,
+  stereotypesUtils,
   PropertyStereotype
 } from '@libs/ontouml';
 
@@ -168,7 +168,7 @@ describe(`${Class.name} Tests`, () => {
 
     // TODO: add validation test
     it('Test classes validation within project', async () => {
-      const isValid = await serialization.validate(project);
+      const isValid = await serializationUtils.validate(project);
 
       if (isValid !== true) {
         console.log('Project serialization is not valid', isValid);
@@ -420,7 +420,7 @@ describe(`${Class.name} Tests`, () => {
   describe(`Test ${Class.prototype.isRestrictedToEndurant.name}()`, () => {
     const model = new Project().createModel();
     const kind = model.createKind('kind');
-    const category = model.createCategory('category', [...natures.EndurantNatures]);
+    const category = model.createCategory('category', [...naturesUtils.EndurantNatures]);
     const type = model.createType('type');
     const event = model.createEvent('event');
     const situation = model.createSituation('situation');
@@ -442,9 +442,9 @@ describe(`${Class.name} Tests`, () => {
 
   describe(`Test ${Class.prototype.isRestrictedToSubstantial.name}()`, () => {
     const model = new Project().createModel();
-    const categoryOfSubstantials = model.createCategory('categoryOfSubstantials', [...natures.SubstantialNatures]);
+    const categoryOfSubstantials = model.createCategory('categoryOfSubstantials', [...naturesUtils.SubstantialNatures]);
     const kind = model.createKind('kind');
-    const categoryOfEndurants = model.createCategory('categoryOfEndurants', [...natures.EndurantNatures]);
+    const categoryOfEndurants = model.createCategory('categoryOfEndurants', [...naturesUtils.EndurantNatures]);
     const mode = model.createIntrinsicMode('mode');
 
     it('Test regular kind', () => expect(kind.isRestrictedToSubstantial()).toBe(true));
@@ -455,9 +455,9 @@ describe(`${Class.name} Tests`, () => {
 
   describe(`Test ${Class.prototype.isRestrictedToMoment.name}()`, () => {
     const model = new Project().createModel();
-    const categoryOfMoments = model.createCategory('categoryOfMoments', [...natures.MomentNatures]);
+    const categoryOfMoments = model.createCategory('categoryOfMoments', [...naturesUtils.MomentNatures]);
     const mode = model.createIntrinsicMode('mode');
-    const categoryOfEndurants = model.createCategory('categoryOfEndurants', [...natures.EndurantNatures]);
+    const categoryOfEndurants = model.createCategory('categoryOfEndurants', [...naturesUtils.EndurantNatures]);
     const kind = model.createKind('kind');
 
     it('Test broad mode', () => expect(mode.isRestrictedToMoment()).toBe(true));
@@ -501,10 +501,12 @@ describe(`${Class.name} Tests`, () => {
 
   describe(`Test ${Class.prototype.isRestrictedToIntrinsicMoment.name}()`, () => {
     const model = new Project().createModel();
-    const categoryOfIntrinsicMoments = model.createCategory('categoryOfMoments', [...natures.IntrinsicMomentNatures]);
+    const categoryOfIntrinsicMoments = model.createCategory('categoryOfMoments', [...naturesUtils.IntrinsicMomentNatures]);
     const mode = model.createIntrinsicMode('mode');
     const quality = model.createQuality('quality');
-    const categoryOfExtrinsicMoments = model.createCategory('categoryOfExtrinsicMoments', [...natures.ExtrinsicMomentNatures]);
+    const categoryOfExtrinsicMoments = model.createCategory('categoryOfExtrinsicMoments', [
+      ...naturesUtils.ExtrinsicMomentNatures
+    ]);
     const relator = model.createRelator('relator');
 
     it('Test broad mode', () => expect(mode.isRestrictedToIntrinsicMoment()).toBe(true));
@@ -518,10 +520,12 @@ describe(`${Class.name} Tests`, () => {
 
   describe(`Test ${Class.prototype.isRestrictedToExtrinsicMoment.name}()`, () => {
     const model = new Project().createModel();
-    const categoryOfExtrinsicMoments = model.createCategory('categoryOfExtrinsicMoments', [...natures.ExtrinsicMomentNatures]);
+    const categoryOfExtrinsicMoments = model.createCategory('categoryOfExtrinsicMoments', [
+      ...naturesUtils.ExtrinsicMomentNatures
+    ]);
     const mode = model.createExtrinsicMode('mode');
     const relator = model.createRelator('relator');
-    const categoryOfIntrinsicMoments = model.createCategory('categoryOfMoments', [...natures.IntrinsicMomentNatures]);
+    const categoryOfIntrinsicMoments = model.createCategory('categoryOfMoments', [...naturesUtils.IntrinsicMomentNatures]);
     const quality = model.createQuality('quality');
 
     it('Test broad mode', () => expect(mode.isRestrictedToExtrinsicMoment()).toBe(true));
@@ -612,7 +616,7 @@ describe(`${Class.name} Tests`, () => {
     const classWithoutStereotypes = model.createClass('classWithoutStereotypes');
     const classWithMultipleStereotypes = model.createClass('classWithMultipleStereotypes');
 
-    stereotypes.ClassStereotypes.forEach((stereotype: ClassStereotype) =>
+    stereotypesUtils.ClassStereotypes.forEach((stereotype: ClassStereotype) =>
       it(`Test class with stereotype '${stereotype}'`, () => {
         classWithValidStereotype.stereotypes = [stereotype];
         expect(classWithValidStereotype.hasValidStereotypeValue()).toBe(true);
@@ -652,11 +656,11 @@ describe(`${Class.name} Tests`, () => {
     classWithMultipleStereotypes.stereotypes = [ClassStereotype.ABSTRACT, ClassStereotype.CATEGORY];
 
     it('Test classWithoutStereotypes', () =>
-      expect(classWithoutStereotypes.hasStereotypeContainedIn(stereotypes.ClassStereotypes)).toBe(false));
+      expect(classWithoutStereotypes.hasStereotypeContainedIn(stereotypesUtils.ClassStereotypes)).toBe(false));
     it('Test classWithUniqueStereotype', () =>
       expect(classWithUniqueStereotype.hasStereotypeContainedIn(ClassStereotype.KIND)).toBe(true));
     it('Test classWithMultipleStereotypes', () =>
-      expect(() => classWithMultipleStereotypes.hasStereotypeContainedIn(stereotypes.NonSortalStereotypes)).toThrow());
+      expect(() => classWithMultipleStereotypes.hasStereotypeContainedIn(stereotypesUtils.NonSortalStereotypes)).toThrow());
   });
 
   describe(`Test ${Class.prototype.hasTypeStereotype.name}()`, () => {

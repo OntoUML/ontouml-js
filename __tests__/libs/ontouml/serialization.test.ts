@@ -1,4 +1,4 @@
-import { Project, serialization } from '@libs/ontouml/';
+import { Project, serializationUtils } from '@libs/ontouml/';
 
 describe('Serialization tests', () => {
   it('Project serialization', () => {
@@ -21,15 +21,15 @@ describe('Serialization tests', () => {
     model.createPartition([agentIntoPerson, agentIntoOrganization], null, 'agentsSet');
 
     expect(() => JSON.stringify(project)).not.toThrow();
-    expect(serialization.validate(project)).toBeTruthy();
+    expect(serializationUtils.validate(project)).toBeTruthy();
   });
 
-  describe(`Test serialization.${serialization.validate}()`, () => {
+  describe(`Test serialization.${serializationUtils.validate}()`, () => {
     const project = new Project();
 
-    it('Test project serialization', () => expect(serialization.validate(project)).toBeTruthy());
-    it('Test string serialization', () => expect(serialization.validate(JSON.stringify(project))).toBeTruthy());
-    it('Test object serialization', () => expect(serialization.validate(JSON.parse(JSON.stringify(project)))).toBeTruthy());
-    it('Test invalid input', () => expect(() => serialization.validate(true as any)).toThrow());
+    it('Test project serialization', () => expect(serializationUtils.validate(project)).toBeTruthy());
+    it('Test string serialization', () => expect(serializationUtils.validate(JSON.stringify(project))).toBeTruthy());
+    it('Test object serialization', () => expect(serializationUtils.validate(JSON.parse(JSON.stringify(project)))).toBeTruthy());
+    it('Test invalid input', () => expect(() => serializationUtils.validate(true as any)).toThrow());
   });
 });

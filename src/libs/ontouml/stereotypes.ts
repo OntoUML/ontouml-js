@@ -202,7 +202,7 @@ const stereotypeArrays = [
 ];
 stereotypeArrays.forEach((array: OntoumlStereotype[]) => Object.freeze(array));
 
-export const stereotypes = {
+export const stereotypesUtils = {
   // Class stereotypes arrays
   ClassStereotypes,
   AbstractStereotypes,

@@ -1,6 +1,6 @@
 import uniqid from 'uniqid';
 import _ from 'lodash';
-import { Class, multilingualText, MultilingualText, Package, Project, Relation } from './';
+import { Class, multilingualTextUtils, MultilingualText, Package, Project, Relation } from './';
 
 export enum OntoumlType {
   PROJECT_TYPE = 'Project',
@@ -32,11 +32,11 @@ export abstract class OntoumlElement {
   }
 
   getName(orderedLanguagePreferences: string[] = ['en']): string {
-    return multilingualText.getText(this.name, orderedLanguagePreferences);
+    return multilingualTextUtils.getText(this.name, orderedLanguagePreferences);
   }
 
   getDescription(orderedLanguagePreferences: string[] = ['en']): string {
-    return multilingualText.getText(this.description, orderedLanguagePreferences);
+    return multilingualTextUtils.getText(this.description, orderedLanguagePreferences);
   }
 
   getReference(): { type: OntoumlType; id: string } {

@@ -3,7 +3,7 @@ import {
   Class,
   Classifier,
   ModelElement,
-  setContainer,
+  containerUtils,
   Package,
   GeneralizationSet,
   OntoumlType,
@@ -36,8 +36,8 @@ export class Generalization extends ModelElement {
     return generalizationSerialization;
   }
 
-  setContainer(container: Package): void {
-    setContainer(this, container);
+  setContainer(newContainer: Package): void {
+    containerUtils.setContainer(this, newContainer, 'contents', true);
   }
 
   getGeneralizationSets(): GeneralizationSet[] {

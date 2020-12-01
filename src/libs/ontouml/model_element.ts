@@ -1,13 +1,5 @@
 import { Relation, Project, Class, Property, OntoumlElement, Package } from './';
 
-export function setContainer(content: ModelElement, container: ModelElement): void {
-  if (content.project !== container.project) {
-    throw new Error('Container and content projects do not match');
-  }
-
-  content.container = container;
-}
-
 export abstract class ModelElement extends OntoumlElement {
   // TODO: decide how to avoid people directly setting project and container fields
   project: Project;

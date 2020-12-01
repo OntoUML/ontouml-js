@@ -28,6 +28,6 @@ function getText(multilingualText: MultilingualText, orderedLanguagePreferences:
   return multilingualText[keys[0]] || null;
 }
 
-export const multilingualText = {
+export const multilingualTextUtils = {
   getText
 };

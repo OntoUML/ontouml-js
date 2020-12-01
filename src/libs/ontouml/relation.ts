@@ -1,19 +1,18 @@
 import {
   Property,
   ModelElement,
-  setContainer,
   Generalization,
   Classifier,
   Class,
   Decoratable,
-  decoratable,
+  decoratableUtils,
   Container,
-  container,
+  containerUtils,
   Package,
-  stereotypes,
+  stereotypesUtils,
   ClassStereotype,
   RelationStereotype,
-  classifier,
+  classifierUtils,
   GeneralizationSet,
   UNBOUNDED_CARDINALITY,
   OntoumlType
@@ -36,71 +35,71 @@ export class Relation extends ModelElement
   }
 
   getGeneralizations(): Generalization[] {
-    return classifier.getGeneralizationsInvolvingClassifier(this);
+    return classifierUtils.getGeneralizationsInvolvingClassifier(this);
   }
 
   getGeneralizationSets(): GeneralizationSet[] {
-    return classifier.getGeneralizationSetsInvolvingClassifier(this);
+    return classifierUtils.getGeneralizationSetsInvolvingClassifier(this);
   }
 
   getGeneralizationsWhereGeneral(): Generalization[] {
-    return classifier.getGeneralizationsWhereGeneral(this);
+    return classifierUtils.getGeneralizationsWhereGeneral(this);
   }
 
   getGeneralizationsWhereSpecific(): Generalization[] {
-    return classifier.getGeneralizationsWhereSpecific(this);
+    return classifierUtils.getGeneralizationsWhereSpecific(this);
   }
 
   getGeneralizationSetsWhereGeneral(): GeneralizationSet[] {
-    return classifier.getGeneralizationSetsWhereGeneral(this);
+    return classifierUtils.getGeneralizationSetsWhereGeneral(this);
   }
 
   getGeneralizationSetsWhereSpecific(): GeneralizationSet[] {
-    return classifier.getGeneralizationSetsWhereSpecific(this);
+    return classifierUtils.getGeneralizationSetsWhereSpecific(this);
   }
 
   getParents(): Relation[] {
-    return classifier.getParents(this);
+    return classifierUtils.getParents(this);
   }
 
   getChildren(): Relation[] {
-    return classifier.getChildren(this);
+    return classifierUtils.getChildren(this);
   }
 
   getAncestors(): Relation[] {
-    return classifier.getAncestors<Relation>(this);
+    return classifierUtils.getAncestors<Relation>(this);
   }
 
   getDescendants(): Relation[] {
-    return classifier.getDescendants<Relation>(this);
+    return classifierUtils.getDescendants<Relation>(this);
   }
 
   getFilteredAncestors(filter: (ancestor: Relation) => boolean): Relation[] {
-    return classifier.getFilteredAncestors(this, filter);
+    return classifierUtils.getFilteredAncestors(this, filter);
   }
 
   getFilteredDescendants(filter: (descendent: Relation) => boolean): Relation[] {
-    return classifier.getFilteredDescendants(this, filter);
+    return classifierUtils.getFilteredDescendants(this, filter);
   }
 
   getContents(contentsFilter?: (property: Property) => boolean): Property[] {
-    return container.getContents(this, ['properties'], contentsFilter);
+    return containerUtils.getContents(this, ['properties'], contentsFilter);
   }
 
   getAllContents(contentsFilter?: (property: Property) => boolean): Property[] {
-    return container.getAllContents(this, ['properties'], contentsFilter);
+    return containerUtils.getAllContents(this, ['properties'], contentsFilter);
   }
 
   getUniqueStereotype(): RelationStereotype {
-    return decoratable.getUniqueStereotype(this);
+    return decoratableUtils.getUniqueStereotype(this);
   }
 
   hasValidStereotypeValue(): boolean {
-    return decoratable.hasValidStereotypeValue(this, stereotypes.RelationStereotypes, true);
+    return decoratableUtils.hasValidStereotypeValue(this, stereotypesUtils.RelationStereotypes, true);
   }
 
   hasStereotypeContainedIn(stereotypes: RelationStereotype | RelationStereotype[]): boolean {
-    return decoratable.hasStereotypeContainedIn<RelationStereotype>(this, stereotypes);
+    return decoratableUtils.hasStereotypeContainedIn<RelationStereotype>(this, stereotypes);
   }
 
   toJSON(): any {
@@ -158,8 +157,8 @@ export class Relation extends ModelElement
     return memberEnd;
   }
 
-  setContainer(container: Package): void {
-    setContainer(this, container);
+  setContainer(newContainer: Package): void {
+    containerUtils.setContainer(this, newContainer, 'contents', true);
   }
 
   getSourceEnd(): Property {
@@ -357,12 +356,12 @@ export class Relation extends ModelElement
 
   hasExistentialDependenceStereotype(): boolean {
     const stereotype = this.getUniqueStereotype();
-    return stereotypes.ExistentialDependencyRelationStereotypes.includes(stereotype);
+    return stereotypesUtils.ExistentialDependencyRelationStereotypes.includes(stereotype);
   }
 
   hasPartWholeStereotype(): boolean {
     const stereotype = this.getUniqueStereotype();
-    return stereotypes.ExistentialDependencyRelationStereotypes.includes(stereotype);
+    return stereotypesUtils.ExistentialDependencyRelationStereotypes.includes(stereotype);
   }
 
   hasMaterialStereotype(): boolean {

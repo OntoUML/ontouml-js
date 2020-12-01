@@ -2,11 +2,11 @@ import {
   Relation,
   Class,
   ModelElement,
-  setContainer,
+  containerUtils,
   Classifier,
   Decoratable,
-  decoratable,
-  stereotypes,
+  decoratableUtils,
+  stereotypesUtils,
   PropertyStereotype,
   OntoumlType,
   ClassifierType
@@ -49,15 +49,15 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
   }
 
   hasStereotypeContainedIn(stereotypes: PropertyStereotype | PropertyStereotype[]): boolean {
-    return decoratable.hasStereotypeContainedIn<PropertyStereotype>(this, stereotypes);
+    return decoratableUtils.hasStereotypeContainedIn<PropertyStereotype>(this, stereotypes);
   }
 
   hasValidStereotypeValue(): boolean {
-    return decoratable.hasValidStereotypeValue(this, stereotypes.PropertyStereotypes, true);
+    return decoratableUtils.hasValidStereotypeValue(this, stereotypesUtils.PropertyStereotypes, true);
   }
 
   getUniqueStereotype(): PropertyStereotype {
-    return decoratable.getUniqueStereotype<PropertyStereotype>(this);
+    return decoratableUtils.getUniqueStereotype<PropertyStereotype>(this);
   }
 
   toJSON(): any {
@@ -88,8 +88,8 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
     return propertySerialization;
   }
 
-  setContainer(container: ClassifierType): void {
-    setContainer(this, container);
+  setContainer(newContainer: ClassifierType): void {
+    containerUtils.setContainer(this, newContainer, 'properties', true);
   }
 
   // TODO: check if we should throw exception when container is not set

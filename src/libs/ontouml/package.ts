@@ -1,9 +1,8 @@
 import _ from 'lodash';
 import {
-  setContainer,
   ModelElement,
   Container,
-  container,
+  containerUtils,
   Class,
   Relation,
   Property,
@@ -19,12 +18,13 @@ import {
   OntologicalNature,
   RelationStereotype,
   OntoumlType,
-  AggregationKind
+  AggregationKind,
+  Project
 } from './';
 
 export class Package extends ModelElement
   implements Container<ModelElement, ModelElement>, PackageContainer<ModelElement, ModelElement> {
-  container: Package;
+  container: Package; // for the root package, container must be null, only this.project is set
   contents: ModelElement[];
 
   constructor(base?: Partial<Package>) {
@@ -34,11 +34,11 @@ export class Package extends ModelElement
   }
 
   getContents(contentsFilter?: (modelElement: ModelElement) => boolean): ModelElement[] {
-    return container.getContents(this, ['contents'], contentsFilter);
+    return containerUtils.getContents(this, ['contents'], contentsFilter);
   }
 
   getAllContents(contentsFilter?: (modelElement: ModelElement) => boolean): ModelElement[] {
-    return container.getAllContents(this, ['contents'], contentsFilter);
+    return containerUtils.getAllContents(this, ['contents'], contentsFilter);
   }
 
   getAllAttributes(): Property[] {
@@ -100,7 +100,7 @@ export class Package extends ModelElement
   }
 
   createPackage(name?: MultilingualText, base?: Partial<Package>): Package {
-    return container.addContentToArray<ModelElement, Package>(
+    return containerUtils.addContentToArray<ModelElement, Package>(
       this,
       'contents',
       new Package(Object.assign({}, base, { name, container: this, project: this.project }))
@@ -114,7 +114,7 @@ export class Package extends ModelElement
     natures?: OntologicalNature | OntologicalNature[],
     base?: Partial<Class>
   ): Class {
-    return container.addContentToArray<ModelElement, Class>(
+    return containerUtils.addContentToArray<ModelElement, Class>(
       this,
       'contents',
       new Class(
@@ -262,7 +262,7 @@ export class Package extends ModelElement
   }
 
   createRelation(base?: Partial<Relation>): Relation {
-    return container.addContentToArray<ModelElement, Relation>(
+    return containerUtils.addContentToArray<ModelElement, Relation>(
       this,
       'contents',
       new Relation(Object.assign({}, base, { container: this, project: this.project }))
@@ -558,7 +558,7 @@ export class Package extends ModelElement
     name?: MultilingualText,
     base?: Partial<Generalization>
   ): Generalization {
-    return container.addContentToArray<ModelElement, Generalization>(
+    return containerUtils.addContentToArray<ModelElement, Generalization>(
       this,
       'contents',
       new Generalization(Object.assign({}, base, { name, general, specific, container: this, project: this.project }))
@@ -577,7 +577,7 @@ export class Package extends ModelElement
     isComplete = isComplete || false;
     categorizer = categorizer || null;
 
-    return container.addContentToArray<ModelElement, GeneralizationSet>(
+    return containerUtils.addContentToArray<ModelElement, GeneralizationSet>(
       this,
       'contents',
       new GeneralizationSet(
@@ -612,8 +612,12 @@ export class Package extends ModelElement
     );
   }
 
-  setContainer(container: Package): void {
-    setContainer(this, container);
+  setContainer(newContainer: Package): void {
+    if (this.container instanceof Project) {
+      throw new Error('This method cannot be used on a root package');
+    }
+
+    containerUtils.setContainer(this, newContainer, 'contents', true);
   }
 
   /**

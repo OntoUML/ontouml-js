@@ -38,7 +38,7 @@ const ExtrinsicMomentNatures = [OntologicalNature.extrinsic_mode, OntologicalNat
 const naturesArrays = [EndurantNatures, SubstantialNatures, MomentNatures, IntrinsicMomentNatures, ExtrinsicMomentNatures];
 naturesArrays.forEach((array: OntologicalNature[]) => Object.freeze(array));
 
-export const natures = {
+export const naturesUtils = {
   EndurantNatures,
   SubstantialNatures,
   MomentNatures,

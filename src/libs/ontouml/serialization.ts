@@ -23,7 +23,7 @@ function validate(input: any): true | object | PromiseLike<any> {
   return isValid ? isValid : validator.errors;
 }
 
-export const serialization = {
+export const serializationUtils = {
   schema,
   validate
 };

@@ -1,4 +1,4 @@
-import { Class, ModelElement, setContainer, OntoumlType } from './';
+import { Class, ModelElement, containerUtils, OntoumlType } from './';
 
 export class Literal extends ModelElement {
   constructor(base?: Partial<Literal>) {
@@ -7,8 +7,8 @@ export class Literal extends ModelElement {
     Object.defineProperty(this, 'type', { value: OntoumlType.LITERAL_TYPE, enumerable: true });
   }
 
-  setContainer(container: Class): void {
-    setContainer(this, container);
+  setContainer(newContainer: Class): void {
+    containerUtils.setContainer(this, newContainer, 'literals', true);
   }
 
   clone(): Literal {

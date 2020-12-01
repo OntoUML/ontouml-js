@@ -1,7 +1,7 @@
 import {
   Relation,
   OntoumlElement,
-  container,
+  containerUtils,
   Package,
   Diagram,
   Class,
@@ -31,7 +31,7 @@ export class Project extends OntoumlElement implements PackageContainer<Package,
   }
 
   getAllContents(contentsFilter?: (modelElement: ModelElement) => boolean): ModelElement[] {
-    return container.getAllContents(this, ['model'], contentsFilter);
+    return containerUtils.getAllContents(this, ['model'], contentsFilter);
   }
 
   getAllAttributes(): Property[] {
@@ -91,31 +91,13 @@ export class Project extends OntoumlElement implements PackageContainer<Package,
     return this.model;
   }
 
-  // getAllProperties(): Property[] {
-  //   throw new Error('Method unimplemented!');
-  // }
+  lock(): void {
+    throw new Error('Unimplemented method');
+  }
 
-  // getAllBinaryRelations(): Relation[] {
-  //   throw new Error('Method unimplemented!');
-  // }
-
-  // getAllTernaryRelations(): Relation[] {
-  //   throw new Error('Method unimplemented!');
-  // }
-
-  // getAllDerivationRelations(): Relation[] {
-  //   throw new Error('Method unimplemented!');
-  // }
-
-  // get locked(): boolean {
-  //   return this._locked;
-  // }
-
-  // set locked(value: boolean) {
-  //   throw new Error('Method unimplemented!');
-  //   // TODO: implement a loop that changes the "isWritable" property in all fields
-  //   // this._locked = value;
-  // }
+  unlock(): void {
+    throw new Error('Unimplemented method');
+  }
 
   getClassesByNature(): Class[] {
     throw new Error('Method unimplemented!');

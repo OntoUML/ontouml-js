@@ -1,4 +1,4 @@
-import { Relation, ModelElement, setContainer, Class, Generalization, Classifier, Package, OntoumlType } from './';
+import { Relation, ModelElement, containerUtils, Class, Generalization, Classifier, Package, OntoumlType } from './';
 
 export class GeneralizationSet extends ModelElement {
   container: Package;
@@ -34,8 +34,8 @@ export class GeneralizationSet extends ModelElement {
     return generalizationSetSerialization;
   }
 
-  setContainer(container: Package): void {
-    setContainer(this, container);
+  setContainer(newContainer: Package): void {
+    containerUtils.setContainer(this, newContainer, 'contents', true);
   }
 
   /**

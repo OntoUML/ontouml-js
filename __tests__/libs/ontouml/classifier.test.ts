@@ -1,7 +1,7 @@
-import { Class, Project, classifier } from '@libs/ontouml';
+import { Class, Project, classifierUtils } from '@libs/ontouml';
 
 describe('Classifier Tests', () => {
-  describe(`Test ${classifier.getGeneralizationsInvolvingClassifier.name}()`, () => {
+  describe(`Test ${classifierUtils.getGeneralizationsInvolvingClassifier.name}()`, () => {
     const model = new Project().createModel();
     const pkg = model.createPackage();
     const agent = model.createClass();
@@ -36,7 +36,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifier.getGeneralizationSetsInvolvingClassifier.name}()`, () => {
+  describe(`Test ${classifierUtils.getGeneralizationSetsInvolvingClassifier.name}()`, () => {
     const model = new Project().createModel();
     const pkg = model.createPackage();
     const agent = model.createClass();
@@ -71,7 +71,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifier.getGeneralizationsWhereGeneral.name}()`, () => {
+  describe(`Test ${classifierUtils.getGeneralizationsWhereGeneral.name}()`, () => {
     const model = new Project().createModel();
     const pkg = model.createPackage();
     const agent = model.createClass();
@@ -98,7 +98,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifier.getGeneralizationsWhereSpecific.name}()`, () => {
+  describe(`Test ${classifierUtils.getGeneralizationsWhereSpecific.name}()`, () => {
     const model = new Project().createModel();
     const pkg = model.createPackage();
     const agent = model.createClass();
@@ -125,7 +125,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifier.getGeneralizationSetsWhereGeneral.name}()`, () => {
+  describe(`Test ${classifierUtils.getGeneralizationSetsWhereGeneral.name}()`, () => {
     const model = new Project().createModel();
     const pkg = model.createPackage();
     const agent = model.createClass();
@@ -152,7 +152,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifier.getGeneralizationSetsWhereSpecific.name}()`, () => {
+  describe(`Test ${classifierUtils.getGeneralizationSetsWhereSpecific.name}()`, () => {
     const model = new Project().createModel();
     const pkg = model.createPackage();
     const agent = model.createClass();
@@ -180,7 +180,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifier.getParents.name}()`, () => {
+  describe(`Test ${classifierUtils.getParents.name}()`, () => {
     const model = new Project().createModel();
     const pkg = model.createPackage();
     const agent = model.createClass();
@@ -216,7 +216,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifier.getChildren.name}()`, () => {
+  describe(`Test ${classifierUtils.getChildren.name}()`, () => {
     const model = new Project().createModel();
     const pkg = model.createPackage();
     const agent = model.createClass();
@@ -252,7 +252,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifier.getAncestors.name}()`, () => {
+  describe(`Test ${classifierUtils.getAncestors.name}()`, () => {
     const model = new Project().createModel();
     const agent = model.createClass('agent');
     const person = model.createClass('person');
@@ -300,7 +300,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifier.getDescendants.name}()`, () => {
+  describe(`Test ${classifierUtils.getDescendants.name}()`, () => {
     const model = new Project().createModel();
     const agent = model.createClass('agent');
     const person = model.createClass('person');
@@ -348,7 +348,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifier.getFilteredAncestors.name}()`, () => {
+  describe(`Test ${classifierUtils.getFilteredAncestors.name}()`, () => {
     const model = new Project().createModel();
     const agent = model.createCategory('agent');
     const person = model.createKind('person');
@@ -384,7 +384,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifier.getFilteredDescendants.name}()`, () => {
+  describe(`Test ${classifierUtils.getFilteredDescendants.name}()`, () => {
     const model = new Project().createModel();
     const agent = model.createCategory('agent');
     const person = model.createKind('person');
