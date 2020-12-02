@@ -19,7 +19,11 @@ export enum AggregationKind {
 }
 
 // Babel did not allow me to make this a static field in Property
-export const UNBOUNDED_CARDINALITY = Infinity;
+const UNBOUNDED_CARDINALITY = Infinity;
+
+export const propertyUtils = {
+  UNBOUNDED_CARDINALITY
+};
 
 export type Cardinality = { lowerBound: number; upperBound: number };
 
@@ -183,7 +187,7 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
     return !this.isOptional();
   }
 
-  isCardinalityZeroToOne(): boolean {
+  isZeroToOne(): boolean {
     const card = this.cardinality;
     return card.lowerBound === 0 && card.upperBound === 1;
   }

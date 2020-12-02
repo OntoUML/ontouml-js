@@ -13,7 +13,7 @@ import {
   MultilingualText,
   Classifier,
   utils,
-  UNBOUNDED_CARDINALITY,
+  propertyUtils,
   ClassStereotype,
   OntologicalNature,
   RelationStereotype,
@@ -84,6 +84,7 @@ export class Package extends ModelElement
     return this.getAllContents(classesFilter) as Class[];
   }
 
+  // TODO: review if this function should exist
   getAllLiterals(): Literal[] {
     const literalsFilter = (modelElement: ModelElement) => modelElement instanceof Literal;
     return this.getAllContents(literalsFilter) as Literal[];
@@ -277,7 +278,7 @@ export class Package extends ModelElement
     stereotype?: RelationStereotype,
     base?: Partial<Relation>
   ): Relation {
-    const binaryRelation = this.createRelation(Object.assign({}, base, { name, stereotype }));
+    const binaryRelation = this.createRelation(Object.assign({}, base, { name, stereotypes: utils.arrayFrom(stereotype) }));
     binaryRelation.createSourceEnd({ propertyType: source });
     binaryRelation.createTargetEnd({ propertyType: target });
     return binaryRelation;
@@ -299,7 +300,7 @@ export class Package extends ModelElement
 
   createTernaryRelation(relata: Class[], name?: MultilingualText, base?: Partial<Relation>): Relation {
     const ternaryRelation = this.createRelation(Object.assign({}, base, { name, stereotype: [RelationStereotype.DERIVATION] }));
-    relata.forEach((relatum: Class) => ternaryRelation.createMemberEnd({ propertyType: relatum }));
+    relata.forEach((relatum: Class, index: number) => ternaryRelation.createMemberEnd({ propertyType: relatum }, index));
     return ternaryRelation;
   }
 
@@ -428,8 +429,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinality(0, UNBOUNDED_CARDINALITY);
-    targetEnd.setCardinality(1, UNBOUNDED_CARDINALITY);
+    sourceEnd.setCardinality(0, propertyUtils.UNBOUNDED_CARDINALITY);
+    targetEnd.setCardinality(1, propertyUtils.UNBOUNDED_CARDINALITY);
 
     return relation;
   }
@@ -545,7 +546,7 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinality(2, UNBOUNDED_CARDINALITY);
+    sourceEnd.setCardinality(2, propertyUtils.UNBOUNDED_CARDINALITY);
     targetEnd.setCardinality(1, 1);
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
@@ -602,14 +603,7 @@ export class Package extends ModelElement
   ): GeneralizationSet {
     categorizer = categorizer || null;
 
-    return this.createGeneralizationSet(
-      generalizations,
-      false,
-      false,
-      categorizer,
-      name,
-      Object.assign({}, base, { isDisjoint: true, isComplete: true })
-    );
+    return this.createGeneralizationSet(generalizations, true, true, categorizer, name, Object.assign({}, base));
   }
 
   setContainer(newContainer: Package): void {

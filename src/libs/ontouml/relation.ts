@@ -14,7 +14,7 @@ import {
   RelationStereotype,
   classifierUtils,
   GeneralizationSet,
-  UNBOUNDED_CARDINALITY,
+  propertyUtils,
   OntoumlType
 } from './';
 
@@ -295,7 +295,7 @@ export class Relation extends ModelElement
 
   // TODO: check whether isBinaryRelation() is a better name
   isBinaryRelation(): boolean {
-    return this.properties[0].propertyType instanceof Class && this.properties[1].propertyType instanceof Class;
+    return this.properties && this.properties.length === 2;
   }
 
   // TODO: check whether isTernaryRelation() is a better name
@@ -338,7 +338,7 @@ export class Relation extends ModelElement
   isBounded(): boolean {
     // TODO: change comparison for a regex to allow letters (as variables) in the cardinalities
     const isBoundedEnd = (relationEnd: Property) =>
-      relationEnd.cardinality && relationEnd.cardinality.upperBound !== UNBOUNDED_CARDINALITY;
+      relationEnd.cardinality && relationEnd.cardinality.upperBound !== propertyUtils.UNBOUNDED_CARDINALITY;
     return this.properties && this.properties.every(isBoundedEnd);
   }
 
@@ -355,11 +355,6 @@ export class Relation extends ModelElement
   }
 
   hasExistentialDependenceStereotype(): boolean {
-    const stereotype = this.getUniqueStereotype();
-    return stereotypesUtils.ExistentialDependencyRelationStereotypes.includes(stereotype);
-  }
-
-  hasPartWholeStereotype(): boolean {
     const stereotype = this.getUniqueStereotype();
     return stereotypesUtils.ExistentialDependencyRelationStereotypes.includes(stereotype);
   }

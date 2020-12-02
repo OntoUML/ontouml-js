@@ -338,6 +338,7 @@ export function getAllLiterals(model: IPackage): ILiteral[] {
 }
 
 // TODO: replace with Property this.isPropertyTypeDefined()
+// I guess this method isn't that necessary...
 export function isTypeDefined(attribute: IProperty): boolean {
   return attribute.propertyType !== null;
 }

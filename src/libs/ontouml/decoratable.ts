@@ -21,13 +21,11 @@ function hasValidStereotypeValue<T extends OntoumlStereotype>(
 function getUniqueStereotype<Stereotype extends ClassStereotype | RelationStereotype | PropertyStereotype>(
   decoratable: Decoratable<Stereotype>
 ): Stereotype {
-  const nStereotypes = decoratable.stereotypes && decoratable.stereotypes.length;
-
-  if (nStereotypes > 1) {
+  if (decoratable.stereotypes && decoratable.stereotypes.length > 1) {
     throw new Error('Multiple stereotypes');
   }
 
-  return decoratable.stereotypes && decoratable.stereotypes[0];
+  return decoratable.stereotypes ? decoratable.stereotypes[0] : undefined;
 }
 
 /** Checks if the return of `this.getUniqueStereotype()` is contained in the
