@@ -1,7 +1,6 @@
 import {
   AggregationKind,
   Class,
-  containerUtils,
   Generalization,
   GeneralizationSet,
   ModelElement,

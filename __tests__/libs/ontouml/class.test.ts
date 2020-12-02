@@ -166,7 +166,6 @@ describe(`${Class.name} Tests`, () => {
       expect(() => JSON.stringify(project)).not.toThrow();
     });
 
-    // TODO: add validation test
     it('Test classes validation within project', async () => {
       const isValid = await serializationUtils.validate(project);
 

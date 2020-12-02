@@ -291,7 +291,7 @@ export class Package extends ModelElement
     base?: Partial<Relation>
   ): Relation {
     const derivationRelation = this.createRelation(
-      Object.assign({}, base, { name, stereotype: [RelationStereotype.DERIVATION] })
+      Object.assign({}, base, { name, stereotypes: [RelationStereotype.DERIVATION] })
     );
     derivationRelation.createSourceEnd({ propertyType: derivingRelation });
     derivationRelation.createTargetEnd({ propertyType: derivedClass });
@@ -299,8 +299,12 @@ export class Package extends ModelElement
   }
 
   createTernaryRelation(relata: Class[], name?: MultilingualText, base?: Partial<Relation>): Relation {
-    const ternaryRelation = this.createRelation(Object.assign({}, base, { name, stereotype: [RelationStereotype.DERIVATION] }));
-    relata.forEach((relatum: Class, index: number) => ternaryRelation.createMemberEnd({ propertyType: relatum }, index));
+    if (relata.length < 3) {
+      throw new Error('Ternary relations must involve at least 3 members');
+    }
+
+    const ternaryRelation = this.createRelation(Object.assign({}, base, { name }));
+    relata.forEach((relatum: Class, index: number) => ternaryRelation.createMemberEnd(index, { propertyType: relatum }));
     return ternaryRelation;
   }
 

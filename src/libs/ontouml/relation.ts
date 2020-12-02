@@ -1,3 +1,4 @@
+import { OntoumlStereotype } from '@constants/';
 import {
   Property,
   ModelElement,
@@ -143,14 +144,26 @@ export class Relation extends ModelElement
     return targetEnd;
   }
 
-  createMemberEnd(base?: Partial<Property>, position: number = 0): Property {
+  /**
+   * Create member end at designated position. If no position is informed, append the member end at the last position.
+   *
+   * @param position - position to place the member end; optional
+   * @param base - partial property object to base the new member end; optional
+   * */
+  createMemberEnd(position?: number, base?: Partial<Property>): Property {
     this.properties = this.properties || [];
+    position = position || position === 0 ? position : this.properties.length;
+
+    if (typeof position !== 'number' || position < 0) {
+      throw new Error(`Invalid position value: ${position}`);
+    }
 
     if (this.properties[position]) {
       throw new Error('Member already defined in this position');
     }
 
     const memberEnd = new Property({ ...base, container: this, project: this.project });
+    position = position;
 
     this.properties[position] = memberEnd;
 
@@ -218,16 +231,10 @@ export class Relation extends ModelElement
   }
 
   getSource(): Classifier<any> {
-    if (this.hasDerivationStereotype()) {
-      throw new Error('Unable to retrieve class from derivation relation');
-    }
     return this.getSourceEnd().propertyType;
   }
 
   getTarget(): Classifier<any> {
-    if (this.hasDerivationStereotype()) {
-      throw new Error('Unable to retrieve class from derivation relation');
-    }
     return this.getTargetEnd().propertyType;
   }
 
@@ -271,6 +278,14 @@ export class Relation extends ModelElement
       throw new Error('Unable to retrieve derived class from non-derivation relation');
     }
     return this.getDerivedClassEnd().propertyType as Class;
+  }
+
+  getSourceStereotype(): ClassStereotype {
+    return (this.getSource() as any).getUniqueStereotype();
+  }
+
+  getTargetStereotype(): ClassStereotype {
+    return (this.getTarget() as any).getUniqueStereotype();
   }
 
   getSourceClassStereotype(): ClassStereotype {
@@ -333,13 +348,6 @@ export class Relation extends ModelElement
   // TODO: check weather ternary relations may denote existential dependencies
   isExistentialDependency(): boolean {
     return this.properties.some((relationEnd: Property) => relationEnd.isReadOnly);
-  }
-
-  isBounded(): boolean {
-    // TODO: change comparison for a regex to allow letters (as variables) in the cardinalities
-    const isBoundedEnd = (relationEnd: Property) =>
-      relationEnd.cardinality && relationEnd.cardinality.upperBound !== propertyUtils.UNBOUNDED_CARDINALITY;
-    return this.properties && this.properties.every(isBoundedEnd);
   }
 
   isSourceExistentiallyDependent(): boolean {

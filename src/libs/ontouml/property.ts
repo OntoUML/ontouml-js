@@ -211,6 +211,10 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
     return Property.isCardinalityValid(this.cardinality);
   }
 
+  isBounded(): boolean {
+    return this.cardinality && this.cardinality.upperBound < propertyUtils.UNBOUNDED_CARDINALITY;
+  }
+
   static isCardinalityValid(cardinality: Cardinality): boolean {
     const { lowerBound, upperBound } = cardinality;
     return !(
