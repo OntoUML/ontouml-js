@@ -30,8 +30,8 @@ export class Generalization extends ModelElement {
 
     const general = this.general as ClassifierType;
     const specific = this.specific as ClassifierType;
-    generalizationSerialization.general = general.getReference();
-    generalizationSerialization.specific = specific.getReference();
+    generalizationSerialization.general = general ? general.getReference() : null;
+    generalizationSerialization.specific = specific ? specific.getReference() : null;
 
     return generalizationSerialization;
   }

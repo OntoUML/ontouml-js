@@ -1,4 +1,3 @@
-import { OntoumlStereotype } from '@constants/';
 import {
   Property,
   ModelElement,
@@ -15,7 +14,6 @@ import {
   RelationStereotype,
   classifierUtils,
   GeneralizationSet,
-  propertyUtils,
   OntoumlType
 } from './';
 
@@ -30,6 +28,9 @@ export class Relation extends ModelElement
     super(base);
 
     Object.defineProperty(this, 'type', { value: OntoumlType.RELATION_TYPE, enumerable: true });
+
+    this.properties = this.properties || null;
+    this.stereotypes = this.stereotypes || null;
 
     this.isAbstract = this.isAbstract || false;
     this.isDerived = this.isDerived || false;

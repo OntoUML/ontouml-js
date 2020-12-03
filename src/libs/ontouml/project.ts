@@ -23,6 +23,9 @@ export class Project extends OntoumlElement implements PackageContainer<Package,
     super(base);
 
     Object.defineProperty(this, 'type', { value: OntoumlType.PROJECT_TYPE, enumerable: true });
+
+    this.model = this.model || null;
+    this.diagrams = this.diagrams || null;
   }
 
   // TODO: add support to diagrams element

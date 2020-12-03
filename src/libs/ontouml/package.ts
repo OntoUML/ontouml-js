@@ -28,9 +28,11 @@ export class Package extends ModelElement
   contents: ModelElement[];
 
   constructor(base?: Partial<Package>) {
-    // TODO: deep clone; stringify/_.clone
     super(base);
+
     Object.defineProperty(this, 'type', { value: OntoumlType.PACKAGE_TYPE, enumerable: true });
+
+    this.contents = this.contents || null;
   }
 
   getContents(contentsFilter?: (modelElement: ModelElement) => boolean): ModelElement[] {

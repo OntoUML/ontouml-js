@@ -46,10 +46,35 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
     Object.defineProperty(this, 'type', { value: OntoumlType.PROPERTY_TYPE, enumerable: true });
 
     this.cardinality = this.cardinality || { lowerBound: 0, upperBound: UNBOUNDED_CARDINALITY };
+
+    if (typeof this.cardinality === 'string') {
+      this.cardinality = Property.parseCardinality(this.cardinality as string);
+    } else if (!this.cardinality) {
+      this.cardinality = { lowerBound: 0, upperBound: UNBOUNDED_CARDINALITY };
+    }
+
+    this.stereotypes = this.stereotypes || null;
+    this.subsettedProperties = this.subsettedProperties || null;
+    this.redefinedProperties = this.redefinedProperties || null;
+
     this.aggregationKind = this.aggregationKind || AggregationKind.NONE;
     this.isDerived = this.isDerived || false;
     this.isOrdered = this.isOrdered || false;
     this.isReadOnly = this.isReadOnly || false;
+  }
+
+  static parseCardinality(cardinalityString: string): Cardinality {
+    const cardinalities = cardinalityString.split('..');
+    const lowerBoundString: any = cardinalities[0];
+    const upperBoundString: any = cardinalities[1] || cardinalities[0];
+    const lowerBound = lowerBoundString === '*' ? 0 : Number(lowerBoundString);
+    const upperBound = upperBoundString === '*' ? UNBOUNDED_CARDINALITY : Number(upperBoundString);
+
+    if (isNaN(lowerBound) || isNaN(upperBound)) {
+      return { lowerBound: 0, upperBound: UNBOUNDED_CARDINALITY };
+    } else {
+      return { lowerBound, upperBound };
+    }
   }
 
   hasStereotypeContainedIn(stereotypes: PropertyStereotype | PropertyStereotype[]): boolean {

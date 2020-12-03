@@ -7,7 +7,7 @@ import {
   Literal,
   Project,
   serializationUtils,
-  ORDERLESS_LEVEL,
+  classUtils,
   naturesUtils,
   stereotypesUtils,
   PropertyStereotype
@@ -36,8 +36,8 @@ describe(`${Class.name} Tests`, () => {
     });
 
     it('Test defaults', () => {
-      expect(emptyClass.stereotypes).toBeUndefined();
-      expect(emptyClass.restrictedTo).toBeUndefined();
+      expect(emptyClass.stereotypes).toBeNull();
+      expect(emptyClass.restrictedTo).toBeNull();
       expect(emptyClass.isAbstract).toEqual(false);
       expect(emptyClass.isDerived).toEqual(false);
       expect(emptyClass.isExtensional).toEqual(false);
@@ -121,7 +121,7 @@ describe(`${Class.name} Tests`, () => {
       isDerived: true,
       isExtensional: true,
       isPowertype: true,
-      order: ORDERLESS_LEVEL
+      order: classUtils.ORDERLESS_LEVEL
     });
     const attribute = fullyFeaturedCategory.createAttribute(enumeration);
 

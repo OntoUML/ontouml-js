@@ -9,6 +9,11 @@ export abstract class ModelElement extends OntoumlElement {
 
   constructor(base?: Partial<ModelElement>) {
     super(base);
+
+    this.project = this.project || null;
+    this.container = this.container || null;
+
+    this.propertyAssignments = this.propertyAssignments || null;
   }
 
   lock(): void {

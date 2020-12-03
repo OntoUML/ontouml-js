@@ -22,7 +22,11 @@ import {
   OntoumlType
 } from './';
 
-export const ORDERLESS_LEVEL = Infinity;
+const ORDERLESS_LEVEL = Infinity;
+
+export const classUtils = {
+  ORDERLESS_LEVEL
+};
 
 export class Class extends ModelElement
   implements Decoratable<ClassStereotype>, Container<Property | Literal, Property | Literal>, Classifier<Class> {
@@ -42,11 +46,28 @@ export class Class extends ModelElement
 
     Object.defineProperty(this, 'type', { value: OntoumlType.CLASS_TYPE, enumerable: true });
 
+    this.properties = this.properties || null;
+    this.literals = this.literals || null;
+    this.stereotypes = this.stereotypes || null;
+    this.restrictedTo = this.restrictedTo || null;
+
     this.isAbstract = this.isAbstract || false;
     this.isDerived = this.isDerived || false;
     this.isExtensional = this.isExtensional || false;
     this.isPowertype = this.isPowertype || false;
     this.order = this.order || 1;
+
+    if (typeof this.order === 'string') {
+      this.order = Class.parseOrder(this.order);
+    }
+  }
+
+  static parseOrder(orderString: string): number {
+    if (orderString === '*') {
+      return ORDERLESS_LEVEL;
+    } else {
+      return isNaN(Number(orderString)) ? 1 : Number(orderString);
+    }
   }
 
   getContents(contentsFilter?: (content: Property | Literal) => boolean): (Property | Literal)[] {
