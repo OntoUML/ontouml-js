@@ -1,4 +1,4 @@
-import { Generalization, Project, serializationUtils } from '@libs/ontouml';
+import { Class, Generalization, Project, serializationUtils } from '@libs/ontouml';
 
 describe(`${Generalization.name} Tests`, () => {
   describe(`Test ${Generalization.prototype.toJSON.name}()`, () => {
@@ -93,7 +93,17 @@ describe(`${Generalization.name} Tests`, () => {
     it('Test class generalization', () => expect(relationGeneralization.involvesRelations()).toBeTruthy());
   });
 
-  describe(`Test ${Generalization.prototype.clone.name}()`, () => {});
+  describe(`Test ${Generalization.prototype.clone.name}()`, () => {
+    const model = new Project().createModel();
+    const classA = model.createClass();
+    const classB = model.createClass();
+    const genA = model.createGeneralization(classA, classB);
+    const genB = genA.clone();
 
-  describe(`Test ${Generalization.prototype.replace.name}()`, () => {});
+    const genC = new Generalization();
+    const genD = genC.clone();
+
+    it('Test method', () => expect(genA).toEqual(genB));
+    it('Test method', () => expect(genC).toEqual(genD));
+  });
 });

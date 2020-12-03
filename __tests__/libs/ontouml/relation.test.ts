@@ -971,10 +971,15 @@ describe(`${Relation.name} Tests`, () => {
   });
 
   describe(`Test ${Relation.prototype.clone.name}()`, () => {
-    // TODO: implement test
-  });
+    const model = new Project().createModel();
+    const classA = model.createClass();
+    const relationA = model.createBinaryRelation(classA, classA);
+    const relationB = relationA.clone();
 
-  describe(`Test ${Relation.prototype.replace.name}()`, () => {
-    // TODO: implement test
+    const relationC = new Relation();
+    const relationD = relationC.clone();
+
+    it('Test method', () => expect(relationA).toEqual(relationB));
+    it('Test method', () => expect(relationC).toEqual(relationD));
   });
 });

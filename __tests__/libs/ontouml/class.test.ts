@@ -1487,15 +1487,99 @@ describe(`${Class.name} Tests`, () => {
     });
   });
 
-  describe(`Test ${Class.prototype.getOwnAttributes.name}()`, () => {});
+  describe(`Test ${Class.prototype.getOwnAttributes.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createCategory();
+    const person = model.createKind();
+    const text = model.createDatatype();
+    const alias = agent.createAttribute(text);
+    const surname = person.createAttribute(text);
+    model.createGeneralization(agent, person);
 
-  describe(`Test ${Class.prototype.getAllAttributes.name}()`, () => {});
+    it('Retrieve own attributes', () => {
+      expect(agent.getOwnAttributes()).toEqual([alias]);
+      expect(person.getOwnAttributes()).toEqual([surname]);
+      expect(text.getOwnAttributes()).toEqual([]);
+    });
 
-  describe(`Test ${Class.prototype.getOwnLiterals.name}()`, () => {});
+    const enumeration = model.createEnumeration();
+    it('Test exception', () => expect(() => enumeration.getOwnAttributes()).toThrow());
+  });
 
-  describe(`Test ${Class.prototype.getAllLiterals.name}()`, () => {});
+  describe(`Test ${Class.prototype.getAllAttributes.name}()`, () => {
+    const model = new Project().createModel();
+    const agent = model.createCategory();
+    const person = model.createKind();
+    const text = model.createDatatype();
+    const alias = agent.createAttribute(text);
+    const surname = person.createAttribute(text);
+    model.createGeneralization(agent, person);
 
-  describe(`Test ${Class.prototype.clone.name}()`, () => {});
+    it('Retrieve all attributes', () => {
+      const personAttributes = person.getAllAttributes();
 
-  describe(`Test ${Class.prototype.replace.name}()`, () => {});
+      expect(personAttributes).toContain(alias);
+      expect(personAttributes).toContain(surname);
+      expect(personAttributes.length).toBe(2);
+      expect(text.getOwnAttributes()).toEqual([]);
+    });
+
+    const enumeration = model.createEnumeration();
+    it('Test exception', () => expect(() => enumeration.getAllAttributes()).toThrow());
+  });
+
+  describe(`Test ${Class.prototype.getOwnLiterals.name}()`, () => {
+    const model = new Project().createModel();
+    const enumerationA = model.createEnumeration();
+    const enumerationB = model.createEnumeration();
+    const enumerationN = model.createEnumeration();
+    const litA = enumerationA.createLiteral();
+    const litB = enumerationB.createLiteral();
+
+    model.createGeneralization(enumerationA, enumerationB);
+
+    it('Retrieve own literals', () => {
+      expect(enumerationA.getOwnLiterals()).toEqual([litA]);
+      expect(enumerationB.getOwnLiterals()).toEqual([litB]);
+      expect(enumerationN.getOwnLiterals()).toEqual([]);
+    });
+
+    const _class = model.createClass();
+    it('Test exception', () => expect(() => _class.getOwnLiterals()).toThrow());
+  });
+
+  describe(`Test ${Class.prototype.getAllLiterals.name}()`, () => {
+    const model = new Project().createModel();
+    const enumerationA = model.createEnumeration();
+    const enumerationB = model.createEnumeration();
+    const enumerationN = model.createEnumeration();
+    const litA = enumerationA.createLiteral();
+    const litB = enumerationB.createLiteral();
+
+    model.createGeneralization(enumerationA, enumerationB);
+
+    it('Retrieve all literals', () => {
+      const bLiterals = enumerationB.getAllLiterals();
+
+      expect(bLiterals).toContain(litA);
+      expect(bLiterals).toContain(litB);
+      expect(bLiterals.length).toBe(2);
+      expect(enumerationN.getAllLiterals()).toEqual([]);
+    });
+
+    const _class = model.createClass();
+    it('Test exception', () => expect(() => _class.getAllLiterals()).toThrow());
+  });
+
+  describe(`Test ${Class.prototype.clone.name}()`, () => {
+    const model = new Project().createModel();
+    const classA = model.createClass();
+    const classB = classA.clone();
+
+    const classC = new Class();
+    const classD = classC.clone();
+
+    it('Test method', () => expect(classA).toEqual(classB));
+    it('Test method', () => expect(classC).toEqual(classD));
+  });
 });

@@ -30,10 +30,15 @@ describe(`${Literal.name} Tests`, () => {
   });
 
   describe(`Test ${Literal.prototype.clone.name}()`, () => {
-    // TODO: implement test
-  });
+    const model = new Project().createModel();
+    const classA = model.createEnumeration();
+    const litA = classA.createLiteral();
+    const litB = litA.clone();
 
-  describe(`Test ${Literal.prototype.replace.name}()`, () => {
-    // TODO: implement test
+    const litC = new Literal();
+    const litD = litC.clone();
+
+    it('Test method', () => expect(litA).toEqual(litB));
+    it('Test method', () => expect(litC).toEqual(litD));
   });
 });

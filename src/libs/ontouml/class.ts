@@ -503,7 +503,7 @@ export class Class extends ModelElement
 
   /** Returns both own attributes, excluding inherited ones */
   getOwnAttributes(): Property[] {
-    if (!this.hasEnumerationStereotype()) {
+    if (this.hasEnumerationStereotype()) {
       throw new Error('Cannot retrieve attributes from an enumeration.');
     }
 
@@ -523,7 +523,7 @@ export class Class extends ModelElement
 
   /** Returns both own literals, excluding inherited ones */
   getOwnLiterals(): Literal[] {
-    if (this.hasEnumerationStereotype()) {
+    if (!this.hasEnumerationStereotype()) {
       throw new Error('Cannot retrieve literals from a non-enumeration.');
     }
 

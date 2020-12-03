@@ -10,7 +10,7 @@ import {
   serializationUtils
 } from '@libs/ontouml';
 
-describe(`${ModelElement.name} Tests`, () => {
+describe(`${Package.name} Tests`, () => {
   describe(`Test ${ModelElement.prototype.isClassifier.name}`, () => {
     const model = new Project().createModel();
     const _class = model.createClass();
@@ -650,14 +650,34 @@ describe(`${ModelElement.name} Tests`, () => {
   });
 
   describe(`Test ${Package.prototype.clone.name}`, () => {
-    // TODO: implement test
-  });
+    const smallModel = new Project().createModel();
+    const packageA = smallModel.createPackage();
+    const packageB = packageA.clone();
 
-  describe(`Test ${Package.prototype.replace.name}`, () => {
-    // TODO: implement test
-  });
+    const packageC = new Package();
+    const packageD = packageC.clone();
 
-  describe(`Test Package.${Package.triggersReplaceOnClonedPackage.name}`, () => {
-    // TODO: implement test
+    it('Test method', () => expect(packageA).toEqual(packageB));
+    it('Test method', () => expect(packageC).toEqual(packageD));
+
+    const project = new Project({ name: 'Project' });
+    const model = project.createModel({ name: 'Model' });
+
+    const agent = model.createCategory('Agent');
+    const person = model.createKind('Person');
+    const organization = model.createKind('Organization');
+    const text = model.createDatatype('Text');
+
+    agent.createAttribute(text, { name: 'name' });
+    person.createAttribute(text, { name: 'surname' });
+
+    model.createBinaryRelation(person, organization, 'works-for');
+
+    const agentIntoPerson = model.createGeneralization(agent, person, 'agentIntoPerson');
+    const agentIntoOrganization = model.createGeneralization(agent, organization, 'agentIntoOrganization');
+
+    model.createPartition([agentIntoPerson, agentIntoOrganization], null, 'agentsSet');
+
+    it('Test method', () => expect(model).toEqual(model.clone()));
   });
 });

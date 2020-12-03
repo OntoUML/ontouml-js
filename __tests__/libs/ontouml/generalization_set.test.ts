@@ -205,11 +205,18 @@ describe(`${GeneralizationSet.name} Tests`, () => {
   });
 
   describe(`Test ${GeneralizationSet.prototype.clone.name}()`, () => {
-    // TODO: implement test
-  });
+    const model = new Project().createModel();
+    const classA = model.createClass();
+    const classB = model.createClass();
+    const genA = model.createGeneralization(classA, classB);
+    const genSetA = model.createGeneralizationSet(genA);
+    const genSetB = genSetA.clone();
 
-  describe(`Test ${GeneralizationSet.prototype.replace.name}()`, () => {
-    // TODO: implement test
+    const genSetC = new GeneralizationSet();
+    const genSetD = genSetC.clone();
+
+    it('Test method', () => expect(genSetA).toEqual(genSetB));
+    it('Test method', () => expect(genSetC).toEqual(genSetD));
   });
 
   describe(`Test ${GeneralizationSet.prototype.getInstantiationRelations.name}()`, () => {

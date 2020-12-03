@@ -352,10 +352,15 @@ describe(`${Property.name} Tests`, () => {
   });
 
   describe(`Test ${Property.prototype.clone.name}()`, () => {
-    // TODO: implement test
-  });
+    const model = new Project().createModel();
+    const classA = model.createClass();
+    const propA = classA.createAttribute(classA);
+    const propB = propA.clone();
 
-  describe(`Test ${Property.prototype.replace.name}()`, () => {
-    // TODO: implement test
+    const propC = new Property();
+    const propD = propC.clone();
+
+    it('Test method', () => expect(propA).toEqual(propB));
+    it('Test method', () => expect(propC).toEqual(propD));
   });
 });
