@@ -1,4 +1,4 @@
-import { Class, Generalization, Project, serializationUtils } from '@libs/ontouml';
+import { Generalization, Project, serializationUtils } from '@libs/ontouml';
 
 describe(`${Generalization.name} Tests`, () => {
   describe(`Test ${Generalization.prototype.toJSON.name}()`, () => {

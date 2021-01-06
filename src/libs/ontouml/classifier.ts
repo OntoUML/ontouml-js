@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Property, Generalization, GeneralizationSet, Class, Relation, ModelElement } from './';
+import { Property, Generalization, GeneralizationSet, Class, Relation } from './';
 
 export type ClassifierType = Class | Relation;
 
