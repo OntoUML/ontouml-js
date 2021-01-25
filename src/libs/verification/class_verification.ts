@@ -1,14 +1,5 @@
 import { Class, ClassStereotype, OntologicalNature, stereotypesUtils, naturesUtils } from '@libs/ontouml';
-import { VerificationIssue } from './';
-import _ from 'lodash';
-
-function pushIssuesToArrayIfNotNull(array: VerificationIssue[], ...issues: VerificationIssue[]): void {
-  for (const issue of issues) {
-    if (issue) {
-      array.push(issue);
-    }
-  }
-}
+import { VerificationIssue, utils } from './';
 
 export const allowedStereotypeRestrictedToMatches = {
   [ClassStereotype.ABSTRACT]: [OntologicalNature.abstract],
@@ -48,7 +39,7 @@ export class ClassVerification {
       return foundIssues;
     }
 
-    pushIssuesToArrayIfNotNull(
+    utils.pushItemsToArrayIfNotNull(
       foundIssues,
       ClassVerification.checkKindSpecialization(_class),
       ClassVerification.checkCompatibleNatures(_class),
@@ -65,15 +56,15 @@ export class ClassVerification {
     const issues: VerificationIssue[] = [];
     const classStereotypes = stereotypesUtils.ClassStereotypes;
 
-    if (!_class.stereotype || _class.stereotype.length !== 1) {
+    if (!_class.stereotype) {
       issues.push(VerificationIssue.createClassNotUniqueStereotype(_class));
     } else if (!classStereotypes.includes(_class.stereotype)) {
       issues.push(VerificationIssue.createClassInvalidOntoumlStereotype(_class));
     }
 
-    if (_class.stereotype && _class.stereotype.includes(ClassStereotype.ENUMERATION) && _class.properties) {
+    if (_class.hasEnumerationStereotype() && _class.properties) {
       issues.push(VerificationIssue.createClassEnumerationWithProperties(_class));
-    } else if (_class.stereotype && !_class.stereotype.includes(ClassStereotype.ENUMERATION) && _class.literals) {
+    } else if (!_class.hasEnumerationStereotype() && _class.literals) {
       issues.push(VerificationIssue.createClassNonEnumerationWithLiterals(_class));
     }
 
@@ -118,7 +109,7 @@ export class ClassVerification {
       return null;
     }
 
-    return !_class.restrictedTo || !_class.restrictedTo.length
+    return !Array.isArray(_class.restrictedTo) || !_class.restrictedTo.length
       ? VerificationIssue.createClassMissingNatureRestrictions(_class)
       : null;
   }
@@ -140,6 +131,7 @@ export class ClassVerification {
   }
 
   static checkMissingOrder(_class: Class): VerificationIssue {
+    // TODO: update this when support to non-sortal types is implemented
     if (!_class.hasTypeStereotype()) {
       return null;
     }

@@ -7,7 +7,7 @@ export class ProjectVerification {
     let foundIssues: VerificationIssue[] = [];
 
     project
-      .getAllContents()
+      .getContents()
       .forEach((element: ModelElement) => (foundIssues = _.concat(foundIssues, Ontouml2Verification.verify(element))));
 
     return foundIssues;

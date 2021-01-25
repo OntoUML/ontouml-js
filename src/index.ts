@@ -1,13 +1,11 @@
-// import OntoUMLModel from './libs/ontouml_model';
 import { ModelManager } from '@libs/model';
-import { OntoUML2Verification } from '@libs/verification';
-import { VerificationIssue, VerificationIssueCode, IssueSeverity } from '@libs/verification/issues';
+import { Ontouml2Verification, VerificationIssue, VerificationIssueCode, IssueSeverity } from '@libs/verification';
 import { VerificationAlternative, VerificationAlternativeCode } from '@libs/verification/alternatives';
 import { Ontouml2Gufo } from '@libs/ontouml2gufo';
 
 export {
   ModelManager,
-  OntoUML2Verification,
+  Ontouml2Verification,
   VerificationIssue,
   VerificationIssueCode,
   VerificationAlternative,

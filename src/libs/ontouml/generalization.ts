@@ -1,18 +1,8 @@
-import {
-  Relation,
-  Class,
-  Classifier,
-  ModelElement,
-  containerUtils,
-  Package,
-  GeneralizationSet,
-  OntoumlType,
-  ClassifierType
-} from './';
+import { Relation, Class, ModelElement, containerUtils, Package, GeneralizationSet, OntoumlType } from './';
 
 export class Generalization extends ModelElement {
-  general: Classifier<ClassifierType>;
-  specific: Classifier<ClassifierType>;
+  general: Class | Relation;
+  specific: Class | Relation;
 
   constructor(base?: Partial<Generalization>) {
     super(base);
@@ -28,8 +18,8 @@ export class Generalization extends ModelElement {
 
     Object.assign(generalizationSerialization, super.toJSON());
 
-    const general = this.general as ClassifierType;
-    const specific = this.specific as ClassifierType;
+    const general = this.general;
+    const specific = this.specific;
     generalizationSerialization.general = general ? general.getReference() : null;
     generalizationSerialization.specific = specific ? specific.getReference() : null;
 
@@ -63,12 +53,44 @@ export class Generalization extends ModelElement {
       this.container = newElement as Package;
     }
 
-    if (this.general === (originalElement as ClassifierType)) {
-      this.general = newElement as ClassifierType;
+    if (this.general === (originalElement as Class | Relation)) {
+      this.general = newElement as Class | Relation;
     }
 
-    if (this.specific === (originalElement as ClassifierType)) {
-      this.specific = newElement as ClassifierType;
+    if (this.specific === (originalElement as Class | Relation)) {
+      this.specific = newElement as Class | Relation;
+    }
+  }
+
+  getGeneralClass(): Class {
+    if (this.general instanceof Class) {
+      return this.general;
+    } else {
+      throw new Error("The generalization's general is not an instance of Class.");
+    }
+  }
+
+  getGeneralRelation(): Relation {
+    if (this.general instanceof Relation) {
+      return this.general;
+    } else {
+      throw new Error("The generalization's general is not an instance of Relation.");
+    }
+  }
+
+  getSpecificClass(): Class {
+    if (this.specific instanceof Class) {
+      return this.specific;
+    } else {
+      throw new Error("The generalization's specific is not an instance of Class.");
+    }
+  }
+
+  getSpecificRelation(): Relation {
+    if (this.specific instanceof Relation) {
+      return this.specific;
+    } else {
+      throw new Error("The generalization's specific is not an instance of Relation.");
     }
   }
 }

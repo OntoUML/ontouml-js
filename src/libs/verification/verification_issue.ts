@@ -27,6 +27,8 @@ export enum VerificationIssueCode {
   generalization_incompatible_datatype = 'generalization_incompatible_datatype',
   generalization_incompatible_class_rigidity = 'generalization_incompatible_class_rigidity',
   generalization_incompatible_class_sortality = 'generalization_incompatible_class_sortality',
+  generalization_incompatible_general_and_specific_types = 'generalization_incompatible_general_and_specific_types',
+  generalization_circular = 'generalization_circular',
   generalization_incompatible_relation_type = 'generalization_incompatible_relation_type',
   relation_multiple_stereotypes = 'relation_multiple_stereotypes',
   relation_missing_is_read_only = 'relation_missing_is_read_only',
@@ -245,7 +247,7 @@ export class VerificationIssue {
     return new VerificationIssue(
       source,
       VerificationIssueCode.generalization_incompatible_natures,
-      "Prohibited specialization: incompatible 'restrictedTo' values",
+      "Prohibited generalization: incompatible 'restrictedTo' values",
       IssueSeverity.error,
       `The allowed ontological natures of instances of ${specific.getNameOrId()} are not among the allowed ontological natures of its superclass ${general.getNameOrId()}`,
       [general, specific]
@@ -259,7 +261,7 @@ export class VerificationIssue {
     return new VerificationIssue(
       source,
       VerificationIssueCode.generalization_incompatible_enumeration,
-      'Prohibited specialization: enumeration specialization',
+      'Prohibited generalization: enumeration specialization',
       IssueSeverity.error,
       `An enumeration can only be in generalization relation with other enumerations`,
       [general, specific]
@@ -273,7 +275,7 @@ export class VerificationIssue {
     return new VerificationIssue(
       source,
       VerificationIssueCode.generalization_incompatible_datatype,
-      'Prohibited specialization: datatype specialization',
+      'Prohibited generalization: datatype specialization',
       IssueSeverity.error,
       'A datatype can only be in generalization relation with other datatypes',
       [general, specific]
@@ -287,7 +289,7 @@ export class VerificationIssue {
     return new VerificationIssue(
       source,
       VerificationIssueCode.generalization_incompatible_class_rigidity,
-      'Prohibited specialization: rigid/semi-rigid specializing an anti-rigid',
+      'Prohibited generalization: rigid/semi-rigid specializing an anti-rigid',
       IssueSeverity.error,
       `The rigid/semi-rigid class ${specific.getNameOrId()} cannot specialize the anti-rigid class ${general.getNameOrId()}`,
       [general, specific]
@@ -301,10 +303,32 @@ export class VerificationIssue {
     return new VerificationIssue(
       source,
       VerificationIssueCode.generalization_incompatible_class_sortality,
-      'Prohibited specialization: non-sortal specializing a sortal',
+      'Prohibited generalization: non-sortal specializing a sortal',
       IssueSeverity.error,
       `The non-sortal class ${specific.getNameOrId()} cannot specialize the sortal class ${general.getNameOrId()}`,
       [general, specific]
+    );
+  }
+
+  static createGeneralizationIncompatibleGeneralAndSpecificTypes(source: Generalization): VerificationIssue {
+    return new VerificationIssue(
+      source,
+      VerificationIssueCode.generalization_incompatible_general_and_specific_types,
+      'Prohibited generalization: specific and general of distinct types',
+      IssueSeverity.error,
+      `Generalizations must exclusively involve classes or relations, never a combination`,
+      [source.general, source.specific]
+    );
+  }
+
+  static createGeneralizationCircular(source: Generalization): VerificationIssue {
+    return new VerificationIssue(
+      source,
+      VerificationIssueCode.generalization_circular,
+      'Prohibited generalization: circular generalization',
+      IssueSeverity.error,
+      `Generalizations must be defined between two distinct classes/relations`,
+      [source.general, source.specific]
     );
   }
 

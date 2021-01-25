@@ -4,7 +4,6 @@ import {
   GeneralizationSet,
   Literal,
   ModelElement,
-  OntoumlType,
   Package,
   Project,
   Property,
@@ -25,46 +24,46 @@ import _ from 'lodash';
 
 export interface VerificationOptions {}
 
+/**
+ * Utility class for perform syntactical model verification
+ *
+ * @author Claudenir Fonseca
+ * @author Lucas Bassetti
+ */
 export class Ontouml2Verification {
-  elementToVerify: ModelElement;
+  elementToVerify: ModelElement | Project;
   options: VerificationOptions;
   issues: VerificationIssue[];
 
-  constructor(elementToVerify: ModelElement, options: Partial<VerificationOptions>) {
-    this.options = options;
-    this.elementToVerify = elementToVerify;
+  constructor(project: Project, options?: Partial<VerificationOptions>);
+  constructor(elementToVerify: ModelElement, options?: Partial<VerificationOptions>);
+  constructor(input: ModelElement | Project, options?: Partial<VerificationOptions>) {
+    this.options = options || null;
     this.issues = [];
+    this.elementToVerify = input;
   }
 
   run(): VerificationIssue[] {
-    return Ontouml2Verification.verify(this.elementToVerify);
+    return (this.issues = Ontouml2Verification.verify(this.elementToVerify));
   }
 
-  static verify(_class: Class): VerificationIssue[];
-  static verify(generalization: Generalization): VerificationIssue[];
-  static verify(generalizationSet: GeneralizationSet): VerificationIssue[];
-  static verify(literal: Literal): VerificationIssue[];
-  static verify(_package: Package): VerificationIssue[];
-  static verify(Project: Project): VerificationIssue[];
-  static verify(property: Property): VerificationIssue[];
-  static verify(relation: Relation): VerificationIssue[];
   static verify(element: ModelElement | Project): VerificationIssue[] {
-    switch (element.type) {
-      case OntoumlType.CLASS_TYPE:
+    switch (element.constructor) {
+      case Class:
         return ClassVerification.verifyClass(element as Class);
-      case OntoumlType.GENERALIZATION_SET_TYPE:
+      case GeneralizationSet:
         return GeneralizationVerification.verifyGeneralization(element as Generalization);
-      case OntoumlType.GENERALIZATION_TYPE:
+      case Generalization:
         return GeneralizationSetVerification.verifyGeneralizationSet(element as GeneralizationSet);
-      case OntoumlType.LITERAL_TYPE:
+      case Literal:
         return LiteralVerification.verifyLiteral(element as Literal);
-      case OntoumlType.PACKAGE_TYPE:
+      case Package:
         return PackageVerification.verifyPackage(element as Package);
-      case OntoumlType.PROJECT_TYPE:
+      case Project:
         return ProjectVerification.verifyProject(element as Project);
-      case OntoumlType.PROPERTY_TYPE:
+      case Property:
         return PropertyVerification.verifyProperty(element as Property);
-      case OntoumlType.RELATION_TYPE:
+      case Relation:
         return RelationVerification.verifyRelation(element as Relation);
       default:
         throw new Error(`Unexpected element to be verified.`);

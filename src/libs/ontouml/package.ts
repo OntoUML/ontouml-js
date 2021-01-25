@@ -11,7 +11,6 @@ import {
   Literal,
   PackageContainer,
   MultilingualText,
-  Classifier,
   utils,
   propertyUtils,
   ClassStereotype,
@@ -557,9 +556,9 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createGeneralization(
-    general: Classifier<any>,
-    specific: Classifier<any>,
+  createGeneralization<T extends Class | Relation>(
+    general: T,
+    specific: T,
     name?: MultilingualText,
     base?: Partial<Generalization>
   ): Generalization {
