@@ -17,7 +17,7 @@ describe(`${Class.name} Tests`, () => {
   describe('Test constructor', () => {
     const emptyClass = new Class();
     const fullyFeaturedClass = new Class({
-      stereotypes: [ClassStereotype.CATEGORY],
+      stereotype: ClassStereotype.CATEGORY,
       restrictedTo: [OntologicalNature.functional_complex],
       isAbstract: true,
       isDerived: true,
@@ -36,7 +36,7 @@ describe(`${Class.name} Tests`, () => {
     });
 
     it('Test defaults', () => {
-      expect(emptyClass.stereotypes).toBeNull();
+      expect(emptyClass.stereotype).toBeNull();
       expect(emptyClass.restrictedTo).toBeNull();
       expect(emptyClass.isAbstract).toEqual(false);
       expect(emptyClass.isDerived).toEqual(false);
@@ -46,7 +46,7 @@ describe(`${Class.name} Tests`, () => {
     });
 
     it('Test overriding defaults', () => {
-      expect(fullyFeaturedClass.stereotypes).toBeDefined();
+      expect(fullyFeaturedClass.stereotype).toBeDefined();
       expect(fullyFeaturedClass.restrictedTo).toBeDefined();
       expect(fullyFeaturedClass.isAbstract).toEqual(true);
       expect(fullyFeaturedClass.isDerived).toEqual(true);
@@ -128,7 +128,7 @@ describe(`${Class.name} Tests`, () => {
     it('Test empty class serialization', () => {
       const serialization = emptyClass.toJSON();
 
-      expect(serialization.stereotypes).toEqual(null);
+      expect(serialization.stereotype).toEqual(null);
       expect(serialization.restrictedTo).toEqual(null);
       expect(serialization.properties).toEqual(null);
       expect(serialization.literals).toEqual(null);
@@ -142,7 +142,7 @@ describe(`${Class.name} Tests`, () => {
     it('Test fully featured category serialization', () => {
       const serialization = fullyFeaturedCategory.toJSON();
 
-      expect(serialization.stereotypes).toContain(ClassStereotype.CATEGORY);
+      expect(serialization.stereotype).toContain(ClassStereotype.CATEGORY);
       expect(serialization.restrictedTo).toContain(OntologicalNature.functional_complex);
       expect(serialization.properties).toContain(attribute);
       expect(serialization.literals).toEqual(null);
@@ -156,7 +156,7 @@ describe(`${Class.name} Tests`, () => {
     it('Test enumeration serialization', () => {
       const serialization = enumeration.toJSON();
 
-      expect(serialization.stereotypes).toContain(ClassStereotype.ENUMERATION);
+      expect(serialization.stereotype).toContain(ClassStereotype.ENUMERATION);
       expect(serialization.restrictedTo).toContain(OntologicalNature.abstract);
       expect(serialization.properties).toEqual(null);
       expect(serialization.literals).toContain(literal);
@@ -613,53 +613,30 @@ describe(`${Class.name} Tests`, () => {
     const classWithValidStereotype = model.createClass('classWithValidStereotype');
     const classWithNonValidStereotype = model.createClass('classWithNonValidStereotype');
     const classWithoutStereotypes = model.createClass('classWithoutStereotypes');
-    const classWithMultipleStereotypes = model.createClass('classWithMultipleStereotypes');
 
     stereotypesUtils.ClassStereotypes.forEach((stereotype: ClassStereotype) =>
       it(`Test class with stereotype '${stereotype}'`, () => {
-        classWithValidStereotype.stereotypes = [stereotype];
+        classWithValidStereotype.stereotype = stereotype;
         expect(classWithValidStereotype.hasValidStereotypeValue()).toBe(true);
       })
     );
 
-    classWithNonValidStereotype.stereotypes = [PropertyStereotype.BEGIN as any];
-    classWithMultipleStereotypes.stereotypes = [ClassStereotype.ABSTRACT, ClassStereotype.CATEGORY];
+    classWithNonValidStereotype.stereotype = PropertyStereotype.BEGIN as any;
 
     it(`Test ${classWithNonValidStereotype.name}`, () =>
       expect(classWithNonValidStereotype.hasValidStereotypeValue()).toBe(false));
     it(`Test ${classWithoutStereotypes.name}`, () => expect(classWithoutStereotypes.hasValidStereotypeValue()).toBe(false));
-    it(`Test ${classWithMultipleStereotypes.name}`, () =>
-      expect(classWithMultipleStereotypes.hasValidStereotypeValue()).toBe(false));
-  });
-
-  describe(`Test ${Class.prototype.getUniqueStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const classWithoutStereotypes = model.createClass();
-    const classWithUniqueStereotype = model.createKind();
-    const classWithMultipleStereotypes = model.createClass();
-
-    classWithMultipleStereotypes.stereotypes = [ClassStereotype.ABSTRACT, ClassStereotype.CATEGORY];
-
-    it('Test classWithoutStereotypes', () => expect(classWithoutStereotypes.getUniqueStereotype()).toBeFalsy());
-    it('Test classWithUniqueStereotype', () =>
-      expect(classWithUniqueStereotype.getUniqueStereotype()).toBe(ClassStereotype.KIND));
-    it('Test classWithMultipleStereotypes', () => expect(() => classWithMultipleStereotypes.getUniqueStereotype()).toThrow());
   });
 
   describe(`Test ${Class.prototype.hasStereotypeContainedIn.name}()`, () => {
     const model = new Project().createModel();
     const classWithoutStereotypes = model.createClass();
     const classWithUniqueStereotype = model.createKind();
-    const classWithMultipleStereotypes = model.createClass();
-
-    classWithMultipleStereotypes.stereotypes = [ClassStereotype.ABSTRACT, ClassStereotype.CATEGORY];
 
     it('Test classWithoutStereotypes', () =>
       expect(classWithoutStereotypes.hasStereotypeContainedIn(stereotypesUtils.ClassStereotypes)).toBe(false));
     it('Test classWithUniqueStereotype', () =>
       expect(classWithUniqueStereotype.hasStereotypeContainedIn(ClassStereotype.KIND)).toBe(true));
-    it('Test classWithMultipleStereotypes', () =>
-      expect(() => classWithMultipleStereotypes.hasStereotypeContainedIn(stereotypesUtils.NonSortalStereotypes)).toThrow());
   });
 
   describe(`Test ${Class.prototype.hasTypeStereotype.name}()`, () => {

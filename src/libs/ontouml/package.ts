@@ -123,7 +123,7 @@ export class Package extends ModelElement
       new Class(
         Object.assign({}, base, {
           name,
-          stereotypes: utils.arrayFrom(stereotype),
+          stereotype,
           restrictedTo: utils.arrayFrom(natures),
           container: this,
           project: this.project
@@ -280,7 +280,7 @@ export class Package extends ModelElement
     stereotype?: RelationStereotype,
     base?: Partial<Relation>
   ): Relation {
-    const binaryRelation = this.createRelation(Object.assign({}, base, { name, stereotypes: utils.arrayFrom(stereotype) }));
+    const binaryRelation = this.createRelation(Object.assign({}, base, { name, stereotype }));
     binaryRelation.createSourceEnd({ propertyType: source });
     binaryRelation.createTargetEnd({ propertyType: target });
     return binaryRelation;
@@ -292,9 +292,7 @@ export class Package extends ModelElement
     name?: MultilingualText,
     base?: Partial<Relation>
   ): Relation {
-    const derivationRelation = this.createRelation(
-      Object.assign({}, base, { name, stereotypes: [RelationStereotype.DERIVATION] })
-    );
+    const derivationRelation = this.createRelation(Object.assign({}, base, { name, stereotype: RelationStereotype.DERIVATION }));
     derivationRelation.createSourceEnd({ propertyType: derivingRelation });
     derivationRelation.createTargetEnd({ propertyType: derivedClass });
     return derivationRelation;

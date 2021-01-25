@@ -15,7 +15,7 @@ describe(`${Property.name} Tests`, () => {
     const summerFestival = model.createEvent();
     const startDate = summerFestival.createAttribute(date);
 
-    startDate.stereotypes = [PropertyStereotype.BEGIN];
+    startDate.stereotype = PropertyStereotype.BEGIN;
 
     it('Test function call', () => expect(startDate.hasStereotypeContainedIn(stereotypesUtils.PropertyStereotypes)).toBe(true));
   });
@@ -28,28 +28,12 @@ describe(`${Property.name} Tests`, () => {
     const endDate = summerFestival.createAttribute(date);
     const precedes = summerFestival.createAttribute(summerFestival);
 
-    startDate.stereotypes = [PropertyStereotype.BEGIN];
-    endDate.stereotypes = [PropertyStereotype.END];
+    startDate.stereotype = PropertyStereotype.BEGIN;
+    endDate.stereotype = PropertyStereotype.END;
 
     it('Test function call', () => expect(startDate.hasValidStereotypeValue()).toBe(true));
     it('Test function call', () => expect(endDate.hasValidStereotypeValue()).toBe(true));
     it('Test function call', () => expect(precedes.hasValidStereotypeValue()).toBe(true));
-  });
-
-  describe(`Test ${Property.prototype.getUniqueStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const date = model.createDatatype();
-    const summerFestival = model.createEvent();
-    const startDate = summerFestival.createAttribute(date);
-    const endDate = summerFestival.createAttribute(date);
-    const precedes = summerFestival.createAttribute(summerFestival);
-
-    startDate.stereotypes = [PropertyStereotype.BEGIN];
-    endDate.stereotypes = [PropertyStereotype.END];
-
-    it('Test function call', () => expect(startDate.getUniqueStereotype()).toBe(PropertyStereotype.BEGIN));
-    it('Test function call', () => expect(endDate.getUniqueStereotype()).toBe(PropertyStereotype.END));
-    it('Test function call', () => expect(precedes.getUniqueStereotype()).toBeUndefined());
   });
 
   describe(`Test ${Property.prototype.toJSON.name}()`, () => {
@@ -60,8 +44,8 @@ describe(`${Property.name} Tests`, () => {
     const endDate = summerFestival.createAttribute(date);
     const precedes = summerFestival.createAttribute(summerFestival);
 
-    startDate.stereotypes = [PropertyStereotype.BEGIN];
-    endDate.stereotypes = [PropertyStereotype.END];
+    startDate.stereotype = PropertyStereotype.BEGIN;
+    endDate.stereotype = PropertyStereotype.END;
 
     it('Test serialization', () => expect(() => JSON.stringify(startDate)).not.toThrow());
     it('Test serialization', () => expect(() => JSON.stringify(precedes)).not.toThrow());

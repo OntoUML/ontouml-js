@@ -30,7 +30,7 @@ export type Cardinality = { lowerBound: number; upperBound: number };
 export class Property extends ModelElement implements Decoratable<PropertyStereotype> {
   type: OntoumlType.PROPERTY_TYPE;
   container: ClassifierType;
-  stereotypes: PropertyStereotype[];
+  stereotype: PropertyStereotype;
   cardinality: Cardinality;
   propertyType: Classifier<any>;
   subsettedProperties: Property[]; // TODO: update null when deserializing
@@ -53,7 +53,7 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
       this.cardinality = { lowerBound: 0, upperBound: UNBOUNDED_CARDINALITY };
     }
 
-    this.stereotypes = this.stereotypes || null;
+    this.stereotype = this.stereotype || null;
     this.subsettedProperties = this.subsettedProperties || null;
     this.redefinedProperties = this.redefinedProperties || null;
 
@@ -82,16 +82,12 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
   }
 
   hasValidStereotypeValue(): boolean {
-    return decoratableUtils.hasValidStereotypeValue(this, stereotypesUtils.PropertyStereotypes, true);
-  }
-
-  getUniqueStereotype(): PropertyStereotype {
-    return decoratableUtils.getUniqueStereotype<PropertyStereotype>(this);
+    return decoratableUtils.hasValidStereotypeValue<PropertyStereotype>(this, stereotypesUtils.PropertyStereotypes, true);
   }
 
   toJSON(): any {
     const propertySerialization = {
-      stereotypes: null,
+      stereotype: null,
       cardinality: null,
       propertyType: null,
       subsettedProperties: null,

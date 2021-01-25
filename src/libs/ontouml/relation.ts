@@ -19,7 +19,7 @@ import {
 
 export class Relation extends ModelElement
   implements Container<Property, Property>, Decoratable<RelationStereotype>, Classifier<Relation> {
-  stereotypes: RelationStereotype[];
+  stereotype: RelationStereotype;
   properties: Property[];
   isAbstract: boolean;
   isDerived: boolean;
@@ -30,7 +30,7 @@ export class Relation extends ModelElement
     Object.defineProperty(this, 'type', { value: OntoumlType.RELATION_TYPE, enumerable: true });
 
     this.properties = this.properties || null;
-    this.stereotypes = this.stereotypes || null;
+    this.stereotype = this.stereotype || null;
 
     this.isAbstract = this.isAbstract || false;
     this.isDerived = this.isDerived || false;
@@ -92,12 +92,8 @@ export class Relation extends ModelElement
     return containerUtils.getAllContents(this, ['properties'], contentsFilter);
   }
 
-  getUniqueStereotype(): RelationStereotype {
-    return decoratableUtils.getUniqueStereotype(this);
-  }
-
   hasValidStereotypeValue(): boolean {
-    return decoratableUtils.hasValidStereotypeValue(this, stereotypesUtils.RelationStereotypes, true);
+    return decoratableUtils.hasValidStereotypeValue<RelationStereotype>(this, stereotypesUtils.RelationStereotypes, true);
   }
 
   hasStereotypeContainedIn(stereotypes: RelationStereotype | RelationStereotype[]): boolean {
@@ -106,7 +102,7 @@ export class Relation extends ModelElement
 
   toJSON(): any {
     const relationSerialization = {
-      stereotypes: null,
+      stereotype: null,
       properties: null,
       isAbstract: false,
       isDerived: false
@@ -282,31 +278,31 @@ export class Relation extends ModelElement
   }
 
   getSourceStereotype(): ClassStereotype {
-    return (this.getSource() as any).getUniqueStereotype();
+    return (this.getSource() as any).stereotype;
   }
 
   getTargetStereotype(): ClassStereotype {
-    return (this.getTarget() as any).getUniqueStereotype();
+    return (this.getTarget() as any).stereotype;
   }
 
   getSourceClassStereotype(): ClassStereotype {
-    return this.getSourceClass().getUniqueStereotype();
+    return this.getSourceClass().stereotype;
   }
 
   getTargetClassStereotype(): ClassStereotype {
-    return this.getTargetClass().getUniqueStereotype();
+    return this.getTargetClass().stereotype;
   }
 
   getMemberClassStereotype(position: number): ClassStereotype {
-    return this.getMemberClass(position).getUniqueStereotype();
+    return this.getMemberClass(position).stereotype;
   }
 
   getDerivingRelationStereotype(): RelationStereotype {
-    return this.getDerivingRelation().getUniqueStereotype();
+    return this.getDerivingRelation().stereotype;
   }
 
   getDerivedClassStereotype(): ClassStereotype {
-    return this.getDerivedClass().getUniqueStereotype();
+    return this.getDerivedClass().stereotype;
   }
 
   // TODO: check whether isBinaryRelation() is a better name
@@ -364,84 +360,84 @@ export class Relation extends ModelElement
   }
 
   hasExistentialDependenceStereotype(): boolean {
-    const stereotype = this.getUniqueStereotype();
+    const stereotype = this.stereotype;
     return stereotypesUtils.ExistentialDependencyRelationStereotypes.includes(stereotype);
   }
 
   hasMaterialStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.MATERIAL;
+    return this.stereotype === RelationStereotype.MATERIAL;
   }
 
   hasDerivationStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.DERIVATION;
+    return this.stereotype === RelationStereotype.DERIVATION;
   }
 
   hasComparativeStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.COMPARATIVE;
+    return this.stereotype === RelationStereotype.COMPARATIVE;
   }
 
   hasMediationStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.MEDIATION;
+    return this.stereotype === RelationStereotype.MEDIATION;
   }
 
   hasCharacterizationStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.CHARACTERIZATION;
+    return this.stereotype === RelationStereotype.CHARACTERIZATION;
   }
 
   hasExternalDependenceStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.EXTERNAL_DEPENDENCE;
+    return this.stereotype === RelationStereotype.EXTERNAL_DEPENDENCE;
   }
 
   hasComponentOfStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.COMPONENT_OF;
+    return this.stereotype === RelationStereotype.COMPONENT_OF;
   }
 
   hasMemberOfStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.MEMBER_OF;
+    return this.stereotype === RelationStereotype.MEMBER_OF;
   }
 
   hasSubCollectionOfStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.SUBCOLLECTION_OF;
+    return this.stereotype === RelationStereotype.SUBCOLLECTION_OF;
   }
 
   hasSubQuantityOfStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.SUBQUANTITY_OF;
+    return this.stereotype === RelationStereotype.SUBQUANTITY_OF;
   }
 
   hasInstantiationStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.INSTANTIATION;
+    return this.stereotype === RelationStereotype.INSTANTIATION;
   }
 
   hasTerminationStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.TERMINATION;
+    return this.stereotype === RelationStereotype.TERMINATION;
   }
 
   hasParticipationalStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.PARTICIPATIONAL;
+    return this.stereotype === RelationStereotype.PARTICIPATIONAL;
   }
 
   hasParticipationStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.PARTICIPATION;
+    return this.stereotype === RelationStereotype.PARTICIPATION;
   }
 
   hasHistoricalDependenceStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.HISTORICAL_DEPENDENCE;
+    return this.stereotype === RelationStereotype.HISTORICAL_DEPENDENCE;
   }
 
   hasCreationStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.CREATION;
+    return this.stereotype === RelationStereotype.CREATION;
   }
 
   hasManifestationStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.MANIFESTATION;
+    return this.stereotype === RelationStereotype.MANIFESTATION;
   }
 
   hasBringsAboutStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.BRINGS_ABOUT;
+    return this.stereotype === RelationStereotype.BRINGS_ABOUT;
   }
 
   hasTriggersStereotype(): boolean {
-    return this.getUniqueStereotype() === RelationStereotype.TRIGGERS;
+    return this.stereotype === RelationStereotype.TRIGGERS;
   }
 
   holdsBetween(...conditions: ((relationEnd: Property) => boolean)[]): boolean {
@@ -606,7 +602,7 @@ export class Relation extends ModelElement
     throw new Error('Method unimplemented!');
   }
 
-  // All part-whole relations and parthood without stereotypes
+  // All part-whole relations and parthood without stereotype
   getPartClass(): Class {
     throw new Error('Method unimplemented!');
   }
