@@ -3,7 +3,6 @@ import {
   Class,
   ModelElement,
   containerUtils,
-  Classifier,
   Decoratable,
   decoratableUtils,
   stereotypesUtils,
@@ -32,7 +31,7 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
   container: ClassifierType;
   stereotype: PropertyStereotype;
   cardinality: Cardinality;
-  propertyType: Classifier<any>;
+  propertyType: Relation | Class;
   subsettedProperties: Property[]; // TODO: update null when deserializing
   redefinedProperties: Property[];
   aggregationKind: AggregationKind;

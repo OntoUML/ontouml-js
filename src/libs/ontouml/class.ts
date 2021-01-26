@@ -265,6 +265,10 @@ export class Class extends ModelElement
     return this.hasDatatypeStereotype() && this.hasAttributes();
   }
 
+  isPrimitiveDatatype(): boolean {
+    return this.hasDatatypeStereotype() && !this.hasAttributes();
+  }
+
   hasEndurantOnlyStereotype(): boolean {
     return this.hasStereotypeContainedIn(stereotypesUtils.EndurantStereotypes);
   }

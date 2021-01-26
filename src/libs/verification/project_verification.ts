@@ -1,5 +1,5 @@
 import { Project, ModelElement } from '@libs/ontouml';
-import { VerificationIssue, Ontouml2Verification } from './';
+import { VerificationIssue, OntoumlVerification } from './';
 import _ from 'lodash';
 
 export class ProjectVerification {
@@ -8,7 +8,7 @@ export class ProjectVerification {
 
     project
       .getContents()
-      .forEach((element: ModelElement) => (foundIssues = _.concat(foundIssues, Ontouml2Verification.verify(element))));
+      .forEach((element: ModelElement) => (foundIssues = _.concat(foundIssues, OntoumlVerification.verify(element))));
 
     return foundIssues;
   }
