@@ -227,15 +227,15 @@ export class Relation extends ModelElement
     return this.properties[position];
   }
 
-  getSource(): Classifier<any> {
+  getSource(): Relation | Class {
     return this.getSourceEnd().propertyType;
   }
 
-  getTarget(): Classifier<any> {
+  getTarget(): Relation | Class {
     return this.getTargetEnd().propertyType;
   }
 
-  getMember(position: number): Classifier<any> {
+  getMember(position: number): Relation | Class {
     if (this.hasDerivationStereotype()) {
       throw new Error('Unable to retrieve class from derivation relation');
     }

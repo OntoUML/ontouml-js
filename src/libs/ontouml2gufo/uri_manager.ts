@@ -1,30 +1,32 @@
+// import { IElement, IRelation, IPackage, IClass, IClassifier, IProperty } from '@types';
+// import Ontouml2Gufo from './ontouml2gufo';
+// import { getSuperProperty } from './relation_functions';
+// import { getPackagePrefix } from './prefix_functions';
+// import {
+//   getAllAssociationEnds,
+//   getAllAttributes,
+//   getAllClasses,
+//   getAllPackages,
+//   getAllRelations,
+//   getAllLiterals,
+//   getName,
+//   hasAttributes,
+//   hasOntoumlStereotype,
+//   isComparative,
+//   isDatatype,
+//   isDerivation,
+//   isInstantiation,
+//   isMaterial,
+//   isPartWholeRelation,
+//   isRelation
+// } from './helper_functions';
+
+import { Relation, ModelElement, Property, Class, Package } from '@libs/ontouml/';
+import { Ontouml2Gufo, getSuperProperty, getPackagePrefix } from './';
+
 import _ from 'lodash';
 
-import { IElement, IRelation, IPackage, IClass, IClassifier, IProperty } from '@types';
-
-import Ontouml2Gufo from './ontouml2gufo';
-import { getSuperProperty } from './relation_functions';
-import { getPackagePrefix } from './prefix_functions';
-import {
-  getAllAssociationEnds,
-  getAllAttributes,
-  getAllClasses,
-  getAllPackages,
-  getAllRelations,
-  getAllLiterals,
-  getName,
-  hasAttributes,
-  hasOntoumlStereotype,
-  isComparative,
-  isDatatype,
-  isDerivation,
-  isInstantiation,
-  isMaterial,
-  isPartWholeRelation,
-  isRelation
-} from './helper_functions';
-
-export default class UriManager {
+export class UriManager {
   transformer: Ontouml2Gufo;
   id2Uri: { [key: string]: string };
   uniqueUris: string[];
@@ -38,26 +40,26 @@ export default class UriManager {
     return this.id2Uri[element.id];
   }
 
-  getSourceUri(relation: IRelation): string {
+  getSourceUri(relation: Relation): string {
     const source = relation.properties[0].propertyType;
 
     if (!source || !source.id) return null;
 
-    return this.getUri(source as IElement);
+    return this.getUri(source as ModelElement);
   }
 
-  getTargetUri(relation: IRelation): string {
+  getTargetUri(relation: Relation): string {
     const target = relation.properties[1].propertyType;
     if (!target || !target.id) return null;
 
-    return this.getUri(target as IElement);
+    return this.getUri(target as ModelElement);
   }
 
   uriExists(uri: string) {
     return this.uniqueUris.includes(uri);
   }
 
-  saveUri(element: IElement, uri: string) {
+  saveUri(element: ModelElement, uri: string) {
     this.id2Uri[element.id] = uri;
     this.uniqueUris.push(uri);
   }
@@ -68,21 +70,23 @@ export default class UriManager {
 
     const { model } = this.transformer;
 
-    const packages = _.sortBy(getAllPackages(model), ['id', 'name']);
-    const classes = _.sortBy(getAllClasses(model), ['id', 'name']);
-    const attributes = _.sortBy(getAllAttributes(model), ['id', 'name']);
-    const relations = _.sortBy(getAllRelations(model), ['id', 'name']);
-    const associationEnds = _.sortBy(getAllAssociationEnds(model), ['id', 'name']);
-    const literals = _.sortBy(getAllLiterals(model), ['id', 'name']);
+    const packages = _.sortBy(model.getAllPackages(), ['id', 'name']);
+    const classes = _.sortBy(model.getAllClasses(), ['id', 'name']);
+    const attributes = _.sortBy(model.getAllAttributes(), ['id', 'name']);
+    const relations = _.sortBy(model.getAllRelations(), ['id', 'name']);
+    const associationEnds = _.sortBy(model.getAllRelationEnds(), ['id', 'name']);
+    const literals = _.sortBy(model.getAllLiterals(), ['id', 'name']);
 
-    const elements: IElement[] = _.concat<IElement>(classes, attributes, relations, associationEnds, literals, packages, [model]);
+    const elements: ModelElement[] = _.concat<ModelElement>(classes, attributes, relations, associationEnds, literals, packages, [
+      model
+    ]);
 
     for (const element of elements) {
       if (!element.id) {
         throw new Error('Cannot generate id-based URI for an element that does not have an id.');
       }
 
-      if (isInstantiation(element as IRelation) || isDerivation(element as IRelation)) {
+      if (element instanceof Relation && (element.hasInstantiationStereotype() || element.hasDerivationStereotype())) {
         continue;
       }
 
@@ -122,11 +126,11 @@ export default class UriManager {
     return candidateUri;
   }
 
-  getUriFromId(element: IElement): string {
+  getUriFromId(element: ModelElement): string {
     return this.getPrefix(element) + ':' + element.id;
   }
 
-  getFixedUri(element: IElement) {
+  getFixedUri(element: ModelElement) {
     return this.getUriFromTaggedValues(element) || this.getUriFromOptions(element) || getUriFromXsdMapping(element);
   }
 
@@ -135,22 +139,22 @@ export default class UriManager {
     return assignments && assignments.uri ? assignments.uri : null;
   }
 
-  getUriFromOptions(element: IElement): string {
+  getUriFromOptions(element: ModelElement): string {
     const uri = this.transformer.options.getCustomUri(element);
     return uri ? this.getPrefix(element) + ':' + uri : null;
   }
 
-  getNameBasedUri(element: IElement): string {
-    if (isRelation(element)) {
-      return this.getRelationNameBasedUri(element as IRelation);
+  getNameBasedUri(element: ModelElement): string {
+    if (element instanceof Relation) {
+      return this.getRelationNameBasedUri(element as Relation);
     }
 
     let elementName = getNormalizedName(element) || normalizeName(element.id);
     return this.getPrefix(element) + ':' + elementName;
   }
 
-  getRelationNameBasedUri(relation: IRelation): string {
-    if (isInstantiation(relation) || isDerivation(relation)) {
+  getRelationNameBasedUri(relation: Relation): string {
+    if (relation.hasInstantiationStereotype() || relation.hasDerivationStereotype()) {
       throw new Error('Instantiation and derivation relations do not have URIs');
     }
 
@@ -161,22 +165,22 @@ export default class UriManager {
       return prefix + normalizedRelationName;
     }
 
-    let normalizedTargetRoleName = getNormalizedName(relation.properties[1] as IProperty);
+    let normalizedTargetRoleName = getNormalizedName(relation.properties[1] as Property);
     if (normalizedTargetRoleName) {
       return prefix + normalizedTargetRoleName;
     }
 
-    let sourceType = relation.properties[0].propertyType as IClassifier;
-    let sourceTypeName = getName(sourceType) || sourceType.id;
+    let sourceType = relation.getSource();
+    let sourceTypeName = sourceType.getNameOrId();
 
-    let targetType = relation.properties[1].propertyType as IClassifier;
-    let targetTypeName = getName(targetType) || sourceType.id;
+    let targetType = relation.getTarget();
+    let targetTypeName = targetType.getNameOrId();
 
     let middleUriSegment;
 
-    if (isMaterial(relation) || isComparative(relation)) {
+    if (relation.hasMaterialStereotype() || relation.hasComparativeStereotype()) {
       middleUriSegment = 'has';
-    } else if (hasOntoumlStereotype(relation) || isPartWholeRelation(relation)) {
+    } else if (relation.stereotype || relation.isPartWholeRelation()) {
       let gufoPropertyUri = getSuperProperty(relation);
       middleUriSegment = gufoPropertyUri.replace('gufo:', '');
     } else {
@@ -187,7 +191,7 @@ export default class UriManager {
     return prefix + normalizeName(relationName);
   }
 
-  getInverseRelationUri(relation: IRelation): string {
+  getInverseRelationUri(relation: Relation): string {
     if (this.transformer.options.uriFormatBy === 'id') {
       return this.getPrefix(relation) + ':inverse_' + relation.id;
     }
@@ -195,29 +199,29 @@ export default class UriManager {
     return this.getInverseRelationNameBasedUri(relation);
   }
 
-  getInverseRelationNameBasedUri(relation: IRelation): string {
-    if (isInstantiation(relation) || isDerivation(relation)) {
+  getInverseRelationNameBasedUri(relation: Relation): string {
+    if (relation.hasInstantiationStereotype() || relation.hasDerivationStereotype()) {
       throw new Error('Instantiation and derivation relations do not have URIs');
     }
 
     const prefix = this.getPrefix(relation);
 
-    let normalizedTargetRoleName = getNormalizedName(relation.properties[0] as IProperty);
+    let normalizedTargetRoleName = getNormalizedName(relation.properties[0] as Property);
     if (normalizedTargetRoleName) {
       return prefix + ':' + normalizedTargetRoleName;
     }
 
-    let sourceType = relation.properties[0].propertyType as IClassifier;
-    let sourceTypeName = getName(sourceType) || sourceType.id;
+    let sourceType = relation.getSource();
+    let sourceTypeName = sourceType.getNameOrId();
 
-    let targetType = relation.properties[1].propertyType as IClassifier;
-    let targetTypeName = getName(targetType) || sourceType.id;
+    let targetType = relation.getTarget();
+    let targetTypeName = targetType.getNameOrId();
 
     let middleUriSegment;
 
-    if (isMaterial(relation) || isComparative(relation)) {
+    if (relation.hasMaterialStereotype() || relation.hasComparativeStereotype()) {
       middleUriSegment = 'has';
-    } else if (hasOntoumlStereotype(relation) || isPartWholeRelation(relation)) {
+    } else if (relation.stereotype || relation.isPartWholeRelation()) {
       let gufoPropertyUri = getSuperProperty(relation);
       middleUriSegment = gufoPropertyUri.replace('gufo:', '');
     } else {
@@ -228,13 +232,13 @@ export default class UriManager {
     return prefix + ':' + normalizeName(relationName);
   }
 
-  getPrefix(element: IElement): string {
+  getPrefix(element: ModelElement): string {
     const { options } = this.transformer;
 
     const hasCustomPackage = options.customPackageMapping && Object.keys(options.customPackageMapping).length > 0;
     if (options.prefixPackages || hasCustomPackage) {
-      const root = element.getRootPackage ? element.getRootPackage() : null;
-      const packageEl = element._container as IPackage;
+      const root = element.getModelOrRootPackage();
+      const packageEl = element.container as Package;
 
       if (packageEl && packageEl.id && packageEl.name) {
         const isRoot = root && root.id === packageEl.id;
@@ -260,13 +264,17 @@ export function normalizeName(name: string): string {
   return name.replace(/[^a-zA-Z0-9_]/g, '');
 }
 
-export const getNormalizedName = (element: IElement) => {
-  let name = getName(element);
+export const getNormalizedName = (element: ModelElement) => {
+  let name = element.getName();
   return normalizeName(name);
 };
 
-export const getUriFromXsdMapping = (element: IElement): string => {
-  if (!isDatatype(element) || hasAttributes(element as IClass)) return null;
+export const getUriFromXsdMapping = (element: ModelElement): string => {
+  if (!(element instanceof Class)) {
+    return null;
+  } else if (!element.hasDatatypeStereotype() || element.hasAttributes()) {
+    return null;
+  }
 
   const xsdTypes: string[] = [
     'anyURI',
@@ -319,7 +327,7 @@ export const getUriFromXsdMapping = (element: IElement): string => {
     'NMTOKENS'
   ];
 
-  const datatypeName = getName(element).toLowerCase();
+  const datatypeName = element.getName().toLowerCase();
 
   for (const type of xsdTypes) {
     if (type.toLowerCase() === datatypeName) {

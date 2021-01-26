@@ -1,21 +1,21 @@
 import { Package, Project } from '@libs/ontouml';
-import { Ontouml2Verification } from '@libs/verification';
+import { OntoumlVerification } from '@libs/verification';
 
-describe(`${Ontouml2Verification.name} tests`, () => {
-  describe(`${Ontouml2Verification.prototype.run.name} test`, () => {
+describe(`${OntoumlVerification.name} tests`, () => {
+  describe(`${OntoumlVerification.prototype.run.name} test`, () => {
     it('Verification of empty projects should not throw exceptions', () => {
-      const service = new Ontouml2Verification(new Project());
+      const service = new OntoumlVerification(new Project());
       expect(() => service.run()).not.toThrow();
     });
 
     it('Verification of model elements should not throw exceptions', () => {
-      const service = new Ontouml2Verification(new Package());
+      const service = new OntoumlVerification(new Package());
       expect(() => service.run()).not.toThrow();
     });
 
     it('Verification of consistent models should not return issues', () => {
       const model = new Project().createModel();
-      const service = new Ontouml2Verification(model);
+      const service = new OntoumlVerification(model);
 
       model.createGeneralization(model.createKind(), model.createSubkind());
 
@@ -24,7 +24,7 @@ describe(`${Ontouml2Verification.name} tests`, () => {
 
     it('Verification of inconsistent models should return issues', () => {
       const model = new Project().createModel();
-      const service = new Ontouml2Verification(model);
+      const service = new OntoumlVerification(model);
 
       model.createGeneralization(model.createSubkind(), model.createKind());
 
@@ -33,7 +33,7 @@ describe(`${Ontouml2Verification.name} tests`, () => {
 
     it('Successive verifications can yield different results', () => {
       const model = new Project().createModel();
-      const service = new Ontouml2Verification(model);
+      const service = new OntoumlVerification(model);
 
       model.createGeneralization(model.createKind(), model.createSubkind());
       const issueBeforeChange = service.run();

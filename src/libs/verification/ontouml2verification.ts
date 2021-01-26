@@ -30,7 +30,7 @@ export interface VerificationOptions {}
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
-export class Ontouml2Verification {
+export class OntoumlVerification {
   elementToVerify: ModelElement | Project;
   options: VerificationOptions;
   issues: VerificationIssue[];
@@ -44,7 +44,7 @@ export class Ontouml2Verification {
   }
 
   run(): VerificationIssue[] {
-    return (this.issues = Ontouml2Verification.verify(this.elementToVerify));
+    return (this.issues = OntoumlVerification.verify(this.elementToVerify));
   }
 
   static verify(element: ModelElement | Project): VerificationIssue[] {
