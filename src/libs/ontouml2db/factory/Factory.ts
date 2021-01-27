@@ -16,7 +16,7 @@ import { GraphGeneralizationSet } from '@libs/ontouml2db/graph/GraphGeneralizati
 // import { IClass, IGeneralization, IRelation, IGeneralizationSet } from '@types';
 // import { OntoumlType, ClassStereotype } from '@constants/.';
 
-import { Project, OntoumlType, ClassStereotype, Class, Generalization, Relation, GeneralizationSet } from '@libs/ontouml';
+import { Project, ClassStereotype, Class, propertyUtils, Generalization, Relation, GeneralizationSet } from '@libs/ontouml';
 
 export class Factory {
   graph: Graph;
@@ -56,29 +56,25 @@ export class Factory {
   }
 
   putClass(_class: Class): void {
-    let node: Node;
-    let property: NodeProperty;
+    const node: Node = new Node(_class.id, _class.name.toString(), this.getUfoStereotype(_class));
 
-    node = new Node(_class.id, _class.name.toString(), this.getUfoStereotype(_class));
+    for (const attribute of _class.getOwnAttributes()) {
+      const cardinality =
+        attribute.cardinality.lowerBound +
+        '..' +
+        (attribute.cardinality.upperBound === propertyUtils.UNBOUNDED_CARDINALITY ? '*' : attribute.cardinality.upperBound);
 
-    const { properties: attributes } = _class;
+      const property: NodeProperty = new NodeProperty(
+        attribute.id,
+        attribute.getName(),
+        attribute.propertyType.getName(),
+        this.getAcceptNull(cardinality),
+        this.getIsMultivalued(cardinality)
+      );
 
-    if (attributes != null) {
-      for (let i = 0; i < attributes.length; i += 1) {
-        const { id: attrID, propertyType: attrElement, name: attrName, cardinality: attrCardinality } = attributes[i];
-        const { name: datatypeName } = (attrElement || {}) as Class;
-
-        property = new NodeProperty(
-          attrID,
-          attrName.toString(),
-          datatypeName.toString(),
-          this.getAcceptNull(attrCardinality),
-          this.getIsMultivalued(attrCardinality)
-        );
-
-        node.addProperty(property);
-      }
+      node.addProperty(property);
     }
+
     this.graph.addNode(node);
   }
 
@@ -106,7 +102,7 @@ export class Factory {
   }
 
   getUfoStereotype(_class: Class): ClassStereotype {
-    return _class.getUniqueStereotype();
+    return _class.stereotype;
   }
 
   /********************************************************************
@@ -120,11 +116,15 @@ export class Factory {
     let relations = this.project.getAllRelations();
 
     relations.forEach((relation: Relation) => {
-      const source = relation.getSource();
-      const target = relation.getTarget();
+      const source = relation.getSourceEnd();
+      const target = relation.getTargetEnd();
 
-      const sourceCardinality = source.cardinality.lowerBound;
-      const targetCardinality = target.cardinality;
+      const sourceCardinality = `${source.cardinality.lowerBound}..${
+        source.cardinality.upperBound === propertyUtils.UNBOUNDED_CARDINALITY ? '*' : source.cardinality.upperBound
+      }`;
+      const targetCardinality = `${target.cardinality.lowerBound}..${
+        target.cardinality.upperBound === propertyUtils.UNBOUNDED_CARDINALITY ? '*' : target.cardinality.upperBound
+      }`;
 
       sourceNode = this.graph.getNodeById(relation.getSource().id);
       targetNode = this.graph.getNodeById(relation.getTarget().id);
@@ -183,11 +183,9 @@ export class Factory {
     let newGeneralization: GraphGeneralization;
     let generalizationNode: Node;
     let specializationNode: Node;
-    let generalizations = this.modelManager.rootPackage.getAllContentsByType([
-      OntoumlType.GENERALIZATION_TYPE
-    ]) as IGeneralization[];
+    let generalizations = this.project.getAllGeneralizations();
 
-    generalizations.forEach((gen: IGeneralization) => {
+    generalizations.forEach((gen: Generalization) => {
       generalizationNode = this.graph.getNodeById(gen.general.id);
       specializationNode = this.graph.getNodeById(gen.specific.id);
 
@@ -206,16 +204,14 @@ export class Factory {
   putGeneralizationSets(): void {
     let newGeneralizationSet: GraphGeneralizationSet;
     let graphGeneralization: GraphGeneralization;
-    let generalizationSets = this.modelManager.rootPackage.getAllContentsByType([
-      OntoumlType.GENERALIZATION_SET_TYPE
-    ]) as IGeneralizationSet[];
+    let generalizationSets = this.project.getAllGeneralizationSets();
 
     //informs the generalization set that the generalizations belong to.
-    generalizationSets.forEach((gs: IGeneralizationSet) => {
+    generalizationSets.forEach((gs: GeneralizationSet) => {
       newGeneralizationSet = new GraphGeneralizationSet(gs.id, gs.name.toString(), gs.isDisjoint, gs.isComplete);
-      newGeneralizationSet.setGeneral(this.graph.getNodeById(gs.getGeneral().id));
+      newGeneralizationSet.setGeneral(this.graph.getNodeById((gs.getGeneral() as Class).id));
 
-      gs.generalizations.forEach((generalization: IGeneralization) => {
+      gs.generalizations.forEach((generalization: Generalization) => {
         newGeneralizationSet.addSpecific(this.graph.getNodeById(generalization.specific.id) as Node);
         graphGeneralization = this.graph.getAssociationByID(generalization.id) as GraphGeneralization;
         graphGeneralization.setBelongGeneralizationSet(newGeneralizationSet);
