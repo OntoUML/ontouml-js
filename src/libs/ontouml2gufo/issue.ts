@@ -1,5 +1,8 @@
-import { OntoumlType } from '@constants/.';
-import { IClass, IElement, IProperty, IRelation } from '@types';
+// import { OntoumlType } from '@constants/.';
+// import { IClass, IElement, IProperty, IRelation } from '@types';
+
+import { ModelElement, Relation, Class, Property, OntoumlType } from '@libs/ontouml/';
+
 import uniqid from 'uniqid';
 
 enum Severity {
@@ -65,7 +68,7 @@ export const IssueType = {
   }
 };
 
-export default class Issue {
+export class Issue {
   id: string;
   code?: string;
   title: string;
@@ -139,7 +142,7 @@ export default class Issue {
     return new Issue(warning);
   }
 
-  static createMissingRelationName(relation: IRelation): Issue {
+  static createMissingRelationName(relation: Relation): Issue {
     const stereotypeName = getStereotypeName(relation);
     const source = relation.getSource();
     const target = relation.getTarget();
@@ -153,7 +156,7 @@ export default class Issue {
     return new Issue(warning);
   }
 
-  static createMissingInverseRelationName(relation: IRelation): Issue {
+  static createMissingInverseRelationName(relation: Relation): Issue {
     const stereotypeName = getStereotypeName(relation);
     const source = relation.getSource();
     const target = relation.getTarget();
@@ -167,7 +170,7 @@ export default class Issue {
     return new Issue(warning);
   }
 
-  static createMissingSourceCardinality(relation: IRelation): Issue {
+  static createMissingSourceCardinality(relation: Relation): Issue {
     const source = relation.getSource();
     const target = relation.getTarget();
 
@@ -180,7 +183,7 @@ export default class Issue {
     return new Issue(warning);
   }
 
-  static createMissingTargetCardinality(relation: IRelation): Issue {
+  static createMissingTargetCardinality(relation: Relation): Issue {
     const source = relation.getSource();
     const target = relation.getTarget();
 
@@ -193,14 +196,14 @@ export default class Issue {
     return new Issue(warning);
   }
 
-  static createDuplicateNames(repeatedElements: IElement[], duplicateName: string): Issue {
-    const occurrences = repeatedElements.map((element: IElement) => {
+  static createDuplicateNames(repeatedElements: ModelElement[], duplicateName: string): Issue {
+    const occurrences = repeatedElements.map((element: ModelElement) => {
       if (element.type === OntoumlType.PROPERTY_TYPE) {
-        const property = element as IProperty;
-        const parent = property._container as IElement;
+        const property = element as Property;
+        const parent = property.container as ModelElement;
 
         if (parent.type === OntoumlType.RELATION_TYPE) {
-          const relation = parent as IRelation;
+          const relation = parent as Relation;
           const source = relation.getSource();
           const target = relation.getTarget();
 
@@ -211,7 +214,7 @@ export default class Issue {
       }
 
       if (element.type === OntoumlType.RELATION_TYPE) {
-        const relation = element as IRelation;
+        const relation = element as Relation;
         const source = relation.getSource();
         const target = relation.getTarget();
 
@@ -234,7 +237,7 @@ export default class Issue {
     return new Issue(warning);
   }
 
-  static createMissingAttributeType(classEl: IClass, attribute: IProperty): Issue {
+  static createMissingAttributeType(classEl: Class, attribute: Property): Issue {
     const warning = {
       ...IssueType.MISSING_ATTRIBUTE_TYPE,
       description: `Missing type on attribute "${classEl.name}::${attribute.name}".`,
@@ -262,7 +265,7 @@ export default class Issue {
 }
 
 //TODO: Move this to the core API
-function getStereotypeName(relation: IRelation): string {
-  const stereotype = relation.stereotypes ? relation.stereotypes[0] : null;
+function getStereotypeName(relation: Relation): string {
+  const stereotype = relation.stereotype || null;
   return stereotype ? `«${stereotype}»` : '';
 }

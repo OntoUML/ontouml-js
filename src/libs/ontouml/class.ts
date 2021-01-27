@@ -31,7 +31,7 @@ export const classUtils = {
 export class Class extends ModelElement
   implements Decoratable<ClassStereotype>, Container<Property | Literal, Property | Literal>, Classifier<Class> {
   container: Package;
-  stereotypes: ClassStereotype[];
+  stereotype: ClassStereotype;
   restrictedTo: OntologicalNature[];
   literals: Literal[];
   properties: Property[];
@@ -48,7 +48,7 @@ export class Class extends ModelElement
 
     this.properties = this.properties || null;
     this.literals = this.literals || null;
-    this.stereotypes = this.stereotypes || null;
+    this.stereotype = this.stereotype || null;
     this.restrictedTo = this.restrictedTo || null;
 
     this.isAbstract = this.isAbstract || false;
@@ -80,7 +80,7 @@ export class Class extends ModelElement
 
   toJSON(): any {
     const classSerialization = {
-      stereotypes: null,
+      stereotype: null,
       restrictedTo: null,
       properties: null,
       literals: null,
@@ -225,24 +225,16 @@ export class Class extends ModelElement
   }
 
   hasValidStereotypeValue(): boolean {
-    return decoratableUtils.hasValidStereotypeValue(this, stereotypesUtils.ClassStereotypes);
+    return decoratableUtils.hasValidStereotypeValue<ClassStereotype>(this, stereotypesUtils.ClassStereotypes);
   }
 
-  /** Returns `this.stereotypes[0]` or throws an exception if multiple
-   * stereotypes are defined.
-   *
-   * @throws error when the class has multiple stereotypes */
-  getUniqueStereotype(): ClassStereotype {
-    return decoratableUtils.getUniqueStereotype(this);
-  }
-
-  /** Checks if the return of `this.getUniqueStereotype()` is contained in the
-   * set of values in `stereotypes`.
+  /** Checks if `this.stereotype` is contained in the set of values in
+   * `stereotypes`.
    *
    * @throws error when the class has multiple stereotypes
    * */
   hasStereotypeContainedIn(stereotypes: ClassStereotype | ClassStereotype[]): boolean {
-    return decoratableUtils.hasStereotypeContainedIn(this, stereotypes);
+    return decoratableUtils.hasStereotypeContainedIn<ClassStereotype>(this, stereotypes);
   }
 
   hasTypeStereotype(): boolean {
@@ -271,6 +263,10 @@ export class Class extends ModelElement
 
   isComplexDatatype(): boolean {
     return this.hasDatatypeStereotype() && this.hasAttributes();
+  }
+
+  isPrimitiveDatatype(): boolean {
+    return this.hasDatatypeStereotype() && !this.hasAttributes();
   }
 
   hasEndurantOnlyStereotype(): boolean {
@@ -570,11 +566,12 @@ export class Class extends ModelElement
     throw new Error('Method unimplemented!');
   }
 
-  getOwnRelations(filter?: Function): Relation[] {
+  // TODO: investigate TSLint error TS6133 "'filter' is declared but its value is never read"
+  getOwnRelations(_filter?: Function): Relation[] {
     throw new Error('Method unimplemented!');
   }
 
-  getAllRelations(filter?: Function): Relation[] {
+  getAllRelations(_filter?: Function): Relation[] {
     throw new Error('Method unimplemented!');
   }
 

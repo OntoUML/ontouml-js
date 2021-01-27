@@ -6,7 +6,7 @@ function hasValidStereotypeValue<T extends OntoumlStereotype>(
   allowsNoStereotype: boolean = false
 ): boolean {
   try {
-    const uniqueStereotype = decoratable.getUniqueStereotype();
+    const uniqueStereotype = decoratable.stereotype;
 
     return validStereotypes.includes(uniqueStereotype) || (!uniqueStereotype && allowsNoStereotype);
   } catch (error) {
@@ -14,22 +14,7 @@ function hasValidStereotypeValue<T extends OntoumlStereotype>(
   }
 }
 
-/** Returns `this.stereotypes[0]` or throws an exception if multiple
- * stereotypes are defined.
- *
- * @throws error when the class has multiple stereotypes */
-function getUniqueStereotype<Stereotype extends ClassStereotype | RelationStereotype | PropertyStereotype>(
-  decoratable: Decoratable<Stereotype>
-): Stereotype {
-  if (decoratable.stereotypes && decoratable.stereotypes.length > 1) {
-    throw new Error('Multiple stereotypes');
-  }
-
-  return decoratable.stereotypes ? decoratable.stereotypes[0] : undefined;
-}
-
-/** Checks if the return of `this.getUniqueStereotype()` is contained in the
- * set of values in `stereotypes`.
+/** Checks if `this.stereotype` is contained in the set of values in `stereotypes`.
  *
  * @throws error when the class has multiple stereotypes
  * */
@@ -37,7 +22,7 @@ function hasStereotypeContainedIn<Stereotype extends ClassStereotype | RelationS
   decoratable: Decoratable<Stereotype>,
   stereotypes: Stereotype | Stereotype[]
 ): boolean {
-  const decoratableStereotype: Stereotype = decoratable.getUniqueStereotype();
+  const decoratableStereotype: Stereotype = decoratable.stereotype;
 
   if (Array.isArray(stereotypes)) {
     return stereotypes.includes(decoratableStereotype);
@@ -48,14 +33,12 @@ function hasStereotypeContainedIn<Stereotype extends ClassStereotype | RelationS
 
 export const decoratableUtils = {
   hasValidStereotypeValue,
-  getUniqueStereotype,
   hasStereotypeContainedIn
 };
 
 export interface Decoratable<Stereotype extends ClassStereotype | RelationStereotype | PropertyStereotype> {
-  stereotypes: Stereotype[];
+  stereotype: Stereotype;
 
   hasValidStereotypeValue(): boolean;
-  hasStereotypeContainedIn(stereotypes: Stereotype | Stereotype[]): boolean;
-  getUniqueStereotype(): Stereotype;
+  hasStereotypeContainedIn(stereotypes: Stereotype): boolean;
 }

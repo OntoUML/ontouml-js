@@ -1,25 +1,27 @@
+// import { IClass, IGeneralization, IGeneralizationSet } from '@types';
+// import { OntoumlType } from '@constants/.';
+
+// import Ontouml2Gufo from './ontouml2gufo';
+// import { isAbstract, isPrimitiveDatatype, isRigid } from './helper_functions';
+
 import _ from 'lodash';
-
-import { IClass, IGeneralization, IGeneralizationSet } from '@types';
-import { OntoumlType } from '@constants/.';
-
-import Ontouml2Gufo from './ontouml2gufo';
-import { isAbstract, isPrimitiveDatatype, isRigid } from './helper_functions';
+import { Generalization, GeneralizationSet, OntoumlType, Class } from '@libs/ontouml';
+import { Ontouml2Gufo } from './';
 
 const N3 = require('n3');
 const { namedNode } = N3.DataFactory;
 
-export const transformGeneralizationSet = (transformer: Ontouml2Gufo, genSet: IGeneralizationSet) => {
+export const transformGeneralizationSet = (transformer: Ontouml2Gufo, genSet: GeneralizationSet) => {
   if (!genSet.generalizations || genSet.generalizations.length === 0 || (!genSet.isComplete && !genSet.isDisjoint)) return;
 
-  const classChildren = (genSet.generalizations as IGeneralization[])
+  const classChildren = (genSet.generalizations as Generalization[])
     .map(gen => gen.specific)
     .filter(child => child.type === OntoumlType.CLASS_TYPE);
   const onlyClassChildren = classChildren.length === genSet.generalizations.length;
 
   if (!onlyClassChildren) return;
 
-  const classParents = (genSet.generalizations as IGeneralization[])
+  const classParents = (genSet.generalizations as Generalization[])
     .map(gen => gen.general)
     .filter(parent => parent.type === OntoumlType.CLASS_TYPE);
   const onlyClassParent = classParents.length === genSet.generalizations.length;
@@ -28,11 +30,11 @@ export const transformGeneralizationSet = (transformer: Ontouml2Gufo, genSet: IG
 
   if (!uniqueParent || !onlyClassParent) return;
 
-  const parent = classParents[0] as IClass;
+  const parent = classParents[0] as Class;
 
   if (genSet.isDisjoint) {
-    const rigidOrAbstractChildren = (classChildren as IClass[]).filter(
-      child => isRigid(child) || (isAbstract(child) && !isPrimitiveDatatype(child))
+    const rigidOrAbstractChildren = (classChildren as Class[]).filter(
+      child => child.hasRigidStereotype() || (child.isAbstract && !child.isPrimitiveDatatype())
     );
 
     if (rigidOrAbstractChildren.length > 1) {

@@ -172,14 +172,6 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(knows.getAllContents().length).toBe(2));
   });
 
-  describe(`Test ${Relation.prototype.getUniqueStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const knows = model.createMaterialRelation(person, person);
-
-    it('Test function call', () => expect(knows.getUniqueStereotype()).toBe(RelationStereotype.MATERIAL));
-  });
-
   describe(`Test ${Relation.prototype.hasValidStereotypeValue.name}()`, () => {
     const model = new Project().createModel();
     const person = model.createClass();

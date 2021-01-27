@@ -583,7 +583,7 @@ describe(`${Package.name} Tests`, () => {
     const target = model.createClass();
     const relation = model.createPartWholeRelation(source, target);
 
-    it('Test stereotype', () => expect(relation.getUniqueStereotype()).toBeFalsy());
+    it('Test stereotype', () => expect(relation.stereotype).toBeNull());
     it('Test aggregation kind', () => expect(relation.getTargetEnd().aggregationKind).toBe(AggregationKind.COMPOSITE));
   });
 
