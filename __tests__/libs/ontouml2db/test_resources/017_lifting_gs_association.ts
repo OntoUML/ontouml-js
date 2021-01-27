@@ -18,24 +18,15 @@ const gChecker_017_lifting_gs_association = new GraphChecker()
       .addProperty(new PropertyChecker('birth_date', false))
       .addProperty(new PropertyChecker('test', true))
       .addProperty(new PropertyChecker('is_employee', false))
-      .addProperty(
-        new PropertyChecker('life_phase_enum', false, ['CHILD', 'ADULT']),
-      ),
+      .addProperty(new PropertyChecker('life_phase_enum', false, ['CHILD', 'ADULT']))
   )
   .addNode(
     new NodeChecker('employment')
       .addProperty(new PropertyChecker('employment_id', false))
       .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('salary', false)),
+      .addProperty(new PropertyChecker('salary', false))
   )
-  .addRelationship(
-    new RelationshipChecker(
-      'person',
-      Cardinality.C1,
-      'employment',
-      Cardinality.C0_N,
-    ),
-  )
+  .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'employment', Cardinality.C0_N))
   .addTracker(new TrackerChecker('Person', 'person'))
   .addTracker(new TrackerChecker('Adult', 'person'))
   .addTracker(new TrackerChecker('Child', 'person'))
@@ -45,9 +36,8 @@ const gChecker_017_lifting_gs_association = new GraphChecker()
 const jsonModel = require('./test_017_lifting_gs_association.json');
 
 export const test_017: TestResource = {
-  title:
-    '017 Evaluate the lifting with one generalization set, where one subclass has one specialization and one association',
+  title: '017 Evaluate the lifting with one generalization set, where one subclass has one specialization and one association',
   checker: gChecker_017_lifting_gs_association,
   model: jsonModel,
-  modelManager: new ModelManager(jsonModel),
+  modelManager: new ModelManager(jsonModel)
 };

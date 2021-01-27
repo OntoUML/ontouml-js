@@ -1,5 +1,4 @@
 import { OntoumlType, AggregationKind, OntologicalNature } from '@constants/.';
-import URIManager from '@libs/ontouml2gufo/uri_manager';
 
 /**
  * Interface that captures common properties of objects in `ontouml-schema`. Whenever necessary, stereotypes are captured as regular string arrays.
@@ -14,8 +13,8 @@ import URIManager from '@libs/ontouml2gufo/uri_manager';
 interface IElement {
   type: OntoumlType;
   id: string;
-  name: string | null;
-  description: string | null;
+  name: string | null | object;
+  description: string | null | object;
   propertyAssignments: any;
 
   /**
@@ -158,9 +157,9 @@ interface IPackage extends IElement, IContainer {
  */
 interface IClass extends IElement, IContainer, IDecoratable, IClassifier {
   type: OntoumlType.CLASS_TYPE;
-  literals: ILiteral[] | null;
-  allowed: OntologicalNature[] | null;
+  allowed: string[] | null;
   isExtensional: boolean | null;
+  literals: ILiteral[] | null;
   isPowertype: boolean | null;
   order: number | null;
 
@@ -215,9 +214,8 @@ interface IClass extends IElement, IContainer, IDecoratable, IClassifier {
  */
 interface IRelation extends IElement, IContainer, IDecoratable, IClassifier {
   type: OntoumlType.RELATION_TYPE;
-  // TODO: why there is a `properType` here?
-
-  propertyType: IReference;
+  // TODO: I commented out the `properType` below
+  // propertyType: IReference;
 
   /**
    * Returns `true` if the relation is binary and relates two IClass objects
@@ -365,43 +363,4 @@ interface IOntoUMLError {
   detail: string;
   links: ISelfLink | IRelatedLink;
   meta?: object;
-}
-
-interface IOntoUML2GUFOOptions {
-  baseIRI: string;
-  createInverses?: boolean;
-  createObjectProperty?: boolean;
-  customElementMapping?: {
-    [key: string]: {
-      label?: {
-        [key: string]: string;
-      };
-      uri: string;
-    };
-  };
-  customPackageMapping?: {
-    [key: string]: {
-      prefix: string;
-      uri: string;
-    };
-  };
-  format?: string;
-  preAnalysis?: boolean;
-  prefixPackages?: boolean;
-  uriFormatBy?: 'name' | 'id';
-  uriManager?: URIManager;
-}
-
-interface IPreAnalysisItem {
-  id: string;
-  code?: string;
-  title: string;
-  description: string;
-  severity?: 'error' | 'warning';
-  data?: Object;
-}
-
-interface IOntoUML2GUFOResult {
-  preAnalysis: IPreAnalysisItem[];
-  model: string;
 }

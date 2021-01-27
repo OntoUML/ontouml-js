@@ -21,8 +21,7 @@ export class MySql extends Generic implements IDBMS {
 
   getPKDescription(property: NodeProperty): string {
     if (property.isPrimaryKey()) {
-      if (property.isPrimaryKeyAutoIncrement())
-        return ' AUTO_INCREMENT PRIMARY KEY';
+      if (property.isPrimaryKeyAutoIncrement()) return ' AUTO_INCREMENT PRIMARY KEY';
       return ' PRIMARY KEY';
     }
     return '';
@@ -34,13 +33,7 @@ export class MySql extends Generic implements IDBMS {
     let today = new Date();
 
     stringConnection += '#Ontouml2DB ' + today.toDateString() + '\n';
-    stringConnection +=
-      'jdbc.url=jdbc:mysql:tcp:' +
-      '//' +
-      options.hostName +
-      '/' +
-      options.databaseName +
-      '\n';
+    stringConnection += 'jdbc.url=jdbc:mysql:tcp:' + '//' + options.hostName + '/' + options.databaseName + '\n';
     stringConnection += 'jdbc.driver=org.mysql.Driver' + '\n';
     stringConnection += 'jdbc.user=' + options.userConnection + '\n';
     stringConnection += 'jdbc.name=ontouml2-db00-ufes-nemo-000000000001' + '\n';

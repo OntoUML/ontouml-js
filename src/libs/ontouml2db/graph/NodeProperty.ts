@@ -24,13 +24,7 @@ export class NodeProperty {
 
   private resolved: boolean;
 
-  constructor(
-    id: string,
-    name: string,
-    dataType: string,
-    acceptNull: boolean,
-    multivalued: boolean,
-  ) {
+  constructor(id: string, name: string, dataType: string, acceptNull: boolean, multivalued: boolean) {
     this.id = id;
     this.name = name;
     this.dataType = dataType;
@@ -133,10 +127,7 @@ export class NodeProperty {
    *
    * @param foreignNode. Node to be referenced.
    */
-  setForeignNodeID(
-    foreignNodeID: string,
-    associationRelated: GraphAssociation,
-  ): void {
+  setForeignNodeID(foreignNodeID: string, associationRelated: GraphAssociation): void {
     if (foreignNodeID != null) {
       this.isFK = true;
       this.foreignNodeID = foreignNodeID;
@@ -258,7 +249,7 @@ export class NodeProperty {
       this.name,
       this.dataType,
       this.acceptNull,
-      this.multivalued,
+      this.multivalued
     );
     newProperty.setPrimaryKey(this.isPK);
     newProperty.setPKAutoIncrement(this.isPKAutoIncrement);
@@ -268,12 +259,6 @@ export class NodeProperty {
   }
 
   toString(): string {
-    return (
-      this.name +
-      ': ' +
-      this.dataType +
-      ', ' +
-      (this.acceptNull === true ? 'NULL' : 'NOT NULL')
-    );
+    return this.name + ': ' + this.dataType + ', ' + (this.acceptNull === true ? 'NULL' : 'NOT NULL');
   }
 }

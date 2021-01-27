@@ -52,11 +52,7 @@ export class AssociationContainer implements IAssociationContainer {
    */
   getAssociationWithNode(nodeID: string): GraphAssociation {
     for (let relation of this.relations) {
-      if (
-        relation.getSourceNode().getId() === nodeID ||
-        relation.getTargetNode().getId() === nodeID
-      )
-        return relation;
+      if (relation.getSourceNode().getId() === nodeID || relation.getTargetNode().getId() === nodeID) return relation;
     }
     return null;
   }
@@ -86,8 +82,7 @@ export class AssociationContainer implements IAssociationContainer {
 
     for (let generalization of this.generalizations) {
       if (generalization.isBelongGeneralizationSet()) {
-        if (!gSets.includes(generalization.getBelongGeneralizationSet()))
-          gSets.push(generalization.getBelongGeneralizationSet());
+        if (!gSets.includes(generalization.getBelongGeneralizationSet())) gSets.push(generalization.getBelongGeneralizationSet());
       }
     }
     return gSets;
@@ -116,8 +111,7 @@ export class AssociationContainer implements IAssociationContainer {
    */
   isSpecialization(): boolean {
     for (let generalization of this.generalizations) {
-      if (generalization.getSpecific().getId() === this.parentNode.getId())
-        return true;
+      if (generalization.getSpecific().getId() === this.parentNode.getId()) return true;
     }
     return false;
   }
@@ -129,8 +123,7 @@ export class AssociationContainer implements IAssociationContainer {
    */
   hasSpecialization(): boolean {
     for (let generalization of this.generalizations) {
-      if (generalization.getGeneral().getId() === this.parentNode.getId())
-        return true;
+      if (generalization.getGeneral().getId() === this.parentNode.getId()) return true;
     }
     return false;
   }

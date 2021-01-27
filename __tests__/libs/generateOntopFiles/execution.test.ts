@@ -63,7 +63,7 @@ const testResources: TestResource[] = [
   test_025,
   test_026,
   test_027,
-  test_028,
+  test_028
 ];
 
 let options: OntoUML2DBOptions = {
@@ -73,7 +73,7 @@ let options: OntoUML2DBOptions = {
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',
-  passwordConnection: 'sa',
+  passwordConnection: 'sa'
 };
 
 function testTransformation(model, checker, title) {
@@ -101,32 +101,20 @@ function testTransformation(model, checker, title) {
 
 test('Execution', () => {
   let pos: number = 0;
-  testTransformation(
-    testResources[pos].model,
-    testResources[pos].checker,
-    testResources[pos].title,
-  );
+  testTransformation(testResources[pos].model, testResources[pos].checker, testResources[pos].title);
   expect(true).toBe(true);
 });
 
 test('Generate Ontop Files', () => {
   let ontoUML2DB = new OntoUML2DB(test_001.modelManager, options);
 
-  fs.writeFile(
-    'C:\\_Results\\test.sql',
-    ontoUML2DB.getRelationalSchema(),
-    err => {
-      if (err) throw err;
-    },
-  );
+  fs.writeFile('C:\\_Results\\test.sql', ontoUML2DB.getRelationalSchema(), err => {
+    if (err) throw err;
+  });
 
-  fs.writeFile(
-    'C:\\_Results\\test.properties',
-    ontoUML2DB.getProtegeConnection(),
-    err => {
-      if (err) throw err;
-    },
-  );
+  fs.writeFile('C:\\_Results\\test.properties', ontoUML2DB.getProtegeConnection(), err => {
+    if (err) throw err;
+  });
 
   fs.writeFile('C:\\_Results\\test.obda', ontoUML2DB.getOBDAFile(), err => {
     if (err) throw err;
@@ -136,152 +124,36 @@ test('Generate Ontop Files', () => {
 });
 
 test('Execute all', () => {
-  testTransformation(
-    testResources[1].modelManager,
-    testResources[1].checker,
-    testResources[1].title,
-  );
-  testTransformation(
-    testResources[2].modelManager,
-    testResources[2].checker,
-    testResources[2].title,
-  );
-  testTransformation(
-    testResources[3].modelManager,
-    testResources[3].checker,
-    testResources[3].title,
-  );
-  testTransformation(
-    testResources[4].modelManager,
-    testResources[4].checker,
-    testResources[4].title,
-  );
-  testTransformation(
-    testResources[5].modelManager,
-    testResources[5].checker,
-    testResources[5].title,
-  );
-  testTransformation(
-    testResources[6].modelManager,
-    testResources[6].checker,
-    testResources[6].title,
-  );
-  testTransformation(
-    testResources[7].modelManager,
-    testResources[7].checker,
-    testResources[7].title,
-  );
-  testTransformation(
-    testResources[8].modelManager,
-    testResources[8].checker,
-    testResources[8].title,
-  );
-  testTransformation(
-    testResources[9].modelManager,
-    testResources[9].checker,
-    testResources[9].title,
-  );
-  testTransformation(
-    testResources[10].modelManager,
-    testResources[10].checker,
-    testResources[10].title,
-  );
-  testTransformation(
-    testResources[11].modelManager,
-    testResources[11].checker,
-    testResources[11].title,
-  );
-  testTransformation(
-    testResources[12].modelManager,
-    testResources[12].checker,
-    testResources[12].title,
-  );
-  testTransformation(
-    testResources[13].modelManager,
-    testResources[13].checker,
-    testResources[13].title,
-  );
-  testTransformation(
-    testResources[14].modelManager,
-    testResources[14].checker,
-    testResources[14].title,
-  );
-  testTransformation(
-    testResources[15].modelManager,
-    testResources[15].checker,
-    testResources[15].title,
-  );
-  testTransformation(
-    testResources[16].modelManager,
-    testResources[16].checker,
-    testResources[16].title,
-  );
-  testTransformation(
-    testResources[17].modelManager,
-    testResources[17].checker,
-    testResources[17].title,
-  );
-  testTransformation(
-    testResources[18].modelManager,
-    testResources[18].checker,
-    testResources[18].title,
-  );
-  testTransformation(
-    testResources[19].modelManager,
-    testResources[19].checker,
-    testResources[19].title,
-  );
-  testTransformation(
-    testResources[20].modelManager,
-    testResources[20].checker,
-    testResources[20].title,
-  );
-  testTransformation(
-    testResources[21].modelManager,
-    testResources[21].checker,
-    testResources[21].title,
-  );
-  testTransformation(
-    testResources[22].modelManager,
-    testResources[22].checker,
-    testResources[22].title,
-  );
-  testTransformation(
-    testResources[23].modelManager,
-    testResources[23].checker,
-    testResources[23].title,
-  );
-  testTransformation(
-    testResources[24].modelManager,
-    testResources[24].checker,
-    testResources[24].title,
-  );
-  testTransformation(
-    testResources[25].modelManager,
-    testResources[25].checker,
-    testResources[25].title,
-  );
-  testTransformation(
-    testResources[26].modelManager,
-    testResources[26].checker,
-    testResources[26].title,
-  );
-  testTransformation(
-    testResources[27].modelManager,
-    testResources[27].checker,
-    testResources[27].title,
-  );
-  testTransformation(
-    testResources[28].modelManager,
-    testResources[28].checker,
-    testResources[28].title,
-  );
+  testTransformation(testResources[1].modelManager, testResources[1].checker, testResources[1].title);
+  testTransformation(testResources[2].modelManager, testResources[2].checker, testResources[2].title);
+  testTransformation(testResources[3].modelManager, testResources[3].checker, testResources[3].title);
+  testTransformation(testResources[4].modelManager, testResources[4].checker, testResources[4].title);
+  testTransformation(testResources[5].modelManager, testResources[5].checker, testResources[5].title);
+  testTransformation(testResources[6].modelManager, testResources[6].checker, testResources[6].title);
+  testTransformation(testResources[7].modelManager, testResources[7].checker, testResources[7].title);
+  testTransformation(testResources[8].modelManager, testResources[8].checker, testResources[8].title);
+  testTransformation(testResources[9].modelManager, testResources[9].checker, testResources[9].title);
+  testTransformation(testResources[10].modelManager, testResources[10].checker, testResources[10].title);
+  testTransformation(testResources[11].modelManager, testResources[11].checker, testResources[11].title);
+  testTransformation(testResources[12].modelManager, testResources[12].checker, testResources[12].title);
+  testTransformation(testResources[13].modelManager, testResources[13].checker, testResources[13].title);
+  testTransformation(testResources[14].modelManager, testResources[14].checker, testResources[14].title);
+  testTransformation(testResources[15].modelManager, testResources[15].checker, testResources[15].title);
+  testTransformation(testResources[16].modelManager, testResources[16].checker, testResources[16].title);
+  testTransformation(testResources[17].modelManager, testResources[17].checker, testResources[17].title);
+  testTransformation(testResources[18].modelManager, testResources[18].checker, testResources[18].title);
+  testTransformation(testResources[19].modelManager, testResources[19].checker, testResources[19].title);
+  testTransformation(testResources[20].modelManager, testResources[20].checker, testResources[20].title);
+  testTransformation(testResources[21].modelManager, testResources[21].checker, testResources[21].title);
+  testTransformation(testResources[22].modelManager, testResources[22].checker, testResources[22].title);
+  testTransformation(testResources[23].modelManager, testResources[23].checker, testResources[23].title);
+  testTransformation(testResources[24].modelManager, testResources[24].checker, testResources[24].title);
+  testTransformation(testResources[25].modelManager, testResources[25].checker, testResources[25].title);
+  testTransformation(testResources[26].modelManager, testResources[26].checker, testResources[26].title);
+  testTransformation(testResources[27].modelManager, testResources[27].checker, testResources[27].title);
+  testTransformation(testResources[28].modelManager, testResources[28].checker, testResources[28].title);
 
-  testTransformation(
-    testResources[0].modelManager,
-    testResources[0].checker,
-    testResources[0].title,
-  );
+  testTransformation(testResources[0].modelManager, testResources[0].checker, testResources[0].title);
 
   expect(true).toBe(true);
 });

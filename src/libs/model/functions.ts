@@ -7,15 +7,12 @@ import {
   IRelation,
   IGeneralizationSet,
   IProperty,
-  IClass,
+  IClass
 } from '@types';
 import { OntoumlType, ClassStereotype, OntologicalNature } from '@constants/.';
 import memoizee from 'memoizee';
 
-export function inject(
-  element: IElement,
-  enableMemoization: boolean = true,
-): void {
+export function inject(element: IElement, enableMemoization: boolean = true): void {
   injectFunctions(element, functions._IElement, enableMemoization);
 
   if (element.hasIContainerType()) {
@@ -44,11 +41,7 @@ export function inject(
       injectFunctions(element, functions._IGeneralization, enableMemoization);
       break;
     case OntoumlType.GENERALIZATION_SET_TYPE:
-      injectFunctions(
-        element,
-        functions._IGeneralizationSet,
-        enableMemoization,
-      );
+      injectFunctions(element, functions._IGeneralizationSet, enableMemoization);
       break;
     case OntoumlType.PROPERTY_TYPE:
       injectFunctions(element, functions._IProperty, enableMemoization);
@@ -67,11 +60,7 @@ export function eject(element: IElement): void {
   });
 }
 
-function injectFunctions(
-  element: IElement,
-  functionImplementations: any,
-  enableMemoization: boolean = true,
-): void {
+function injectFunctions(element: IElement, functionImplementations: any, enableMemoization: boolean = true): void {
   Object.keys(functionImplementations).forEach((functionName: string) => {
     element[functionName] = enableMemoization
       ? memoizee(functionImplementations[functionName])
@@ -84,19 +73,19 @@ const functions = {
     getRootPackage,
     hasIContainerType,
     hasIDecoratableType,
-    hasIClassifierType,
+    hasIClassifierType
   },
   _IContainer: {
     getAllContents,
     getAllContentsByType,
-    getContentById,
+    getContentById
   },
   _IClassifier: {
     getParents,
     getChildren,
     getAncestors,
     getDescendants,
-    getRelations,
+    getRelations
   },
   _IDecoratable: {},
   _IPackage: {},
@@ -107,7 +96,7 @@ const functions = {
     isRigid,
     isSemiRigid,
     isAntiRigid,
-    allowsInstances,
+    allowsInstances
   },
   _IRelation: {
     isBinary,
@@ -116,14 +105,14 @@ const functions = {
     getSource,
     getTarget,
     getDerivingRelation,
-    getDerivedClass,
+    getDerivedClass
   },
   _IGeneralization: {},
   _IGeneralizationSet: {
-    getGeneral,
+    getGeneral
   },
   _IProperty: {},
-  _ILiteral: {},
+  _ILiteral: {}
 };
 
 function getRootPackage(): IPackage {
@@ -147,25 +136,15 @@ function getRootPackage(): IPackage {
 }
 
 function hasIContainerType(): boolean {
-  return [
-    OntoumlType.PACKAGE_TYPE,
-    OntoumlType.CLASS_TYPE,
-    OntoumlType.RELATION_TYPE,
-  ].includes((this as IElement).type);
+  return [OntoumlType.PACKAGE_TYPE, OntoumlType.CLASS_TYPE, OntoumlType.RELATION_TYPE].includes((this as IElement).type);
 }
 
 function hasIDecoratableType(): boolean {
-  return [
-    OntoumlType.PROPERTY_TYPE,
-    OntoumlType.CLASS_TYPE,
-    OntoumlType.RELATION_TYPE,
-  ].includes((this as IElement).type);
+  return [OntoumlType.PROPERTY_TYPE, OntoumlType.CLASS_TYPE, OntoumlType.RELATION_TYPE].includes((this as IElement).type);
 }
 
 function hasIClassifierType(): boolean {
-  return [OntoumlType.CLASS_TYPE, OntoumlType.RELATION_TYPE].includes(
-    (this as IElement).type,
-  );
+  return [OntoumlType.CLASS_TYPE, OntoumlType.RELATION_TYPE].includes((this as IElement).type);
 }
 
 function getAllContents(): IElement[] {
@@ -183,28 +162,17 @@ function getAllContents(): IElement[] {
         if (innerContents.includes(self)) {
           throw {
             title: 'Circular containment references',
-            error: content,
+            error: content
           };
         }
         allElements = [...allElements, ...innerContents];
-      } else if (
-        content.type === OntoumlType.CLASS_TYPE ||
-        content.type === OntoumlType.RELATION_TYPE
-      ) {
-        allElements = [
-          ...allElements,
-          ...((content as IClassifier).properties
-            ? (content as IClassifier).properties
-            : []),
-        ];
+      } else if (content.type === OntoumlType.CLASS_TYPE || content.type === OntoumlType.RELATION_TYPE) {
+        allElements = [...allElements, ...((content as IClassifier).properties ? (content as IClassifier).properties : [])];
       }
     });
 
     return allElements;
-  } else if (
-    this.type === OntoumlType.CLASS_TYPE ||
-    this.type === OntoumlType.RELATION_TYPE
-  ) {
+  } else if (this.type === OntoumlType.CLASS_TYPE || this.type === OntoumlType.RELATION_TYPE) {
     return (this as IClassifier).properties;
   }
 
@@ -214,9 +182,7 @@ function getAllContents(): IElement[] {
 function getAllContentsByType(types: OntoumlType[]): IElement[] {
   const self = this as IContainer;
 
-  return self
-    .getAllContents()
-    .filter((element: IElement) => types.includes(element.type));
+  return self.getAllContents().filter((element: IElement) => types.includes(element.type));
 }
 
 function getContentById(id: string): IElement {
@@ -229,10 +195,7 @@ function getParents(): IClassifier[] {
   const self = this as IClassifier;
 
   return self._generalOfGeneralizations
-    ? self._generalOfGeneralizations.map(
-        (generalization: IGeneralization) =>
-          generalization.general as IClassifier,
-      )
+    ? self._generalOfGeneralizations.map((generalization: IGeneralization) => generalization.general as IClassifier)
     : [];
 }
 
@@ -240,10 +203,7 @@ function getChildren(): IClassifier[] {
   const self = this as IClassifier;
 
   return self._specificOfGeneralizations
-    ? self._specificOfGeneralizations.map(
-        (specialization: IGeneralization) =>
-          specialization.specific as IClassifier,
-      )
+    ? self._specificOfGeneralizations.map((specialization: IGeneralization) => specialization.specific as IClassifier)
     : [];
 }
 
@@ -283,8 +243,7 @@ function getRelations(): IRelation[] {
     .getAllContentsByType([OntoumlType.RELATION_TYPE])
     .filter(
       (relation: IRelation) =>
-        relation.properties[0].propertyType.id === self.id ||
-        relation.properties[1].propertyType.id === self.id,
+        relation.properties[0].propertyType.id === self.id || relation.properties[1].propertyType.id === self.id
     )
     .map((relation: IRelation) => relation);
 }
@@ -303,6 +262,7 @@ function isSortal(): boolean {
       ClassStereotype.SUBKIND,
       ClassStereotype.ROLE,
       ClassStereotype.PHASE,
+      ClassStereotype.HISTORICAL_ROLE
     ];
     return strs.includes(self.stereotypes[0]);
   }
@@ -319,6 +279,7 @@ function isNonSortal(): boolean {
       ClassStereotype.MIXIN,
       ClassStereotype.ROLE_MIXIN,
       ClassStereotype.PHASE_MIXIN,
+      ClassStereotype.HISTORICAL_ROLE_MIXIN
     ];
     return strs.includes(self.stereotypes[0]);
   }
@@ -336,7 +297,7 @@ function isUltimateSortal(): boolean {
       ClassStereotype.QUANTITY,
       ClassStereotype.RELATOR,
       ClassStereotype.MODE,
-      ClassStereotype.QUALITY,
+      ClassStereotype.QUALITY
     ];
     return strs.includes(self.stereotypes[0]);
   }
@@ -357,6 +318,7 @@ function isRigid(): boolean {
       ClassStereotype.QUALITY,
       ClassStereotype.SUBKIND,
       ClassStereotype.CATEGORY,
+      ClassStereotype.TYPE
     ];
     return strs.includes(self.stereotypes[0]);
   }
@@ -384,6 +346,8 @@ function isAntiRigid(): boolean {
       ClassStereotype.PHASE_MIXIN,
       ClassStereotype.ROLE,
       ClassStereotype.PHASE,
+      ClassStereotype.HISTORICAL_ROLE,
+      ClassStereotype.HISTORICAL_ROLE_MIXIN
     ];
     return strs.includes(self.stereotypes[0]);
   }
@@ -395,9 +359,7 @@ function allowsInstances(instancesNatures: OntologicalNature[]): boolean {
   const self = this as IClass;
 
   if (self.allowed) {
-    return instancesNatures.every((instancesNature: OntologicalNature) =>
-      self.allowed.includes(instancesNature),
-    );
+    return instancesNatures.every((instancesNature: OntologicalNature) => self.allowed.includes(instancesNature));
   }
 
   return false;
@@ -410,12 +372,7 @@ function isBinary(): boolean {
   const source = self.properties[0].propertyType as IClassifier;
   const target = self.properties[1].propertyType as IClassifier;
 
-  return (
-    source &&
-    target &&
-    source.type === OntoumlType.CLASS_TYPE &&
-    target.type === OntoumlType.CLASS_TYPE
-  );
+  return source && target && source.type === OntoumlType.CLASS_TYPE && target.type === OntoumlType.CLASS_TYPE;
 }
 
 function isTernary(): boolean {
@@ -434,40 +391,27 @@ function isDerivation(): boolean {
   const source = self.properties[0].propertyType as IClassifier;
   const target = self.properties[1].propertyType as IClassifier;
 
-  return (
-    source &&
-    target &&
-    source.type === OntoumlType.RELATION_TYPE &&
-    target.type === OntoumlType.CLASS_TYPE
-  );
+  return source && target && source.type === OntoumlType.RELATION_TYPE && target.type === OntoumlType.CLASS_TYPE;
 }
 
 function getSource(): IClass {
   const self = this as IRelation;
-  return self.isBinary() && self.properties[0]
-    ? (self.properties[0].propertyType as IClass)
-    : ({} as IClass);
+  return self.isBinary() && self.properties[0] ? (self.properties[0].propertyType as IClass) : ({} as IClass);
 }
 
 function getTarget(): IClass {
   const self = this as IRelation;
-  return self.isBinary() && self.properties[1]
-    ? (self.properties[1].propertyType as IClass)
-    : ({} as IClass);
+  return self.isBinary() && self.properties[1] ? (self.properties[1].propertyType as IClass) : ({} as IClass);
 }
 
 function getDerivingRelation(): IRelation {
   const self = this as IRelation;
-  return self.isDerivation() && self.properties[0]
-    ? (self.properties[0].propertyType as IRelation)
-    : null;
+  return self.isDerivation() && self.properties[0] ? (self.properties[0].propertyType as IRelation) : null;
 }
 
 function getDerivedClass(): IClass {
   const self = this as IRelation;
-  return self.isDerivation() && self.properties[1]
-    ? (self.properties[1].propertyType as IClass)
-    : null;
+  return self.isDerivation() && self.properties[1] ? (self.properties[1].propertyType as IClass) : null;
 }
 
 function getGeneral(): IClassifier {

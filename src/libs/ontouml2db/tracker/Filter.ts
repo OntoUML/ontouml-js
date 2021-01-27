@@ -15,12 +15,7 @@ export class Filter {
   private value: any;
   private belongsToOtherNode: Node;
 
-  constructor(
-    sourceNode: Node,
-    property: NodeProperty,
-    value: any,
-    belongsToOtherNode: Node,
-  ) {
+  constructor(sourceNode: Node, property: NodeProperty, value: any, belongsToOtherNode: Node) {
     this.id = Increment.getNext().toString();
     this.sourceNode = sourceNode;
     this.property = property;

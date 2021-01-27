@@ -25,7 +25,7 @@ export class OneTablePerClass implements IStrategy {
           generalization.getGeneral(), //sourceNode
           Cardinality.C1, //sourceCardinality
           generalization.getSpecific(), //targetNode
-          Cardinality.C1, //targetCardinality
+          Cardinality.C1 //targetCardinality
         );
 
         generalization.getGeneral().addRelation(newRelation);

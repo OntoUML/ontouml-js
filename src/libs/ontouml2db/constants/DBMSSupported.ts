@@ -8,5 +8,5 @@ export enum DBMSSupported {
   H2 = 'H2',
   SQLSERVER = 'SqlServer',
   ORACLE = 'Oracle',
-  POSTGRE = 'Postgre',
+  POSTGRE = 'Postgre'
 }

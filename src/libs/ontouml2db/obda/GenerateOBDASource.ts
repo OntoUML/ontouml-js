@@ -76,10 +76,7 @@ export class GenerateOBDASource {
         text += ' = ';
         text += filter.getBelongToOtherNode().getName();
         text += '.';
-        text += this.getReferencePkTable(
-          filter.getBelongToOtherNode(),
-          trackedNode.getId(),
-        );
+        text += this.getReferencePkTable(filter.getBelongToOtherNode(), trackedNode.getId());
 
         text += '\n';
         text += largeTab;

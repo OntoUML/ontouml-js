@@ -53,7 +53,7 @@ export class Lifting {
         'is' + generalization.getSpecific().getName(),
         'boolean',
         false,
-        false,
+        false
       );
       newProperty.setDefaultValue(false);
 
@@ -61,13 +61,7 @@ export class Lifting {
       node.addProperty(newProperty);
 
       //for the tracking
-      tracker.moveTraceFromTo(
-        generalization.getSpecific().getId(),
-        generalization.getGeneral().getId(),
-        newProperty,
-        true,
-        null,
-      );
+      tracker.moveTraceFromTo(generalization.getSpecific().getId(), generalization.getGeneral().getId(), newProperty, true, null);
     }
   }
 
@@ -95,11 +89,7 @@ export class Lifting {
   // **************************************************************************************
   // *********** Resolve the node generalization sets
   // **************************************************************************************
-  static resolveGeneralizationSet(
-    node: Node,
-    graph: Graph,
-    tracker: Tracker,
-  ): void {
+  static resolveGeneralizationSet(node: Node, graph: Graph, tracker: Tracker): void {
     let enumTableName: string;
     let enumFieldName: string;
     let associationID: string;
@@ -118,18 +108,8 @@ export class Lifting {
         associationID = 'enum_' + Increment.getNext();
         associationName = 'has_' + enumTableName;
 
-        newEnumerationField = new NodePropertyEnumeration(
-          Increment.getNext().toString(),
-          enumFieldName,
-          'int',
-          false,
-          false,
-        );
-        newNode = new Node(
-          Increment.getNext().toString(),
-          enumTableName,
-          ClassStereotype.ENUMERATION,
-        );
+        newEnumerationField = new NodePropertyEnumeration(Increment.getNext().toString(), enumFieldName, 'int', false, false);
+        newNode = new Node(Increment.getNext().toString(), enumTableName, ClassStereotype.ENUMERATION);
         newNode.addProperty(newEnumerationField);
 
         newRelation = new GraphRelation(
@@ -138,7 +118,7 @@ export class Lifting {
           newNode,
           Lifting.getNewSourceCardinality(gs),
           gs.getGeneral(),
-          Cardinality.C0_N,
+          Cardinality.C0_N
         );
 
         gs.getGeneral().addRelation(newRelation);
@@ -155,7 +135,7 @@ export class Lifting {
             specializationNode,
             newEnumerationField,
             specializationNode.getName(),
-            newNode,
+            newNode
           );
         }
 
@@ -165,8 +145,7 @@ export class Lifting {
   }
 
   static getEnumName(gs: GraphGeneralizationSet): string {
-    if (gs.getName() === null || gs.getName().trim() === '')
-      return 'Enum' + Increment.getNext();
+    if (gs.getName() === null || gs.getName().trim() === '') return 'Enum' + Increment.getNext();
     else return gs.getName();
   }
 
@@ -196,14 +175,10 @@ export class Lifting {
       let relation = node.getRelations()[0];
       if (relation.getSourceNode() === node) {
         relation.setSourceNode(superNode);
-        relation.setTargetCardinality(
-          Lifting.getNewCardinality(relation.getTargetCardinality()),
-        );
+        relation.setTargetCardinality(Lifting.getNewCardinality(relation.getTargetCardinality()));
       } else {
         relation.setTargetNode(superNode);
-        relation.setSourceCardinality(
-          Lifting.getNewCardinality(relation.getSourceCardinality()),
-        );
+        relation.setSourceCardinality(Lifting.getNewCardinality(relation.getSourceCardinality()));
       }
       superNode.addRelation(relation);
       node.deleteAssociation(relation);

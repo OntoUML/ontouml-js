@@ -16,13 +16,13 @@ const gChecker_003_flatting_gs = new GraphChecker()
     new NodeChecker('person')
       .addProperty(new PropertyChecker('person_id', false))
       .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('birth_date', true)),
+      .addProperty(new PropertyChecker('birth_date', true))
   )
   .addNode(
     new NodeChecker('organization')
       .addProperty(new PropertyChecker('organization_id', false))
       .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('address', true)),
+      .addProperty(new PropertyChecker('address', true))
   )
   .addTracker(new TrackerChecker('NamedEntity', 'person'))
   .addTracker(new TrackerChecker('NamedEntity', 'organization'))
@@ -33,5 +33,5 @@ export const test_003: TestResource = {
   title: '003 Evaluates flattening involving only one generalizations set',
   checker: gChecker_003_flatting_gs,
   model: jsonModel,
-  modelManager: new ModelManager(jsonModel),
+  modelManager: new ModelManager(jsonModel)
 };

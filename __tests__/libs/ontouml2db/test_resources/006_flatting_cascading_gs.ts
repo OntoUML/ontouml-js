@@ -15,14 +15,14 @@ const gChecker_006_flatting_cascading_gs = new GraphChecker()
       .addProperty(new PropertyChecker('person_id', false))
       .addProperty(new PropertyChecker('name', false))
       .addProperty(new PropertyChecker('name_b', true))
-      .addProperty(new PropertyChecker('birth_date', false)),
+      .addProperty(new PropertyChecker('birth_date', false))
   )
   .addNode(
     new NodeChecker('organization')
       .addProperty(new PropertyChecker('organization_id', false))
       .addProperty(new PropertyChecker('name', false))
       .addProperty(new PropertyChecker('name_a', true))
-      .addProperty(new PropertyChecker('address', false)),
+      .addProperty(new PropertyChecker('address', false))
   )
   .addTracker(new TrackerChecker('NamedEntity', 'person'))
   .addTracker(new TrackerChecker('NamedEntity', 'organization'))
@@ -34,9 +34,8 @@ const gChecker_006_flatting_cascading_gs = new GraphChecker()
 const jsonModel = require('./test_006_flatting_cascading_gs.json');
 
 export const test_006: TestResource = {
-  title:
-    '006 Evaluates the flattening involving a generalization set, where the subclasses are superclasses of other classes',
+  title: '006 Evaluates the flattening involving a generalization set, where the subclasses are superclasses of other classes',
   checker: gChecker_006_flatting_cascading_gs,
   model: jsonModel,
-  modelManager: new ModelManager(jsonModel),
+  modelManager: new ModelManager(jsonModel)
 };

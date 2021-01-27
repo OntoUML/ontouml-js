@@ -32,11 +32,7 @@ export class SolvesName {
     let index = 0;
 
     //In order not to add "_" in the properties which are written in uppercase.
-    while (
-      index < name.length &&
-      name.charAt(index) >= 'A' &&
-      name.charAt(index) <= 'Z'
-    ) {
+    while (index < name.length && name.charAt(index) >= 'A' && name.charAt(index) <= 'Z') {
       newName += name.charAt(index);
       index++;
     }

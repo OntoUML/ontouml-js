@@ -17,40 +17,20 @@ const gChecker_020_lifting_hierarchy_gs = new GraphChecker()
       .addProperty(new PropertyChecker('person_id', false))
       .addProperty(new PropertyChecker('birth_date', false))
       .addProperty(new PropertyChecker('is_employee', false))
-      .addProperty(
-        new PropertyChecker('life_phase_enum', false, [
-          'CHILD',
-          'TEENAGER',
-          'ADULT',
-        ]),
-      )
-      .addProperty(
-        new PropertyChecker('teenager_phase_enum', true, [
-          'TEENAGERA',
-          'TEENAGERB',
-        ]),
-      )
-      .addProperty(
-        new PropertyChecker('adult_phase_enum', true, ['ADULTA', 'ADULTB']),
-      )
+      .addProperty(new PropertyChecker('life_phase_enum', false, ['CHILD', 'TEENAGER', 'ADULT']))
+      .addProperty(new PropertyChecker('teenager_phase_enum', true, ['TEENAGERA', 'TEENAGERB']))
+      .addProperty(new PropertyChecker('adult_phase_enum', true, ['ADULTA', 'ADULTB']))
       .addProperty(new PropertyChecker('test_teenager_b', true))
       .addProperty(new PropertyChecker('test_adult_a', true))
-      .addProperty(new PropertyChecker('test_adult_b', true)),
+      .addProperty(new PropertyChecker('test_adult_b', true))
   )
   .addNode(
     new NodeChecker('employment')
       .addProperty(new PropertyChecker('employment_id', false))
       .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('salary', false)),
+      .addProperty(new PropertyChecker('salary', false))
   )
-  .addRelationship(
-    new RelationshipChecker(
-      'person',
-      Cardinality.C1,
-      'employment',
-      Cardinality.C0_N,
-    ),
-  )
+  .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'employment', Cardinality.C0_N))
   .addTracker(new TrackerChecker('Person', 'person'))
   .addTracker(new TrackerChecker('Adult', 'person'))
   .addTracker(new TrackerChecker('Teenager', 'person'))
@@ -68,5 +48,5 @@ export const test_020: TestResource = {
   title: '020 Evaluate the lifting with hierarchy of generalization sets',
   checker: gChecker_020_lifting_hierarchy_gs,
   model: jsonModel,
-  modelManager: new ModelManager(jsonModel),
+  modelManager: new ModelManager(jsonModel)
 };

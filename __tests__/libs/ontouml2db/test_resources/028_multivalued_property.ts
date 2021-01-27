@@ -13,33 +13,22 @@ it('should ignore', () => {
 
 const gChecker_028_multivalued_property = new GraphChecker()
   .addNode(
-    new NodeChecker('person')
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('name', false)),
+    new NodeChecker('person').addProperty(new PropertyChecker('person_id', false)).addProperty(new PropertyChecker('name', false))
   )
   .addNode(
     new NodeChecker('tel')
       .addProperty(new PropertyChecker('tel_id', false))
       .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('tel', false)),
+      .addProperty(new PropertyChecker('tel', false))
   )
   .addNode(
     new NodeChecker('address')
       .addProperty(new PropertyChecker('address_id', false))
       .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('address', false)),
+      .addProperty(new PropertyChecker('address', false))
   )
-  .addRelationship(
-    new RelationshipChecker('person', Cardinality.C1, 'tel', Cardinality.C0_N),
-  )
-  .addRelationship(
-    new RelationshipChecker(
-      'person',
-      Cardinality.C1,
-      'address',
-      Cardinality.C0_N,
-    ),
-  )
+  .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'tel', Cardinality.C0_N))
+  .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'address', Cardinality.C0_N))
   .addTracker(new TrackerChecker('NamedEntity', 'person'))
   .addTracker(new TrackerChecker('Person', 'person'));
 
@@ -49,5 +38,5 @@ export const test_028: TestResource = {
   title: '028 Evaluates the multivalued property',
   checker: gChecker_028_multivalued_property,
   model: jsonModel,
-  modelManager: new ModelManager(jsonModel),
+  modelManager: new ModelManager(jsonModel)
 };

@@ -134,9 +134,7 @@ export class Node implements IPropertyContainer, IAssociationContainer {
    */
   clone(): Node {
     let newNode: Node = new Node(this.id, this.name, this.stereotype);
-    newNode.setPropertyContainer(
-      this.propertyContainer.clonePropertyContainer(),
-    );
+    newNode.setPropertyContainer(this.propertyContainer.clonePropertyContainer());
     newNode.setAssociationNameNtoN(this.associationNameNtoN);
     return newNode;
   }

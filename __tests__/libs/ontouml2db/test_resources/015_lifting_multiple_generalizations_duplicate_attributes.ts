@@ -15,9 +15,7 @@ const gChecker_015_lifting_multiple_generalizations_duplicate_attributes = new G
       .addProperty(new PropertyChecker('person_id', false))
       .addProperty(new PropertyChecker('birth_date', false))
       .addProperty(new PropertyChecker('test1', true))
-      .addProperty(
-        new PropertyChecker('person_phase_enum', false, ['CHILD', 'ADULT']),
-      ),
+      .addProperty(new PropertyChecker('person_phase_enum', false, ['CHILD', 'ADULT']))
   )
   .addTracker(new TrackerChecker('Person', 'person'))
   .addTracker(new TrackerChecker('Child', 'person'))
@@ -26,9 +24,8 @@ const gChecker_015_lifting_multiple_generalizations_duplicate_attributes = new G
 const jsonModel = require('./test_015_lifting_multiple_generalizations_duplicate_attributes.json');
 
 export const test_015: TestResource = {
-  title:
-    '015 Evaluate the survey with a generalization set with the attribute name repeated in both subclasses',
+  title: '015 Evaluate the survey with a generalization set with the attribute name repeated in both subclasses',
   checker: gChecker_015_lifting_multiple_generalizations_duplicate_attributes,
   model: jsonModel,
-  modelManager: new ModelManager(jsonModel),
+  modelManager: new ModelManager(jsonModel)
 };

@@ -60,11 +60,7 @@ export class OntoUML2DB {
    * Adds database constructs to the graph.
    */
   transformToEntityRelationship(): void {
-    ToEntityRelationship.run(
-      this.graph,
-      this.options.isStandardizeNames,
-      this.tracker,
-    );
+    ToEntityRelationship.run(this.graph, this.options.isStandardizeNames, this.tracker);
   }
 
   /**

@@ -35,10 +35,7 @@ export class GenerateOBDA {
     );
   }
 
-  static generateMappingDeclaration(
-    options: OntoUML2DBOptions,
-    tracker: Tracker,
-  ): string {
+  static generateMappingDeclaration(options: OntoUML2DBOptions, tracker: Tracker): string {
     let projectName: string = options.databaseName;
     let first: boolean;
     let text: string = '[MappingDeclaration] @collection [[\n\n';
@@ -48,17 +45,9 @@ export class GenerateOBDA {
       trace.getTargetNodes().forEach((node: Node) => {
         //value: Node, key: string, map: Map<string,Node>
 
-        text += GenerateOBDAMappingID.generate(
-          trace.getSourceNode(),
-          projectName,
-          first,
-        );
+        text += GenerateOBDAMappingID.generate(trace.getSourceNode(), projectName, first);
 
-        text += GenerateOBDATarget.generate(
-          trace.getSourceNode(),
-          projectName,
-          node,
-        );
+        text += GenerateOBDATarget.generate(trace.getSourceNode(), projectName, node);
 
         text += GenerateOBDASource.generate(trace, node);
 

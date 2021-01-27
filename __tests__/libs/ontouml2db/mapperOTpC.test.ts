@@ -22,7 +22,7 @@ let options: OntoUML2DBOptions = {
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',
-  passwordConnection: 'sa',
+  passwordConnection: 'sa'
 };
 
 test('Run Example', () => {
@@ -34,258 +34,102 @@ test('Run Example', () => {
     .addNode(
       new NodeChecker('named_entity')
         .addProperty(new PropertyChecker('named_entity_id', false))
-        .addProperty(new PropertyChecker('name', false)),
+        .addProperty(new PropertyChecker('name', false))
     )
 
     .addNode(
       new NodeChecker('person')
         .addProperty(new PropertyChecker('named_entity_id', false))
-        .addProperty(new PropertyChecker('birth_date', false)),
+        .addProperty(new PropertyChecker('birth_date', false))
     )
     .addNode(
       new NodeChecker('organization')
         .addProperty(new PropertyChecker('named_entity_id', false))
-        .addProperty(new PropertyChecker('address', false)),
+        .addProperty(new PropertyChecker('address', false))
     )
     .addNode(
       new NodeChecker('brazilian_citizen')
         .addProperty(new PropertyChecker('named_entity_id', false))
-        .addProperty(new PropertyChecker('rg', false)),
+        .addProperty(new PropertyChecker('rg', false))
     )
     .addNode(
       new NodeChecker('italian_citizen')
         .addProperty(new PropertyChecker('named_entity_id', false))
-        .addProperty(new PropertyChecker('ci', false)),
+        .addProperty(new PropertyChecker('ci', false))
     )
-    .addNode(
-      new NodeChecker('child').addProperty(
-        new PropertyChecker('named_entity_id', false),
-      ),
-    )
-    .addNode(
-      new NodeChecker('adult').addProperty(
-        new PropertyChecker('named_entity_id', false),
-      ),
-    )
-    .addNode(
-      new NodeChecker('employee').addProperty(
-        new PropertyChecker('named_entity_id', false),
-      ),
-    )
+    .addNode(new NodeChecker('child').addProperty(new PropertyChecker('named_entity_id', false)))
+    .addNode(new NodeChecker('adult').addProperty(new PropertyChecker('named_entity_id', false)))
+    .addNode(new NodeChecker('employee').addProperty(new PropertyChecker('named_entity_id', false)))
     .addNode(
       new NodeChecker('primary_school')
         .addProperty(new PropertyChecker('named_entity_id', false))
-        .addProperty(new PropertyChecker('playground_size', true)),
+        .addProperty(new PropertyChecker('playground_size', true))
     )
     .addNode(
       new NodeChecker('hospital')
         .addProperty(new PropertyChecker('named_entity_id', false))
-        .addProperty(new PropertyChecker('capacity', true)),
+        .addProperty(new PropertyChecker('capacity', true))
     )
-    .addNode(
-      new NodeChecker('contractor').addProperty(
-        new PropertyChecker('named_entity_id', false),
-      ),
-    )
+    .addNode(new NodeChecker('contractor').addProperty(new PropertyChecker('named_entity_id', false)))
     .addNode(
       new NodeChecker('customer')
         .addProperty(new PropertyChecker('customer_id', false))
-        .addProperty(new PropertyChecker('credit_rating', false)),
+        .addProperty(new PropertyChecker('credit_rating', false))
     )
     .addNode(
       new NodeChecker('personal_customer')
         .addProperty(new PropertyChecker('customer_id', false))
         .addProperty(new PropertyChecker('named_entity_id', false))
-        .addProperty(new PropertyChecker('credit_card', true)),
+        .addProperty(new PropertyChecker('credit_card', true))
     )
     .addNode(
       new NodeChecker('corporate_customer')
         .addProperty(new PropertyChecker('customer_id', false))
         .addProperty(new PropertyChecker('named_entity_id', false))
-        .addProperty(new PropertyChecker('credit_limit', false)),
+        .addProperty(new PropertyChecker('credit_limit', false))
     )
     .addNode(
       new NodeChecker('employment')
         .addProperty(new PropertyChecker('employment_id', false))
         .addProperty(new PropertyChecker('named_entity_id', false))
         .addProperty(new PropertyChecker('named_entity_organization_id', false))
-        .addProperty(new PropertyChecker('salary', false)),
+        .addProperty(new PropertyChecker('salary', false))
     )
     .addNode(
       new NodeChecker('supply_contract')
         .addProperty(new PropertyChecker('supply_contract_id', false))
         .addProperty(new PropertyChecker('named_entity_id', false))
         .addProperty(new PropertyChecker('customer_id', false))
-        .addProperty(new PropertyChecker('contract_value', false)),
+        .addProperty(new PropertyChecker('contract_value', false))
     )
     .addNode(
       new NodeChecker('enrollment')
         .addProperty(new PropertyChecker('enrollment_id', false))
         .addProperty(new PropertyChecker('named_entity_id', false))
         .addProperty(new PropertyChecker('named_entity_child_id', false))
-        .addProperty(new PropertyChecker('grade', false)),
+        .addProperty(new PropertyChecker('grade', false))
     )
-    .addRelationship(
-      new RelationshipChecker(
-        'named_entity',
-        Cardinality.C1,
-        'person',
-        Cardinality.C1,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'named_entity',
-        Cardinality.C1,
-        'organization',
-        Cardinality.C1,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'person',
-        Cardinality.C1,
-        'brazilian_citizen',
-        Cardinality.C1,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'person',
-        Cardinality.C1,
-        'italian_citizen',
-        Cardinality.C1,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'person',
-        Cardinality.C1,
-        'child',
-        Cardinality.C1,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'person',
-        Cardinality.C1,
-        'adult',
-        Cardinality.C1,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'adult',
-        Cardinality.C1,
-        'employee',
-        Cardinality.C1,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'adult',
-        Cardinality.C1,
-        'personal_customer',
-        Cardinality.C1,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'customer',
-        Cardinality.C1,
-        'personal_customer',
-        Cardinality.C1,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'customer',
-        Cardinality.C1,
-        'corporate_customer',
-        Cardinality.C1,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'organization',
-        Cardinality.C1,
-        'corporate_customer',
-        Cardinality.C1,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'organization',
-        Cardinality.C1,
-        'primary_school',
-        Cardinality.C1,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'organization',
-        Cardinality.C1,
-        'hospital',
-        Cardinality.C1,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'organization',
-        Cardinality.C1,
-        'contractor',
-        Cardinality.C1,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'enrollment',
-        Cardinality.C0_N,
-        'child',
-        Cardinality.C1,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'employee',
-        Cardinality.C1,
-        'employment',
-        Cardinality.C1_N,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'supply_contract',
-        Cardinality.C1_N,
-        'customer',
-        Cardinality.C1,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'organization',
-        Cardinality.C1,
-        'employment',
-        Cardinality.C0_N,
-      ),
-    )
-    .addRelationship(
-      new RelationshipChecker(
-        'contractor',
-        Cardinality.C1,
-        'supply_contract',
-        Cardinality.C1_N,
-      ),
-    )
+    .addRelationship(new RelationshipChecker('named_entity', Cardinality.C1, 'person', Cardinality.C1))
+    .addRelationship(new RelationshipChecker('named_entity', Cardinality.C1, 'organization', Cardinality.C1))
+    .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'brazilian_citizen', Cardinality.C1))
+    .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'italian_citizen', Cardinality.C1))
+    .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'child', Cardinality.C1))
+    .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'adult', Cardinality.C1))
+    .addRelationship(new RelationshipChecker('adult', Cardinality.C1, 'employee', Cardinality.C1))
+    .addRelationship(new RelationshipChecker('adult', Cardinality.C1, 'personal_customer', Cardinality.C1))
+    .addRelationship(new RelationshipChecker('customer', Cardinality.C1, 'personal_customer', Cardinality.C1))
+    .addRelationship(new RelationshipChecker('customer', Cardinality.C1, 'corporate_customer', Cardinality.C1))
+    .addRelationship(new RelationshipChecker('organization', Cardinality.C1, 'corporate_customer', Cardinality.C1))
+    .addRelationship(new RelationshipChecker('organization', Cardinality.C1, 'primary_school', Cardinality.C1))
+    .addRelationship(new RelationshipChecker('organization', Cardinality.C1, 'hospital', Cardinality.C1))
+    .addRelationship(new RelationshipChecker('organization', Cardinality.C1, 'contractor', Cardinality.C1))
+    .addRelationship(new RelationshipChecker('enrollment', Cardinality.C0_N, 'child', Cardinality.C1))
+    .addRelationship(new RelationshipChecker('employee', Cardinality.C1, 'employment', Cardinality.C1_N))
+    .addRelationship(new RelationshipChecker('supply_contract', Cardinality.C1_N, 'customer', Cardinality.C1))
+    .addRelationship(new RelationshipChecker('organization', Cardinality.C1, 'employment', Cardinality.C0_N))
+    .addRelationship(new RelationshipChecker('contractor', Cardinality.C1, 'supply_contract', Cardinality.C1_N))
 
-    .addRelationship(
-      new RelationshipChecker(
-        'primary_school',
-        Cardinality.C1,
-        'enrollment',
-        Cardinality.C0_N,
-      ),
-    )
+    .addRelationship(new RelationshipChecker('primary_school', Cardinality.C1, 'enrollment', Cardinality.C0_N))
 
     .addTracker(new TrackerChecker('NamedEntity', 'named_entity'))
     .addTracker(new TrackerChecker('Person', 'person'))

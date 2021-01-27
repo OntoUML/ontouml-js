@@ -82,15 +82,8 @@ export class Tracer {
    * @param value
    * @param propertyBelongsToOtherNode
    */
-  newFilter(
-    sourceNode: Node,
-    property: NodeProperty,
-    value: any,
-    propertyBelongsToOtherNode: Node,
-  ): void {
-    this.filters.push(
-      new Filter(sourceNode, property, value, propertyBelongsToOtherNode),
-    );
+  newFilter(sourceNode: Node, property: NodeProperty, value: any, propertyBelongsToOtherNode: Node): void {
+    this.filters.push(new Filter(sourceNode, property, value, propertyBelongsToOtherNode));
   }
 
   /**

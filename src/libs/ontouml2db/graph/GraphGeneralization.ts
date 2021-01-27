@@ -72,19 +72,13 @@ export class GraphGeneralization extends GraphAssociation {
    * @return IGraphAssociation
    */
   cloneChangingReferencesTo(nodes: Node[]): GraphGeneralization {
-    let newGeneralizationNode: Node = Util.findNodeById(
-      this.generalizationNode.getId(),
-      nodes,
-    );
-    let newSpecializationNode: Node = Util.findNodeById(
-      this.specializationNode.getId(),
-      nodes,
-    );
+    let newGeneralizationNode: Node = Util.findNodeById(this.generalizationNode.getId(), nodes);
+    let newSpecializationNode: Node = Util.findNodeById(this.specializationNode.getId(), nodes);
 
     let newGeneralization: GraphGeneralization = new GraphGeneralization(
       this.getAssociationID(),
       newGeneralizationNode,
-      newSpecializationNode,
+      newSpecializationNode
     );
 
     newGeneralizationNode.addGeneralization(newGeneralization);
@@ -108,12 +102,7 @@ export class GraphGeneralization extends GraphAssociation {
    */
   toString(): string {
     if (this.belongToGS === null) {
-      return (
-        '\n\t : ' +
-        this.generalizationNode.getName() +
-        ' <- ' +
-        this.specializationNode.getName()
-      ); // +  gs;
+      return '\n\t : ' + this.generalizationNode.getName() + ' <- ' + this.specializationNode.getName(); // +  gs;
     } else {
       return this.belongToGS.toString();
     }

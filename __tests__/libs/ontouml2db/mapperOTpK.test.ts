@@ -67,7 +67,7 @@ const testResources: TestResource[] = [
   test_025,
   test_026,
   test_027,
-  test_028,
+  test_028
 ];
 
 let options: OntoUML2DBOptions = {
@@ -77,7 +77,7 @@ let options: OntoUML2DBOptions = {
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',
-  passwordConnection: 'sa',
+  passwordConnection: 'sa'
 };
 
 function testTransformation(model, checker) {
@@ -98,8 +98,6 @@ describe('Database transformation test', () => {
   let title: string;
   for (const testResource of testResources) {
     title = testResource.title;
-    test(title, () =>
-      testTransformation(testResource.modelManager, testResource.checker),
-    );
+    test(title, () => testTransformation(testResource.modelManager, testResource.checker));
   }
 });

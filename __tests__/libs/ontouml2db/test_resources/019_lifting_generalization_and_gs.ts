@@ -18,13 +18,7 @@ const gChecker_019_lifting_generalization_and_gs = new GraphChecker()
       .addProperty(new PropertyChecker('ci', true))
       .addProperty(new PropertyChecker('is_brazilian_citizen', false))
       .addProperty(new PropertyChecker('is_italian_citizen', false))
-      .addProperty(
-        new PropertyChecker('life_phase_enum', false, [
-          'CHILD',
-          'TEENAGER',
-          'ADULT',
-        ]),
-      ),
+      .addProperty(new PropertyChecker('life_phase_enum', false, ['CHILD', 'TEENAGER', 'ADULT']))
   )
   .addTracker(new TrackerChecker('Person', 'person'))
   .addTracker(new TrackerChecker('Adult', 'person'))
@@ -36,9 +30,8 @@ const gChecker_019_lifting_generalization_and_gs = new GraphChecker()
 const jsonModel = require('./test_019_lifting_generalization_and_gs.json');
 
 export const test_019: TestResource = {
-  title:
-    '019 Evaluate the lifting with one generalization set and two simple generalizations',
+  title: '019 Evaluate the lifting with one generalization set and two simple generalizations',
   checker: gChecker_019_lifting_generalization_and_gs,
   model: jsonModel,
-  modelManager: new ModelManager(jsonModel),
+  modelManager: new ModelManager(jsonModel)
 };

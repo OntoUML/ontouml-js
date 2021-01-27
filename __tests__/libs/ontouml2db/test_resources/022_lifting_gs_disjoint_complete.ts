@@ -15,26 +15,14 @@ const gChecker_022_lifting_gs_disjoint_complete = new GraphChecker()
   .addNode(
     new NodeChecker('super_class')
       .addProperty(new PropertyChecker('super_class_id', false))
-      .addProperty(
-        new PropertyChecker('super_class_type_enum', false, [
-          'SUBCLASS1',
-          'SUBCLASS2',
-        ]),
-      ),
+      .addProperty(new PropertyChecker('super_class_type_enum', false, ['SUBCLASS1', 'SUBCLASS2']))
   )
   .addNode(
     new NodeChecker('associated_class')
       .addProperty(new PropertyChecker('associated_class_id', false))
-      .addProperty(new PropertyChecker('super_class_id', false)),
+      .addProperty(new PropertyChecker('super_class_id', false))
   )
-  .addRelationship(
-    new RelationshipChecker(
-      'super_class',
-      Cardinality.C1,
-      'associated_class',
-      Cardinality.C0_N,
-    ),
-  )
+  .addRelationship(new RelationshipChecker('super_class', Cardinality.C1, 'associated_class', Cardinality.C0_N))
   .addTracker(new TrackerChecker('SuperClass', 'super_class'))
   .addTracker(new TrackerChecker('SubClass1', 'super_class'))
   .addTracker(new TrackerChecker('SubClass2', 'super_class'))
@@ -43,9 +31,8 @@ const gChecker_022_lifting_gs_disjoint_complete = new GraphChecker()
 const jsonModel = require('./test_022_lifting_gs_disjoint.json');
 
 export const test_022: TestResource = {
-  title:
-    '022 Evaluate the lifting with a disjoint and complete generalization set',
+  title: '022 Evaluate the lifting with a disjoint and complete generalization set',
   checker: gChecker_022_lifting_gs_disjoint_complete,
   model: jsonModel,
-  modelManager: new ModelManager(jsonModel),
+  modelManager: new ModelManager(jsonModel)
 };

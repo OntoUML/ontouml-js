@@ -16,7 +16,7 @@ let options: OntoUML2DBOptions = {
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',
-  passwordConnection: 'sa',
+  passwordConnection: 'sa'
 };
 
 test('Run Example', () => {

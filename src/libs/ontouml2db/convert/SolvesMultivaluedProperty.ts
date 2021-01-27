@@ -19,11 +19,7 @@ export class SolvesMultivaluedProperty {
       idToRemove.length = 0;
       for (let property of node.getProperties()) {
         if (property.isMultivalued()) {
-          SolvesMultivaluedProperty.transformPropertyIntoNode(
-            property,
-            node,
-            graph,
-          );
+          SolvesMultivaluedProperty.transformPropertyIntoNode(property, node, graph);
           idToRemove.push(property.getID());
         }
       }
@@ -34,29 +30,13 @@ export class SolvesMultivaluedProperty {
     }
   }
 
-  static transformPropertyIntoNode(
-    property: NodeProperty,
-    node: Node,
-    graph: Graph,
-  ): void {
+  static transformPropertyIntoNode(property: NodeProperty, node: Node, graph: Graph): void {
     let newNode: Node;
     let relation: GraphRelation;
 
-    newNode = new Node(
-      Increment.getNext().toString(),
-      property.getName(),
-      ClassStereotype.MIXIN,
-    );
+    newNode = new Node(Increment.getNext().toString(), property.getName(), ClassStereotype.MIXIN);
 
-    newNode.addProperty(
-      new NodeProperty(
-        property.getID(),
-        property.getName(),
-        property.getDataType(),
-        false,
-        false,
-      ),
-    );
+    newNode.addProperty(new NodeProperty(property.getID(), property.getName(), property.getDataType(), false, false));
 
     relation = new GraphRelation(
       Increment.getNext().toString(),
@@ -64,7 +44,7 @@ export class SolvesMultivaluedProperty {
       node,
       Cardinality.C1,
       newNode,
-      Cardinality.C0_N,
+      Cardinality.C0_N
     );
 
     newNode.addRelation(relation);

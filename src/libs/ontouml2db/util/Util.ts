@@ -29,12 +29,7 @@ export class Util {
   }
 
   static isSortalNonKind(type: ClassStereotype): boolean {
-    if (
-      type === ClassStereotype.ROLE ||
-      type === ClassStereotype.PHASE ||
-      type === ClassStereotype.SUBKIND
-    )
-      return true;
+    if (type === ClassStereotype.ROLE || type === ClassStereotype.PHASE || type === ClassStereotype.SUBKIND) return true;
     else return false;
   }
 

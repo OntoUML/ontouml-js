@@ -17,7 +17,7 @@ const gChecker_013_lifting_cascade_generalization = new GraphChecker()
       .addProperty(new PropertyChecker('test_role_x', true))
       .addProperty(new PropertyChecker('test_employee', true))
       .addProperty(new PropertyChecker('is_role_x', false))
-      .addProperty(new PropertyChecker('is_employee', false)),
+      .addProperty(new PropertyChecker('is_employee', false))
   )
   .addTracker(new TrackerChecker('Person', 'person'))
   .addTracker(new TrackerChecker('RoleX', 'person'))
@@ -29,5 +29,5 @@ export const test_013: TestResource = {
   title: '013 Evaluate the lifting with cascading generalizations',
   checker: gChecker_013_lifting_cascade_generalization,
   model: jsonModel,
-  modelManager: new ModelManager(jsonModel),
+  modelManager: new ModelManager(jsonModel)
 };

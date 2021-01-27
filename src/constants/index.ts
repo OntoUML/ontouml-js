@@ -1,28 +1,29 @@
 export enum Rigidity {
   RIGID = 'RIGID',
   ANTI_RIGID = 'ANTI_RIGID',
-  SEMI_RIGID = 'SEMI_RIGID',
+  SEMI_RIGID = 'SEMI_RIGID'
 }
 
 export enum Sortality {
   SORTAL = 'SORTAL',
-  NON_SORTAL = 'NON_SORTAL',
+  NON_SORTAL = 'NON_SORTAL'
 }
 
 export enum OntoumlType {
+  PROJECT_TYPE = 'Project',
   PACKAGE_TYPE = 'Package',
   CLASS_TYPE = 'Class',
   RELATION_TYPE = 'Relation',
   GENERALIZATION_TYPE = 'Generalization',
   GENERALIZATION_SET_TYPE = 'GeneralizationSet',
   PROPERTY_TYPE = 'Property',
-  LITERAL_TYPE = 'Literal',
+  LITERAL_TYPE = 'Literal'
 }
 
 export enum AggregationKind {
   NONE = 'NONE',
   SHARED = 'SHARED',
-  COMPOSITE = 'COMPOSITE',
+  COMPOSITE = 'COMPOSITE'
 }
 
 export enum ClassStereotype {
@@ -46,22 +47,36 @@ export enum ClassStereotype {
   PHASE = 'phase',
   ENUMERATION = 'enumeration',
   DATATYPE = 'datatype',
-  ABSTRACT = 'abstract',
+  ABSTRACT = 'abstract'
 }
 
-export const MomentTypes = [
-  ClassStereotype.MODE,
-  ClassStereotype.QUALITY,
-  ClassStereotype.RELATOR,
+export const NonSortalStereotypes = [
+  ClassStereotype.CATEGORY,
+  ClassStereotype.MIXIN,
+  ClassStereotype.PHASE_MIXIN,
+  ClassStereotype.ROLE_MIXIN,
+  ClassStereotype.HISTORICAL_ROLE_MIXIN
 ];
 
-export const ObjectTypes = [
+export const UltimateSortalStereotypes = [
   ClassStereotype.KIND,
-  ClassStereotype.QUANTITY,
   ClassStereotype.COLLECTIVE,
+  ClassStereotype.QUANTITY,
+  ClassStereotype.RELATOR,
+  ClassStereotype.QUALITY,
+  ClassStereotype.MODE
 ];
 
-export const RigidTypes = [
+export const BaseSortalStereotypes = [
+  ClassStereotype.SUBKIND,
+  ClassStereotype.PHASE,
+  ClassStereotype.ROLE,
+  ClassStereotype.HISTORICAL_ROLE
+];
+
+export const SortalStereotypes = [...UltimateSortalStereotypes, ...BaseSortalStereotypes];
+
+export const RigidStereotypes = [
   ClassStereotype.KIND,
   ClassStereotype.QUANTITY,
   ClassStereotype.COLLECTIVE,
@@ -72,25 +87,31 @@ export const RigidTypes = [
   ClassStereotype.CATEGORY,
   ClassStereotype.EVENT,
   ClassStereotype.SITUATION,
-  ClassStereotype.TYPE,
+  ClassStereotype.TYPE
 ];
 
-export const AntiRigidTypes = [
+export const AntiRigidStereotypes = [
   ClassStereotype.ROLE,
   ClassStereotype.ROLE_MIXIN,
   ClassStereotype.HISTORICAL_ROLE,
   ClassStereotype.HISTORICAL_ROLE_MIXIN,
   ClassStereotype.PHASE,
-  ClassStereotype.PHASE_MIXIN,
+  ClassStereotype.PHASE_MIXIN
 ];
 
-export const SemiRigidTypes = [ClassStereotype.MIXIN];
+export const SemiRigidStereotypes = [ClassStereotype.MIXIN];
 
-export const AbstractTypes = [
-  ClassStereotype.ABSTRACT,
-  ClassStereotype.DATATYPE,
-  ClassStereotype.ENUMERATION,
-];
+export const MomentOnlyStereotypes = [ClassStereotype.MODE, ClassStereotype.QUALITY, ClassStereotype.RELATOR];
+
+// TODO: review this name
+export const ObjectOnlyStereotypes = [ClassStereotype.KIND, ClassStereotype.QUANTITY, ClassStereotype.COLLECTIVE];
+
+export const EndurantStereotypes = {
+  ...SortalStereotypes,
+  ...NonSortalStereotypes
+};
+
+export const AbstractStereotypes = [ClassStereotype.ABSTRACT, ClassStereotype.DATATYPE, ClassStereotype.ENUMERATION];
 
 export enum RelationStereotype {
   MATERIAL = 'material',
@@ -111,13 +132,16 @@ export enum RelationStereotype {
   CREATION = 'creation',
   MANIFESTATION = 'manifestation',
   BRINGS_ABOUT = 'bringsAbout',
-  TRIGGERS = 'triggers',
+  TRIGGERS = 'triggers'
 }
 
 export enum PropertyStereotype {
   BEGIN = 'begin',
-  END = 'end',
+  END = 'end'
 }
+
+// TODO: review the usage of 'type' on OntoumlStereotype
+export type OntoumlStereotype = ClassStereotype | RelationStereotype | PropertyStereotype;
 
 export enum OntologicalNature {
   functional_complex = 'functional-complex',
@@ -130,21 +154,17 @@ export enum OntologicalNature {
   event = 'event',
   situation = 'situation',
   type = 'type',
-  abstract = 'abstract',
+  abstract = 'abstract'
 }
 
 export const MomentNatures = [
   OntologicalNature.intrinsic_mode,
   OntologicalNature.extrinsic_mode,
   OntologicalNature.quality,
-  OntologicalNature.relator,
+  OntologicalNature.relator
 ];
 
-export const ObjectNatures = [
-  OntologicalNature.functional_complex,
-  OntologicalNature.collective,
-  OntologicalNature.quantity,
-];
+export const ObjectNatures = [OntologicalNature.functional_complex, OntologicalNature.collective, OntologicalNature.quantity];
 
 export default {
   ClassStereotype,
@@ -155,11 +175,11 @@ export default {
   Sortality,
   OntoumlType,
   AggregationKind,
-  RigidTypes,
-  AntiRigidTypes,
-  SemiRigidTypes,
-  MomentTypes,
-  ObjectTypes,
+  RigidTypes: RigidStereotypes,
+  AntiRigidTypes: AntiRigidStereotypes,
+  SemiRigidTypes: SemiRigidStereotypes,
+  MomentTypes: MomentOnlyStereotypes,
+  ObjectTypes: ObjectOnlyStereotypes,
   MomentNatures,
-  ObjectNatures,
+  ObjectNatures
 };

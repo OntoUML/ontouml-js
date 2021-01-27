@@ -12,7 +12,7 @@ const options: OntoUML2DBOptions[] = [
     hostName: 'localhost/~',
     databaseName: 'RunExample',
     userConnection: 'sa',
-    passwordConnection: 'sa',
+    passwordConnection: 'sa'
   },
 
   {
@@ -22,7 +22,7 @@ const options: OntoUML2DBOptions[] = [
     hostName: 'localhost/~',
     databaseName: 'RunExample',
     userConnection: 'sa',
-    passwordConnection: 'sa',
+    passwordConnection: 'sa'
   },
 
   {
@@ -32,7 +32,7 @@ const options: OntoUML2DBOptions[] = [
     hostName: 'localhost/~',
     databaseName: 'RunExample',
     userConnection: 'sa',
-    passwordConnection: 'sa',
+    passwordConnection: 'sa'
   },
 
   {
@@ -42,7 +42,7 @@ const options: OntoUML2DBOptions[] = [
     hostName: 'localhost/~',
     databaseName: 'RunExample',
     userConnection: 'sa',
-    passwordConnection: 'sa',
+    passwordConnection: 'sa'
   },
 
   {
@@ -52,8 +52,8 @@ const options: OntoUML2DBOptions[] = [
     hostName: 'localhost/~',
     databaseName: 'RunExample',
     userConnection: 'sa',
-    passwordConnection: 'sa',
-  },
+    passwordConnection: 'sa'
+  }
 ];
 
 describe('Test', () => {

@@ -15,33 +15,22 @@ const gChecker_027_lifting_multiple_relations_to_remake = new GraphChecker()
   .addNode(
     new NodeChecker('person')
       .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(
-        new PropertyChecker('life_phase_enum', false, ['CHILD', 'ADULT']),
-      )
+      .addProperty(new PropertyChecker('life_phase_enum', false, ['CHILD', 'ADULT']))
       .addProperty(new PropertyChecker('is_employee', false))
-      .addProperty(new PropertyChecker('is_personal_customer', false)),
+      .addProperty(new PropertyChecker('is_personal_customer', false))
   )
   .addNode(
     new NodeChecker('employment')
       .addProperty(new PropertyChecker('employment_id', false))
-      .addProperty(new PropertyChecker('person_id', false)),
+      .addProperty(new PropertyChecker('person_id', false))
   )
   .addNode(
     new NodeChecker('test')
       .addProperty(new PropertyChecker('test_id', false))
-      .addProperty(new PropertyChecker('person_id', false)),
+      .addProperty(new PropertyChecker('person_id', false))
   )
-  .addRelationship(
-    new RelationshipChecker(
-      'person',
-      Cardinality.C1,
-      'employment',
-      Cardinality.C0_N,
-    ),
-  )
-  .addRelationship(
-    new RelationshipChecker('person', Cardinality.C1, 'test', Cardinality.C0_N),
-  )
+  .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'employment', Cardinality.C0_N))
+  .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'test', Cardinality.C0_N))
   .addTracker(new TrackerChecker('Person', 'person'))
   .addTracker(new TrackerChecker('Child', 'person'))
   .addTracker(new TrackerChecker('Adult', 'person'))
@@ -53,9 +42,8 @@ const gChecker_027_lifting_multiple_relations_to_remake = new GraphChecker()
 const jsonModel = require('./test_027_lifting_multiple_relations_to_remake.json');
 
 export const test_027: TestResource = {
-  title:
-    '027 Evaluate the lifting when one subclass has two indirect associations',
+  title: '027 Evaluate the lifting when one subclass has two indirect associations',
   checker: gChecker_027_lifting_multiple_relations_to_remake,
   model: jsonModel,
-  modelManager: new ModelManager(jsonModel),
+  modelManager: new ModelManager(jsonModel)
 };

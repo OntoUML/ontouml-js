@@ -14,19 +14,19 @@ const gChecker_007_flatting_category_without_specialization = new GraphChecker()
     new NodeChecker('person')
       .addProperty(new PropertyChecker('person_id', false))
       .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('birth_date', false)),
+      .addProperty(new PropertyChecker('birth_date', false))
   )
   .addNode(
     new NodeChecker('organization')
       .addProperty(new PropertyChecker('organization_id', false))
       .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('address', false)),
+      .addProperty(new PropertyChecker('address', false))
   )
   .addNode(
     new NodeChecker('named_entity_a')
       .addProperty(new PropertyChecker('named_entity_a_id', false))
       .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('name_a', true)),
+      .addProperty(new PropertyChecker('name_a', true))
   )
   .addTracker(new TrackerChecker('NamedEntity', 'person'))
   .addTracker(new TrackerChecker('NamedEntity', 'organization'))
@@ -42,5 +42,5 @@ export const test_007: TestResource = {
     '007 Evaluates the flattening involving one generalization set, where the superclass has one generalization relationship with another non-sortal class',
   checker: gChecker_007_flatting_category_without_specialization,
   model: jsonModel,
-  modelManager: new ModelManager(jsonModel),
+  modelManager: new ModelManager(jsonModel)
 };

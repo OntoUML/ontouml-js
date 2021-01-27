@@ -14,9 +14,7 @@ import { Increment } from '../util/Increment';
 
 export class SolvesCardinalityNtoN {
   static solves(graph: Graph, tracker: Tracker): void {
-    let relations = graph
-      .getAssociations()
-      .filter(this.filterNtoN) as GraphRelation[];
+    let relations = graph.getAssociations().filter(this.filterNtoN) as GraphRelation[];
 
     for (let relation of relations) {
       SolvesCardinalityNtoN.resolveNtoN(relation, graph, tracker);
@@ -26,24 +24,18 @@ export class SolvesCardinalityNtoN {
   static filterNtoN(element: GraphAssociation) {
     if (!(element instanceof GraphRelation)) return false;
     if (
-      (element.getSourceCardinality() === Cardinality.C0_N ||
-        element.getSourceCardinality() === Cardinality.C1_N) &&
-      (element.getTargetCardinality() === Cardinality.C0_N ||
-        element.getTargetCardinality() === Cardinality.C1_N)
+      (element.getSourceCardinality() === Cardinality.C0_N || element.getSourceCardinality() === Cardinality.C1_N) &&
+      (element.getTargetCardinality() === Cardinality.C0_N || element.getTargetCardinality() === Cardinality.C1_N)
     )
       return true;
     else return false;
   }
 
-  static resolveNtoN(
-    relation: GraphRelation,
-    graph: Graph,
-    tracker: Tracker,
-  ): void {
+  static resolveNtoN(relation: GraphRelation, graph: Graph, tracker: Tracker): void {
     let newNode: Node = new Node(
       Increment.getNext().toString(),
       relation.getSourceNode().getName() + relation.getTargetNode().getName(),
-      ClassStereotype.RELATOR,
+      ClassStereotype.RELATOR
     );
     let nodeName: string;
     if (relation.getName() != null) {
@@ -71,7 +63,7 @@ export class SolvesCardinalityNtoN {
       relation.getSourceNode(), //sourceNode
       Cardinality.C1, //sourceCardinality
       newNode, //targetNode
-      Cardinality.C0_N,
+      Cardinality.C0_N
     );
 
     let newRelation2: GraphRelation = new GraphRelation(
@@ -80,7 +72,7 @@ export class SolvesCardinalityNtoN {
       relation.getTargetNode(), //sourceNode
       Cardinality.C1, //sourceCardinality
       newNode, //targetNode
-      Cardinality.C0_N,
+      Cardinality.C0_N
     );
 
     newNode.addRelation(newRelation1);

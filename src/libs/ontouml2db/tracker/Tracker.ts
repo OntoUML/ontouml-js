@@ -54,20 +54,8 @@ export class Tracker {
    * @param value
    * @param propertyBelongsToTheNode
    */
-  moveTraceFromTo(
-    fromID: string,
-    toID: string,
-    property: NodeProperty,
-    value: any,
-    propertyBelongsToTheNode: Node,
-  ): void {
-    this.addFilterAtNode(
-      fromID,
-      this.nodeMap.get(toID),
-      property,
-      value,
-      propertyBelongsToTheNode,
-    );
+  moveTraceFromTo(fromID: string, toID: string, property: NodeProperty, value: any, propertyBelongsToTheNode: Node): void {
+    this.addFilterAtNode(fromID, this.nodeMap.get(toID), property, value, propertyBelongsToTheNode);
     this.copyTracesFromTo(fromID, toID);
     this.removeNodeFromTraces(fromID);
   }
@@ -86,10 +74,7 @@ export class Tracker {
     for (trace of this.traceMap.values()) {
       if (trace.existsTraceFor(fromID)) {
         trace.addTargetNode(this.nodeMap.get(toID));
-        trace.updateSourceRulesToFrom(
-          this.nodeMap.get(fromID),
-          this.nodeMap.get(toID),
-        );
+        trace.updateSourceRulesToFrom(this.nodeMap.get(fromID), this.nodeMap.get(toID));
       }
     }
   }
@@ -112,13 +97,7 @@ export class Tracker {
    * @param value
    * @param belongsToTheNode
    */
-  addFilterAtNode(
-    id: string,
-    mappedToTheNode: Node,
-    property: NodeProperty,
-    value: any,
-    belongsToTheNode: Node,
-  ): void {
+  addFilterAtNode(id: string, mappedToTheNode: Node, property: NodeProperty, value: any, belongsToTheNode: Node): void {
     let trace = this.traceMap.get(id);
     trace.newFilter(mappedToTheNode, property, value, belongsToTheNode);
 
@@ -134,18 +113,13 @@ export class Tracker {
   putCascateRules(originalTrace: Tracer, currentTrace: Tracer): void {
     let nextTrace = this.traceMap.get(currentTrace.getSourceNode().getId());
 
-    if (
-      originalTrace.getSourceNode().getId() !=
-      currentTrace.getSourceNode().getId()
-    ) {
+    if (originalTrace.getSourceNode().getId() != currentTrace.getSourceNode().getId()) {
       for (let filter of currentTrace.getFilters()) {
         originalTrace.addFilter(filter);
       }
     }
 
-    if (
-      currentTrace.getSourceNode().getId() != nextTrace.getSourceNode().getId()
-    ) {
+    if (currentTrace.getSourceNode().getId() != nextTrace.getSourceNode().getId()) {
       this.putCascateRules(originalTrace, nextTrace);
     }
   }

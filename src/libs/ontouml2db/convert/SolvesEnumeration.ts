@@ -29,8 +29,7 @@ export class SolvesEnumeration {
             // relationship. The cardinality 1 is associated with the ENUM
             // field of the table and N with the table itself.
             //node.setStereotype("table");
-            if (relation.getSourceNode() === node)
-              relation.setTargetCardinality(Cardinality.C1);
+            if (relation.getSourceNode() === node) relation.setTargetCardinality(Cardinality.C1);
             else relation.setSourceCardinality(Cardinality.C1);
           }
         }
@@ -40,11 +39,7 @@ export class SolvesEnumeration {
     graph.removeNodes(nodesToDestroy);
   }
 
-  static addEnumerationColumn(
-    enumNode: Node,
-    relation: GraphRelation,
-    tracker: Tracker,
-  ): void {
+  static addEnumerationColumn(enumNode: Node, relation: GraphRelation, tracker: Tracker): void {
     let targetNode: Node;
     let cardinalityOfEnum: Cardinality;
     let isNull: boolean;
@@ -53,18 +48,10 @@ export class SolvesEnumeration {
     targetNode = SolvesEnumeration.getTargetNode(enumNode, relation);
     cardinalityOfEnum = SolvesEnumeration.getCardinalityOf(enumNode, relation);
 
-    if (
-      cardinalityOfEnum === Cardinality.C0_1 ||
-      cardinalityOfEnum === Cardinality.C1
-    )
-      isMultivalued = false;
+    if (cardinalityOfEnum === Cardinality.C0_1 || cardinalityOfEnum === Cardinality.C1) isMultivalued = false;
     else isMultivalued = true;
 
-    if (
-      cardinalityOfEnum === Cardinality.C0_1 ||
-      cardinalityOfEnum === Cardinality.C0_N
-    )
-      isNull = true;
+    if (cardinalityOfEnum === Cardinality.C0_1 || cardinalityOfEnum === Cardinality.C0_N) isNull = true;
     //accept null
     else isNull = false; //not accept null
 
@@ -84,8 +71,7 @@ export class SolvesEnumeration {
   }
 
   static getCardinalityOf(node: Node, relation: GraphRelation): Cardinality {
-    if (relation.getSourceNode() === node)
-      return relation.getSourceCardinality();
+    if (relation.getSourceNode() === node) return relation.getSourceCardinality();
     else return relation.getTargetCardinality();
   }
 }

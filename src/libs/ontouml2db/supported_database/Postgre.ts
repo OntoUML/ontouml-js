@@ -100,13 +100,7 @@ export class Postgre extends Generic implements IDBMS {
     let today = new Date();
 
     stringConnection += '#Ontouml2DB ' + today.toDateString() + '\n';
-    stringConnection +=
-      'jdbc.url=jdbc:postgre:tcp:' +
-      '//' +
-      options.hostName +
-      '/' +
-      options.databaseName +
-      '\n';
+    stringConnection += 'jdbc.url=jdbc:postgre:tcp:' + '//' + options.hostName + '/' + options.databaseName + '\n';
     stringConnection += 'jdbc.driver=org.postgre.Driver' + '\n';
     stringConnection += 'jdbc.user=' + options.userConnection + '\n';
     stringConnection += 'jdbc.name=ontouml2-db00-ufes-nemo-000000000001' + '\n';

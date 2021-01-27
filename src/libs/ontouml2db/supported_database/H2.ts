@@ -45,13 +45,7 @@ export class H2 extends Generic implements IDBMS {
     let today = new Date();
 
     stringConnection += '#Ontouml2DB ' + today.toDateString() + '\n';
-    stringConnection +=
-      'jdbc.url=jdbc:h2:tcp:' +
-      '//' +
-      options.hostName +
-      '/' +
-      options.databaseName +
-      '\n';
+    stringConnection += 'jdbc.url=jdbc:h2:tcp:' + '//' + options.hostName + '/' + options.databaseName + '\n';
     stringConnection += 'jdbc.driver=org.h2.Driver' + '\n';
     stringConnection += 'jdbc.user=' + options.userConnection + '\n';
     stringConnection += 'jdbc.name=ontouml2-db00-ufes-nemo-000000000001' + '\n';

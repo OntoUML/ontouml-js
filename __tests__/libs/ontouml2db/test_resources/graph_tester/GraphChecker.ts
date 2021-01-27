@@ -110,11 +110,7 @@ export class GraphChecker {
         targetNodeName = tracedNode.getName();
         if (!this.existsTrace(sourceNodeName, targetNodeName)) {
           return (
-            'The trace ' +
-            sourceNodeName +
-            ' - ' +
-            targetNodeName +
-            ' was produced in the graph and not evaluated in the check.'
+            'The trace ' + sourceNodeName + ' - ' + targetNodeName + ' was produced in the graph and not evaluated in the check.'
           );
         }
       }
@@ -126,10 +122,7 @@ export class GraphChecker {
 
   existsTrace(sourceName: string, targetName: string): boolean {
     for (let trackerChecker of this.trackerCheckers) {
-      if (
-        sourceName === trackerChecker.getSourceNodeName() &&
-        targetName === trackerChecker.getTargetNodeName()
-      ) {
+      if (sourceName === trackerChecker.getSourceNodeName() && targetName === trackerChecker.getTargetNodeName()) {
         return true;
       }
     }

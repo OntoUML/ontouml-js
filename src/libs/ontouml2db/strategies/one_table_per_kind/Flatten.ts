@@ -38,60 +38,34 @@ export class Flatten {
     }
   }
 
-  static flattenGeneralization(
-    generalization: GraphGeneralization,
-    tracker: Tracker,
-  ): void {
+  static flattenGeneralization(generalization: GraphGeneralization, tracker: Tracker): void {
     //The generalization is not removed from the node here because when removing the
     //node, its associations are also removed.
-    generalization
-      .getSpecific()
-      .addPropertiesAt(0, generalization.getGeneral().getProperties());
+    generalization.getSpecific().addPropertiesAt(0, generalization.getGeneral().getProperties());
 
     //for tracking between graphs
-    tracker.copyTracesFromTo(
-      generalization.getGeneral().getId(),
-      generalization.getSpecific().getId(),
-    );
+    tracker.copyTracesFromTo(generalization.getGeneral().getId(), generalization.getSpecific().getId());
   }
 
-  static flattenAssociation(
-    flattenNode: Node,
-    relation: GraphRelation,
-    graph: Graph,
-  ): void {
+  static flattenAssociation(flattenNode: Node, relation: GraphRelation, graph: Graph): void {
     for (let generalization of flattenNode.getGeneralizations()) {
-      Flatten.flattenAssociationWith(
-        flattenNode,
-        generalization.getSpecific(),
-        relation,
-        graph,
-      );
+      Flatten.flattenAssociationWith(flattenNode, generalization.getSpecific(), relation, graph);
     }
   }
 
-  static flattenAssociationWith(
-    flattenNode: Node,
-    toNode: Node,
-    relation: GraphRelation,
-    graph: Graph,
-  ): void {
+  static flattenAssociationWith(flattenNode: Node, toNode: Node, relation: GraphRelation, graph: Graph): void {
     let newRelation = relation.clone(Increment.getNext().toString());
 
     newRelation.setNodeNameRemoved(flattenNode.getName()); //this is important when there is a name collision in the FK name propagation process.
 
     if (relation.getSourceNode() === flattenNode) {
       newRelation.setSourceNode(toNode);
-      newRelation.setSourceCardinality(
-        Flatten.getNewCardinality(relation.getSourceCardinality()),
-      );
+      newRelation.setSourceCardinality(Flatten.getNewCardinality(relation.getSourceCardinality()));
       newRelation.getTargetNode().addRelation(newRelation);
       newRelation.getTargetNode().deleteAssociation(relation);
     } else {
       newRelation.setTargetNode(toNode);
-      newRelation.setTargetCardinality(
-        Flatten.getNewCardinality(relation.getTargetCardinality()),
-      );
+      newRelation.setTargetCardinality(Flatten.getNewCardinality(relation.getTargetCardinality()));
       newRelation.getSourceNode().addRelation(newRelation);
       newRelation.getSourceNode().deleteAssociation(relation);
     }

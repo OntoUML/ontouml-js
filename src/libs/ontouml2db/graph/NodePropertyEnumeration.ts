@@ -11,13 +11,7 @@ import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 export class NodePropertyEnumeration extends NodeProperty {
   private values: string[];
 
-  constructor(
-    id: string,
-    name: string,
-    dataType: string,
-    isNull: boolean,
-    multiValues: boolean,
-  ) {
+  constructor(id: string, name: string, dataType: string, isNull: boolean, multiValues: boolean) {
     super(id, name, dataType, isNull, multiValues);
     this.values = [];
   }

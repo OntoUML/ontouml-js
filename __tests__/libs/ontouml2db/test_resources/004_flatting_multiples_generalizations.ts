@@ -16,18 +16,16 @@ const gChecker_004_flatting_multiples_generalizations = new GraphChecker()
     new NodeChecker('person')
       .addProperty(new PropertyChecker('person_id', false))
       .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('birth_date', false)),
+      .addProperty(new PropertyChecker('birth_date', false))
   )
   .addNode(
     new NodeChecker('organization')
       .addProperty(new PropertyChecker('organization_id', false))
       .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('address', false)),
+      .addProperty(new PropertyChecker('address', false))
   )
   .addNode(
-    new NodeChecker('test')
-      .addProperty(new PropertyChecker('test_id', false))
-      .addProperty(new PropertyChecker('name', false)),
+    new NodeChecker('test').addProperty(new PropertyChecker('test_id', false)).addProperty(new PropertyChecker('name', false))
   )
   .addTracker(new TrackerChecker('NamedEntity', 'person'))
   .addTracker(new TrackerChecker('NamedEntity', 'organization'))
@@ -37,9 +35,8 @@ const gChecker_004_flatting_multiples_generalizations = new GraphChecker()
   .addTracker(new TrackerChecker('Test', 'test'));
 
 export const test_004: TestResource = {
-  title:
-    '004 Evaluates flattening involving one generalizations set and one simple generalization',
+  title: '004 Evaluates flattening involving one generalizations set and one simple generalization',
   checker: gChecker_004_flatting_multiples_generalizations,
   model: jsonModel,
-  modelManager: new ModelManager(jsonModel),
+  modelManager: new ModelManager(jsonModel)
 };

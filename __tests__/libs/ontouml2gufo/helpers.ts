@@ -1,22 +1,45 @@
 import { ModelManager } from '@libs/model';
-import { OntoUML2GUFO } from '@libs/ontouml2gufo';
-import { IPackage, IOntoUML2GUFOOptions, IOntoUML2GUFOResult } from '@types';
+import { Ontouml2Gufo } from '@libs/ontouml2gufo';
 
-export async function transformOntoUML2GUFO(
-  model: IPackage,
-  options?: Partial<IOntoUML2GUFOOptions>,
-): Promise<IOntoUML2GUFOResult> {
-  const modelCopy = JSON.parse(JSON.stringify(model));
-  const modelManager = new ModelManager(modelCopy);
-  const service = new OntoUML2GUFO(modelManager);
+import { IPackage } from '@types';
+import Options from '@libs/ontouml2gufo/options';
+import Issue from '@libs/ontouml2gufo/issue';
+import UriManager from '@libs/ontouml2gufo/uri_manager';
 
-  return await service.transformOntoUML2GUFO({
-    baseIRI: 'https://example.com',
+export function generateGufo(model: IPackage, options?: Partial<Options>): string {
+  const modelManager = new ModelManager(model);
+  const ontouml2gufo = new Ontouml2Gufo(modelManager, {
+    baseIri: 'https://example.com',
     format: 'N-Triple',
-    ...options,
+    ...options
   });
+
+  ontouml2gufo.transform();
+
+  return ontouml2gufo.getOwlCode();
+  // TODO: replace with static method
 }
 
-it('should ignore', () => {
-  expect(true).toBe(true);
-});
+export function getIssues(model: IPackage, options?: Partial<Options>): Issue[] {
+  const modelManager = new ModelManager(model);
+  const ontouml2gufo = new Ontouml2Gufo(modelManager, {
+    baseIri: 'https://example.com',
+    format: 'Turtle',
+    ...options
+  });
+
+  ontouml2gufo.transform();
+
+  return ontouml2gufo.getIssues();
+}
+
+export function getUriManager(model: IPackage, options?: Partial<Options>): UriManager {
+  const modelManager = new ModelManager(model);
+  const ontouml2gufo = new Ontouml2Gufo(modelManager, {
+    baseIri: 'https://example.com',
+    format: 'Turtle',
+    ...options
+  });
+
+  return ontouml2gufo.uriManager;
+}

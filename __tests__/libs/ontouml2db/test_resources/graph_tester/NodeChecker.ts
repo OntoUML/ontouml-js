@@ -41,11 +41,7 @@ export class NodeChecker {
     }
 
     if (this.properties.length != node.getProperties().length) {
-      return (
-        "The amount of properties does not match for the node '" +
-        this.name +
-        "'."
-      );
+      return "The amount of properties does not match for the node '" + this.name + "'.";
     }
 
     return result;

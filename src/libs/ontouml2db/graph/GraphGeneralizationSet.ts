@@ -94,12 +94,7 @@ export class GraphGeneralizationSet extends GraphAssociation {
     let subNode: Node;
     let generalization: GraphGeneralization;
 
-    gs = new GraphGeneralizationSet(
-      this.getAssociationID(),
-      this.getName(),
-      this.disjoint,
-      this.complete,
-    );
+    gs = new GraphGeneralizationSet(this.getAssociationID(), this.getName(), this.disjoint, this.complete);
 
     superNode = Util.findNodeById(this.generalizationNode.getId(), nodes);
     gs.setGeneral(superNode);
@@ -115,10 +110,7 @@ export class GraphGeneralizationSet extends GraphAssociation {
     return gs;
   }
 
-  private getGeneralization(
-    superNode: Node,
-    subNode: Node,
-  ): GraphGeneralization {
+  private getGeneralization(superNode: Node, subNode: Node): GraphGeneralization {
     let i: number = 0;
     let generalizations = superNode.getGeneralizations();
 

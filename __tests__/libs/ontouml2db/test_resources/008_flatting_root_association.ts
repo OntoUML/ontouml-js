@@ -16,36 +16,22 @@ const gChecker_008_flatting_root_association = new GraphChecker()
     new NodeChecker('person')
       .addProperty(new PropertyChecker('person_id', false))
       .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('birth_date', false)),
+      .addProperty(new PropertyChecker('birth_date', false))
   )
   .addNode(
     new NodeChecker('organization')
       .addProperty(new PropertyChecker('organization_id', false))
       .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('address', false)),
+      .addProperty(new PropertyChecker('address', false))
   )
   .addNode(
     new NodeChecker('test')
       .addProperty(new PropertyChecker('test_id', false))
       .addProperty(new PropertyChecker('organization_id', true))
-      .addProperty(new PropertyChecker('person_id', true)),
+      .addProperty(new PropertyChecker('person_id', true))
   )
-  .addRelationship(
-    new RelationshipChecker(
-      'organization',
-      Cardinality.C0_1,
-      'test',
-      Cardinality.C0_N,
-    ),
-  )
-  .addRelationship(
-    new RelationshipChecker(
-      'person',
-      Cardinality.C0_1,
-      'test',
-      Cardinality.C0_N,
-    ),
-  )
+  .addRelationship(new RelationshipChecker('organization', Cardinality.C0_1, 'test', Cardinality.C0_N))
+  .addRelationship(new RelationshipChecker('person', Cardinality.C0_1, 'test', Cardinality.C0_N))
   .addTracker(new TrackerChecker('NamedEntity', 'person'))
   .addTracker(new TrackerChecker('NamedEntity', 'organization'))
   .addTracker(new TrackerChecker('Person', 'person'))
@@ -55,9 +41,8 @@ const gChecker_008_flatting_root_association = new GraphChecker()
 const jsonModel = require('./test_008_flatting_root_association.json');
 
 export const test_008: TestResource = {
-  title:
-    '008 Evaluates the flattening involving a generalization set, where the superclass has an association with a sortal',
+  title: '008 Evaluates the flattening involving a generalization set, where the superclass has an association with a sortal',
   checker: gChecker_008_flatting_root_association,
   model: jsonModel,
-  modelManager: new ModelManager(jsonModel),
+  modelManager: new ModelManager(jsonModel)
 };

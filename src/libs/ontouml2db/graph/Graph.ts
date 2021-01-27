@@ -17,11 +17,7 @@ export class Graph {
   private associations: GraphAssociation[];
   private generalizationSets: GraphGeneralizationSet[];
 
-  constructor(
-    nodes?: Node[],
-    associations?: GraphAssociation[],
-    gs?: GraphGeneralizationSet[],
-  ) {
+  constructor(nodes?: Node[], associations?: GraphAssociation[], gs?: GraphGeneralizationSet[]) {
     if (nodes) this.nodes = nodes;
     else this.nodes = [];
 
@@ -293,9 +289,7 @@ export class Graph {
     });
 
     this.generalizationSets.forEach((gs: GraphGeneralizationSet) => {
-      newGS.push(gs.cloneChangingReferencesTo(
-        newNodes,
-      ) as GraphGeneralizationSet);
+      newGS.push(gs.cloneChangingReferencesTo(newNodes) as GraphGeneralizationSet);
     });
 
     return new Graph(newNodes, newAssociations, newGS);

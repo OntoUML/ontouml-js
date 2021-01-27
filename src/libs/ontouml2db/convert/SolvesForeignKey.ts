@@ -60,7 +60,7 @@ export class SolvesForeignKey {
             relation.getSourceNode(),
             relation.getTargetCardinality(),
             relation.getTargetNode(),
-            relation,
+            relation
           );
         } else {
           //First, resolve the primary key of the superclass, then the primary key of the subclass.
@@ -80,14 +80,14 @@ export class SolvesForeignKey {
           relation.getSourceNode(),
           relation.getSourceCardinality(),
           relation.getTargetNode(),
-          relation,
+          relation
         );
       } else if (SolvesForeignKey.isNTo1(relation)) {
         SolvesForeignKey.propagateKey(
           relation.getTargetNode(),
           relation.getTargetCardinality(),
           relation.getSourceNode(),
-          relation,
+          relation
         );
       }
     }
@@ -95,10 +95,8 @@ export class SolvesForeignKey {
 
   static is1ToN(relation: GraphRelation): boolean {
     if (
-      (relation.getSourceCardinality() === Cardinality.C0_1 ||
-        relation.getSourceCardinality() === Cardinality.C1) &&
-      (relation.getTargetCardinality() === Cardinality.C0_N ||
-        relation.getTargetCardinality() === Cardinality.C1_N)
+      (relation.getSourceCardinality() === Cardinality.C0_1 || relation.getSourceCardinality() === Cardinality.C1) &&
+      (relation.getTargetCardinality() === Cardinality.C0_N || relation.getTargetCardinality() === Cardinality.C1_N)
     )
       return true;
     else return false;
@@ -106,10 +104,8 @@ export class SolvesForeignKey {
 
   static isNTo1(relation: GraphRelation): boolean {
     if (
-      (relation.getTargetCardinality() === Cardinality.C0_1 ||
-        relation.getTargetCardinality() === Cardinality.C1) &&
-      (relation.getSourceCardinality() === Cardinality.C0_N ||
-        relation.getSourceCardinality() === Cardinality.C1_N)
+      (relation.getTargetCardinality() === Cardinality.C0_1 || relation.getTargetCardinality() === Cardinality.C1) &&
+      (relation.getSourceCardinality() === Cardinality.C0_N || relation.getSourceCardinality() === Cardinality.C1_N)
     )
       return true;
     else return false;
@@ -117,31 +113,19 @@ export class SolvesForeignKey {
 
   static is1To1(relation: GraphRelation): boolean {
     if (
-      (relation.getSourceCardinality() === Cardinality.C0_1 ||
-        relation.getSourceCardinality() === Cardinality.C1) &&
-      (relation.getTargetCardinality() === Cardinality.C0_1 ||
-        relation.getTargetCardinality() === Cardinality.C1)
+      (relation.getSourceCardinality() === Cardinality.C0_1 || relation.getSourceCardinality() === Cardinality.C1) &&
+      (relation.getTargetCardinality() === Cardinality.C0_1 || relation.getTargetCardinality() === Cardinality.C1)
     )
       return true;
     else return false;
   }
 
-  static propagateKey(
-    from: Node,
-    cardinalityFrom: Cardinality,
-    to: Node,
-    relation: GraphRelation,
-  ): void {
-    let fk = from
-      .getPrimaryKey()
-      .clone(from.getPrimaryKey().getName() + '_' + Increment.getNext());
+  static propagateKey(from: Node, cardinalityFrom: Cardinality, to: Node, relation: GraphRelation): void {
+    let fk = from.getPrimaryKey().clone(from.getPrimaryKey().getName() + '_' + Increment.getNext());
 
     fk.setForeignNodeID(from.getId(), relation);
 
-    if (
-      cardinalityFrom === Cardinality.C0_1 ||
-      cardinalityFrom === Cardinality.C0_N
-    ) {
+    if (cardinalityFrom === Cardinality.C0_1 || cardinalityFrom === Cardinality.C0_N) {
       fk.setNullable(true);
     } else {
       fk.setNullable(false);
@@ -161,11 +145,7 @@ export class SolvesForeignKey {
     }
   }
 
-  static getNewFKName(
-    prop: NodeProperty,
-    relation: GraphRelation,
-    nodeFrom: Node,
-  ): string {
+  static getNewFKName(prop: NodeProperty, relation: GraphRelation, nodeFrom: Node): string {
     let result: string;
     let associationName: string;
 
@@ -182,9 +162,7 @@ export class SolvesForeignKey {
 
     associationName = associationName.trim();
     if (associationName != '') {
-      result +=
-        associationName.substring(0, 1).toUpperCase() +
-        associationName.substring(1);
+      result += associationName.substring(0, 1).toUpperCase() + associationName.substring(1);
     }
 
     return result + '_id';

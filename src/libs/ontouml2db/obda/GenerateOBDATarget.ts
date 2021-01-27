@@ -9,29 +9,15 @@ import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
 import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
 
 export class GenerateOBDATarget {
-  public static generate(
-    originalNode: Node,
-    project: string,
-    trackedNode: Node,
-  ): string {
+  public static generate(originalNode: Node, project: string, trackedNode: Node): string {
     if (originalNode.getAssociationNameNtoN() == null) {
-      return (
-        'target       ' +
-        this.generateTarget(originalNode, project, trackedNode)
-      );
+      return 'target       ' + this.generateTarget(originalNode, project, trackedNode);
     } else {
-      return (
-        'target       ' +
-        this.generateTargetNtoN(originalNode, project, trackedNode)
-      );
+      return 'target       ' + this.generateTargetNtoN(originalNode, project, trackedNode);
     }
   }
 
-  static generateTarget(
-    originalNode: Node,
-    project: string,
-    trackedNode: Node,
-  ): string {
+  static generateTarget(originalNode: Node, project: string, trackedNode: Node): string {
     let text: string = '';
 
     text += this.generateSource(originalNode, project, trackedNode);
@@ -45,11 +31,7 @@ export class GenerateOBDATarget {
     return text;
   }
 
-  static generateSource(
-    originalNode: Node,
-    project: string,
-    trackedNode: Node,
-  ): string {
+  static generateSource(originalNode: Node, project: string, trackedNode: Node): string {
     let text: string = '';
     text += ':';
     text += project;
@@ -66,10 +48,7 @@ export class GenerateOBDATarget {
     return text;
   }
 
-  static generatePredicateAndObjects(
-    originalNode: Node,
-    trackedNode: Node,
-  ): string {
+  static generatePredicateAndObjects(originalNode: Node, trackedNode: Node): string {
     let text: string = '';
 
     for (let property of originalNode.getProperties()) {
@@ -100,10 +79,7 @@ export class GenerateOBDATarget {
     return text;
   }
 
-  static generateForeignKeyAssociations(
-    project: string,
-    trackedNode: Node,
-  ): string {
+  static generateForeignKeyAssociations(project: string, trackedNode: Node): string {
     let text: string = '';
     let association: GraphRelation;
 
@@ -128,10 +104,7 @@ export class GenerateOBDATarget {
     return text;
   }
 
-  static generateReferencedObject(
-    property: NodeProperty,
-    trackedNode: Node,
-  ): string {
+  static generateReferencedObject(property: NodeProperty, trackedNode: Node): string {
     let text: string = '';
     text += '{';
     text += trackedNode.getPropertyByID(property.getID()).getName();
@@ -141,14 +114,9 @@ export class GenerateOBDATarget {
     return text;
   }
 
-  static generatePredicateFromAssociation(
-    association: GraphAssociation,
-  ): string {
+  static generatePredicateFromAssociation(association: GraphAssociation): string {
     let text: string = ':';
-    text +=
-      association.getName() != null
-        ? association.getName()
-        : 'unnamed_association';
+    text += association.getName() != null ? association.getName() : 'unnamed_association';
     return text;
   }
 
@@ -168,19 +136,13 @@ export class GenerateOBDATarget {
     return '^^xsd:' + property.getDataType();
   }
 
-  static generateTargetNtoN(
-    originalNode: Node,
-    project: string,
-    trackedNode: Node,
-  ): string {
+  static generateTargetNtoN(originalNode: Node, project: string, trackedNode: Node): string {
     let text: string = '';
     let association: GraphRelation;
 
-    let propertiesFK = trackedNode
-      .getProperties()
-      .filter((element: NodeProperty) => {
-        return element.isForeignKey();
-      });
+    let propertiesFK = trackedNode.getProperties().filter((element: NodeProperty) => {
+      return element.isForeignKey();
+    });
 
     if (propertiesFK.length != 2) {
       return '[ERROR: must exists tow FKs]';

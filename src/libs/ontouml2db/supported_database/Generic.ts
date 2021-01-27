@@ -117,8 +117,7 @@ export class Generic implements IDBMS {
   }
 
   getDefaultValue(property: NodeProperty): string {
-    if (property.getDefaultValue() != null)
-      return (' DEFAULT ' + property.getDefaultValue()).toUpperCase();
+    if (property.getDefaultValue() != null) return (' DEFAULT ' + property.getDefaultValue()).toUpperCase();
     else return '';
   }
 
@@ -180,8 +179,7 @@ export class Generic implements IDBMS {
     let today = new Date();
 
     stringConnection += '#Ontouml2DB ' + today.toDateString() + '\n';
-    stringConnection +=
-      'jdbc.url=' + options.hostName + '/' + options.databaseName + '\n';
+    stringConnection += 'jdbc.url=' + options.hostName + '/' + options.databaseName + '\n';
     stringConnection += 'jdbc.driver=[PUT_DRIVE_HERE]' + '\n';
     stringConnection += 'jdbc.user=' + options.userConnection + '\n';
     stringConnection += 'jdbc.name=ontouml2-db00-ufes-nemo-000000000001' + '\n';

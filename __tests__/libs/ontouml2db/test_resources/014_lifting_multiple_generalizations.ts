@@ -19,7 +19,7 @@ const gChecker_014_lifting_multiple_generalizations = new GraphChecker()
       .addProperty(new PropertyChecker('test3', true))
       .addProperty(new PropertyChecker('is_employee', false))
       .addProperty(new PropertyChecker('is_role_x', false))
-      .addProperty(new PropertyChecker('is_role_y', false)),
+      .addProperty(new PropertyChecker('is_role_y', false))
   )
   .addTracker(new TrackerChecker('Person', 'person'))
   .addTracker(new TrackerChecker('RoleX', 'person'))
@@ -29,9 +29,8 @@ const gChecker_014_lifting_multiple_generalizations = new GraphChecker()
 const jsonModel = require('./test_014_lifting_multiple_generalizations.json');
 
 export const test_014: TestResource = {
-  title:
-    '014 Evaluate the lifting with multiple generalizations, without forming a generalization set',
+  title: '014 Evaluate the lifting with multiple generalizations, without forming a generalization set',
   checker: gChecker_014_lifting_multiple_generalizations,
   model: jsonModel,
-  modelManager: new ModelManager(jsonModel),
+  modelManager: new ModelManager(jsonModel)
 };

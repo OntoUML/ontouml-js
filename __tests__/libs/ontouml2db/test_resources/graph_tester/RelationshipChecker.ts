@@ -17,12 +17,7 @@ export class RelationshipChecker {
   private targetNodeName: string;
   private targetCardinality: Cardinality;
 
-  constructor(
-    sourceNode: string,
-    sourceCardinality: Cardinality,
-    targetNode: string,
-    targetCardinality: Cardinality,
-  ) {
+  constructor(sourceNode: string, sourceCardinality: Cardinality, targetNode: string, targetCardinality: Cardinality) {
     this.sourceNodeName = sourceNode;
     this.sourceCardinality = sourceCardinality;
     this.targetNodeName = targetNode;

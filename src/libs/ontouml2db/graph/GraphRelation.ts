@@ -4,10 +4,7 @@
  * Author: Gustavo L. Guidoni
  */
 
-import {
-  Cardinality,
-  AssociationType,
-} from '@libs/ontouml2db/constants/enumerations';
+import { Cardinality, AssociationType } from '@libs/ontouml2db/constants/enumerations';
 import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
 import { Util } from '@libs/ontouml2db/util/Util';
 import { Node } from '@libs/ontouml2db/graph/Node';
@@ -24,7 +21,7 @@ export class GraphRelation extends GraphAssociation {
     sourceNode: Node,
     sourceCardinality: Cardinality,
     targetNode: Node,
-    targetCardinality: Cardinality,
+    targetCardinality: Cardinality
   ) {
     super(ID, name, AssociationType.RELATION_TYPE);
     this.sourceNode = sourceNode;
@@ -116,7 +113,7 @@ export class GraphRelation extends GraphAssociation {
       this.sourceNode,
       this.sourceCardinality,
       this.targetNode,
-      this.targetCardinality,
+      this.targetCardinality
     );
     newRelation.setNodeNameRemoved(this.getNodeNameRemoved());
     return newRelation;
@@ -139,7 +136,7 @@ export class GraphRelation extends GraphAssociation {
       source,
       this.sourceCardinality,
       target,
-      this.targetCardinality,
+      this.targetCardinality
     );
 
     relation.setNodeNameRemoved(this.getNodeNameRemoved());
@@ -166,19 +163,11 @@ export class GraphRelation extends GraphAssociation {
    * @param node. Side of the relationship with the node to be evaluated.
    */
   isLowCardinalityOfNode(node: Node): boolean {
-    if (
-      this.sourceNode === node &&
-      (this.sourceCardinality === Cardinality.C0_1 ||
-        this.sourceCardinality === Cardinality.C1)
-    ) {
+    if (this.sourceNode === node && (this.sourceCardinality === Cardinality.C0_1 || this.sourceCardinality === Cardinality.C1)) {
       return true;
     }
 
-    if (
-      this.targetNode === node &&
-      (this.targetCardinality === Cardinality.C0_1 ||
-        this.targetCardinality === Cardinality.C1)
-    ) {
+    if (this.targetNode === node && (this.targetCardinality === Cardinality.C0_1 || this.targetCardinality === Cardinality.C1)) {
       return true;
     }
     return false;
@@ -192,16 +181,14 @@ export class GraphRelation extends GraphAssociation {
   isHighCardinalityOfNode(node: Node): boolean {
     if (
       this.sourceNode === node &&
-      (this.sourceCardinality === Cardinality.C0_N ||
-        this.sourceCardinality === Cardinality.C1_N)
+      (this.sourceCardinality === Cardinality.C0_N || this.sourceCardinality === Cardinality.C1_N)
     ) {
       return true;
     }
 
     if (
       this.targetNode === node &&
-      (this.targetCardinality === Cardinality.C0_N ||
-        this.targetCardinality === Cardinality.C1_N)
+      (this.targetCardinality === Cardinality.C0_N || this.targetCardinality === Cardinality.C1_N)
     ) {
       return true;
     }

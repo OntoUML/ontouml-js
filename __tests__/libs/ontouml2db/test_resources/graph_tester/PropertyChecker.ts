@@ -27,23 +27,10 @@ export class PropertyChecker {
 
     property = node.getPropertyByName(this.name);
 
-    if (property === null)
-      return (
-        "The '" +
-        this.name +
-        "' property was not found in '" +
-        node.getName() +
-        "' node."
-      );
+    if (property === null) return "The '" + this.name + "' property was not found in '" + node.getName() + "' node.";
 
     if (this.nullable != property.isNullable()) {
-      return (
-        "The annulability of '" +
-        this.name +
-        "' in '" +
-        node.getName() +
-        "' table is different form the graph."
-      );
+      return "The annulability of '" + this.name + "' in '" + node.getName() + "' table is different form the graph.";
     }
 
     if (this.enumValues != null) {
@@ -51,21 +38,11 @@ export class PropertyChecker {
 
       for (let val of this.enumValues) {
         if (!enumProperty.getValues().includes(val)) {
-          return (
-            "The enumeration '" +
-            this.name +
-            "' does not include the value + '" +
-            val +
-            "'."
-          );
+          return "The enumeration '" + this.name + "' does not include the value + '" + val + "'.";
         }
       }
       if (this.enumValues.length != enumProperty.getValues().length)
-        return (
-          "The number of values in the '" +
-          this.name +
-          "' enumeration does not match."
-        );
+        return "The number of values in the '" + this.name + "' enumeration does not match.";
     }
 
     return '';

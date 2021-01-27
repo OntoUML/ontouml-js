@@ -1,16 +1,11 @@
 import { ModelManager } from '@libs/model';
-import { alpinebits } from '@test-models/valids';
 import { OntoUML2Verification } from '@libs/verification';
 import { VerificationIssue } from '@libs/verification/issues';
-import { OntoUML2GUFO } from '@libs/ontouml2gufo';
+import { Ontouml2Gufo } from '@libs/ontouml2gufo';
 
 describe('Model deserializing', () => {
-  const inputModel = alpinebits;
-  let modelManager: ModelManager;
-
-  it('Check input model against OntoUML Schema', () => {
-    modelManager = new ModelManager(inputModel);
-  });
+  const inputModel = require('./test_resources/alpinebits.json');
+  let modelManager: ModelManager = new ModelManager(inputModel);
 
   let verification: OntoUML2Verification;
   let issues: VerificationIssue[];
@@ -18,7 +13,9 @@ describe('Model deserializing', () => {
   it('Run verification', async () => {
     verification = new OntoUML2Verification(modelManager);
     issues = await verification.run();
+    let service = new Ontouml2Gufo(modelManager);
 
-    let service = new OntoUML2GUFO(modelManager);
+    expect(issues.length).toBe(0);
+    expect(service).toBeDefined();
   });
 });

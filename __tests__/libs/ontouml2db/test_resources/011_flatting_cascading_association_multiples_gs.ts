@@ -15,23 +15,23 @@ const gChecker_011_flatting_cascading_association_multiples_gs = new GraphChecke
   .addNode(
     new NodeChecker('organization_a')
       .addProperty(new PropertyChecker('organization_a_id', false))
-      .addProperty(new PropertyChecker('name', false)),
+      .addProperty(new PropertyChecker('name', false))
   )
   .addNode(
     new NodeChecker('organization_b')
       .addProperty(new PropertyChecker('organization_b_id', false))
       .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('address', false)),
+      .addProperty(new PropertyChecker('address', false))
   )
   .addNode(
     new NodeChecker('organization_c')
       .addProperty(new PropertyChecker('organization_c_id', false))
-      .addProperty(new PropertyChecker('name', false)),
+      .addProperty(new PropertyChecker('name', false))
   )
   .addNode(
     new NodeChecker('organization_d')
       .addProperty(new PropertyChecker('organization_d_id', false))
-      .addProperty(new PropertyChecker('name', false)),
+      .addProperty(new PropertyChecker('name', false))
   )
   .addNode(
     new NodeChecker('test')
@@ -40,40 +40,12 @@ const gChecker_011_flatting_cascading_association_multiples_gs = new GraphChecke
       .addProperty(new PropertyChecker('organization_a_id', true))
       .addProperty(new PropertyChecker('organization_b_id', true))
       .addProperty(new PropertyChecker('organization_c_id', true))
-      .addProperty(new PropertyChecker('organization_d_id', true)),
+      .addProperty(new PropertyChecker('organization_d_id', true))
   )
-  .addRelationship(
-    new RelationshipChecker(
-      'organization_a',
-      Cardinality.C0_1,
-      'test',
-      Cardinality.C0_N,
-    ),
-  )
-  .addRelationship(
-    new RelationshipChecker(
-      'organization_b',
-      Cardinality.C0_1,
-      'test',
-      Cardinality.C0_N,
-    ),
-  )
-  .addRelationship(
-    new RelationshipChecker(
-      'organization_c',
-      Cardinality.C0_1,
-      'test',
-      Cardinality.C0_N,
-    ),
-  )
-  .addRelationship(
-    new RelationshipChecker(
-      'organization_d',
-      Cardinality.C0_1,
-      'test',
-      Cardinality.C0_N,
-    ),
-  )
+  .addRelationship(new RelationshipChecker('organization_a', Cardinality.C0_1, 'test', Cardinality.C0_N))
+  .addRelationship(new RelationshipChecker('organization_b', Cardinality.C0_1, 'test', Cardinality.C0_N))
+  .addRelationship(new RelationshipChecker('organization_c', Cardinality.C0_1, 'test', Cardinality.C0_N))
+  .addRelationship(new RelationshipChecker('organization_d', Cardinality.C0_1, 'test', Cardinality.C0_N))
   .addTracker(new TrackerChecker('NamedEntity', 'organization_a'))
   .addTracker(new TrackerChecker('NamedEntity', 'organization_b'))
   .addTracker(new TrackerChecker('NamedEntity', 'organization_c'))
@@ -87,9 +59,8 @@ const gChecker_011_flatting_cascading_association_multiples_gs = new GraphChecke
 const jsonModel = require('./test_011_flatting_cascading_association_multiples_gs.json');
 
 export const test_011: TestResource = {
-  title:
-    '011 Evaluates the flatting with one association and multiples generalization sets',
+  title: '011 Evaluates the flatting with one association and multiples generalization sets',
   checker: gChecker_011_flatting_cascading_association_multiples_gs,
   model: jsonModel,
-  modelManager: new ModelManager(jsonModel),
+  modelManager: new ModelManager(jsonModel)
 };

@@ -14,11 +14,7 @@ import { Graph } from '@libs/ontouml2db/graph//Graph';
 import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
 
 export class ToEntityRelationship {
-  static run(
-    graph: Graph,
-    applyStandardizeNames: boolean,
-    tracker: Tracker,
-  ): void {
+  static run(graph: Graph, applyStandardizeNames: boolean, tracker: Tracker): void {
     SolvesMultivaluedProperty.solves(graph);
 
     SolvesEnumeration.solves(graph, tracker);
