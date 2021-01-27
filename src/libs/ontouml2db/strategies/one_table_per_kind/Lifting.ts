@@ -10,10 +10,13 @@ import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 import { Increment } from '@libs/ontouml2db/util/Increment';
 import { GraphGeneralizationSet } from '@libs/ontouml2db/graph/GraphGeneralizationSet';
 import { NodePropertyEnumeration } from '@libs/ontouml2db/graph/NodePropertyEnumeration';
-import { ClassStereotype } from '@constants/.';
 import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
 import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
+
+// import { ClassStereotype } from '@constants/.';
+
+import { ClassStereotype } from '@libs/ontouml';
 
 export class Lifting {
   static doLifting(graph: Graph, tracker: Tracker): void {

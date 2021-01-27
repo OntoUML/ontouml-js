@@ -3,7 +3,6 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { ClassStereotype } from '@constants/.';
 import { Graph } from '@libs/ontouml2db/graph/Graph';
 import { Node } from '@libs/ontouml2db/graph/Node';
 import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
@@ -11,6 +10,10 @@ import { Cardinality } from '../constants/enumerations';
 import { GraphAssociation } from '../graph/GraphAssociation';
 import { GraphRelation } from '../graph/GraphRelation';
 import { Increment } from '../util/Increment';
+
+// import { ClassStereotype } from '@constants/.';
+
+import { ClassStereotype } from '@libs/ontouml';
 
 export class SolvesCardinalityNtoN {
   static solves(graph: Graph, tracker: Tracker): void {

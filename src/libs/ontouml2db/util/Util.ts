@@ -4,7 +4,10 @@
  */
 
 import { Node } from '@libs/ontouml2db/graph/Node';
-import { ClassStereotype } from '@constants/.';
+
+// import { ClassStereotype } from '@constants/.';
+
+import { ClassStereotype } from '@libs/ontouml';
 
 export class Util {
   static findNodeById(id: string, nodes: Node[]): Node {

@@ -4,9 +4,6 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { ModelManager } from '@libs/model';
-import { IClass, IGeneralization, IRelation, IGeneralizationSet } from '@types';
-import { OntoumlType, ClassStereotype } from '@constants/.';
 import { Graph } from '@libs/ontouml2db/graph/Graph';
 import { Node } from '@libs/ontouml2db/graph/Node';
 import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
@@ -15,12 +12,18 @@ import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
 import { GraphGeneralization } from '@libs/ontouml2db/graph/GraphGeneralization';
 import { GraphGeneralizationSet } from '@libs/ontouml2db/graph/GraphGeneralizationSet';
 
+// import { ModelManager } from '@libs/model';
+// import { IClass, IGeneralization, IRelation, IGeneralizationSet } from '@types';
+// import { OntoumlType, ClassStereotype } from '@constants/.';
+
+import { Project, OntoumlType, ClassStereotype, Class, Generalization, Relation, GeneralizationSet } from '@libs/ontouml';
+
 export class Factory {
   graph: Graph;
-  modelManager: ModelManager;
+  project: Project;
 
-  constructor(model: ModelManager) {
-    this.modelManager = model;
+  constructor(project: Project) {
+    this.project = project;
 
     this.graph = new Graph();
   }
@@ -41,28 +44,29 @@ export class Factory {
    ** puts the classes
    *********************************************************************/
   putClasses(): void {
-    let classes: IClass[];
-    classes = this.modelManager.rootPackage.getAllContentsByType([OntoumlType.CLASS_TYPE]) as IClass[];
+    let classes: Class[];
+    // classes = this.modelManager.rootPackage.getAllContentsByType([OntoumlType.CLASS_TYPE]) as Class[];
+    classes = this.project.getAllClasses();
 
-    classes.forEach((iclass: IClass) => {
-      if (this.getUfoStereotype(iclass) != null) {
-        this.putClass(iclass);
+    classes.forEach((_class: Class) => {
+      if (this.getUfoStereotype(_class) != null) {
+        this.putClass(_class);
       }
     });
   }
 
-  putClass(iclass: IClass): void {
+  putClass(_class: Class): void {
     let node: Node;
     let property: NodeProperty;
 
-    node = new Node(iclass.id, iclass.name.toString(), this.getUfoStereotype(iclass));
+    node = new Node(_class.id, _class.name.toString(), this.getUfoStereotype(_class));
 
-    const { properties: attributes } = iclass;
+    const { properties: attributes } = _class;
 
     if (attributes != null) {
       for (let i = 0; i < attributes.length; i += 1) {
         const { id: attrID, propertyType: attrElement, name: attrName, cardinality: attrCardinality } = attributes[i];
-        const { name: datatypeName } = (attrElement || {}) as IClass;
+        const { name: datatypeName } = (attrElement || {}) as Class;
 
         property = new NodeProperty(
           attrID,
@@ -101,63 +105,8 @@ export class Factory {
     return false;
   }
 
-  getUfoStereotype(iclass: IClass): ClassStereotype {
-    let classStereotype: ClassStereotype = null;
-    if (iclass.stereotypes != null) {
-      iclass.stereotypes.some(element => {
-        switch (element) {
-          case 'kind':
-            classStereotype = ClassStereotype.KIND;
-            break;
-          case 'subkind':
-            classStereotype = ClassStereotype.SUBKIND;
-            break;
-          case 'phase':
-            classStereotype = ClassStereotype.PHASE;
-            break;
-          case 'role':
-            classStereotype = ClassStereotype.ROLE;
-            break;
-          case 'collective':
-            classStereotype = ClassStereotype.COLLECTIVE;
-            break;
-          case 'quantity':
-            classStereotype = ClassStereotype.QUANTITY;
-            break;
-          case 'relator':
-            classStereotype = ClassStereotype.RELATOR;
-            break;
-          case 'category':
-            classStereotype = ClassStereotype.CATEGORY;
-            break;
-          case 'mixin':
-            classStereotype = ClassStereotype.MIXIN;
-            break;
-          case 'roleMixin':
-            classStereotype = ClassStereotype.ROLE_MIXIN;
-            break;
-          case 'phaseMixin':
-            classStereotype = ClassStereotype.PHASE_MIXIN;
-            break;
-          case 'mode':
-            classStereotype = ClassStereotype.MODE;
-            break;
-          case 'quality':
-            classStereotype = ClassStereotype.QUALITY;
-            break;
-          case 'event':
-            classStereotype = ClassStereotype.EVENT;
-            break;
-          case 'historical_role':
-            classStereotype = ClassStereotype.HISTORICAL_ROLE;
-            break;
-          case 'enumeration':
-            classStereotype = ClassStereotype.ENUMERATION;
-            break;
-        }
-      });
-    }
-    return classStereotype;
+  getUfoStereotype(_class: Class): ClassStereotype {
+    return _class.getUniqueStereotype();
   }
 
   /********************************************************************
@@ -168,13 +117,13 @@ export class Factory {
     let newRelation: GraphRelation;
     let sourceNode: Node;
     let targetNode: Node;
-    let relations = this.modelManager.rootPackage.getAllContentsByType([OntoumlType.RELATION_TYPE]) as IRelation[];
+    let relations = this.project.getAllRelations();
 
-    relations.forEach((relation: IRelation) => {
-      const source = relation.properties[0];
-      const target = relation.properties[1];
+    relations.forEach((relation: Relation) => {
+      const source = relation.getSource();
+      const target = relation.getTarget();
 
-      const sourceCardinality = source.cardinality;
+      const sourceCardinality = source.cardinality.lowerBound;
       const targetCardinality = target.cardinality;
 
       sourceNode = this.graph.getNodeById(relation.getSource().id);
@@ -182,7 +131,7 @@ export class Factory {
 
       newRelation = new GraphRelation(
         relation.id,
-        relation.name,
+        relation.getName(),
         sourceNode,
         this.getCardinality(sourceCardinality),
         targetNode,

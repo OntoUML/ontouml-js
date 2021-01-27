@@ -5,7 +5,6 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { ModelManager } from '@libs/model';
 import { Factory } from '@libs/ontouml2db/factory/Factory';
 import { IStrategy } from '@libs/ontouml2db/strategies/IStrategy';
 import { OneTablePerClass } from '@libs/ontouml2db/strategies/one_table_per_class/OneTablePerClass';
@@ -19,13 +18,17 @@ import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
 import { GenerateOBDA } from '@libs/ontouml2db/obda/GenerateOBDA';
 import { GenerateConnection } from './obda/GenerateConnection';
 
+// import { ModelManager } from '@libs/model';
+
+import { Project } from '@libs/ontouml';
+
 export class OntoUML2DB {
   private graph: Graph;
   private tracker: Tracker;
   private options: OntoUML2DBOptions;
 
-  constructor(model: ModelManager, opt?: Partial<OntoUML2DBOptions>) {
-    let factory = new Factory(model);
+  constructor(project: Project, opt?: Partial<OntoUML2DBOptions>) {
+    let factory = new Factory(project);
     this.graph = factory.mountGraph();
     this.tracker = new Tracker(this.graph);
 

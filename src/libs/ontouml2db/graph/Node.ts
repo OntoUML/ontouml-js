@@ -7,7 +7,6 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { ClassStereotype } from '@constants/.';
 import { IPropertyContainer } from '@libs/ontouml2db/graph/IPropertyContainer';
 import { IAssociationContainer } from '@libs/ontouml2db/graph/IAssociationContainer';
 import { PropertyContainer } from '@libs/ontouml2db/graph/PropertyContainer';
@@ -17,6 +16,10 @@ import { GraphGeneralization } from '@libs/ontouml2db/graph/GraphGeneralization'
 import { GraphGeneralizationSet } from '@libs/ontouml2db/graph/GraphGeneralizationSet';
 import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
 import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
+
+// import { ClassStereotype } from '@constants/.';
+
+import { ClassStereotype } from '@libs/ontouml';
 
 export class Node implements IPropertyContainer, IAssociationContainer {
   private id: string;

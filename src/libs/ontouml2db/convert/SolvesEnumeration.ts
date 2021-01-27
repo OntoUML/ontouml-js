@@ -2,12 +2,15 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { ClassStereotype } from '@constants/.';
 import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { Graph } from '@libs/ontouml2db/graph/Graph';
 import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
 import { Node } from '@libs/ontouml2db/graph/Node';
 import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
+
+// import { ClassStereotype } from '@constants/.';
+
+import { ClassStereotype } from '@libs/ontouml';
 
 export class SolvesEnumeration {
   static solves(graph: Graph, tracker: Tracker): void {

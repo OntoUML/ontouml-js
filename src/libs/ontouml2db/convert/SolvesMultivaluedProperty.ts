@@ -4,12 +4,15 @@
  */
 
 import { Increment } from '@libs/ontouml2db//util/Increment';
-import { ClassStereotype } from '@constants/.';
 import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
 import { Node } from '@libs/ontouml2db/graph/Node';
 import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { Graph } from '@libs/ontouml2db/graph//Graph';
+
+// import { ClassStereotype } from '@constants/.';
+
+import { ClassStereotype } from '@libs/ontouml';
 
 export class SolvesMultivaluedProperty {
   static solves(graph: Graph): void {
