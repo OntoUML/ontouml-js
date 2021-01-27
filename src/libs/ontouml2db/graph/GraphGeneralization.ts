@@ -4,11 +4,11 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { GraphAssociation } from './GraphAssociation';
-import { Node } from './Node';
-import { AssociationType } from './util/enumerations';
-import { Util } from './util/Util';
-import { GraphGeneralizationSet } from './GraphGeneralizationSet';
+import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
+import { Node } from '@libs/ontouml2db/graph/Node';
+import { AssociationType } from '@libs/ontouml2db/constants/enumerations';
+import { Util } from '@libs/ontouml2db/util/Util';
+import { GraphGeneralizationSet } from '@libs/ontouml2db/graph/GraphGeneralizationSet';
 
 export class GraphGeneralization extends GraphAssociation {
   private generalizationNode: Node;
@@ -16,7 +16,7 @@ export class GraphGeneralization extends GraphAssociation {
   private belongToGS: GraphGeneralizationSet;
 
   constructor(id: string, generalizationNode: Node, specializationNode: Node) {
-    super(id, 'unamed', AssociationType.GENERALIZATION_TYPE);
+    super(id, 'unnamed', AssociationType.GENERALIZATION_TYPE);
     this.generalizationNode = generalizationNode;
     this.specializationNode = specializationNode;
     this.belongToGS = null;
@@ -60,7 +60,7 @@ export class GraphGeneralization extends GraphAssociation {
    * Tells whether the generalization belongs to a generalization set.
    */
   isBelongGeneralizationSet(): boolean {
-    if (this.belongToGS == null) return false;
+    if (this.belongToGS === null) return false;
     else return true;
   }
 
@@ -104,10 +104,10 @@ export class GraphGeneralization extends GraphAssociation {
   }
 
   /**
-   * Returns the generalization formated as string;
+   * Returns the generalization formatted as string;
    */
   toString(): string {
-    if (this.belongToGS == null) {
+    if (this.belongToGS === null) {
       return (
         '\n\t : ' +
         this.generalizationNode.getName() +

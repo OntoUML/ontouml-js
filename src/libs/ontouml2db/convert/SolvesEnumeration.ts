@@ -3,23 +3,24 @@
  */
 
 import { ClassStereotype } from '@constants/.';
-import { Cardinality } from '../graph/util/enumerations';
-import { Graph } from '../graph/Graph';
-import { GraphRelation } from '../graph/GraphRelation';
-import { Node } from '../graph/Node';
+import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
+import { Graph } from '@libs/ontouml2db/graph/Graph';
+import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
+import { Node } from '@libs/ontouml2db/graph/Node';
+import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
 
 export class SolvesEnumeration {
-  static solves(graph: Graph): void {
+  static solves(graph: Graph, tracker: Tracker): void {
     let nodesToDestroy: Node[] = [];
     let associationsToRemove: GraphRelation[] = [];
 
     for (let node of graph.getNodes()) {
-      if (node.getStereotype() == ClassStereotype.ENUMERATION) {
+      if (node.getStereotype() === ClassStereotype.ENUMERATION) {
         associationsToRemove.length = 0; // clear the array
         for (let relation of node.getRelations()) {
           if (relation.isLowCardinalityOfNode(node)) {
             //Transforms the enumeration into a column in the target node.
-            SolvesEnumeration.addEnumerationColumn(node, relation);
+            SolvesEnumeration.addEnumerationColumn(node, relation, tracker);
             nodesToDestroy.push(node);
             associationsToRemove.push(relation);
           } else if (relation.isHighCardinalityOfNode(node)) {
@@ -28,7 +29,7 @@ export class SolvesEnumeration {
             // relationship. The cardinality 1 is associated with the ENUM
             // field of the table and N with the table itself.
             //node.setStereotype("table");
-            if (relation.getSourceNode() == node)
+            if (relation.getSourceNode() === node)
               relation.setTargetCardinality(Cardinality.C1);
             else relation.setSourceCardinality(Cardinality.C1);
           }
@@ -39,7 +40,11 @@ export class SolvesEnumeration {
     graph.removeNodes(nodesToDestroy);
   }
 
-  static addEnumerationColumn(enumNode: Node, relation: GraphRelation): void {
+  static addEnumerationColumn(
+    enumNode: Node,
+    relation: GraphRelation,
+    tracker: Tracker,
+  ): void {
     let targetNode: Node;
     let cardinalityOfEnum: Cardinality;
     let isNull: boolean;
@@ -49,37 +54,37 @@ export class SolvesEnumeration {
     cardinalityOfEnum = SolvesEnumeration.getCardinalityOf(enumNode, relation);
 
     if (
-      cardinalityOfEnum == Cardinality.C0_1 ||
-      cardinalityOfEnum == Cardinality.C1
+      cardinalityOfEnum === Cardinality.C0_1 ||
+      cardinalityOfEnum === Cardinality.C1
     )
       isMultivalued = false;
     else isMultivalued = true;
 
     if (
-      cardinalityOfEnum == Cardinality.C0_1 ||
-      cardinalityOfEnum == Cardinality.C0_N
+      cardinalityOfEnum === Cardinality.C0_1 ||
+      cardinalityOfEnum === Cardinality.C0_N
     )
       isNull = true;
     //accept null
     else isNull = false; //not accept null
 
     for (let property of enumNode.getProperties()) {
-      //if( property instanceof IEnumeration ) {
       property.setNullable(isNull);
       property.setMultivalued(isMultivalued);
       targetNode.addProperty(property);
-
-      targetNode.removeSourcePropertyLinkedAtNode(enumNode.getId());
     }
+
+    //for the tracking
+    tracker.removePropertyBelongsToOtherNode(enumNode.getId());
   }
 
   static getTargetNode(node: Node, relation: GraphRelation): Node {
-    if (relation.getSourceNode() == node) return relation.getTargetNode();
+    if (relation.getSourceNode() === node) return relation.getTargetNode();
     else return relation.getSourceNode();
   }
 
   static getCardinalityOf(node: Node, relation: GraphRelation): Cardinality {
-    if (relation.getSourceNode() == node)
+    if (relation.getSourceNode() === node)
       return relation.getSourceCardinality();
     else return relation.getTargetCardinality();
   }

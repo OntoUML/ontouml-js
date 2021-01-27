@@ -7,6 +7,10 @@ import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 import { Node } from '@libs/ontouml2db/graph/Node';
 import { NodePropertyEnumeration } from '@libs/ontouml2db/graph/NodePropertyEnumeration';
 
+it('should ignore', () => {
+  expect(true).toBe(true);
+});
+
 export class PropertyChecker {
   private name: string;
   private nullable: boolean;
@@ -23,7 +27,7 @@ export class PropertyChecker {
 
     property = node.getPropertyByName(this.name);
 
-    if (property == null)
+    if (property === null)
       return (
         "The '" +
         this.name +
@@ -38,16 +42,14 @@ export class PropertyChecker {
         this.name +
         "' in '" +
         node.getName() +
-        "' table is diferente form the graph."
+        "' table is different form the graph."
       );
     }
 
     if (this.enumValues != null) {
       let enumProperty = property as NodePropertyEnumeration;
 
-      //for( let val of enumProperty.getValues() ){
       for (let val of this.enumValues) {
-        //if( !this.enumValues.includes(val) ){
         if (!enumProperty.getValues().includes(val)) {
           return (
             "The enumeration '" +

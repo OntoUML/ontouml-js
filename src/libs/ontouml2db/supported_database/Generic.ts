@@ -3,14 +3,15 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { IDBMSSchema } from './IDBMSSchema';
+import { IDBMS } from './IDBMS';
 import { Graph } from '@libs/ontouml2db/graph/Graph';
 import { Node } from '@libs/ontouml2db/graph/Node';
 import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
-import { Util } from '@libs/ontouml2db/graph/util/Util';
+import { Util } from '@libs/ontouml2db/util/Util';
 import { NodePropertyEnumeration } from '@libs/ontouml2db/graph/NodePropertyEnumeration';
+import { OntoUML2DBOptions } from '@libs/ontouml2db/OntoUML2DBOptions';
 
-export class GenericSchema implements IDBMSSchema {
+export class Generic implements IDBMS {
   types: Map<string, string>;
 
   constructor() {
@@ -31,7 +32,7 @@ export class GenericSchema implements IDBMSSchema {
 
     ddl = this.createTables(graph);
 
-    ddl += this.createForeingKeys(graph);
+    ddl += this.createForeignKeys(graph);
 
     return ddl;
   }
@@ -54,12 +55,19 @@ export class GenericSchema implements IDBMSSchema {
       ddl += this.createColumn(property, firstColumn);
       firstColumn = false;
     }
+
+    ddl += this.getConstraintTable(node);
+
     ddl += '\n); \n\n';
     return ddl;
   }
 
   createTableDescription() {
     return 'CREATE TABLE ';
+  }
+
+  getConstraintTable(node: Node): string {
+    return '';
   }
 
   createColumn(property: NodeProperty, firstColumn: boolean): string {
@@ -69,7 +77,7 @@ export class GenericSchema implements IDBMSSchema {
     let columnType: string = '';
     let primaryKey: string = '';
     let nullable: string = '';
-    let defalutValue: string = '';
+    let defaultValue: string = '';
 
     if (firstColumn) comma = '\n' + Util.getSpaces('', 8);
     else comma = '\n,' + Util.getSpaces(',', 8);
@@ -82,14 +90,14 @@ export class GenericSchema implements IDBMSSchema {
 
     nullable = this.getNullable(property);
 
-    defalutValue = this.getDefaultValue(property);
+    defaultValue = this.getDefaultValue(property);
 
     ddl += comma;
     ddl += columnName;
     ddl += columnType;
     ddl += nullable;
     ddl += primaryKey;
-    ddl += defalutValue;
+    ddl += defaultValue;
 
     return ddl;
   }
@@ -144,7 +152,7 @@ export class GenericSchema implements IDBMSSchema {
 
   // ***************************************************************************
 
-  createForeingKeys(graph: Graph): string {
+  createForeignKeys(graph: Graph): string {
     let ddl: string = '';
 
     for (let node of graph.getNodes()) {
@@ -163,5 +171,22 @@ export class GenericSchema implements IDBMSSchema {
       }
     }
     return ddl;
+  }
+
+  //*****************************************************************************************
+  getConnectionToProtege(options: OntoUML2DBOptions): string {
+    let stringConnection: string = '';
+
+    let today = new Date();
+
+    stringConnection += '#Ontouml2DB ' + today.toDateString() + '\n';
+    stringConnection +=
+      'jdbc.url=' + options.hostName + '/' + options.databaseName + '\n';
+    stringConnection += 'jdbc.driver=[PUT_DRIVE_HERE]' + '\n';
+    stringConnection += 'jdbc.user=' + options.userConnection + '\n';
+    stringConnection += 'jdbc.name=ontouml2-db00-ufes-nemo-000000000001' + '\n';
+    stringConnection += 'jdbc.password=' + options.passwordConnection + '\n';
+
+    return stringConnection;
   }
 }

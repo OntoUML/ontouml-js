@@ -1,7 +1,8 @@
-import { GraphChecker } from '@libs/ontouml2db/graph/graph_tester/GraphChecker';
-import { NodeChecker } from '@libs/ontouml2db/graph/graph_tester/NodeCheker';
-import { PropertyChecker } from '@libs/ontouml2db/graph/graph_tester/PropertyChecker';
-import { TrackerChecker } from '@libs/ontouml2db/graph/graph_tester/TrackerChecker';
+import { ModelManager } from '@libs/model';
+import { GraphChecker } from './graph_tester/GraphChecker';
+import { NodeChecker } from './graph_tester/NodeChecker';
+import { PropertyChecker } from './graph_tester/PropertyChecker';
+import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
 it('should ignore', () => {
@@ -18,8 +19,11 @@ const gChecker_001_simple_flattening: GraphChecker = new GraphChecker()
   .addTracker(new TrackerChecker('NamedEntity', 'person'))
   .addTracker(new TrackerChecker('Person', 'person'));
 
+const jsonModel = require('./test_001_simple_flattening.json');
+
 export const test_001: TestResource = {
   title: '001 - Flattening involving only one generalization test',
   checker: gChecker_001_simple_flattening,
-  model: require('./test_001_simple_flattening.json'),
+  model: jsonModel,
+  modelManager: new ModelManager(jsonModel),
 };

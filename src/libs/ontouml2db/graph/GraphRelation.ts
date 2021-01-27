@@ -4,10 +4,13 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { Cardinality, AssociationType } from './util/enumerations';
-import { GraphAssociation } from './GraphAssociation';
-import { Util } from './util/Util';
-import { Node } from './Node';
+import {
+  Cardinality,
+  AssociationType,
+} from '@libs/ontouml2db/constants/enumerations';
+import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
+import { Util } from '@libs/ontouml2db/util/Util';
+import { Node } from '@libs/ontouml2db/graph/Node';
 
 export class GraphRelation extends GraphAssociation {
   private sourceNode: Node;
@@ -17,13 +20,14 @@ export class GraphRelation extends GraphAssociation {
 
   constructor(
     ID: string,
-    sourceNdde: Node,
+    name: string,
+    sourceNode: Node,
     sourceCardinality: Cardinality,
     targetNode: Node,
     targetCardinality: Cardinality,
   ) {
-    super(ID, 'unamed', AssociationType.RELATION_TYPE);
-    this.sourceNode = sourceNdde;
+    super(ID, name, AssociationType.RELATION_TYPE);
+    this.sourceNode = sourceNode;
     this.targetNode = targetNode;
     this.sourceCardinality = sourceCardinality;
     this.targetCardinality = targetCardinality;
@@ -105,23 +109,17 @@ export class GraphRelation extends GraphAssociation {
    * Clone the relation by referencing the current nodes.
    */
   clone(newID?: string): GraphRelation {
-    if (newID != null) {
-      return new GraphRelation(
-        newID,
-        this.sourceNode,
-        this.sourceCardinality,
-        this.targetNode,
-        this.targetCardinality,
-      );
-    } else {
-      return new GraphRelation(
-        this.getAssociationID(),
-        this.sourceNode,
-        this.sourceCardinality,
-        this.targetNode,
-        this.targetCardinality,
-      );
-    }
+    let newRelation: GraphRelation;
+    newRelation = new GraphRelation(
+      newID != null ? newID : this.getAssociationID(),
+      this.getName(),
+      this.sourceNode,
+      this.sourceCardinality,
+      this.targetNode,
+      this.targetCardinality,
+    );
+    newRelation.setNodeNameRemoved(this.getNodeNameRemoved());
+    return newRelation;
   }
 
   /**
@@ -137,11 +135,14 @@ export class GraphRelation extends GraphAssociation {
 
     let relation = new GraphRelation(
       this.getAssociationID(),
+      this.getName(),
       source,
       this.sourceCardinality,
       target,
       this.targetCardinality,
     );
+
+    relation.setNodeNameRemoved(this.getNodeNameRemoved());
 
     source.addRelation(relation);
     target.addRelation(relation);
@@ -166,17 +167,17 @@ export class GraphRelation extends GraphAssociation {
    */
   isLowCardinalityOfNode(node: Node): boolean {
     if (
-      this.sourceNode == node &&
-      (this.sourceCardinality == Cardinality.C0_1 ||
-        this.sourceCardinality == Cardinality.C1)
+      this.sourceNode === node &&
+      (this.sourceCardinality === Cardinality.C0_1 ||
+        this.sourceCardinality === Cardinality.C1)
     ) {
       return true;
     }
 
     if (
-      this.targetNode == node &&
-      (this.targetCardinality == Cardinality.C0_1 ||
-        this.targetCardinality == Cardinality.C1)
+      this.targetNode === node &&
+      (this.targetCardinality === Cardinality.C0_1 ||
+        this.targetCardinality === Cardinality.C1)
     ) {
       return true;
     }
@@ -190,17 +191,17 @@ export class GraphRelation extends GraphAssociation {
    */
   isHighCardinalityOfNode(node: Node): boolean {
     if (
-      this.sourceNode == node &&
-      (this.sourceCardinality == Cardinality.C0_N ||
-        this.sourceCardinality == Cardinality.C1_N)
+      this.sourceNode === node &&
+      (this.sourceCardinality === Cardinality.C0_N ||
+        this.sourceCardinality === Cardinality.C1_N)
     ) {
       return true;
     }
 
     if (
-      this.targetNode == node &&
-      (this.targetCardinality == Cardinality.C0_N ||
-        this.targetCardinality == Cardinality.C1_N)
+      this.targetNode === node &&
+      (this.targetCardinality === Cardinality.C0_N ||
+        this.targetCardinality === Cardinality.C1_N)
     ) {
       return true;
     }
@@ -208,7 +209,7 @@ export class GraphRelation extends GraphAssociation {
   }
 
   /**
-   * Returns the relation formated as string;
+   * Returns the relation formatted as string;
    */
   toString(): string {
     return (

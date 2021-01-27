@@ -1,6 +1,6 @@
 import Ajv from 'ajv';
 import memoizee from 'memoizee';
-import { OntoUMLType } from '@constants/.';
+import { OntoumlType } from '@constants/.';
 import {
   IPackage,
   IElement,
@@ -78,9 +78,9 @@ export class ModelManager {
     }
 
     current.contents.forEach((element: IElement) => {
-      if (element.type === OntoUMLType.PACKAGE_TYPE) {
+      if (element.type === OntoumlType.PACKAGE_TYPE) {
         contents = [...contents, ...this.getElements(element as IPackage)];
-      } else if (element.type === OntoUMLType.RELATION_TYPE) {
+      } else if (element.type === OntoumlType.RELATION_TYPE) {
         const relation = element as IRelation;
 
         if (relation.properties) {
@@ -92,7 +92,7 @@ export class ModelManager {
           ...contents,
           ...(relation.properties ? relation.properties : []),
         ];
-      } else if (element.type === OntoUMLType.CLASS_TYPE) {
+      } else if (element.type === OntoumlType.CLASS_TYPE) {
         const _class = element as IClass;
 
         if (_class.properties) {
@@ -135,29 +135,29 @@ export class ModelManager {
     });
 
     switch (element.type) {
-      case OntoUMLType.PACKAGE_TYPE:
+      case OntoumlType.PACKAGE_TYPE:
         this.updateReadOnlyReferencesToIPackage(element as IPackage);
         break;
-      case OntoUMLType.CLASS_TYPE:
+      case OntoumlType.CLASS_TYPE:
         this.updateReadOnlyReferencesToIClass(element as IClass);
         break;
-      case OntoUMLType.RELATION_TYPE:
+      case OntoumlType.RELATION_TYPE:
         this.updateReadOnlyReferencesToIRelation(element as IRelation);
         break;
-      case OntoUMLType.GENERALIZATION_TYPE:
+      case OntoumlType.GENERALIZATION_TYPE:
         this.updateReadOnlyReferencesToIGeneralization(
           element as IGeneralization,
         );
         break;
-      case OntoUMLType.GENERALIZATION_SET_TYPE:
+      case OntoumlType.GENERALIZATION_SET_TYPE:
         this.updateReadOnlyReferencesToIGeneralizationSet(
           element as IGeneralizationSet,
         );
         break;
-      case OntoUMLType.PROPERTY_TYPE:
+      case OntoumlType.PROPERTY_TYPE:
         this.updateReadOnlyReferencesToIProperty(element as IProperty);
         break;
-      case OntoUMLType.LITERAL_TYPE:
+      case OntoumlType.LITERAL_TYPE:
         this.updateReadOnlyReferencesToILiteral(element as ILiteral);
         break;
     }
@@ -214,9 +214,9 @@ export class ModelManager {
 
   updateReadOnlyReferencesToIProperty(property: IProperty): void {
     switch (property._container.type) {
-      case OntoUMLType.CLASS_TYPE:
+      case OntoumlType.CLASS_TYPE:
         break;
-      case OntoUMLType.RELATION_TYPE:
+      case OntoumlType.RELATION_TYPE:
         break;
     }
 

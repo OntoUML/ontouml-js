@@ -3,13 +3,13 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { Increment } from '../graph/util/Increment';
+import { Increment } from '@libs/ontouml2db//util/Increment';
 import { ClassStereotype } from '@constants/.';
-import { NodeProperty } from '../graph/NodeProperty';
-import { GraphRelation } from '../graph/GraphRelation';
-import { Node } from '../graph/Node';
-import { Cardinality } from '../graph/util/enumerations';
-import { Graph } from '../graph/Graph';
+import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
+import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
+import { Node } from '@libs/ontouml2db/graph/Node';
+import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
+import { Graph } from '@libs/ontouml2db/graph//Graph';
 
 export class SolvesMultivaluedProperty {
   static solves(graph: Graph): void {
@@ -60,6 +60,7 @@ export class SolvesMultivaluedProperty {
 
     relation = new GraphRelation(
       Increment.getNext().toString(),
+      'has' + property.getName() + '_' + Increment.getNext().toString(),
       node,
       Cardinality.C1,
       newNode,

@@ -1,9 +1,10 @@
-import { GraphChecker } from '@libs/ontouml2db/graph/graph_tester/GraphChecker';
-import { NodeChecker } from '@libs/ontouml2db/graph/graph_tester/NodeCheker';
-import { PropertyChecker } from '@libs/ontouml2db/graph/graph_tester/PropertyChecker';
-import { TrackerChecker } from '@libs/ontouml2db/graph/graph_tester/TrackerChecker';
-import { RelationshipChecker } from '@libs/ontouml2db/graph/graph_tester/RelationshipChecker';
-import { Cardinality } from '@libs/ontouml2db/graph/util/enumerations';
+import { ModelManager } from '@libs/model';
+import { GraphChecker } from './graph_tester/GraphChecker';
+import { NodeChecker } from './graph_tester/NodeChecker';
+import { PropertyChecker } from './graph_tester/PropertyChecker';
+import { TrackerChecker } from './graph_tester/TrackerChecker';
+import { RelationshipChecker } from './graph_tester/RelationshipChecker';
+import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { TestResource } from './TestResource';
 
 it('should ignore', () => {
@@ -162,8 +163,11 @@ const gChecker_run_example = new GraphChecker()
   .addTracker(new TrackerChecker('Hospital', 'organization'))
   .addTracker(new TrackerChecker('Enrollment', 'enrollment'));
 
+const jsonModel = require('./baseExample.json');
+
 export const baseExample: TestResource = {
   title: 'Base Example Test',
   checker: gChecker_run_example,
-  model: require('./baseExample.json'),
+  model: jsonModel,
+  modelManager: new ModelManager(jsonModel),
 };

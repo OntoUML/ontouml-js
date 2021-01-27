@@ -9,7 +9,7 @@ import {
   IProperty,
   IClass,
 } from '@types';
-import { OntoUMLType, ClassStereotype, OntologicalNature } from '@constants/.';
+import { OntoumlType, ClassStereotype, OntologicalNature } from '@constants/.';
 import memoizee from 'memoizee';
 
 export function inject(
@@ -31,29 +31,29 @@ export function inject(
   }
 
   switch (element.type) {
-    case OntoUMLType.PACKAGE_TYPE:
+    case OntoumlType.PACKAGE_TYPE:
       injectFunctions(element, functions._IPackage, enableMemoization);
       break;
-    case OntoUMLType.CLASS_TYPE:
+    case OntoumlType.CLASS_TYPE:
       injectFunctions(element, functions._IClass, enableMemoization);
       break;
-    case OntoUMLType.RELATION_TYPE:
+    case OntoumlType.RELATION_TYPE:
       injectFunctions(element, functions._IRelation, enableMemoization);
       break;
-    case OntoUMLType.GENERALIZATION_TYPE:
+    case OntoumlType.GENERALIZATION_TYPE:
       injectFunctions(element, functions._IGeneralization, enableMemoization);
       break;
-    case OntoUMLType.GENERALIZATION_SET_TYPE:
+    case OntoumlType.GENERALIZATION_SET_TYPE:
       injectFunctions(
         element,
         functions._IGeneralizationSet,
         enableMemoization,
       );
       break;
-    case OntoUMLType.PROPERTY_TYPE:
+    case OntoumlType.PROPERTY_TYPE:
       injectFunctions(element, functions._IProperty, enableMemoization);
       break;
-    case OntoUMLType.LITERAL_TYPE:
+    case OntoumlType.LITERAL_TYPE:
       injectFunctions(element, functions._ILiteral, enableMemoization);
       break;
   }
@@ -132,11 +132,11 @@ function getRootPackage(): IPackage {
   if (self._container) {
     const root: IPackage = (self._container as IContainer).getRootPackage();
 
-    if (self.type === OntoUMLType.PACKAGE_TYPE && root === self) {
+    if (self.type === OntoumlType.PACKAGE_TYPE && root === self) {
       throw 'Circular containment references';
     } else if (root) {
       return root;
-    } else if (self._container.type === OntoUMLType.PACKAGE_TYPE) {
+    } else if (self._container.type === OntoumlType.PACKAGE_TYPE) {
       return self._container as IPackage;
     } else {
       return null;
@@ -148,28 +148,28 @@ function getRootPackage(): IPackage {
 
 function hasIContainerType(): boolean {
   return [
-    OntoUMLType.PACKAGE_TYPE,
-    OntoUMLType.CLASS_TYPE,
-    OntoUMLType.RELATION_TYPE,
+    OntoumlType.PACKAGE_TYPE,
+    OntoumlType.CLASS_TYPE,
+    OntoumlType.RELATION_TYPE,
   ].includes((this as IElement).type);
 }
 
 function hasIDecoratableType(): boolean {
   return [
-    OntoUMLType.PROPERTY_TYPE,
-    OntoUMLType.CLASS_TYPE,
-    OntoUMLType.RELATION_TYPE,
+    OntoumlType.PROPERTY_TYPE,
+    OntoumlType.CLASS_TYPE,
+    OntoumlType.RELATION_TYPE,
   ].includes((this as IElement).type);
 }
 
 function hasIClassifierType(): boolean {
-  return [OntoUMLType.CLASS_TYPE, OntoUMLType.RELATION_TYPE].includes(
+  return [OntoumlType.CLASS_TYPE, OntoumlType.RELATION_TYPE].includes(
     (this as IElement).type,
   );
 }
 
 function getAllContents(): IElement[] {
-  if (this.type === OntoUMLType.PACKAGE_TYPE) {
+  if (this.type === OntoumlType.PACKAGE_TYPE) {
     const self = this as IPackage;
     if (!self.contents) {
       return [];
@@ -178,7 +178,7 @@ function getAllContents(): IElement[] {
     let allElements = [...self.contents];
 
     self.contents.forEach((content: IElement) => {
-      if (content.type === OntoUMLType.PACKAGE_TYPE) {
+      if (content.type === OntoumlType.PACKAGE_TYPE) {
         const innerContents = (content as IPackage).getAllContents();
         if (innerContents.includes(self)) {
           throw {
@@ -188,8 +188,8 @@ function getAllContents(): IElement[] {
         }
         allElements = [...allElements, ...innerContents];
       } else if (
-        content.type === OntoUMLType.CLASS_TYPE ||
-        content.type === OntoUMLType.RELATION_TYPE
+        content.type === OntoumlType.CLASS_TYPE ||
+        content.type === OntoumlType.RELATION_TYPE
       ) {
         allElements = [
           ...allElements,
@@ -202,8 +202,8 @@ function getAllContents(): IElement[] {
 
     return allElements;
   } else if (
-    this.type === OntoUMLType.CLASS_TYPE ||
-    this.type === OntoUMLType.RELATION_TYPE
+    this.type === OntoumlType.CLASS_TYPE ||
+    this.type === OntoumlType.RELATION_TYPE
   ) {
     return (this as IClassifier).properties;
   }
@@ -211,7 +211,7 @@ function getAllContents(): IElement[] {
   return null;
 }
 
-function getAllContentsByType(types: OntoUMLType[]): IElement[] {
+function getAllContentsByType(types: OntoumlType[]): IElement[] {
   const self = this as IContainer;
 
   return self
@@ -280,7 +280,7 @@ function getRelations(): IRelation[] {
 
   return self
     .getRootPackage()
-    .getAllContentsByType([OntoUMLType.RELATION_TYPE])
+    .getAllContentsByType([OntoumlType.RELATION_TYPE])
     .filter(
       (relation: IRelation) =>
         relation.properties[0].propertyType.id === self.id ||
@@ -413,8 +413,8 @@ function isBinary(): boolean {
   return (
     source &&
     target &&
-    source.type === OntoUMLType.CLASS_TYPE &&
-    target.type === OntoUMLType.CLASS_TYPE
+    source.type === OntoumlType.CLASS_TYPE &&
+    target.type === OntoumlType.CLASS_TYPE
   );
 }
 
@@ -423,7 +423,7 @@ function isTernary(): boolean {
   if (!self.properties || self.properties.length < 2) return false;
 
   return self.properties.every((end: IProperty) => {
-    return end.propertyType && end.propertyType.type === OntoUMLType.CLASS_TYPE;
+    return end.propertyType && end.propertyType.type === OntoumlType.CLASS_TYPE;
   });
 }
 
@@ -437,8 +437,8 @@ function isDerivation(): boolean {
   return (
     source &&
     target &&
-    source.type === OntoUMLType.RELATION_TYPE &&
-    target.type === OntoUMLType.CLASS_TYPE
+    source.type === OntoumlType.RELATION_TYPE &&
+    target.type === OntoumlType.CLASS_TYPE
   );
 }
 

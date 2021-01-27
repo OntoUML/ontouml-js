@@ -1,7 +1,8 @@
-import { GraphChecker } from '@libs/ontouml2db/graph/graph_tester/GraphChecker';
-import { NodeChecker } from '@libs/ontouml2db/graph/graph_tester/NodeCheker';
-import { PropertyChecker } from '@libs/ontouml2db/graph/graph_tester/PropertyChecker';
-import { TrackerChecker } from '@libs/ontouml2db/graph/graph_tester/TrackerChecker';
+import { ModelManager } from '@libs/model';
+import { GraphChecker } from './graph_tester/GraphChecker';
+import { NodeChecker } from './graph_tester/NodeChecker';
+import { PropertyChecker } from './graph_tester/PropertyChecker';
+import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
 it('should ignore', () => {
@@ -30,9 +31,12 @@ const gChecker_006_flatting_cascading_gs = new GraphChecker()
   .addTracker(new TrackerChecker('Person', 'person'))
   .addTracker(new TrackerChecker('Organization', 'organization'));
 
+const jsonModel = require('./test_006_flatting_cascading_gs.json');
+
 export const test_006: TestResource = {
   title:
     '006 Evaluates the flattening involving a generalization set, where the subclasses are superclasses of other classes',
-  model: require('./test_006_flatting_cascading_gs.json'),
   checker: gChecker_006_flatting_cascading_gs,
+  model: jsonModel,
+  modelManager: new ModelManager(jsonModel),
 };

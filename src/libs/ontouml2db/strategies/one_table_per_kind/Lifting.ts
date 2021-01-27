@@ -7,42 +7,43 @@
 import { Node } from '@libs/ontouml2db/graph/Node';
 import { Graph } from '@libs/ontouml2db/graph/Graph';
 import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
-import { Increment } from '@libs/ontouml2db/graph/util/Increment';
+import { Increment } from '@libs/ontouml2db/util/Increment';
 import { GraphGeneralizationSet } from '@libs/ontouml2db/graph/GraphGeneralizationSet';
 import { NodePropertyEnumeration } from '@libs/ontouml2db/graph/NodePropertyEnumeration';
 import { ClassStereotype } from '@constants/.';
 import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
-import { Cardinality } from '@libs/ontouml2db/graph/util/enumerations';
+import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
+import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
 
 export class Lifting {
-  static doLifting(graph: Graph): void {
+  static doLifting(graph: Graph, tracker: Tracker): void {
     let node = graph.getLeafSortalNonKind();
 
     while (node != null) {
-      Lifting.liftNode(node, graph);
+      Lifting.liftNode(node, graph, tracker);
       graph.removeNode(node);
       node = graph.getLeafSortalNonKind();
     }
   }
 
-  static liftNode(node: Node, graph: Graph): void {
-    Lifting.resolveGeneralization(node);
+  static liftNode(node: Node, graph: Graph, tracker: Tracker): void {
+    Lifting.resolveGeneralization(node, tracker);
 
-    Lifting.resolveGeneralizationSet(node, graph);
+    Lifting.resolveGeneralizationSet(node, graph, tracker);
 
-    Lifting.liftAtributes(node);
+    Lifting.liftAttributes(node);
 
-    Lifting.remakeReferences(node);
+    Lifting.remakeReferences(node, tracker);
   }
 
   // **************************************************************************************
   // *********** Resolve the nodes generalizations
   // **************************************************************************************
-  static resolveGeneralization(node: Node): void {
+  static resolveGeneralization(node: Node, tracker: Tracker): void {
     let newProperty: NodeProperty;
     node.setResolved(true);
-    //here, each node must have only one generaization node
-    //Generalization Sets are resolved by "resolveGeneralizatinSet
+    //here, each node must have only one generalization node
+    //Generalization Sets are resolved by "resolveGeneralizationSet
     let generalization = node.getGeneralizations()[0];
 
     if (!generalization.isBelongGeneralizationSet()) {
@@ -56,10 +57,17 @@ export class Lifting {
       );
       newProperty.setDefaultValue(false);
 
-      //The new property is put in the generalizaiton node node by liftAttribute method.
+      //The new property is put in the generalization node node by liftAttribute method.
       node.addProperty(newProperty);
 
-      node.setSourceTrackerField(newProperty, true);
+      //for the tracking
+      tracker.moveTraceFromTo(
+        generalization.getSpecific().getId(),
+        generalization.getGeneral().getId(),
+        newProperty,
+        true,
+        null,
+      );
     }
   }
 
@@ -67,17 +75,17 @@ export class Lifting {
   // *********** Resolve the node attributes
   // **************************************************************************************
   //must be called after creating all attributes on the specialization nodes.
-  static liftAtributes(node: Node): void {
-    //here, each note must have only one generaization
+  static liftAttributes(node: Node): void {
+    //here, each note must have only one generalization
 
-    if (node.getGeneralizations().length == 0) return;
+    if (node.getGeneralizations().length === 0) return;
 
     let generalization = node.getGeneralizations()[0];
 
     let properties = generalization.getSpecific().getProperties();
 
     for (let property of properties) {
-      if (property.getDefaultValue() == null)
+      if (property.getDefaultValue() === null)
         //Does not change nullability for columns with default values (eg is_employee default false)
         property.setNullable(true);
     }
@@ -87,9 +95,14 @@ export class Lifting {
   // **************************************************************************************
   // *********** Resolve the node generalization sets
   // **************************************************************************************
-  static resolveGeneralizationSet(node: Node, graph: Graph): void {
+  static resolveGeneralizationSet(
+    node: Node,
+    graph: Graph,
+    tracker: Tracker,
+  ): void {
     let enumTableName: string;
     let enumFieldName: string;
+    let associationID: string;
     let associationName: string;
     let newEnumerationField: NodePropertyEnumeration;
     let newNode: Node;
@@ -102,7 +115,8 @@ export class Lifting {
       if (!gs.isResolved()) {
         enumTableName = Lifting.getEnumName(gs);
         enumFieldName = enumTableName + 'Enum';
-        associationName = 'enum_' + Increment.getNext();
+        associationID = 'enum_' + Increment.getNext();
+        associationName = 'has_' + enumTableName;
 
         newEnumerationField = new NodePropertyEnumeration(
           Increment.getNext().toString(),
@@ -119,6 +133,7 @@ export class Lifting {
         newNode.addProperty(newEnumerationField);
 
         newRelation = new GraphRelation(
+          associationID,
           associationName,
           newNode,
           Lifting.getNewSourceCardinality(gs),
@@ -134,19 +149,23 @@ export class Lifting {
 
         for (let specializationNode of gs.getSpecific()) {
           newEnumerationField.addValue(specializationNode.getName());
-          specializationNode.setSourceTrackerField(
+          //for the tracking
+          tracker.addFilterAtNode(
+            specializationNode.getId(),
+            specializationNode,
             newEnumerationField,
             specializationNode.getName(),
+            newNode,
           );
-          specializationNode.setSourcePropertyLinkedAtNode(newNode);
         }
+
         gs.setResolved(true);
       }
     }
   }
 
   static getEnumName(gs: GraphGeneralizationSet): string {
-    if (gs.getName() == null || gs.getName().trim() == '')
+    if (gs.getName() === null || gs.getName().trim() === '')
       return 'Enum' + Increment.getNext();
     else return gs.getName();
   }
@@ -167,15 +186,15 @@ export class Lifting {
   // **************************************************************************************
   // *********** Resolve the references
   // **************************************************************************************
-  static remakeReferences(node: Node): void {
-    //here, each node must have only one generaization node
+  static remakeReferences(node: Node, tracker: Tracker): void {
+    //here, each node must have only one generalization node
     let generalization = node.getGeneralizations()[0];
 
     let superNode = generalization.getGeneral();
 
     while (node.getRelations().length != 0) {
       let relation = node.getRelations()[0];
-      if (relation.getSourceNode() == node) {
+      if (relation.getSourceNode() === node) {
         relation.setSourceNode(superNode);
         relation.setTargetCardinality(
           Lifting.getNewCardinality(relation.getTargetCardinality()),
@@ -189,13 +208,16 @@ export class Lifting {
       superNode.addRelation(relation);
       node.deleteAssociation(relation);
     }
-    node.changeSourceTracking(superNode);
+
+    //for the tracking
+    tracker.copyTracesFromTo(node.getId(), superNode.getId());
+    tracker.removeNodeFromTraces(node.getId());
   }
 
   static getNewCardinality(oldCardinality: Cardinality): Cardinality {
-    if (oldCardinality == Cardinality.C1_N) {
+    if (oldCardinality === Cardinality.C1_N) {
       return Cardinality.C0_N;
-    } else if (oldCardinality == Cardinality.C1) {
+    } else if (oldCardinality === Cardinality.C1) {
       return Cardinality.C0_1;
     } else return oldCardinality;
   }

@@ -5,29 +5,22 @@
  */
 
 import { ModelManager } from '@libs/model';
-import {
-  IPackage,
-  IClass,
-  IGeneralization,
-  IRelation,
-  IGeneralizationSet,
-} from '@types';
-import { OntoUMLType, ClassStereotype } from '@constants/.';
-import { Graph } from '../graph/Graph';
-import { Node } from '../graph/Node';
-import { Cardinality } from '../graph/util/enumerations';
-import { NodeProperty } from '../graph/NodeProperty';
-import { GraphRelation } from '../graph/GraphRelation';
-import { GraphGeneralization } from '../graph/GraphGeneralization';
-import { GraphGeneralizationSet } from '../graph/GraphGeneralizationSet';
+import { IClass, IGeneralization, IRelation, IGeneralizationSet } from '@types';
+import { OntoumlType, ClassStereotype } from '@constants/.';
+import { Graph } from '@libs/ontouml2db/graph/Graph';
+import { Node } from '@libs/ontouml2db/graph/Node';
+import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
+import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
+import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
+import { GraphGeneralization } from '@libs/ontouml2db/graph/GraphGeneralization';
+import { GraphGeneralizationSet } from '@libs/ontouml2db/graph/GraphGeneralizationSet';
 
 export class Factory {
   graph: Graph;
   modelManager: ModelManager;
 
-  constructor(model: IPackage) {
-    let modelCopy = JSON.parse(JSON.stringify(model));
-    this.modelManager = new ModelManager(modelCopy);
+  constructor(model: ModelManager) {
+    this.modelManager = model;
 
     this.graph = new Graph();
   }
@@ -37,7 +30,7 @@ export class Factory {
 
     this.putRelations();
 
-    this.putGeneralizaitons();
+    this.putGeneralizations();
 
     this.putGeneralizationSets();
 
@@ -50,15 +43,12 @@ export class Factory {
   putClasses(): void {
     let classes: IClass[];
     classes = this.modelManager.rootPackage.getAllContentsByType([
-      OntoUMLType.CLASS_TYPE,
+      OntoumlType.CLASS_TYPE,
     ]) as IClass[];
 
     classes.forEach((iclass: IClass) => {
       if (this.getUfoStereotype(iclass) != null) {
-        //if (iclass.stereotypes != null) {
-        //  if (iclass.stereotypes.length > 0) {
         this.putClass(iclass);
-        //  }
       }
     });
   }
@@ -67,7 +57,11 @@ export class Factory {
     let node: Node;
     let property: NodeProperty;
 
-    node = new Node(iclass.id, iclass.name, this.getUfoStereotype(iclass));
+    node = new Node(
+      iclass.id,
+      iclass.name.toString(),
+      this.getUfoStereotype(iclass),
+    );
 
     const { properties: attributes } = iclass;
 
@@ -83,8 +77,8 @@ export class Factory {
 
         property = new NodeProperty(
           attrID,
-          attrName,
-          datatypeName,
+          attrName.toString(),
+          datatypeName.toString(),
           this.getAcceptNull(attrCardinality),
           this.getIsMultivalued(attrCardinality),
         );
@@ -96,14 +90,14 @@ export class Factory {
   }
 
   getAcceptNull(cardinality: string): boolean {
-    if (cardinality == null) return true;
+    if (cardinality === null) return true;
 
-    if (cardinality.substring(0, 1) == '0') return true;
+    if (cardinality.substring(0, 1) === '0') return true;
     else return false;
   }
 
   getIsMultivalued(cardinality: string): boolean {
-    if (cardinality == null) return false;
+    if (cardinality === null) return false;
 
     if (cardinality.length > 3) {
       let num = cardinality.substring(
@@ -111,7 +105,7 @@ export class Factory {
         cardinality.length,
       );
 
-      if (num == '*') return true;
+      if (num === '*') return true;
 
       if (!isNaN(parseFloat(num))) {
         if (Number(num) > 1) return true;
@@ -126,52 +120,52 @@ export class Factory {
     if (iclass.stereotypes != null) {
       iclass.stereotypes.some(element => {
         switch (element) {
-          case ClassStereotype.KIND:
+          case 'kind':
             classStereotype = ClassStereotype.KIND;
             break;
-          case ClassStereotype.SUBKIND:
+          case 'subkind':
             classStereotype = ClassStereotype.SUBKIND;
             break;
-          case ClassStereotype.PHASE:
+          case 'phase':
             classStereotype = ClassStereotype.PHASE;
             break;
-          case ClassStereotype.ROLE:
+          case 'role':
             classStereotype = ClassStereotype.ROLE;
             break;
-          case ClassStereotype.COLLECTIVE:
+          case 'collective':
             classStereotype = ClassStereotype.COLLECTIVE;
             break;
-          case ClassStereotype.QUANTITY:
+          case 'quantity':
             classStereotype = ClassStereotype.QUANTITY;
             break;
-          case ClassStereotype.RELATOR:
+          case 'relator':
             classStereotype = ClassStereotype.RELATOR;
             break;
-          case ClassStereotype.CATEGORY:
+          case 'category':
             classStereotype = ClassStereotype.CATEGORY;
             break;
-          case ClassStereotype.MIXIN:
+          case 'mixin':
             classStereotype = ClassStereotype.MIXIN;
             break;
-          case ClassStereotype.ROLE_MIXIN:
+          case 'roleMixin':
             classStereotype = ClassStereotype.ROLE_MIXIN;
             break;
-          case ClassStereotype.PHASE_MIXIN:
+          case 'phaseMixin':
             classStereotype = ClassStereotype.PHASE_MIXIN;
             break;
-          case ClassStereotype.MODE:
+          case 'mode':
             classStereotype = ClassStereotype.MODE;
             break;
-          case ClassStereotype.QUALITY:
+          case 'quality':
             classStereotype = ClassStereotype.QUALITY;
             break;
-          case ClassStereotype.EVENT:
+          case 'event':
             classStereotype = ClassStereotype.EVENT;
             break;
-          case ClassStereotype.HISTORICAL_ROLE:
+          case 'historical_role':
             classStereotype = ClassStereotype.HISTORICAL_ROLE;
             break;
-          case ClassStereotype.ENUMERATION:
+          case 'enumeration':
             classStereotype = ClassStereotype.ENUMERATION;
             break;
         }
@@ -189,7 +183,7 @@ export class Factory {
     let sourceNode: Node;
     let targetNode: Node;
     let relations = this.modelManager.rootPackage.getAllContentsByType([
-      OntoUMLType.RELATION_TYPE,
+      OntoumlType.RELATION_TYPE,
     ]) as IRelation[];
 
     relations.forEach((relation: IRelation) => {
@@ -204,6 +198,7 @@ export class Factory {
 
       newRelation = new GraphRelation(
         relation.id,
+        relation.name,
         sourceNode,
         this.getCardinality(sourceCardinality),
         targetNode,
@@ -218,15 +213,15 @@ export class Factory {
   }
 
   getCardinality(cardinality: string): Cardinality {
-    let lowerCardinality = this.getLowerboundCardinality(cardinality);
-    let uppetCardinality = this.getUpperboundCardinality(cardinality);
+    let lowerCardinality = this.getLowerBoundCardinality(cardinality);
+    let upperCardinality = this.getUpperBoundCardinality(cardinality);
 
-    if (lowerCardinality == 0) {
-      if (uppetCardinality == 1) return Cardinality.C0_1;
+    if (lowerCardinality === 0) {
+      if (upperCardinality === 1) return Cardinality.C0_1;
       else return Cardinality.C0_N; // 0..2, 0..3, ..., 0..*
     } else {
-      if (lowerCardinality == 1) {
-        if (uppetCardinality == 1) return Cardinality.C1;
+      if (lowerCardinality === 1) {
+        if (upperCardinality === 1) return Cardinality.C1;
         else return Cardinality.C1_N; // 1..2, 1..3, ..., 1..*
       } else {
         return Cardinality.C1_N;
@@ -234,29 +229,29 @@ export class Factory {
     }
   }
 
-  getLowerboundCardinality(cardinality: string): number {
+  getLowerBoundCardinality(cardinality: string): number {
     const cardinalities = cardinality.split('..');
-    const lowerbound = cardinalities[0];
+    const lowerBound = cardinalities[0];
 
-    return lowerbound === '*' ? 99999 : Number(lowerbound);
+    return lowerBound === '*' ? 99999 : Number(lowerBound);
   }
 
-  getUpperboundCardinality(cardinality: string): number {
+  getUpperBoundCardinality(cardinality: string): number {
     const cardinalities = cardinality.split('..');
-    const upperbound = cardinalities[1] || cardinalities[0];
+    const upperBound = cardinalities[1] || cardinalities[0];
 
-    return upperbound === '*' ? 99999 : Number(upperbound);
+    return upperBound === '*' ? 99999 : Number(upperBound);
   }
 
   /********************************************************************
    ** puts the generalizations
    *********************************************************************/
-  putGeneralizaitons(): void {
+  putGeneralizations(): void {
     let newGeneralization: GraphGeneralization;
     let generalizationNode: Node;
     let specializationNode: Node;
     let generalizations = this.modelManager.rootPackage.getAllContentsByType([
-      OntoUMLType.GENERALIZATION_TYPE,
+      OntoumlType.GENERALIZATION_TYPE,
     ]) as IGeneralization[];
 
     generalizations.forEach((gen: IGeneralization) => {
@@ -283,14 +278,14 @@ export class Factory {
     let newGeneralizationSet: GraphGeneralizationSet;
     let graphGeneralization: GraphGeneralization;
     let generalizationSets = this.modelManager.rootPackage.getAllContentsByType(
-      [OntoUMLType.GENERALIZATION_SET_TYPE],
+      [OntoumlType.GENERALIZATION_SET_TYPE],
     ) as IGeneralizationSet[];
 
     //informs the generalization set that the generalizations belong to.
     generalizationSets.forEach((gs: IGeneralizationSet) => {
       newGeneralizationSet = new GraphGeneralizationSet(
         gs.id,
-        gs.name,
+        gs.name.toString(),
         gs.isDisjoint,
         gs.isComplete,
       );

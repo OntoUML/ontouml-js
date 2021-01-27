@@ -1,9 +1,10 @@
-import { GraphChecker } from '@libs/ontouml2db/graph/graph_tester/GraphChecker';
-import { NodeChecker } from '@libs/ontouml2db/graph/graph_tester/NodeCheker';
-import { PropertyChecker } from '@libs/ontouml2db/graph/graph_tester/PropertyChecker';
-import { TrackerChecker } from '@libs/ontouml2db/graph/graph_tester/TrackerChecker';
-import { RelationshipChecker } from '@libs/ontouml2db/graph/graph_tester/RelationshipChecker';
-import { Cardinality } from '@libs/ontouml2db/graph/util/enumerations';
+import { ModelManager } from '@libs/model';
+import { GraphChecker } from './graph_tester/GraphChecker';
+import { NodeChecker } from './graph_tester/NodeChecker';
+import { PropertyChecker } from './graph_tester/PropertyChecker';
+import { TrackerChecker } from './graph_tester/TrackerChecker';
+import { RelationshipChecker } from './graph_tester/RelationshipChecker';
+import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { TestResource } from './TestResource';
 
 it('should ignore', () => {
@@ -83,9 +84,12 @@ const gChecker_010_flatting_with_association_multiples_generalizations = new Gra
   .addTracker(new TrackerChecker('OrganizationD', 'organization_d'))
   .addTracker(new TrackerChecker('Test', 'test'));
 
+const jsonModel = require('./test_010_flatting_with_association_multiples_generalizations.json');
+
 export const test_010: TestResource = {
   title:
     '010 Evaluates the flatting with one association and multiples generalizations',
-  model: require('./test_010_flatting_with_association_multiples_generalizations.json'),
   checker: gChecker_010_flatting_with_association_multiples_generalizations,
+  model: jsonModel,
+  modelManager: new ModelManager(jsonModel),
 };

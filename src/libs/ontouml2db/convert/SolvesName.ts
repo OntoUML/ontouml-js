@@ -3,8 +3,8 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { NodePropertyEnumeration } from '../graph/NodePropertyEnumeration';
-import { Graph } from '../graph/Graph';
+import { NodePropertyEnumeration } from '@libs/ontouml2db/graph/NodePropertyEnumeration';
+import { Graph } from '@libs/ontouml2db/graph//Graph';
 
 export class SolvesName {
   static solves(graph: Graph): void {
@@ -28,8 +28,8 @@ export class SolvesName {
   }
 
   static adjust(name: string): string {
-    let newName = ''; // + name.charAt(0);
-    let index = 0; //1;
+    let newName = '';
+    let index = 0;
 
     //In order not to add "_" in the properties which are written in uppercase.
     while (

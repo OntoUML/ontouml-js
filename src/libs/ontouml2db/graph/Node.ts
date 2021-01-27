@@ -8,21 +8,17 @@
  */
 
 import { ClassStereotype } from '@constants/.';
-import { IPropertyContainer } from './IPropertyContainer';
-import { ITrackerContainer } from './ITrackerContainer';
-import { IAssociationContainer } from './IAssociationContainer';
-import { PropertyContainer } from './PropertyContainer';
-import { AssociationContainer } from './AssociationContainer';
-import { TrackerContainer } from './TrackerContainer';
-import { NodeProperty } from './NodeProperty';
-import { GraphGeneralization } from './GraphGeneralization';
-import { GraphGeneralizationSet } from './GraphGeneralizationSet';
-import { GraphRelation } from './GraphRelation';
-import { GraphAssociation } from './GraphAssociation';
-import { Tracker } from './Tracker';
+import { IPropertyContainer } from '@libs/ontouml2db/graph/IPropertyContainer';
+import { IAssociationContainer } from '@libs/ontouml2db/graph/IAssociationContainer';
+import { PropertyContainer } from '@libs/ontouml2db/graph/PropertyContainer';
+import { AssociationContainer } from '@libs/ontouml2db/graph/AssociationContainer';
+import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
+import { GraphGeneralization } from '@libs/ontouml2db/graph/GraphGeneralization';
+import { GraphGeneralizationSet } from '@libs/ontouml2db/graph/GraphGeneralizationSet';
+import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
+import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
 
-export class Node
-  implements IPropertyContainer, IAssociationContainer, ITrackerContainer {
+export class Node implements IPropertyContainer, IAssociationContainer {
   private id: string;
   private name: string;
   private stereotype: ClassStereotype;
@@ -30,7 +26,8 @@ export class Node
 
   private propertyContainer: IPropertyContainer;
   private associationContainer: AssociationContainer;
-  private trackerContainer: ITrackerContainer;
+
+  private associationNameNtoN: string; //This property should only be filled in when the node originates from an N to N association.
 
   constructor(id: string, name: string, stereotype: ClassStereotype) {
     this.id = id;
@@ -40,7 +37,8 @@ export class Node
 
     this.propertyContainer = new PropertyContainer();
     this.associationContainer = new AssociationContainer(this);
-    this.trackerContainer = new TrackerContainer(this);
+
+    this.associationNameNtoN = null;
   }
 
   /**
@@ -115,12 +113,18 @@ export class Node
   }
 
   /**
-   * Returns a string containing the description of the trace.
-   *
-   * @return A string with tracking of the node.
+   * Informs the association name of an N to N relationship.
+   * @param name
    */
-  trackingToString(): string {
-    throw new Error('Method not implemented.');
+  setAssociationNameNtoN(name: string): void {
+    this.associationNameNtoN = name;
+  }
+
+  /**
+   * Returns the N to N association name in which the node originated.
+   */
+  getAssociationNameNtoN(): string {
+    return this.associationNameNtoN;
   }
 
   /**
@@ -133,8 +137,7 @@ export class Node
     newNode.setPropertyContainer(
       this.propertyContainer.clonePropertyContainer(),
     );
-    newNode.addTrackedNode(this);
-    this.addTrackedNode(newNode);
+    newNode.setAssociationNameNtoN(this.associationNameNtoN);
     return newNode;
   }
 
@@ -156,6 +159,10 @@ export class Node
 
   addPropertiesAt(index: number, properties: NodeProperty[]): void {
     this.propertyContainer.addPropertiesAt(index, properties);
+  }
+
+  getPropertyByID(id: string): NodeProperty {
+    return this.propertyContainer.getPropertyByID(id);
   }
 
   getPropertyByName(name: string): NodeProperty {
@@ -210,6 +217,10 @@ export class Node
     return this.associationContainer.getRelations();
   }
 
+  getAssociationWithNode(nodeID: string): GraphAssociation {
+    return this.associationContainer.getAssociationWithNode(nodeID);
+  }
+
   isSpecialization(): boolean {
     return this.associationContainer.isSpecialization();
   }
@@ -222,76 +233,6 @@ export class Node
     this.associationContainer.deleteAssociation(association);
   }
 
-  //---------------------------------------------------------------------------------------
-  //--- The methods below are intended to manipulate the trackers nodes (TrackerContainer)
-  //---------------------------------------------------------------------------------------
-
-  addSourceTrackedNode(newNodeTracker: Node): void {
-    this.trackerContainer.addSourceTrackedNode(newNodeTracker);
-  }
-
-  addTrackedNode(newNodeTracker: Node): void {
-    this.trackerContainer.addTrackedNode(newNodeTracker);
-  }
-
-  addTracking(trackers: Tracker[]): void {
-    this.trackerContainer.addTracking(trackers);
-  }
-
-  removeSourceTracking(): void {
-    this.trackerContainer.removeSourceTracking();
-  }
-
-  removeTracking(node: Node): void {
-    this.trackerContainer.removeTracking(node);
-  }
-
-  changeSourceTracking(newNodeTracker: Node): void {
-    this.trackerContainer.changeSourceTracking(newNodeTracker);
-  }
-
-  changeTracking(oldNodeTracker: Node, newNodeTracker: Node): void {
-    this.trackerContainer.changeTracking(oldNodeTracker, newNodeTracker);
-  }
-
-  setSourceTrackerField(property: NodeProperty, value: any): void {
-    this.trackerContainer.setSourceTrackerField(property, value);
-  }
-
-  setTrackerField(node: Node, property: NodeProperty, value: any): void {
-    this.trackerContainer.setTrackerField(node, property, value);
-  }
-
-  setSourcePropertyLinkedAtNode(linkedNode: Node): void {
-    this.trackerContainer.setSourcePropertyLinkedAtNode(linkedNode);
-  }
-
-  setPropertyLinkedAtNode(node: Node, linkedNode: Node): void {
-    this.trackerContainer.setPropertyLinkedAtNode(node, linkedNode);
-  }
-
-  removeSourcePropertyLinkedAtNode(id: string): void {
-    this.trackerContainer.removeSourcePropertyLinkedAtNode(id);
-  }
-
-  removePropertyLinkedAtNode(id: string): void {
-    this.trackerContainer.removePropertyLinkedAtNode(id);
-  }
-
-  getAmountNodesTracked(): number {
-    throw new Error('Method not implemented.');
-  }
-  getTargetColumnName(field: string): string {
-    throw new Error('Method not implemented.');
-  }
-  getTargetPKName(): string {
-    throw new Error('Method not implemented.');
-  }
-
-  getTrackers(): Tracker[] {
-    return this.trackerContainer.getTrackers();
-  }
-
   //----------------------------------------------------
 
   toString(): string {
@@ -300,8 +241,6 @@ export class Node
     msg += this.propertyContainer.toString();
 
     msg += this.associationContainer.toString();
-
-    msg += this.trackerContainer.toString();
 
     return msg;
   }

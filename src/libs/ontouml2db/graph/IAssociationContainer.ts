@@ -1,15 +1,15 @@
 /**
- * An AssociationConteiner is intended to group all the properties of a node.
+ * An AssociationContainer is intended to group all the properties of a node.
  * A node is composed of a relationships set with other nodes. This interface contains the
  * necessary methods for handling node's associations.
  *
  * Author: Gustavo L. Guidoni
  */
 
-import { GraphRelation } from './GraphRelation';
-import { GraphGeneralization } from './GraphGeneralization';
-import { GraphAssociation } from './GraphAssociation';
-import { GraphGeneralizationSet } from './GraphGeneralizationSet';
+import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
+import { GraphGeneralization } from '@libs/ontouml2db/graph/GraphGeneralization';
+import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
+import { GraphGeneralizationSet } from '@libs/ontouml2db/graph/GraphGeneralizationSet';
 
 export interface IAssociationContainer {
   /**
@@ -30,9 +30,16 @@ export interface IAssociationContainer {
   getRelations(): GraphRelation[];
 
   /**
+   * Returns the association that references the node.
+   *
+   * @param nodeID Node identifier to be searched.
+   */
+  getAssociationWithNode(nodeID: string): GraphAssociation;
+
+  /**
    * Adds a new generalization to the node's association set.
    *
-   * @param generalization Generalizatin to be added
+   * @param generalization Generalization to be added
    */
   addGeneralization(generalization: GraphGeneralization);
 

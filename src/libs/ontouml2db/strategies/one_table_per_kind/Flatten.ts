@@ -1,5 +1,5 @@
 /**
- * Class responsable for making the flatten processo on the One Table per Kind mapping.
+ * Class responsible for making the flatten process on the One Table per Kind mapping.
  *
  * Author: João Paulo A. Almeida; Gustavo L. Guidoni
  */
@@ -7,34 +7,41 @@ import { Graph } from '@libs/ontouml2db/graph/Graph';
 import { Node } from '@libs/ontouml2db/graph/Node';
 import { GraphGeneralization } from '@libs/ontouml2db/graph/GraphGeneralization';
 import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
-import { Cardinality } from '@libs/ontouml2db/graph/util/enumerations';
-import { Increment } from '@libs/ontouml2db/graph/util/Increment';
+import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
+import { Increment } from '@libs/ontouml2db/util/Increment';
+import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
 
 export class Flatten {
-  static doFlattening(graph: Graph): void {
+  static doFlattening(graph: Graph, tracker: Tracker): void {
     let node: Node;
 
     // flattens all top-level non-sortals
-    node = graph.getToplevelNonSortal();
+    node = graph.getTopLevelNonSortal();
 
     while (node != null) {
-      Flatten.flattenNode(node, graph);
+      Flatten.flattenNode(node, graph, tracker);
       graph.removeNode(node);
-      node = graph.getToplevelNonSortal();
+      node = graph.getTopLevelNonSortal();
     }
   }
 
-  static flattenNode(node: Node, graph: Graph): void {
+  static flattenNode(node: Node, graph: Graph, tracker: Tracker): void {
     for (let generalization of node.getGeneralizations()) {
-      Flatten.flattenGeneralization(generalization);
+      Flatten.flattenGeneralization(generalization, tracker);
     }
+
+    //for tracking
+    tracker.removeNodeFromTraces(node.getId());
 
     for (let relation of node.getRelations()) {
       Flatten.flattenAssociation(node, relation, graph);
     }
   }
 
-  static flattenGeneralization(generalization: GraphGeneralization): void {
+  static flattenGeneralization(
+    generalization: GraphGeneralization,
+    tracker: Tracker,
+  ): void {
     //The generalization is not removed from the node here because when removing the
     //node, its associations are also removed.
     generalization
@@ -42,13 +49,10 @@ export class Flatten {
       .addPropertiesAt(0, generalization.getGeneral().getProperties());
 
     //for tracking between graphs
-    generalization
-      .getGeneral()
-      .addSourceTrackedNode(generalization.getSpecific());
-    generalization
-      .getSpecific()
-      .addTracking(generalization.getGeneral().getTrackers());
-    generalization.getGeneral().removeSourceTracking();
+    tracker.copyTracesFromTo(
+      generalization.getGeneral().getId(),
+      generalization.getSpecific().getId(),
+    );
   }
 
   static flattenAssociation(
@@ -74,9 +78,9 @@ export class Flatten {
   ): void {
     let newRelation = relation.clone(Increment.getNext().toString());
 
-    newRelation.setName(flattenNode.getName());
+    newRelation.setNodeNameRemoved(flattenNode.getName()); //this is important when there is a name collision in the FK name propagation process.
 
-    if (relation.getSourceNode() == flattenNode) {
+    if (relation.getSourceNode() === flattenNode) {
       newRelation.setSourceNode(toNode);
       newRelation.setSourceCardinality(
         Flatten.getNewCardinality(relation.getSourceCardinality()),
@@ -97,9 +101,9 @@ export class Flatten {
   }
 
   static getNewCardinality(oldCardinality: Cardinality): Cardinality {
-    if (oldCardinality == Cardinality.C1) {
+    if (oldCardinality === Cardinality.C1) {
       return Cardinality.C0_1;
-    } else if (oldCardinality == Cardinality.C1_N) {
+    } else if (oldCardinality === Cardinality.C1_N) {
       return Cardinality.C0_N;
     } else return oldCardinality;
   }

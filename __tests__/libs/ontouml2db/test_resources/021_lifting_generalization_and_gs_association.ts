@@ -1,9 +1,10 @@
-import { GraphChecker } from '@libs/ontouml2db/graph/graph_tester/GraphChecker';
-import { NodeChecker } from '@libs/ontouml2db/graph/graph_tester/NodeCheker';
-import { PropertyChecker } from '@libs/ontouml2db/graph/graph_tester/PropertyChecker';
-import { RelationshipChecker } from '@libs/ontouml2db/graph/graph_tester/RelationshipChecker';
-import { Cardinality } from '@libs/ontouml2db/graph/util/enumerations';
-import { TrackerChecker } from '@libs/ontouml2db/graph/graph_tester/TrackerChecker';
+import { ModelManager } from '@libs/model';
+import { GraphChecker } from './graph_tester/GraphChecker';
+import { NodeChecker } from './graph_tester/NodeChecker';
+import { PropertyChecker } from './graph_tester/PropertyChecker';
+import { RelationshipChecker } from './graph_tester/RelationshipChecker';
+import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
+import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
 it('should ignore', () => {
@@ -61,9 +62,12 @@ const gChecker_021_lifting_generalization_and_gs_association = new GraphChecker(
   .addTracker(new TrackerChecker('EmploymentA', 'employment_a'))
   .addTracker(new TrackerChecker('EmploymentB', 'employment_b'));
 
+const jsonModel = require('./test_021_lifting_Generalization_and_gs_association.json');
+
 export const test_021: TestResource = {
   title:
     '021 Evaluate the lifting with generalizations, one generalization set and association in the subclasses',
-  model: require('./test_021_lifting_Generalization_and_gs_association.json'),
   checker: gChecker_021_lifting_generalization_and_gs_association,
+  model: jsonModel,
+  modelManager: new ModelManager(jsonModel),
 };

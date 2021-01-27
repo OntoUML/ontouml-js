@@ -1,7 +1,8 @@
-import { GraphChecker } from '@libs/ontouml2db/graph/graph_tester/GraphChecker';
-import { NodeChecker } from '@libs/ontouml2db/graph/graph_tester/NodeCheker';
-import { PropertyChecker } from '@libs/ontouml2db/graph/graph_tester/PropertyChecker';
-import { TrackerChecker } from '@libs/ontouml2db/graph/graph_tester/TrackerChecker';
+import { ModelManager } from '@libs/model';
+import { GraphChecker } from './graph_tester/GraphChecker';
+import { NodeChecker } from './graph_tester/NodeChecker';
+import { PropertyChecker } from './graph_tester/PropertyChecker';
+import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
 it('should ignore', () => {
@@ -32,9 +33,12 @@ const gChecker_019_lifting_generalization_and_gs = new GraphChecker()
   .addTracker(new TrackerChecker('BrazilianCitizen', 'person'))
   .addTracker(new TrackerChecker('ItalianCitizen', 'person'));
 
+const jsonModel = require('./test_019_lifting_generalization_and_gs.json');
+
 export const test_019: TestResource = {
   title:
     '019 Evaluate the lifting with one generalization set and two simple generalizations',
-  model: require('./test_019_lifting_generalization_and_gs.json'),
   checker: gChecker_019_lifting_generalization_and_gs,
+  model: jsonModel,
+  modelManager: new ModelManager(jsonModel),
 };

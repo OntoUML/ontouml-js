@@ -278,7 +278,7 @@
     {
       "type": "Relation",
       "id": "W7q5NC6GAqAMEo94",
-      "name": null,
+      "name": "hasAssociatedClass4",
       "description": null,
       "properties": [
         {
@@ -328,7 +328,7 @@
     {
       "type": "Relation",
       "id": "WJa5NC6GAqAMEo.A",
-      "name": null,
+      "name": "hasAssociatedClass3",
       "description": null,
       "properties": [
         {
@@ -378,7 +378,7 @@
     {
       "type": "Relation",
       "id": "7I65NC6GAqAMEo.I",
-      "name": null,
+      "name": "hasAssociatedClass2",
       "description": null,
       "properties": [
         {
@@ -428,7 +428,7 @@
     {
       "type": "Relation",
       "id": "P565NC6GAqAMEo.Q",
-      "name": null,
+      "name": "hasAssociatedClass1",
       "description": null,
       "properties": [
         {

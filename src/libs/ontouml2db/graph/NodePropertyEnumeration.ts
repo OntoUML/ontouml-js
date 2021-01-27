@@ -3,10 +3,10 @@
  * having all the features of OntoProperty, it is also capable of adding
  * several values of the same type.
  *
- * Author: Gustavo Ludovido Guidoni
+ * Author: Gustavo Ludovico Guidoni
  */
 
-import { NodeProperty } from './NodeProperty';
+import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 
 export class NodePropertyEnumeration extends NodeProperty {
   private values: string[];
@@ -16,9 +16,9 @@ export class NodePropertyEnumeration extends NodeProperty {
     name: string,
     dataType: string,
     isNull: boolean,
-    multValues: boolean,
+    multiValues: boolean,
   ) {
-    super(id, name, dataType, isNull, multValues);
+    super(id, name, dataType, isNull, multiValues);
     this.values = [];
   }
 
@@ -41,7 +41,7 @@ export class NodePropertyEnumeration extends NodeProperty {
   }
 
   /**
-   * Returns the enumeratins as string.
+   * Returns the enumerations as string.
    */
   toString(): string {
     let result = this.getName() + ': ' + this.getDataType() + ' [';

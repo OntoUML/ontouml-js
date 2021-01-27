@@ -1,9 +1,11 @@
-import { IGraph } from '../graph/IGraph';
 /**
  * Interface to the processing methods must implement.
  *
  * Author: Gustavo Ludovico Guidoni
  */
+
+import { Graph } from '@libs/ontouml2db/graph/Graph';
+import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
 
 export interface IStrategy {
   /**
@@ -11,5 +13,5 @@ export interface IStrategy {
    *
    * @param graph Graph to be modified.
    */
-  run(graph: IGraph): void;
+  run(graph: Graph, tracker: Tracker): void;
 }

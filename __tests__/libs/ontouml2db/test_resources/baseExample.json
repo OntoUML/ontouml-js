@@ -1025,7 +1025,7 @@
     {
       "type": "Relation",
       "id": "xmwlsC6GAqAMEgq7",
-      "name": null,
+      "name": "hasEmployee",
       "description": null,
       "properties": [
         {
@@ -1075,7 +1075,7 @@
     {
       "type": "Relation",
       "id": "ns6lsC6GAqAMEgrv",
-      "name": null,
+      "name": "hasCustomer",
       "description": null,
       "properties": [
         {
@@ -1125,7 +1125,7 @@
     {
       "type": "Relation",
       "id": "E5KVsC6GAqAMEgvX",
-      "name": null,
+      "name": "hasContractor",
       "description": null,
       "properties": [
         {
@@ -1175,7 +1175,7 @@
     {
       "type": "Relation",
       "id": "dq7VsC6GAqAMEgyG",
-      "name": null,
+      "name": "hasOrganization",
       "description": null,
       "properties": [
         {
@@ -1225,7 +1225,7 @@
     {
       "type": "Relation",
       "id": "zBPVsC6GAqAMEgye",
-      "name": null,
+      "name": "hasPrimarySchool",
       "description": null,
       "properties": [
         {
@@ -1275,7 +1275,7 @@
     {
       "type": "Relation",
       "id": "zYI1sC6GAqAMEgzG",
-      "name": null,
+      "name": "hasChild",
       "description": null,
       "properties": [
         {

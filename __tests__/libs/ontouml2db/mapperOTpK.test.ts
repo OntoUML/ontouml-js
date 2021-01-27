@@ -3,14 +3,14 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { StrategyType } from '@libs/ontouml2db/strategies/StrategyType';
-import { DBMSType } from '@libs/ontouml2db/file_generation/DMBSType';
+import { StrategyType } from '@libs/ontouml2db/constants/StrategyType';
+import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 import { OntoUML2DB } from '@libs/ontouml2db/OntoUML2DB';
-import { IOntoUML2DBOptions } from '@libs/ontouml2db/IOntoUML2DBOptions';
+import { OntoUML2DBOptions } from '@libs/ontouml2db/OntoUML2DBOptions';
 import { TestResource } from './test_resources/TestResource';
 import { baseExample } from './test_resources/baseExample';
 import { test_001 } from './test_resources/001_simple_flattening';
-import { test_002 } from './test_resources/002_flatting_with_duplicate_attribures';
+import { test_002 } from './test_resources/002_flatting_with_duplicate_attributes';
 import { test_003 } from './test_resources/003_flatting_gs';
 import { test_004 } from './test_resources/004_flatting_multiples_generalizations';
 import { test_005 } from './test_resources/005_flatting_orthogonal_gs';
@@ -70,17 +70,19 @@ const testResources: TestResource[] = [
   test_028,
 ];
 
-let options: IOntoUML2DBOptions = {
-  strategyType: StrategyType.ONE_TABLE_PER_KIND,
-  dbms: DBMSType.GENERIC_SCHEMA,
-  standardizeNames: true,
+let options: OntoUML2DBOptions = {
+  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
+  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  isStandardizeNames: true,
+  hostName: 'localhost/~',
+  databaseName: 'RunExample',
+  userConnection: 'sa',
+  passwordConnection: 'sa',
 };
 
 function testTransformation(model, checker) {
-  //Tests the transformation applied to a comprehensive example. All other tests evaluate the
-  //relationships between classes in isolation.
-  let mapper = new OntoUML2DB(model);
-  mapper.getSchema(options);
+  let mapper = new OntoUML2DB(model, options);
+  mapper.getRelationalSchema();
 
   checker.setTransformation(mapper);
 
@@ -88,15 +90,16 @@ function testTransformation(model, checker) {
 
   if (result != '') {
     console.log(mapper.getSourceGraph().toString());
-    console.log(mapper.getTargetGraph().toString());
     expect(result).toBe('');
   }
 }
 
 describe('Database transformation test', () => {
+  let title: string;
   for (const testResource of testResources) {
-    test(testResource.title, () =>
-      testTransformation(testResource.model, testResource.checker),
+    title = testResource.title;
+    test(title, () =>
+      testTransformation(testResource.modelManager, testResource.checker),
     );
   }
 });

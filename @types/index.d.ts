@@ -1,4 +1,4 @@
-import { OntoUMLType, AggregationKind, OntologicalNature } from '@constants/.';
+import { OntoumlType, AggregationKind, OntologicalNature } from '@constants/.';
 import URIManager from '@libs/ontouml2gufo/uri_manager';
 
 /**
@@ -12,7 +12,7 @@ import URIManager from '@libs/ontouml2gufo/uri_manager';
  * @todo Replace strings (such as 'type') for constants
  */
 interface IElement {
-  type: OntoUMLType;
+  type: OntoumlType;
   id: string;
   name: string | null;
   description: string | null;
@@ -48,7 +48,7 @@ interface IContainer extends IElement {
    *
    * @param selectedTypes - an array of strings representing the desired types (i.e., PACKAGE_TYPE, CLASS_TYPE, RELATION_TYPE, GENERALIZATION_TYPE, GENERALIZATION_SET_TYPE, or PROPERTY_TYPE).
    */
-  getAllContentsByType?: (types: OntoUMLType[]) => IElement[];
+  getAllContentsByType?: (types: OntoumlType[]) => IElement[];
 
   /**
    * Returns an Element according of matching id.
@@ -146,7 +146,7 @@ interface IClassifier extends IElement {
  * @author Lucas Bassetti
  */
 interface IPackage extends IElement, IContainer {
-  type: OntoUMLType.PACKAGE_TYPE;
+  type: OntoumlType.PACKAGE_TYPE;
   contents: IElement[] | null;
 }
 
@@ -157,7 +157,7 @@ interface IPackage extends IElement, IContainer {
  * @author Lucas Bassetti
  */
 interface IClass extends IElement, IContainer, IDecoratable, IClassifier {
-  type: OntoUMLType.CLASS_TYPE;
+  type: OntoumlType.CLASS_TYPE;
   literals: ILiteral[] | null;
   allowed: OntologicalNature[] | null;
   isExtensional: boolean | null;
@@ -214,7 +214,7 @@ interface IClass extends IElement, IContainer, IDecoratable, IClassifier {
  * @author Lucas Bassetti
  */
 interface IRelation extends IElement, IContainer, IDecoratable, IClassifier {
-  type: OntoUMLType.RELATION_TYPE;
+  type: OntoumlType.RELATION_TYPE;
   // TODO: why there is a `properType` here?
 
   propertyType: IReference;
@@ -262,7 +262,7 @@ interface IRelation extends IElement, IContainer, IDecoratable, IClassifier {
  * @author Lucas Bassetti
  */
 interface IGeneralization extends IElement {
-  type: OntoUMLType.GENERALIZATION_TYPE;
+  type: OntoumlType.GENERALIZATION_TYPE;
   general: IClassifier | IReference;
   specific: IClassifier | IReference;
 
@@ -281,7 +281,7 @@ interface IGeneralization extends IElement {
  * @author Lucas Bassetti
  */
 interface IGeneralizationSet extends IElement {
-  type: OntoUMLType.GENERALIZATION_SET_TYPE;
+  type: OntoumlType.GENERALIZATION_SET_TYPE;
   isDisjoint: boolean | null;
   isComplete: boolean | null;
   categorizer: IClass | IReference;
@@ -300,7 +300,7 @@ interface IGeneralizationSet extends IElement {
  * @author Lucas Bassetti
  */
 interface IProperty extends IElement, IDecoratable {
-  type: OntoUMLType.PROPERTY_TYPE;
+  type: OntoumlType.PROPERTY_TYPE;
   cardinality: string | null;
   propertyType: IClassifier | null | IReference;
   subsettedProperties: IProperty[] | null | IReference[];
@@ -332,7 +332,7 @@ interface IProperty extends IElement, IDecoratable {
  * @author Lucas Bassetti
  */
 interface ILiteral extends IElement {
-  type: OntoUMLType.LITERAL_TYPE;
+  type: OntoumlType.LITERAL_TYPE;
   _container?: IClass;
 }
 
@@ -343,7 +343,7 @@ interface ILiteral extends IElement {
  * @author Lucas Bassetti
  */
 interface IReference {
-  type: OntoUMLType;
+  type: OntoumlType;
   id: string;
 }
 

@@ -1,9 +1,10 @@
-import { GraphChecker } from '@libs/ontouml2db/graph/graph_tester/GraphChecker';
-import { NodeChecker } from '@libs/ontouml2db/graph/graph_tester/NodeCheker';
-import { PropertyChecker } from '@libs/ontouml2db/graph/graph_tester/PropertyChecker';
-import { RelationshipChecker } from '@libs/ontouml2db/graph/graph_tester/RelationshipChecker';
-import { Cardinality } from '@libs/ontouml2db/graph/util/enumerations';
-import { TrackerChecker } from '@libs/ontouml2db/graph/graph_tester/TrackerChecker';
+import { ModelManager } from '@libs/model';
+import { GraphChecker } from './graph_tester/GraphChecker';
+import { NodeChecker } from './graph_tester/NodeChecker';
+import { PropertyChecker } from './graph_tester/PropertyChecker';
+import { RelationshipChecker } from './graph_tester/RelationshipChecker';
+import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
+import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
 it('should ignore', () => {
@@ -39,10 +40,14 @@ const gChecker_028_multivalued_property = new GraphChecker()
       Cardinality.C0_N,
     ),
   )
+  .addTracker(new TrackerChecker('NamedEntity', 'person'))
   .addTracker(new TrackerChecker('Person', 'person'));
+
+const jsonModel = require('./test_028_multivalued_property.json');
 
 export const test_028: TestResource = {
   title: '028 Evaluates the multivalued property',
-  model: require('./test_028_multivalued_property.json'),
   checker: gChecker_028_multivalued_property,
+  model: jsonModel,
+  modelManager: new ModelManager(jsonModel),
 };

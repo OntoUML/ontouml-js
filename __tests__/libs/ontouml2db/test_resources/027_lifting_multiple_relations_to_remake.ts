@@ -1,9 +1,10 @@
-import { GraphChecker } from '@libs/ontouml2db/graph/graph_tester/GraphChecker';
-import { NodeChecker } from '@libs/ontouml2db/graph/graph_tester/NodeCheker';
-import { PropertyChecker } from '@libs/ontouml2db/graph/graph_tester/PropertyChecker';
-import { RelationshipChecker } from '@libs/ontouml2db/graph/graph_tester/RelationshipChecker';
-import { Cardinality } from '@libs/ontouml2db/graph/util/enumerations';
-import { TrackerChecker } from '@libs/ontouml2db/graph/graph_tester/TrackerChecker';
+import { ModelManager } from '@libs/model';
+import { GraphChecker } from './graph_tester/GraphChecker';
+import { NodeChecker } from './graph_tester/NodeChecker';
+import { PropertyChecker } from './graph_tester/PropertyChecker';
+import { RelationshipChecker } from './graph_tester/RelationshipChecker';
+import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
+import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
 it('should ignore', () => {
@@ -46,11 +47,15 @@ const gChecker_027_lifting_multiple_relations_to_remake = new GraphChecker()
   .addTracker(new TrackerChecker('Adult', 'person'))
   .addTracker(new TrackerChecker('Employee', 'person'))
   .addTracker(new TrackerChecker('PersonalCustomer', 'person'))
-  .addTracker(new TrackerChecker('Employment', 'employment'));
+  .addTracker(new TrackerChecker('Employment', 'employment'))
+  .addTracker(new TrackerChecker('Test', 'test'));
+
+const jsonModel = require('./test_027_lifting_multiple_relations_to_remake.json');
 
 export const test_027: TestResource = {
   title:
     '027 Evaluate the lifting when one subclass has two indirect associations',
-  model: require('./test_027_lifting_multiple_relations_to_remake.json'),
   checker: gChecker_027_lifting_multiple_relations_to_remake,
+  model: jsonModel,
+  modelManager: new ModelManager(jsonModel),
 };

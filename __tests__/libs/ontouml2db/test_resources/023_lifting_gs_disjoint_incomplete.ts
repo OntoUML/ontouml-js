@@ -1,9 +1,10 @@
-import { GraphChecker } from '@libs/ontouml2db/graph/graph_tester/GraphChecker';
-import { NodeChecker } from '@libs/ontouml2db/graph/graph_tester/NodeCheker';
-import { PropertyChecker } from '@libs/ontouml2db/graph/graph_tester/PropertyChecker';
-import { RelationshipChecker } from '@libs/ontouml2db/graph/graph_tester/RelationshipChecker';
-import { Cardinality } from '@libs/ontouml2db/graph/util/enumerations';
-import { TrackerChecker } from '@libs/ontouml2db/graph/graph_tester/TrackerChecker';
+import { ModelManager } from '@libs/model';
+import { GraphChecker } from './graph_tester/GraphChecker';
+import { NodeChecker } from './graph_tester/NodeChecker';
+import { PropertyChecker } from './graph_tester/PropertyChecker';
+import { RelationshipChecker } from './graph_tester/RelationshipChecker';
+import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
+import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
 it('should ignore', () => {
@@ -39,9 +40,12 @@ const gChecker_023_lifting_gs_disjoint_incomplete = new GraphChecker()
   .addTracker(new TrackerChecker('SubClass2', 'super_class'))
   .addTracker(new TrackerChecker('AssociatedClass', 'associated_class'));
 
+const jsonModel = require('./test_023_lifting_gs_disjoint_incomplete.json');
+
 export const test_023: TestResource = {
   title:
     '023 Evaluate the lifting with a disjoint and incomplete generalization set',
-  model: require('./test_023_lifting_gs_disjoint_incomplete.json'),
   checker: gChecker_023_lifting_gs_disjoint_incomplete,
+  model: jsonModel,
+  modelManager: new ModelManager(jsonModel),
 };

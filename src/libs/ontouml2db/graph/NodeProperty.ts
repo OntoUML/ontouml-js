@@ -4,6 +4,8 @@
  * Author: Gustavo L. Guidoni
  */
 
+import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
+
 export class NodeProperty {
   //attributes intended for the class
   private id: string;
@@ -13,11 +15,13 @@ export class NodeProperty {
   private multivalued: boolean;
 
   //attributes intended for the construction of the table
-  //private columnName: string;
   private isPK: boolean;
+  private isPKAutoIncrement: boolean;
   private isFK: boolean;
   private foreignNodeID: string;
+  private associationRelated: GraphAssociation;
   private defaultValue: any;
+
   private resolved: boolean;
 
   constructor(
@@ -33,11 +37,12 @@ export class NodeProperty {
     this.acceptNull = acceptNull;
     this.multivalued = multivalued;
 
-    //this.columnName = name;
     this.isPK = false;
+    this.isPKAutoIncrement = false;
     this.isFK = false;
     this.defaultValue = null;
     this.resolved = false;
+    this.associationRelated = null;
   }
 
   /**
@@ -66,24 +71,6 @@ export class NodeProperty {
   }
 
   /**
-   * Informs the column name to be assigned to the property in the database.
-   *
-   * @param name. Attribute name in the database.
-   */
-  //setColumnName(name: string): void {
-  //    this.columnName = name;
-  // }
-
-  /**
-   * Returns the column name of the property in the database.
-   *
-   * @return string with the column name.
-   */
-  //getColumnName(): string {
-  //    return this.columnName;
-  //}
-
-  /**
    * Informs the property data type.
    *
    * @param dataType. Name of the property type.
@@ -107,13 +94,13 @@ export class NodeProperty {
    * @param flag. If true, the property will be marked as a
    * primary key.
    */
-  setPrimeryKey(flag: boolean): void {
+  setPrimaryKey(flag: boolean): void {
     this.isPK = flag;
+    this.isPKAutoIncrement = flag;
     if (flag) {
       this.acceptNull = false;
     }
   }
-
   /**
    * Returns whether the property is marked as primary key.
    *
@@ -124,6 +111,21 @@ export class NodeProperty {
   }
 
   /**
+   * Informs whether the Primary Key is auto-incrementing or not. By default, the primary key is auto-incremented.
+   * @param flag
+   */
+  setPKAutoIncrement(flag: boolean): void {
+    this.isPKAutoIncrement = flag;
+  }
+
+  /**
+   * Returns whether the primary key is auto-increment.
+   */
+  isPrimaryKeyAutoIncrement(): boolean {
+    return this.isPKAutoIncrement;
+  }
+
+  /**
    * Informs which node the property (marked as a foreign key) refers to.
    * This is necessary because the foreign key name may be different from
    * the primary key name of the referenced table. This method marks the
@@ -131,14 +133,19 @@ export class NodeProperty {
    *
    * @param foreignNode. Node to be referenced.
    */
-  setForeignNodeID(foreignNodeID: string): void {
+  setForeignNodeID(
+    foreignNodeID: string,
+    associationRelated: GraphAssociation,
+  ): void {
     if (foreignNodeID != null) {
       this.isFK = true;
       this.foreignNodeID = foreignNodeID;
+      this.associationRelated = associationRelated;
     } else {
       //removes the foreign key
       this.isFK = false;
       this.foreignNodeID = null;
+      this.associationRelated = null;
     }
   }
 
@@ -158,6 +165,13 @@ export class NodeProperty {
    */
   isForeignKey(): boolean {
     return this.isFK;
+  }
+
+  /**
+   * Returns the association related of Foreign Key.
+   */
+  getAssociationRelatedOfFK(): GraphAssociation {
+    return this.associationRelated;
   }
 
   /**
@@ -238,17 +252,17 @@ export class NodeProperty {
    *
    * @return IOntoProperty.
    */
-  clone(): NodeProperty {
+  clone(newKey?: string): NodeProperty {
     let newProperty: NodeProperty = new NodeProperty(
-      this.id,
+      newKey == null ? this.id : newKey,
       this.name,
       this.dataType,
       this.acceptNull,
       this.multivalued,
     );
-    newProperty.setPrimeryKey(this.isPK);
-    newProperty.setForeignNodeID(this.foreignNodeID);
-    //newProperty.setColumnName(this.columnName);
+    newProperty.setPrimaryKey(this.isPK);
+    newProperty.setPKAutoIncrement(this.isPKAutoIncrement);
+    newProperty.setForeignNodeID(this.foreignNodeID, this.associationRelated);
     newProperty.setDefaultValue(this.defaultValue);
     return newProperty;
   }
@@ -259,7 +273,7 @@ export class NodeProperty {
       ': ' +
       this.dataType +
       ', ' +
-      (this.acceptNull == true ? 'NULL' : 'NOT NULL')
+      (this.acceptNull === true ? 'NULL' : 'NOT NULL')
     );
   }
 }

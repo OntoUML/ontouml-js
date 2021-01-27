@@ -7,15 +7,16 @@
  *
  * Author: João Paulo A. Almeida; Gustavo L. Guidoni
  */
-import { IStrategy } from '../IStrategy';
+import { IStrategy } from '@libs/ontouml2db/strategies/IStrategy';
 import { Graph } from '@libs/ontouml2db/graph/Graph';
-import { Flatten } from './Flatten';
-import { Lifting } from './Lifting';
+import { Flatten } from '@libs/ontouml2db/strategies/one_table_per_kind/Flatten';
+import { Lifting } from '@libs/ontouml2db/strategies/one_table_per_kind/Lifting';
+import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
 
 export class OneTablePerKind implements IStrategy {
-  run(graph: Graph): void {
-    Flatten.doFlattening(graph);
+  run(graph: Graph, tracker: Tracker): void {
+    Flatten.doFlattening(graph, tracker);
 
-    Lifting.doLifting(graph);
+    Lifting.doLifting(graph, tracker);
   }
 }

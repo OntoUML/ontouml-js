@@ -5,12 +5,12 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { Util } from './util/Util';
-import { GraphRelation } from './GraphRelation';
-import { GraphGeneralization } from './GraphGeneralization';
-import { GraphAssociation } from './GraphAssociation';
-import { GraphGeneralizationSet } from './GraphGeneralizationSet';
-import { Node } from './Node';
+import { Util } from '@libs/ontouml2db/util/Util';
+import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
+import { GraphGeneralization } from '@libs/ontouml2db/graph/GraphGeneralization';
+import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
+import { GraphGeneralizationSet } from '@libs/ontouml2db/graph/GraphGeneralizationSet';
+import { Node } from '@libs/ontouml2db/graph/Node';
 
 export class Graph {
   private nodes: Node[];
@@ -48,7 +48,7 @@ export class Graph {
    */
   getNodeById(id: string): Node {
     for (let val of this.nodes) {
-      if (val.getId() == id) return val;
+      if (val.getId() === id) return val;
     }
     return null;
   }
@@ -59,10 +59,8 @@ export class Graph {
    * @param name. The class name to search for.
    */
   getNodeByName(name: string): Node {
-    let n: Node;
-
     for (let val of this.nodes) {
-      if (val.getName() == name) return val;
+      if (val.getName() === name) return val;
     }
     return null;
   }
@@ -87,12 +85,24 @@ export class Graph {
   }
 
   /**
+   * Verifies whether the association name exists on the graph.
+   *
+   * @param name Association name.
+   */
+  existsAssociationName(name: string): boolean {
+    for (let association of this.associations) {
+      if (association.getName() === name) return true;
+    }
+    return false;
+  }
+
+  /**
    * Adds a new relation to the graph.
    *
    * @param relation. The relation to be stored.
    */
   addRelation(relation: GraphRelation): void {
-    if (this.getAssociationByID(relation.getAssociationID()) == null) {
+    if (this.getAssociationByID(relation.getAssociationID()) === null) {
       this.associations.push(relation);
     }
   }
@@ -109,7 +119,7 @@ export class Graph {
   }
 
   /**
-   * Returns the associaiton of the respective ID.
+   * Returns the association of the respective ID.
    *
    * @param id Association ID.
    */
@@ -126,7 +136,7 @@ export class Graph {
    */
   getAssociationByID(id: string): GraphAssociation {
     for (let val of this.associations) {
-      if (val.getAssociationID() == id) return val;
+      if (val.getAssociationID() === id) return val;
     }
     return null;
   }
@@ -146,7 +156,7 @@ export class Graph {
    * @return An Node with the top-level non-sortal from the graph, or null
    * if none can be found
    */
-  getToplevelNonSortal(): Node {
+  getTopLevelNonSortal(): Node {
     for (let node of this.nodes) {
       if (
         Util.isNonSortal(node.getStereotype()) &&

@@ -4,11 +4,11 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { GraphAssociation } from './GraphAssociation';
-import { Node } from './Node';
-import { AssociationType } from './util/enumerations';
-import { Util } from './util/Util';
-import { GraphGeneralization } from './GraphGeneralization';
+import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
+import { Node } from '@libs/ontouml2db/graph/Node';
+import { AssociationType } from '@libs/ontouml2db/constants/enumerations';
+import { Util } from '@libs/ontouml2db/util/Util';
+import { GraphGeneralization } from '@libs/ontouml2db/graph/GraphGeneralization';
 
 export class GraphGeneralizationSet extends GraphAssociation {
   private generalizationNode: Node;
@@ -24,7 +24,7 @@ export class GraphGeneralizationSet extends GraphAssociation {
   }
 
   /**
-   * Informs the generalist node of the generalizatin set.
+   * Informs the generalist node of the generalization set.
    *
    * @param generalizationNode Generalist node.
    */
@@ -53,7 +53,7 @@ export class GraphGeneralizationSet extends GraphAssociation {
   }
 
   /**
-   * Returns the specialization nodes linked to the genrealization set.
+   * Returns the specialization nodes linked to the generalization set.
    *
    * @return An ArrayList with all the specialization nodes.
    */
@@ -108,14 +108,14 @@ export class GraphGeneralizationSet extends GraphAssociation {
       subNode = Util.findNodeById(node.getId(), nodes);
       gs.addSpecific(subNode);
 
-      generalization = this.getGeneraization(superNode, subNode);
+      generalization = this.getGeneralization(superNode, subNode);
       generalization.setBelongGeneralizationSet(gs);
     });
 
     return gs;
   }
 
-  private getGeneraization(
+  private getGeneralization(
     superNode: Node,
     subNode: Node,
   ): GraphGeneralization {
@@ -124,8 +124,8 @@ export class GraphGeneralizationSet extends GraphAssociation {
 
     while (i < generalizations.length) {
       if (
-        generalizations[i].getGeneral().getId() == superNode.getId() &&
-        generalizations[i].getSpecific().getId() == subNode.getId()
+        generalizations[i].getGeneral().getId() === superNode.getId() &&
+        generalizations[i].getSpecific().getId() === subNode.getId()
       )
         return generalizations[i];
       i++;
@@ -134,7 +134,7 @@ export class GraphGeneralizationSet extends GraphAssociation {
   }
 
   /**
-   * Returns the generalization set formated as string;
+   * Returns the generalization set formatted as string;
    */
   toString(): string {
     let msg: string = '\n\t : ';

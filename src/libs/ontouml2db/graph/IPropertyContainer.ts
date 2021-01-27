@@ -5,7 +5,7 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { NodeProperty } from './NodeProperty';
+import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 
 export interface IPropertyContainer {
   /**
@@ -34,9 +34,16 @@ export interface IPropertyContainer {
    * Adds a set of property in the container from a specific position
    *
    * @param index. Initial position to be added to the properties.
-   * @param properties. Propertues to be added.
+   * @param properties. Properties to be added.
    */
   addPropertiesAt(index: number, properties: NodeProperty[]): void;
+
+  /**
+   * Returns the property.
+   *
+   * @param id. Property id to search for.
+   */
+  getPropertyByID(id: string): NodeProperty;
 
   /**
    * Returns the property.

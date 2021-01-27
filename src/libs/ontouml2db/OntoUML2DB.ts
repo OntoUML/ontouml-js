@@ -5,98 +5,43 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { IPackage } from '@types';
-import { Factory } from './factory/Factory';
-import { IStrategy } from './strategies/IStrategy';
-import { OneTablePerClass } from './strategies/one_table_per_class/OneTablePerClass';
-import { OneTablePerKind } from './strategies/one_table_per_kind/OneTablePerKind';
-import { ToEntityRelationship } from './convert/ToEntityRelationship';
-import { StrategyType } from './strategies/StrategyType';
-import { RelationalSchema } from './file_generation/RelationalSchema';
-import { DBMSType } from './file_generation/DMBSType';
-import { Graph } from './graph/Graph';
-import { IOntoUML2DBOptions } from './IOntoUML2DBOptions';
+import { ModelManager } from '@libs/model';
+import { Factory } from '@libs/ontouml2db/factory/Factory';
+import { IStrategy } from '@libs/ontouml2db/strategies/IStrategy';
+import { OneTablePerClass } from '@libs/ontouml2db/strategies/one_table_per_class/OneTablePerClass';
+import { OneTablePerKind } from '@libs/ontouml2db/strategies/one_table_per_kind/OneTablePerKind';
+import { ToEntityRelationship } from '@libs/ontouml2db/convert/ToEntityRelationship';
+import { StrategyType } from '@libs/ontouml2db/constants/StrategyType';
+import { ToRelationalSchema } from '@libs/ontouml2db/convert/ToRelationalSchema';
+import { Graph } from '@libs/ontouml2db/graph/Graph';
+import { OntoUML2DBOptions } from '@libs/ontouml2db/OntoUML2DBOptions';
+import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
+import { GenerateOBDA } from '@libs/ontouml2db/obda/GenerateOBDA';
+import { GenerateConnection } from './obda/GenerateConnection';
 
 export class OntoUML2DB {
-  private sourceGraph: Graph;
-  private targetGraph: Graph;
-  //private strategyType: StrategyType; //0- One Table per Class; 1 - One Table per Kind.
-  //private standardizeNames: boolean; //false: the tables and columns names are the same of the classes and attributes names.
+  private graph: Graph;
+  private tracker: Tracker;
+  private options: OntoUML2DBOptions;
 
-  constructor(model: IPackage) {
+  constructor(model: ModelManager, opt?: Partial<OntoUML2DBOptions>) {
     let factory = new Factory(model);
-    this.sourceGraph = factory.mountGraph();
-    this.targetGraph = null;
-    //this.strategyType = StrategyType.ONE_TABLE_PER_KIND;
-    //this.standardizeNames = true;
+    this.graph = factory.mountGraph();
+    this.tracker = new Tracker(this.graph);
+
+    this.options = opt ? new OntoUML2DBOptions(opt) : new OntoUML2DBOptions();
+
+    this.doMapping();
+    this.transformToEntityRelationship();
   }
 
-  /**
-   * Ontology transformation strategy for the relational schema. The transformation
-   * pattern is "One Table per Kind".
-   *
-   * @param strategy 0- One Table per Class; 1 - One Table per Kind.
-   */
-  //setStrategy(strategyType: StrategyType): void {
-  //  this.strategyType = strategyType;
-  //}
-
-  /**
-   * Adapts the nomenclature of classes and attributes to a standard of names for tables
-   * and columns. Lowercase names and separated by underline ("_") when there is a
-   * uppercase letter in the middle of the name. Example .: NamedEntity for named_entity.
-   *
-   * @param flag True standardizes the names, False does nothing.
-   */
-  //setStandardizeDatabaseNomenclature(flag: boolean): void {
-  //  this.standardizeDatabaseNomenclature = flag;
-  //}
-
-  getSourceGraph(): Graph {
-    return this.sourceGraph;
-  }
-
-  getTargetGraph(): Graph {
-    return this.targetGraph;
-  }
-
-  /**
-   * Returns the relational schema form the transformed graph.
-   *
-   * @param dbms DBMS for which the relational scheme will be generated.
-   */
-  //getSchema(dbms: DBMSType): string {
-  //getSchema (
-  //  strategyType = StrategyType.ONE_TABLE_PER_KIND,
-  //  dbms = DBMSType.GENERIC_SCHEMA,
-  //  standardizeNames = true,
-  //): string {
-  getSchema(options: IOntoUML2DBOptions): string {
-    if (this.targetGraph == null) {
-      this.doMapping(options.strategyType, options.standardizeNames);
-    }
-
-    let script = RelationalSchema.getSchema(this.targetGraph, options.dbms);
-
-    return script;
-  }
-
-  getTest(options: IOntoUML2DBOptions) {
-    console.log(options);
-  }
   /**
    * Performs the transformation according to the selected strategy.
    */
-  doMapping(strategyType: StrategyType, standardizeNames: boolean): void {
-    this.appliesMappingStrategy(strategyType);
-
-    ToEntityRelationship.run(this.targetGraph, standardizeNames);
-  }
-
-  appliesMappingStrategy(strategyType: StrategyType): void {
+  doMapping(): void {
     let strategy: IStrategy;
 
-    switch (strategyType) {
+    switch (this.options.mappingStrategy) {
       case StrategyType.ONE_TABLE_PER_CLASS:
         strategy = new OneTablePerClass();
         break;
@@ -104,11 +49,66 @@ export class OntoUML2DB {
         strategy = new OneTablePerKind();
         break;
       default:
+        console.log('ops');
         break;
     }
 
-    this.targetGraph = this.sourceGraph.clone();
+    strategy.run(this.graph, this.tracker);
+  }
 
-    strategy.run(this.targetGraph);
+  /**
+   * Adds database constructs to the graph.
+   */
+  transformToEntityRelationship(): void {
+    ToEntityRelationship.run(
+      this.graph,
+      this.options.isStandardizeNames,
+      this.tracker,
+    );
+  }
+
+  /**
+   * Returns the relational schema form the transformed OntoUML model.
+   *
+   * @param options
+   */
+  getRelationalSchema(): string {
+    return ToRelationalSchema.getSchema(this.graph, this.options.targetDBMS);
+  }
+
+  /**
+   * Returns the OBDA file of the OntoUML model. For this, the selected transformation strategy is applied.
+   * @param options
+   */
+  getOBDAFile(): string {
+    return GenerateOBDA.getFile(this.options, this.tracker);
+  }
+
+  /**
+   * Returns de connection file. This a specific file for Protegé.
+   */
+  getProtegeConnection(): string {
+    return GenerateConnection.getFile(this.options);
+  }
+
+  /**
+   * Returns the model read from the json file as a graph
+   */
+  getSourceGraph(): Graph {
+    return this.graph;
+  }
+
+  /**
+   * Return the tracking between the source and target graph nodes
+   */
+  getTracker(): Tracker {
+    return this.tracker;
+  }
+
+  /**
+   * Returns the configuration options.
+   */
+  getOptions(): OntoUML2DBOptions {
+    return this.options;
   }
 }

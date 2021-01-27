@@ -4,20 +4,22 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { AssociationType } from './util/enumerations';
-import { Node } from './Node';
+import { AssociationType } from '@libs/ontouml2db/constants/enumerations';
+import { Node } from '@libs/ontouml2db/graph/Node';
 
 export class GraphAssociation {
   private id: string;
   private name: string;
   private associationType: AssociationType;
   private resolved: boolean;
+  private nodeNameRemoved: string; //this is important when there is a name collision in the FK name propagation process.
 
   constructor(id: string, name: string, associationType: AssociationType) {
     this.id = id;
     this.name = name;
     this.associationType = associationType;
     this.resolved = false;
+    this.nodeNameRemoved = null;
   }
 
   /**
@@ -51,7 +53,7 @@ export class GraphAssociation {
    * passed as a parameter.
    *
    * @param associationType. association to be tested.
-   * @return boolean. Returns true if are the same, outerwise false.
+   * @return boolean. Returns true if are the same, otherwise false.
    */
   isAssociationType(associationType: AssociationType): boolean {
     return this.associationType === associationType;
@@ -74,6 +76,21 @@ export class GraphAssociation {
    */
   isResolved(): boolean {
     return this.resolved;
+  }
+
+  /**
+   * Informs the name of the Node that was removed.
+   * @param nodeName
+   */
+  setNodeNameRemoved(nodeName: string) {
+    this.nodeNameRemoved = nodeName;
+  }
+
+  /**
+   * Return the name of the Node removed.
+   */
+  getNodeNameRemoved(): string {
+    return this.nodeNameRemoved;
   }
 
   /**

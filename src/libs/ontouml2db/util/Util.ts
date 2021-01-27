@@ -3,7 +3,7 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { Node } from '../Node';
+import { Node } from '@libs/ontouml2db/graph/Node';
 import { ClassStereotype } from '@constants/.';
 
 export class Util {
@@ -19,10 +19,10 @@ export class Util {
 
   static isNonSortal(type: ClassStereotype): boolean {
     if (
-      type == ClassStereotype.CATEGORY ||
-      type == ClassStereotype.ROLE_MIXIN ||
-      type == ClassStereotype.PHASE_MIXIN ||
-      type == ClassStereotype.MIXIN
+      type === ClassStereotype.CATEGORY ||
+      type === ClassStereotype.ROLE_MIXIN ||
+      type === ClassStereotype.PHASE_MIXIN ||
+      type === ClassStereotype.MIXIN
     )
       return true;
     else return false;
@@ -30,9 +30,9 @@ export class Util {
 
   static isSortalNonKind(type: ClassStereotype): boolean {
     if (
-      type == ClassStereotype.ROLE ||
-      type == ClassStereotype.PHASE ||
-      type == ClassStereotype.SUBKIND
+      type === ClassStereotype.ROLE ||
+      type === ClassStereotype.PHASE ||
+      type === ClassStereotype.SUBKIND
     )
       return true;
     else return false;

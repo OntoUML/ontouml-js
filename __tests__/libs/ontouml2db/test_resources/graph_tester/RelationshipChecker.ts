@@ -2,10 +2,14 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { Cardinality } from '@libs/ontouml2db/graph/util/enumerations';
+import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { Graph } from '@libs/ontouml2db/graph/Graph';
 import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
 import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
+
+it('should ignore', () => {
+  expect(true).toBe(true);
+});
 
 export class RelationshipChecker {
   private sourceNodeName: string;
@@ -42,14 +46,14 @@ export class RelationshipChecker {
   existsAssociation(associations: GraphAssociation[]): boolean {
     for (let relation of associations as GraphRelation[]) {
       if (
-        (relation.getSourceNode().getName() == this.sourceNodeName &&
-          relation.getSourceCardinality() == this.sourceCardinality &&
-          relation.getTargetNode().getName() == this.targetNodeName &&
-          relation.getTargetCardinality() == this.targetCardinality) ||
-        (relation.getSourceNode().getName() == this.targetNodeName &&
-          relation.getSourceCardinality() == this.targetCardinality &&
-          relation.getTargetNode().getName() == this.sourceNodeName &&
-          relation.getTargetCardinality() == this.sourceCardinality)
+        (relation.getSourceNode().getName() === this.sourceNodeName &&
+          relation.getSourceCardinality() === this.sourceCardinality &&
+          relation.getTargetNode().getName() === this.targetNodeName &&
+          relation.getTargetCardinality() === this.targetCardinality) ||
+        (relation.getSourceNode().getName() === this.targetNodeName &&
+          relation.getSourceCardinality() === this.targetCardinality &&
+          relation.getTargetNode().getName() === this.sourceNodeName &&
+          relation.getTargetCardinality() === this.sourceCardinality)
       ) {
         return true;
       }

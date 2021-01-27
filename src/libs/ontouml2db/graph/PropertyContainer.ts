@@ -4,8 +4,8 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { IPropertyContainer } from './IPropertyContainer';
-import { NodeProperty } from './NodeProperty';
+import { IPropertyContainer } from '@libs/ontouml2db/graph/IPropertyContainer';
+import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 
 export class PropertyContainer implements IPropertyContainer {
   private properties: NodeProperty[];
@@ -41,9 +41,16 @@ export class PropertyContainer implements IPropertyContainer {
     });
   }
 
+  getPropertyByID(id: string): NodeProperty {
+    for (let val of this.properties) {
+      if (val.getID() === id) return val;
+    }
+    return null;
+  }
+
   getPropertyByName(name: string): NodeProperty {
     for (let val of this.properties) {
-      if (val.getName() == name) return val;
+      if (val.getName() === name) return val;
     }
     return null;
   }
@@ -54,7 +61,7 @@ export class PropertyContainer implements IPropertyContainer {
 
   removeProperty(id: string): void {
     for (let index = 0; index < this.properties.length; index++) {
-      if (this.properties[index].getID() == id) {
+      if (this.properties[index].getID() === id) {
         this.properties.splice(index, 1);
         return;
       }
@@ -79,7 +86,7 @@ export class PropertyContainer implements IPropertyContainer {
 
   existsPropertyName(propertyName: string): boolean {
     for (let property of this.properties) {
-      if (propertyName == property.getName()) return true;
+      if (propertyName === property.getName()) return true;
     }
     return false;
   }

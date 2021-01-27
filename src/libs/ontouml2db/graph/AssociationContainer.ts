@@ -1,17 +1,17 @@
 /**
- * An AssociationConteiner is intended to group all the properties of a node.
+ * An AssociationContainer is intended to group all the properties of a node.
  * A node is composed of a relationships set with other nodes. This interface contains the
  * necessary methods for handling node's associations.
  *
  * Author: Gustavo L. Guidoni
  */
 
-import { GraphRelation } from './GraphRelation';
-import { GraphGeneralization } from './GraphGeneralization';
-import { Node } from './Node';
-import { GraphGeneralizationSet } from './GraphGeneralizationSet';
-import { IAssociationContainer } from './IAssociationContainer';
-import { GraphAssociation } from './GraphAssociation';
+import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
+import { GraphGeneralization } from '@libs/ontouml2db/graph/GraphGeneralization';
+import { Node } from '@libs/ontouml2db/graph/Node';
+import { GraphGeneralizationSet } from '@libs/ontouml2db/graph/GraphGeneralizationSet';
+import { IAssociationContainer } from '@libs/ontouml2db/graph/IAssociationContainer';
+import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
 
 export class AssociationContainer implements IAssociationContainer {
   private parentNode: Node;
@@ -29,7 +29,7 @@ export class AssociationContainer implements IAssociationContainer {
    * this way, a association is referenced by the origin and destination node, forming
    * a bidirectional graph.
    *
-   * @param relation Relatin to be added.
+   * @param relation Relation to be added.
    */
   addRelation(relation: GraphRelation): void {
     this.relations.push(relation);
@@ -46,9 +46,25 @@ export class AssociationContainer implements IAssociationContainer {
   }
 
   /**
+   * Returns the association that references the node.
+   *
+   * @param nodeID Node identifier to be searched.
+   */
+  getAssociationWithNode(nodeID: string): GraphAssociation {
+    for (let relation of this.relations) {
+      if (
+        relation.getSourceNode().getId() === nodeID ||
+        relation.getTargetNode().getId() === nodeID
+      )
+        return relation;
+    }
+    return null;
+  }
+
+  /**
    * Adds a new generalization to the node's association set.
    *
-   * @param generalization Generalizatin to be added
+   * @param generalization Generalization to be added
    */
   addGeneralization(generalization: GraphGeneralization) {
     this.generalizations.push(generalization);
@@ -100,7 +116,7 @@ export class AssociationContainer implements IAssociationContainer {
    */
   isSpecialization(): boolean {
     for (let generalization of this.generalizations) {
-      if (generalization.getSpecific().getId() == this.parentNode.getId())
+      if (generalization.getSpecific().getId() === this.parentNode.getId())
         return true;
     }
     return false;
@@ -113,7 +129,7 @@ export class AssociationContainer implements IAssociationContainer {
    */
   hasSpecialization(): boolean {
     for (let generalization of this.generalizations) {
-      if (generalization.getGeneral().getId() == this.parentNode.getId())
+      if (generalization.getGeneral().getId() === this.parentNode.getId())
         return true;
     }
     return false;
@@ -126,15 +142,15 @@ export class AssociationContainer implements IAssociationContainer {
     let msg = '';
 
     if (this.generalizations.length > 0) {
-      this.generalizations.forEach((genearlization: GraphGeneralization) => {
-        msg += genearlization.toString();
+      this.generalizations.forEach((generalization: GraphGeneralization) => {
+        msg += generalization.toString();
       });
     }
 
     if (this.relations.length > 0) {
       msg += '\n\t : ';
       this.relations.forEach((relation: GraphRelation) => {
-        msg += relation.toString() + '| ';
+        msg += relation.toString() + ' | ';
       });
     }
 
