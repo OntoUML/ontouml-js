@@ -153,16 +153,16 @@ describe(`${Property.name} Tests`, () => {
     it('Test prop', () => expect(prop.isAggregationEnd()).toBe(false));
   });
 
-  describe(`Test ${Property.prototype.setCardinality.name}()`, () => {
+  describe(`Test ${Property.prototype.setCardinalityFromNumbers.name}()`, () => {
     const prop = new Property();
 
     it('Test prop', () => {
       expect(prop.isZeroToMany()).toBe(true);
-      prop.setCardinality(0, 1);
+      prop.setCardinalityFromNumbers(0, 1);
       expect(prop.isZeroToOne()).toBe(true);
-      prop.setCardinality(1, propertyUtils.UNBOUNDED_CARDINALITY);
+      prop.setCardinalityFromNumbers(1, propertyUtils.UNBOUNDED_CARDINALITY);
       expect(prop.isOneToMany()).toBe(true);
-      prop.setCardinality(1, 1);
+      prop.setCardinalityFromNumbers(1, 1);
       expect(prop.isOneToOne()).toBe(true);
     });
   });
@@ -230,11 +230,11 @@ describe(`${Property.name} Tests`, () => {
 
     it('Test prop', () => {
       expect(prop.isOptional()).toBe(true);
-      prop.setCardinality(0, 1);
+      prop.setCardinalityFromNumbers(0, 1);
       expect(prop.isOptional()).toBe(true);
-      prop.setCardinality(1, propertyUtils.UNBOUNDED_CARDINALITY);
+      prop.setCardinalityFromNumbers(1, propertyUtils.UNBOUNDED_CARDINALITY);
       expect(prop.isOptional()).toBe(false);
-      prop.setCardinality(1, 1);
+      prop.setCardinalityFromNumbers(1, 1);
       expect(prop.isOptional()).toBe(false);
     });
   });
@@ -244,11 +244,11 @@ describe(`${Property.name} Tests`, () => {
 
     it('Test prop', () => {
       expect(prop.isMandatory()).toBe(false);
-      prop.setCardinality(0, 1);
+      prop.setCardinalityFromNumbers(0, 1);
       expect(prop.isMandatory()).toBe(false);
-      prop.setCardinality(1, propertyUtils.UNBOUNDED_CARDINALITY);
+      prop.setCardinalityFromNumbers(1, propertyUtils.UNBOUNDED_CARDINALITY);
       expect(prop.isMandatory()).toBe(true);
-      prop.setCardinality(1, 1);
+      prop.setCardinalityFromNumbers(1, 1);
       expect(prop.isMandatory()).toBe(true);
     });
   });
@@ -258,11 +258,11 @@ describe(`${Property.name} Tests`, () => {
 
     it('Test prop', () => {
       expect(prop.isZeroToOne()).toBe(false);
-      prop.setCardinality(0, 1);
+      prop.setCardinalityFromNumbers(0, 1);
       expect(prop.isZeroToOne()).toBe(true);
-      prop.setCardinality(1, propertyUtils.UNBOUNDED_CARDINALITY);
+      prop.setCardinalityFromNumbers(1, propertyUtils.UNBOUNDED_CARDINALITY);
       expect(prop.isZeroToOne()).toBe(false);
-      prop.setCardinality(1, 1);
+      prop.setCardinalityFromNumbers(1, 1);
       expect(prop.isZeroToOne()).toBe(false);
     });
   });
@@ -272,11 +272,11 @@ describe(`${Property.name} Tests`, () => {
 
     it('Test prop', () => {
       expect(prop.isZeroToMany()).toBe(true);
-      prop.setCardinality(0, 1);
+      prop.setCardinalityFromNumbers(0, 1);
       expect(prop.isZeroToMany()).toBe(false);
-      prop.setCardinality(1, propertyUtils.UNBOUNDED_CARDINALITY);
+      prop.setCardinalityFromNumbers(1, propertyUtils.UNBOUNDED_CARDINALITY);
       expect(prop.isZeroToMany()).toBe(false);
-      prop.setCardinality(1, 1);
+      prop.setCardinalityFromNumbers(1, 1);
       expect(prop.isZeroToMany()).toBe(false);
     });
   });
@@ -286,11 +286,11 @@ describe(`${Property.name} Tests`, () => {
 
     it('Test prop', () => {
       expect(prop.isOneToOne()).toBe(false);
-      prop.setCardinality(0, 1);
+      prop.setCardinalityFromNumbers(0, 1);
       expect(prop.isOneToOne()).toBe(false);
-      prop.setCardinality(1, propertyUtils.UNBOUNDED_CARDINALITY);
+      prop.setCardinalityFromNumbers(1, propertyUtils.UNBOUNDED_CARDINALITY);
       expect(prop.isOneToOne()).toBe(false);
-      prop.setCardinality(1, 1);
+      prop.setCardinalityFromNumbers(1, 1);
       expect(prop.isOneToOne()).toBe(true);
     });
   });
@@ -300,11 +300,11 @@ describe(`${Property.name} Tests`, () => {
 
     it('Test prop', () => {
       expect(prop.isOneToMany()).toBe(false);
-      prop.setCardinality(0, 1);
+      prop.setCardinalityFromNumbers(0, 1);
       expect(prop.isOneToMany()).toBe(false);
-      prop.setCardinality(1, propertyUtils.UNBOUNDED_CARDINALITY);
+      prop.setCardinalityFromNumbers(1, propertyUtils.UNBOUNDED_CARDINALITY);
       expect(prop.isOneToMany()).toBe(true);
-      prop.setCardinality(1, 1);
+      prop.setCardinalityFromNumbers(1, 1);
       expect(prop.isOneToMany()).toBe(false);
     });
   });
@@ -314,24 +314,20 @@ describe(`${Property.name} Tests`, () => {
 
     it('Test prop', () => {
       expect(prop.hasValidCardinality()).toBe(true);
-      prop.setCardinality(1, propertyUtils.UNBOUNDED_CARDINALITY);
+      prop.setCardinalityFromNumbers(1, propertyUtils.UNBOUNDED_CARDINALITY);
       expect(prop.hasValidCardinality()).toBe(true);
-      prop.cardinality = { lowerBound: -1, upperBound: -1 };
+      prop.cardinality = '-1..-1';
       expect(prop.hasValidCardinality()).toBe(false);
     });
   });
 
   describe(`Test Property.${Property.isCardinalityValid.name}()`, () => {
     it('Test cardinalities', () => {
-      expect(Property.isCardinalityValid({ lowerBound: 0, upperBound: 1 })).toBe(true);
-      expect(Property.isCardinalityValid({ lowerBound: 0, upperBound: propertyUtils.UNBOUNDED_CARDINALITY })).toBe(true);
-      expect(
-        Property.isCardinalityValid({
-          lowerBound: propertyUtils.UNBOUNDED_CARDINALITY,
-          upperBound: propertyUtils.UNBOUNDED_CARDINALITY
-        })
-      ).toBe(false);
-      expect(Property.isCardinalityValid({ lowerBound: -1, upperBound: -1 })).toBe(false);
+      expect(Property.isCardinalityValid('0..1')).toBe(true);
+      expect(Property.isCardinalityValid('0..*')).toBe(true);
+      expect(Property.isCardinalityValid('*..*')).toBe(false);
+      expect(Property.isCardinalityValid('-1')).toBe(false);
+      expect(Property.isCardinalityValid('a..b')).toBe(false);
     });
   });
 

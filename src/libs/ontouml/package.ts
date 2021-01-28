@@ -408,8 +408,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinality(1, 1);
-    targetEnd.setCardinality(1, 1);
+    sourceEnd.setCardinalityFromNumbers(1, 1);
+    targetEnd.setCardinalityFromNumbers(1, 1);
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
     return relation;
@@ -420,8 +420,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinality(1, 1);
-    targetEnd.setCardinality(1, 1);
+    sourceEnd.setCardinalityFromNumbers(1, 1);
+    targetEnd.setCardinalityFromNumbers(1, 1);
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
     return relation;
@@ -432,8 +432,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinality(0, propertyUtils.UNBOUNDED_CARDINALITY);
-    targetEnd.setCardinality(1, propertyUtils.UNBOUNDED_CARDINALITY);
+    sourceEnd.setCardinalityFromNumbers(0, propertyUtils.UNBOUNDED_CARDINALITY);
+    targetEnd.setCardinalityFromNumbers(1, propertyUtils.UNBOUNDED_CARDINALITY);
 
     return relation;
   }
@@ -443,9 +443,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinality(1, 1);
+    sourceEnd.setCardinalityFromNumbers(1, 1);
     sourceEnd.isReadOnly = true;
-    targetEnd.setCardinality(1, 1);
+    targetEnd.setCardinalityFromNumbers(1, 1);
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -549,8 +549,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinality(2, propertyUtils.UNBOUNDED_CARDINALITY);
-    targetEnd.setCardinality(1, 1);
+    sourceEnd.setCardinalityFromNumbers(2, propertyUtils.UNBOUNDED_CARDINALITY);
+    targetEnd.setCardinalityFromNumbers(1, 1);
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
     return relation;
