@@ -1,39 +1,44 @@
-import { RelationStereotype } from '@constants/.';
 import { generateGufo } from './helpers';
-import OntoumlFactory from './ontouml_factory';
+import { Package, propertyUtils } from '@libs/ontouml';
 
 describe('Cardinalities', () => {
   describe('Relation cardinalities not transformed', () => {
     it('should NOT generate cardinality axioms if association end is mutable (readOnly = false)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createRelation('likes', RelationStereotype.MATERIAL, class1, class1);
-      relation.properties[0].cardinality = '1..*';
-      relation.properties[1].cardinality = '1..*';
-      const model = OntoumlFactory.createPackage('Model', [class1, relation]);
+      const model = new Package();
+      const _class = model.createKind('Person');
+      const relation = model.createMaterialRelation(_class, _class, 'likes');
+
+      relation.getSourceEnd().setCardinalityToOneToMany();
+      relation.getTargetEnd().setCardinalityToOneToMany();
+
       const owlCode = generateGufo(model);
 
       expect(owlCode).not.toContain('<rdf:type> <owl:Restriction>');
     });
 
     it('should NOT generate cardinality axioms if relation is unbounded (0..*)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '0..*';
-      relation.properties[1].cardinality = '0..*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const event = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, event, 'was born in');
+
+      relation.getSourceEnd().setCardinalityToMany();
+      relation.getTargetEnd().setCardinalityToMany();
+
       const owlCode = generateGufo(model);
 
       expect(owlCode).not.toContain('<rdf:type> <owl:Restriction>');
     });
 
     it('should NOT generate cardinality axioms if relation is unbounded (*)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '*';
-      relation.properties[1].cardinality = '*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const event = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, event, 'was born in');
+
+      relation.getSourceEnd().cardinality = '*';
+      relation.getTargetEnd().cardinality = '*';
+
       const owlCode = generateGufo(model);
 
       expect(owlCode).not.toContain('<rdf:type> <owl:Restriction>');
@@ -42,11 +47,14 @@ describe('Cardinalities', () => {
 
   describe('Relation cardinalities { createObjectProperty: true, createInverses: false }', () => {
     it('should generate cardinality axioms if source association end is readOnly (1..*)', () => {
-      const class1 = OntoumlFactory.createMode('Love');
-      const class2 = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createRelation('is love of', null, class1, class2);
-      relation.properties[0].isReadOnly = true;
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const love = model.createExtrinsicMode('Love');
+      const person = model.createKind('Person');
+      const relation = model.createCharacterizationRelation(love, person, 'is love of');
+
+      relation.getSourceEnd().isReadOnly = true;
+      relation.getSourceEnd().setCardinalityToOneToMany();
+
       const owlCode = generateGufo(model);
 
       expect(owlCode).toContain('<:Person> <rdfs:subClassOf> [');
@@ -56,11 +64,15 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms if target association end is readOnly (1..*)', () => {
-      const class1 = OntoumlFactory.createMode('Love');
-      const class2 = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createRelation('is love of', null, class1, class2);
-      relation.properties[1].isReadOnly = true;
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const love = model.createExtrinsicMode('Love');
+      const person = model.createKind('Person');
+      const relation = model.createCharacterizationRelation(love, person, 'is love of');
+
+      relation.getSourceEnd().setCardinalityToOneToMany();
+      relation.getTargetEnd().isReadOnly = true;
+      relation.getTargetEnd().setCardinalityToOneToMany();
+
       const owlCode = generateGufo(model);
 
       expect(owlCode).toContain('<:Love> <rdfs:subClassOf> [');
@@ -70,10 +82,11 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms if relation stereotype implies existential dependency from source to target (1)', () => {
-      const class1 = OntoumlFactory.createMode('Love');
-      const class2 = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createCharacterization('is love of', class1, class2);
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const love = model.createExtrinsicMode('Love');
+      const person = model.createKind('Person');
+      model.createCharacterizationRelation(love, person, 'is love of');
+
       const owlCode = generateGufo(model);
 
       expect(owlCode).toContain('<:Love> <rdfs:subClassOf> [');
@@ -84,10 +97,13 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms if relation stereotype implies existential dependency from target to source (1..*)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Death');
-      const relation = OntoumlFactory.createTermination('diedAt', class1, class2);
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const death = model.createEvent('Death');
+      const relation = model.createTerminationRelation(person, death, 'diedAt');
+
+      relation.getSourceEnd().setCardinalityToOneToMany();
+
       const owlCode = generateGufo(model);
 
       expect(owlCode).toContain('<:Death> <rdfs:subClassOf> [');
@@ -97,10 +113,13 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms if relation stereotype implies bidirectional existential dependency (1..*)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().setCardinalityToOneToMany();
+
       const owlCode = generateGufo(model);
 
       expect(owlCode).toContain('<:Birth> <rdfs:subClassOf> [');
@@ -110,12 +129,11 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:qualifiedCardinality (1)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '1';
-      relation.properties[1].cardinality = '*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      model.createCreationRelation(person, birth, 'was born in');
+
       const owlCode = generateGufo(model);
 
       expect(owlCode).toContain('<:Birth> <rdfs:subClassOf> [');
@@ -126,12 +144,11 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:qualifiedCardinality (1..1)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '1..1';
-      relation.properties[1].cardinality = '*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      model.createCreationRelation(person, birth, 'was born in');
+
       const owlCode = generateGufo(model);
 
       expect(owlCode).toContain('<:Birth> <rdfs:subClassOf> [');
@@ -142,12 +159,14 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:minQualifiedCardinality (2..*)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '2..*';
-      relation.properties[1].cardinality = '*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().setCardinalityFromNumbers(2, propertyUtils.UNBOUNDED_CARDINALITY);
+      relation.getTargetEnd().setCardinalityToMany();
+
       const owlCode = generateGufo(model);
 
       expect(owlCode).toContain('<:Birth> <rdfs:subClassOf> [');
@@ -158,12 +177,14 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:maxQualifiedCardinality (0..1)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '0..1';
-      relation.properties[1].cardinality = '*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().setCardinalityToZeroToOne();
+      relation.getTargetEnd().setCardinalityToMany();
+
       const owlCode = generateGufo(model);
 
       expect(owlCode).toContain('<:Birth> <rdfs:subClassOf> [');
@@ -174,12 +195,14 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:minQualifiedCardinality and owl:maxQualifiedCardinality (1..3)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '1..3';
-      relation.properties[1].cardinality = '*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().setCardinalityFromNumbers(1, 3);
+      relation.getTargetEnd().setCardinalityToMany();
+
       const owlCode = generateGufo(model);
 
       expect(owlCode).toContain('<:Birth> <rdfs:subClassOf> [');
@@ -196,13 +219,15 @@ describe('Cardinalities', () => {
 
   describe('Relation cardinalities { createObjectProperty: true, createInverses: true }', () => {
     it('should generate cardinality axioms using owl:someValuesFrom (1..*)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '1..*';
-      relation.properties[0].name = 'newPerson';
-      relation.properties[1].cardinality = '*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().setCardinalityToOneToMany();
+      relation.getSourceEnd().name = 'newPerson';
+      relation.getTargetEnd().setCardinalityToMany();
+
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
 
       expect(owlCode).toContain('<:Birth> <rdfs:subClassOf> [');
@@ -212,13 +237,15 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:qualifiedCardinality (1)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '1';
-      relation.properties[0].name = 'newPerson';
-      relation.properties[1].cardinality = '*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().setCardinalityToOne();
+      relation.getSourceEnd().name = 'newPerson';
+      relation.getTargetEnd().setCardinalityToMany();
+
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
 
       expect(owlCode).toContain('<:Birth> <rdfs:subClassOf> [');
@@ -229,13 +256,15 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:minQualifiedCardinality (2..*)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('wasBornIn', class1, class2);
-      relation.properties[0].cardinality = '*';
-      relation.properties[0].name = 'newPerson';
-      relation.properties[1].cardinality = '2..*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().setCardinalityToMany();
+      relation.getSourceEnd().name = 'newPerson';
+      relation.getTargetEnd().cardinality = '2..*';
+
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
 
       expect(owlCode).toContain('<:Person> <rdfs:subClassOf> [');
@@ -246,13 +275,15 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:maxQualifiedCardinality (0..1)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('wasBornIn', class1, class2);
-      relation.properties[0].cardinality = '*';
-      relation.properties[0].name = 'newPerson';
-      relation.properties[1].cardinality = '0..1';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().setCardinalityToMany();
+      relation.getSourceEnd().name = 'newPerson';
+      relation.getTargetEnd().setCardinalityToZeroToOne();
+
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
 
       expect(owlCode).toContain('<:Person> <rdfs:subClassOf> [');
@@ -263,13 +294,15 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:minQualifiedCardinality and owl:maxQualifiedCardinality (1..3)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '1..3';
-      relation.properties[0].name = 'newPerson';
-      relation.properties[1].cardinality = '*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().cardinality = '1..3';
+      relation.getSourceEnd().name = 'newPerson';
+      relation.getTargetEnd().setCardinalityToMany();
+
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
 
       expect(owlCode).toContain('<:Birth> <rdfs:subClassOf> [');
@@ -286,12 +319,14 @@ describe('Cardinalities', () => {
 
   describe('Relation cardinalities { createObjectProperty: false, createInverses: false }', () => {
     it('should generate cardinality axioms using owl:someValuesFrom (1..*)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '1..*';
-      relation.properties[1].cardinality = '*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().setCardinalityToOneToMany();
+      relation.getTargetEnd().setCardinalityToMany();
+
       const owlCode = generateGufo(model, { createObjectProperty: false });
 
       expect(owlCode).toContain('<:Birth> <rdfs:subClassOf> [');
@@ -301,12 +336,14 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:qualifiedCardinality (1)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '1';
-      relation.properties[1].cardinality = '*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().setCardinalityToOne();
+      relation.getTargetEnd().setCardinalityToMany();
+
       const owlCode = generateGufo(model, { createObjectProperty: false });
 
       expect(owlCode).toContain('<:Birth> <rdfs:subClassOf> [');
@@ -317,12 +354,14 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:minQualifiedCardinality (2..*)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '*';
-      relation.properties[1].cardinality = '2..*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().setCardinalityToMany();
+      relation.getTargetEnd().cardinality = '2..*';
+
       const owlCode = generateGufo(model, { createObjectProperty: false });
 
       expect(owlCode).toContain('<:Person> <rdfs:subClassOf> [');
@@ -333,12 +372,14 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:maxQualifiedCardinality (0..1)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '*';
-      relation.properties[1].cardinality = '0..1';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().setCardinalityToMany();
+      relation.getTargetEnd().setCardinalityToZeroToOne();
+
       const owlCode = generateGufo(model, { createObjectProperty: false });
 
       expect(owlCode).toContain('<:Person> <rdfs:subClassOf> [');
@@ -349,12 +390,14 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:minQualifiedCardinality and owl:maxQualifiedCardinality (1..3)', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '1..3';
-      relation.properties[1].cardinality = '*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().cardinality = '1..3';
+      relation.getTargetEnd().setCardinalityToMany();
+
       const owlCode = generateGufo(model, { createObjectProperty: false });
 
       expect(owlCode).toContain('<:Birth> <rdfs:subClassOf> [');
@@ -371,12 +414,14 @@ describe('Cardinalities', () => {
 
   describe('Relation cardinalities { createObjectProperty: false, createInverses: true } ', () => {
     it('should generate cardinality axioms using owl:someValuesFrom (1..*) and gufoi:created', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '1..*';
-      relation.properties[1].cardinality = '*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().setCardinalityToOneToMany();
+      relation.getTargetEnd().setCardinalityToMany();
+
       const owlCode = generateGufo(model, { createObjectProperty: false, createInverses: true });
 
       expect(owlCode).toContain('<:Birth> <rdfs:subClassOf> [');
@@ -386,12 +431,14 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:qualifiedCardinality (1) and gufoi:created', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '1';
-      relation.properties[1].cardinality = '*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().setCardinalityToOne();
+      relation.getTargetEnd().setCardinalityToMany();
+
       const owlCode = generateGufo(model, { createObjectProperty: false, createInverses: true });
 
       expect(owlCode).toContain('<:Birth> <rdfs:subClassOf> [');
@@ -402,12 +449,14 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:minQualifiedCardinality (2..*) and gufo:wasCreatedIn', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '*';
-      relation.properties[1].cardinality = '2..*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().setCardinalityToMany();
+      relation.getTargetEnd().cardinality = '2..*';
+
       const owlCode = generateGufo(model, { createObjectProperty: false, createInverses: true });
 
       expect(owlCode).toContain('<:Person> <rdfs:subClassOf> [');
@@ -418,12 +467,14 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:maxQualifiedCardinality (0..1) and gufo:wasCreatedIn', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '*';
-      relation.properties[1].cardinality = '0..1';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().setCardinalityToMany();
+      relation.getTargetEnd().setCardinalityToZeroToOne();
+
       const owlCode = generateGufo(model, { createObjectProperty: false, createInverses: true });
 
       expect(owlCode).toContain('<:Person> <rdfs:subClassOf> [');
@@ -434,12 +485,14 @@ describe('Cardinalities', () => {
     });
 
     it('should generate cardinality axioms using owl:minQualifiedCardinality and owl:maxQualifiedCardinality (1..3) and gufoi:created', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createCreation('was born in', class1, class2);
-      relation.properties[0].cardinality = '1..3';
-      relation.properties[1].cardinality = '*';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package();
+      const person = model.createKind('Person');
+      const birth = model.createEvent('Birth');
+      const relation = model.createCreationRelation(person, birth, 'was born in');
+
+      relation.getSourceEnd().cardinality = '1..3';
+      relation.getTargetEnd().setCardinalityToMany();
+
       const owlCode = generateGufo(model, { createObjectProperty: false, createInverses: true });
 
       expect(owlCode).toContain('<:Birth> <rdfs:subClassOf> [');

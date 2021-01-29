@@ -1,24 +1,21 @@
-import { RelationStereotype } from '@constants/.';
 import { generateGufo } from './helpers';
-import OntoumlFactory from './ontouml_factory';
+import { Package } from '@libs/ontouml';
 
 describe('Names to labels', () => {
   it('should generate labels without language tags when names are simple strings', () => {
-    const _class = OntoumlFactory.createKind('Person');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createKind('Person');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Person> <rdfs:label> "Person"');
   });
 
   it('should generate language labels on classess using 2-letter IANA language tags (e.g. en, it)', () => {
-    const _class = OntoumlFactory.createKind('Person');
-    _class.name = {
+    const model = new Package();
+    model.createKind({
       en: 'Person',
       it: 'Persona'
-    };
-
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    });
     const result = generateGufo(model);
 
     expect(result).toContain('<:Person> <rdfs:label> "Person"@en');
@@ -26,13 +23,11 @@ describe('Names to labels', () => {
   });
 
   it('should generate language labels on classess using composed IANA language tags (e.g. en-us, pt-br)', () => {
-    const _class = OntoumlFactory.createKind('Person');
-    _class.name = {
+    const model = new Package();
+    model.createKind({
       'en-us': 'Person',
       'pt-br': 'Pessoa'
-    };
-
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    });
     const result = generateGufo(model);
 
     expect(result).toContain('<:Person> <rdfs:label> "Person"@en-us');
@@ -40,15 +35,15 @@ describe('Names to labels', () => {
   });
 
   it('should NOT generate language labels for invalid IANA language tags (e.g. ens, it-trento, xyz)', () => {
-    const _class = OntoumlFactory.createKind('Person');
-    _class.id = '123';
-    _class.name = {
-      ens: 'Person',
-      'it-trento': 'Persona',
-      xyz: 'Persoon'
-    };
-
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createKind(
+      {
+        ens: 'Person',
+        'it-trento': 'Persona',
+        xyz: 'Persoon'
+      },
+      { id: '123' }
+    );
     const result = generateGufo(model);
 
     expect(result).not.toContain('<:123> <rdfs:label> "Persona"@it-trento');
@@ -57,15 +52,12 @@ describe('Names to labels', () => {
   });
 
   it('should generate language labels on attributes (e.g. nl, pt)', () => {
-    const _class = OntoumlFactory.createKind('Person');
-    const datatype = OntoumlFactory.createKind('string');
-    const attr = OntoumlFactory.addAttribute(_class, 'name', datatype);
-    attr.name = {
-      nl: 'naam',
-      pt: 'nome'
-    };
+    const model = new Package();
+    const person = model.createKind('Person');
+    const datatype = model.createKind('string');
 
-    const model = OntoumlFactory.createPackage(null, [_class, datatype]);
+    person.createAttribute(datatype, { nl: 'naam', pt: 'nome' });
+
     const result = generateGufo(model);
 
     expect(result).toContain('<:naam> <rdfs:label> "naam"@nl');
@@ -73,14 +65,11 @@ describe('Names to labels', () => {
   });
 
   it('should generate language labels on relations (e.g. de, sv)', () => {
-    const _class = OntoumlFactory.createKind('Person');
-    const relation = OntoumlFactory.createRelation('knows', RelationStereotype.MATERIAL, _class, _class);
-    relation.name = {
-      de: 'kennt',
-      sv: 'känner'
-    };
+    const model = new Package();
+    const person = model.createKind('Person');
 
-    const model = OntoumlFactory.createPackage(null, [_class, relation]);
+    model.createMaterialRelation(person, person, { de: 'kennt', sv: 'känner' });
+
     const result = generateGufo(model);
 
     expect(result).toContain('<:kennt> <rdfs:label> "kennt"@de');

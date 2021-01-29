@@ -56,11 +56,11 @@ export function getInverseSuperProperty(relation: Relation): string {
 }
 
 export function transformInverseRelation(transformer: Ontouml2Gufo, relation: Relation) {
-  if (relation.hasInstantiationStereotype() || relation.isDerivationRelation) {
+  if (relation.hasInstantiationStereotype() || relation.isDerivationRelation()) {
     return;
   }
 
-  if (relation.hasMaterialStereotype || relation.hasComparativeStereotype()) {
+  if (relation.hasMaterialStereotype() || relation.hasComparativeStereotype()) {
     writeInverseBaseRelationAxioms(transformer, relation);
     transformInverseAnnotations(transformer, relation);
     writeInverseRelationTypeAxiom(transformer, relation);

@@ -1,18 +1,19 @@
-import { RelationStereotype } from '@constants/.';
 import { generateGufo } from './helpers';
-import OntoumlFactory from './ontouml_factory';
+import { Package } from '@libs/ontouml';
 
 describe('Inverse relations', () => {
   describe('Basic inverse relation mapping: stereotypeless relation', () => {
     let owlCode;
 
     beforeAll(() => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createKind('Dog');
-      const relation = OntoumlFactory.createRelation('owns', null, class1, class2);
-      relation.properties[0].name = 'owner';
-      relation.properties[1].name = 'pet';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createKind('Person');
+      const class2 = model.createKind('Dog');
+      const relation = model.createBinaryRelation(class1, class2, 'owns');
+
+      relation.getSourceEnd().name = 'owner';
+      relation.getTargetEnd().name = 'pet';
+
       owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
     });
 
@@ -37,11 +38,13 @@ describe('Inverse relations', () => {
     let owlCode;
 
     beforeAll(() => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createKind('Dog');
-      const relation = OntoumlFactory.createRelation('owns', RelationStereotype.MATERIAL, class1, class2);
-      relation.properties[0].name = 'owner';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createKind('Person');
+      const class2 = model.createKind('Dog');
+      const relation = model.createMaterialRelation(class1, class2, 'owns');
+
+      relation.getSourceEnd().name = 'owner';
+
       owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
     });
 
@@ -62,23 +65,25 @@ describe('Inverse relations', () => {
     });
 
     it('should not generate basic mapping for «instantiation»', () => {
-      const class1 = OntoumlFactory.createMode('Person');
-      const class2 = OntoumlFactory.createMode('PersonType');
-      const relation = OntoumlFactory.createRelation('instantiated by', RelationStereotype.INSTANTIATION, class1, class2);
-      relation.properties[0].name = 'instance';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createIntrinsicMode('Person');
+      const class2 = model.createIntrinsicMode('PersonType');
+      const relation = model.createInstantiationRelation(class1, class2, 'instantiated by');
+
+      relation.getSourceEnd().name = 'instance';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).not.toContain('<:instance>');
     });
 
     it('should not generate basic mapping for «derivation»', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const relation1 = OntoumlFactory.createRelation('married to', RelationStereotype.MATERIAL, class1, class1);
-      const class2 = OntoumlFactory.createRelator('Marriage');
-      const relation2 = OntoumlFactory.createRelation('derived from', RelationStereotype.DERIVATION, relation1, class2);
-      relation2.properties[0].name = 'derivedRelation';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation1, relation2]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createKind('Person');
+      const relation1 = model.createMaterialRelation(class1, class1, 'married to');
+      const class2 = model.createRelator('MArriage');
+      const relation2 = model.createDerivationRelation(relation1, class2, 'derived from');
+
+      relation2.getSourceEnd().name = 'derivedRelation';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).not.toContain('<:derivedRelation>');
@@ -87,10 +92,11 @@ describe('Inverse relations', () => {
 
   describe('Stereotype specific inverse mapping: from OntoUML stereotype to gufo object property', () => {
     it('inverse «material» to gufoi:MaterialRelationshipType', () => {
-      const _class = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createRelation('knows', RelationStereotype.MATERIAL, _class, _class);
-      relation.properties[0].name = 'knownBy';
-      const model = OntoumlFactory.createPackage('Model', [_class, relation]);
+      const model = new Package({ name: 'Model' });
+      const _class = model.createKind('Person');
+      const relation = model.createMaterialRelation(_class, _class, 'knows');
+
+      relation.getSourceEnd().name = 'knownBy';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:knownBy> <rdf:type> <gufo:MaterialRelationshipType>');
@@ -98,10 +104,11 @@ describe('Inverse relations', () => {
     });
 
     it('inverse «comparative» to gufoi:ComparativeRelationshipType', () => {
-      const _class = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createRelation('heavierThan', RelationStereotype.COMPARATIVE, _class, _class);
-      relation.properties[0].name = 'heavier';
-      const model = OntoumlFactory.createPackage('Model', [_class, relation]);
+      const model = new Package({ name: 'Model' });
+      const _class = model.createKind('Person');
+      const relation = model.createComparativeRelation(_class, _class, 'heavierThan');
+
+      relation.getSourceEnd().name = 'heavier';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:heavier> <rdf:type> <gufo:ComparativeRelationshipType>');
@@ -109,169 +116,179 @@ describe('Inverse relations', () => {
     });
 
     it('inverse «inverse bringsAbout» to gufoi:broughtAbout', () => {
-      const class1 = OntoumlFactory.createEvent('Car Accident');
-      const class2 = OntoumlFactory.createSituation('Dangerous Situation');
-      const relation = OntoumlFactory.createRelation('has post state', RelationStereotype.BRINGS_ABOUT, class1, class2);
-      relation.properties[0].name = 'accident';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createEvent('Car Accident');
+      const class2 = model.createSituation('Dangerous Situation');
+      const relation = model.createBringsAboutRelation(class1, class2, 'has post state');
+
+      relation.getSourceEnd().name = 'accident';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:accident> <rdfs:subPropertyOf> <gufoi:wasBroughtAboutBy>');
     });
 
     it('inverse «characterization» to gufoi:inheresIn', () => {
-      const class1 = OntoumlFactory.createMode('Love');
-      const class2 = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createRelation('inheres in person', RelationStereotype.CHARACTERIZATION, class1, class2);
-      relation.properties[0].name = 'love';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createExtrinsicMode('Love');
+      const class2 = model.createKind('Person');
+      const relation = model.createCharacterizationRelation(class1, class2, 'inheres in person');
+
+      relation.getSourceEnd().name = 'love';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:love> <rdfs:subPropertyOf> <gufoi:bears>');
     });
 
     it('inverse «creation» to gufoi:wasCreatedIn', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Birth');
-      const relation = OntoumlFactory.createRelation('was created in birth', RelationStereotype.CREATION, class1, class2);
-      relation.properties[0].name = 'bornPerson';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createKind('Person');
+      const class2 = model.createEvent('Birth');
+      const relation = model.createCreationRelation(class1, class2, 'was created in birth');
+
+      relation.getSourceEnd().name = 'bornPerson';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:bornPerson> <rdfs:subPropertyOf> <gufoi:created>');
     });
 
     it('inverse «externalDependence» to gufoi:externallyDependsOn', () => {
-      const class1 = OntoumlFactory.createMode('Love');
-      const class2 = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createRelation('has lovee', RelationStereotype.EXTERNAL_DEPENDENCE, class1, class2);
-      relation.properties[0].name = 'love';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createExtrinsicMode('Love');
+      const class2 = model.createKind('Person');
+      const relation = model.createExternalDependencyRelation(class1, class2, 'has lovee');
+
+      relation.getSourceEnd().name = 'love';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:love> <rdfs:subPropertyOf> <gufoi:hasModeDependee>');
     });
 
     it('inverse «historicalDependence» to gufoi:historicallyDependsOn', () => {
-      const class1 = OntoumlFactory.createMode('Person');
-      const relation = OntoumlFactory.createRelation('has ancestor', RelationStereotype.HISTORICAL_DEPENDENCE, class1, class1);
-      relation.properties[0].name = 'descendant';
-      const model = OntoumlFactory.createPackage('Model', [class1, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createIntrinsicMode('Person');
+      const relation = model.createHistoricalDependenceRelation(class1, class1, 'has ancestor');
+
+      relation.getSourceEnd().name = 'descendant';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:descendant> <rdfs:subPropertyOf> <gufoi:hasHistoricalDependee>');
     });
 
     it('inverse «manifestation» to gufoi:manifestedIn', () => {
-      const class1 = OntoumlFactory.createMode('Vulnerability');
-      const class2 = OntoumlFactory.createEvent('Accident');
-      const relation = OntoumlFactory.createRelation('manifested in accident', RelationStereotype.MANIFESTATION, class1, class2);
-      relation.properties[0].name = 'vulnerability';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createExtrinsicMode('Vulnerability');
+      const class2 = model.createEvent('Accident');
+      const relation = model.createManifestationRelation(class1, class2, 'manifested in accident');
+
+      relation.getSourceEnd().name = 'vulnerability';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:vulnerability> <rdfs:subPropertyOf> <gufoi:manifested>');
     });
 
     it('inverse «mediation» to gufoi:mediates', () => {
-      const class1 = OntoumlFactory.createRelator('Enrolment');
-      const class2 = OntoumlFactory.createRole('Student');
-      const relation = OntoumlFactory.createRelation('involves student', RelationStereotype.MEDIATION, class1, class2);
-      relation.properties[0].name = 'enrolment';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createRelator('Enrollment');
+      const class2 = model.createRole('Student');
+      const relation = model.createMediationRelation(class1, class2, 'involves student');
+
+      relation.getSourceEnd().name = 'enrolment';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:enrolment> <rdfs:subPropertyOf> <gufoi:isMediatedBy>');
     });
 
     it('inverse «participation» to gufoi:participatedIn', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Fight');
-      const relation = OntoumlFactory.createRelation('participated in fight', RelationStereotype.PARTICIPATION, class1, class2);
-      relation.properties[0].name = 'fighter';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createKind('Person');
+      const class2 = model.createEvent('Fight');
+      const relation = model.createParticipationRelation(class1, class2, 'participated in fight');
+
+      relation.getSourceEnd().name = 'fighter';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:fighter> <rdfs:subPropertyOf> <gufoi:hadParticipant>');
     });
 
     it('inverse «termination» to gufoi:wasTerminatedIn', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createEvent('Death');
-      const relation = OntoumlFactory.createRelation('was terminated in death', RelationStereotype.TERMINATION, class1, class2);
-      relation.properties[0].name = 'dead';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createKind('Person');
+      const class2 = model.createEvent('Death');
+      const relation = model.createTerminationRelation(class1, class2, 'was terminated in death');
+
+      relation.getSourceEnd().name = 'dead';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:dead> <rdfs:subPropertyOf> <gufoi:terminated>');
     });
 
     it('inverse «trigger» to gufoi:contributedToTrigger', () => {
-      const class1 = OntoumlFactory.createSituation('Hazard');
-      const class2 = OntoumlFactory.createEvent('Threat Event');
-      const relation = OntoumlFactory.createRelation('triggered threat event', RelationStereotype.TRIGGERS, class1, class2);
-      relation.properties[0].name = 'hazard';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createSituation('Hazard');
+      const class2 = model.createEvent('Threat Event');
+      const relation = model.createTriggersRelation(class1, class2, 'triggered threat event');
+
+      relation.getSourceEnd().name = 'hazard';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:hazard> <rdfs:subPropertyOf> <gufoi:wasTriggeredBy>');
     });
 
     it('inverse «componentOf» to gufoi:contributedToTrigger', () => {
-      const class1 = OntoumlFactory.createKind('Engine');
-      const class2 = OntoumlFactory.createKind('Car');
-      const relation = OntoumlFactory.createRelation('is component of car', RelationStereotype.COMPONENT_OF, class1, class2);
-      relation.properties[0].name = 'engine';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createKind('Engine');
+      const class2 = model.createKind('Car');
+      const relation = model.createComponentOfRelation(class1, class2, 'is component of car');
+
+      relation.getSourceEnd().name = 'engine';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:engine> <rdfs:subPropertyOf> <gufoi:hasComponent>');
     });
 
     it('inverse «memberOf» to gufoi:isCollectionMemberOf', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createKind('Group');
-      const relation = OntoumlFactory.createRelation('is component of car', RelationStereotype.MEMBER_OF, class1, class2);
-      relation.properties[0].name = 'member';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createKind('Person');
+      const class2 = model.createKind('Group');
+      const relation = model.createMemberOfRelation(class1, class2, 'is component of car');
+
+      relation.getSourceEnd().name = 'member';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:member> <rdfs:subPropertyOf> <gufoi:hasCollectionMember>');
     });
 
     it('inverse «subCollectionOf» to gufoi:isSubCollectionOf', () => {
-      const class1 = OntoumlFactory.createKind('Research Group');
-      const class2 = OntoumlFactory.createKind('Faculty');
-      const relation = OntoumlFactory.createRelation(
-        'is subcollection of faculty',
-        RelationStereotype.SUBCOLLECTION_OF,
-        class1,
-        class2
-      );
-      relation.properties[0].name = 'researchGroup';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createKind('Research Group');
+      const class2 = model.createKind('Faculty');
+      const relation = model.createSubCollectionOfRelation(class1, class2, 'is subcollection of faculty');
+
+      relation.getSourceEnd().name = 'researchGroup';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:researchGroup> <rdfs:subPropertyOf> <gufoi:hasSubCollection>');
     });
 
     it('inverse «subQuantityOf» to gufoi:isSubQuantityOf', () => {
-      const class1 = OntoumlFactory.createQuantity('Water');
-      const class2 = OntoumlFactory.createQuantity('Wine');
-      const relation = OntoumlFactory.createRelation('is part of wine', RelationStereotype.SUBQUANTITY_OF, class1, class2);
-      relation.properties[0].name = 'waterSubQuantity';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createQuantity('Water');
+      const class2 = model.createQuantity('Wine');
+      const relation = model.createSubQuantityOfRelation(class1, class2, 'is part of wine');
+
+      relation.getSourceEnd().name = 'waterSubQuantity';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:waterSubQuantity> <rdfs:subPropertyOf> <gufoi:hasSubQuantity>');
     });
 
     it('inverse «participational» to gufoi:isEventProperPartOf', () => {
-      const class1 = OntoumlFactory.createEvent('Player Contribution');
-      const class2 = OntoumlFactory.createEvent('Match');
-      const relation = OntoumlFactory.createRelation('is part of match', RelationStereotype.PARTICIPATIONAL, class1, class2);
-      relation.properties[0].name = 'playerContribution';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createEvent('Player Contribution');
+      const class2 = model.createEvent('Match');
+      const relation = model.createParticipationalRelation(class1, class2, 'is part of match');
+
+      relation.getSourceEnd().name = 'playerContribution';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:playerContribution> <rdfs:subPropertyOf> <gufoi:hasEventProperPart>');
@@ -280,66 +297,72 @@ describe('Inverse relations', () => {
 
   describe('Part-whole relation without stereotype mapping', () => {
     it('Should generate subproperty of gufoi:hasProperPart if more specific property is not available', () => {
-      const class1 = OntoumlFactory.createCollective('Treasure');
-      const class2 = OntoumlFactory.createSituation('Hazard');
-      const relation = OntoumlFactory.createPartWhole('is part of hazardous situation', class1, class2);
-      relation.properties[0].name = 'treasure';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createCollective('Treasure');
+      const class2 = model.createSituation('Hazard');
+      const relation = model.createPartWholeRelation(class1, class2, 'is part of hazardous situation');
+
+      relation.getSourceEnd().name = 'treasure';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:treasure> <rdfs:subPropertyOf> <gufoi:hasProperPart>');
     });
 
     it('Inverse between functional complexes should generate subproperty of gufoi:hasObjectProperPart', () => {
-      const class1 = OntoumlFactory.createKind('Engine');
-      const class2 = OntoumlFactory.createKind('Car');
-      const relation = OntoumlFactory.createPartWhole('is part of car', class1, class2);
-      relation.properties[0].name = 'engine';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createKind('Engine');
+      const class2 = model.createKind('Car');
+      const relation = model.createPartWholeRelation(class1, class2, 'is part of car');
+
+      relation.getSourceEnd().name = 'engine';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:engine> <rdfs:subPropertyOf> <gufoi:hasObjectProperPart>');
     });
 
     it('Inverse between relators should generate subproperty of gufoi:hasAspectProperPart', () => {
-      const class1 = OntoumlFactory.createRelator('SubAgreement');
-      const class2 = OntoumlFactory.createRelator('Agreement');
-      const relation = OntoumlFactory.createPartWhole('is part of agreement', class1, class2);
-      relation.properties[0].name = 'subAgreement';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createRelator('SubAgreement');
+      const class2 = model.createRelator('Agreement');
+      const relation = model.createPartWholeRelation(class1, class2, 'is part of agreement');
+
+      relation.getSourceEnd().name = 'subAgreement';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:subAgreement> <rdfs:subPropertyOf> <gufoi:hasAspectProperPart>');
     });
 
     it('Inverse between mode and relator should generate subproperty of gufoi:hasApectProperPart', () => {
-      const class1 = OntoumlFactory.createMode('Commitment');
-      const class2 = OntoumlFactory.createRelator('Agreement');
-      const relation = OntoumlFactory.createPartWhole('is part of agreement', class1, class2);
-      relation.properties[0].name = 'commitment';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createExtrinsicMode('Commitment');
+      const class2 = model.createRelator('Agreement');
+      const relation = model.createPartWholeRelation(class1, class2, 'is part of agreement');
+
+      relation.getSourceEnd().name = 'commitment';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:commitment> <rdfs:subPropertyOf> <gufoi:hasAspectProperPart>');
     });
 
     it('Inverse between modes should generate subproperty of gufoi:hasAspectProperPart', () => {
-      const class1 = OntoumlFactory.createMode('Admiration');
-      const class2 = OntoumlFactory.createMode('Love');
-      const relation = OntoumlFactory.createPartWhole('is part of love', class1, class2);
-      relation.properties[0].name = 'admiration';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createExtrinsicMode('Admiration');
+      const class2 = model.createExtrinsicMode('Love');
+      const relation = model.createPartWholeRelation(class1, class2, 'is part of love');
+
+      relation.getSourceEnd().name = 'admiration';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:admiration> <rdfs:subPropertyOf> <gufoi:hasAspectProperPart>');
     });
 
     it('Between events should generate subproperty of gufoi:hasEventProperPart', () => {
-      const class1 = OntoumlFactory.createEvent('Keynote Speech');
-      const class2 = OntoumlFactory.createEvent('Conference');
-      const relation = OntoumlFactory.createPartWhole('is part of conference', class1, class2);
-      relation.properties[0].name = 'keynoteSpeech';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createEvent('Keynote Speech');
+      const class2 = model.createEvent('Conference');
+      const relation = model.createPartWholeRelation(class1, class2, 'is part of conference');
+
+      relation.getSourceEnd().name = 'keynoteSpeech';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
       expect(owlCode).toContain('<:keynoteSpeech> <rdfs:subPropertyOf> <gufoi:hasEventProperPart>');
@@ -348,32 +371,35 @@ describe('Inverse relations', () => {
 
   describe('Hide property creation { createObjectProperty: false, createInverses: true }', () => {
     it('inverse «mediation» should NOT be transformed into an object property', () => {
-      const class1 = OntoumlFactory.createRelator('Enrolment');
-      const class2 = OntoumlFactory.createRole('Student');
-      const relation = OntoumlFactory.createRelation('involves student', RelationStereotype.MEDIATION, class1, class2);
-      relation.properties[0].name = 'enrolment';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createRelator('Enrolment');
+      const class2 = model.createRole('Student');
+      const relation = model.createMediationRelation(class1, class2, 'involves student');
+
+      relation.getSourceEnd().name = 'enrolment';
 
       const owlCode = generateGufo(model, { createObjectProperty: false, createInverses: true });
       expect(owlCode).not.toContain('<:enrolment>');
     });
 
     it('inverse «characterization» should NOT be transformed into an object property', () => {
-      const class1 = OntoumlFactory.createMode('Love');
-      const class2 = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createRelation('inheres in person', RelationStereotype.CHARACTERIZATION, class1, class2);
-      relation.properties[0].name = 'love';
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createExtrinsicMode('Love');
+      const class2 = model.createKind('Person');
+      const relation = model.createCharacterizationRelation(class1, class2, 'inheres in person');
+
+      relation.getSourceEnd().name = 'love';
 
       const owlCode = generateGufo(model, { createObjectProperty: false, createInverses: true });
       expect(owlCode).not.toContain('<:love>');
     });
 
     it('inverse «material» should generate gufo:MaterialRelationshipType', () => {
-      const _class = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createRelation('knows', RelationStereotype.MATERIAL, _class, _class);
-      relation.properties[0].name = 'knower';
-      const model = OntoumlFactory.createPackage('Model', [_class, relation]);
+      const model = new Package({ name: 'Model' });
+      const _class = model.createKind('Person');
+      const relation = model.createMaterialRelation(_class, _class, 'knows');
+
+      relation.getSourceEnd().name = 'knower';
 
       const owlCode = generateGufo(model, { createObjectProperty: false, createInverses: true });
       expect(owlCode).toContain('<:knower> <rdf:type> <gufo:MaterialRelationshipType>');
@@ -381,10 +407,11 @@ describe('Inverse relations', () => {
     });
 
     it('inverse «comparative» should generate gufo:ComparativeRelationshipType', () => {
-      const _class = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createRelation('heavierThan', RelationStereotype.COMPARATIVE, _class, _class);
-      relation.properties[0].name = 'heavier';
-      const model = OntoumlFactory.createPackage('Model', [_class, relation]);
+      const model = new Package({ name: 'Model' });
+      const _class = model.createKind('Person');
+      const relation = model.createComparativeRelation(_class, _class, 'heavierThan');
+
+      relation.getSourceEnd().name = 'heavier';
 
       const owlCode = generateGufo(model, { createObjectProperty: false, createInverses: true });
       expect(owlCode).toContain('<:heavier> <rdf:type> <gufo:ComparativeRelationshipType>');

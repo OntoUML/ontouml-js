@@ -1,12 +1,17 @@
 import { generateGufo } from './helpers';
-import OntoumlFactory from './ontouml_factory';
+import { Package } from '@libs/ontouml';
 
 describe('Enumeration', () => {
   let result;
 
   beforeAll(async () => {
-    const _class = OntoumlFactory.createEnumeration('Color', ['blue', 'red', 'green']);
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    const _class = model.createEnumeration('Color');
+
+    _class.createLiteral('blue');
+    _class.createLiteral('red');
+    _class.createLiteral('green');
+
     result = generateGufo(model);
   });
 

@@ -146,7 +146,7 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
       throw new Error('Invalid NaN parameter');
     }
 
-    this.cardinality = lowerBound + '..' + upperBound;
+    this.cardinality = lowerBound + '..' + (upperBound === UNBOUNDED_CARDINALITY ? '*' : upperBound);
   }
 
   setCardinalityToZeroToOne(): void {
@@ -226,7 +226,7 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
   }
 
   isBounded(): boolean {
-    return this.cardinality && this.getUpperBoundAsNumber() < propertyUtils.UNBOUNDED_CARDINALITY;
+    return this.cardinality !== '*' && this.cardinality !== '0..*';
   }
 
   static isCardinalityValid(cardinality: string): boolean {

@@ -116,8 +116,8 @@ function writerCardinalityAxiom(transformer: Ontouml2Gufo, relation: Relation, d
 
   let restrictionNodes = [];
 
-  const lowerBound = relation.getTargetEnd().getLowerBoundAsNumber();
-  const upperBound = relation.getTargetEnd().getUpperBoundAsNumber();
+  const lowerBound = targetAssociationEnd.getLowerBoundAsNumber();
+  const upperBound = targetAssociationEnd.getUpperBoundAsNumber();
   const targetClassNode = namedNode(transformer.getUri(targetAssociationEnd.propertyType));
 
   if (lowerBound === 1 && upperBound === propertyUtils.UNBOUNDED_CARDINALITY) {
