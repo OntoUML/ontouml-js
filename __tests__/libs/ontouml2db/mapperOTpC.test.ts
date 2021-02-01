@@ -15,7 +15,7 @@ import { RelationshipChecker } from './test_resources/graph_tester/RelationshipC
 import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { TrackerChecker } from './test_resources/graph_tester/TrackerChecker';
 
-let options: OntoUML2DBOptions = {
+let options: Partial<OntoUML2DBOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_CLASS,
   targetDBMS: DBMSSupported.H2,
   isStandardizeNames: true,

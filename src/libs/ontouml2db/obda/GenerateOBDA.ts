@@ -13,7 +13,7 @@ import { Node } from '@libs/ontouml2db/graph/Node';
 export class GenerateOBDA {
   static getFile(options: OntoUML2DBOptions, tracker: Tracker): string {
     let file: string;
-    file = this.generatePrefixDeclaration();
+    file = this.generatePrefixDeclaration(options);
 
     file += this.generateMappingDeclaration(options, tracker);
 

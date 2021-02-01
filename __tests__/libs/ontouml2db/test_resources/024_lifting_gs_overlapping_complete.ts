@@ -7,10 +7,6 @@ import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
-it('should ignore', () => {
-  expect(true).toBe(true);
-});
-
 const gChecker_024_lifting_gs_overlapping_complete = new GraphChecker()
   .addNode(new NodeChecker('super_class').addProperty(new PropertyChecker('super_class_id', false)))
   .addNode(

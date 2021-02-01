@@ -7,10 +7,6 @@ import { RelationshipChecker } from './graph_tester/RelationshipChecker';
 import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { TestResource } from './TestResource';
 
-it('should ignore', () => {
-  expect(true).toBe(true);
-});
-
 const gChecker_011_flatting_cascading_association_multiples_gs = new GraphChecker()
   .addNode(
     new NodeChecker('organization_a')

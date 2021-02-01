@@ -5,10 +5,6 @@ import { NodeChecker } from './graph_tester/NodeChecker';
 import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
-it('should ignore', () => {
-  expect(true).toBe(true);
-});
-
 const jsonModel = require('./test_003_flatting_gs.json');
 
 const gChecker_003_flatting_gs = new GraphChecker()

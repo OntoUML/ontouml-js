@@ -5,10 +5,6 @@ import { PropertyChecker } from './graph_tester/PropertyChecker';
 import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
-it('should ignore', () => {
-  expect(true).toBe(true);
-});
-
 const jsonModel = require('./test_005_flatting_orthogonal_gs.json');
 
 const gChecker_005_flatting_orthogonal_gs = new GraphChecker()

@@ -6,10 +6,6 @@
 import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
 //import { Tracker } from '@libs/ontouml2db/graph/REM_Tracker';
 
-it('should ignore', () => {
-  expect(true).toBe(true);
-});
-
 export class TrackerChecker {
   private sourceNodeName: string;
   private targetNodeName: string;

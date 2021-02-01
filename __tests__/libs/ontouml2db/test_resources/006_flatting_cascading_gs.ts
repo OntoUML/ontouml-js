@@ -5,10 +5,6 @@ import { PropertyChecker } from './graph_tester/PropertyChecker';
 import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
-it('should ignore', () => {
-  expect(true).toBe(true);
-});
-
 const gChecker_006_flatting_cascading_gs = new GraphChecker()
   .addNode(
     new NodeChecker('person')

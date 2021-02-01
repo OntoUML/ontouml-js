@@ -7,10 +7,6 @@ import { PropertyChecker } from './PropertyChecker';
 import { Node } from '@libs/ontouml2db/graph/Node';
 import { Graph } from '@libs/ontouml2db/graph/Graph';
 
-it('should ignore', () => {
-  expect(true).toBe(true);
-});
-
 export class NodeChecker {
   private name: string;
   private properties: PropertyChecker[];

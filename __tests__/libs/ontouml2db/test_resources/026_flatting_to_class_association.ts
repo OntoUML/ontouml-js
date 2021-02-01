@@ -7,10 +7,6 @@ import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
-it('should ignore', () => {
-  expect(true).toBe(true);
-});
-
 const gChecker_026_flatting_to_class_association = new GraphChecker()
   .addNode(new NodeChecker('person').addProperty(new PropertyChecker('person_id', false)))
   .addNode(new NodeChecker('associated_class1').addProperty(new PropertyChecker('associated_class1_id', false)))

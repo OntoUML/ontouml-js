@@ -12,10 +12,6 @@ import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
 import { Tracer } from '@libs/ontouml2db/tracker/Tracer';
 //import { TracedNode } from '@libs/ontouml2db/tracker/TracedNode';
 
-it('should ignore', () => {
-  expect(true).toBe(true);
-});
-
 export class GraphChecker {
   private nodes: NodeChecker[];
   private relationships: RelationshipChecker[];

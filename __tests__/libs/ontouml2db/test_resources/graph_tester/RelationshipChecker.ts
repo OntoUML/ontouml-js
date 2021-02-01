@@ -7,10 +7,6 @@ import { Graph } from '@libs/ontouml2db/graph/Graph';
 import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
 import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
 
-it('should ignore', () => {
-  expect(true).toBe(true);
-});
-
 export class RelationshipChecker {
   private sourceNodeName: string;
   private sourceCardinality: Cardinality;

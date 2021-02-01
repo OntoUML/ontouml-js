@@ -7,10 +7,6 @@ import { RelationshipChecker } from './graph_tester/RelationshipChecker';
 import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { TestResource } from './TestResource';
 
-it('should ignore', () => {
-  expect(true).toBe(true);
-});
-
 const gChecker_010_flatting_with_association_multiples_generalizations = new GraphChecker()
   .addNode(
     new NodeChecker('organization_a')

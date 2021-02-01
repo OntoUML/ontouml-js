@@ -5,8 +5,9 @@
 
 import { StrategyType } from '@libs/ontouml2db/constants/StrategyType';
 import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
+import { ServiceOptions } from './../';
 
-export class OntoUML2DBOptions {
+export class OntoUML2DBOptions implements ServiceOptions {
   mappingStrategy: StrategyType;
   targetDBMS: DBMSSupported;
   isStandardizeNames: boolean;

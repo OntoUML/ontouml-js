@@ -1,13 +1,11 @@
-import { ModelManager } from 'src';
+// import { ModelManager } from 'src';
 import { GraphChecker } from './graph_tester/GraphChecker';
-
-it('should ignore', () => {
-  expect(true).toBe(true);
-});
+import { Project } from '@libs/ontouml';
 
 export interface TestResource {
   title: string;
-  model: object;
   checker: GraphChecker;
-  modelManager: ModelManager;
+  project: Project;
+  // model: object;
+  // modelManager: ModelManager;
 }

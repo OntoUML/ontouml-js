@@ -5,10 +5,6 @@ import { PropertyChecker } from './graph_tester/PropertyChecker';
 import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
-it('should ignore', () => {
-  expect(true).toBe(true);
-});
-
 const gChecker_012_simple_lifting = new GraphChecker()
   .addNode(
     new NodeChecker('person')

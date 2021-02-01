@@ -4,7 +4,7 @@ import { OntoUML2DB } from '@libs/ontouml2db/OntoUML2DB';
 import { OntoUML2DBOptions } from '@libs/ontouml2db/OntoUML2DBOptions';
 import { baseExample } from './../ontouml2db/test_resources/baseExample';
 
-const options: OntoUML2DBOptions[] = [
+const options: Partial<OntoUML2DBOptions>[] = [
   {
     mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
     targetDBMS: DBMSSupported.H2,

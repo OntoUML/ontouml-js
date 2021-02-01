@@ -5,10 +5,6 @@ import { PropertyChecker } from './graph_tester/PropertyChecker';
 import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
-it('should ignore', () => {
-  expect(true).toBe(true);
-});
-
 const jsonModel = require('./test_004_flatting_multiples_generalizations.json');
 
 const gChecker_004_flatting_multiples_generalizations = new GraphChecker()

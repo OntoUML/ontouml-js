@@ -70,7 +70,7 @@ const testResources: TestResource[] = [
   test_028
 ];
 
-let options: OntoUML2DBOptions = {
+let options: Partial<OntoUML2DBOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
   targetDBMS: DBMSSupported.GENERIC_SCHEMA,
   isStandardizeNames: true,

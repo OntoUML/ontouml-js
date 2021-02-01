@@ -9,7 +9,7 @@ import { StrategyType } from '@libs/ontouml2db/constants/StrategyType';
 import { baseExample } from './test_resources/baseExample';
 import { OntoUML2DB } from '@libs/ontouml2db';
 
-let options: OntoUML2DBOptions = {
+let options: Partial<OntoUML2DBOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
   targetDBMS: DBMSSupported.H2,
   isStandardizeNames: true,

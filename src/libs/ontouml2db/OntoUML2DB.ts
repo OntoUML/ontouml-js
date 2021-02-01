@@ -18,11 +18,10 @@ import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
 import { GenerateOBDA } from '@libs/ontouml2db/obda/GenerateOBDA';
 import { GenerateConnection } from './obda/GenerateConnection';
 
-// import { ModelManager } from '@libs/model';
-
 import { Project } from '@libs/ontouml';
+import { Service, ServiceIssue } from './../';
 
-export class OntoUML2DB {
+export class OntoUML2DB implements Service {
   private graph: Graph;
   private tracker: Tracker;
   private options: OntoUML2DBOptions;
@@ -57,6 +56,17 @@ export class OntoUML2DB {
     }
 
     strategy.run(this.graph, this.tracker);
+  }
+
+  // TODO: review the implementation of run(), move the actual behavior into the method, and delete unnecessary methods.
+  run(): { result: any; issues?: ServiceIssue[] } {
+    return {
+      result: {
+        schema: this.getRelationalSchema(),
+        odba: this.getOBDAFile(),
+        connection: this.getProtegeConnection()
+      }
+    };
   }
 
   /**

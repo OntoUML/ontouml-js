@@ -7,10 +7,6 @@ import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
-it('should ignore', () => {
-  expect(true).toBe(true);
-});
-
 const gChecker_027_lifting_multiple_relations_to_remake = new GraphChecker()
   .addNode(
     new NodeChecker('person')
