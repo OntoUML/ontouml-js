@@ -15,30 +15,44 @@ yarn add ontouml-js
 
 ## Usage
 
-![](/resources/howto.png)
-
-This package is designed to support manipulating OntoUML models, such as the one above, serialized in [`ontouml-schema`](https://github.com/OntoUML/ontouml-schema) JSON format.
+This package is designed to support manipulating OntoUML models and their serialization into [`ontouml-schema`](https://github.com/OntoUML/ontouml-schema) compliant JSON files.
 
 ```javascript
-import { ModelManager } from 'ontouml-js';
+import { Project, serializationUtils } from 'ontouml-js';
 
-const modelManager = new ModelManager(ontoULMSchemaModel);
+// Every OntoUML element can be created from a constructor that can receive a partial object as references for its creation
+const project = new Project({ name: 'My Project' }); // creates an OntoUML projects
 
-const rootPackage = modelManager.rootPackage; // ontoULMSchemaModel root package
-rootPackage.getAllContents() // returns elements recursively contained within the executing package
-rootPackage.getAllContentsByType([ OntoumlType.GENERALIZATION_TYPE, OntoumlType.PROPERTY_TYPE ]) // returns elements contained within in the package selected by type
-rootPackage.getContentById('elementId') // returns the element bearering the given id
+// Projects contain an instance of Package  dubbed model that contains all model elements in the project
+// Container elements, e.g., projects and packages, also serve as factories for their contents
+const model = project.createModel({ name: 'Model a.k.a. Root Package' }); // creates a "model" Package
 
-const student = rootPackage.getAllContents().find(element => element.name === 'Student'); // Student role class
-student.stereotypes; // [ 'role' ]
-student.getParents(); // [ Person kind class ]
-student.getAncestors(); // [ Person kind class, Agent category class ]
-student.getChildren(); // [ Privately Enrolled role class, Privately Enrolled role class ]
-student.getDescendants(); // [ Privately Enrolled role class, Privately Enrolled role class ]
+// Instead of partial objects, "factory" methods receive more suitable lists of arguments to facilitating populating elements
+const person = model.createKind('Person');
+const school = model.createKind('School');
+const date = model.createDatatype('Date');
+const enrollment = model.createRelator('Enrollment');
+const studiesAt = model.createMaterialRelation(person, school, 'studies at');
 
-const enrollmentDate = rootPackage.getAllContents().find(element => element.name === 'Enrollment Date'); // Enrollment Date mode class
-enrollmentDate.properties[0]; // date property representing the class's attibute
-enrollmentDate.getRootPackage; // returns rootPackage
+model.createMediationRelation(enrollment, person);
+model.createMediationRelation(enrollment, school);
+
+// our API is constantly updated to include helpful methods to facilitate building OntoUML models
+studiesAt.getTargetEnd().name = 'school';
+studiesAt.getTargetEnd().setCardinalityToMany();
+studiesAt.getSourceEnd().name = 'student';
+studiesAt.getSourceEnd().cardinality = '1..*';
+
+enrollment.createAttribute(date, 'enrollment date');
+
+// Containers also include methods to easily support retrieving their contents
+model.getAllAttributes(); // returns all contained attributes
+model.getAllClasses(); // returns all contained classes
+model.getAllGeneralizations(); // returns all contained generalizations
+
+// Any element can be easily serialized into JSON, and properly serialized elements can be deserialized just as easily
+const projectSerialization = JSON.stringify(project);
+const projectCopy = serializationUtils.parse(projectSerialization);
 ```
 
 ## About

@@ -1,11 +1,11 @@
 import { getUriManager } from './helpers';
-import OntoumlFactory from './ontouml_factory';
+import { Package } from '@libs/ontouml';
 
 describe('URI generation duplicate names', () => {
   it('Duplicate detection is case sensitive', () => {
-    const class1 = OntoumlFactory.createKind('Person');
-    const class2 = OntoumlFactory.createKind('person');
-    const model = OntoumlFactory.createPackage(null, [class1, class2]);
+    const model = new Package();
+    const class1 = model.createKind('Person');
+    const class2 = model.createKind('person');
 
     const uriManager = getUriManager(model);
     const class1Uri = uriManager.getUri(class1);
@@ -17,9 +17,9 @@ describe('URI generation duplicate names', () => {
 
   describe('Should generate distinct URIs for elements with the same name', () => {
     it('2 classes', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createKind('Person');
-      const model = OntoumlFactory.createPackage(null, [class1, class2]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const class2 = model.createKind('Person');
 
       const uriManager = getUriManager(model);
       const class1Uri = uriManager.getUri(class1);
@@ -31,10 +31,10 @@ describe('URI generation duplicate names', () => {
     });
 
     it('3 classes', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createKind('Person');
-      const class3 = OntoumlFactory.createKind('Person');
-      const model = OntoumlFactory.createPackage(null, [class1, class2, class3]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const class2 = model.createKind('Person');
+      const class3 = model.createKind('Person');
 
       const uriManager = getUriManager(model);
       const class1Uri = uriManager.getUri(class1);
@@ -50,10 +50,10 @@ describe('URI generation duplicate names', () => {
     });
 
     it('2 relations ', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const relation1 = OntoumlFactory.createMaterial('knows', class1, class1);
-      const relation2 = OntoumlFactory.createMaterial('knows', class1, class1);
-      const model = OntoumlFactory.createPackage(null, [class1, relation1, relation2]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const relation1 = model.createMaterialRelation(class1, class1, 'knows');
+      const relation2 = model.createMaterialRelation(class1, class1, 'knows');
 
       const uriManager = getUriManager(model);
       const relation1Uri = uriManager.getUri(relation1);
@@ -65,10 +65,10 @@ describe('URI generation duplicate names', () => {
     });
 
     it('2 attributes of the same class', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const attribute1 = OntoumlFactory.addAttribute(class1, 'friend', class1);
-      const attribute2 = OntoumlFactory.addAttribute(class1, 'friend', class1);
-      const model = OntoumlFactory.createPackage(null, [class1]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const attribute1 = class1.createAttribute(class1, 'friend');
+      const attribute2 = class1.createAttribute(class1, 'friend');
 
       const uriManager = getUriManager(model);
       const attribute1Uri = uriManager.getUri(attribute1);
@@ -80,11 +80,11 @@ describe('URI generation duplicate names', () => {
     });
 
     it('2 attributes of the different classes', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createKind('Dog');
-      const attribute1 = OntoumlFactory.addAttribute(class1, 'friend', class1);
-      const attribute2 = OntoumlFactory.addAttribute(class2, 'friend', class2);
-      const model = OntoumlFactory.createPackage(null, [class1, class2]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const class2 = model.createKind('Dog');
+      const attribute1 = class1.createAttribute(class1, 'friend');
+      const attribute2 = class2.createAttribute(class2, 'friend');
 
       const uriManager = getUriManager(model);
       const attribute1Uri = uriManager.getUri(attribute1);
@@ -96,8 +96,8 @@ describe('URI generation duplicate names', () => {
     });
 
     it('1 class and 1 package ', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const model = OntoumlFactory.createPackage('Person', [class1]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
 
       const uriManager = getUriManager(model);
       const classUri = uriManager.getUri(class1);
@@ -109,9 +109,9 @@ describe('URI generation duplicate names', () => {
     });
 
     it('1 class and 1 relation ', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createMaterial('Person', class1, class1);
-      const model = OntoumlFactory.createPackage(null, [class1, relation]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const relation = model.createMaterialRelation(class1, class1, 'Person');
 
       const uriManager = getUriManager(model);
       const classUri = uriManager.getUri(class1);
@@ -123,10 +123,10 @@ describe('URI generation duplicate names', () => {
     });
 
     it('1 class and 1 relation end ', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createMaterial('knows', class1, class1);
-      relation.properties[1].name = 'Person';
-      const model = OntoumlFactory.createPackage(null, [class1, relation]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const relation = model.createMaterialRelation(class1, class1, 'knows');
+      relation.getTargetEnd().name = 'Person';
 
       const uriManager = getUriManager(model);
       const classUri = uriManager.getUri(class1);
@@ -138,9 +138,9 @@ describe('URI generation duplicate names', () => {
     });
 
     it('1 class and 1 attribute', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const attribute = OntoumlFactory.addAttribute(class1, 'Person', class1);
-      const model = OntoumlFactory.createPackage(null, [class1]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const attribute = class1.createAttribute(class1, 'Person');
 
       const uriManager = getUriManager(model);
       const classUri = uriManager.getUri(class1);
@@ -152,10 +152,10 @@ describe('URI generation duplicate names', () => {
     });
 
     it('1 relation and 1 attribute', () => {
-      const class1 = OntoumlFactory.createKind('Car');
-      const attribute = OntoumlFactory.addAttribute(class1, 'Person', class1);
-      const relation = OntoumlFactory.createMaterial('Person', class1, class1);
-      const model = OntoumlFactory.createPackage(null, [class1, relation]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const attribute = class1.createAttribute(class1, 'Person');
+      const relation = model.createMaterialRelation(class1, class1, 'Person');
 
       const uriManager = getUriManager(model);
       const attributeUri = uriManager.getUri(attribute);
@@ -169,10 +169,10 @@ describe('URI generation duplicate names', () => {
 
   describe('Should use incremental sufixes to distinguish repeated URIs', () => {
     it('3 classes', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createKind('Person');
-      const class3 = OntoumlFactory.createKind('Person');
-      const model = OntoumlFactory.createPackage(null, [class1, class2, class3]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const class2 = model.createKind('Person');
+      const class3 = model.createKind('Person');
 
       const uriManager = getUriManager(model);
       const class1Uri = uriManager.getUri(class1);
@@ -185,11 +185,11 @@ describe('URI generation duplicate names', () => {
     });
 
     it('3 relations ', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const relation1 = OntoumlFactory.createMaterial('knows', class1, class1);
-      const relation2 = OntoumlFactory.createMaterial('knows', class1, class1);
-      const relation3 = OntoumlFactory.createMaterial('knows', class1, class1);
-      const model = OntoumlFactory.createPackage(null, [class1, relation1, relation2, relation3]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const relation1 = model.createMaterialRelation(class1, class1, 'knows');
+      const relation2 = model.createMaterialRelation(class1, class1, 'knows');
+      const relation3 = model.createMaterialRelation(class1, class1, 'knows');
 
       const uriManager = getUriManager(model);
       const relation1Uri = uriManager.getUri(relation1);
@@ -202,11 +202,11 @@ describe('URI generation duplicate names', () => {
     });
 
     it('3 attributes', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const attribute1 = OntoumlFactory.addAttribute(class1, 'friend', class1);
-      const attribute2 = OntoumlFactory.addAttribute(class1, 'friend', class1);
-      const attribute3 = OntoumlFactory.addAttribute(class1, 'friend', class1);
-      const model = OntoumlFactory.createPackage(null, [class1]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const attribute1 = class1.createAttribute(class1, 'friend');
+      const attribute2 = class1.createAttribute(class1, 'friend');
+      const attribute3 = class1.createAttribute(class1, 'friend');
 
       const uriManager = getUriManager(model);
       const attribute1Uri = uriManager.getUri(attribute1);
@@ -221,9 +221,9 @@ describe('URI generation duplicate names', () => {
 
   describe('Original URI preference', () => {
     it('Class has preference over relation', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createMaterial('Person', class1, class1);
-      const model = OntoumlFactory.createPackage(null, [class1, relation]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const relation = model.createMaterialRelation(class1, class1, 'Person');
 
       const uriManager = getUriManager(model);
       const classUri = uriManager.getUri(class1);
@@ -234,9 +234,9 @@ describe('URI generation duplicate names', () => {
     });
 
     it('Class has preference over attribute', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const attribute = OntoumlFactory.addAttribute(class1, 'Person', class1);
-      const model = OntoumlFactory.createPackage(null, [class1]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const attribute = class1.createAttribute(class1, 'Person');
 
       const uriManager = getUriManager(model);
       const classUri = uriManager.getUri(class1);
@@ -247,10 +247,10 @@ describe('URI generation duplicate names', () => {
     });
 
     it('Attribute has preference over relation', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const attribute = OntoumlFactory.addAttribute(class1, 'betterThan', class1);
-      const relation = OntoumlFactory.createMaterial('betterThan', class1, class1);
-      const model = OntoumlFactory.createPackage(null, [class1, relation]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const attribute = class1.createAttribute(class1, 'betterThan');
+      const relation = model.createMaterialRelation(class1, class1, 'betterThan');
 
       const uriManager = getUriManager(model);
       const attributeUri = uriManager.getUri(attribute);
@@ -261,10 +261,10 @@ describe('URI generation duplicate names', () => {
     });
 
     it('Class > attribute > relation', () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const attribute = OntoumlFactory.addAttribute(class1, 'Person', class1);
-      const relation = OntoumlFactory.createMaterial('Person', class1, class1);
-      const model = OntoumlFactory.createPackage(null, [class1, relation]);
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const attribute = class1.createAttribute(class1, 'Person');
+      const relation = model.createMaterialRelation(class1, class1, 'Person');
 
       const uriManager = getUriManager(model);
       const classUri = uriManager.getUri(class1);

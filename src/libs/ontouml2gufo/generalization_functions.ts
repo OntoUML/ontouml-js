@@ -1,7 +1,3 @@
-// import { IClassifier, IGeneralization } from '@types';
-// import Ontouml2Gufo from './ontouml2gufo';
-// import { isClass, isRelation } from './helper_functions';
-
 import { Generalization } from '@libs/ontouml';
 import { Ontouml2Gufo } from './';
 

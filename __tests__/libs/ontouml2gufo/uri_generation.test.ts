@@ -1,12 +1,11 @@
-import { RelationStereotype } from '@constants/.';
 import { getUriManager } from './helpers';
-import OntoumlFactory from './ontouml_factory';
+import { Package } from '@libs/ontouml';
 
 describe('URI generation', () => {
   describe("{ uriFormatBy = 'id' }", () => {
     it('should generate id-based uri for classes', () => {
-      const _class = OntoumlFactory.cloneKind({ id: '123', name: 'Person' });
-      const model = OntoumlFactory.createPackage('Model', [_class]);
+      const model = new Package({ name: 'Model' });
+      const _class = model.createKind('Person', { id: '123' });
 
       const uriManager = getUriManager(model, { uriFormatBy: 'id' });
       const uri = uriManager.getUri(_class);
@@ -14,10 +13,9 @@ describe('URI generation', () => {
     });
 
     it('should generate id-based uri for attribute', () => {
-      const _class = OntoumlFactory.createKind('Person');
-      const attr = OntoumlFactory.addAttribute(_class, 'name', _class);
-      attr.id = '456';
-      const model = OntoumlFactory.createPackage('Model', [_class]);
+      const model = new Package({ name: 'Model' });
+      const _class = model.createKind('Person');
+      const attr = _class.createAttribute(_class, 'name', { id: '456' });
 
       const uriManager = getUriManager(model, { uriFormatBy: 'id' });
       const uri = uriManager.getUri(attr);
@@ -25,10 +23,9 @@ describe('URI generation', () => {
     });
 
     it('should generate id-based uri for relations', () => {
-      const _class = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createRelation('knows', RelationStereotype.MATERIAL, _class, _class);
-      relation.id = 'abc';
-      const model = OntoumlFactory.createPackage('Model', [_class, relation]);
+      const model = new Package({ name: 'Model' });
+      const _class = model.createKind('Person');
+      const relation = model.createMaterialRelation(_class, _class, 'knows', { id: 'abc' });
 
       const uriManager = getUriManager(model, { uriFormatBy: 'id' });
       const uri = uriManager.getUri(relation);
@@ -40,8 +37,8 @@ describe('URI generation', () => {
 
   describe("{uriFormatBy = 'name'}", () => {
     it('should generate name-based uri for classes', () => {
-      const _class = OntoumlFactory.cloneKind({ name: 'Person' });
-      const model = OntoumlFactory.createPackage('Model', [_class]);
+      const model = new Package({ name: 'Model' });
+      const _class = model.createKind('Person');
 
       const uriManager = getUriManager(model, { uriFormatBy: 'name' });
       const uri = uriManager.getUri(_class);
@@ -49,8 +46,8 @@ describe('URI generation', () => {
     });
 
     it('should generate normalized name-based uri for classes', () => {
-      const _class = OntoumlFactory.cloneKind({ name: 'Happy Person' });
-      const model = OntoumlFactory.createPackage('Model', [_class]);
+      const model = new Package({ name: 'Model' });
+      const _class = model.createKind('Happy Person');
 
       const uriManager = getUriManager(model, { uriFormatBy: 'name' });
       const uri = uriManager.getUri(_class);
@@ -58,9 +55,9 @@ describe('URI generation', () => {
     });
 
     it('should generate name-based uri for attribute', () => {
-      const _class = OntoumlFactory.createKind('Person');
-      const attr = OntoumlFactory.addAttribute(_class, 'name', _class);
-      const model = OntoumlFactory.createPackage('Model', [_class]);
+      const model = new Package({ name: 'Model' });
+      const _class = model.createKind('Person');
+      const attr = _class.createAttribute(_class, 'name');
 
       const uriManager = getUriManager(model, { uriFormatBy: 'name' });
       const uri = uriManager.getUri(attr);
@@ -68,9 +65,9 @@ describe('URI generation', () => {
     });
 
     it('should generate normalized name-based uri for attribute', () => {
-      const _class = OntoumlFactory.createKind('Person');
-      const attr = OntoumlFactory.addAttribute(_class, 'last name', _class);
-      const model = OntoumlFactory.createPackage('Model', [_class]);
+      const model = new Package({ name: 'Model' });
+      const _class = model.createKind('Person');
+      const attr = _class.createAttribute(_class, 'last name');
 
       const uriManager = getUriManager(model, { uriFormatBy: 'name' });
       const uri = uriManager.getUri(attr);
@@ -78,9 +75,9 @@ describe('URI generation', () => {
     });
 
     it('should generate name-based uri for relations', () => {
-      const _class = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createRelation('knows', RelationStereotype.MATERIAL, _class, _class);
-      const model = OntoumlFactory.createPackage('Model', [_class, relation]);
+      const model = new Package({ name: 'Model' });
+      const _class = model.createKind('Person');
+      const relation = model.createMaterialRelation(_class, _class, 'knows');
 
       const uriManager = getUriManager(model, { uriFormatBy: 'name' });
       const uri = uriManager.getUri(relation);
@@ -88,9 +85,9 @@ describe('URI generation', () => {
     });
 
     it('should generate normalized name-based uri for relations', () => {
-      const _class = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createRelation('has friend', RelationStereotype.MATERIAL, _class, _class);
-      const model = OntoumlFactory.createPackage('Model', [_class, relation]);
+      const model = new Package({ name: 'Model' });
+      const _class = model.createKind('Person');
+      const relation = model.createMaterialRelation(_class, _class, 'has friend');
 
       const uriManager = getUriManager(model, { uriFormatBy: 'name' });
       const uri = uriManager.getUri(relation);
@@ -98,10 +95,11 @@ describe('URI generation', () => {
     });
 
     it('should use target role name when relation name is empty', () => {
-      const _class = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createRelation('   ', RelationStereotype.MATERIAL, _class, _class);
-      relation.properties[1].name = 'friend';
-      const model = OntoumlFactory.createPackage('Model', [_class, relation]);
+      const model = new Package({ name: 'Model' });
+      const _class = model.createKind('Person');
+      const relation = model.createMaterialRelation(_class, _class, '   ');
+
+      relation.getTargetEnd().name = 'friend';
 
       const uriManager = getUriManager(model, { uriFormatBy: 'name' });
       const uri = uriManager.getUri(relation);
@@ -109,10 +107,11 @@ describe('URI generation', () => {
     });
 
     it('should use target role name when relation name is null', () => {
-      const _class = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createRelation(null, RelationStereotype.MATERIAL, _class, _class);
-      relation.properties[1].name = 'friend';
-      const model = OntoumlFactory.createPackage('Model', [_class, relation]);
+      const model = new Package({ name: 'Model' });
+      const _class = model.createKind('Person');
+      const relation = model.createMaterialRelation(_class, _class, null);
+
+      relation.getTargetClassEnd().name = 'friend';
 
       const uriManager = getUriManager(model, { uriFormatBy: 'name' });
       const uri = uriManager.getUri(relation);
@@ -120,10 +119,10 @@ describe('URI generation', () => {
     });
 
     it("When the relation name and the target role name are missing, should create the relation's URI based on its stereotype, source and target classes: «material»", () => {
-      const class1 = OntoumlFactory.createKind('Person');
-      const class2 = OntoumlFactory.createKind('Car');
-      const relation = OntoumlFactory.createRelation(null, RelationStereotype.MATERIAL, class1, class2);
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createKind('Person');
+      const class2 = model.createKind('Car');
+      const relation = model.createMaterialRelation(class1, class2, null);
 
       const uriManager = getUriManager(model, { uriFormatBy: 'name' });
       const uri = uriManager.getUri(relation);
@@ -131,10 +130,10 @@ describe('URI generation', () => {
     });
 
     it("When the relation name and the target role name are missing, should create the relation's URI based on its stereotype, source and target classes: «characterization»", () => {
-      const class1 = OntoumlFactory.createKind('Love');
-      const class2 = OntoumlFactory.createKind('Person');
-      const relation = OntoumlFactory.createRelation(null, RelationStereotype.CHARACTERIZATION, class1, class2);
-      const model = OntoumlFactory.createPackage('Model', [class1, class2, relation]);
+      const model = new Package({ name: 'Model' });
+      const class1 = model.createKind('Love');
+      const class2 = model.createKind('Person');
+      const relation = model.createCharacterizationRelation(class1, class2, null);
 
       const uriManager = getUriManager(model, { uriFormatBy: 'name' });
       const uri = uriManager.getUri(relation);

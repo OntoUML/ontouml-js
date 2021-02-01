@@ -2,7 +2,6 @@ import { Relation, Project, Class, Property, OntoumlElement, Package } from './'
 import { Container } from './container';
 
 export abstract class ModelElement extends OntoumlElement {
-  // TODO: decide how to avoid people directly setting project and container fields
   project: Project;
   container: ModelElement;
   propertyAssignments: object;

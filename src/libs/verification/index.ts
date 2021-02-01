@@ -1,5 +1,6 @@
+export * from './constants';
 export * from './verification_issue';
-export * from './ontouml2verification';
+export * from './ontouml_verification';
 export * from './class_verification';
 export * from './generalization_set_verification';
 export * from './generalization_verification';

@@ -1,10 +1,3 @@
-// import { IClass } from '@types';
-// import { OntoumlType, ClassStereotype, OntologicalNature } from '@constants/.';
-// import { transformAnnotations } from './annotation_function';
-// import { isPrimitiveDatatype, isEnumeration, getStereotype } from './helper_functions';
-// import Ontouml2Gufo from './ontouml2gufo';
-// import { getUriFromXsdMapping } from './uri_manager';
-
 import { Class, ClassStereotype, OntologicalNature, OntoumlType } from '@libs/ontouml';
 import { Ontouml2Gufo, transformAnnotations, getUriFromXsdMapping } from './';
 

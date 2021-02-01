@@ -1,9 +1,0 @@
-@startuml
-
-enum "Office Availability Status" <<datatype>> {
-    AVAILABLE
-    BOOKED
-    UNDER_MAINTENANCE
-}
-
-@enduml

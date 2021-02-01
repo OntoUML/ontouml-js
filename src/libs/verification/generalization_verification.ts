@@ -5,7 +5,6 @@ export class GeneralizationVerification {
   static verifyGeneralization(generalization: Generalization): VerificationIssue[] {
     let foundIssues: VerificationIssue[] = GeneralizationVerification.checkMinimalConsistency(generalization);
 
-    // The verification stops if one of the basic consistency rules are violated
     if (foundIssues.some((issue: VerificationIssue) => issue.isError())) {
       return foundIssues;
     }

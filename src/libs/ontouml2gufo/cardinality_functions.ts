@@ -1,25 +1,3 @@
-// import { IClass, IProperty, IRelation } from '@types';
-// import Ontouml2Gufo from './ontouml2gufo';
-// import { getSuperProperty } from './relation_functions';
-// import { getInverseSuperProperty } from './relations_inverse_functions';
-// import {
-//   isDerivation,
-//   isInstantiation,
-//   isBounded,
-//   isMaterial,
-//   isComparative,
-//   hasOntoumlStereotype,
-//   isPartWholeRelation,
-//   isBinary,
-//   impliesExistentialDependency,
-//   getLowerboundCardinality,
-//   getUpperboundCardinality,
-//   UNBOUNDED_CARDINALITY,
-//   targetExistentiallyDependsOnSource,
-//   sourceExistentiallyDependsOnTarget,
-//   isClass
-// } from './helper_functions';
-
 import { Relation, Class, Property, propertyUtils } from '@libs/ontouml';
 import { Ontouml2Gufo, getInverseSuperProperty, getSuperProperty } from './';
 
@@ -116,8 +94,8 @@ function writerCardinalityAxiom(transformer: Ontouml2Gufo, relation: Relation, d
 
   let restrictionNodes = [];
 
-  const lowerBound = relation.getTargetEnd().cardinality.lowerBound;
-  const upperBound = relation.getTargetEnd().cardinality.upperBound;
+  const lowerBound = targetAssociationEnd.getLowerBoundAsNumber();
+  const upperBound = targetAssociationEnd.getUpperBoundAsNumber();
   const targetClassNode = namedNode(transformer.getUri(targetAssociationEnd.propertyType));
 
   if (lowerBound === 1 && upperBound === propertyUtils.UNBOUNDED_CARDINALITY) {

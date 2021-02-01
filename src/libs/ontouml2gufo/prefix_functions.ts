@@ -1,8 +1,3 @@
-// import { IPackage } from '@types';
-// import { getAllPackages, getName } from './helper_functions';
-// import { normalizeName } from './uri_manager';
-// import Ontouml2Gufo from './ontouml2gufo';
-
 import { Package } from '@libs/ontouml/';
 import { Ontouml2Gufo, normalizeName } from './';
 

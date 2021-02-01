@@ -614,8 +614,4 @@ export class Class extends ModelElement
   getOwnOppositeRelationEnds(): Property[] {
     throw new Error('Method unimplemented!');
   }
-
-  isPrimitiveDataType(): boolean {
-    throw new Error('Method unimplemented!');
-  }
 }

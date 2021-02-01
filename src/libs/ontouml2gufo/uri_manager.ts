@@ -1,26 +1,3 @@
-// import { IElement, IRelation, IPackage, IClass, IClassifier, IProperty } from '@types';
-// import Ontouml2Gufo from './ontouml2gufo';
-// import { getSuperProperty } from './relation_functions';
-// import { getPackagePrefix } from './prefix_functions';
-// import {
-//   getAllAssociationEnds,
-//   getAllAttributes,
-//   getAllClasses,
-//   getAllPackages,
-//   getAllRelations,
-//   getAllLiterals,
-//   getName,
-//   hasAttributes,
-//   hasOntoumlStereotype,
-//   isComparative,
-//   isDatatype,
-//   isDerivation,
-//   isInstantiation,
-//   isMaterial,
-//   isPartWholeRelation,
-//   isRelation
-// } from './helper_functions';
-
 import { Relation, ModelElement, Property, Class, Package } from '@libs/ontouml/';
 import { Ontouml2Gufo, getSuperProperty, getPackagePrefix } from './';
 
@@ -86,7 +63,7 @@ export class UriManager {
         throw new Error('Cannot generate id-based URI for an element that does not have an id.');
       }
 
-      if ((element as Relation).hasInstantiationStereotype() || (element as Relation).hasDerivationStereotype()) {
+      if (element instanceof Relation && (element.hasInstantiationStereotype() || element.hasDerivationStereotype())) {
         continue;
       }
 
@@ -270,7 +247,11 @@ export const getNormalizedName = (element: ModelElement) => {
 };
 
 export const getUriFromXsdMapping = (element: ModelElement): string => {
-  if (element instanceof Class && (!element.hasDatatypeStereotype() || element.hasAttributes())) return null;
+  if (!(element instanceof Class)) {
+    return null;
+  } else if (!element.hasDatatypeStereotype() || element.hasAttributes()) {
+    return null;
+  }
 
   const xsdTypes: string[] = [
     'anyURI',

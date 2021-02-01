@@ -30,7 +30,7 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
   type: OntoumlType.PROPERTY_TYPE;
   container: ClassifierType;
   stereotype: PropertyStereotype;
-  cardinality: Cardinality;
+  cardinality: string;
   propertyType: Relation | Class;
   subsettedProperties: Property[]; // TODO: update null when deserializing
   redefinedProperties: Property[];
@@ -44,13 +44,7 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
 
     Object.defineProperty(this, 'type', { value: OntoumlType.PROPERTY_TYPE, enumerable: true });
 
-    this.cardinality = this.cardinality || { lowerBound: 0, upperBound: UNBOUNDED_CARDINALITY };
-
-    if (typeof this.cardinality === 'string') {
-      this.cardinality = Property.parseCardinality(this.cardinality as string);
-    } else if (!this.cardinality) {
-      this.cardinality = { lowerBound: 0, upperBound: UNBOUNDED_CARDINALITY };
-    }
+    this.cardinality = this.cardinality || '0..*';
 
     this.stereotype = this.stereotype || null;
     this.subsettedProperties = this.subsettedProperties || null;
@@ -63,17 +57,21 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
   }
 
   static parseCardinality(cardinalityString: string): Cardinality {
-    const cardinalities = cardinalityString.split('..');
-    const lowerBoundString: any = cardinalities[0];
-    const upperBoundString: any = cardinalities[1] || cardinalities[0];
-    const lowerBound = lowerBoundString === '*' ? 0 : Number(lowerBoundString);
+    let lowerBoundString = '';
+    let upperBoundString = '';
+
+    if (cardinalityString.includes('..')) {
+      const cardinalities = cardinalityString.split('..');
+      lowerBoundString = cardinalities[0];
+      upperBoundString = cardinalities[1] || cardinalities[0];
+    } else {
+      lowerBoundString = upperBoundString = cardinalityString;
+    }
+
+    const lowerBound = lowerBoundString === '*' ? UNBOUNDED_CARDINALITY : Number(lowerBoundString);
     const upperBound = upperBoundString === '*' ? UNBOUNDED_CARDINALITY : Number(upperBoundString);
 
-    if (isNaN(lowerBound) || isNaN(upperBound)) {
-      return { lowerBound: 0, upperBound: UNBOUNDED_CARDINALITY };
-    } else {
-      return { lowerBound, upperBound };
-    }
+    return { lowerBound, upperBound };
   }
 
   hasStereotypeContainedIn(stereotypes: PropertyStereotype | PropertyStereotype[]): boolean {
@@ -101,13 +99,6 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
 
     const propertyType = this.propertyType as ClassifierType;
     propertySerialization.propertyType = propertyType.getReference();
-
-    if (this.cardinality) {
-      let lowerBound = this.cardinality.lowerBound;
-      let upperBound = this.cardinality.upperBound;
-
-      propertySerialization.cardinality = `${lowerBound}..${upperBound === UNBOUNDED_CARDINALITY ? '*' : upperBound}`;
-    }
 
     return propertySerialization;
   }
@@ -142,7 +133,7 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
     return this.isSharedAggregationEnd() || this.isCompositeAggregationEnd();
   }
 
-  setCardinality(lowerBound: number, upperBound: number): void {
+  setCardinalityFromNumbers(lowerBound: number, upperBound: number): void {
     if (lowerBound < 0) {
       throw new Error('Lower bound must be a positive number');
     } else if (upperBound < 1) {
@@ -155,24 +146,31 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
       throw new Error('Invalid NaN parameter');
     }
 
-    this.cardinality.lowerBound = lowerBound;
-    this.cardinality.upperBound = upperBound;
+    this.cardinality = lowerBound + '..' + (upperBound === UNBOUNDED_CARDINALITY ? '*' : upperBound);
   }
 
   setCardinalityToZeroToOne(): void {
-    this.setCardinality(0, 1);
+    this.setCardinalityFromNumbers(0, 1);
   }
 
   setCardinalityToMany(): void {
-    this.setCardinality(0, UNBOUNDED_CARDINALITY);
+    this.setCardinalityFromNumbers(0, UNBOUNDED_CARDINALITY);
   }
 
   setCardinalityToOne(): void {
-    this.setCardinality(1, 1);
+    this.setCardinalityFromNumbers(1, 1);
   }
 
   setCardinalityToOneToMany(): void {
-    this.setCardinality(1, UNBOUNDED_CARDINALITY);
+    this.setCardinalityFromNumbers(1, UNBOUNDED_CARDINALITY);
+  }
+
+  getLowerBoundAsNumber(): number {
+    return Property.parseCardinality(this.cardinality).lowerBound;
+  }
+
+  getUpperBoundAsNumber(): number {
+    return Property.parseCardinality(this.cardinality).upperBound;
   }
 
   /**
@@ -200,7 +198,7 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
   }
 
   isOptional(): boolean {
-    return this.cardinality.lowerBound === 0;
+    return this.getLowerBoundAsNumber() === 0;
   }
 
   isMandatory(): boolean {
@@ -208,23 +206,19 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
   }
 
   isZeroToOne(): boolean {
-    const card = this.cardinality;
-    return card.lowerBound === 0 && card.upperBound === 1;
+    return this.getLowerBoundAsNumber() === 0 && this.getUpperBoundAsNumber() === 1;
   }
 
   isZeroToMany(): boolean {
-    const card = this.cardinality;
-    return card.lowerBound === 0 && card.upperBound === UNBOUNDED_CARDINALITY;
+    return this.getLowerBoundAsNumber() === 0 && this.getUpperBoundAsNumber() === UNBOUNDED_CARDINALITY;
   }
 
   isOneToOne(): boolean {
-    const card = this.cardinality;
-    return card.lowerBound === 1 && card.upperBound === 1;
+    return this.getLowerBoundAsNumber() === 1 && this.getUpperBoundAsNumber() === 1;
   }
 
   isOneToMany(): boolean {
-    const card = this.cardinality;
-    return card.lowerBound === 1 && card.upperBound === UNBOUNDED_CARDINALITY;
+    return this.getLowerBoundAsNumber() === 1 && this.getUpperBoundAsNumber() === UNBOUNDED_CARDINALITY;
   }
 
   hasValidCardinality(): boolean {
@@ -232,11 +226,11 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
   }
 
   isBounded(): boolean {
-    return this.cardinality && this.cardinality.upperBound < propertyUtils.UNBOUNDED_CARDINALITY;
+    return this.cardinality !== '*' && this.cardinality !== '0..*';
   }
 
-  static isCardinalityValid(cardinality: Cardinality): boolean {
-    const { lowerBound, upperBound } = cardinality;
+  static isCardinalityValid(cardinality: string): boolean {
+    const { lowerBound, upperBound } = Property.parseCardinality(cardinality);
     return !(
       lowerBound < 0 ||
       upperBound < 0 ||

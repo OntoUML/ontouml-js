@@ -1,7 +1,7 @@
 import { Class, ClassStereotype, OntologicalNature, stereotypesUtils, naturesUtils } from '@libs/ontouml';
 import { VerificationIssue, utils } from './';
 
-export const allowedStereotypeRestrictedToMatches = {
+const allowedStereotypeRestrictedToMatches = {
   [ClassStereotype.ABSTRACT]: [OntologicalNature.abstract],
   [ClassStereotype.DATATYPE]: [OntologicalNature.abstract],
   [ClassStereotype.ENUMERATION]: [OntologicalNature.abstract],

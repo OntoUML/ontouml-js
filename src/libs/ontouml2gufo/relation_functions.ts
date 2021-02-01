@@ -1,19 +1,3 @@
-// import { IRelation } from '@types';
-// import Ontouml2Gufo from './ontouml2gufo';
-// import { transformAnnotations } from './annotation_function';
-// import {
-//   getStereotype,
-//   isDerivation,
-//   isInstantiation,
-//   isMaterial,
-//   isComparative,
-//   isPartWholeRelation,
-//   holdsBetweenObjects,
-//   holdsBetweenAspects,
-//   holdsBetweenEvents,
-//   hasOntoumlStereotype
-// } from './helper_functions';
-
 import { Relation } from '@libs/ontouml/';
 import { Ontouml2Gufo, transformAnnotations } from './';
 

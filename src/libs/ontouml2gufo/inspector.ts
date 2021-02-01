@@ -1,10 +1,3 @@
-// import { IPackage, IRelation, IElement, IClass, IProperty } from '@types';
-// import { DefaultPrefixes } from './prefix_functions';
-// import { getAllClasses, getAllPackages, getAllRelations, getName } from './helper_functions';
-// import { getPackagePrefixes } from './prefix_functions';
-// import Issue from './issue';
-// import Ontouml2Gufo from './ontouml2gufo';
-
 import { ModelElement, Relation, Package, Class, Property } from '@libs/ontouml/';
 import { Ontouml2Gufo, Issue, DefaultPrefixes, getPackagePrefixes } from './';
 

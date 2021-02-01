@@ -1,9 +1,3 @@
-// import { IClass, IGeneralization, IGeneralizationSet } from '@types';
-// import { OntoumlType } from '@constants/.';
-
-// import Ontouml2Gufo from './ontouml2gufo';
-// import { isAbstract, isPrimitiveDatatype, isRigid } from './helper_functions';
-
 import _ from 'lodash';
 import { Generalization, GeneralizationSet, OntoumlType, Class } from '@libs/ontouml';
 import { Ontouml2Gufo } from './';
@@ -21,21 +15,19 @@ export const transformGeneralizationSet = (transformer: Ontouml2Gufo, genSet: Ge
 
   if (!onlyClassChildren) return;
 
-  const classParents = (genSet.generalizations as Generalization[])
-    .map(gen => gen.general)
-    .filter(parent => parent.type === OntoumlType.CLASS_TYPE);
+  const classParents = genSet.generalizations.map((gen: Generalization) => gen.getGeneralClass());
   const onlyClassParent = classParents.length === genSet.generalizations.length;
+  const parent = genSet.getGeneralClass();
+  const uniqueParent = !!parent;
 
-  const uniqueParent = _.uniq(classParents).length === 1;
-
-  if (!uniqueParent || !onlyClassParent) return;
-
-  const parent = classParents[0] as Class;
+  if (!uniqueParent || !onlyClassParent) {
+    return;
+  }
 
   if (genSet.isDisjoint) {
-    const rigidOrAbstractChildren = (classChildren as Class[]).filter(
-      child => child.hasRigidStereotype() || (child.isAbstract && !child.isPrimitiveDatatype())
-    );
+    const rigidOrAbstractChildren = genSet
+      .getSpecificClasses()
+      .filter((child: Class) => child.hasRigidStereotype() || (child.isRestrictedToAbstract() && !child.isPrimitiveDatatype()));
 
     if (rigidOrAbstractChildren.length > 1) {
       const childrenNodes = rigidOrAbstractChildren.map(_class => namedNode(transformer.getUri(_class)));

@@ -1,19 +1,3 @@
-// import { IRelation } from '@types';
-// import Ontouml2Gufo from './ontouml2gufo';
-// import { transformInverseAnnotations } from './annotation_function';
-// import {
-//   getStereotype,
-//   hasOntoumlStereotype,
-//   holdsBetweenAspects,
-//   holdsBetweenEvents,
-//   holdsBetweenObjects,
-//   isComparative,
-//   isDerivation,
-//   isInstantiation,
-//   isMaterial,
-//   isPartWholeRelation
-// } from './helper_functions';
-
 import { Relation } from '@libs/ontouml/';
 import { Ontouml2Gufo, transformInverseAnnotations } from './';
 
@@ -56,11 +40,11 @@ export function getInverseSuperProperty(relation: Relation): string {
 }
 
 export function transformInverseRelation(transformer: Ontouml2Gufo, relation: Relation) {
-  if (relation.hasInstantiationStereotype() || relation.isDerivationRelation) {
+  if (relation.hasInstantiationStereotype() || relation.isDerivationRelation()) {
     return;
   }
 
-  if (relation.hasMaterialStereotype || relation.hasComparativeStereotype()) {
+  if (relation.hasMaterialStereotype() || relation.hasComparativeStereotype()) {
     writeInverseBaseRelationAxioms(transformer, relation);
     transformInverseAnnotations(transformer, relation);
     writeInverseRelationTypeAxiom(transformer, relation);

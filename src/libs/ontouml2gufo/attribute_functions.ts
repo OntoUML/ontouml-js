@@ -1,7 +1,3 @@
-// import { IClass, IProperty } from '@types';
-// import { transformAnnotations } from './annotation_function';
-// import { isComplexDatatype, isConcrete, isDatatype, isEnumeration, isPrimitiveDatatype, isTypeDefined } from './helper_functions';
-// import { OntoumlType } from '@constants/.';
 import { OntoumlType, Property, Class } from '@libs/ontouml/';
 import { Ontouml2Gufo, transformAnnotations } from './';
 
@@ -18,10 +14,10 @@ export function transformAttribute(transformer: Ontouml2Gufo, attribute: Propert
   const containerUri = transformer.getUri(containerClass);
 
   const containerIsDatatype = containerClass.hasDatatypeStereotype();
-  const containerIsConcreteIndividual = !containerClass.isAbstract;
+  const containerIsConcreteIndividual = !containerClass.isRestrictedToAbstract();
 
-  const isTypelessAttribute = !!attribute.propertyType;
-  const isPrimitiveAttribute = (attribute.propertyType as Class).isPrimitiveDataType();
+  const isTypelessAttribute = !attribute.propertyType;
+  const isPrimitiveAttribute = attribute.propertyType && (attribute.propertyType as Class).isPrimitiveDatatype();
 
   transformer.addQuad(attributeUri, 'rdfs:domain', containerUri);
 
