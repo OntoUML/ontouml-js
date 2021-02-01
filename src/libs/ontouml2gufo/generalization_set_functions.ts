@@ -1,9 +1,3 @@
-// import { IClass, IGeneralization, IGeneralizationSet } from '@types';
-// import { OntoumlType } from '@constants/.';
-
-// import Ontouml2Gufo from './ontouml2gufo';
-// import { isAbstract, isPrimitiveDatatype, isRigid } from './helper_functions';
-
 import _ from 'lodash';
 import { Generalization, GeneralizationSet, OntoumlType, Class } from '@libs/ontouml';
 import { Ontouml2Gufo } from './';

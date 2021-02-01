@@ -1,25 +1,3 @@
-// import { IClass, IProperty, IRelation } from '@types';
-// import Ontouml2Gufo from './ontouml2gufo';
-// import { getSuperProperty } from './relation_functions';
-// import { getInverseSuperProperty } from './relations_inverse_functions';
-// import {
-//   isDerivation,
-//   isInstantiation,
-//   isBounded,
-//   isMaterial,
-//   isComparative,
-//   hasOntoumlStereotype,
-//   isPartWholeRelation,
-//   isBinary,
-//   impliesExistentialDependency,
-//   getLowerboundCardinality,
-//   getUpperboundCardinality,
-//   UNBOUNDED_CARDINALITY,
-//   targetExistentiallyDependsOnSource,
-//   sourceExistentiallyDependsOnTarget,
-//   isClass
-// } from './helper_functions';
-
 import { Relation, Class, Property, propertyUtils } from '@libs/ontouml';
 import { Ontouml2Gufo, getInverseSuperProperty, getSuperProperty } from './';
 

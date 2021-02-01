@@ -1,16 +1,8 @@
-// import { OntoumlType } from '@constants/.';
-// import { IClass, IElement, IProperty, IRelation } from '@types';
-
 import { ModelElement, Relation, Class, Property, OntoumlType } from '@libs/ontouml/';
 import { ServiceIssue } from '@libs/service_issue';
 import { ServiceIssueSeverity } from '@libs/service_issue_severity';
 
 import uniqid from 'uniqid';
-
-// enum Severity {
-//   ERROR = 'error',
-//   WARNING = 'warning'
-// }
 
 export const IssueType = {
   INVALID_BASE_IRI: {

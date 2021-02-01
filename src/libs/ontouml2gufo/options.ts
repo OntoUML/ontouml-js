@@ -1,6 +1,3 @@
-// import { IElement, IPackage } from '@types';
-// import { getName } from './helper_functions';
-
 import { ModelElement, Package } from '@libs/ontouml/';
 import { ServiceOptions } from '@libs/service_options';
 

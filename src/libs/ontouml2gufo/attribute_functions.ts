@@ -1,7 +1,3 @@
-// import { IClass, IProperty } from '@types';
-// import { transformAnnotations } from './annotation_function';
-// import { isComplexDatatype, isConcrete, isDatatype, isEnumeration, isPrimitiveDatatype, isTypeDefined } from './helper_functions';
-// import { OntoumlType } from '@constants/.';
 import { OntoumlType, Property, Class } from '@libs/ontouml/';
 import { Ontouml2Gufo, transformAnnotations } from './';
 

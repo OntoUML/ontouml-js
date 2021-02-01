@@ -1,26 +1,3 @@
-// import { IElement, IRelation, IPackage, IClass, IClassifier, IProperty } from '@types';
-// import Ontouml2Gufo from './ontouml2gufo';
-// import { getSuperProperty } from './relation_functions';
-// import { getPackagePrefix } from './prefix_functions';
-// import {
-//   getAllAssociationEnds,
-//   getAllAttributes,
-//   getAllClasses,
-//   getAllPackages,
-//   getAllRelations,
-//   getAllLiterals,
-//   getName,
-//   hasAttributes,
-//   hasOntoumlStereotype,
-//   isComparative,
-//   isDatatype,
-//   isDerivation,
-//   isInstantiation,
-//   isMaterial,
-//   isPartWholeRelation,
-//   isRelation
-// } from './helper_functions';
-
 import { Relation, ModelElement, Property, Class, Package } from '@libs/ontouml/';
 import { Ontouml2Gufo, getSuperProperty, getPackagePrefix } from './';
 
