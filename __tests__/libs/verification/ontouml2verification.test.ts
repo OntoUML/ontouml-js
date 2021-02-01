@@ -2,7 +2,7 @@ import { Package, Project } from '@libs/ontouml';
 import { OntoumlVerification } from '@libs/verification';
 
 describe(`${OntoumlVerification.name} tests`, () => {
-  describe(`${OntoumlVerification.prototype.run.name} test`, () => {
+  describe(`${OntoumlVerification.name}.${OntoumlVerification.prototype.run.name}() test`, () => {
     it('Verification of empty projects should not throw exceptions', () => {
       const service = new OntoumlVerification(new Project());
       expect(() => service.run()).not.toThrow();
@@ -19,7 +19,7 @@ describe(`${OntoumlVerification.name} tests`, () => {
 
       model.createGeneralization(model.createKind(), model.createSubkind());
 
-      expect(service.run().length).toBe(0);
+      expect(service.run().result.length).toBe(0);
     });
 
     it('Verification of inconsistent models should return issues', () => {
@@ -28,7 +28,7 @@ describe(`${OntoumlVerification.name} tests`, () => {
 
       model.createGeneralization(model.createSubkind(), model.createKind());
 
-      expect(service.run().length).toBeGreaterThan(0);
+      expect(service.run().result.length).toBeGreaterThan(0);
     });
 
     it('Successive verifications can yield different results', () => {
@@ -40,7 +40,7 @@ describe(`${OntoumlVerification.name} tests`, () => {
       model.createGeneralization(model.createSubkind(), model.createKind());
       const issueAfterChange = service.run();
 
-      expect(issueBeforeChange.length).not.toBe(issueAfterChange.length);
+      expect(issueBeforeChange.result.length).not.toBe(issueAfterChange.result.length);
     });
   });
 });

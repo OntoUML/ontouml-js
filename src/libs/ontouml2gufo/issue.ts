@@ -2,79 +2,81 @@
 // import { IClass, IElement, IProperty, IRelation } from '@types';
 
 import { ModelElement, Relation, Class, Property, OntoumlType } from '@libs/ontouml/';
+import { ServiceIssue } from '@libs/service_issue';
+import { ServiceIssueSeverity } from '@libs/service_issue_severity';
 
 import uniqid from 'uniqid';
 
-enum Severity {
-  ERROR = 'error',
-  WARNING = 'warning'
-}
+// enum Severity {
+//   ERROR = 'error',
+//   WARNING = 'warning'
+// }
 
 export const IssueType = {
   INVALID_BASE_IRI: {
     code: 'invalid_base_iri',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Invalid BaseIRI'
   },
   INVALID_CUSTOM_PACKAGE_PREFIX: {
     code: 'invalid_custom_package_prefix',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Protected prefix provided in custom package mapping'
   },
   INVALID_CUSTOM_PACKAGE_URI: {
     code: 'invalid_custom_package_uri',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Protected URI provided in custom package mapping'
   },
   INVALID_PACKAGE_PREFIX: {
     code: 'invalid_package_prefix',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Protected prefix generated in package mapping'
   },
   INVALID_PACKAGE_URI: {
     code: 'invalid_package_uri',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Protected URI generated in package mapping'
   },
   MISSING_RELATION_NAME: {
     code: 'missing_relation_name',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Missing relation name'
   },
   MISSING_INVERSE_RELATION_NAME: {
     code: 'missing_inverse_relation_name',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Missing inverse relation name'
   },
   MISSING_SOURCE_CARDINALITY: {
     code: 'missing_source_cardinality',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Missing cardinality'
   },
   MISSING_TARGET_CARDINALITY: {
     code: 'missing_target_cardinality',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Missing cardinality'
   },
   DUPLICATE_NAMES: {
     code: 'duplicate_names',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Duplicate element name'
   },
   MISSING_ATTRIBUTE_TYPE: {
     code: 'missing_attribute_type',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Missing attribute type'
   }
 };
 
-export class Issue {
+export class Issue implements ServiceIssue {
   id: string;
-  code?: string;
+  code: string;
   title: string;
   description: string;
-  severity?: 'error' | 'warning';
-  data?: any;
+  severity: ServiceIssueSeverity;
+  data: any;
 
   constructor(base: Partial<Issue>) {
     (this.id = base.id || uniqid()),

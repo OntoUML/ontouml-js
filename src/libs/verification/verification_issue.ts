@@ -7,73 +7,48 @@ import {
   stereotypesUtils,
   OntoumlStereotype
 } from '@libs/ontouml';
-
-export enum VerificationIssueCode {
-  class_identity_provider_specialization = 'class_identity_provider_specialization',
-  class_missing_nature_restrictions = 'class_missing_nature_restrictions',
-  class_missing_identity_provider = 'class_missing_identity_provider',
-  class_missing_is_extensional = 'class_missing_is_extensional',
-  class_missing_is_powertype = 'class_missing_is_powertype',
-  class_missing_order = 'class_missing_order',
-  class_multiple_identity_providers = 'class_multiple_identity_providers',
-  class_not_unique_stereotype = 'class_not_unique_stereotype',
-  class_invalid_ontouml_stereotype = 'class_invalid_ontouml_stereotype',
-  class_non_enumeration_with_literals = 'class_non_enumeration_with_literals',
-  class_enumeration_with_properties = 'class_enumeration_with_properties',
-  class_incompatible_natures = 'class_incompatible_natures',
-  generalization_inconsistent_specialization = 'generalization_inconsistent_specialization',
-  generalization_incompatible_natures = 'generalization_incompatible_natures',
-  generalization_incompatible_enumeration = 'generalization_incompatible_enumeration',
-  generalization_incompatible_datatype = 'generalization_incompatible_datatype',
-  generalization_incompatible_class_rigidity = 'generalization_incompatible_class_rigidity',
-  generalization_incompatible_class_sortality = 'generalization_incompatible_class_sortality',
-  generalization_incompatible_general_and_specific_types = 'generalization_incompatible_general_and_specific_types',
-  generalization_circular = 'generalization_circular',
-  generalization_incompatible_relation_type = 'generalization_incompatible_relation_type',
-  relation_multiple_stereotypes = 'relation_multiple_stereotypes',
-  relation_missing_is_read_only = 'relation_missing_is_read_only',
-  relation_improper_derivation = 'relation_improper_derivation'
-}
-
-export enum IssueSeverity {
-  error = 'error',
-  warning = 'warning'
-}
+import { VerificationIssueCode } from './';
+import { ServiceIssueSeverity, ServiceIssue } from './../';
 
 function stringifyStereotypes(stereotypes: OntoumlStereotype[]): string {
   return `«${stereotypes.join('», «')}»`;
 }
 
-export class VerificationIssue {
+export class VerificationIssue implements ServiceIssue {
+  id: string;
   code: VerificationIssueCode;
   title: string;
   description: string;
-  source: OntoumlElement;
-  context: OntoumlElement[];
-  severity: IssueSeverity;
+  severity: ServiceIssueSeverity;
+  data: {
+    source: OntoumlElement;
+    context: OntoumlElement[];
+  };
 
   constructor(
     source: OntoumlElement,
     code: VerificationIssueCode,
     title: string,
-    severity: IssueSeverity = IssueSeverity.warning,
+    severity: ServiceIssueSeverity = ServiceIssueSeverity.WARNING,
     description?: string,
     context?: OntoumlElement[]
   ) {
-    this.source = source;
     this.code = code;
     this.title = title;
-    this.severity = severity || IssueSeverity.warning;
+    this.severity = severity || ServiceIssueSeverity.WARNING;
     this.description = description || null;
-    this.context = context || [];
+    this.data = {
+      source,
+      context: context || []
+    };
   }
 
   isError(): boolean {
-    return this.severity === IssueSeverity.error;
+    return this.severity === ServiceIssueSeverity.ERROR;
   }
 
   isWarning(): boolean {
-    return this.severity === IssueSeverity.warning;
+    return this.severity === ServiceIssueSeverity.WARNING;
   }
 
   static createClassIdentityProviderSpecialization(source: Class, specializedUltimateSortals: Class[]): VerificationIssue {
@@ -85,7 +60,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.class_identity_provider_specialization,
       'Classes representing ultimate sortals cannot specialize other ultimate sortals',
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `The class ${source.getNameOrId()} is specializing other classes that represent ultimate sortals: ${stringifyStereotypes([
         ...specializedStereotypes
       ])}`,
@@ -99,7 +74,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.class_missing_nature_restrictions,
       "The meta-property 'restrictedTo' is not assigned",
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       description,
       []
     );
@@ -110,7 +85,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.class_missing_identity_provider,
       'Every sortal class must specialize a unique ultimate sortal',
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `The class ${source.getNameOrId()} must specialize (directly or indirectly) a unique class decorated as one of the following: ${stringifyStereotypes(
         stereotypesUtils.UltimateSortalStereotypes
       )}`,
@@ -123,7 +98,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.class_missing_is_extensional,
       "The meta-property 'isExtensional' is not assigned",
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `The meta-property 'isExtensional' of «${ClassStereotype.COLLECTIVE}» class ${source.getNameOrId()} must be assigned`,
       []
     );
@@ -134,7 +109,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.class_missing_is_powertype,
       "The meta-property 'isPowertype' is not assigned",
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `The meta-property 'isPowertype' of «${ClassStereotype.TYPE}» class ${source.getNameOrId()} must be assigned.`,
       []
     );
@@ -145,7 +120,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.class_missing_order,
       "The meta-property 'order' is not assigned",
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `The meta-property 'order' of «${ClassStereotype.TYPE}» class ${source.getNameOrId()} must be assigned.`,
       []
     );
@@ -160,7 +135,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.class_multiple_identity_providers,
       'Every sortal class must specialize a unique ultimate sortal',
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `The class ${source.getNameOrId()} is specializing multiple classes that represent ultimate sortals: ${stringifyStereotypes(
         [...specializedStereotypes]
       )}`,
@@ -173,7 +148,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.class_not_unique_stereotype,
       'Not unique class stereotype',
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `The class ${source.getNameOrId()} must have a unique OntoUML stereotype.`,
       []
     );
@@ -184,7 +159,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.class_invalid_ontouml_stereotype,
       'No valid OntoUML stereotype',
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `The class ${source.getNameOrId()} must have a unique OntoUML stereotype.`,
       []
     );
@@ -195,7 +170,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.class_non_enumeration_with_literals,
       'Only enumerations may have literals',
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `The class ${source.getNameOrId()} is not decorated as «${ClassStereotype.ENUMERATION}» and thus cannot have literals.`,
       []
     );
@@ -206,7 +181,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.class_enumeration_with_properties,
       'Enumerations may not have attributes',
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `The class ${source.getNameOrId()} decorated as «${ClassStereotype.ENUMERATION}» cannot have attributes.`,
       []
     );
@@ -217,7 +192,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.class_incompatible_natures,
       "Incompatible stereotype and 'restrictedTo' combination",
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `The «${
         source.stereotype
       }» class ${source.getNameOrId()} has its value for 'restrictedTo' incompatible with the stereotype`,
@@ -234,7 +209,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.generalization_inconsistent_specialization,
       '',
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       '',
       []
     );
@@ -248,7 +223,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.generalization_incompatible_natures,
       "Prohibited generalization: incompatible 'restrictedTo' values",
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `The allowed ontological natures of instances of ${specific.getNameOrId()} are not among the allowed ontological natures of its superclass ${general.getNameOrId()}`,
       [general, specific]
     );
@@ -262,7 +237,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.generalization_incompatible_enumeration,
       'Prohibited generalization: enumeration specialization',
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `An enumeration can only be in generalization relation with other enumerations`,
       [general, specific]
     );
@@ -276,7 +251,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.generalization_incompatible_datatype,
       'Prohibited generalization: datatype specialization',
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       'A datatype can only be in generalization relation with other datatypes',
       [general, specific]
     );
@@ -290,7 +265,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.generalization_incompatible_class_rigidity,
       'Prohibited generalization: rigid/semi-rigid specializing an anti-rigid',
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `The rigid/semi-rigid class ${specific.getNameOrId()} cannot specialize the anti-rigid class ${general.getNameOrId()}`,
       [general, specific]
     );
@@ -304,7 +279,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.generalization_incompatible_class_sortality,
       'Prohibited generalization: non-sortal specializing a sortal',
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `The non-sortal class ${specific.getNameOrId()} cannot specialize the sortal class ${general.getNameOrId()}`,
       [general, specific]
     );
@@ -315,7 +290,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.generalization_incompatible_general_and_specific_types,
       'Prohibited generalization: specific and general of distinct types',
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `Generalizations must exclusively involve classes or relations, never a combination`,
       [source.general, source.specific]
     );
@@ -326,7 +301,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.generalization_circular,
       'Prohibited generalization: circular generalization',
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       `Generalizations must be defined between two distinct classes/relations`,
       [source.general, source.specific]
     );
@@ -339,7 +314,7 @@ export class VerificationIssue {
       source,
       VerificationIssueCode.generalization_incompatible_relation_type,
       '',
-      IssueSeverity.error,
+      ServiceIssueSeverity.ERROR,
       '',
       []
     );
@@ -348,18 +323,39 @@ export class VerificationIssue {
   static createRelationMultipleStereotypes(source: Relation): VerificationIssue {
     throw new Error('Unimplemented: relation_multiple_stereotypes');
 
-    return new VerificationIssue(source, VerificationIssueCode.relation_multiple_stereotypes, '', IssueSeverity.error, '', []);
+    return new VerificationIssue(
+      source,
+      VerificationIssueCode.relation_multiple_stereotypes,
+      '',
+      ServiceIssueSeverity.ERROR,
+      '',
+      []
+    );
   }
 
   static createRelationMissingIsReadOnly(source: Relation): VerificationIssue {
     throw new Error('Unimplemented: relation_missing_is_read_only');
 
-    return new VerificationIssue(source, VerificationIssueCode.relation_missing_is_read_only, '', IssueSeverity.error, '', []);
+    return new VerificationIssue(
+      source,
+      VerificationIssueCode.relation_missing_is_read_only,
+      '',
+      ServiceIssueSeverity.ERROR,
+      '',
+      []
+    );
   }
 
   static createRelationImproperDerivation(source: Relation): VerificationIssue {
     throw new Error('Unimplemented: relation_improper_derivation');
 
-    return new VerificationIssue(source, VerificationIssueCode.relation_improper_derivation, '', IssueSeverity.error, '', []);
+    return new VerificationIssue(
+      source,
+      VerificationIssueCode.relation_improper_derivation,
+      '',
+      ServiceIssueSeverity.ERROR,
+      '',
+      []
+    );
   }
 }

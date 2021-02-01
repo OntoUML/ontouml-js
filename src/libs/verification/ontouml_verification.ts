@@ -20,9 +20,10 @@ import {
   PropertyVerification,
   RelationVerification
 } from '@libs/verification';
+import { Service, ServiceOptions } from './..';
 import _ from 'lodash';
 
-export interface VerificationOptions {}
+export interface VerificationOptions extends ServiceOptions {}
 
 /**
  * Utility class for perform syntactical model verification
@@ -30,7 +31,7 @@ export interface VerificationOptions {}
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
-export class OntoumlVerification {
+export class OntoumlVerification implements Service {
   elementToVerify: ModelElement | Project;
   options: VerificationOptions;
   issues: VerificationIssue[];
@@ -43,8 +44,10 @@ export class OntoumlVerification {
     this.elementToVerify = input;
   }
 
-  run(): VerificationIssue[] {
-    return (this.issues = OntoumlVerification.verify(this.elementToVerify));
+  run(): { result: VerificationIssue[] } {
+    return {
+      result: this.issues = OntoumlVerification.verify(this.elementToVerify)
+    };
   }
 
   static verify(element: ModelElement | Project): VerificationIssue[] {

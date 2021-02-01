@@ -1,3 +1,4 @@
 export * from './libs/ontouml';
 export { Ontouml2Gufo, Options } from './libs/ontouml2gufo';
-export { OntoumlVerification, VerificationIssue, VerificationIssueCode, IssueSeverity } from './libs/verification';
+export * from './libs';
+export { OntoumlVerification, VerificationIssue, VerificationIssueCode } from './libs/verification';
