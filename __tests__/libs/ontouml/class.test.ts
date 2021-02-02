@@ -7,9 +7,9 @@ import {
   Literal,
   Project,
   serializationUtils,
-  classUtils,
+  ORDERLESS_LEVEL,
   naturesUtils,
-  stereotypesUtils,
+  stereotypeUtils,
   PropertyStereotype
 } from '@libs/ontouml';
 
@@ -121,7 +121,7 @@ describe(`${Class.name} Tests`, () => {
       isDerived: true,
       isExtensional: true,
       isPowertype: true,
-      order: classUtils.ORDERLESS_LEVEL
+      order: ORDERLESS_LEVEL
     });
     const attribute = fullyFeaturedCategory.createAttribute(enumeration);
 
@@ -614,7 +614,7 @@ describe(`${Class.name} Tests`, () => {
     const classWithNonValidStereotype = model.createClass('classWithNonValidStereotype');
     const classWithoutStereotypes = model.createClass('classWithoutStereotypes');
 
-    stereotypesUtils.ClassStereotypes.forEach((stereotype: ClassStereotype) =>
+    stereotypeUtils.ClassStereotypes.forEach((stereotype: ClassStereotype) =>
       it(`Test class with stereotype '${stereotype}'`, () => {
         classWithValidStereotype.stereotype = stereotype;
         expect(classWithValidStereotype.hasValidStereotypeValue()).toBe(true);
@@ -634,7 +634,7 @@ describe(`${Class.name} Tests`, () => {
     const classWithUniqueStereotype = model.createKind();
 
     it('Test classWithoutStereotypes', () =>
-      expect(classWithoutStereotypes.hasStereotypeContainedIn(stereotypesUtils.ClassStereotypes)).toBe(false));
+      expect(classWithoutStereotypes.hasStereotypeContainedIn(stereotypeUtils.ClassStereotypes)).toBe(false));
     it('Test classWithUniqueStereotype', () =>
       expect(classWithUniqueStereotype.hasStereotypeContainedIn(ClassStereotype.KIND)).toBe(true));
   });

@@ -11,7 +11,7 @@ import {
   Package,
   Classifier,
   utils,
-  stereotypesUtils,
+  stereotypeUtils,
   naturesUtils,
   MultilingualText,
   ClassStereotype,
@@ -19,14 +19,9 @@ import {
   Generalization,
   GeneralizationSet,
   classifierUtils,
-  OntoumlType
-} from './';
-
-const ORDERLESS_LEVEL = Infinity;
-
-export const classUtils = {
+  OntoumlType,
   ORDERLESS_LEVEL
-};
+} from './';
 
 export class Class extends ModelElement
   implements Decoratable<ClassStereotype>, Container<Property | Literal, Property | Literal>, Classifier<Class> {
@@ -225,7 +220,7 @@ export class Class extends ModelElement
   }
 
   hasValidStereotypeValue(): boolean {
-    return decoratableUtils.hasValidStereotypeValue<ClassStereotype>(this, stereotypesUtils.ClassStereotypes);
+    return decoratableUtils.hasValidStereotypeValue<ClassStereotype>(this, stereotypeUtils.ClassStereotypes);
   }
 
   /** Checks if `this.stereotype` is contained in the set of values in
@@ -270,16 +265,16 @@ export class Class extends ModelElement
   }
 
   hasEndurantOnlyStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypesUtils.EndurantStereotypes);
+    return this.hasStereotypeContainedIn(stereotypeUtils.EndurantStereotypes);
   }
 
   hasMomentOnlyStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypesUtils.MomentOnlyStereotypes);
+    return this.hasStereotypeContainedIn(stereotypeUtils.MomentOnlyStereotypes);
   }
 
   // TODO: explain substantial
   hasSubstantialOnlyStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypesUtils.SubstantialOnlyStereotypes);
+    return this.hasStereotypeContainedIn(stereotypeUtils.SubstantialOnlyStereotypes);
   }
 
   // TODO: expand support
@@ -288,31 +283,31 @@ export class Class extends ModelElement
   }
 
   hasRigidStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypesUtils.RigidStereotypes);
+    return this.hasStereotypeContainedIn(stereotypeUtils.RigidStereotypes);
   }
 
   hasSemiRigidStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypesUtils.SemiRigidStereotypes);
+    return this.hasStereotypeContainedIn(stereotypeUtils.SemiRigidStereotypes);
   }
 
   hasAntiRigidStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypesUtils.AntiRigidStereotypes);
+    return this.hasStereotypeContainedIn(stereotypeUtils.AntiRigidStereotypes);
   }
 
   hasNonSortalStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypesUtils.NonSortalStereotypes);
+    return this.hasStereotypeContainedIn(stereotypeUtils.NonSortalStereotypes);
   }
 
   hasSortalStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypesUtils.SortalStereotypes);
+    return this.hasStereotypeContainedIn(stereotypeUtils.SortalStereotypes);
   }
 
   hasUltimateSortalStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypesUtils.UltimateSortalStereotypes);
+    return this.hasStereotypeContainedIn(stereotypeUtils.UltimateSortalStereotypes);
   }
 
   hasBaseSortalStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypesUtils.BaseSortalStereotypes);
+    return this.hasStereotypeContainedIn(stereotypeUtils.BaseSortalStereotypes);
   }
 
   hasKindStereotype(): boolean {

@@ -1,57 +1,5 @@
 import _ from 'lodash';
-
-export enum ClassStereotype {
-  TYPE = 'type',
-  HISTORICAL_ROLE = 'historicalRole',
-  HISTORICAL_ROLE_MIXIN = 'historicalRoleMixin',
-  EVENT = 'event',
-  SITUATION = 'situation',
-  CATEGORY = 'category',
-  MIXIN = 'mixin',
-  ROLE_MIXIN = 'roleMixin',
-  PHASE_MIXIN = 'phaseMixin',
-  KIND = 'kind',
-  COLLECTIVE = 'collective',
-  QUANTITY = 'quantity',
-  RELATOR = 'relator',
-  QUALITY = 'quality',
-  MODE = 'mode',
-  SUBKIND = 'subkind',
-  ROLE = 'role',
-  PHASE = 'phase',
-  ENUMERATION = 'enumeration',
-  DATATYPE = 'datatype',
-  ABSTRACT = 'abstract'
-}
-
-export enum RelationStereotype {
-  MATERIAL = 'material',
-  DERIVATION = 'derivation',
-  COMPARATIVE = 'comparative',
-  MEDIATION = 'mediation',
-  CHARACTERIZATION = 'characterization',
-  EXTERNAL_DEPENDENCE = 'externalDependence',
-  COMPONENT_OF = 'componentOf',
-  MEMBER_OF = 'memberOf',
-  SUBCOLLECTION_OF = 'subCollectionOf',
-  SUBQUANTITY_OF = 'subQuantityOf',
-  INSTANTIATION = 'instantiation',
-  TERMINATION = 'termination',
-  PARTICIPATIONAL = 'participational',
-  PARTICIPATION = 'participation',
-  HISTORICAL_DEPENDENCE = 'historicalDependence',
-  CREATION = 'creation',
-  MANIFESTATION = 'manifestation',
-  BRINGS_ABOUT = 'bringsAbout',
-  TRIGGERS = 'triggers'
-}
-
-export enum PropertyStereotype {
-  BEGIN = 'begin',
-  END = 'end'
-}
-
-export type OntoumlStereotype = ClassStereotype | RelationStereotype | PropertyStereotype;
+import { ClassStereotype, RelationStereotype, PropertyStereotype } from './';
 
 const NonSortalStereotypes = [
   ClassStereotype.CATEGORY,
@@ -175,34 +123,37 @@ const PropertyStereotypes = [PropertyStereotype.BEGIN, PropertyStereotype.END];
 
 const OntoumlStereotypes = [...ClassStereotypes, ...RelationStereotypes, ...PropertyStereotypes];
 
-const stereotypeArrays = [
-  // Class stereotypes arrays
-  NonSortalStereotypes,
-  UltimateSortalStereotypes,
-  BaseSortalStereotypes,
-  SortalStereotypes,
-  RigidStereotypes,
-  AntiRigidStereotypes,
-  SemiRigidStereotypes,
-  MomentOnlyStereotypes,
-  SubstantialOnlyStereotypes,
-  EndurantStereotypes,
-  AbstractStereotypes,
-  ClassStereotypes,
-  // Relation stereotypes arrays
-  RelationStereotypes,
-  ExistentialDependentSourceRelationStereotypes,
-  ExistentialDependentTargetRelationStereotypes,
-  ExistentialDependencyRelationStereotypes,
-  PartWholeRelationStereotypes,
-  // Property stereotypes arrays
-  PropertyStereotypes,
-  // OntoUML stereotypes arrays
-  OntoumlStereotypes
-];
-stereotypeArrays.forEach((array: OntoumlStereotype[]) => Object.freeze(array));
+{
+  const stereotypeArrays = [
+    // Class stereotypes arrays
+    NonSortalStereotypes,
+    UltimateSortalStereotypes,
+    BaseSortalStereotypes,
+    SortalStereotypes,
+    RigidStereotypes,
+    AntiRigidStereotypes,
+    SemiRigidStereotypes,
+    MomentOnlyStereotypes,
+    SubstantialOnlyStereotypes,
+    EndurantStereotypes,
+    AbstractStereotypes,
+    ClassStereotypes,
+    // Relation stereotypes arrays
+    RelationStereotypes,
+    ExistentialDependentSourceRelationStereotypes,
+    ExistentialDependentTargetRelationStereotypes,
+    ExistentialDependencyRelationStereotypes,
+    PartWholeRelationStereotypes,
+    // Property stereotypes arrays
+    PropertyStereotypes,
+    // OntoUML stereotypes arrays
+    OntoumlStereotypes
+  ];
 
-export const stereotypesUtils = {
+  stereotypeArrays.forEach(array => Object.freeze(array));
+}
+
+export const stereotypeUtils = {
   // Class stereotypes arrays
   ClassStereotypes,
   AbstractStereotypes,

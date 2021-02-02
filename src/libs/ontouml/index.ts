@@ -2,6 +2,7 @@ export * from './ontouml_element';
 export * from './project';
 export * from './cardinality';
 export * from './classifier';
+export * from './constants';
 export * from './container';
 export * from './decoratable';
 export * from './diagram';

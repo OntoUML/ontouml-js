@@ -1,8 +1,8 @@
-import { OntoumlStereotype, ClassStereotype, RelationStereotype, PropertyStereotype } from './';
+import { ClassStereotype, RelationStereotype, PropertyStereotype } from './';
 
-function hasValidStereotypeValue<T extends OntoumlStereotype>(
+function hasValidStereotypeValue<T extends ClassStereotype | RelationStereotype | PropertyStereotype>(
   decoratable: Decoratable<T>,
-  validStereotypes: OntoumlStereotype[],
+  validStereotypes: T[],
   allowsNoStereotype: boolean = false
 ): boolean {
   try {

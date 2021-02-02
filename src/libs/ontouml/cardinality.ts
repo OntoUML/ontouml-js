@@ -1,17 +1,6 @@
+import { CardinalityValues, CARDINALITY_MAX, CARDINALITY_MAX_AS_NUMBER } from './';
+
 const SEPARATOR = '..';
-
-export const CARDINALITY_MAX = '*';
-
-export const CARDINALITY_MAX_AS_NUMBER = Infinity;
-
-export enum CardinalityValues {
-  ZERO_TO_ONE = '0..1',
-  ZERO_TO_MANY = '0..*',
-  ONE = '1',
-  ONE_TO_ONE = '1..1',
-  ONE_TO_MANY = '1..*',
-  MANY = '*'
-}
 
 export class Cardinality {
   value: string;

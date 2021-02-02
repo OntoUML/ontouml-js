@@ -1,4 +1,4 @@
-import { AggregationKind, Project, Property, PropertyStereotype, serializationUtils, stereotypesUtils } from '@libs/ontouml';
+import { AggregationKind, Project, Property, PropertyStereotype, serializationUtils, stereotypeUtils } from '@libs/ontouml';
 
 describe(`${Property.name} Tests`, () => {
   describe(`Test ${Property.prototype.hasStereotypeContainedIn.name}()`, () => {
@@ -9,7 +9,7 @@ describe(`${Property.name} Tests`, () => {
 
     startDate.stereotype = PropertyStereotype.BEGIN;
 
-    it('Test function call', () => expect(startDate.hasStereotypeContainedIn(stereotypesUtils.PropertyStereotypes)).toBe(true));
+    it('Test function call', () => expect(startDate.hasStereotypeContainedIn(stereotypeUtils.PropertyStereotypes)).toBe(true));
   });
 
   describe(`Test ${Property.prototype.hasValidStereotypeValue.name}()`, () => {

@@ -5,22 +5,16 @@ import {
   containerUtils,
   Decoratable,
   decoratableUtils,
-  stereotypesUtils,
+  stereotypeUtils,
   PropertyStereotype,
   OntoumlType,
-  ClassifierType,
-  Cardinality
+  Cardinality,
+  AggregationKind
 } from './';
-
-export enum AggregationKind {
-  NONE = 'NONE',
-  SHARED = 'SHARED',
-  COMPOSITE = 'COMPOSITE'
-}
 
 export class Property extends ModelElement implements Decoratable<PropertyStereotype> {
   type: OntoumlType.PROPERTY_TYPE;
-  container: ClassifierType;
+  container: Class | Relation;
   stereotype: PropertyStereotype;
   cardinality: Cardinality;
   propertyType: Relation | Class;
@@ -51,7 +45,7 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
   }
 
   hasValidStereotypeValue(): boolean {
-    return decoratableUtils.hasValidStereotypeValue<PropertyStereotype>(this, stereotypesUtils.PropertyStereotypes, true);
+    return decoratableUtils.hasValidStereotypeValue<PropertyStereotype>(this, stereotypeUtils.PropertyStereotypes, true);
   }
 
   toJSON(): any {
@@ -69,13 +63,13 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
 
     Object.assign(propertySerialization, super.toJSON());
 
-    const propertyType = this.propertyType as ClassifierType;
+    const propertyType = this.propertyType;
     propertySerialization.propertyType = propertyType.getReference();
 
     return propertySerialization;
   }
 
-  setContainer(newContainer: ClassifierType): void {
+  setContainer(newContainer: Class | Relation): void {
     containerUtils.setContainer(this, newContainer, 'properties', true);
   }
 
@@ -135,11 +129,11 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
 
   replace(originalElement: ModelElement, newElement: ModelElement): void {
     if (this.container === originalElement) {
-      this.container = newElement as ClassifierType;
+      this.container = newElement as Class | Relation;
     }
 
-    if (this.propertyType === (originalElement as ClassifierType)) {
-      this.propertyType = newElement as ClassifierType;
+    if (this.propertyType === (originalElement as Class | Relation)) {
+      this.propertyType = newElement as Class | Relation;
     }
 
     if (this.subsettedProperties && this.subsettedProperties.includes(originalElement as any)) {

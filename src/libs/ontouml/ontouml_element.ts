@@ -1,17 +1,6 @@
 import uniqid from 'uniqid';
 import _ from 'lodash';
-import { Class, multilingualTextUtils, MultilingualText, Package, Project, Relation } from './';
-
-export enum OntoumlType {
-  PROJECT_TYPE = 'Project',
-  PACKAGE_TYPE = 'Package',
-  CLASS_TYPE = 'Class',
-  RELATION_TYPE = 'Relation',
-  GENERALIZATION_TYPE = 'Generalization',
-  GENERALIZATION_SET_TYPE = 'GeneralizationSet',
-  PROPERTY_TYPE = 'Property',
-  LITERAL_TYPE = 'Literal'
-}
+import { Class, multilingualTextUtils, MultilingualText, Package, Project, Relation, OntoumlType } from './';
 
 export abstract class OntoumlElement {
   type: OntoumlType;

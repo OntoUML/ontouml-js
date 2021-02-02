@@ -1,16 +1,4 @@
-export enum OntologicalNature {
-  functional_complex = 'functional-complex',
-  collective = 'collective',
-  quantity = 'quantity',
-  relator = 'relator',
-  intrinsic_mode = 'intrinsic-mode',
-  extrinsic_mode = 'extrinsic-mode',
-  quality = 'quality',
-  event = 'event',
-  situation = 'situation',
-  type = 'type',
-  abstract = 'abstract'
-}
+import { OntologicalNature } from './';
 
 const EndurantNatures = [
   OntologicalNature.functional_complex,

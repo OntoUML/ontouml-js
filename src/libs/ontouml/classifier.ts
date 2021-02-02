@@ -1,24 +1,22 @@
 import _ from 'lodash';
 import { Property, Generalization, GeneralizationSet, Class, Relation } from './';
 
-export type ClassifierType = Class | Relation;
-
-function getGeneralizationsInvolvingClassifier<T extends ClassifierType>(classifier: T): Generalization[] {
+function getGeneralizationsInvolvingClassifier<T extends Class | Relation>(classifier: T): Generalization[] {
   const root = classifier.getModelOrRootPackage();
   return root.getAllGeneralizations().filter((gen: Generalization) => classifier === gen.specific || classifier === gen.general);
 }
 
-function getGeneralizationsWhereGeneral<T extends ClassifierType>(classifier: T): Generalization[] {
+function getGeneralizationsWhereGeneral<T extends Class | Relation>(classifier: T): Generalization[] {
   const root = classifier.getModelOrRootPackage();
   return root.getAllGeneralizations().filter((gen: Generalization) => classifier === gen.general);
 }
 
-function getGeneralizationsWhereSpecific<T extends ClassifierType>(classifier: T): Generalization[] {
+function getGeneralizationsWhereSpecific<T extends Class | Relation>(classifier: T): Generalization[] {
   const root = classifier.getModelOrRootPackage();
   return root.getAllGeneralizations().filter((gen: Generalization) => classifier === gen.specific);
 }
 
-function getGeneralizationSetsInvolvingClassifier<T extends ClassifierType>(classifier: T): GeneralizationSet[] {
+function getGeneralizationSetsInvolvingClassifier<T extends Class | Relation>(classifier: T): GeneralizationSet[] {
   const root = classifier.getModelOrRootPackage();
   const generalizationSets = root.getAllGeneralizationSets();
   const generalizationSetsInvolvingClassifier: GeneralizationSet[] = [];
@@ -34,7 +32,7 @@ function getGeneralizationSetsInvolvingClassifier<T extends ClassifierType>(clas
   return generalizationSetsInvolvingClassifier;
 }
 
-function getGeneralizationSetsWhereGeneral<T extends ClassifierType>(classifier: T): GeneralizationSet[] {
+function getGeneralizationSetsWhereGeneral<T extends Class | Relation>(classifier: T): GeneralizationSet[] {
   const root = classifier.getModelOrRootPackage();
   const generalizationSets = root.getAllGeneralizationSets();
   const generalizationSetsInvolvingClassifier: GeneralizationSet[] = [];
@@ -50,7 +48,7 @@ function getGeneralizationSetsWhereGeneral<T extends ClassifierType>(classifier:
   return generalizationSetsInvolvingClassifier;
 }
 
-function getGeneralizationSetsWhereSpecific<T extends ClassifierType>(classifier: T): GeneralizationSet[] {
+function getGeneralizationSetsWhereSpecific<T extends Class | Relation>(classifier: T): GeneralizationSet[] {
   const root = classifier.getModelOrRootPackage();
   const generalizationSets = root.getAllGeneralizationSets();
   const generalizationSetsInvolvingClassifier: GeneralizationSet[] = [];
@@ -66,7 +64,7 @@ function getGeneralizationSetsWhereSpecific<T extends ClassifierType>(classifier
   return generalizationSetsInvolvingClassifier;
 }
 
-function getGeneralizationSetsWhereCategorizer<T extends ClassifierType>(classifier: T): GeneralizationSet[] {
+function getGeneralizationSetsWhereCategorizer<T extends Class | Relation>(classifier: T): GeneralizationSet[] {
   const root = classifier.getModelOrRootPackage();
   const generalizationSets = root.getAllGeneralizationSets();
   const generalizationSetsInvolvingClassifier: GeneralizationSet[] = [];
@@ -82,7 +80,7 @@ function getGeneralizationSetsWhereCategorizer<T extends ClassifierType>(classif
   return generalizationSetsInvolvingClassifier;
 }
 
-function getParents<T extends ClassifierType>(classifier: T): T[] {
+function getParents<T extends Class | Relation>(classifier: T): T[] {
   const root = classifier.getModelOrRootPackage();
 
   return root
@@ -91,7 +89,7 @@ function getParents<T extends ClassifierType>(classifier: T): T[] {
     .map((gen: Generalization) => gen.general) as T[];
 }
 
-function getChildren<T extends ClassifierType>(classifier: T): T[] {
+function getChildren<T extends Class | Relation>(classifier: T): T[] {
   const root = classifier.getModelOrRootPackage();
 
   return root
