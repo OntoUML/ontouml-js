@@ -18,7 +18,8 @@ import {
   RelationStereotype,
   OntoumlType,
   AggregationKind,
-  Project
+  Project,
+  PropertyStereotype
 } from './';
 
 export class Package extends ModelElement
@@ -89,6 +90,152 @@ export class Package extends ModelElement
   getAllLiterals(): Literal[] {
     const literalsFilter = (modelElement: ModelElement) => modelElement instanceof Literal;
     return this.getAllContents(literalsFilter) as Literal[];
+  }
+
+  getAllContentsByType(type: OntoumlType | OntoumlType[]): ModelElement[] {
+    const types = utils.arrayFrom(type);
+    const typesFilter = (element: ModelElement) => types.includes(element.type);
+    return this.getAllContents(typesFilter);
+  }
+
+  getAllAttributesByStereotype(stereotype: PropertyStereotype | PropertyStereotype[]): Property[] {
+    const stereotypes = utils.arrayFrom(stereotype);
+    const stereotypesFilter = (attribute: Property) => stereotypes.includes(attribute.stereotype);
+    return this.getAllAttributes().filter(stereotypesFilter);
+  }
+
+  getAllClassesByStereotype(stereotype: ClassStereotype | ClassStereotype[]): Class[] {
+    const stereotypes = utils.arrayFrom(stereotype);
+    const stereotypesFilter = (_class: Class) => stereotypes.includes(_class.stereotype);
+    return this.getAllClasses().filter(stereotypesFilter);
+  }
+
+  getAllRelationsByStereotype(stereotype: RelationStereotype | RelationStereotype[]): Relation[] {
+    const stereotypes = utils.arrayFrom(stereotype);
+    const stereotypesFilter = (relation: Relation) => stereotypes.includes(relation.stereotype);
+    return this.getAllRelations().filter(stereotypesFilter);
+  }
+
+  getAllClassesWithRestrictedToContainedIn(nature: OntologicalNature | OntologicalNature[]): Class[] {
+    const natures = utils.arrayFrom(nature);
+    const naturesFilter = (_class: Class) => _class.restrictedToContainedIn(natures);
+    return this.getAllClasses().filter(naturesFilter);
+  }
+
+  getClassesWithTypeStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.TYPE);
+  }
+
+  getClassesWithHistoricalRoleStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.HISTORICAL_ROLE);
+  }
+
+  getClassesWithHistoricalRoleMixinStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.HISTORICAL_ROLE_MIXIN);
+  }
+
+  getClassesWithEventStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.EVENT);
+  }
+
+  getClassesWithSituationStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.SITUATION);
+  }
+
+  getClassesWithCategoryStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.CATEGORY);
+  }
+
+  getClassesWithMixinStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.MIXIN);
+  }
+
+  getClassesWithRoleMixinStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.ROLE_MIXIN);
+  }
+
+  getClassesWithPhaseMixinStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.PHASE_MIXIN);
+  }
+
+  getClassesWithKindStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.KIND);
+  }
+
+  getClassesWithCollectiveStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.COLLECTIVE);
+  }
+
+  getClassesWithQuantityStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.QUANTITY);
+  }
+
+  getClassesWithRelatorStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.RELATOR);
+  }
+
+  getClassesWithQualityStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.QUALITY);
+  }
+
+  getClassesWithModeStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.MODE);
+  }
+
+  getClassesWithSubkindStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.SUBKIND);
+  }
+
+  getClassesWithRoleStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.ROLE);
+  }
+
+  getClassesWithPhaseStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.PHASE);
+  }
+
+  getClassesWithEnumerationStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.ENUMERATION);
+  }
+
+  getClassesWithDatatypeStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.DATATYPE);
+  }
+
+  getClassesWithAbstractStereotype(): Class[] {
+    return this.getAllClassesByStereotype(ClassStereotype.ABSTRACT);
+  }
+
+  getClassesRestrictedToFunctionalComplex(): Class[] {
+    return this.getAllClassesWithRestrictedToContainedIn(OntologicalNature.functional_complex);
+  }
+
+  getClassesRestrictedToCollective(): Class[] {
+    return this.getAllClassesWithRestrictedToContainedIn(OntologicalNature.collective);
+  }
+
+  getClassesRestrictedToQuantity(): Class[] {
+    return this.getAllClassesWithRestrictedToContainedIn(OntologicalNature.quantity);
+  }
+
+  getClassesRestrictedToMode(): Class[] {
+    return this.getAllClassesWithRestrictedToContainedIn([OntologicalNature.intrinsic_mode, OntologicalNature.extrinsic_mode]);
+  }
+
+  getClassesRestrictedToIntrinsicMode(): Class[] {
+    return this.getAllClassesWithRestrictedToContainedIn(OntologicalNature.intrinsic_mode);
+  }
+
+  getClassesRestrictedToExtrinsicMode(): Class[] {
+    return this.getAllClassesWithRestrictedToContainedIn(OntologicalNature.extrinsic_mode);
+  }
+
+  getClassesRestrictedToQuality(): Class[] {
+    return this.getAllClassesWithRestrictedToContainedIn(OntologicalNature.quality);
+  }
+
+  getClassesRestrictedToRelator(): Class[] {
+    return this.getAllClassesWithRestrictedToContainedIn(OntologicalNature.relator);
   }
 
   toJSON(): any {
