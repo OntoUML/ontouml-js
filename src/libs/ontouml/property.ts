@@ -5,32 +5,18 @@ import {
   containerUtils,
   Decoratable,
   decoratableUtils,
-  stereotypesUtils,
+  stereotypeUtils,
   PropertyStereotype,
   OntoumlType,
-  ClassifierType
+  Cardinality,
+  AggregationKind
 } from './';
-
-export enum AggregationKind {
-  NONE = 'NONE',
-  SHARED = 'SHARED',
-  COMPOSITE = 'COMPOSITE'
-}
-
-// Babel did not allow me to make this a static field in Property
-const UNBOUNDED_CARDINALITY = Infinity;
-
-export const propertyUtils = {
-  UNBOUNDED_CARDINALITY
-};
-
-export type Cardinality = { lowerBound: number; upperBound: number };
 
 export class Property extends ModelElement implements Decoratable<PropertyStereotype> {
   type: OntoumlType.PROPERTY_TYPE;
-  container: ClassifierType;
+  container: Class | Relation;
   stereotype: PropertyStereotype;
-  cardinality: string;
+  cardinality: Cardinality;
   propertyType: Relation | Class;
   subsettedProperties: Property[]; // TODO: update null when deserializing
   redefinedProperties: Property[];
@@ -44,34 +30,14 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
 
     Object.defineProperty(this, 'type', { value: OntoumlType.PROPERTY_TYPE, enumerable: true });
 
-    this.cardinality = this.cardinality || '0..*';
-
+    this.cardinality = new Cardinality(this.cardinality);
     this.stereotype = this.stereotype || null;
     this.subsettedProperties = this.subsettedProperties || null;
     this.redefinedProperties = this.redefinedProperties || null;
-
     this.aggregationKind = this.aggregationKind || AggregationKind.NONE;
     this.isDerived = this.isDerived || false;
     this.isOrdered = this.isOrdered || false;
     this.isReadOnly = this.isReadOnly || false;
-  }
-
-  static parseCardinality(cardinalityString: string): Cardinality {
-    let lowerBoundString = '';
-    let upperBoundString = '';
-
-    if (cardinalityString.includes('..')) {
-      const cardinalities = cardinalityString.split('..');
-      lowerBoundString = cardinalities[0];
-      upperBoundString = cardinalities[1] || cardinalities[0];
-    } else {
-      lowerBoundString = upperBoundString = cardinalityString;
-    }
-
-    const lowerBound = lowerBoundString === '*' ? UNBOUNDED_CARDINALITY : Number(lowerBoundString);
-    const upperBound = upperBoundString === '*' ? UNBOUNDED_CARDINALITY : Number(upperBoundString);
-
-    return { lowerBound, upperBound };
   }
 
   hasStereotypeContainedIn(stereotypes: PropertyStereotype | PropertyStereotype[]): boolean {
@@ -79,7 +45,7 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
   }
 
   hasValidStereotypeValue(): boolean {
-    return decoratableUtils.hasValidStereotypeValue<PropertyStereotype>(this, stereotypesUtils.PropertyStereotypes, true);
+    return decoratableUtils.hasValidStereotypeValue<PropertyStereotype>(this, stereotypeUtils.PropertyStereotypes, true);
   }
 
   toJSON(): any {
@@ -97,13 +63,13 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
 
     Object.assign(propertySerialization, super.toJSON());
 
-    const propertyType = this.propertyType as ClassifierType;
+    const propertyType = this.propertyType;
     propertySerialization.propertyType = propertyType.getReference();
 
     return propertySerialization;
   }
 
-  setContainer(newContainer: ClassifierType): void {
+  setContainer(newContainer: Class | Relation): void {
     containerUtils.setContainer(this, newContainer, 'properties', true);
   }
 
@@ -133,46 +99,6 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
     return this.isSharedAggregationEnd() || this.isCompositeAggregationEnd();
   }
 
-  setCardinalityFromNumbers(lowerBound: number, upperBound: number): void {
-    if (lowerBound < 0) {
-      throw new Error('Lower bound must be a positive number');
-    } else if (upperBound < 1) {
-      throw new Error('Upper bound must be a positive number greater than zero');
-    } else if (lowerBound > upperBound) {
-      throw new Error('Lower bound cannot be greater than upper bound');
-    } else if (lowerBound === UNBOUNDED_CARDINALITY) {
-      throw new Error('Lower bound cannot be unbounded');
-    } else if (Number.isNaN(lowerBound) || Number.isNaN(upperBound)) {
-      throw new Error('Invalid NaN parameter');
-    }
-
-    this.cardinality = lowerBound + '..' + (upperBound === UNBOUNDED_CARDINALITY ? '*' : upperBound);
-  }
-
-  setCardinalityToZeroToOne(): void {
-    this.setCardinalityFromNumbers(0, 1);
-  }
-
-  setCardinalityToMany(): void {
-    this.setCardinalityFromNumbers(0, UNBOUNDED_CARDINALITY);
-  }
-
-  setCardinalityToOne(): void {
-    this.setCardinalityFromNumbers(1, 1);
-  }
-
-  setCardinalityToOneToMany(): void {
-    this.setCardinalityFromNumbers(1, UNBOUNDED_CARDINALITY);
-  }
-
-  getLowerBoundAsNumber(): number {
-    return Property.parseCardinality(this.cardinality).lowerBound;
-  }
-
-  getUpperBoundAsNumber(): number {
-    return Property.parseCardinality(this.cardinality).upperBound;
-  }
-
   /**
    * Only in binary relations
    */
@@ -197,61 +123,17 @@ export class Property extends ModelElement implements Decoratable<PropertyStereo
     }
   }
 
-  isOptional(): boolean {
-    return this.getLowerBoundAsNumber() === 0;
-  }
-
-  isMandatory(): boolean {
-    return !this.isOptional();
-  }
-
-  isZeroToOne(): boolean {
-    return this.getLowerBoundAsNumber() === 0 && this.getUpperBoundAsNumber() === 1;
-  }
-
-  isZeroToMany(): boolean {
-    return this.getLowerBoundAsNumber() === 0 && this.getUpperBoundAsNumber() === UNBOUNDED_CARDINALITY;
-  }
-
-  isOneToOne(): boolean {
-    return this.getLowerBoundAsNumber() === 1 && this.getUpperBoundAsNumber() === 1;
-  }
-
-  isOneToMany(): boolean {
-    return this.getLowerBoundAsNumber() === 1 && this.getUpperBoundAsNumber() === UNBOUNDED_CARDINALITY;
-  }
-
-  hasValidCardinality(): boolean {
-    return Property.isCardinalityValid(this.cardinality);
-  }
-
-  isBounded(): boolean {
-    return this.cardinality !== '*' && this.cardinality !== '0..*';
-  }
-
-  static isCardinalityValid(cardinality: string): boolean {
-    const { lowerBound, upperBound } = Property.parseCardinality(cardinality);
-    return !(
-      lowerBound < 0 ||
-      upperBound < 0 ||
-      lowerBound > upperBound ||
-      lowerBound === UNBOUNDED_CARDINALITY ||
-      isNaN(lowerBound) ||
-      isNaN(upperBound)
-    );
-  }
-
   clone(): Property {
     return new Property(this);
   }
 
   replace(originalElement: ModelElement, newElement: ModelElement): void {
     if (this.container === originalElement) {
-      this.container = newElement as ClassifierType;
+      this.container = newElement as Class | Relation;
     }
 
-    if (this.propertyType === (originalElement as ClassifierType)) {
-      this.propertyType = newElement as ClassifierType;
+    if (this.propertyType === (originalElement as Class | Relation)) {
+      this.propertyType = newElement as Class | Relation;
     }
 
     if (this.subsettedProperties && this.subsettedProperties.includes(originalElement as any)) {

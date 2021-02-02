@@ -1,6 +1,4 @@
-import { Relation, Project, Class, Property, OntoumlElement, Package } from './';
-import { Container } from './container';
-
+import { Relation, Project, Class, Property, OntoumlElement, Package, Container } from './';
 export abstract class ModelElement extends OntoumlElement {
   project: Project;
   container: ModelElement;

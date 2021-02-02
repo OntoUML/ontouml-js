@@ -7,10 +7,10 @@ import {
   Literal,
   Project,
   serializationUtils,
-  classUtils,
-  naturesUtils,
-  stereotypesUtils,
-  PropertyStereotype
+  natureUtils,
+  stereotypeUtils,
+  PropertyStereotype,
+  ORDERLESS_LEVEL
 } from '@libs/ontouml';
 
 describe(`${Class.name} Tests`, () => {
@@ -121,7 +121,7 @@ describe(`${Class.name} Tests`, () => {
       isDerived: true,
       isExtensional: true,
       isPowertype: true,
-      order: classUtils.ORDERLESS_LEVEL
+      order: ORDERLESS_LEVEL
     });
     const attribute = fullyFeaturedCategory.createAttribute(enumeration);
 
@@ -419,7 +419,7 @@ describe(`${Class.name} Tests`, () => {
   describe(`Test ${Class.prototype.isRestrictedToEndurant.name}()`, () => {
     const model = new Project().createModel();
     const kind = model.createKind('kind');
-    const category = model.createCategory('category', [...naturesUtils.EndurantNatures]);
+    const category = model.createCategory('category', [...natureUtils.EndurantNatures]);
     const type = model.createType('type');
     const event = model.createEvent('event');
     const situation = model.createSituation('situation');
@@ -441,9 +441,9 @@ describe(`${Class.name} Tests`, () => {
 
   describe(`Test ${Class.prototype.isRestrictedToSubstantial.name}()`, () => {
     const model = new Project().createModel();
-    const categoryOfSubstantials = model.createCategory('categoryOfSubstantials', [...naturesUtils.SubstantialNatures]);
+    const categoryOfSubstantials = model.createCategory('categoryOfSubstantials', [...natureUtils.SubstantialNatures]);
     const kind = model.createKind('kind');
-    const categoryOfEndurants = model.createCategory('categoryOfEndurants', [...naturesUtils.EndurantNatures]);
+    const categoryOfEndurants = model.createCategory('categoryOfEndurants', [...natureUtils.EndurantNatures]);
     const mode = model.createIntrinsicMode('mode');
 
     it('Test regular kind', () => expect(kind.isRestrictedToSubstantial()).toBe(true));
@@ -454,9 +454,9 @@ describe(`${Class.name} Tests`, () => {
 
   describe(`Test ${Class.prototype.isRestrictedToMoment.name}()`, () => {
     const model = new Project().createModel();
-    const categoryOfMoments = model.createCategory('categoryOfMoments', [...naturesUtils.MomentNatures]);
+    const categoryOfMoments = model.createCategory('categoryOfMoments', [...natureUtils.MomentNatures]);
     const mode = model.createIntrinsicMode('mode');
-    const categoryOfEndurants = model.createCategory('categoryOfEndurants', [...naturesUtils.EndurantNatures]);
+    const categoryOfEndurants = model.createCategory('categoryOfEndurants', [...natureUtils.EndurantNatures]);
     const kind = model.createKind('kind');
 
     it('Test broad mode', () => expect(mode.isRestrictedToMoment()).toBe(true));
@@ -500,11 +500,11 @@ describe(`${Class.name} Tests`, () => {
 
   describe(`Test ${Class.prototype.isRestrictedToIntrinsicMoment.name}()`, () => {
     const model = new Project().createModel();
-    const categoryOfIntrinsicMoments = model.createCategory('categoryOfMoments', [...naturesUtils.IntrinsicMomentNatures]);
+    const categoryOfIntrinsicMoments = model.createCategory('categoryOfMoments', [...natureUtils.IntrinsicMomentNatures]);
     const mode = model.createIntrinsicMode('mode');
     const quality = model.createQuality('quality');
     const categoryOfExtrinsicMoments = model.createCategory('categoryOfExtrinsicMoments', [
-      ...naturesUtils.ExtrinsicMomentNatures
+      ...natureUtils.ExtrinsicMomentNatures
     ]);
     const relator = model.createRelator('relator');
 
@@ -520,11 +520,11 @@ describe(`${Class.name} Tests`, () => {
   describe(`Test ${Class.prototype.isRestrictedToExtrinsicMoment.name}()`, () => {
     const model = new Project().createModel();
     const categoryOfExtrinsicMoments = model.createCategory('categoryOfExtrinsicMoments', [
-      ...naturesUtils.ExtrinsicMomentNatures
+      ...natureUtils.ExtrinsicMomentNatures
     ]);
     const mode = model.createExtrinsicMode('mode');
     const relator = model.createRelator('relator');
-    const categoryOfIntrinsicMoments = model.createCategory('categoryOfMoments', [...naturesUtils.IntrinsicMomentNatures]);
+    const categoryOfIntrinsicMoments = model.createCategory('categoryOfMoments', [...natureUtils.IntrinsicMomentNatures]);
     const quality = model.createQuality('quality');
 
     it('Test broad mode', () => expect(mode.isRestrictedToExtrinsicMoment()).toBe(true));
@@ -614,7 +614,7 @@ describe(`${Class.name} Tests`, () => {
     const classWithNonValidStereotype = model.createClass('classWithNonValidStereotype');
     const classWithoutStereotypes = model.createClass('classWithoutStereotypes');
 
-    stereotypesUtils.ClassStereotypes.forEach((stereotype: ClassStereotype) =>
+    stereotypeUtils.ClassStereotypes.forEach((stereotype: ClassStereotype) =>
       it(`Test class with stereotype '${stereotype}'`, () => {
         classWithValidStereotype.stereotype = stereotype;
         expect(classWithValidStereotype.hasValidStereotypeValue()).toBe(true);
@@ -634,7 +634,7 @@ describe(`${Class.name} Tests`, () => {
     const classWithUniqueStereotype = model.createKind();
 
     it('Test classWithoutStereotypes', () =>
-      expect(classWithoutStereotypes.hasStereotypeContainedIn(stereotypesUtils.ClassStereotypes)).toBe(false));
+      expect(classWithoutStereotypes.hasStereotypeContainedIn(stereotypeUtils.ClassStereotypes)).toBe(false));
     it('Test classWithUniqueStereotype', () =>
       expect(classWithUniqueStereotype.hasStereotypeContainedIn(ClassStereotype.KIND)).toBe(true));
   });

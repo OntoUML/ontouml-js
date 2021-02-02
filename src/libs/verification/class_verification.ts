@@ -1,4 +1,4 @@
-import { Class, ClassStereotype, OntologicalNature, stereotypesUtils, naturesUtils } from '@libs/ontouml';
+import { Class, ClassStereotype, OntologicalNature, stereotypeUtils, natureUtils } from '@libs/ontouml';
 import { VerificationIssue, utils } from './';
 
 const allowedStereotypeRestrictedToMatches = {
@@ -9,11 +9,11 @@ const allowedStereotypeRestrictedToMatches = {
   [ClassStereotype.EVENT]: [OntologicalNature.event],
   [ClassStereotype.SITUATION]: [OntologicalNature.situation],
 
-  [ClassStereotype.CATEGORY]: naturesUtils.EndurantNatures,
-  [ClassStereotype.MIXIN]: naturesUtils.EndurantNatures,
-  [ClassStereotype.ROLE_MIXIN]: naturesUtils.EndurantNatures,
-  [ClassStereotype.PHASE_MIXIN]: naturesUtils.EndurantNatures,
-  [ClassStereotype.HISTORICAL_ROLE_MIXIN]: naturesUtils.EndurantNatures,
+  [ClassStereotype.CATEGORY]: natureUtils.EndurantNatures,
+  [ClassStereotype.MIXIN]: natureUtils.EndurantNatures,
+  [ClassStereotype.ROLE_MIXIN]: natureUtils.EndurantNatures,
+  [ClassStereotype.PHASE_MIXIN]: natureUtils.EndurantNatures,
+  [ClassStereotype.HISTORICAL_ROLE_MIXIN]: natureUtils.EndurantNatures,
 
   [ClassStereotype.KIND]: [OntologicalNature.functional_complex],
   [ClassStereotype.COLLECTIVE]: [OntologicalNature.collective],
@@ -22,10 +22,10 @@ const allowedStereotypeRestrictedToMatches = {
   [ClassStereotype.MODE]: [OntologicalNature.extrinsic_mode, OntologicalNature.intrinsic_mode],
   [ClassStereotype.QUALITY]: [OntologicalNature.quality],
 
-  [ClassStereotype.SUBKIND]: naturesUtils.EndurantNatures,
-  [ClassStereotype.ROLE]: naturesUtils.EndurantNatures,
-  [ClassStereotype.PHASE]: naturesUtils.EndurantNatures,
-  [ClassStereotype.HISTORICAL_ROLE]: naturesUtils.EndurantNatures,
+  [ClassStereotype.SUBKIND]: natureUtils.EndurantNatures,
+  [ClassStereotype.ROLE]: natureUtils.EndurantNatures,
+  [ClassStereotype.PHASE]: natureUtils.EndurantNatures,
+  [ClassStereotype.HISTORICAL_ROLE]: natureUtils.EndurantNatures,
 
   [ClassStereotype.TYPE]: [OntologicalNature.type]
 };
@@ -54,7 +54,7 @@ export class ClassVerification {
 
   static checkMinimalConsistency(_class: Class): VerificationIssue[] {
     const issues: VerificationIssue[] = [];
-    const classStereotypes = stereotypesUtils.ClassStereotypes;
+    const classStereotypes = stereotypeUtils.ClassStereotypes;
 
     if (!_class.stereotype) {
       issues.push(VerificationIssue.createClassNotUniqueStereotype(_class));

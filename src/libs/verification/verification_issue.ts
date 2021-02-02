@@ -4,7 +4,7 @@ import {
   ClassStereotype,
   Generalization,
   Relation,
-  stereotypesUtils,
+  stereotypeUtils,
   OntoumlStereotype
 } from '@libs/ontouml';
 import { VerificationIssueCode } from './';
@@ -87,7 +87,7 @@ export class VerificationIssue implements ServiceIssue {
       'Every sortal class must specialize a unique ultimate sortal',
       ServiceIssueSeverity.ERROR,
       `The class ${source.getNameOrId()} must specialize (directly or indirectly) a unique class decorated as one of the following: ${stringifyStereotypes(
-        stereotypesUtils.UltimateSortalStereotypes
+        stereotypeUtils.UltimateSortalStereotypes
       )}`,
       []
     );
