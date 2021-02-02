@@ -1,4 +1,16 @@
-import { OntologicalNature } from './';
+export enum OntologicalNature {
+  functional_complex = 'functional-complex',
+  collective = 'collective',
+  quantity = 'quantity',
+  relator = 'relator',
+  intrinsic_mode = 'intrinsic-mode',
+  extrinsic_mode = 'extrinsic-mode',
+  quality = 'quality',
+  event = 'event',
+  situation = 'situation',
+  type = 'type',
+  abstract = 'abstract'
+}
 
 const EndurantNatures = [
   OntologicalNature.functional_complex,
@@ -26,7 +38,7 @@ const ExtrinsicMomentNatures = [OntologicalNature.extrinsic_mode, OntologicalNat
 const naturesArrays = [EndurantNatures, SubstantialNatures, MomentNatures, IntrinsicMomentNatures, ExtrinsicMomentNatures];
 naturesArrays.forEach((array: OntologicalNature[]) => Object.freeze(array));
 
-export const natureUtils = {
+export const naturesUtils = {
   EndurantNatures,
   SubstantialNatures,
   MomentNatures,

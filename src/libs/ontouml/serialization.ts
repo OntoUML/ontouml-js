@@ -1,3 +1,4 @@
+import schema from './schema.json';
 import {
   Project,
   OntoumlType,
@@ -10,10 +11,11 @@ import {
   Generalization,
   GeneralizationSet,
   Property,
-  Literal,
-  schema
+  Literal
 } from './';
 import Ajv from 'ajv';
+
+Object.freeze(schema);
 
 const ajv = new Ajv();
 const validator = ajv.compile(schema);

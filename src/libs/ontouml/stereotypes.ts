@@ -1,5 +1,55 @@
 import _ from 'lodash';
-import { ClassStereotype, RelationStereotype, PropertyStereotype } from './';
+
+export enum ClassStereotype {
+  TYPE = 'type',
+  HISTORICAL_ROLE = 'historicalRole',
+  HISTORICAL_ROLE_MIXIN = 'historicalRoleMixin',
+  EVENT = 'event',
+  SITUATION = 'situation',
+  CATEGORY = 'category',
+  MIXIN = 'mixin',
+  ROLE_MIXIN = 'roleMixin',
+  PHASE_MIXIN = 'phaseMixin',
+  KIND = 'kind',
+  COLLECTIVE = 'collective',
+  QUANTITY = 'quantity',
+  RELATOR = 'relator',
+  QUALITY = 'quality',
+  MODE = 'mode',
+  SUBKIND = 'subkind',
+  ROLE = 'role',
+  PHASE = 'phase',
+  ENUMERATION = 'enumeration',
+  DATATYPE = 'datatype',
+  ABSTRACT = 'abstract'
+}
+
+export enum RelationStereotype {
+  MATERIAL = 'material',
+  DERIVATION = 'derivation',
+  COMPARATIVE = 'comparative',
+  MEDIATION = 'mediation',
+  CHARACTERIZATION = 'characterization',
+  EXTERNAL_DEPENDENCE = 'externalDependence',
+  COMPONENT_OF = 'componentOf',
+  MEMBER_OF = 'memberOf',
+  SUBCOLLECTION_OF = 'subCollectionOf',
+  SUBQUANTITY_OF = 'subQuantityOf',
+  INSTANTIATION = 'instantiation',
+  TERMINATION = 'termination',
+  PARTICIPATIONAL = 'participational',
+  PARTICIPATION = 'participation',
+  HISTORICAL_DEPENDENCE = 'historicalDependence',
+  CREATION = 'creation',
+  MANIFESTATION = 'manifestation',
+  BRINGS_ABOUT = 'bringsAbout',
+  TRIGGERS = 'triggers'
+}
+
+export enum PropertyStereotype {
+  BEGIN = 'begin',
+  END = 'end'
+}
 
 export type OntoumlStereotype = ClassStereotype | RelationStereotype | PropertyStereotype;
 
@@ -152,63 +202,7 @@ const stereotypeArrays = [
 ];
 stereotypeArrays.forEach((array: OntoumlStereotype[]) => Object.freeze(array));
 
-function isNonSortalClassStereotype(stereotype: ClassStereotype): boolean {
-  return NonSortalStereotypes.includes(stereotype);
-}
-
-function isSortalClassStereotype(stereotype: ClassStereotype): boolean {
-  return SortalStereotypes.includes(stereotype);
-}
-
-function isUltimateSortalClassStereotype(stereotype: ClassStereotype): boolean {
-  return UltimateSortalStereotypes.includes(stereotype);
-}
-
-function isBaseSortalClassStereotype(stereotype: ClassStereotype): boolean {
-  return BaseSortalStereotypes.includes(stereotype);
-}
-
-function isRigidClassStereotype(stereotype: ClassStereotype): boolean {
-  return RigidStereotypes.includes(stereotype);
-}
-
-function isAntiRigidClassStereotype(stereotype: ClassStereotype): boolean {
-  return AntiRigidStereotypes.includes(stereotype);
-}
-
-function isSemiRigidClassStereotype(stereotype: ClassStereotype): boolean {
-  return SemiRigidStereotypes.includes(stereotype);
-}
-
-function isAbstractClassStereotype(stereotype: ClassStereotype): boolean {
-  return AbstractStereotypes.includes(stereotype);
-}
-
-function isEndurantClassStereotype(stereotype: ClassStereotype): boolean {
-  return EndurantStereotypes.includes(stereotype);
-}
-
-function isSubstantialClassStereotype(stereotype: ClassStereotype): boolean {
-  return SubstantialOnlyStereotypes.includes(stereotype);
-}
-
-function isMomentClassStereotype(stereotype: ClassStereotype): boolean {
-  return MomentOnlyStereotypes.includes(stereotype);
-}
-
-function isEventClassStereotype(stereotype: ClassStereotype): boolean {
-  return stereotype === ClassStereotype.EVENT;
-}
-
-function isSituationClassStereotype(stereotype: ClassStereotype): boolean {
-  return stereotype === ClassStereotype.SITUATION;
-}
-
-function isTypeClassStereotype(stereotype: ClassStereotype): boolean {
-  return stereotype === ClassStereotype.TYPE;
-}
-
-export const stereotypeUtils = {
+export const stereotypesUtils = {
   // Class stereotypes arrays
   ClassStereotypes,
   AbstractStereotypes,
@@ -229,20 +223,5 @@ export const stereotypeUtils = {
   ExistentialDependentTargetRelationStereotypes,
   PartWholeRelationStereotypes,
   // Property stereotypes arrays
-  PropertyStereotypes,
-  // ClassStereotype utility methods
-  isNonSortalClassStereotype,
-  isSortalClassStereotype,
-  isUltimateSortalClassStereotype,
-  isBaseSortalClassStereotype,
-  isRigidClassStereotype,
-  isAntiRigidClassStereotype,
-  isSemiRigidClassStereotype,
-  isAbstractClassStereotype,
-  isEndurantClassStereotype,
-  isSubstantialClassStereotype,
-  isMomentClassStereotype,
-  isEventClassStereotype,
-  isSituationClassStereotype,
-  isTypeClassStereotype
+  PropertyStereotypes
 };

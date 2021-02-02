@@ -11,17 +11,23 @@ import {
   Package,
   Classifier,
   utils,
-  stereotypeUtils,
-  natureUtils,
+  stereotypesUtils,
+  naturesUtils,
   MultilingualText,
   ClassStereotype,
   OntologicalNature,
   Generalization,
   GeneralizationSet,
   classifierUtils,
-  OntoumlType,
-  ORDERLESS_LEVEL
+  OntoumlType
 } from './';
+
+const ORDERLESS_LEVEL = Infinity;
+
+export const classUtils = {
+  ORDERLESS_LEVEL
+};
+
 export class Class extends ModelElement
   implements Decoratable<ClassStereotype>, Container<Property | Literal, Property | Literal>, Classifier<Class> {
   container: Package;
@@ -117,21 +123,6 @@ export class Class extends ModelElement
     );
   }
 
-  addAttribute(attribute: Property): void {
-    if (this.hasEnumerationStereotype()) {
-      throw new Error('Cannot create an attribute on an enumeration class.');
-    }
-
-    containerUtils.addContentToArray<ModelElement, Property>(this, 'properties', attribute);
-  }
-
-  addLiteral(literal: Literal): void {
-    if (!this.hasEnumerationStereotype()) {
-      throw new Error('Cannot create a literal on a non-enumeration class.');
-    }
-    containerUtils.addContentToArray<ModelElement, Literal>(this, 'literals', literal);
-  }
-
   // TODO: review other implementations of setContainer
   setContainer(newContainer: Package): void {
     containerUtils.setContainer(this, newContainer, 'contents', true);
@@ -170,15 +161,15 @@ export class Class extends ModelElement
   }
 
   isRestrictedToEndurant(): boolean {
-    return this.restrictedToContainedIn(natureUtils.EndurantNatures);
+    return this.restrictedToContainedIn(naturesUtils.EndurantNatures);
   }
 
   isRestrictedToSubstantial(): boolean {
-    return this.restrictedToContainedIn(natureUtils.SubstantialNatures);
+    return this.restrictedToContainedIn(naturesUtils.SubstantialNatures);
   }
 
   isRestrictedToMoment(): boolean {
-    return this.restrictedToContainedIn(natureUtils.MomentNatures);
+    return this.restrictedToContainedIn(naturesUtils.MomentNatures);
   }
 
   isRestrictedToFunctionalComplex(): boolean {
@@ -194,11 +185,11 @@ export class Class extends ModelElement
   }
 
   isRestrictedToIntrinsicMoment(): boolean {
-    return this.restrictedToContainedIn(natureUtils.IntrinsicMomentNatures);
+    return this.restrictedToContainedIn(naturesUtils.IntrinsicMomentNatures);
   }
 
   isRestrictedToExtrinsicMoment(): boolean {
-    return this.restrictedToContainedIn(natureUtils.ExtrinsicMomentNatures);
+    return this.restrictedToContainedIn(naturesUtils.ExtrinsicMomentNatures);
   }
 
   isRestrictedToRelator(): boolean {
@@ -234,7 +225,7 @@ export class Class extends ModelElement
   }
 
   hasValidStereotypeValue(): boolean {
-    return decoratableUtils.hasValidStereotypeValue<ClassStereotype>(this, stereotypeUtils.ClassStereotypes);
+    return decoratableUtils.hasValidStereotypeValue<ClassStereotype>(this, stereotypesUtils.ClassStereotypes);
   }
 
   /** Checks if `this.stereotype` is contained in the set of values in
@@ -279,16 +270,16 @@ export class Class extends ModelElement
   }
 
   hasEndurantOnlyStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypeUtils.EndurantStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.EndurantStereotypes);
   }
 
   hasMomentOnlyStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypeUtils.MomentOnlyStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.MomentOnlyStereotypes);
   }
 
   // TODO: explain substantial
   hasSubstantialOnlyStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypeUtils.SubstantialOnlyStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.SubstantialOnlyStereotypes);
   }
 
   // TODO: expand support
@@ -297,31 +288,31 @@ export class Class extends ModelElement
   }
 
   hasRigidStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypeUtils.RigidStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.RigidStereotypes);
   }
 
   hasSemiRigidStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypeUtils.SemiRigidStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.SemiRigidStereotypes);
   }
 
   hasAntiRigidStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypeUtils.AntiRigidStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.AntiRigidStereotypes);
   }
 
   hasNonSortalStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypeUtils.NonSortalStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.NonSortalStereotypes);
   }
 
   hasSortalStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypeUtils.SortalStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.SortalStereotypes);
   }
 
   hasUltimateSortalStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypeUtils.UltimateSortalStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.UltimateSortalStereotypes);
   }
 
   hasBaseSortalStereotype(): boolean {
-    return this.hasStereotypeContainedIn(stereotypeUtils.BaseSortalStereotypes);
+    return this.hasStereotypeContainedIn(stereotypesUtils.BaseSortalStereotypes);
   }
 
   hasKindStereotype(): boolean {
@@ -623,6 +614,4 @@ export class Class extends ModelElement
   getOwnOppositeRelationEnds(): Property[] {
     throw new Error('Method unimplemented!');
   }
-
-  // TODO: add static version of factory methods present in class here
 }

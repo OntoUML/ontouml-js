@@ -12,14 +12,13 @@ import {
   PackageContainer,
   MultilingualText,
   utils,
+  propertyUtils,
   ClassStereotype,
   OntologicalNature,
   RelationStereotype,
   OntoumlType,
   AggregationKind,
-  Project,
-  CARDINALITY_MAX_AS_NUMBER,
-  PropertyStereotype
+  Project
 } from './';
 
 export class Package extends ModelElement
@@ -86,155 +85,10 @@ export class Package extends ModelElement
     return this.getAllContents(classesFilter) as Class[];
   }
 
+  // TODO: review if this function should exist
   getAllLiterals(): Literal[] {
     const literalsFilter = (modelElement: ModelElement) => modelElement instanceof Literal;
     return this.getAllContents(literalsFilter) as Literal[];
-  }
-
-  getAllContentsByType(type: OntoumlType | OntoumlType[]): ModelElement[] {
-    const types = utils.arrayFrom(type);
-    const typesFilter = (element: ModelElement) => types.includes(element.type);
-    return this.getAllContents(typesFilter);
-  }
-
-  getAllAttributesByStereotype(stereotype: PropertyStereotype | PropertyStereotype[]): Property[] {
-    const stereotypes = utils.arrayFrom(stereotype);
-    const stereotypesFilter = (attribute: Property) => stereotypes.includes(attribute.stereotype);
-    return this.getAllAttributes().filter(stereotypesFilter);
-  }
-
-  getAllClassesByStereotype(stereotype: ClassStereotype | ClassStereotype[]): Class[] {
-    const stereotypes = utils.arrayFrom(stereotype);
-    const stereotypesFilter = (_class: Class) => stereotypes.includes(_class.stereotype);
-    return this.getAllClasses().filter(stereotypesFilter);
-  }
-
-  getAllRelationsByStereotype(stereotype: RelationStereotype | RelationStereotype[]): Relation[] {
-    const stereotypes = utils.arrayFrom(stereotype);
-    const stereotypesFilter = (relation: Relation) => stereotypes.includes(relation.stereotype);
-    return this.getAllRelations().filter(stereotypesFilter);
-  }
-
-  getAllClassesWithRestrictedToContainedIn(nature: OntologicalNature | OntologicalNature[]): Class[] {
-    const natures = utils.arrayFrom(nature);
-    const naturesFilter = (_class: Class) => _class.restrictedToContainedIn(natures);
-    return this.getAllClasses().filter(naturesFilter);
-  }
-
-  getClassesWithTypeStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.TYPE);
-  }
-
-  getClassesWithHistoricalRoleStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.HISTORICAL_ROLE);
-  }
-
-  getClassesWithHistoricalRoleMixinStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.HISTORICAL_ROLE_MIXIN);
-  }
-
-  getClassesWithEventStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.EVENT);
-  }
-
-  getClassesWithSituationStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.SITUATION);
-  }
-
-  getClassesWithCategoryStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.CATEGORY);
-  }
-
-  getClassesWithMixinStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.MIXIN);
-  }
-
-  getClassesWithRoleMixinStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.ROLE_MIXIN);
-  }
-
-  getClassesWithPhaseMixinStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.PHASE_MIXIN);
-  }
-
-  getClassesWithKindStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.KIND);
-  }
-
-  getClassesWithCollectiveStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.COLLECTIVE);
-  }
-
-  getClassesWithQuantityStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.QUANTITY);
-  }
-
-  getClassesWithRelatorStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.RELATOR);
-  }
-
-  getClassesWithQualityStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.QUALITY);
-  }
-
-  getClassesWithModeStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.MODE);
-  }
-
-  getClassesWithSubkindStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.SUBKIND);
-  }
-
-  getClassesWithRoleStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.ROLE);
-  }
-
-  getClassesWithPhaseStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.PHASE);
-  }
-
-  getClassesWithEnumerationStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.ENUMERATION);
-  }
-
-  getClassesWithDatatypeStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.DATATYPE);
-  }
-
-  getClassesWithAbstractStereotype(): Class[] {
-    return this.getAllClassesByStereotype(ClassStereotype.ABSTRACT);
-  }
-
-  getClassesRestrictedToFunctionalComplex(): Class[] {
-    return this.getAllClassesWithRestrictedToContainedIn(OntologicalNature.functional_complex);
-  }
-
-  getClassesRestrictedToCollective(): Class[] {
-    return this.getAllClassesWithRestrictedToContainedIn(OntologicalNature.collective);
-  }
-
-  getClassesRestrictedToQuantity(): Class[] {
-    return this.getAllClassesWithRestrictedToContainedIn(OntologicalNature.quantity);
-  }
-
-  getClassesRestrictedToMode(): Class[] {
-    return this.getAllClassesWithRestrictedToContainedIn([OntologicalNature.intrinsic_mode, OntologicalNature.extrinsic_mode]);
-  }
-
-  getClassesRestrictedToIntrinsicMode(): Class[] {
-    return this.getAllClassesWithRestrictedToContainedIn(OntologicalNature.intrinsic_mode);
-  }
-
-  getClassesRestrictedToExtrinsicMode(): Class[] {
-    return this.getAllClassesWithRestrictedToContainedIn(OntologicalNature.extrinsic_mode);
-  }
-
-  getClassesRestrictedToQuality(): Class[] {
-    return this.getAllClassesWithRestrictedToContainedIn(OntologicalNature.quality);
-  }
-
-  getClassesRestrictedToRelator(): Class[] {
-    return this.getAllClassesWithRestrictedToContainedIn(OntologicalNature.relator);
   }
 
   toJSON(): any {
@@ -459,15 +313,15 @@ export class Package extends ModelElement
     const targetEnd = relation.getTargetEnd();
 
     if (target.hasRoleStereotype() || target.hasRoleMixinStereotype()) {
-      sourceEnd.cardinality.setOneToMany();
+      sourceEnd.setCardinalityToOneToMany();
     } else {
-      sourceEnd.cardinality.setZeroToMany();
+      sourceEnd.setCardinalityToMany();
     }
 
     if (source.hasRoleStereotype() || source.hasRoleMixinStereotype()) {
-      targetEnd.cardinality.setOneToMany();
+      targetEnd.setCardinalityToOneToMany();
     } else {
-      targetEnd.cardinality.setZeroToMany();
+      targetEnd.setCardinalityToMany();
     }
 
     return relation;
@@ -477,9 +331,9 @@ export class Package extends ModelElement
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.COMPARATIVE, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
-    sourceEnd.cardinality.setZeroToOne();
+    sourceEnd.setCardinalityToZeroToOne();
     sourceEnd.isReadOnly = true;
-    targetEnd.cardinality.setZeroToOne();
+    targetEnd.setCardinalityToZeroToOne();
     targetEnd.isReadOnly = true;
     return relation;
   }
@@ -490,12 +344,12 @@ export class Package extends ModelElement
     const targetEnd = relation.getTargetEnd();
 
     if (target.hasRoleStereotype() || target.hasRoleMixinStereotype()) {
-      sourceEnd.cardinality.setOneToMany();
+      sourceEnd.setCardinalityToOneToMany();
     } else {
-      sourceEnd.cardinality.setZeroToMany();
+      sourceEnd.setCardinalityToMany();
     }
 
-    targetEnd.cardinality.setOneToOne;
+    targetEnd.setCardinalityToOne();
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -506,8 +360,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setOneToOne;
-    targetEnd.cardinality.setOneToOne;
+    sourceEnd.setCardinalityToOne();
+    targetEnd.setCardinalityToOne();
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -518,8 +372,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setZeroToMany();
-    targetEnd.cardinality.setOneToMany();
+    sourceEnd.setCardinalityToMany();
+    targetEnd.setCardinalityToOneToMany();
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -530,8 +384,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setOneToMany();
-    targetEnd.cardinality.setOneToOne;
+    sourceEnd.setCardinalityToOneToMany();
+    targetEnd.setCardinalityToOne();
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
     return relation;
@@ -542,8 +396,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setOneToMany();
-    targetEnd.cardinality.setOneToMany();
+    sourceEnd.setCardinalityToOneToMany();
+    targetEnd.setCardinalityToOneToMany();
     targetEnd.aggregationKind = AggregationKind.SHARED;
 
     return relation;
@@ -554,8 +408,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setCardinalityFromNumbers(1, 1);
-    targetEnd.cardinality.setCardinalityFromNumbers(1, 1);
+    sourceEnd.setCardinalityFromNumbers(1, 1);
+    targetEnd.setCardinalityFromNumbers(1, 1);
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
     return relation;
@@ -566,8 +420,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setCardinalityFromNumbers(1, 1);
-    targetEnd.cardinality.setCardinalityFromNumbers(1, 1);
+    sourceEnd.setCardinalityFromNumbers(1, 1);
+    targetEnd.setCardinalityFromNumbers(1, 1);
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
     return relation;
@@ -578,8 +432,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setZeroToMany();
-    targetEnd.cardinality.setOneToMany();
+    sourceEnd.setCardinalityFromNumbers(0, propertyUtils.UNBOUNDED_CARDINALITY);
+    targetEnd.setCardinalityFromNumbers(1, propertyUtils.UNBOUNDED_CARDINALITY);
 
     return relation;
   }
@@ -589,9 +443,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setCardinalityFromNumbers(1, 1);
+    sourceEnd.setCardinalityFromNumbers(1, 1);
     sourceEnd.isReadOnly = true;
-    targetEnd.cardinality.setCardinalityFromNumbers(1, 1);
+    targetEnd.setCardinalityFromNumbers(1, 1);
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -602,9 +456,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setOneToMany();
+    sourceEnd.setCardinalityToOneToMany();
     sourceEnd.isReadOnly = true;
-    targetEnd.cardinality.setOneToOne;
+    targetEnd.setCardinalityToOne();
     targetEnd.isReadOnly = true;
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
@@ -616,13 +470,13 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setZeroToOne();
+    sourceEnd.setCardinalityToZeroToOne();
     sourceEnd.isReadOnly = true;
 
     if (source.hasHistoricalRoleStereotype() || source.hasHistoricalRoleMixinStereotype()) {
-      targetEnd.cardinality.setOneToMany();
+      targetEnd.setCardinalityToOneToMany();
     } else {
-      targetEnd.cardinality.setZeroToMany();
+      targetEnd.setCardinalityToMany();
     }
 
     return relation;
@@ -633,9 +487,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setZeroToMany();
+    sourceEnd.setCardinalityToMany();
     sourceEnd.isReadOnly = true;
-    targetEnd.cardinality.setOneToOne;
+    targetEnd.setCardinalityToOne();
 
     return relation;
   }
@@ -645,9 +499,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setOneToOne;
+    sourceEnd.setCardinalityToOne();
     sourceEnd.isReadOnly = true;
-    targetEnd.cardinality.setOneToOne;
+    targetEnd.setCardinalityToOne();
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -658,9 +512,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setOneToMany();
+    sourceEnd.setCardinalityToOneToMany();
     sourceEnd.isReadOnly = true;
-    targetEnd.cardinality.setZeroToMany();
+    targetEnd.setCardinalityToMany();
 
     return relation;
   }
@@ -670,9 +524,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setOneToOne;
+    sourceEnd.setCardinalityToOne();
     sourceEnd.isReadOnly = true;
-    targetEnd.cardinality.setOneToOne;
+    targetEnd.setCardinalityToOne();
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -683,9 +537,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setOneToOne;
+    sourceEnd.setCardinalityToOne();
     sourceEnd.isReadOnly = true;
-    targetEnd.cardinality.setOneToOne;
+    targetEnd.setCardinalityToOne();
 
     return relation;
   }
@@ -695,8 +549,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setCardinalityFromNumbers(2, CARDINALITY_MAX_AS_NUMBER);
-    targetEnd.cardinality.setOneToOne();
+    sourceEnd.setCardinalityFromNumbers(2, propertyUtils.UNBOUNDED_CARDINALITY);
+    targetEnd.setCardinalityFromNumbers(1, 1);
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
     return relation;
