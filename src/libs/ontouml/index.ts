@@ -1,5 +1,6 @@
 export * from './ontouml_element';
 export * from './project';
+export * from './cardinality';
 export * from './classifier';
 export * from './container';
 export * from './decoratable';

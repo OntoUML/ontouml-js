@@ -12,7 +12,7 @@ import {
   PackageContainer,
   MultilingualText,
   utils,
-  propertyUtils,
+  CARDINALITY_MAX_AS_NUMBER,
   ClassStereotype,
   OntologicalNature,
   RelationStereotype,
@@ -313,15 +313,15 @@ export class Package extends ModelElement
     const targetEnd = relation.getTargetEnd();
 
     if (target.hasRoleStereotype() || target.hasRoleMixinStereotype()) {
-      sourceEnd.setCardinalityToOneToMany();
+      sourceEnd.cardinality.setOneToMany();
     } else {
-      sourceEnd.setCardinalityToMany();
+      sourceEnd.cardinality.setZeroToMany();
     }
 
     if (source.hasRoleStereotype() || source.hasRoleMixinStereotype()) {
-      targetEnd.setCardinalityToOneToMany();
+      targetEnd.cardinality.setOneToMany();
     } else {
-      targetEnd.setCardinalityToMany();
+      targetEnd.cardinality.setZeroToMany();
     }
 
     return relation;
@@ -331,9 +331,9 @@ export class Package extends ModelElement
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.COMPARATIVE, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
-    sourceEnd.setCardinalityToZeroToOne();
+    sourceEnd.cardinality.setZeroToOne();
     sourceEnd.isReadOnly = true;
-    targetEnd.setCardinalityToZeroToOne();
+    targetEnd.cardinality.setZeroToOne();
     targetEnd.isReadOnly = true;
     return relation;
   }
@@ -344,12 +344,12 @@ export class Package extends ModelElement
     const targetEnd = relation.getTargetEnd();
 
     if (target.hasRoleStereotype() || target.hasRoleMixinStereotype()) {
-      sourceEnd.setCardinalityToOneToMany();
+      sourceEnd.cardinality.setOneToMany();
     } else {
-      sourceEnd.setCardinalityToMany();
+      sourceEnd.cardinality.setZeroToMany();
     }
 
-    targetEnd.setCardinalityToOne();
+    targetEnd.cardinality.setOneToOne;
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -360,8 +360,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinalityToOne();
-    targetEnd.setCardinalityToOne();
+    sourceEnd.cardinality.setOneToOne;
+    targetEnd.cardinality.setOneToOne;
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -372,8 +372,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinalityToMany();
-    targetEnd.setCardinalityToOneToMany();
+    sourceEnd.cardinality.setZeroToMany();
+    targetEnd.cardinality.setOneToMany();
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -384,8 +384,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinalityToOneToMany();
-    targetEnd.setCardinalityToOne();
+    sourceEnd.cardinality.setOneToMany();
+    targetEnd.cardinality.setOneToOne;
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
     return relation;
@@ -396,8 +396,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinalityToOneToMany();
-    targetEnd.setCardinalityToOneToMany();
+    sourceEnd.cardinality.setOneToMany();
+    targetEnd.cardinality.setOneToMany();
     targetEnd.aggregationKind = AggregationKind.SHARED;
 
     return relation;
@@ -408,8 +408,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinalityFromNumbers(1, 1);
-    targetEnd.setCardinalityFromNumbers(1, 1);
+    sourceEnd.cardinality.setCardinalityFromNumbers(1, 1);
+    targetEnd.cardinality.setCardinalityFromNumbers(1, 1);
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
     return relation;
@@ -420,8 +420,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinalityFromNumbers(1, 1);
-    targetEnd.setCardinalityFromNumbers(1, 1);
+    sourceEnd.cardinality.setCardinalityFromNumbers(1, 1);
+    targetEnd.cardinality.setCardinalityFromNumbers(1, 1);
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
     return relation;
@@ -432,8 +432,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinalityFromNumbers(0, propertyUtils.UNBOUNDED_CARDINALITY);
-    targetEnd.setCardinalityFromNumbers(1, propertyUtils.UNBOUNDED_CARDINALITY);
+    sourceEnd.cardinality.setZeroToMany();
+    targetEnd.cardinality.setOneToMany();
 
     return relation;
   }
@@ -443,9 +443,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinalityFromNumbers(1, 1);
+    sourceEnd.cardinality.setCardinalityFromNumbers(1, 1);
     sourceEnd.isReadOnly = true;
-    targetEnd.setCardinalityFromNumbers(1, 1);
+    targetEnd.cardinality.setCardinalityFromNumbers(1, 1);
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -456,9 +456,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinalityToOneToMany();
+    sourceEnd.cardinality.setOneToMany();
     sourceEnd.isReadOnly = true;
-    targetEnd.setCardinalityToOne();
+    targetEnd.cardinality.setOneToOne;
     targetEnd.isReadOnly = true;
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
@@ -470,13 +470,13 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinalityToZeroToOne();
+    sourceEnd.cardinality.setZeroToOne();
     sourceEnd.isReadOnly = true;
 
     if (source.hasHistoricalRoleStereotype() || source.hasHistoricalRoleMixinStereotype()) {
-      targetEnd.setCardinalityToOneToMany();
+      targetEnd.cardinality.setOneToMany();
     } else {
-      targetEnd.setCardinalityToMany();
+      targetEnd.cardinality.setZeroToMany();
     }
 
     return relation;
@@ -487,9 +487,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinalityToMany();
+    sourceEnd.cardinality.setZeroToMany();
     sourceEnd.isReadOnly = true;
-    targetEnd.setCardinalityToOne();
+    targetEnd.cardinality.setOneToOne;
 
     return relation;
   }
@@ -499,9 +499,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinalityToOne();
+    sourceEnd.cardinality.setOneToOne;
     sourceEnd.isReadOnly = true;
-    targetEnd.setCardinalityToOne();
+    targetEnd.cardinality.setOneToOne;
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -512,9 +512,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinalityToOneToMany();
+    sourceEnd.cardinality.setOneToMany();
     sourceEnd.isReadOnly = true;
-    targetEnd.setCardinalityToMany();
+    targetEnd.cardinality.setZeroToMany();
 
     return relation;
   }
@@ -524,9 +524,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinalityToOne();
+    sourceEnd.cardinality.setOneToOne;
     sourceEnd.isReadOnly = true;
-    targetEnd.setCardinalityToOne();
+    targetEnd.cardinality.setOneToOne;
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -537,9 +537,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinalityToOne();
+    sourceEnd.cardinality.setOneToOne;
     sourceEnd.isReadOnly = true;
-    targetEnd.setCardinalityToOne();
+    targetEnd.cardinality.setOneToOne;
 
     return relation;
   }
@@ -549,8 +549,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.setCardinalityFromNumbers(2, propertyUtils.UNBOUNDED_CARDINALITY);
-    targetEnd.setCardinalityFromNumbers(1, 1);
+    sourceEnd.cardinality.setCardinalityFromNumbers(2, CARDINALITY_MAX_AS_NUMBER);
+    targetEnd.cardinality.setOneToOne();
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
     return relation;
