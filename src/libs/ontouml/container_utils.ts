@@ -1,4 +1,4 @@
-import { Container, ModelElement } from '.';
+import { Container, ModelElement } from './';
 import _ from 'lodash';
 
 function getContents<T>(container: Container<T, any>, contentFields: string[], contentsFilter?: (content: T) => boolean): T[] {

@@ -12,7 +12,7 @@ import {
   Classifier,
   utils,
   stereotypeUtils,
-  naturesUtils,
+  natureUtils,
   MultilingualText,
   ClassStereotype,
   OntologicalNature,
@@ -118,6 +118,21 @@ export class Class extends ModelElement
     );
   }
 
+  addAttribute(attribute: Property): void {
+    if (this.hasEnumerationStereotype()) {
+      throw new Error('Cannot create an attribute on an enumeration class.');
+    }
+
+    containerUtils.addContentToArray<ModelElement, Property>(this, 'properties', attribute);
+  }
+
+  addLiteral(literal: Literal): void {
+    if (!this.hasEnumerationStereotype()) {
+      throw new Error('Cannot create a literal on a non-enumeration class.');
+    }
+    containerUtils.addContentToArray<ModelElement, Literal>(this, 'literals', literal);
+  }
+
   // TODO: review other implementations of setContainer
   setContainer(newContainer: Package): void {
     containerUtils.setContainer(this, newContainer, 'contents', true);
@@ -156,15 +171,15 @@ export class Class extends ModelElement
   }
 
   isRestrictedToEndurant(): boolean {
-    return this.restrictedToContainedIn(naturesUtils.EndurantNatures);
+    return this.restrictedToContainedIn(natureUtils.EndurantNatures);
   }
 
   isRestrictedToSubstantial(): boolean {
-    return this.restrictedToContainedIn(naturesUtils.SubstantialNatures);
+    return this.restrictedToContainedIn(natureUtils.SubstantialNatures);
   }
 
   isRestrictedToMoment(): boolean {
-    return this.restrictedToContainedIn(naturesUtils.MomentNatures);
+    return this.restrictedToContainedIn(natureUtils.MomentNatures);
   }
 
   isRestrictedToFunctionalComplex(): boolean {
@@ -180,11 +195,11 @@ export class Class extends ModelElement
   }
 
   isRestrictedToIntrinsicMoment(): boolean {
-    return this.restrictedToContainedIn(naturesUtils.IntrinsicMomentNatures);
+    return this.restrictedToContainedIn(natureUtils.IntrinsicMomentNatures);
   }
 
   isRestrictedToExtrinsicMoment(): boolean {
-    return this.restrictedToContainedIn(naturesUtils.ExtrinsicMomentNatures);
+    return this.restrictedToContainedIn(natureUtils.ExtrinsicMomentNatures);
   }
 
   isRestrictedToRelator(): boolean {
@@ -609,4 +624,6 @@ export class Class extends ModelElement
   getOwnOppositeRelationEnds(): Property[] {
     throw new Error('Method unimplemented!');
   }
+
+  // TODO: add static version of factory methods present in class here
 }

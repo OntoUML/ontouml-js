@@ -13,8 +13,7 @@ import {
   RelationStereotype,
   OntologicalNature,
   Container
-} from '.';
-import _ from 'lodash';
+} from './';
 
 export interface PackageContainer<ContentType, DeepContentType> extends Container<ContentType, DeepContentType> {
   getAllPackages(): Package[];

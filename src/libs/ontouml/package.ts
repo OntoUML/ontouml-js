@@ -86,7 +86,6 @@ export class Package extends ModelElement
     return this.getAllContents(classesFilter) as Class[];
   }
 
-  // TODO: review if this function should exist
   getAllLiterals(): Literal[] {
     const literalsFilter = (modelElement: ModelElement) => modelElement instanceof Literal;
     return this.getAllContents(literalsFilter) as Literal[];
