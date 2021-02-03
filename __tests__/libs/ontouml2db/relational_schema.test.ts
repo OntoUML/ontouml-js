@@ -27,6 +27,8 @@ describe('Test models against different options', () => {
         const service = new OntoUML2DB(test_001.project, options[index - 1]);
         test_001.checker.setTransformation(service);
 
+        console.log(service.getRelationalSchema());
+
         // let result;
         // expect(() => {
         //     result = service.run();

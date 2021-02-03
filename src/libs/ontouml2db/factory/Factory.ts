@@ -16,7 +16,7 @@ import { GraphGeneralizationSet } from '@libs/ontouml2db/graph/GraphGeneralizati
 // import { IClass, IGeneralization, IRelation, IGeneralizationSet } from '@types';
 // import { OntoumlType, ClassStereotype } from '@constants/.';
 
-import { Project, ClassStereotype, Class, propertyUtils, Generalization, Relation, GeneralizationSet } from '@libs/ontouml';
+import { Project, ClassStereotype, Class, Generalization, Relation, GeneralizationSet, CARDINALITY_MAX } from '@libs/ontouml';
 
 export class Factory {
   graph: Graph;
@@ -59,10 +59,7 @@ export class Factory {
     const node: Node = new Node(_class.id, _class.name.toString(), this.getUfoStereotype(_class));
 
     for (const attribute of _class.getOwnAttributes()) {
-      const cardinality =
-        attribute.cardinality.lowerBound +
-        '..' +
-        (attribute.cardinality.upperBound === propertyUtils.UNBOUNDED_CARDINALITY ? '*' : attribute.cardinality.upperBound);
+      const cardinality = attribute.cardinality.lowerBound + '..' + attribute.cardinality.upperBound;
 
       const property: NodeProperty = new NodeProperty(
         attribute.id,
@@ -119,12 +116,8 @@ export class Factory {
       const source = relation.getSourceEnd();
       const target = relation.getTargetEnd();
 
-      const sourceCardinality = `${source.cardinality.lowerBound}..${
-        source.cardinality.upperBound === propertyUtils.UNBOUNDED_CARDINALITY ? '*' : source.cardinality.upperBound
-      }`;
-      const targetCardinality = `${target.cardinality.lowerBound}..${
-        target.cardinality.upperBound === propertyUtils.UNBOUNDED_CARDINALITY ? '*' : target.cardinality.upperBound
-      }`;
+      const sourceCardinality = `${source.cardinality.lowerBound}..${source.cardinality.upperBound}`;
+      const targetCardinality = `${target.cardinality.lowerBound}..${target.cardinality.upperBound}`;
 
       sourceNode = this.graph.getNodeById(relation.getSource().id);
       targetNode = this.graph.getNodeById(relation.getTarget().id);
