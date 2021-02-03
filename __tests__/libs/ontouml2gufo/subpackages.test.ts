@@ -1,14 +1,15 @@
-import { IPackage } from '@types';
 import { generateGufo } from './helpers';
-import OntoumlFactory from './ontouml_factory';
+import { Package } from '@libs/ontouml';
 
 describe('Subpackages', () => {
-  let model: IPackage;
+  let model: Package;
 
   beforeEach(() => {
-    const personClass = OntoumlFactory.createKind('Person');
-    const universityPkg = OntoumlFactory.createPackage('University', [personClass]);
-    model = OntoumlFactory.createPackage('Model', [personClass, universityPkg]);
+    model = new Package();
+
+    const universityPkg = model.createPackage('University');
+
+    universityPkg.createKind('Person');
   });
 
   describe('When { prefixPackages = true }', () => {

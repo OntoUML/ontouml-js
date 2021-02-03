@@ -1,77 +1,74 @@
-import { OntoumlType } from '@constants/.';
-import { IClass, IElement, IProperty, IRelation } from '@types';
-import uniqid from 'uniqid';
+import { ModelElement, Relation, Class, Property, OntoumlType } from '@libs/ontouml/';
+import { ServiceIssue } from '@libs/service_issue';
+import { ServiceIssueSeverity } from '@libs/service_issue_severity';
 
-enum Severity {
-  ERROR = 'error',
-  WARNING = 'warning'
-}
+import uniqid from 'uniqid';
 
 export const IssueType = {
   INVALID_BASE_IRI: {
     code: 'invalid_base_iri',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Invalid BaseIRI'
   },
   INVALID_CUSTOM_PACKAGE_PREFIX: {
     code: 'invalid_custom_package_prefix',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Protected prefix provided in custom package mapping'
   },
   INVALID_CUSTOM_PACKAGE_URI: {
     code: 'invalid_custom_package_uri',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Protected URI provided in custom package mapping'
   },
   INVALID_PACKAGE_PREFIX: {
     code: 'invalid_package_prefix',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Protected prefix generated in package mapping'
   },
   INVALID_PACKAGE_URI: {
     code: 'invalid_package_uri',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Protected URI generated in package mapping'
   },
   MISSING_RELATION_NAME: {
     code: 'missing_relation_name',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Missing relation name'
   },
   MISSING_INVERSE_RELATION_NAME: {
     code: 'missing_inverse_relation_name',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Missing inverse relation name'
   },
   MISSING_SOURCE_CARDINALITY: {
     code: 'missing_source_cardinality',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Missing cardinality'
   },
   MISSING_TARGET_CARDINALITY: {
     code: 'missing_target_cardinality',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Missing cardinality'
   },
   DUPLICATE_NAMES: {
     code: 'duplicate_names',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Duplicate element name'
   },
   MISSING_ATTRIBUTE_TYPE: {
     code: 'missing_attribute_type',
-    severity: Severity.WARNING,
+    severity: ServiceIssueSeverity.WARNING,
     title: 'Missing attribute type'
   }
 };
 
-export default class Issue {
+export class Issue implements ServiceIssue {
   id: string;
-  code?: string;
+  code: string;
   title: string;
   description: string;
-  severity?: 'error' | 'warning';
-  data?: any;
+  severity: ServiceIssueSeverity;
+  data: any;
 
   constructor(base: Partial<Issue>) {
     (this.id = base.id || uniqid()),
@@ -139,7 +136,7 @@ export default class Issue {
     return new Issue(warning);
   }
 
-  static createMissingRelationName(relation: IRelation): Issue {
+  static createMissingRelationName(relation: Relation): Issue {
     const stereotypeName = getStereotypeName(relation);
     const source = relation.getSource();
     const target = relation.getTarget();
@@ -153,7 +150,7 @@ export default class Issue {
     return new Issue(warning);
   }
 
-  static createMissingInverseRelationName(relation: IRelation): Issue {
+  static createMissingInverseRelationName(relation: Relation): Issue {
     const stereotypeName = getStereotypeName(relation);
     const source = relation.getSource();
     const target = relation.getTarget();
@@ -167,7 +164,7 @@ export default class Issue {
     return new Issue(warning);
   }
 
-  static createMissingSourceCardinality(relation: IRelation): Issue {
+  static createMissingSourceCardinality(relation: Relation): Issue {
     const source = relation.getSource();
     const target = relation.getTarget();
 
@@ -180,7 +177,7 @@ export default class Issue {
     return new Issue(warning);
   }
 
-  static createMissingTargetCardinality(relation: IRelation): Issue {
+  static createMissingTargetCardinality(relation: Relation): Issue {
     const source = relation.getSource();
     const target = relation.getTarget();
 
@@ -193,14 +190,14 @@ export default class Issue {
     return new Issue(warning);
   }
 
-  static createDuplicateNames(repeatedElements: IElement[], duplicateName: string): Issue {
-    const occurrences = repeatedElements.map((element: IElement) => {
+  static createDuplicateNames(repeatedElements: ModelElement[], duplicateName: string): Issue {
+    const occurrences = repeatedElements.map((element: ModelElement) => {
       if (element.type === OntoumlType.PROPERTY_TYPE) {
-        const property = element as IProperty;
-        const parent = property._container as IElement;
+        const property = element as Property;
+        const parent = property.container as ModelElement;
 
         if (parent.type === OntoumlType.RELATION_TYPE) {
-          const relation = parent as IRelation;
+          const relation = parent as Relation;
           const source = relation.getSource();
           const target = relation.getTarget();
 
@@ -211,7 +208,7 @@ export default class Issue {
       }
 
       if (element.type === OntoumlType.RELATION_TYPE) {
-        const relation = element as IRelation;
+        const relation = element as Relation;
         const source = relation.getSource();
         const target = relation.getTarget();
 
@@ -234,7 +231,7 @@ export default class Issue {
     return new Issue(warning);
   }
 
-  static createMissingAttributeType(classEl: IClass, attribute: IProperty): Issue {
+  static createMissingAttributeType(classEl: Class, attribute: Property): Issue {
     const warning = {
       ...IssueType.MISSING_ATTRIBUTE_TYPE,
       description: `Missing type on attribute "${classEl.name}::${attribute.name}".`,
@@ -262,7 +259,7 @@ export default class Issue {
 }
 
 //TODO: Move this to the core API
-function getStereotypeName(relation: IRelation): string {
-  const stereotype = relation.stereotypes ? relation.stereotypes[0] : null;
+function getStereotypeName(relation: Relation): string {
+  const stereotype = relation.stereotype || null;
   return stereotype ? `«${stereotype}»` : '';
 }

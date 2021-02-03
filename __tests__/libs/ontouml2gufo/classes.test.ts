@@ -1,19 +1,18 @@
-import { OntologicalNature } from '@constants/.';
 import { generateGufo } from './helpers';
-import OntoumlFactory from './ontouml_factory';
+import { ClassStereotype, OntologicalNature, Package } from '@libs/ontouml';
 
 describe('Classes', () => {
   it('should generate a label with the original name of the class', () => {
-    const _class = OntoumlFactory.createKind('Happy Person');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createKind('Happy Person');
     const result = generateGufo(model);
 
     expect(result).toContain('<:HappyPerson> <rdfs:label> "Happy Person"');
   });
 
   it('should generate a owl:Class and an owl:NamedIndividual', () => {
-    const _class = OntoumlFactory.createKind('Person');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createKind('Person');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Person> <rdf:type> <owl:Class>');
@@ -21,8 +20,8 @@ describe('Classes', () => {
   });
 
   it('should transform «kind» class', () => {
-    const _class = OntoumlFactory.createKind('Person');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createKind('Person');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Person> <rdfs:subClassOf> <gufo:FunctionalComplex>');
@@ -30,9 +29,8 @@ describe('Classes', () => {
   });
 
   it('should transform «collective» class { isExtensional=false }', () => {
-    const _class = OntoumlFactory.createCollective('Group');
-    _class.isExtensional = false;
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createCollective('Group', false);
     const result = generateGufo(model);
 
     expect(result).toContain('<:Group> <rdfs:subClassOf> <gufo:VariableCollection>');
@@ -40,9 +38,8 @@ describe('Classes', () => {
   });
 
   it('should transform «collective» class { isExtensional=true }', () => {
-    const _class = OntoumlFactory.createCollective('FixedGroup');
-    _class.isExtensional = true;
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createCollective('FixedGroup', true);
     const result = generateGufo(model);
 
     expect(result).toContain('<:FixedGroup> <rdfs:subClassOf> <gufo:FixedCollection>');
@@ -50,8 +47,8 @@ describe('Classes', () => {
   });
 
   it('should transform «quantity» class', () => {
-    const _class = OntoumlFactory.createQuantity('Wine');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createQuantity('Wine');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Wine> <rdfs:subClassOf> <gufo:Quantity>');
@@ -59,8 +56,8 @@ describe('Classes', () => {
   });
 
   it('should transform «relator» class', () => {
-    const _class = OntoumlFactory.createRelator('Marriage');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createRelator('Marriage');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Marriage> <rdfs:subClassOf> <gufo:Relator>');
@@ -68,9 +65,8 @@ describe('Classes', () => {
   });
 
   it('should transform «mode» class { allowed=[intrinsic-mode] }', () => {
-    const _class = OntoumlFactory.createMode('Skill');
-    _class.allowed = [OntologicalNature.intrinsic_mode];
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createIntrinsicMode('Skill');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Skill> <rdfs:subClassOf> <gufo:IntrinsicMode>');
@@ -78,9 +74,8 @@ describe('Classes', () => {
   });
 
   it('should transform «mode» class { allowed=[extrinsic-mode] }', () => {
-    const _class = OntoumlFactory.createMode('Love');
-    _class.allowed = [OntologicalNature.extrinsic_mode];
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createExtrinsicMode('Love');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Love> <rdfs:subClassOf> <gufo:ExtrinsicMode>');
@@ -88,9 +83,9 @@ describe('Classes', () => {
   });
 
   it('should transform «mode» class { allowed=[intrinsic-mode, extrinsic-mode] }', () => {
-    const _class = OntoumlFactory.createMode('Belief');
-    _class.allowed = [OntologicalNature.intrinsic_mode, OntologicalNature.extrinsic_mode];
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    // const _class = OntoumlFactory.createMode('Belief');
+    const model = new Package();
+    model.createClass('Belief', ClassStereotype.MODE, [OntologicalNature.intrinsic_mode, OntologicalNature.extrinsic_mode]);
     const result = generateGufo(model);
 
     expect(result).toContain('<:Belief> <rdfs:subClassOf> [');
@@ -99,48 +94,48 @@ describe('Classes', () => {
   });
 
   it('should transform «role» class', () => {
-    const _class = OntoumlFactory.createRole('Student');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createRole('Student');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Student> <rdf:type> <gufo:Role>');
   });
 
   it('should transform «phase» class', () => {
-    const _class = OntoumlFactory.createPhase('Child');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createPhase('Child');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Child> <rdf:type> <gufo:Phase>');
   });
 
   it('should transform «roleMixin» class', () => {
-    const _class = OntoumlFactory.createRoleMixin('Customer');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createRoleMixin('Customer');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Customer> <rdf:type> <gufo:RoleMixin>');
   });
 
   it('should transform «phaseMixin» class', () => {
-    const _class = OntoumlFactory.createPhaseMixin('Infant');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createPhaseMixin('Infant');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Infant> <rdf:type> <gufo:PhaseMixin>');
   });
 
   it('should transform «mixin» class', () => {
-    const _class = OntoumlFactory.createMixin('Seatable');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createMixin('Seatable');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Seatable> <rdf:type> <gufo:Mixin>');
   });
 
   it('should transform «event» class', () => {
-    const _class = OntoumlFactory.createEvent('Wedding');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createEvent('Wedding');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Wedding> <rdfs:subClassOf> <gufo:Event>');
@@ -148,8 +143,8 @@ describe('Classes', () => {
   });
 
   it('should transform «situation» class', () => {
-    const _class = OntoumlFactory.createSituation('Hazard');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createSituation('Hazard');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Hazard> <rdfs:subClassOf> <gufo:Situation>');
@@ -157,8 +152,8 @@ describe('Classes', () => {
   });
 
   it('should transform «abstract» class', () => {
-    const _class = OntoumlFactory.createAbstract('Goal');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createAbstract('Goal');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Goal> <rdfs:subClassOf> <gufo:AbstractIndividual>');
@@ -166,12 +161,12 @@ describe('Classes', () => {
   });
 
   it('should transform «datatype» class with attributes (complex datatype)', () => {
-    const complexDatatype = OntoumlFactory.createDatatype('Date');
-    const string = OntoumlFactory.createDatatype('String');
-    OntoumlFactory.addAttribute(complexDatatype, 'day', string);
-    OntoumlFactory.addAttribute(complexDatatype, 'month', string);
-    OntoumlFactory.addAttribute(complexDatatype, 'year', string);
-    const model = OntoumlFactory.createPackage(null, [complexDatatype, string]);
+    const model = new Package();
+    const _string = model.createDatatype('String');
+    const complexDatatype = model.createDatatype('Date');
+    complexDatatype.createAttribute(_string, 'day');
+    complexDatatype.createAttribute(_string, 'month');
+    complexDatatype.createAttribute(_string, 'year');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Date> <rdfs:subClassOf> <gufo:QualityValue>');
@@ -179,8 +174,8 @@ describe('Classes', () => {
   });
 
   it('should NOT transform «datatype» class without attributes (primitive datatype)', () => {
-    const primitiveDatatype = OntoumlFactory.createDatatype('Date');
-    const model = OntoumlFactory.createPackage(null, [primitiveDatatype]);
+    const model = new Package();
+    model.createDatatype('Date');
     const result = generateGufo(model);
 
     expect(result).not.toContain('<:Date> <rdfs:subClassOf> <gufo:QualityValue>');
@@ -188,8 +183,8 @@ describe('Classes', () => {
   });
 
   it('should transform «type» class', () => {
-    const _class = OntoumlFactory.createType('Gender');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createType('Gender');
     const result = generateGufo(model);
 
     expect(result).toContain('<:Gender> <rdfs:subClassOf> <gufo:ConcreteIndividualType>');

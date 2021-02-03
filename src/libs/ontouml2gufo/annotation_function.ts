@@ -1,9 +1,8 @@
+import { ModelElement, Relation } from '@libs/ontouml/';
+import { Ontouml2Gufo } from './';
 import tags from 'language-tags';
 
-import { IElement, IRelation } from '@types';
-import Ontouml2Gufo from './ontouml2gufo';
-
-export function transformAnnotations(transformer: Ontouml2Gufo, element: IElement): boolean {
+export function transformAnnotations(transformer: Ontouml2Gufo, element: ModelElement): boolean {
   const labels = transformer.options.getCustomLabels(element) || {};
   const uri = transformer.getUri(element);
 
@@ -56,6 +55,6 @@ export function transformAnnotations(transformer: Ontouml2Gufo, element: IElemen
   return true;
 }
 
-export function transformInverseAnnotations(transformer: Ontouml2Gufo, relation: IRelation) {
+export function transformInverseAnnotations(transformer: Ontouml2Gufo, relation: Relation) {
   transformAnnotations(transformer, relation.properties[0]);
 }

@@ -1,7 +1,7 @@
-import { IElement, IPackage } from '@types';
-import { getName } from './helper_functions';
+import { ModelElement, Package } from '@libs/ontouml/';
+import { ServiceOptions } from '@libs/service_options';
 
-export default class Options {
+export class Options implements ServiceOptions {
   format: string;
   baseIri: string;
   basePrefix: string;
@@ -37,7 +37,7 @@ export default class Options {
     Object.keys(base).forEach(key => (this[key] = base[key]));
   }
 
-  getCustomUri(element: IElement): string {
+  getCustomUri(element: ModelElement): string {
     const allMappings = this.customElementMapping;
 
     let elementCustomMapping = allMappings[element.id];
@@ -46,7 +46,7 @@ export default class Options {
       return elementCustomMapping.uri;
     }
 
-    elementCustomMapping = allMappings[getName(element)];
+    elementCustomMapping = allMappings[element.getName()];
 
     if (elementCustomMapping && elementCustomMapping.uri) {
       return elementCustomMapping.uri;
@@ -55,7 +55,7 @@ export default class Options {
     return null;
   }
 
-  getCustomLabels(element: IElement) {
+  getCustomLabels(element: ModelElement) {
     const allMappings = this.customElementMapping;
 
     let elementCustomMapping = allMappings[element.id];
@@ -64,7 +64,7 @@ export default class Options {
       return elementCustomMapping.label;
     }
 
-    elementCustomMapping = allMappings[getName(element)];
+    elementCustomMapping = allMappings[element.getName()];
 
     if (elementCustomMapping && elementCustomMapping.label) {
       return elementCustomMapping.label;
@@ -75,14 +75,14 @@ export default class Options {
 
   // type CustomPrefixData = { customPrefix?: string; customUri: string };
 
-  getCustomPackagePrefix(pkg: IPackage): string {
+  getCustomPackagePrefix(pkg: Package): string {
     const idMapping = this.customPackageMapping[pkg.id];
 
     if (idMapping && idMapping.prefix) {
       return idMapping.prefix;
     }
 
-    const packageName = getName(pkg);
+    const packageName = pkg.getName();
     const nameMapping = this.customPackageMapping[packageName];
     if (nameMapping && nameMapping.prefix) {
       return nameMapping.prefix;
@@ -91,14 +91,14 @@ export default class Options {
     return null;
   }
 
-  getCustomPackageUri(pkg: IPackage): string {
+  getCustomPackageUri(pkg: Package): string {
     const idMapping = this.customPackageMapping[pkg.id];
 
     if (idMapping && idMapping.uri) {
       return idMapping.uri;
     }
 
-    const packageName = getName(pkg);
+    const packageName = pkg.getName();
     const nameMapping = this.customPackageMapping[packageName];
     if (nameMapping && nameMapping.uri) {
       return nameMapping.uri;

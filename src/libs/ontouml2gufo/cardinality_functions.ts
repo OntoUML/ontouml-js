@@ -1,64 +1,44 @@
-import { IClass, IProperty, IRelation } from '@types';
-
-import Ontouml2Gufo from './ontouml2gufo';
-import { getSuperProperty } from './relation_functions';
-import { getInverseSuperProperty } from './relations_inverse_functions';
-import {
-  isDerivation,
-  isInstantiation,
-  isBounded,
-  isMaterial,
-  isComparative,
-  hasOntoumlStereotype,
-  isPartWholeRelation,
-  isBinary,
-  impliesExistentialDependency,
-  getLowerboundCardinality,
-  getUpperboundCardinality,
-  UNBOUNDED_CARDINALITY,
-  targetExistentiallyDependsOnSource,
-  sourceExistentiallyDependsOnTarget,
-  isClass
-} from './helper_functions';
+import { Relation, Class, Property, CARDINALITY_MAX_AS_NUMBER } from '@libs/ontouml';
+import { Ontouml2Gufo, getInverseSuperProperty, getSuperProperty } from './';
 
 const N3 = require('n3');
 const { namedNode, literal } = N3.DataFactory;
 
-export function transformRelationCardinalities(transformer: Ontouml2Gufo, relation: IRelation) {
+export function transformRelationCardinalities(transformer: Ontouml2Gufo, relation: Relation) {
   if (
-    !isClass(relation.getSource()) ||
-    !isClass(relation.getTarget()) ||
-    isInstantiation(relation) ||
-    isDerivation(relation) ||
-    !isBinary(relation) ||
-    !impliesExistentialDependency(relation)
+    !(relation.getSource() instanceof Class) ||
+    !(relation.getTarget() instanceof Class) ||
+    relation.hasInstantiationStereotype() ||
+    relation.hasDerivationStereotype() ||
+    !relation.isBinaryRelation() ||
+    !relation.isExistentialDependenceRelation()
   ) {
     return;
   }
 
-  const sourceProperty = relation.properties[0];
-  if (isBounded(sourceProperty)) {
+  const sourceProperty = relation.getSourceEnd();
+  if (!sourceProperty.cardinality.isZeroToMany()) {
     writerCardinalityAxiom(transformer, relation, Direction.TARGET_TO_SOURCE);
   }
 
-  const targetProperty = relation.properties[1];
-  if (isBounded(targetProperty)) {
+  const targetProperty = relation.getTargetEnd();
+  if (!targetProperty.cardinality.isZeroToMany()) {
     writerCardinalityAxiom(transformer, relation, Direction.SOURCE_TO_TARGET);
   }
 }
 
-function getObjectPropertyNodes(transformer: Ontouml2Gufo, relation: IRelation, propertyPosition) {
+function getObjectPropertyNodes(transformer: Ontouml2Gufo, relation: Relation, propertyPosition) {
   const { options } = transformer;
 
-  if (isInstantiation(relation) || isDerivation(relation) || relation.properties.length > 2) {
+  if (relation.hasInstantiationStereotype() || relation.isDerivationRelation() || relation.isTernaryRelation()) {
     throw new Error('Cannot get property nodes for n-ary, «instantation», or «derivation» relations');
   }
 
   if (propertyPosition === 0) {
     if (
-      isMaterial(relation) ||
-      isComparative(relation) ||
-      (!hasOntoumlStereotype(relation) && !isPartWholeRelation(relation)) ||
+      relation.hasMaterialStereotype() ||
+      relation.hasComparativeStereotype() ||
+      (!relation.stereotype && !relation.isPartWholeRelation()) ||
       options.createObjectProperty
     ) {
       return options.createInverses
@@ -73,9 +53,9 @@ function getObjectPropertyNodes(transformer: Ontouml2Gufo, relation: IRelation, 
 
   if (propertyPosition === 1) {
     if (
-      isMaterial(relation) ||
-      isComparative(relation) ||
-      (!hasOntoumlStereotype(relation) && !isPartWholeRelation(relation)) ||
+      relation.hasMaterialStereotype() ||
+      relation.hasComparativeStereotype() ||
+      (!relation.stereotype && !relation.isPartWholeRelation()) ||
       options.createObjectProperty
     ) {
       return namedNode(transformer.getUri(relation));
@@ -92,33 +72,33 @@ enum Direction {
   TARGET_TO_SOURCE = 2
 }
 
-function writerCardinalityAxiom(transformer: Ontouml2Gufo, relation: IRelation, direction: Direction) {
+function writerCardinalityAxiom(transformer: Ontouml2Gufo, relation: Relation, direction: Direction) {
   if (!direction) return;
 
-  let sourceClass: IClass;
-  let targetAssociationEnd: IProperty;
+  let sourceClass: Class;
+  let targetAssociationEnd: Property;
   let objectPropertyNode;
   let isExistentialDependency: boolean;
 
   if (direction === Direction.SOURCE_TO_TARGET) {
-    sourceClass = relation.properties[0].propertyType as IClass;
-    targetAssociationEnd = relation.properties[1];
+    sourceClass = relation.getSourceClass();
+    targetAssociationEnd = relation.getTargetEnd();
     objectPropertyNode = getObjectPropertyNodes(transformer, relation, 1);
-    isExistentialDependency = sourceExistentiallyDependsOnTarget(relation);
+    isExistentialDependency = relation.getSourceEnd().isReadOnly;
   } else {
-    sourceClass = relation.properties[1].propertyType as IClass;
-    targetAssociationEnd = relation.properties[0];
+    sourceClass = relation.getTargetClass();
+    targetAssociationEnd = relation.getSourceEnd();
     objectPropertyNode = getObjectPropertyNodes(transformer, relation, 0);
-    isExistentialDependency = targetExistentiallyDependsOnSource(relation);
+    isExistentialDependency = relation.getTargetEnd().isReadOnly;
   }
 
   let restrictionNodes = [];
 
-  const lowerBound = getLowerboundCardinality(targetAssociationEnd.cardinality);
-  const upperBound = getUpperboundCardinality(targetAssociationEnd.cardinality);
+  const lowerBound = targetAssociationEnd.cardinality.getLowerBoundAsNumber();
+  const upperBound = targetAssociationEnd.cardinality.getUpperBoundAsNumber();
   const targetClassNode = namedNode(transformer.getUri(targetAssociationEnd.propertyType));
 
-  if (lowerBound === 1 && upperBound === UNBOUNDED_CARDINALITY) {
+  if (lowerBound === 1 && upperBound === CARDINALITY_MAX_AS_NUMBER) {
     restrictionNodes.push([
       {
         predicate: namedNode('rdf:type'),
@@ -174,7 +154,7 @@ function writerCardinalityAxiom(transformer: Ontouml2Gufo, relation: IRelation, 
       ]);
     }
 
-    if (upperBound > 0 && upperBound !== UNBOUNDED_CARDINALITY && isExistentialDependency) {
+    if (upperBound > 0 && upperBound !== CARDINALITY_MAX_AS_NUMBER && isExistentialDependency) {
       restrictionNodes.push([
         {
           predicate: namedNode('rdf:type'),

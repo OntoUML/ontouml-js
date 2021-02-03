@@ -1,12 +1,9 @@
-import isURI from 'validate.io-uri';
-import { IPackage, IRelation, IElement, IClass, IProperty } from '@types';
-import { DefaultPrefixes } from './prefix_functions';
-import { getAllClasses, getAllPackages, getAllRelations, getName } from './helper_functions';
-import { getPackagePrefixes } from './prefix_functions';
-import Issue from './issue';
-import Ontouml2Gufo from './ontouml2gufo';
+import { ModelElement, Relation, Package, Class, Property } from '@libs/ontouml/';
+import { Ontouml2Gufo, Issue, DefaultPrefixes, getPackagePrefixes } from './';
 
-export default class Inspector {
+import isURI from 'validate.io-uri';
+
+export class Inspector {
   transformer: Ontouml2Gufo;
   issues: Issue[];
 
@@ -46,14 +43,14 @@ export default class Inspector {
   }
 
   checkPackagePrefixes() {
-    const packages = getAllPackages(this.transformer.model);
+    const packages = this.transformer.model.getAllPackages();
 
     const { customPackageMapping, prefixPackages } = this.transformer.options;
     const defaultPrefixKeys = Object.keys(DefaultPrefixes);
     const defaultPrefixUris = Object.values(DefaultPrefixes);
 
     for (const key of Object.keys(customPackageMapping)) {
-      const packageEl = packages.find(({ id, name }: IPackage) => id === key || name === key) || {
+      const packageEl = packages.find(({ id, name }: Package) => id === key || name === key) || {
         id: '',
         name: ''
       };
@@ -90,9 +87,9 @@ export default class Inspector {
   }
 
   checkRelationNames() {
-    const relations = getAllRelations(this.transformer.model);
+    const relations = this.transformer.model.getAllRelations();
 
-    relations.forEach((relation: IRelation) => {
+    relations.forEach((relation: Relation) => {
       const sourceAssociationName = relation.properties[0].name;
       const targetAssociationName = relation.properties[1].name;
 
@@ -112,8 +109,8 @@ export default class Inspector {
     const elements = this.transformer.model.getAllContents();
     const elementNames = {};
 
-    elements.forEach((element: IElement) => {
-      const name = getName(element);
+    elements.forEach((element: ModelElement) => {
+      const name = element.getName();
 
       if (name) {
         if (!elementNames[name]) {
@@ -135,9 +132,9 @@ export default class Inspector {
   }
 
   checkCardinality() {
-    const relations = getAllRelations(this.transformer.model);
+    const relations = this.transformer.model.getAllRelations();
 
-    relations.forEach((relation: IRelation) => {
+    relations.forEach((relation: Relation) => {
       const { properties } = relation;
       const sourceCardinality = properties[0].cardinality;
       const targetCardinality = properties[1].cardinality;
@@ -155,10 +152,10 @@ export default class Inspector {
   }
 
   checkAttributeType() {
-    const classes = getAllClasses(this.transformer.model);
+    const classes = this.transformer.model.getAllClasses();
 
-    classes.forEach((classEl: IClass) => {
-      (classEl.properties || []).forEach((attribute: IProperty) => {
+    classes.forEach((classEl: Class) => {
+      (classEl.properties || []).forEach((attribute: Property) => {
         if (!attribute.propertyType) {
           const issue = Issue.createMissingAttributeType(classEl, attribute);
           this.issues.push(issue);

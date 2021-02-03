@@ -1,39 +1,25 @@
-import { IRelation } from '@types';
+import { Relation } from '@libs/ontouml/';
+import { Ontouml2Gufo, transformAnnotations } from './';
 
-import Ontouml2Gufo from './ontouml2gufo';
-import { transformAnnotations } from './annotation_function';
-import {
-  getStereotype,
-  isDerivation,
-  isInstantiation,
-  isMaterial,
-  isComparative,
-  isPartWholeRelation,
-  holdsBetweenObjects,
-  holdsBetweenAspects,
-  holdsBetweenEvents,
-  hasOntoumlStereotype
-} from './helper_functions';
-
-export function transformRelation(transformer: Ontouml2Gufo, relation: IRelation) {
-  if (isInstantiation(relation)) {
+export function transformRelation(transformer: Ontouml2Gufo, relation: Relation) {
+  if (relation.hasInstantiationStereotype()) {
     transformInstantiation(transformer, relation);
     return;
   }
 
-  if (isDerivation(relation)) {
+  if (relation.hasDerivationStereotype()) {
     transformDerivation(transformer, relation);
     return;
   }
 
-  if (isMaterial(relation) || isComparative(relation)) {
+  if (relation.hasMaterialStereotype() || relation.hasComparativeStereotype()) {
     writeBaseRelationAxioms(transformer, relation);
     transformAnnotations(transformer, relation);
     writeRelationTypeAxiom(transformer, relation);
     return;
   }
 
-  if (!isPartWholeRelation(relation) && !hasOntoumlStereotype(relation)) {
+  if (!relation.isPartWholeRelation() && !relation.stereotype) {
     writeBaseRelationAxioms(transformer, relation);
     transformAnnotations(transformer, relation);
     return;
@@ -47,7 +33,7 @@ export function transformRelation(transformer: Ontouml2Gufo, relation: IRelation
   }
 }
 
-function writeBaseRelationAxioms(transformer: Ontouml2Gufo, relation: IRelation) {
+function writeBaseRelationAxioms(transformer: Ontouml2Gufo, relation: Relation) {
   const relationUri = transformer.getUri(relation);
   transformer.addQuad(relationUri, 'rdf:type', 'owl:ObjectProperty');
 
@@ -62,16 +48,16 @@ function writeBaseRelationAxioms(transformer: Ontouml2Gufo, relation: IRelation)
   }
 }
 
-export function getPartWholeSuperProperty(relation: IRelation): string {
-  if (!isPartWholeRelation(relation)) return null;
-  if (holdsBetweenObjects(relation)) return 'gufo:isObjectProperPartOf';
-  if (holdsBetweenAspects(relation)) return 'gufo:isAspectProperPartOf';
-  if (holdsBetweenEvents(relation)) return 'gufo:isEventProperPartOf';
+export function getPartWholeSuperProperty(relation: Relation): string {
+  if (!relation.isPartWholeRelation()) return null;
+  if (relation.holdsBetweenSubstantials()) return 'gufo:isObjectProperPartOf';
+  if (relation.holdsBetweenMoments()) return 'gufo:isAspectProperPartOf';
+  if (relation.holdsBetweenEvents()) return 'gufo:isEventProperPartOf';
   return 'gufo:isProperPartOf';
 }
 
-export function getSuperPropertyFromStereotype(relation: IRelation): string {
-  const stereotype = getStereotype(relation);
+export function getSuperPropertyFromStereotype(relation: Relation): string {
+  const stereotype = relation.stereotype;
   const ontoumlRelation2GufoProperty = {
     bringsAbout: 'gufo:broughtAbout',
     characterization: 'gufo:inheresIn',
@@ -95,11 +81,11 @@ export function getSuperPropertyFromStereotype(relation: IRelation): string {
   return ontoumlRelation2GufoProperty[stereotype];
 }
 
-export function getSuperProperty(relation: IRelation): string {
+export function getSuperProperty(relation: Relation): string {
   return getSuperPropertyFromStereotype(relation) || getPartWholeSuperProperty(relation);
 }
 
-function writeSubPropertyAxiom(transformer: Ontouml2Gufo, relation: IRelation) {
+function writeSubPropertyAxiom(transformer: Ontouml2Gufo, relation: Relation) {
   let superProperty = getSuperProperty(relation);
 
   if (!superProperty) {
@@ -110,7 +96,7 @@ function writeSubPropertyAxiom(transformer: Ontouml2Gufo, relation: IRelation) {
   transformer.addQuad(relationUri, 'rdfs:subPropertyOf', superProperty);
 }
 
-function writeRelationTypeAxiom(transformer: Ontouml2Gufo, relation: IRelation) {
+function writeRelationTypeAxiom(transformer: Ontouml2Gufo, relation: Relation) {
   const relationUri = transformer.getUri(relation);
 
   const relationTypeMap = {
@@ -118,13 +104,13 @@ function writeRelationTypeAxiom(transformer: Ontouml2Gufo, relation: IRelation) 
     comparative: 'gufo:ComparativeRelationshipType'
   };
 
-  const stereotype = getStereotype(relation);
+  const stereotype = relation.stereotype;
   const typeUri = relationTypeMap[stereotype];
 
   transformer.addQuad(relationUri, 'rdf:type', typeUri);
 }
 
-function transformInstantiation(transformer: Ontouml2Gufo, relation: IRelation): boolean {
+function transformInstantiation(transformer: Ontouml2Gufo, relation: Relation): boolean {
   const domainUri = transformer.getTargetUri(relation);
   const rangeUri = transformer.getSourceUri(relation);
 
@@ -136,7 +122,7 @@ function transformInstantiation(transformer: Ontouml2Gufo, relation: IRelation):
   return true;
 }
 
-function transformDerivation(transformer: Ontouml2Gufo, relation: IRelation): boolean {
+function transformDerivation(transformer: Ontouml2Gufo, relation: Relation): boolean {
   const domainUri = transformer.getSourceUri(relation);
   const rangeUri = transformer.getTargetUri(relation);
 

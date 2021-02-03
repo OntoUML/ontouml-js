@@ -1,18 +1,13 @@
-import { ModelManager } from '@libs/model';
-import { Ontouml2Gufo } from '@libs/ontouml2gufo';
+import { Package, Project } from '@libs/ontouml';
+import { Ontouml2Gufo, Options, Issue, UriManager } from '@libs/ontouml2gufo';
 
-import { IPackage } from '@types';
-import Options from '@libs/ontouml2gufo/options';
-import Issue from '@libs/ontouml2gufo/issue';
-import UriManager from '@libs/ontouml2gufo/uri_manager';
-
-export function generateGufo(model: IPackage, options?: Partial<Options>): string {
-  const modelManager = new ModelManager(model);
-  const ontouml2gufo = new Ontouml2Gufo(modelManager, {
+export function generateGufo(modelOrProject: Package | Project, options?: Partial<Options>): string {
+  const optionsWithDefaults = {
     baseIri: 'https://example.com',
     format: 'N-Triple',
     ...options
-  });
+  };
+  const ontouml2gufo = new Ontouml2Gufo(modelOrProject, optionsWithDefaults);
 
   ontouml2gufo.transform();
 
@@ -20,26 +15,26 @@ export function generateGufo(model: IPackage, options?: Partial<Options>): strin
   // TODO: replace with static method
 }
 
-export function getIssues(model: IPackage, options?: Partial<Options>): Issue[] {
-  const modelManager = new ModelManager(model);
-  const ontouml2gufo = new Ontouml2Gufo(modelManager, {
+export function getIssues(modelOrProject: Package | Project, options?: Partial<Options>): Issue[] {
+  const optionsWithDefaults = {
     baseIri: 'https://example.com',
     format: 'Turtle',
     ...options
-  });
+  };
+  const ontouml2gufo = new Ontouml2Gufo(modelOrProject, optionsWithDefaults);
 
   ontouml2gufo.transform();
 
   return ontouml2gufo.getIssues();
 }
 
-export function getUriManager(model: IPackage, options?: Partial<Options>): UriManager {
-  const modelManager = new ModelManager(model);
-  const ontouml2gufo = new Ontouml2Gufo(modelManager, {
+export function getUriManager(modelOrProject: Package | Project, options?: Partial<Options>): UriManager {
+  const optionsWithDefaults = {
     baseIri: 'https://example.com',
     format: 'Turtle',
     ...options
-  });
+  };
+  const ontouml2gufo = new Ontouml2Gufo(modelOrProject, optionsWithDefaults);
 
   return ontouml2gufo.uriManager;
 }

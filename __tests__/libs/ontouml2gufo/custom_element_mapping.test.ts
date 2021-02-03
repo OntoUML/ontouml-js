@@ -1,11 +1,10 @@
-import { RelationStereotype } from '@constants/.';
 import { generateGufo } from './helpers';
-import OntoumlFactory from './ontouml_factory';
+import { Package } from '@libs/ontouml';
 
 describe('Custom labels', () => {
   it("should use the labels defined in the transformation's options to generate class' labels", () => {
-    const _class = OntoumlFactory.createKind('Person');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createKind('Person');
 
     const result = generateGufo(model, {
       customElementMapping: {
@@ -20,8 +19,8 @@ describe('Custom labels', () => {
   });
 
   it("should use the uri defined in the transformation's options to generate the class' URI", () => {
-    const _class = OntoumlFactory.createKind('Person');
-    const model = OntoumlFactory.createPackage(null, [_class]);
+    const model = new Package();
+    model.createKind('Person');
 
     const result = generateGufo(model, {
       customElementMapping: {
@@ -37,9 +36,10 @@ describe('Custom labels', () => {
   });
 
   it("should use the labels defined in the transformation's options to generate the relation's labels", () => {
-    const _class = OntoumlFactory.createKind('Person');
-    const relation = OntoumlFactory.createRelation('likes', RelationStereotype.MATERIAL, _class, _class);
-    const model = OntoumlFactory.createPackage('Model', [_class, relation]);
+    const model = new Package();
+    const _class = model.createKind('Person');
+    model.createMaterialRelation(_class, _class, 'likes');
+    model.name = 'Model';
 
     const result = generateGufo(model, {
       customElementMapping: {
@@ -54,9 +54,10 @@ describe('Custom labels', () => {
   });
 
   it("should use the uri defined in the transformation's options to generate the relation's URI", () => {
-    const _class = OntoumlFactory.createKind('Person');
-    const relation = OntoumlFactory.createRelation('likes', RelationStereotype.MATERIAL, _class, _class);
-    const model = OntoumlFactory.createPackage('Model', [_class, relation]);
+    const model = new Package();
+    const _class = model.createKind('Person');
+    model.createMaterialRelation(_class, _class, 'likes');
+    model.name = 'Model';
 
     const result = generateGufo(model, {
       customElementMapping: {
@@ -72,11 +73,10 @@ describe('Custom labels', () => {
   });
 
   it("should use the lables defined in the transformation's options to generate the attribute's labels", () => {
-    const _class = OntoumlFactory.createKind('Person');
-    const datatype = OntoumlFactory.createDatatype('string');
-    OntoumlFactory.addAttribute(_class, 'name', datatype);
-
-    const model = OntoumlFactory.createPackage(null, [_class, datatype]);
+    const model = new Package();
+    const _class = model.createKind('Person');
+    const datatype = model.createDatatype('string');
+    _class.createAttribute(datatype, 'name');
 
     const result = generateGufo(model, {
       customElementMapping: {
@@ -91,11 +91,10 @@ describe('Custom labels', () => {
   });
 
   it("should use the uri defined in the transformation's options to generate the attribute's URI", () => {
-    const _class = OntoumlFactory.createKind('Person');
-    const datatype = OntoumlFactory.createDatatype('string');
-    OntoumlFactory.addAttribute(_class, 'name', datatype);
-
-    const model = OntoumlFactory.createPackage(null, [_class, datatype]);
+    const model = new Package();
+    const _class = model.createKind('Person');
+    const datatype = model.createDatatype('string');
+    _class.createAttribute(datatype, 'name');
 
     const result = generateGufo(model, {
       customElementMapping: {

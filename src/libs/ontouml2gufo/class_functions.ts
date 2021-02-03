@@ -1,23 +1,19 @@
-import { IClass } from '@types';
-import { OntoumlType, ClassStereotype, OntologicalNature } from '@constants/.';
-import { transformAnnotations } from './annotation_function';
-import { isPrimitiveDatatype, isEnumeration, getStereotype } from './helper_functions';
-import Ontouml2Gufo from './ontouml2gufo';
-import { getUriFromXsdMapping } from './uri_manager';
+import { Class, ClassStereotype, OntologicalNature, OntoumlType } from '@libs/ontouml';
+import { Ontouml2Gufo, transformAnnotations, getUriFromXsdMapping } from './';
 
 const N3 = require('n3');
 const { namedNode, literal } = N3.DataFactory;
 
-export function transformClass(transformer: Ontouml2Gufo, _class: IClass): boolean {
+export function transformClass(transformer: Ontouml2Gufo, _class: Class): boolean {
   const { uriManager } = transformer;
-  if (uriManager.getUriFromTaggedValues(_class) || getUriFromXsdMapping(_class) || isPrimitiveDatatype(_class)) {
+  if (uriManager.getUriFromTaggedValues(_class) || getUriFromXsdMapping(_class) || _class.isPrimitiveDatatype()) {
     return true;
   }
 
   transformClassAsIndividual(transformer, _class);
   transformClassAsClass(transformer, _class);
 
-  if (isEnumeration(_class)) {
+  if (_class.hasEnumerationStereotype()) {
     transformEnumeration(transformer, _class);
   }
 
@@ -26,7 +22,7 @@ export function transformClass(transformer: Ontouml2Gufo, _class: IClass): boole
   return true;
 }
 
-export function transformClassAsIndividual(transformer: Ontouml2Gufo, _class: IClass): boolean {
+export function transformClassAsIndividual(transformer: Ontouml2Gufo, _class: Class): boolean {
   const classTypeMap = {
     [ClassStereotype.KIND]: 'gufo:Kind',
     [ClassStereotype.QUANTITY]: 'gufo:Kind',
@@ -51,7 +47,7 @@ export function transformClassAsIndividual(transformer: Ontouml2Gufo, _class: IC
     [ClassStereotype.ENUMERATION]: 'gufo:AbstractIndividualType'
   };
 
-  const classTypeUri = classTypeMap[getStereotype(_class)];
+  const classTypeUri = classTypeMap[_class.stereotype];
 
   if (!classTypeUri) return false;
 
@@ -62,7 +58,7 @@ export function transformClassAsIndividual(transformer: Ontouml2Gufo, _class: IC
   return true;
 }
 
-export function transformClassAsClass(transformer: Ontouml2Gufo, classElement: IClass) {
+export function transformClassAsClass(transformer: Ontouml2Gufo, classElement: Class) {
   const classUri = transformer.getUri(classElement);
   transformer.addQuad(classUri, 'rdf:type', 'owl:NamedIndividual');
 
@@ -90,7 +86,7 @@ export function transformClassAsClass(transformer: Ontouml2Gufo, classElement: I
   }
 }
 
-export function transformEnumeration(transformer: Ontouml2Gufo, classElement: IClass) {
+export function transformEnumeration(transformer: Ontouml2Gufo, classElement: Class) {
   const { literals } = classElement;
 
   if (!literals) {
@@ -123,13 +119,13 @@ export function transformEnumeration(transformer: Ontouml2Gufo, classElement: IC
   }
 }
 
-export function getCollectiveGufoParent(classElement: IClass): string {
+export function getCollectiveGufoParent(classElement: Class): string {
   if (classElement.isExtensional === null) return 'gufo:Collection';
   if (classElement.isExtensional) return 'gufo:FixedCollection';
   return 'gufo:VariableCollection';
 }
 
-export function getGufoParentFromAllowed(classElement: IClass): GufoParentSettings {
+export function getGufoParentFromAllowed(classElement: Class): GufoParentSettings {
   const basicMapping = {
     abstract: 'gufo:QualityValue',
     collective: 'gufo:Collection',
@@ -144,17 +140,17 @@ export function getGufoParentFromAllowed(classElement: IClass): GufoParentSettin
     type: 'gufo:ConcreteIndividualType'
   };
 
-  const allowed = classElement.allowed;
+  const restrictedTo = classElement.restrictedTo;
 
-  if (!allowed || allowed.length === 0) return null;
+  if (!restrictedTo || restrictedTo.length === 0) return null;
 
   // Allows a single ontological nature
-  if (allowed.length === 1) {
-    const nature = allowed[0];
+  if (restrictedTo.length === 1) {
+    const nature = restrictedTo[0];
 
     if (nature === OntologicalNature.collective) return { parentUri: getCollectiveGufoParent(classElement), unionOf: null };
     if (nature === OntologicalNature.abstract) {
-      switch (classElement.stereotypes[0]) {
+      switch (classElement.stereotype) {
         case ClassStereotype.DATATYPE:
         case ClassStereotype.ENUMERATION:
           return { parentUri: 'gufo:QualityValue', unionOf: null };
@@ -168,32 +164,32 @@ export function getGufoParentFromAllowed(classElement: IClass): GufoParentSettin
   }
 
   // Allows multiple ontological natures
-  if (allowed.includes(OntologicalNature.type)) return { parentUri: 'owl:Thing', unionOf: null };
+  if (restrictedTo.includes(OntologicalNature.type)) return { parentUri: 'owl:Thing', unionOf: null };
 
-  if (allowed.includes(OntologicalNature.abstract)) return { parentUri: 'gufo:Individual', unionOf: null };
+  if (restrictedTo.includes(OntologicalNature.abstract)) return { parentUri: 'gufo:Individual', unionOf: null };
 
-  if (allowed.includes(OntologicalNature.event)) return { parentUri: 'gufo:ConcreteIndividual', unionOf: null };
+  if (restrictedTo.includes(OntologicalNature.event)) return { parentUri: 'gufo:ConcreteIndividual', unionOf: null };
 
   if (
-    !allowed.includes(OntologicalNature.quality) &&
-    !allowed.includes(OntologicalNature.intrinsic_mode) &&
-    !allowed.includes(OntologicalNature.extrinsic_mode) &&
-    !allowed.includes(OntologicalNature.relator)
+    !restrictedTo.includes(OntologicalNature.quality) &&
+    !restrictedTo.includes(OntologicalNature.intrinsic_mode) &&
+    !restrictedTo.includes(OntologicalNature.extrinsic_mode) &&
+    !restrictedTo.includes(OntologicalNature.relator)
   )
     return { parentUri: 'gufo:Object', unionOf: null };
 
   if (
-    !allowed.includes(OntologicalNature.collective) &&
-    !allowed.includes(OntologicalNature.functional_complex) &&
-    !allowed.includes(OntologicalNature.quantity)
+    !restrictedTo.includes(OntologicalNature.collective) &&
+    !restrictedTo.includes(OntologicalNature.functional_complex) &&
+    !restrictedTo.includes(OntologicalNature.quantity)
   ) {
-    if (!allowed.includes(OntologicalNature.relator) && !allowed.includes(OntologicalNature.extrinsic_mode))
+    if (!restrictedTo.includes(OntologicalNature.relator) && !restrictedTo.includes(OntologicalNature.extrinsic_mode))
       return { parentUri: 'gufo:IntrinsicAspect', unionOf: null };
 
-    if (!allowed.includes(OntologicalNature.quality) && !allowed.includes(OntologicalNature.intrinsic_mode))
+    if (!restrictedTo.includes(OntologicalNature.quality) && !restrictedTo.includes(OntologicalNature.intrinsic_mode))
       return { parentUri: 'gufo:ExtrinsicAspect', unionOf: null };
 
-    if (!allowed.includes(OntologicalNature.quality) && !allowed.includes(OntologicalNature.relator))
+    if (!restrictedTo.includes(OntologicalNature.quality) && !restrictedTo.includes(OntologicalNature.relator))
       return { parentUri: 'gufo:Aspect', unionOf: ['gufo:IntrinsicMode', 'gufo:ExtrinsicMode'] };
 
     return { parentUri: 'gufo:Aspect', unionOf: null };
@@ -207,9 +203,9 @@ interface GufoParentSettings {
   unionOf: string[];
 }
 
-export function getGufoParents(classElement: IClass): GufoParentSettings {
+export function getGufoParents(classElement: Class): GufoParentSettings {
   const parents = classElement.getParents() || [];
-  const allowed = classElement.allowed || [];
+  const restrictedTo = classElement.restrictedTo || [];
 
   // If the class has no parents...
   if (parents.length === 0) return getGufoParentFromAllowed(classElement);
@@ -219,10 +215,10 @@ export function getGufoParents(classElement: IClass): GufoParentSettings {
   for (let parent of parents) {
     if (parent.type !== OntoumlType.CLASS_TYPE) continue;
 
-    const parentAllowed = (parent as IClass).allowed || [];
+    const parentRestrictedTo = (parent as Class).restrictedTo || [];
     const containsAll = (source, target) => target.every(v => source.includes(v));
 
-    if (containsAll(allowed, parentAllowed) && containsAll(parentAllowed, allowed)) {
+    if (containsAll(restrictedTo, parentRestrictedTo) && containsAll(parentRestrictedTo, restrictedTo)) {
       hasSameNatureAsAParent = true;
       break;
     }
@@ -238,7 +234,7 @@ export function getGufoParents(classElement: IClass): GufoParentSettings {
 /**
  * Transform classes of same stereotype using owl:AllDisjointClasses
  */
-export function writeDisjointnessAxioms(transformer: Ontouml2Gufo, classes: IClass[]): boolean {
+export function writeDisjointnessAxioms(transformer: Ontouml2Gufo, classes: Class[]): boolean {
   const ultimateSortalStereotypes = [
     ClassStereotype.KIND,
     ClassStereotype.QUANTITY,
@@ -249,12 +245,12 @@ export function writeDisjointnessAxioms(transformer: Ontouml2Gufo, classes: ICla
   ];
 
   for (let i = 0; i < ultimateSortalStereotypes.length; i += 1) {
-    const stereotype = ultimateSortalStereotypes[i];
+    const ultimateSortalStereotype = ultimateSortalStereotypes[i];
 
     // TODO: replace with getClasses(stereotype), requires changing the input of the method
     const stereotypeClasses = classes
-      .filter(({ stereotypes }: IClass) => stereotypes && stereotypes[0] === stereotype)
-      .map((classElement: IClass) => {
+      .filter(({ stereotype }: Class) => stereotype && stereotype[0] === ultimateSortalStereotype)
+      .map((classElement: Class) => {
         const uri = transformer.getUri(classElement);
         return namedNode(uri);
       });

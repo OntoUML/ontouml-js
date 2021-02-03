@@ -1,25 +1,22 @@
-import { ModelManager } from '@libs/model';
-import { Quad, Writer } from 'n3';
-import { IPackage, IRelation } from '@types';
-import { writeDisjointnessAxioms, transformClass } from './class_functions';
-import { transformRelation } from './relation_functions';
+import { Project, Package, Relation } from '@libs/ontouml/';
 import {
-  getAllAttributes,
-  getAllClasses,
-  getAllGeneralizations,
-  getAllGeneralizationSets,
-  getAllRelations
-} from './helper_functions';
-import Inspector from './inspector';
-import Options from './options';
-import Issue from './issue';
-import { getPrefixes } from './prefix_functions';
-import { transformGeneralization } from './generalization_functions';
-import { transformAttribute } from './attribute_functions';
-import { transformGeneralizationSet } from './generalization_set_functions';
-import { transformRelationCardinalities } from './cardinality_functions';
-import { transformInverseRelation } from './relations_inverse_functions';
-import UriManager from './uri_manager';
+  Issue,
+  Options,
+  Inspector,
+  UriManager,
+  getPrefixes,
+  transformClass,
+  writeDisjointnessAxioms,
+  transformAttribute,
+  transformRelation,
+  transformInverseRelation,
+  transformRelationCardinalities,
+  transformGeneralization,
+  transformGeneralizationSet
+} from './';
+
+import { Quad, Writer } from 'n3';
+import { Service, ServiceIssue } from './..';
 
 const N3 = require('n3');
 const { namedNode, quad, literal } = N3.DataFactory;
@@ -31,16 +28,25 @@ const { namedNode, quad, literal } = N3.DataFactory;
  * @author Claudenir Fonseca
  * @author Lucas Bassetti
  */
-export default class Ontouml2Gufo {
-  model: IPackage;
+export class Ontouml2Gufo implements Service {
+  model: Package;
   options: Options;
   inspector: Inspector;
   owlCode: string;
   writer: Writer;
   uriManager: UriManager;
 
-  constructor(model: ModelManager, options?: Partial<Options>) {
-    this.model = model.rootPackage;
+  constructor(project: Project, options?: Partial<Options>);
+  constructor(model: Package, options?: Partial<Options>);
+  constructor(project: Project, options?: Partial<Options>);
+  constructor(input: Project | Package, options?: Partial<Options>);
+  constructor(input: Project | Package, options?: Partial<Options>) {
+    if (input instanceof Project) {
+      this.model = input.model;
+    } else if (input instanceof Package) {
+      this.model = input;
+    }
+
     this.options = options ? new Options(options) : new Options();
     this.inspector = new Inspector(this);
     this.uriManager = new UriManager(this);
@@ -62,11 +68,11 @@ export default class Ontouml2Gufo {
     return this.uriManager.getInverseRelationUri(element);
   }
 
-  getSourceUri(relation: IRelation): string {
+  getSourceUri(relation: Relation): string {
     return this.uriManager.getSourceUri(relation);
   }
 
-  getTargetUri(relation: IRelation): string {
+  getTargetUri(relation: Relation): string {
     return this.uriManager.getTargetUri(relation);
   }
 
@@ -136,7 +142,7 @@ export default class Ontouml2Gufo {
   }
 
   transformClasses() {
-    const classes = getAllClasses(this.model);
+    const classes = this.model.getAllClasses();
 
     for (const _class of classes) {
       transformClass(this, _class);
@@ -148,7 +154,7 @@ export default class Ontouml2Gufo {
   }
 
   transformAttributes() {
-    const attributes = getAllAttributes(this.model);
+    const attributes = this.model.getAllAttributes();
 
     for (const attribute of attributes) {
       transformAttribute(this, attribute);
@@ -156,7 +162,7 @@ export default class Ontouml2Gufo {
   }
 
   transformRelations() {
-    const relations = getAllRelations(this.model);
+    const relations = this.model.getAllRelations();
 
     for (const relation of relations) {
       transformRelation(this, relation);
@@ -168,7 +174,7 @@ export default class Ontouml2Gufo {
   }
 
   transformCardinalities() {
-    const relations = getAllRelations(this.model);
+    const relations = this.model.getAllRelations();
     for (const relation of relations) {
       transformRelationCardinalities(this, relation);
     }
@@ -180,7 +186,7 @@ export default class Ontouml2Gufo {
   }
 
   transformGeneralizations() {
-    const generalizations = getAllGeneralizations(this.model);
+    const generalizations = this.model.getAllGeneralizations();
 
     for (const gen of generalizations) {
       transformGeneralization(this, gen);
@@ -188,19 +194,27 @@ export default class Ontouml2Gufo {
   }
 
   transformGeneralizationSets() {
-    const generalizationSets = getAllGeneralizationSets(this.model);
+    const generalizationSets = this.model.getAllGeneralizationSets();
 
     for (const genSet of generalizationSets) {
       transformGeneralizationSet(this, genSet);
     }
   }
 
-  static run(_package: IPackage, options?: Partial<Options>): { output: string; issues: Issue[] } {
-    const modelManager = new ModelManager(_package);
-    const ontouml2gufo = new Ontouml2Gufo(modelManager, options);
+  // static run(_package: Package, options?: Partial<Options>): { output: string; issues: Issue[] } {
+  //   const ontouml2gufo = new Ontouml2Gufo(_package, options);
 
-    ontouml2gufo.transform();
+  //   ontouml2gufo.transform();
 
-    return { output: ontouml2gufo.getOwlCode(), issues: ontouml2gufo.getIssues() };
+  //   return { output: ontouml2gufo.getOwlCode(), issues: ontouml2gufo.getIssues() };
+  // }
+
+  run(): { result: any; issues?: ServiceIssue[] } {
+    this.transform();
+
+    return {
+      result: this.getOwlCode(),
+      issues: this.getIssues() || undefined
+    };
   }
 }

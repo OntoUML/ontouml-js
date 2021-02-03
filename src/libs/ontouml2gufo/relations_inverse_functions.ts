@@ -1,30 +1,18 @@
-import { IRelation } from '@types';
+import { Relation } from '@libs/ontouml/';
+import { Ontouml2Gufo, transformInverseAnnotations } from './';
 
-import Ontouml2Gufo from './ontouml2gufo';
-import { transformInverseAnnotations } from './annotation_function';
-import {
-  getStereotype,
-  hasOntoumlStereotype,
-  holdsBetweenAspects,
-  holdsBetweenEvents,
-  holdsBetweenObjects,
-  isComparative,
-  isDerivation,
-  isInstantiation,
-  isMaterial,
-  isPartWholeRelation
-} from './helper_functions';
-
-export function getPartWholeSuperProperty(relation: IRelation): string {
-  if (!isPartWholeRelation(relation)) return null;
-  if (holdsBetweenObjects(relation)) return 'gufoi:hasObjectProperPart';
-  if (holdsBetweenAspects(relation)) return 'gufoi:hasAspectProperPart';
-  if (holdsBetweenEvents(relation)) return 'gufoi:hasEventProperPart';
+// TODO: check method name updated for disambiguation
+export function getPartWholeSuperPropertyInverse(relation: Relation): string {
+  if (!relation.isPartWholeRelation()) return null;
+  if (relation.holdsBetweenSubstantials()) return 'gufoi:hasObjectProperPart';
+  if (relation.holdsBetweenMoments()) return 'gufoi:hasAspectProperPart';
+  if (relation.holdsBetweenEvents()) return 'gufoi:hasEventProperPart';
   return 'gufoi:hasProperPart';
 }
 
-export function getSuperPropertyFromStereotype(relation: IRelation): string {
-  const stereotype = getStereotype(relation);
+// TODO: check method name updated for disambiguation
+export function getSuperPropertyFromStereotypeInverse(relation: Relation): string {
+  const stereotype = relation.stereotype;
 
   const ontoumlRelation2GufoInverseProperty = {
     bringsAbout: 'gufoi:wasBroughtAboutBy',
@@ -47,23 +35,23 @@ export function getSuperPropertyFromStereotype(relation: IRelation): string {
   return ontoumlRelation2GufoInverseProperty[stereotype];
 }
 
-export function getInverseSuperProperty(relation: IRelation): string {
-  return getSuperPropertyFromStereotype(relation) || getPartWholeSuperProperty(relation);
+export function getInverseSuperProperty(relation: Relation): string {
+  return getSuperPropertyFromStereotypeInverse(relation) || getPartWholeSuperPropertyInverse(relation);
 }
 
-export function transformInverseRelation(transformer: Ontouml2Gufo, relation: IRelation) {
-  if (isInstantiation(relation) || isDerivation(relation)) {
+export function transformInverseRelation(transformer: Ontouml2Gufo, relation: Relation) {
+  if (relation.hasInstantiationStereotype() || relation.isDerivationRelation()) {
     return;
   }
 
-  if (isMaterial(relation) || isComparative(relation)) {
+  if (relation.hasMaterialStereotype() || relation.hasComparativeStereotype()) {
     writeInverseBaseRelationAxioms(transformer, relation);
     transformInverseAnnotations(transformer, relation);
     writeInverseRelationTypeAxiom(transformer, relation);
     return;
   }
 
-  if (!isPartWholeRelation(relation) && !hasOntoumlStereotype(relation)) {
+  if (!relation.isPartWholeRelation() && !relation.stereotype) {
     writeInverseBaseRelationAxioms(transformer, relation);
     transformInverseAnnotations(transformer, relation);
     return;
@@ -77,7 +65,7 @@ export function transformInverseRelation(transformer: Ontouml2Gufo, relation: IR
   }
 }
 
-function writeInverseRelationTypeAxiom(transformer: Ontouml2Gufo, relation: IRelation) {
+function writeInverseRelationTypeAxiom(transformer: Ontouml2Gufo, relation: Relation) {
   const relationUri = transformer.getInverseRelationUri(relation);
 
   const relationTypeMap = {
@@ -85,13 +73,13 @@ function writeInverseRelationTypeAxiom(transformer: Ontouml2Gufo, relation: IRel
     comparative: 'gufo:ComparativeRelationshipType'
   };
 
-  const stereotype = getStereotype(relation);
+  const stereotype = relation.stereotype;
   const typeUri = relationTypeMap[stereotype];
 
   transformer.addQuad(relationUri, 'rdf:type', typeUri);
 }
 
-function writeInverseBaseRelationAxioms(transformer: Ontouml2Gufo, relation: IRelation) {
+function writeInverseBaseRelationAxioms(transformer: Ontouml2Gufo, relation: Relation) {
   const relationUri = transformer.getInverseRelationUri(relation);
 
   transformer.addQuad(relationUri, 'rdf:type', 'owl:ObjectProperty');
@@ -107,7 +95,7 @@ function writeInverseBaseRelationAxioms(transformer: Ontouml2Gufo, relation: IRe
   }
 }
 
-function writeInverseSubPropertyAxiom(transformer: Ontouml2Gufo, relation: IRelation) {
+function writeInverseSubPropertyAxiom(transformer: Ontouml2Gufo, relation: Relation) {
   let superProperty = getInverseSuperProperty(relation);
 
   if (!superProperty) {

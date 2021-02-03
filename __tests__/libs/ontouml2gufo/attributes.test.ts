@@ -1,16 +1,15 @@
+import { Package, Property } from '@libs/ontouml';
 import { generateGufo } from './helpers';
-import OntoumlFactory from './ontouml_factory';
 
 describe('An attribute', () => {
-  describe('of a concrete class (e.g. «kind» Person) with a PRIMITIVE TYPE (e.g. name: string, age: int, start: date)', () => {
+  describe('of a class with non-abstract instances (e.g. «kind» Person) with a PRIMITIVE TYPE (e.g. name: string, age: int, start: date)', () => {
     let result: string;
 
     beforeAll(() => {
-      const _class = OntoumlFactory.createKind('Person');
-      const datatype = OntoumlFactory.createDatatype('string');
-      OntoumlFactory.addAttribute(_class, 'name', datatype);
-
-      const model = OntoumlFactory.createPackage(null, [_class, datatype]);
+      const model = new Package();
+      const _class = model.createKind('Person');
+      const datatype = model.createDatatype('string');
+      _class.createAttribute(datatype, 'name');
       result = generateGufo(model);
     });
 
@@ -32,18 +31,19 @@ describe('An attribute', () => {
     });
   });
 
-  describe('of a concrete class (e.g. «category» Location) with a COMPLEX TYPE (e.g. address: Address)', () => {
+  describe('of a class with non-abstract instances (e.g. «category» Location) with a COMPLEX TYPE (e.g. address: Address)', () => {
     let result: string;
 
     beforeAll(() => {
-      const location = OntoumlFactory.createCategory('Location');
-      const address = OntoumlFactory.createDatatype('Address');
-      const _string = OntoumlFactory.createDatatype('string');
-      OntoumlFactory.addAttribute(address, 'street', _string);
-      OntoumlFactory.addAttribute(address, 'city', _string);
-      OntoumlFactory.addAttribute(location, 'address', address);
+      const model = new Package();
+      const location = model.createCategory('Location');
+      const address = model.createDatatype('Address');
+      const _string = model.createDatatype('string');
 
-      const model = OntoumlFactory.createPackage(null, [location, address, _string]);
+      address.createAttribute(_string, 'street');
+      address.createAttribute(_string, 'city');
+      location.createAttribute(address, 'address');
+
       result = generateGufo(model);
     });
 
@@ -65,15 +65,19 @@ describe('An attribute', () => {
     });
   });
 
-  describe('of a concrete class (e.g. «category» Object) with a ENUMERATION TYPE (e.g. color: Color<Red,Blue,Green>)', () => {
+  describe('of a class with non-abstract instances (e.g. «category» Object) with a ENUMERATION TYPE (e.g. color: Color<Red,Blue,Green>)', () => {
     let result: string;
 
     beforeAll(() => {
-      const location = OntoumlFactory.createCategory('Object');
-      const color = OntoumlFactory.createEnumeration('Color', ['Red', 'Blue', 'Green']);
-      OntoumlFactory.addAttribute(location, 'color', color);
+      const model = new Package();
+      const object = model.createCategory('Object');
+      const color = model.createEnumeration('Color');
 
-      const model = OntoumlFactory.createPackage(null, [location, color]);
+      object.createAttribute(color, 'color');
+      color.createLiteral('Red');
+      color.createLiteral('Blue');
+      color.createLiteral('Green');
+
       result = generateGufo(model);
     });
 
@@ -99,11 +103,12 @@ describe('An attribute', () => {
     let result: string;
 
     beforeAll(() => {
-      const address = OntoumlFactory.createDatatype('Address');
-      const _string = OntoumlFactory.createDatatype('string');
-      OntoumlFactory.addAttribute(address, 'street', _string);
+      const model = new Package();
+      const address = model.createDatatype('Address');
+      const _string = model.createDatatype('string');
 
-      const model = OntoumlFactory.createPackage(null, [address, _string]);
+      address.createAttribute(_string, 'street');
+
       result = generateGufo(model);
     });
 
@@ -129,10 +134,17 @@ describe('An attribute', () => {
     let result: string;
 
     beforeAll(() => {
-      const address = OntoumlFactory.createDatatype('Address');
-      OntoumlFactory.addAttribute(address, 'street');
+      // const address = OntoumlFactory.createDatatype('Address');
+      // OntoumlFactory.addAttribute(address, 'street');
 
-      const model = OntoumlFactory.createPackage(null, [address]);
+      // const model = OntoumlFactory.createPackage(null, [address]);
+
+      const model = new Package();
+      const address = model.createDatatype('Address');
+
+      // TODO: review if we should support typeless attributes
+      address.properties = [new Property({ name: 'street', container: address })];
+
       result = generateGufo(model);
     });
 
@@ -158,14 +170,15 @@ describe('An attribute', () => {
     let result: string;
 
     beforeAll(() => {
-      const address = OntoumlFactory.createDatatype('Address');
-      const gps = OntoumlFactory.createDatatype('GPS');
-      const _string = OntoumlFactory.createDatatype('string');
-      OntoumlFactory.addAttribute(address, 'gps', gps);
-      OntoumlFactory.addAttribute(gps, 'latitude', _string);
-      OntoumlFactory.addAttribute(gps, 'longitude', _string);
+      const model = new Package();
+      const address = model.createDatatype('Address');
+      const gps = model.createDatatype('GPS');
+      const _string = model.createDatatype('string');
 
-      const model = OntoumlFactory.createPackage(null, [address, gps, _string]);
+      address.createAttribute(gps, 'gps');
+      gps.createAttribute(_string, 'latitude');
+      gps.createAttribute(_string, 'longitude');
+
       result = generateGufo(model);
     });
 

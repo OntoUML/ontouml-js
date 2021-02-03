@@ -1,26 +1,23 @@
-import { IClass, IProperty } from '@types';
-import { transformAnnotations } from './annotation_function';
-import { isComplexDatatype, isConcrete, isDatatype, isEnumeration, isPrimitiveDatatype, isTypeDefined } from './helper_functions';
-import { OntoumlType } from '@constants/.';
-import Ontouml2Gufo from './ontouml2gufo';
+import { OntoumlType, Property, Class } from '@libs/ontouml/';
+import { Ontouml2Gufo, transformAnnotations } from './';
 
-export function transformAttribute(transformer: Ontouml2Gufo, attribute: IProperty): boolean {
-  const container = attribute._container;
+export function transformAttribute(transformer: Ontouml2Gufo, attribute: Property): boolean {
+  const container = attribute.container;
 
   if (container.type !== OntoumlType.CLASS_TYPE) {
     return false;
   }
 
-  const containerClass: IClass = container as IClass;
+  const containerClass: Class = container as Class;
 
   const attributeUri = transformer.getUri(attribute);
   const containerUri = transformer.getUri(containerClass);
 
-  const containerIsDatatype = isDatatype(containerClass);
-  const containerIsConcreteIndividual = isConcrete(containerClass);
+  const containerIsDatatype = containerClass.hasDatatypeStereotype();
+  const containerIsConcreteIndividual = !containerClass.isRestrictedToAbstract();
 
-  const isTypelessAttribute = !isTypeDefined(attribute);
-  const isPrimitiveAttribute = isPrimitiveDatatype(attribute.propertyType as IClass);
+  const isTypelessAttribute = !attribute.propertyType;
+  const isPrimitiveAttribute = attribute.propertyType && (attribute.propertyType as Class).isPrimitiveDatatype();
 
   transformer.addQuad(attributeUri, 'rdfs:domain', containerUri);
 
@@ -40,8 +37,8 @@ export function transformAttribute(transformer: Ontouml2Gufo, attribute: IProper
   } else {
     transformer.addQuad(attributeUri, 'rdf:type', 'owl:ObjectProperty');
 
-    const isComplexAttribute = isComplexDatatype(attribute.propertyType as IClass);
-    const isEnumeratedAttribute = isEnumeration(attribute.propertyType as IClass);
+    const isComplexAttribute = (attribute.propertyType as Class).isComplexDatatype();
+    const isEnumeratedAttribute = (attribute.propertyType as Class).hasEnumerationStereotype();
 
     if (containerIsConcreteIndividual && (isComplexAttribute || isEnumeratedAttribute)) {
       transformer.addQuad(attributeUri, 'rdfs:subPropertyOf', 'gufo:hasReifiedQualityValue');

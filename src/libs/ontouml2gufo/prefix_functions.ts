@@ -1,8 +1,7 @@
-import { IPackage } from '@types';
-import { getAllPackages, getName } from './helper_functions';
-import { normalizeName } from './uri_manager';
+import { Package } from '@libs/ontouml/';
+import { Ontouml2Gufo, normalizeName } from './';
+
 import _ from 'lodash';
-import Ontouml2Gufo from '.';
 
 export const DefaultPrefixes = {
   gufo: 'http://purl.org/nemo/gufo#',
@@ -39,7 +38,7 @@ export const getPackagePrefixes = (ontouml2gufo: Ontouml2Gufo) => {
   }
 
   const prefixes = {};
-  const packages = getAllPackages(ontouml2gufo.model);
+  const packages = ontouml2gufo.model.getAllPackages();
 
   for (const pkg of packages) {
     const prefix = getPackagePrefix(ontouml2gufo, pkg);
@@ -50,14 +49,14 @@ export const getPackagePrefixes = (ontouml2gufo: Ontouml2Gufo) => {
   return prefixes;
 };
 
-export const getPackagePrefix = (ontouml2gufo: Ontouml2Gufo, pkg: IPackage): string => {
+export const getPackagePrefix = (ontouml2gufo: Ontouml2Gufo, pkg: Package): string => {
   const customPrefix = ontouml2gufo.options.getCustomPackagePrefix(pkg);
   if (customPrefix) {
     return customPrefix;
   }
 
   if (ontouml2gufo.options.prefixPackages) {
-    let prefix: string = normalizeName(getName(pkg));
+    let prefix: string = normalizeName(pkg.getName());
     prefix = prefix.charAt(0).toLowerCase() + prefix.slice(1);
     return prefix;
   }
@@ -65,7 +64,7 @@ export const getPackagePrefix = (ontouml2gufo: Ontouml2Gufo, pkg: IPackage): str
   return '';
 };
 
-export const getPackageUri = (ontouml2gufo: Ontouml2Gufo, pkg: IPackage): string => {
+export const getPackageUri = (ontouml2gufo: Ontouml2Gufo, pkg: Package): string => {
   const customUri = ontouml2gufo.options.getCustomPackageUri(pkg);
   if (customUri) {
     return customUri;
@@ -74,7 +73,7 @@ export const getPackageUri = (ontouml2gufo: Ontouml2Gufo, pkg: IPackage): string
   const { options } = ontouml2gufo;
 
   if (options.prefixPackages) {
-    let uriSuffix: string = getName(pkg);
+    let uriSuffix: string = pkg.getName();
     uriSuffix = _.kebabCase(uriSuffix);
 
     return `${options.baseIri}/${uriSuffix}#`;
