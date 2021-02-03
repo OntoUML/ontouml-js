@@ -1,5 +1,5 @@
 import { generateGufo } from './helpers';
-import { Package, propertyUtils } from '@libs/ontouml';
+import { Package, CARDINALITY_MAX_AS_NUMBER } from '@libs/ontouml';
 
 describe('Cardinalities', () => {
   describe('Relation cardinalities not transformed', () => {
@@ -8,8 +8,8 @@ describe('Cardinalities', () => {
       const _class = model.createKind('Person');
       const relation = model.createMaterialRelation(_class, _class, 'likes');
 
-      relation.getSourceEnd().setCardinalityToOneToMany();
-      relation.getTargetEnd().setCardinalityToOneToMany();
+      relation.getSourceEnd().cardinality.setOneToMany();
+      relation.getTargetEnd().cardinality.setOneToMany();
 
       const owlCode = generateGufo(model);
 
@@ -22,8 +22,8 @@ describe('Cardinalities', () => {
       const event = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, event, 'was born in');
 
-      relation.getSourceEnd().setCardinalityToMany();
-      relation.getTargetEnd().setCardinalityToMany();
+      relation.getSourceEnd().cardinality.setZeroToMany();
+      relation.getTargetEnd().cardinality.setZeroToMany();
 
       const owlCode = generateGufo(model);
 
@@ -36,8 +36,8 @@ describe('Cardinalities', () => {
       const event = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, event, 'was born in');
 
-      relation.getSourceEnd().cardinality = '*';
-      relation.getTargetEnd().cardinality = '*';
+      relation.getSourceEnd().cardinality.value = '*';
+      relation.getTargetEnd().cardinality.value = '*';
 
       const owlCode = generateGufo(model);
 
@@ -53,7 +53,7 @@ describe('Cardinalities', () => {
       const relation = model.createCharacterizationRelation(love, person, 'is love of');
 
       relation.getSourceEnd().isReadOnly = true;
-      relation.getSourceEnd().setCardinalityToOneToMany();
+      relation.getSourceEnd().cardinality.setOneToMany();
 
       const owlCode = generateGufo(model);
 
@@ -69,9 +69,9 @@ describe('Cardinalities', () => {
       const person = model.createKind('Person');
       const relation = model.createCharacterizationRelation(love, person, 'is love of');
 
-      relation.getSourceEnd().setCardinalityToOneToMany();
+      relation.getSourceEnd().cardinality.setOneToMany();
       relation.getTargetEnd().isReadOnly = true;
-      relation.getTargetEnd().setCardinalityToOneToMany();
+      relation.getTargetEnd().cardinality.setOneToMany();
 
       const owlCode = generateGufo(model);
 
@@ -85,7 +85,8 @@ describe('Cardinalities', () => {
       const model = new Package();
       const love = model.createExtrinsicMode('Love');
       const person = model.createKind('Person');
-      model.createCharacterizationRelation(love, person, 'is love of');
+      const relation = model.createCharacterizationRelation(love, person, 'is love of');
+      relation.getTargetEnd().cardinality.setOneToOne();
 
       const owlCode = generateGufo(model);
 
@@ -102,7 +103,7 @@ describe('Cardinalities', () => {
       const death = model.createEvent('Death');
       const relation = model.createTerminationRelation(person, death, 'diedAt');
 
-      relation.getSourceEnd().setCardinalityToOneToMany();
+      relation.getSourceEnd().cardinality.setOneToMany();
 
       const owlCode = generateGufo(model);
 
@@ -118,7 +119,7 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().setCardinalityToOneToMany();
+      relation.getSourceEnd().cardinality.setOneToMany();
 
       const owlCode = generateGufo(model);
 
@@ -164,8 +165,8 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().setCardinalityFromNumbers(2, propertyUtils.UNBOUNDED_CARDINALITY);
-      relation.getTargetEnd().setCardinalityToMany();
+      relation.getSourceEnd().cardinality.setCardinalityFromNumbers(2, CARDINALITY_MAX_AS_NUMBER);
+      relation.getTargetEnd().cardinality.setZeroToMany();
 
       const owlCode = generateGufo(model);
 
@@ -182,8 +183,8 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().setCardinalityToZeroToOne();
-      relation.getTargetEnd().setCardinalityToMany();
+      relation.getSourceEnd().cardinality.setZeroToOne();
+      relation.getTargetEnd().cardinality.setZeroToMany();
 
       const owlCode = generateGufo(model);
 
@@ -200,8 +201,8 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().setCardinalityFromNumbers(1, 3);
-      relation.getTargetEnd().setCardinalityToMany();
+      relation.getSourceEnd().cardinality.setCardinalityFromNumbers(1, 3);
+      relation.getTargetEnd().cardinality.setZeroToMany();
 
       const owlCode = generateGufo(model);
 
@@ -224,9 +225,9 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().setCardinalityToOneToMany();
+      relation.getSourceEnd().cardinality.setOneToMany();
       relation.getSourceEnd().name = 'newPerson';
-      relation.getTargetEnd().setCardinalityToMany();
+      relation.getTargetEnd().cardinality.setZeroToMany();
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
 
@@ -242,9 +243,9 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().setCardinalityToOne();
+      relation.getSourceEnd().cardinality.setOneToOne();
       relation.getSourceEnd().name = 'newPerson';
-      relation.getTargetEnd().setCardinalityToMany();
+      relation.getTargetEnd().cardinality.setZeroToMany();
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
 
@@ -261,9 +262,9 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().setCardinalityToMany();
+      relation.getSourceEnd().cardinality.setZeroToMany();
       relation.getSourceEnd().name = 'newPerson';
-      relation.getTargetEnd().cardinality = '2..*';
+      relation.getTargetEnd().cardinality.value = '2..*';
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
 
@@ -280,9 +281,9 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().setCardinalityToMany();
+      relation.getSourceEnd().cardinality.setZeroToMany();
       relation.getSourceEnd().name = 'newPerson';
-      relation.getTargetEnd().setCardinalityToZeroToOne();
+      relation.getTargetEnd().cardinality.setZeroToOne();
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
 
@@ -299,9 +300,9 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().cardinality = '1..3';
+      relation.getSourceEnd().cardinality.value = '1..3';
       relation.getSourceEnd().name = 'newPerson';
-      relation.getTargetEnd().setCardinalityToMany();
+      relation.getTargetEnd().cardinality.setZeroToMany();
 
       const owlCode = generateGufo(model, { createObjectProperty: true, createInverses: true });
 
@@ -324,8 +325,8 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().setCardinalityToOneToMany();
-      relation.getTargetEnd().setCardinalityToMany();
+      relation.getSourceEnd().cardinality.setOneToMany();
+      relation.getTargetEnd().cardinality.setZeroToMany();
 
       const owlCode = generateGufo(model, { createObjectProperty: false });
 
@@ -341,8 +342,8 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().setCardinalityToOne();
-      relation.getTargetEnd().setCardinalityToMany();
+      relation.getSourceEnd().cardinality.setOneToOne();
+      relation.getTargetEnd().cardinality.setZeroToMany();
 
       const owlCode = generateGufo(model, { createObjectProperty: false });
 
@@ -359,8 +360,8 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().setCardinalityToMany();
-      relation.getTargetEnd().cardinality = '2..*';
+      relation.getSourceEnd().cardinality.setZeroToMany();
+      relation.getTargetEnd().cardinality.value = '2..*';
 
       const owlCode = generateGufo(model, { createObjectProperty: false });
 
@@ -377,8 +378,8 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().setCardinalityToMany();
-      relation.getTargetEnd().setCardinalityToZeroToOne();
+      relation.getSourceEnd().cardinality.setZeroToMany();
+      relation.getTargetEnd().cardinality.setZeroToOne();
 
       const owlCode = generateGufo(model, { createObjectProperty: false });
 
@@ -395,8 +396,8 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().cardinality = '1..3';
-      relation.getTargetEnd().setCardinalityToMany();
+      relation.getSourceEnd().cardinality.value = '1..3';
+      relation.getTargetEnd().cardinality.setZeroToMany();
 
       const owlCode = generateGufo(model, { createObjectProperty: false });
 
@@ -419,8 +420,8 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().setCardinalityToOneToMany();
-      relation.getTargetEnd().setCardinalityToMany();
+      relation.getSourceEnd().cardinality.setOneToMany();
+      relation.getTargetEnd().cardinality.setZeroToMany();
 
       const owlCode = generateGufo(model, { createObjectProperty: false, createInverses: true });
 
@@ -436,8 +437,8 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().setCardinalityToOne();
-      relation.getTargetEnd().setCardinalityToMany();
+      relation.getSourceEnd().cardinality.setOneToOne();
+      relation.getTargetEnd().cardinality.setZeroToMany();
 
       const owlCode = generateGufo(model, { createObjectProperty: false, createInverses: true });
 
@@ -454,8 +455,8 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().setCardinalityToMany();
-      relation.getTargetEnd().cardinality = '2..*';
+      relation.getSourceEnd().cardinality.setZeroToMany();
+      relation.getTargetEnd().cardinality.value = '2..*';
 
       const owlCode = generateGufo(model, { createObjectProperty: false, createInverses: true });
 
@@ -472,8 +473,8 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().setCardinalityToMany();
-      relation.getTargetEnd().setCardinalityToZeroToOne();
+      relation.getSourceEnd().cardinality.setZeroToMany();
+      relation.getTargetEnd().cardinality.setZeroToOne();
 
       const owlCode = generateGufo(model, { createObjectProperty: false, createInverses: true });
 
@@ -490,8 +491,8 @@ describe('Cardinalities', () => {
       const birth = model.createEvent('Birth');
       const relation = model.createCreationRelation(person, birth, 'was born in');
 
-      relation.getSourceEnd().cardinality = '1..3';
-      relation.getTargetEnd().setCardinalityToMany();
+      relation.getSourceEnd().cardinality.value = '1..3';
+      relation.getTargetEnd().cardinality.setZeroToMany();
 
       const owlCode = generateGufo(model, { createObjectProperty: false, createInverses: true });
 

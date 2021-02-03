@@ -1,4 +1,4 @@
-import { Relation, Class, Property, propertyUtils } from '@libs/ontouml';
+import { Relation, Class, Property, CARDINALITY_MAX_AS_NUMBER } from '@libs/ontouml';
 import { Ontouml2Gufo, getInverseSuperProperty, getSuperProperty } from './';
 
 const N3 = require('n3');
@@ -17,12 +17,12 @@ export function transformRelationCardinalities(transformer: Ontouml2Gufo, relati
   }
 
   const sourceProperty = relation.getSourceEnd();
-  if (sourceProperty.isBounded()) {
+  if (!sourceProperty.cardinality.isZeroToMany()) {
     writerCardinalityAxiom(transformer, relation, Direction.TARGET_TO_SOURCE);
   }
 
   const targetProperty = relation.getTargetEnd();
-  if (targetProperty.isBounded()) {
+  if (!targetProperty.cardinality.isZeroToMany()) {
     writerCardinalityAxiom(transformer, relation, Direction.SOURCE_TO_TARGET);
   }
 }
@@ -94,11 +94,11 @@ function writerCardinalityAxiom(transformer: Ontouml2Gufo, relation: Relation, d
 
   let restrictionNodes = [];
 
-  const lowerBound = targetAssociationEnd.getLowerBoundAsNumber();
-  const upperBound = targetAssociationEnd.getUpperBoundAsNumber();
+  const lowerBound = targetAssociationEnd.cardinality.getLowerBoundAsNumber();
+  const upperBound = targetAssociationEnd.cardinality.getUpperBoundAsNumber();
   const targetClassNode = namedNode(transformer.getUri(targetAssociationEnd.propertyType));
 
-  if (lowerBound === 1 && upperBound === propertyUtils.UNBOUNDED_CARDINALITY) {
+  if (lowerBound === 1 && upperBound === CARDINALITY_MAX_AS_NUMBER) {
     restrictionNodes.push([
       {
         predicate: namedNode('rdf:type'),
@@ -154,7 +154,7 @@ function writerCardinalityAxiom(transformer: Ontouml2Gufo, relation: Relation, d
       ]);
     }
 
-    if (upperBound > 0 && upperBound !== propertyUtils.UNBOUNDED_CARDINALITY && isExistentialDependency) {
+    if (upperBound > 0 && upperBound !== CARDINALITY_MAX_AS_NUMBER && isExistentialDependency) {
       restrictionNodes.push([
         {
           predicate: namedNode('rdf:type'),

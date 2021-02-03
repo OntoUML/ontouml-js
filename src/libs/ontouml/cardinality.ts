@@ -130,9 +130,10 @@ export class Cardinality {
     return isNaN(Number.parseInt(this.upperBound));
   }
 
-  isUnbounded(): boolean {
+  isBounded(): boolean {
     const bounds = this.getCardinalityBounds();
-    return bounds && bounds.upperBound === CARDINALITY_MAX;
+    console.log('isBounded', this.value, bounds, bounds.upperBound !== CARDINALITY_MAX);
+    return bounds && bounds.upperBound !== CARDINALITY_MAX;
   }
 
   toJSON(): any {

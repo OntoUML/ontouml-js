@@ -495,7 +495,7 @@ export class Package extends ModelElement
       sourceEnd.cardinality.setZeroToMany();
     }
 
-    targetEnd.cardinality.setOneToOne;
+    targetEnd.cardinality.setOneToOne();
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -506,8 +506,8 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setOneToOne;
-    targetEnd.cardinality.setOneToOne;
+    sourceEnd.cardinality.setOneToOne();
+    targetEnd.cardinality.setOneToOne();
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -531,7 +531,7 @@ export class Package extends ModelElement
     const targetEnd = relation.getTargetEnd();
 
     sourceEnd.cardinality.setOneToMany();
-    targetEnd.cardinality.setOneToOne;
+    targetEnd.cardinality.setOneToOne();
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
     return relation;
@@ -604,7 +604,7 @@ export class Package extends ModelElement
 
     sourceEnd.cardinality.setOneToMany();
     sourceEnd.isReadOnly = true;
-    targetEnd.cardinality.setOneToOne;
+    targetEnd.cardinality.setOneToOne();
     targetEnd.isReadOnly = true;
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
@@ -635,7 +635,7 @@ export class Package extends ModelElement
 
     sourceEnd.cardinality.setZeroToMany();
     sourceEnd.isReadOnly = true;
-    targetEnd.cardinality.setOneToOne;
+    targetEnd.cardinality.setOneToOne();
 
     return relation;
   }
@@ -645,9 +645,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setOneToOne;
+    sourceEnd.cardinality.setOneToOne();
     sourceEnd.isReadOnly = true;
-    targetEnd.cardinality.setOneToOne;
+    targetEnd.cardinality.setOneToOne();
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -670,9 +670,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setOneToOne;
+    sourceEnd.cardinality.setOneToOne();
     sourceEnd.isReadOnly = true;
-    targetEnd.cardinality.setOneToOne;
+    targetEnd.cardinality.setOneToOne();
     targetEnd.isReadOnly = true;
 
     return relation;
@@ -683,9 +683,9 @@ export class Package extends ModelElement
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setOneToOne;
+    sourceEnd.cardinality.setOneToOne();
     sourceEnd.isReadOnly = true;
-    targetEnd.cardinality.setOneToOne;
+    targetEnd.cardinality.setOneToOne();
 
     return relation;
   }
