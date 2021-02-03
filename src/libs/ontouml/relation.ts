@@ -9,7 +9,7 @@ import {
   Container,
   containerUtils,
   Package,
-  stereotypesUtils,
+  stereotypeUtils,
   ClassStereotype,
   RelationStereotype,
   classifierUtils,
@@ -93,7 +93,7 @@ export class Relation extends ModelElement
   }
 
   hasValidStereotypeValue(): boolean {
-    return decoratableUtils.hasValidStereotypeValue<RelationStereotype>(this, stereotypesUtils.RelationStereotypes, true);
+    return decoratableUtils.hasValidStereotypeValue<RelationStereotype>(this, stereotypeUtils.RelationStereotypes, true);
   }
 
   hasStereotypeContainedIn(stereotypes: RelationStereotype | RelationStereotype[]): boolean {
@@ -361,7 +361,7 @@ export class Relation extends ModelElement
 
   hasExistentialDependenceStereotype(): boolean {
     const stereotype = this.stereotype;
-    return stereotypesUtils.ExistentialDependencyRelationStereotypes.includes(stereotype);
+    return stereotypeUtils.ExistentialDependencyRelationStereotypes.includes(stereotype);
   }
 
   hasMaterialStereotype(): boolean {

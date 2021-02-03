@@ -19,11 +19,11 @@ it('Test the example presented in the "Usage" section of the README file', () =>
     model.createMediationRelation(enrollment, person);
     model.createMediationRelation(enrollment, school);
 
-    // our API is constantly updated to include helpful methods to facilitate building OntoUML models
+    // the API is constantly updated to include helpful methods to facilitate building OntoUML models
     studiesAt.getTargetEnd().name = 'school';
-    studiesAt.getTargetEnd().setCardinalityToMany();
+    studiesAt.getTargetEnd().cardinality.setZeroToMany();
     studiesAt.getSourceEnd().name = 'student';
-    studiesAt.getSourceEnd().cardinality = '1..*';
+    studiesAt.getSourceEnd().cardinality.setOneToMany();
 
     enrollment.createAttribute(date, 'enrollment date');
 

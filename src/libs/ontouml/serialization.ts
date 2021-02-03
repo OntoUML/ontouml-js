@@ -1,4 +1,3 @@
-import schema from './schema.json';
 import {
   Project,
   OntoumlType,
@@ -15,7 +14,10 @@ import {
 } from './';
 import Ajv from 'ajv';
 
-Object.freeze(schema);
+const schemaJson = require('./../../../resources/schema.json');
+Object.freeze(schemaJson);
+
+export const schema = schemaJson;
 
 const ajv = new Ajv();
 const validator = ajv.compile(schema);

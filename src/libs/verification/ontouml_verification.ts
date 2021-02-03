@@ -55,9 +55,9 @@ export class OntoumlVerification implements Service {
       case Class:
         return ClassVerification.verifyClass(element as Class);
       case GeneralizationSet:
-        return GeneralizationVerification.verifyGeneralization(element as Generalization);
-      case Generalization:
         return GeneralizationSetVerification.verifyGeneralizationSet(element as GeneralizationSet);
+      case Generalization:
+        return GeneralizationVerification.verifyGeneralization(element as Generalization);
       case Literal:
         return LiteralVerification.verifyLiteral(element as Literal);
       case Package:
