@@ -151,6 +151,8 @@ describe('Serialization tests', () => {
 
       const serialization = JSON.stringify(project);
 
+      console.log(serialization);
+
       expect(() => serializationUtils.parse(serialization)).not.toThrow();
       expect(serializationUtils.parse(serialization)).toEqual(project);
     });

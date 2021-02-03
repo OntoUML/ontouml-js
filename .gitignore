@@ -38,3 +38,6 @@ catalog-v001.xml
 *.n3
 *.nt
 __tests__/libs/ontouml2gufo/examples/*
+
+# Manually exported packages
+ontouml-js-*.tgz

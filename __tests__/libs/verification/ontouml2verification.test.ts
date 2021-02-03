@@ -42,5 +42,31 @@ describe(`${OntoumlVerification.name} tests`, () => {
 
       expect(issueBeforeChange.result.length).not.toBe(issueAfterChange.result.length);
     });
+
+    it('Verifying a fully-featured model should not throw exceptions', () => {
+      const project = new Project({ name: 'Project' });
+      const model = project.createModel({ name: 'Model' });
+
+      const agent = model.createCategory('Agent');
+      const person = model.createKind('Person');
+      const organization = model.createKind('Organization');
+      const text = model.createDatatype('Text');
+      const status = model.createEnumeration('Status');
+
+      status.createLiteral('Active');
+      status.createLiteral('Inactive');
+      agent.createAttribute(text, { name: 'name' });
+      agent.createAttribute(status, { name: 'status' });
+      person.createAttribute(text, { name: 'surname' });
+
+      model.createMaterialRelation(person, organization, 'works-for');
+
+      const agentIntoPerson = model.createGeneralization(agent, person, 'agentIntoPerson');
+      const agentIntoOrganization = model.createGeneralization(agent, organization, 'agentIntoOrganization');
+
+      model.createPartition([agentIntoPerson, agentIntoOrganization], null, 'agentsSet');
+
+      expect(() => new OntoumlVerification(model).run()).not.toThrow();
+    });
   });
 });
