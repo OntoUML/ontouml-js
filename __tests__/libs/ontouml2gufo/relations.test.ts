@@ -1,259 +1,436 @@
-import {
-  alpinebits as alpinebitsModel,
-  partWhole as partWholeModel,
-  derivation as derivationModel,
-} from '@test-models/valids';
-import { transformOntoUML2GUFO } from './helpers';
+import { generateGufo } from './helpers';
+import { Package } from '@libs/ontouml';
 
 describe('Relations', () => {
-  let alpinebits;
-  let derivation;
-  let partWhole;
-  let partWholeHideRelation;
-  let partWholeCustomLabel;
+  describe('Basic relation mapping: stereotypeless relation', () => {
+    let owlCode;
 
-  beforeAll(async () => {
-    alpinebits = (await transformOntoUML2GUFO(alpinebitsModel)).model;
-    derivation = (await transformOntoUML2GUFO(derivationModel)).model;
-    partWhole = (await transformOntoUML2GUFO(partWholeModel)).model;
-    partWholeHideRelation = (await transformOntoUML2GUFO(partWholeModel, {
-      createObjectProperty: false,
-    })).model;
-    partWholeCustomLabel = (await transformOntoUML2GUFO(partWholeModel, {
-      customElementMapping: {
-        geHLKw6GAqACBCSD: { uri: 'historicalDependence' },
-        hF1rKw6GAqACBCXn: {
-          uri: 'mediation',
-          label: { default: 'OWLMediation' },
-        },
-      },
-    })).model;
+    beforeAll(() => {
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      model.createBinaryRelation(class1, class1, 'likes');
+      owlCode = generateGufo(model);
+    });
+
+    it('should generate a label with the original name of the relation', () => {
+      expect(owlCode).toContain('<:likes> <rdfs:label> "likes"');
+    });
+
+    it('should generate an object property', () => {
+      expect(owlCode).toContain('<:likes> <rdf:type> <owl:ObjectProperty>');
+    });
+
+    it('should generate a domain axiom', () => {
+      expect(owlCode).toContain('<:likes> <rdfs:domain> <:Person>');
+    });
+
+    it('should generate a range axiom', () => {
+      expect(owlCode).toContain('<:likes> <rdfs:range> <:Person>');
+    });
   });
 
-  it('should generate an uri automatically using association end', async () => {
-    const data = [
-      '<:historicallyDependsOnKeynoteInvitation> <rdfs:subPropertyOf> <gufo:historicallyDependsOn> .',
-      '<:mediatesKeynoteSpeaker> <rdfs:subPropertyOf> <gufo:mediates> .',
-      '<:isProperPartOfPerson> <rdfs:subPropertyOf> <gufo:isObjectProperPartOf> .',
-    ];
+  describe('Basic relation mapping: stereotyped relation', () => {
+    let owlCode;
 
-    for (const value of data) {
-      expect(partWhole).toContain(value);
-    }
+    beforeAll(() => {
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const class2 = model.createKind('Car');
+
+      model.createMaterialRelation(class1, class2, 'is owner of');
+      owlCode = generateGufo(model);
+    });
+
+    it('should generate a label with the original name of the relation', () => {
+      expect(owlCode).toContain('<:isOwnerOf> <rdfs:label> "is owner of"');
+    });
+
+    it('should generate an object property', () => {
+      expect(owlCode).toContain('<:isOwnerOf> <rdf:type> <owl:ObjectProperty>');
+    });
+
+    it('should generate a domain axiom', () => {
+      expect(owlCode).toContain('<:isOwnerOf> <rdfs:domain> <:Person>');
+    });
+
+    it('should generate a range axiom', () => {
+      expect(owlCode).toContain('<:isOwnerOf> <rdfs:range> <:Car>');
+    });
+
+    it('should not generate basic mapping for «instantiation»', () => {
+      const model = new Package();
+      const class1 = model.createIntrinsicMode('Person');
+      const class2 = model.createIntrinsicMode('PersonType');
+
+      model.createInstantiationRelation(class1, class2, 'instantiated by');
+
+      const owl = generateGufo(model);
+      expect(owl).not.toContain('<:instantiatedBy>');
+    });
+
+    it('should not generate basic mapping for «derivation»', () => {
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const class2 = model.createRelator('Marriage');
+      const relation1 = model.createMaterialRelation(class1, class1, 'married to');
+
+      model.createDerivationRelation(relation1, class2, 'derived from');
+
+      const owl = generateGufo(model);
+      expect(owl).not.toContain('<:derivedFrom>');
+    });
   });
 
-  it('should generate an uri automatically using stereotype', async () => {
-    const data = ['<:organizer> <rdf:type> <owl:ObjectProperty>'];
+  describe('Stereotype specific mapping: from OntoUML stereotype to gufo object property', () => {
+    it('«material» to gufo:MaterialRelationshipType', () => {
+      const model = new Package();
+      const class1 = model.createKind('Person');
 
-    for (const value of data) {
-      expect(alpinebits).toContain(value);
-    }
+      model.createMaterialRelation(class1, class1, 'knows');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:knows> <rdf:type> <gufo:MaterialRelationshipType>');
+      expect(owlCode).not.toContain('<:knows> <rdfs:subPropertyOf>');
+    });
+
+    it('«comparative» to gufo:ComparativeRelationshipType', () => {
+      const model = new Package();
+      const class1 = model.createKind('Person');
+
+      model.createComparativeRelation(class1, class1, 'heavierThan');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:heavierThan> <rdf:type> <gufo:ComparativeRelationshipType>');
+      expect(owlCode).not.toContain('<:heavierThan> <rdfs:subPropertyOf>');
+    });
+
+    it('«derivation» to gufo:isDerivedFrom', () => {
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const class2 = model.createRelator('Marriage');
+      const relation1 = model.createMaterialRelation(class1, class1, 'married to');
+
+      model.createDerivationRelation(relation1, class2, 'derived from');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:marriedTo> <gufo:isDerivedFrom> <:Marriage>');
+    });
+
+    it('«instantiation» to gufo:categorizes', () => {
+      const model = new Package();
+      const class1 = model.createIntrinsicMode('Person');
+      const class2 = model.createIntrinsicMode('PersonType');
+
+      model.createInstantiationRelation(class1, class2, 'instantiated by');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:PersonType> <gufo:categorizes> <:Person>');
+    });
+
+    it('«bringsAbout» to gufo:broughtAbout', () => {
+      const model = new Package();
+      const class1 = model.createEvent('Car Accident');
+      const class2 = model.createSituation('Dangerous Situation');
+
+      model.createBringsAboutRelation(class1, class2, 'has post state');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:hasPostState> <rdfs:subPropertyOf> <gufo:broughtAbout>');
+    });
+
+    it('«characterization» to gufo:inheresIn', () => {
+      const model = new Package();
+      const class1 = model.createExtrinsicMode('Love');
+      const class2 = model.createKind('Person');
+
+      model.createCharacterizationRelation(class1, class2, 'inheres in person');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:inheresInPerson> <rdfs:subPropertyOf> <gufo:inheresIn>');
+    });
+
+    it('«creation» to gufo:wasCreatedIn', () => {
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const class2 = model.createEvent('Birth');
+
+      model.createCreationRelation(class1, class2, 'was created in birth');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:wasCreatedInBirth> <rdfs:subPropertyOf> <gufo:wasCreatedIn>');
+    });
+
+    it('«externalDependence» to gufo:externallyDependsOn', () => {
+      const model = new Package();
+      const class1 = model.createExtrinsicMode('Love');
+      const class2 = model.createKind('Person');
+
+      model.createExternalDependencyRelation(class1, class2, 'has lovee');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:hasLovee> <rdfs:subPropertyOf> <gufo:externallyDependsOn>');
+    });
+
+    it('«historicalDependence» to gufo:historicallyDependsOn', () => {
+      const model = new Package();
+      const class1 = model.createIntrinsicMode('Person');
+
+      model.createHistoricalDependenceRelation(class1, class1, 'has ancestor');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:hasAncestor> <rdfs:subPropertyOf> <gufo:historicallyDependsOn>');
+    });
+
+    it('«manifestation» to gufo:manifestedIn', () => {
+      const model = new Package();
+      const class1 = model.createIntrinsicMode('Vulnerability');
+      const class2 = model.createEvent('Accident');
+
+      model.createManifestationRelation(class1, class2, 'manifested in accident');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:manifestedInAccident> <rdfs:subPropertyOf> <gufo:manifestedIn>');
+    });
+
+    it('«mediation» to gufo:mediates', () => {
+      const model = new Package();
+      const class1 = model.createRelator('Enrollment');
+      const class2 = model.createRole('Student');
+
+      model.createMediationRelation(class1, class2, 'involves student');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:involvesStudent> <rdfs:subPropertyOf> <gufo:mediates>');
+    });
+
+    it('«participation» to gufo:participatedIn', () => {
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const class2 = model.createEvent('Fight');
+
+      model.createParticipationRelation(class1, class2, 'participated in fight');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:participatedInFight> <rdfs:subPropertyOf> <gufo:participatedIn>');
+    });
+
+    it('«termination» to gufo:wasTerminatedIn', () => {
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const class2 = model.createEvent('Death');
+
+      model.createTerminationRelation(class1, class2, 'was terminated in death');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:wasTerminatedInDeath> <rdfs:subPropertyOf> <gufo:wasTerminatedIn>');
+    });
+
+    it('«trigger» to gufo:contributedToTrigger', () => {
+      const model = new Package();
+      const class1 = model.createSituation('Hazard');
+      const class2 = model.createEvent('Threat Event');
+
+      model.createTriggersRelation(class1, class2, 'triggered threat event');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:triggeredThreatEvent> <rdfs:subPropertyOf> <gufo:contributedToTrigger>');
+    });
+
+    it('«componentOf» to gufo:contributedToTrigger', () => {
+      const model = new Package();
+      const class1 = model.createKind('Engine');
+      const class2 = model.createKind('Car');
+
+      model.createComponentOfRelation(class1, class2, 'is component of car');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:isComponentOfCar> <rdfs:subPropertyOf> <gufo:isComponentOf>');
+    });
+
+    it('«memberOf» to gufo:isCollectionMemberOf', () => {
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const class2 = model.createKind('Group');
+
+      model.createMemberOfRelation(class1, class2, 'is component of car');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:isComponentOfCar> <rdfs:subPropertyOf> <gufo:isCollectionMemberOf>');
+    });
+
+    it('«subCollectionOf» to gufo:isSubCollectionOf', () => {
+      //   'is subcollection of faculty',
+      //   RelationStereotype.SUBCOLLECTION_OF,
+      //   class1,
+      //   class2
+      // );
+      const model = new Package();
+      const class1 = model.createKind('Faculty');
+      const class2 = model.createKind('Research Group');
+
+      model.createSubCollectionOfRelation(class1, class2, 'is subcollection of faculty');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:isSubcollectionOfFaculty> <rdfs:subPropertyOf> <gufo:isSubCollectionOf>');
+    });
+
+    it('«subQuantityOf» to gufo:isSubQuantityOf', () => {
+      const model = new Package();
+      const class1 = model.createQuantity('Water');
+      const class2 = model.createQuantity('Wine');
+
+      model.createSubQuantityOfRelation(class1, class2, 'is component of car');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:isComponentOfCar> <rdfs:subPropertyOf> <gufo:isSubQuantityOf>');
+    });
+
+    it('«participational» to gufo:isEventProperPartOf', () => {
+      const model = new Package();
+      const class1 = model.createEvent('Player Contribution');
+      const class2 = model.createEvent('Match');
+
+      model.createParticipationalRelation(class1, class2, 'is part of match');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:isPartOfMatch> <rdfs:subPropertyOf> <gufo:isEventProperPartOf>');
+    });
   });
 
-  it('should generate a domain and range to relation', async () => {
-    const data = ['<:organizer> <rdfs:domain> <:EventPlan>', '<:organizer> <rdfs:range> <:Organizer>'];
+  describe('Part-whole relation without stereotype mapping', () => {
+    it('Should generate subproperty of gufo:isProperPartOf if more specific property is not available', () => {
+      const model = new Package();
+      const class1 = model.createCollective('Treasure');
+      const class2 = model.createSituation('Hazard');
 
-    for (const value of data) {
-      expect(alpinebits).toContain(value);
-    }
+      model.createPartWholeRelation(class1, class2, 'is part of hazardous situation');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:isPartOfHazardousSituation> <rdfs:subPropertyOf> <gufo:isProperPartOf>');
+    });
+
+    it('Between functional complexes should generate subproperty of gufo:isObjectProperPartOf', () => {
+      const model = new Package();
+      const class1 = model.createKind('Engine');
+      const class2 = model.createKind('Car');
+
+      model.createPartWholeRelation(class1, class2, 'is part of car');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:isPartOfCar> <rdfs:subPropertyOf> <gufo:isObjectProperPartOf>');
+    });
+
+    it('Between relators should generate subproperty of gufo:isAspectProperPartOf', () => {
+      const model = new Package();
+      const class1 = model.createRelator('SubAgreement');
+      const class2 = model.createRelator('Agreement');
+
+      model.createPartWholeRelation(class1, class2, 'is part of agreement');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:isPartOfAgreement> <rdfs:subPropertyOf> <gufo:isAspectProperPartOf>');
+    });
+
+    it('Between mode and relator should generate subproperty of gufo:isAspectProperPartOf', () => {
+      const model = new Package();
+      const class1 = model.createExtrinsicMode('Commitment');
+      const class2 = model.createRelator('Agreement');
+
+      model.createPartWholeRelation(class1, class2, 'is part of agreement');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:isPartOfAgreement> <rdfs:subPropertyOf> <gufo:isAspectProperPartOf>');
+    });
+
+    it('Between modes should generate subproperty of gufo:isAspectProperPartOf', () => {
+      const model = new Package();
+      const class1 = model.createExtrinsicMode('Admiration');
+      const class2 = model.createExtrinsicMode('Love');
+
+      model.createPartWholeRelation(class1, class2, 'is part of love');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:isPartOfLove> <rdfs:subPropertyOf> <gufo:isAspectProperPartOf>');
+    });
+
+    it('Between events should generate subproperty of gufo:isEventProperPartOf', () => {
+      const model = new Package();
+      const class1 = model.createEvent('Keynote Speech');
+      const class2 = model.createEvent('Conference');
+
+      model.createPartWholeRelation(class1, class2, 'is part of conference');
+
+      const owlCode = generateGufo(model);
+      expect(owlCode).toContain('<:isPartOfConference> <rdfs:subPropertyOf> <gufo:isEventProperPartOf>');
+    });
   });
 
-  it('should connect a relation to gUFO stereotype', async () => {
-    const data = [
-      '<:organizer> <rdfs:subPropertyOf> <gufo:mediates>',
-      '<:depicted> <rdfs:subPropertyOf> <gufo:historicallyDependsOn>',
-      '<:snowparkcontainer> <rdfs:subPropertyOf> <gufo:isComponentOf>',
-      '<:feature> <rdfs:subPropertyOf> <gufo:inheresIn>',
-    ];
+  describe('Hide property creation { createObjectProperty: false }', () => {
+    it('«mediation» should NOT generate gufo:mediates', () => {
+      const model = new Package();
+      const class1 = model.createRelator('Enrollment');
+      const class2 = model.createRole('Student');
 
-    for (const value of data) {
-      expect(alpinebits).toContain(value);
-    }
-  });
+      model.createMediationRelation(class1, class2, 'involves student');
 
-  it('should generate a cardinality restriction of 2..*', async () => {
-    expect(alpinebits).toContain(
-      `<:CompositeArea> <rdfs:subClassOf> [
-        <rdf:type> <owl:Restriction>;
-        <owl:onProperty> [ <owl:inverseOf> <:superarea> ];
-        <owl:minQualifiedCardinality> "2"^^<xsd:nonNegativeInteger>;
-        <owl:onClass> <:MountainArea>
-      ] .`.replace(/ {6}/gm, '')
-    );
-  });
+      const owlCode = generateGufo(model, { createObjectProperty: false });
+      expect(owlCode).not.toContain('<:involvesStudent>');
+    });
 
-  it('should generate a cardinality restriction of 1..*', async () => {
-    expect(alpinebits).toContain(
-      `<:EventPlan> <rdfs:subClassOf> [
-        <rdf:type> <owl:Restriction>;
-        <owl:onProperty> <:organizer>;
-        <owl:someValuesFrom> <:Organizer>
-      ] .`.replace(/ {6}/gm, '')
-    );
-  });
+    it('«characterization» should NOT generate gufo:inheresIn', () => {
+      const model = new Package();
+      const class1 = model.createExtrinsicMode('Love');
+      const class2 = model.createKind('Person');
 
-  it('should generate a cardinality restriction of 0..1', () => {
-    expect(alpinebits).toContain(
-      `<:EventPlan> <rdfs:subClassOf> [
-        <rdf:type> <owl:Restriction>;
-        <owl:onProperty> <:eventseries>;
-        <owl:maxQualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;
-        <owl:onClass> <:EventSeries>
-      ] .`.replace(/ {6}/gm, '')
-    );
-  });
+      model.createCharacterizationRelation(class1, class2, 'inheres in person');
 
-  it('should generate normal relation without stereotype', () => {
-    const data = [
-      '<:keynoteSpeaker> <rdf:type> <owl:ObjectProperty> .',
-      '<:keynoteSpeaker> <rdfs:domain> <:KeynoteSpeech> .',
-      '<:keynoteSpeaker> <rdfs:range> <:KeynoteSpeaker> .',
-      '<:keynoteSpeaker> <rdfs:comment> "Relation URI was automatically generated." .',
-      '<:KeynoteSpeech> <rdfs:subClassOf> [',
-      '<rdf:type> <owl:Restriction>;',
-      '<owl:onProperty> <:keynoteSpeaker>;',
-      '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
-      '<owl:onClass> <:KeynoteSpeaker>',
-      '] .',
-      '<:KeynoteSpeech> <rdfs:subClassOf> [',
-      '<rdf:type> <owl:Restriction>;',
-      '<owl:onProperty> <:keynoteSpeaker>;',
-      '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
-      '<owl:onClass> <:KeynoteSpeaker>',
-      '] .',
-    ];
+      const owlCode = generateGufo(model, { createObjectProperty: false });
+      expect(owlCode).not.toContain('<:inheresInPerson>');
+    });
 
-    for (const value of data) {
-      expect(partWhole).toContain(value);
-    }
-  });
+    it('«material» should generate gufo:MaterialRelationshipType', () => {
+      const model = new Package();
+      const class1 = model.createKind('Person');
 
-  it('should generate part-whole relation without stereotype', () => {
-    const data = [
-      '<:isProperPartOfPerson> <rdf:type> <owl:ObjectProperty> .',
-      '<:isProperPartOfPerson> <rdfs:range> <:Person> .',
-      '<:isProperPartOfPerson> <rdfs:domain> <:Heart> .',
-      '<:isProperPartOfPerson> <rdfs:subPropertyOf> <gufo:isObjectProperPartOf> .',
-      '<:isProperPartOfPerson> <rdfs:comment> "Relation URI was automatically generated." .',
-      '<:Person> <rdfs:subClassOf> [',
-      '<rdf:type> <owl:Restriction>;',
-      '<owl:onProperty> [ <owl:inverseOf> <:isProperPartOfPerson> ];',
-      '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
-      '<owl:onClass> <:Heart>',
-      '] .',
-      '<:Heart> <rdfs:subClassOf> [',
-      '<rdf:type> <owl:Restriction>;',
-      '<owl:onProperty> <:isProperPartOfPerson>;',
-      '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
-      '<owl:onClass> <:Person>',
-      '] .',
-    ];
+      model.createMaterialRelation(class1, class1, 'knows');
 
-    for (const value of data) {
-      expect(partWhole).toContain(value);
-    }
-  });
+      const owlCode = generateGufo(model, { createObjectProperty: false });
+      expect(owlCode).toContain('<:knows> <rdf:type> <gufo:MaterialRelationshipType>');
+      expect(owlCode).toContain('<:knows> <rdfs:label> "knows"');
+    });
 
-  it('should generate a part-whole relation between aspects', () => {
-    const data = [
-      '<:isProperPartOfKeynoteAgreement> <rdf:type> <owl:ObjectProperty> .',
-      '<:isProperPartOfKeynoteAgreement> <rdfs:domain> <:KeynoteSpeakerCommitment> .',
-      '<:isProperPartOfKeynoteAgreement> <rdfs:range> <:KeynoteAgreement> .',
-      '<:isProperPartOfKeynoteAgreement> <rdfs:subPropertyOf> <gufo:isAspectProperPartOf> .',
-      '<:KeynoteSpeakerCommitment> <rdfs:subClassOf> [',
-      '<rdf:type> <owl:Restriction>;',
-      '<owl:onProperty> <:isProperPartOfKeynoteAgreement>;',
-      '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
-      '<owl:onClass> <:KeynoteAgreement>',
-      '] .',
-      '<:KeynoteAgreement> <rdfs:subClassOf> [',
-      '<rdf:type> <owl:Restriction>;',
-      '<owl:onProperty> [ <owl:inverseOf> <:isProperPartOfKeynoteAgreement> ];',
-      '<owl:someValuesFrom> <:KeynoteSpeakerCommitment>',
-      '] .',
-    ];
+    it('«comparative» should generate gufo:ComparativeRelationshipType', () => {
+      const model = new Package();
+      const class1 = model.createKind('Person');
 
-    for (const value of data) {
-      expect(partWhole).toContain(value);
-    }
-  });
+      model.createComparativeRelation(class1, class1, 'heavierThan');
 
-  it('should generate a part-whole relation between events', () => {
-    const data = [
-      '<:isProperPartOfConference> <rdf:type> <owl:ObjectProperty> .',
-      '<:isProperPartOfConference> <rdfs:domain> <:KeynoteSpeech> .',
-      '<:isProperPartOfConference> <rdfs:range> <:Conference> .',
-      '<:isProperPartOfConference> <rdfs:subPropertyOf> <gufo:isEventProperPartOf> .',
-      '<:isProperPartOfConference> <rdfs:comment> "Relation URI was automatically generated." .',
-      '<:KeynoteSpeech> <rdfs:subClassOf> [',
-      '<rdf:type> <owl:Restriction>;',
-      '<owl:onProperty> <:isProperPartOfConference>;',
-      '<owl:qualifiedCardinality> "1"^^<xsd:nonNegativeInteger>;',
-      '<owl:onClass> <:Conference>',
-      '] .',
-      '<:Conference> <rdfs:subClassOf> [',
-      '<rdf:type> <owl:Restriction>;',
-      '<owl:onProperty> [ <owl:inverseOf> <:isProperPartOfConference> ];',
-      '<owl:someValuesFrom> <:KeynoteSpeech>',
-      '] .',
-    ];
+      const owlCode = generateGufo(model, { createObjectProperty: false });
+      expect(owlCode).toContain('<:heavierThan> <rdf:type> <gufo:ComparativeRelationshipType>');
+      expect(owlCode).toContain('<:heavierThan> <rdfs:label> "heavierThan"');
+    });
 
-    for (const value of data) {
-      expect(partWhole).toContain(value);
-    }
-  });
+    it('«instantiation» should generate gufo:characterizes', () => {
+      const model = new Package();
+      const class1 = model.createExtrinsicMode('Person');
+      const class2 = model.createExtrinsicMode('PersonType');
 
-  it('should generate derivation relation', async () => {
-    const data = [
-      '<:Loves> <gufo:isDerivedFrom> <:Love>',
-      '<:HeavierThan> <gufo:isDerivedFrom> <:Weight>',
-      '<:WorksAt> <gufo:isDerivedFrom> <:EmploymentContract>',
-    ];
+      model.createInstantiationRelation(class1, class2, 'instantiated by');
 
-    for (const value of data) {
-      expect(derivation).toContain(value);
-    }
-  });
+      const owlCode = generateGufo(model, { createObjectProperty: false });
+      expect(owlCode).toContain('<:PersonType> <gufo:categorizes> <:Person>');
+    });
 
-  it('should hide object property creation', async () => {
-    const data = [
-      '<:inheresInKeynoteSpeaker> <rdf:type> <owl:ObjectProperty>',
-      '<owl:onProperty> <:inheresInKeynoteSpeaker>',
-      '<:mediatesKeynoteSpeaker> <rdf:type> <owl:ObjectProperty>',
-      '<owl:onProperty> <:mediatesKeynoteSpeaker>',
-      '<:historicallyDependsOnKeynoteInvitation> <rdf:type> <owl:ObjectProperty>',
-      '<owl:onProperty> <:historicallyDependsOnKeynoteInvitation>',
-    ];
+    it('«derivation» to gufo:isDerivedFrom', () => {
+      const model = new Package();
+      const class1 = model.createKind('Person');
+      const class2 = model.createRelator('Marriage');
+      const relation = model.createMaterialRelation(class1, class1, 'married to');
 
-    for (const value of data) {
-      expect(partWhole).toContain(value);
-      expect(partWholeHideRelation).not.toContain(value);
-    }
-  });
+      model.createDerivationRelation(relation, class2, 'derived from');
 
-  it('should create cardinality restriction with gufo property', async () => {
-    const data = [
-      '<owl:onProperty> <gufo:inheresIn>',
-      '<owl:inverseOf> <gufo:inheresIn>',
-      '<owl:onProperty> <gufo:mediates>',
-      '<owl:inverseOf> <gufo:mediates>',
-      '<owl:onProperty> <gufo:historicallyDependsOn>',
-    ];
-
-    for (const value of data) {
-      expect(partWholeHideRelation).toContain(value);
-    }
-  });
-
-  it('should generate custom labels', async () => {
-    const data = [
-      '<:historicalDependence> <rdf:type> <owl:ObjectProperty>',
-      '<:mediation> <rdf:type> <owl:ObjectProperty>',
-      '<:mediation> <rdfs:label> "OWLMediation',
-    ];
-
-    for (const value of data) {
-      expect(partWholeCustomLabel).toContain(value);
-    }
+      const owlCode = generateGufo(model, { createObjectProperty: false });
+      expect(owlCode).toContain('<:marriedTo> <gufo:isDerivedFrom> <:Marriage>');
+    });
   });
 });

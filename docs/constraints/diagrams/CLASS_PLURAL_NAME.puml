@@ -1,5 +1,0 @@
-@startuml
-
-class People <<kind>>
-
-@enduml

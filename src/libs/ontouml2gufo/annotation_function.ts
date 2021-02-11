@@ -1,51 +1,60 @@
-import { N3Writer } from 'n3';
-import { IElement, IOntoUML2GUFOOptions } from '@types';
-import { AvailableLanguages } from './constants';
-import { getURI, getCustomElementData } from './helper_functions';
+import { ModelElement, Relation } from '@libs/ontouml/';
+import { Ontouml2Gufo } from './';
+import tags from 'language-tags';
 
-const N3 = require('n3');
-const { DataFactory } = N3;
-const { namedNode, literal, quad } = DataFactory;
+export function transformAnnotations(transformer: Ontouml2Gufo, element: ModelElement): boolean {
+  const labels = transformer.options.getCustomLabels(element) || {};
+  const uri = transformer.getUri(element);
 
-export async function transformAnnotations(
-  writer: N3Writer,
-  element: IElement,
-  options: IOntoUML2GUFOOptions
-): Promise<boolean> {
-  const { propertyAssignments, description, name } = element;
-  const { customLabel = {} } = getCustomElementData(element, options);
-  const uri = getURI({ element, options });
-  const quads = [];
-
-  for (const language of Object.keys(customLabel)) {
-    if (AvailableLanguages.includes(language)) {
-      quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(customLabel[language], language)));
+  for (const language of Object.keys(labels)) {
+    if (tags.check(language)) {
+      transformer.addLiteralQuad(uri, 'rdfs:label', labels[language], language);
     }
   }
 
+  const { propertyAssignments } = element;
+
   if (propertyAssignments) {
     for (const language of Object.keys(propertyAssignments)) {
-      if (AvailableLanguages.includes(language)) {
-        quads.push(
-          quad(namedNode(uri), namedNode('rdfs:label'), literal(propertyAssignments[language], language))
-        );
+      if (tags.check(language)) {
+        transformer.addLiteralQuad(uri, 'rdfs:label', propertyAssignments[language], language);
       }
     }
   }
 
-  if (customLabel.default) {
-    quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(customLabel.default)));
-  } else if (name) {
-    quads.push(quad(namedNode(uri), namedNode('rdfs:label'), literal(name)));
+  if (labels.default) {
+    transformer.addLiteralQuad(uri, 'rdfs:label', labels.default);
   }
 
+  const { name } = element;
+  if (name) {
+    if (typeof name === 'string' || name instanceof String) {
+      transformer.addLiteralQuad(uri, 'rdfs:label', name as string);
+    } else if (typeof name === 'object') {
+      for (const language of Object.keys(name)) {
+        if (tags.check(language)) {
+          transformer.addLiteralQuad(uri, 'rdfs:label', name[language], language);
+        }
+      }
+    }
+  }
+
+  const { description } = element;
   if (description) {
-    quads.push(quad(namedNode(uri), namedNode('rdfs:comment'), literal(description)));
-  }
-
-  if (quads.length > 0) {
-    await writer.addQuads(quads);
+    if (typeof description === 'string' || description instanceof String) {
+      transformer.addLiteralQuad(uri, 'rdfs:comment', description as string);
+    } else if (typeof description === 'object') {
+      for (const language of Object.keys(description)) {
+        if (tags.check(language)) {
+          transformer.addLiteralQuad(uri, 'rdfs:comment', description[language], language);
+        }
+      }
+    }
   }
 
   return true;
+}
+
+export function transformInverseAnnotations(transformer: Ontouml2Gufo, relation: Relation) {
+  transformAnnotations(transformer, relation.properties[0]);
 }
