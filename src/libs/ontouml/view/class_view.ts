@@ -1,8 +1,8 @@
-import { Class } from '../model/class';
-import { OntoumlElement } from '../ontouml_element';
-import { OntoumlType } from '../ontouml_type';
-import { ElementView } from './element_view';
-import { Rectangle } from './rectangle';
+import { Class } from '..';
+import { OntoumlElement } from '..';
+import { OntoumlType } from '..';
+import { ElementView } from '..';
+import { Rectangle } from '..';
 
 export class ClassView extends ElementView<Class, Rectangle> {
   constructor(base?: Partial<ClassView>) {

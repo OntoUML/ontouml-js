@@ -1,11 +1,11 @@
-import { OntoumlElement } from '../ontouml_element';
-import { OntoumlType } from '../ontouml_type';
-import { Class } from './class';
-import { Classifier } from './classifier';
-import { Generalization } from './generalization';
-import { ModelElement } from './model_element';
-import { Package } from './package';
-import { Relation } from './relation';
+import { OntoumlElement } from '..';
+import { OntoumlType } from '..';
+import { Class } from '..';
+import { Classifier } from '..';
+import { Generalization } from '..';
+import { ModelElement } from '..';
+import { Package } from '..';
+import { Relation } from '..';
 
 export class GeneralizationSet extends ModelElement {
   isDisjoint: boolean;

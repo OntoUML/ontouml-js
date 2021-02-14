@@ -1,5 +1,5 @@
 import { Package, Class, GeneralizationSet, Generalization, Relation, ModelElement } from '@libs/ontouml';
-import { Diagram } from '@libs/ontouml/view';
+import { Diagram } from '@libs/ontouml';
 import { uniqBy } from 'lodash';
 
 export class Module {

@@ -1,16 +1,16 @@
 import _ from 'lodash';
-import { OntoumlElement } from '../ontouml_element';
-import { OntoumlType } from '../ontouml_type';
-import { utils } from '../utils';
-import { Class } from './class';
-import { AggregationKind, ClassStereotype, OntologicalNature, PropertyStereotype, RelationStereotype } from './constants';
-import { Generalization } from './generalization';
-import { GeneralizationSet } from './generalization_set';
-import { Literal } from './literal';
-import { ModelElement } from './model_element';
-import { ModelElementContainer } from './model_element_container';
-import { Property } from './property';
-import { Relation } from './relation';
+import { OntoumlElement } from '..';
+import { OntoumlType } from '..';
+import { utils } from '..';
+import { Class } from '..';
+import { AggregationKind, ClassStereotype, OntologicalNature, PropertyStereotype, RelationStereotype } from '..';
+import { Generalization } from '..';
+import { GeneralizationSet } from '..';
+import { Literal } from '..';
+import { ModelElement } from '..';
+import { ModelElementContainer } from '..';
+import { Property } from '..';
+import { Relation } from '..';
 
 export class Package extends ModelElement implements ModelElementContainer {
   contents: ModelElement[];

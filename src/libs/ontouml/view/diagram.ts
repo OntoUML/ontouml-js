@@ -1,7 +1,7 @@
-import { ModelElement } from '../model/model_element';
-import { OntoumlElement } from '../ontouml_element';
-import { OntoumlType } from '../ontouml_type';
-import { ElementView } from './element_view';
+import { ModelElement } from '..';
+import { OntoumlElement } from '..';
+import { OntoumlType } from '..';
+import { ElementView } from '..';
 
 export class Diagram extends OntoumlElement {
   owner: ModelElement;

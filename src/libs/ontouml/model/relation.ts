@@ -1,12 +1,12 @@
-import { OntoumlElement } from '../ontouml_element';
-import { OntoumlType } from '../ontouml_type';
-import { Class } from './class';
-import { Classifier } from './classifier';
-import { ClassStereotype, RelationStereotype } from './constants';
-import { ModelElement } from './model_element';
-import { Package } from './package';
-import { Property } from './property';
-import { stereotypeUtils } from './stereotypes';
+import { OntoumlElement } from '..';
+import { OntoumlType } from '..';
+import { Class } from '..';
+import { Classifier } from '..';
+import { ClassStereotype, RelationStereotype } from '..';
+import { ModelElement } from '..';
+import { Package } from '..';
+import { Property } from '..';
+import { stereotypeUtils } from '..';
 
 export class Relation extends Classifier<Relation, RelationStereotype> {
   constructor(base?: Partial<Relation>) {

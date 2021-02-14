@@ -1,10 +1,10 @@
 import _ from 'lodash';
-import { ClassStereotype, PropertyStereotype, RelationStereotype } from './constants';
-import { Decoratable } from './decoratable';
-import { Generalization } from './generalization';
-import { GeneralizationSet } from './generalization_set';
-import { Property } from './property';
-import { Class } from './class';
+import { ClassStereotype, PropertyStereotype, RelationStereotype } from '..';
+import { Decoratable } from '..';
+import { Generalization } from '..';
+import { GeneralizationSet } from '..';
+import { Property } from '..';
+import { Class } from '..';
 
 export abstract class Classifier<
   T extends Classifier<T, S>,

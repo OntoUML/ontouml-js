@@ -1,8 +1,8 @@
 // import { OntoumlElement, OntoumlType, Shape } from '@libs/ontouml';
 
-import { OntoumlElement } from '../ontouml_element';
-import { OntoumlType } from '../ontouml_type';
-import { Shape } from './shape';
+import { OntoumlElement } from '..';
+import { OntoumlType } from '..';
+import { Shape } from '..';
 
 export class Path extends Shape {
   constructor(base?: Partial<Path>) {

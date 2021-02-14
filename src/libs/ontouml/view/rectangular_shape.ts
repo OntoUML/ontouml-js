@@ -1,4 +1,4 @@
-import { Shape } from './shape';
+import { Shape } from '..';
 
 export abstract class RectangularShape extends Shape {
   constructor(type: string, base?: Partial<RectangularShape>) {

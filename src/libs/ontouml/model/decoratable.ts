@@ -1,5 +1,5 @@
-import { ClassStereotype, PropertyStereotype, RelationStereotype } from './constants';
-import { ModelElement } from './model_element';
+import { ClassStereotype, PropertyStereotype, RelationStereotype } from '..';
+import { ModelElement } from '..';
 
 export abstract class Decoratable<S extends ClassStereotype | RelationStereotype | PropertyStereotype> extends ModelElement {
   stereotype: S;

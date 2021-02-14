@@ -1,16 +1,16 @@
 import _ from 'lodash';
-import { OntoumlElement } from '../ontouml_element';
-import { OntoumlType } from '../ontouml_type';
-import { utils } from '../utils';
-import { Classifier } from './classifier';
-import { ClassStereotype, OntologicalNature } from './constants';
-import { Literal } from './literal';
-import { ModelElement } from './model_element';
-import { natureUtils } from './natures';
-import { Package } from './package';
-import { Property } from './property';
-import { Relation } from './relation';
-import { stereotypeUtils } from './stereotypes';
+import { OntoumlElement } from '..';
+import { OntoumlType } from '..';
+import { utils } from '..';
+import { Classifier } from '..';
+import { ClassStereotype, OntologicalNature } from '..';
+import { Literal } from '..';
+import { ModelElement } from '..';
+import { natureUtils } from '..';
+import { Package } from '..';
+import { Property } from '..';
+import { Relation } from '..';
+import { stereotypeUtils } from '..';
 
 export const ORDERLESS_LEVEL = Infinity;
 

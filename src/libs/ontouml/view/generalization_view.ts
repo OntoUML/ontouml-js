@@ -1,4 +1,4 @@
-import { OntoumlType, ElementView, Path, Generalization } from '@libs/ontouml';
+import { OntoumlType, ElementView, Path, Generalization } from '..';
 
 export class GeneralizationView extends ElementView<Generalization, Path> {
   constructor(base?: Partial<GeneralizationView>) {

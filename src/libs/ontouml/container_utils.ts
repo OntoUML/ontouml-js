@@ -1,4 +1,4 @@
-import { OntoumlElement } from '@libs/ontouml';
+import { OntoumlElement } from '.';
 import _ from 'lodash';
 
 function getContents(

@@ -1,5 +1,4 @@
-import { OntoumlElement } from '../ontouml_element';
-import { Package } from './package';
+import { OntoumlElement } from '..';
 
 export abstract class ModelElement extends OntoumlElement {
   propertyAssignments: object;
@@ -18,27 +17,6 @@ export abstract class ModelElement extends OntoumlElement {
     Object.assign(modelElementSerialization, super.toJSON());
 
     return modelElementSerialization;
-  }
-
-  // TODO: add documentation
-  getModelOrRootPackage(): Package {
-    if (this.project) {
-      return this.project.model;
-    }
-
-    let packageReference = this.container;
-
-    while (packageReference && packageReference.container) {
-      packageReference = packageReference.container;
-    }
-
-    if (packageReference instanceof Package) {
-      return packageReference;
-    } else if (this instanceof Package) {
-      return this;
-    } else {
-      return null;
-    }
   }
 
   /** Clones the model element and all its contents. Replaces all references to

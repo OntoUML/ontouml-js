@@ -1,6 +1,6 @@
-import { OntoumlElement } from '../ontouml_element';
-import { OntoumlType } from '../ontouml_type';
-import { RectangularShape } from './rectangular_shape';
+import { OntoumlElement } from '..';
+import { OntoumlType } from '..';
+import { RectangularShape } from '..';
 
 export class Rectangle extends RectangularShape {
   constructor(base?: Partial<Rectangle>) {

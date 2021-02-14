@@ -1,16 +1,16 @@
-import { Class } from './model/class';
-import { ClassStereotype, OntologicalNature, PropertyStereotype, RelationStereotype } from './model/constants';
-import { Generalization } from './model/generalization';
-import { GeneralizationSet } from './model/generalization_set';
-import { Literal } from './model/literal';
-import { ModelElement } from './model/model_element';
-import { ModelElementContainer } from './model/model_element_container';
-import { Package } from './model/package';
-import { Property } from './model/property';
-import { Relation } from './model/relation';
-import { OntoumlElement } from './ontouml_element';
-import { OntoumlType } from './ontouml_type';
-import { Diagram } from './view/diagram';
+import { Class } from '.';
+import { ClassStereotype, OntologicalNature, PropertyStereotype, RelationStereotype } from '.';
+import { Generalization } from '.';
+import { GeneralizationSet } from '.';
+import { Literal } from '.';
+import { ModelElement } from '.';
+import { ModelElementContainer } from '.';
+import { Package } from '.';
+import { Property } from '.';
+import { Relation } from '.';
+import { OntoumlElement } from '.';
+import { OntoumlType } from '.';
+import { Diagram } from '.';
 
 export class Project extends OntoumlElement implements ModelElementContainer {
   model: Package;

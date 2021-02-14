@@ -1,4 +1,4 @@
-import { OntoumlElement } from '../ontouml_element';
+import { OntoumlElement } from '..';
 
 export abstract class DiagramElement extends OntoumlElement {
   constructor(type: string, base?: Partial<DiagramElement>) {

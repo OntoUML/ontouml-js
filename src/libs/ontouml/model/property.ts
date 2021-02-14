@@ -1,13 +1,19 @@
-import { OntoumlElement } from '../ontouml_element';
-import { OntoumlType } from '../ontouml_type';
-import { Cardinality } from './cardinality';
-import { Class } from './class';
-import { Classifier } from './classifier';
-import { AggregationKind, PropertyStereotype } from './constants';
-import { Decoratable } from './decoratable';
-import { ModelElement } from './model_element';
-import { Relation } from './relation';
-import { stereotypeUtils } from './stereotypes';
+import { OntoumlElement } from '..';
+import { OntoumlType } from '..';
+import { Cardinality } from '..';
+import { Class } from '..';
+import { Classifier } from '..';
+import { PropertyStereotype } from '..';
+import { Decoratable } from '..';
+import { ModelElement } from '..';
+import { Relation } from '..';
+import { stereotypeUtils } from '..';
+
+export enum AggregationKind {
+  NONE = 'NONE',
+  SHARED = 'SHARED',
+  COMPOSITE = 'COMPOSITE'
+}
 
 export class Property extends Decoratable<PropertyStereotype> {
   cardinality: Cardinality;

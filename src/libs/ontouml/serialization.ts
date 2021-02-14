@@ -10,7 +10,7 @@ import {
   GeneralizationSet,
   Property,
   Literal
-} from '@libs/ontouml';
+} from '.';
 import Ajv from 'ajv';
 
 const schemaJson = require('./../../../resources/schema.json');

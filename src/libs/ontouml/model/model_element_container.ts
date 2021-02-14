@@ -1,14 +1,14 @@
-import { OntoumlElement } from '../ontouml_element';
-import { OntoumlType } from '../ontouml_type';
-import { Class } from './class';
-import { ClassStereotype, OntologicalNature, PropertyStereotype, RelationStereotype } from './constants';
-import { Generalization } from './generalization';
-import { GeneralizationSet } from './generalization_set';
-import { Literal } from './literal';
-import { ModelElement } from './model_element';
-import { Package } from './package';
-import { Property } from './property';
-import { Relation } from './relation';
+import { OntoumlElement } from '..';
+import { OntoumlType } from '..';
+import { Class } from '..';
+import { ClassStereotype, OntologicalNature, PropertyStereotype, RelationStereotype } from '..';
+import { Generalization } from '..';
+import { GeneralizationSet } from '..';
+import { Literal } from '..';
+import { ModelElement } from '..';
+import { Package } from '..';
+import { Property } from '..';
+import { Relation } from '..';
 
 export interface ModelElementContainer {
   getAllPackages(): Package[];
