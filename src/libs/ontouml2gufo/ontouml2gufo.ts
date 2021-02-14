@@ -1,4 +1,4 @@
-import { Project, Package, Relation } from '@libs/ontouml/';
+import { Project, Package, Relation } from '@libs/ontouml';
 import {
   Issue,
   Options,

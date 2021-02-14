@@ -1,4 +1,4 @@
-import { Relation } from '@libs/ontouml/';
+import { Relation } from '@libs/ontouml';
 import { Ontouml2Gufo, transformAnnotations } from './';
 
 export function transformRelation(transformer: Ontouml2Gufo, relation: Relation) {

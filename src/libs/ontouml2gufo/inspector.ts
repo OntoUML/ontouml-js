@@ -1,4 +1,4 @@
-import { ModelElement, Relation, Package, Class, Property } from '@libs/ontouml/';
+import { ModelElement, Relation, Package, Class, Property } from '@libs/ontouml';
 import { Ontouml2Gufo, Issue, DefaultPrefixes, getPackagePrefixes } from './';
 
 import isURI from 'validate.io-uri';
@@ -50,7 +50,7 @@ export class Inspector {
     const defaultPrefixUris = Object.values(DefaultPrefixes);
 
     for (const key of Object.keys(customPackageMapping)) {
-      const packageEl = packages.find(({ id, name }: Package) => id === key || name === key) || {
+      const packageEl = packages.find(({ id, name }: Package) => id === key || name.getText() === key) || {
         id: '',
         name: ''
       };

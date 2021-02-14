@@ -1,4 +1,4 @@
-import { Relation, ModelElement, Property, Class, Package } from '@libs/ontouml/';
+import { Relation, ModelElement, Property, Class, Package } from '@libs/ontouml';
 import { Ontouml2Gufo, getSuperProperty, getPackagePrefix } from './';
 
 import _ from 'lodash';

@@ -1,54 +1,40 @@
-import { Relation, ModelElement, containerUtils, Class, Generalization, Classifier, Package, OntoumlType } from './';
+import { OntoumlElement } from '../ontouml_element';
+import { OntoumlType } from '../ontouml_type';
+import { Class } from './class';
+import { Classifier } from './classifier';
+import { Generalization } from './generalization';
+import { ModelElement } from './model_element';
+import { Package } from './package';
+import { Relation } from './relation';
 
 export class GeneralizationSet extends ModelElement {
-  container: Package;
   isDisjoint: boolean;
   isComplete: boolean;
   categorizer: Class;
   generalizations: Generalization[];
 
   constructor(base?: Partial<GeneralizationSet>) {
-    super(base);
-
-    Object.defineProperty(this, 'type', { value: OntoumlType.GENERALIZATION_SET_TYPE, enumerable: true });
+    super(OntoumlType.GENERALIZATION_SET_TYPE, base);
 
     this.isDisjoint = this.isDisjoint || false;
     this.isComplete = this.isComplete || false;
   }
 
-  toJSON(): any {
-    const generalizationSetSerialization: any = {
-      isDisjoint: false,
-      isComplete: false,
-      categorizer: null,
-      generalizations: null
-    };
-
-    Object.assign(generalizationSetSerialization, super.toJSON());
-
-    generalizationSetSerialization.categorizer = this.categorizer && this.categorizer.getReference();
-    generalizationSetSerialization.generalizations = [...this.generalizations].map((generalization: Generalization) =>
-      generalization.getReference()
-    );
-
-    return generalizationSetSerialization;
-  }
-
-  setContainer(newContainer: Package): void {
-    containerUtils.setContainer(this, newContainer, 'contents', true);
+  getContents(): OntoumlElement[] {
+    return [];
   }
 
   /**
    * A disjoint complete set of phase subclasses
    */
-  isPhasePartition(): boolean {
+  isPartition(): boolean {
     return this.isComplete && this.isDisjoint;
   }
 
   /**
    * @throws exception if different generals are present
    */
-  getGeneral(): Classifier<Class | Relation> {
+  getGeneral(): Classifier<any, any> {
     if (!this.generalizations) {
       return null;
     }
@@ -62,7 +48,7 @@ export class GeneralizationSet extends ModelElement {
     return general;
   }
 
-  getSpecifics(): Classifier<Class | Relation>[] {
+  getSpecifics(): Classifier<any, any>[] {
     if (this.generalizations) {
       return this.generalizations.map((gen: Generalization) => gen.specific);
     }
@@ -78,7 +64,7 @@ export class GeneralizationSet extends ModelElement {
     return this.getGeneral() as Class;
   }
 
-  getSpecificClasses(): Classifier<Class | Relation>[] {
+  getSpecificClasses(): Classifier<any, any>[] {
     if (!this.involvesClasses()) {
       throw new Error('Generalization set does not involve classes');
     }
@@ -102,8 +88,8 @@ export class GeneralizationSet extends ModelElement {
     return this.getSpecifics() as Relation[];
   }
 
-  getInvolvedClassifiers(): Classifier<Class | Relation>[] {
-    let involvedClassifiers: Classifier<Class | Relation>[] = [];
+  getInvolvedClassifiers(): Classifier<any, any>[] {
+    let involvedClassifiers: Classifier<any, any>[] = [];
     const general = this.getGeneral();
     const specifics = this.getSpecifics();
 
@@ -151,5 +137,21 @@ export class GeneralizationSet extends ModelElement {
   /** Get instantiation relations where the categorizer (or one of its ancestors) is the source */
   getInstantiationRelations(): Relation[] {
     throw new Error('Method unimplemented!');
+  }
+
+  toJSON(): any {
+    const object: any = {
+      isDisjoint: false,
+      isComplete: false,
+      categorizer: null,
+      generalizations: null
+    };
+
+    Object.assign(object, super.toJSON());
+
+    object.categorizer = this.categorizer && this.categorizer.getReference();
+    object.generalizations = [...this.generalizations].map((generalization: Generalization) => generalization.getReference());
+
+    return object;
   }
 }

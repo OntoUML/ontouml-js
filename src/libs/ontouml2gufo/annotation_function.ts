@@ -1,4 +1,4 @@
-import { ModelElement, Relation } from '@libs/ontouml/';
+import { ModelElement, Relation } from '@libs/ontouml';
 import { Ontouml2Gufo } from './';
 import tags from 'language-tags';
 
@@ -26,9 +26,9 @@ export function transformAnnotations(transformer: Ontouml2Gufo, element: ModelEl
     transformer.addLiteralQuad(uri, 'rdfs:label', labels.default);
   }
 
-  const { name } = element;
+  const name = element.getName();
   if (name) {
-    if (typeof name === 'string' || name instanceof String) {
+    if (typeof name === 'string') {
       transformer.addLiteralQuad(uri, 'rdfs:label', name as string);
     } else if (typeof name === 'object') {
       for (const language of Object.keys(name)) {
@@ -39,9 +39,9 @@ export function transformAnnotations(transformer: Ontouml2Gufo, element: ModelEl
     }
   }
 
-  const { description } = element;
+  const description = element.getDescription();
   if (description) {
-    if (typeof description === 'string' || description instanceof String) {
+    if (typeof description === 'string') {
       transformer.addLiteralQuad(uri, 'rdfs:comment', description as string);
     } else if (typeof description === 'object') {
       for (const language of Object.keys(description)) {

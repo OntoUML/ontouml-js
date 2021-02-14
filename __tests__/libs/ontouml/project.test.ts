@@ -1,4 +1,4 @@
-import { Package, Project, serializationUtils } from '@libs/ontouml/';
+import { Package, Project, serializationUtils } from '@libs/ontouml';
 
 describe('Project tests', () => {
   it('Create Project', () => {

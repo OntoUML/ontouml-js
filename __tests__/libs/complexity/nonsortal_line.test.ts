@@ -1,10 +1,10 @@
 import { complexityNonSortals } from '@test-models/valids';
-import { IClass } from '@types';
-import { ClusterFinder } from '@libs/complexity';
+import { Class } from '@types';
+import { Modularizer } from '@libs/complexity';
 import { ModelManager } from '@libs/model';
 import { ClassStereotype } from '@constants/.';
 
-function expectToContainClass(array: IClass[], name: string, stereotype: ClassStereotype) {
+function expectToContainClass(array: Class[], name: string, stereotype: ClassStereotype) {
   const _class = array.find(c => c.name === name);
   expect(_class).toBeTruthy();
   expect(_class.stereotypes[0]).toBe(stereotype);
@@ -16,7 +16,7 @@ describe('getDescendantsNonSortalLine()', () => {
     const modelManager = new ModelManager(modelCopy);
 
     const musicalArtist = modelManager.getElementById('R2SB0c6GAqACAg52');
-    const children = ClusterFinder.getNonSortalLine(musicalArtist);
+    const children = Modularizer.getNonSortalLine(musicalArtist);
 
     expect(children).toHaveLength(2);
 
@@ -29,7 +29,7 @@ describe('getDescendantsNonSortalLine()', () => {
     const modelManager = new ModelManager(modelCopy);
 
     const physicalObject = modelManager.getElementById('tvoJ0c6GAqACAhO5');
-    const children = ClusterFinder.getNonSortalLine(physicalObject);
+    const children = Modularizer.getNonSortalLine(physicalObject);
 
     expectToContainClass(children, 'Airplane', ClassStereotype.KIND);
     expectToContainClass(children, 'Car', ClassStereotype.KIND);
@@ -45,7 +45,7 @@ describe('getDescendantsNonSortalLine()', () => {
     const modelManager = new ModelManager(modelCopy);
 
     const physicalObject = modelManager.getElementById('tvoJ0c6GAqACAhO5');
-    const children = ClusterFinder.getNonSortalLine(physicalObject);
+    const children = Modularizer.getNonSortalLine(physicalObject);
 
     expectToContainClass(children, 'Machine', ClassStereotype.CATEGORY);
     expectToContainClass(children, 'Vehicle', ClassStereotype.CATEGORY);
@@ -58,7 +58,7 @@ describe('getDescendantsNonSortalLine()', () => {
     const modelManager = new ModelManager(modelCopy);
 
     const agent = modelManager.getElementById('Lb0.0c6GAqACAgv9');
-    const children = ClusterFinder.getNonSortalLine(agent);
+    const children = Modularizer.getNonSortalLine(agent);
 
     expect(children).toHaveLength(4);
 

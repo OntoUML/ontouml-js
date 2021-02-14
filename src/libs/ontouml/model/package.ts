@@ -1,100 +1,95 @@
 import _ from 'lodash';
-import {
-  ModelElement,
-  Container,
-  containerUtils,
-  Class,
-  Relation,
-  Property,
-  Generalization,
-  GeneralizationSet,
-  Literal,
-  PackageContainer,
-  MultilingualText,
-  utils,
-  CARDINALITY_MAX_AS_NUMBER,
-  ClassStereotype,
-  OntologicalNature,
-  RelationStereotype,
-  OntoumlType,
-  AggregationKind,
-  Project,
-  PropertyStereotype
-} from './';
+import { OntoumlElement } from '../ontouml_element';
+import { OntoumlType } from '../ontouml_type';
+import { utils } from '../utils';
+import { Class } from './class';
+import { AggregationKind, ClassStereotype, OntologicalNature, PropertyStereotype, RelationStereotype } from './constants';
+import { Generalization } from './generalization';
+import { GeneralizationSet } from './generalization_set';
+import { Literal } from './literal';
+import { ModelElement } from './model_element';
+import { ModelElementContainer } from './model_element_container';
+import { Property } from './property';
+import { Relation } from './relation';
 
-export class Package extends ModelElement
-  implements Container<ModelElement, ModelElement>, PackageContainer<ModelElement, ModelElement> {
-  container: Package; // for the root package, container must be null, only this.project is set
+export class Package extends ModelElement implements ModelElementContainer {
   contents: ModelElement[];
 
   constructor(base?: Partial<Package>) {
-    super(base);
+    super(OntoumlType.PACKAGE_TYPE, base);
 
-    Object.defineProperty(this, 'type', { value: OntoumlType.PACKAGE_TYPE, enumerable: true });
-
-    this.contents = this.contents || null;
+    this.contents = this.contents || [];
   }
 
-  getContents(contentsFilter?: (modelElement: ModelElement) => boolean): ModelElement[] {
-    return containerUtils.getContents(this, ['contents'], contentsFilter);
+  addContent<T extends ModelElement>(child: T): T {
+    if (child == null) throw new Error('Cannot add a null element to the package.');
+
+    child.setContainer(this);
+    this.contents.push(child);
+    return child;
   }
 
-  getAllContents(contentsFilter?: (modelElement: ModelElement) => boolean): ModelElement[] {
-    return containerUtils.getAllContents(this, ['contents'], contentsFilter);
+  // public void addContents(Collection<? extends ModelElement> contents) {
+  //   if (contents == null) return;
+  //   contents.stream().filter(Objects::nonNull).forEach(x -> addContent(x));
+  // }
+
+  // public void setContents(Collection<? extends ModelElement> contents) {
+  //   this.contents.clear();
+  //   addContents(contents);
+  // }
+
+  getContents(): OntoumlElement[] {
+    return this.contents ? [...this.contents] : [];
+  }
+
+  getAllProperties(): Property[] {
+    return this.getAllContents().filter(e => e instanceof Property) as Property[];
   }
 
   getAllAttributes(): Property[] {
-    const attributesFilter = (modelElement: ModelElement) =>
-      modelElement instanceof Property && (modelElement as Property).isAttribute();
-    return this.getAllContents(attributesFilter) as Property[];
+    return this.getAllProperties().filter(p => p.isAttribute());
   }
 
   getAllRelationEnds(): Property[] {
-    const relationEndsFilter = (modelElement: ModelElement) =>
-      modelElement instanceof Property && (modelElement as Property).isRelationEnd();
-    return this.getAllContents(relationEndsFilter) as Property[];
+    return this.getAllProperties().filter(p => p.isRelationEnd());
   }
 
   getAllRelations(): Relation[] {
-    const relationsFilter = (modelElement: ModelElement) => modelElement instanceof Relation;
-    return this.getAllContents(relationsFilter) as Relation[];
+    return this.getAllContents().filter(e => e instanceof Relation) as Relation[];
   }
 
   getAllGeneralizations(): Generalization[] {
-    const generalizationsFilter = (modelElement: ModelElement) => modelElement instanceof Generalization;
-    return this.getAllContents(generalizationsFilter) as Generalization[];
+    return this.getAllContents().filter(e => e instanceof Generalization) as Generalization[];
   }
 
   getAllGeneralizationSets(): GeneralizationSet[] {
-    const generalizationSetsFilter = (modelElement: ModelElement) => modelElement instanceof GeneralizationSet;
-    return this.getAllContents(generalizationSetsFilter) as GeneralizationSet[];
+    return this.getAllContents().filter(e => e instanceof GeneralizationSet) as GeneralizationSet[];
   }
 
   getAllPackages(): Package[] {
-    const packagesFilter = (modelElement: ModelElement) => modelElement instanceof Package;
-    return this.getAllContents(packagesFilter) as Package[];
+    return this.getAllContents().filter(e => e instanceof Package) as Package[];
   }
 
   getAllClasses(): Class[] {
-    const classesFilter = (modelElement: ModelElement) => modelElement instanceof Class;
-    return this.getAllContents(classesFilter) as Class[];
+    return this.getAllContents().filter(e => e instanceof Class) as Class[];
   }
 
   getAllEnumerations(): Class[] {
-    const classesFilter = (modelElement: ModelElement) =>
-      modelElement instanceof Class && (modelElement as Class).hasEnumerationStereotype();
-    return this.getAllContents(classesFilter) as Class[];
+    return this.getAllClasses().filter(c => c.hasEnumerationStereotype()) as Class[];
   }
 
   getAllLiterals(): Literal[] {
-    const literalsFilter = (modelElement: ModelElement) => modelElement instanceof Literal;
-    return this.getAllContents(literalsFilter) as Literal[];
+    return this.getAllContents().filter(e => e instanceof Literal) as Literal[];
   }
 
-  getAllContentsByType(type: OntoumlType | OntoumlType[]): ModelElement[] {
+  getAllModelElements(): ModelElement[] {
+    return this.getAllContents().filter(e => e instanceof ModelElement) as ModelElement[];
+  }
+
+  getAllContentsByType(type: OntoumlType | OntoumlType[]): OntoumlElement[] {
     const types = utils.arrayFrom(type);
-    const typesFilter = (element: ModelElement) => types.includes(element.type);
-    return this.getAllContents(typesFilter);
+    return this.getAllContents().filter(e => types.includes(e.type));
   }
 
   getAllAttributesByStereotype(stereotype: PropertyStereotype | PropertyStereotype[]): Property[] {
@@ -247,49 +242,39 @@ export class Package extends ModelElement
     return packageSerialization;
   }
 
-  createPackage(name?: MultilingualText, base?: Partial<Package>): Package {
-    return containerUtils.addContentToArray<ModelElement, Package>(
-      this,
-      'contents',
-      new Package(Object.assign({}, base, { name, container: this, project: this.project }))
-    );
+  createPackage(name?: string, base?: Partial<Package>): Package {
+    let pkg = new Package(Object.assign({}, base, { name, container: this, project: this.project }));
+    return this.addContent(pkg);
   }
 
   // TODO: documentation
   createClass(
-    name?: MultilingualText,
+    name?: string,
     stereotype?: ClassStereotype,
     natures?: OntologicalNature | OntologicalNature[],
     base?: Partial<Class>
   ): Class {
-    return containerUtils.addContentToArray<ModelElement, Class>(
-      this,
-      'contents',
-      new Class(
-        Object.assign({}, base, {
-          name,
-          stereotype,
-          restrictedTo: utils.arrayFrom(natures),
-          container: this,
-          project: this.project
-        })
-      )
+    let clazz = new Class(
+      Object.assign({}, base, {
+        name,
+        stereotype,
+        restrictedTo: utils.arrayFrom(natures),
+        container: this,
+        project: this.project
+      })
     );
+    return this.addContent(clazz);
   }
 
-  createType(name?: MultilingualText, base?: Partial<Class>): Class {
+  createType(name?: string, base?: Partial<Class>): Class {
     return this.createClass(name, ClassStereotype.TYPE, OntologicalNature.type, base);
   }
 
-  createHistoricalRole(name?: MultilingualText, base?: Partial<Class>): Class {
+  createHistoricalRole(name?: string, base?: Partial<Class>): Class {
     return this.createClass(name, ClassStereotype.HISTORICAL_ROLE, OntologicalNature.functional_complex, base);
   }
 
-  createHistoricalRoleMixin(
-    name?: MultilingualText,
-    natures?: OntologicalNature | OntologicalNature[],
-    base?: Partial<Class>
-  ): Class {
+  createHistoricalRoleMixin(name?: string, natures?: OntologicalNature | OntologicalNature[], base?: Partial<Class>): Class {
     const isAbstract = true;
     return this.createClass(
       name,
@@ -299,15 +284,15 @@ export class Package extends ModelElement
     );
   }
 
-  createEvent(name?: MultilingualText, base?: Partial<Class>): Class {
+  createEvent(name?: string, base?: Partial<Class>): Class {
     return this.createClass(name, ClassStereotype.EVENT, OntologicalNature.event, base);
   }
 
-  createSituation(name?: MultilingualText, base?: Partial<Class>): Class {
+  createSituation(name?: string, base?: Partial<Class>): Class {
     return this.createClass(name, ClassStereotype.SITUATION, OntologicalNature.situation, base);
   }
 
-  createCategory(name?: MultilingualText, natures?: OntologicalNature | OntologicalNature[], base?: Partial<Class>): Class {
+  createCategory(name?: string, natures?: OntologicalNature | OntologicalNature[], base?: Partial<Class>): Class {
     const isAbstract = true;
     return this.createClass(
       name,
@@ -317,7 +302,7 @@ export class Package extends ModelElement
     );
   }
 
-  createMixin(name?: MultilingualText, natures?: OntologicalNature | OntologicalNature[], base?: Partial<Class>): Class {
+  createMixin(name?: string, natures?: OntologicalNature | OntologicalNature[], base?: Partial<Class>): Class {
     const isAbstract = true;
     return this.createClass(
       name,
@@ -328,7 +313,7 @@ export class Package extends ModelElement
   }
 
   // TODO: move default
-  createRoleMixin(name?: MultilingualText, natures?: OntologicalNature | OntologicalNature[], base?: Partial<Class>): Class {
+  createRoleMixin(name?: string, natures?: OntologicalNature | OntologicalNature[], base?: Partial<Class>): Class {
     const isAbstract = true;
     return this.createClass(
       name,
@@ -338,7 +323,7 @@ export class Package extends ModelElement
     );
   }
 
-  createPhaseMixin(name?: MultilingualText, natures?: OntologicalNature | OntologicalNature[], base?: Partial<Class>): Class {
+  createPhaseMixin(name?: string, natures?: OntologicalNature | OntologicalNature[], base?: Partial<Class>): Class {
     const isAbstract = true;
     return this.createClass(
       name,
@@ -348,11 +333,11 @@ export class Package extends ModelElement
     );
   }
 
-  createKind(name?: MultilingualText, base?: Partial<Class>): Class {
+  createKind(name?: string, base?: Partial<Class>): Class {
     return this.createClass(name, ClassStereotype.KIND, OntologicalNature.functional_complex, base);
   }
 
-  createCollective(name?: MultilingualText, isExtensional?: boolean, base?: Partial<Class>): Class {
+  createCollective(name?: string, isExtensional?: boolean, base?: Partial<Class>): Class {
     return this.createClass(
       name,
       ClassStereotype.COLLECTIVE,
@@ -361,67 +346,66 @@ export class Package extends ModelElement
     );
   }
 
-  createQuantity(name?: MultilingualText, base?: Partial<Class>): Class {
+  createQuantity(name?: string, base?: Partial<Class>): Class {
     return this.createClass(name, ClassStereotype.QUANTITY, OntologicalNature.quantity, base);
   }
 
-  createRelator(name?: MultilingualText, base?: Partial<Class>): Class {
+  createRelator(name?: string, base?: Partial<Class>): Class {
     return this.createClass(name, ClassStereotype.RELATOR, OntologicalNature.relator, base);
   }
 
-  createQuality(name?: MultilingualText, base?: Partial<Class>): Class {
+  createQuality(name?: string, base?: Partial<Class>): Class {
     return this.createClass(name, ClassStereotype.QUALITY, OntologicalNature.quality, base);
   }
 
-  createIntrinsicMode(name?: MultilingualText, base?: Partial<Class>): Class {
+  createIntrinsicMode(name?: string, base?: Partial<Class>): Class {
     return this.createClass(name, ClassStereotype.MODE, OntologicalNature.intrinsic_mode, base);
   }
 
-  createExtrinsicMode(name?: MultilingualText, base?: Partial<Class>): Class {
+  createExtrinsicMode(name?: string, base?: Partial<Class>): Class {
     return this.createClass(name, ClassStereotype.MODE, OntologicalNature.extrinsic_mode, base);
   }
 
-  createSubkind(name?: MultilingualText, nature?: OntologicalNature, base?: Partial<Class>): Class {
+  createSubkind(name?: string, nature?: OntologicalNature, base?: Partial<Class>): Class {
     return this.createClass(name, ClassStereotype.SUBKIND, nature || OntologicalNature.functional_complex, base);
   }
 
-  createRole(name?: MultilingualText, nature?: OntologicalNature, base?: Partial<Class>): Class {
+  createRole(name?: string, nature?: OntologicalNature, base?: Partial<Class>): Class {
     return this.createClass(name, ClassStereotype.ROLE, nature || OntologicalNature.functional_complex, base);
   }
 
-  createPhase(name?: MultilingualText, nature?: OntologicalNature, base?: Partial<Class>): Class {
+  createPhase(name?: string, nature?: OntologicalNature, base?: Partial<Class>): Class {
     return this.createClass(name, ClassStereotype.PHASE, nature || OntologicalNature.functional_complex, base);
   }
 
-  createAbstract(name?: MultilingualText, base?: Partial<Class>): Class {
+  createAbstract(name?: string, base?: Partial<Class>): Class {
     return this.createClass(name, ClassStereotype.ABSTRACT, OntologicalNature.abstract, base);
   }
 
-  createDatatype(name?: MultilingualText, base?: Partial<Class>): Class {
+  createDatatype(name?: string, base?: Partial<Class>): Class {
     return this.createClass(name, ClassStereotype.DATATYPE, OntologicalNature.abstract, base);
   }
 
-  createEnumeration(name?: MultilingualText, literals?: Partial<Literal>[], base?: Partial<Class>): Class {
+  createEnumeration(name?: string, literals?: Partial<Literal>[], base?: Partial<Class>): Class {
     const enumeration = this.createClass(name, ClassStereotype.ENUMERATION, OntologicalNature.abstract, base);
+
     if (Array.isArray(literals)) {
-      literals.forEach((literalBase: Partial<Literal>) => enumeration.createLiteral(literalBase.name, literalBase));
+      literals.forEach((literalBase: Partial<Literal>) => enumeration.createLiteral(undefined, literalBase));
     }
+
     return enumeration;
   }
 
   createRelation(base?: Partial<Relation>): Relation {
-    return containerUtils.addContentToArray<ModelElement, Relation>(
-      this,
-      'contents',
-      new Relation(Object.assign({}, base, { container: this, project: this.project }))
-    );
+    let relation = new Relation(Object.assign({}, base, { container: this, project: this.project }));
+    return this.addContent(relation);
   }
 
   // TODO: update names
   createBinaryRelation(
     source: Class,
     target: Class,
-    name?: MultilingualText,
+    name?: string,
     stereotype?: RelationStereotype,
     base?: Partial<Relation>
   ): Relation {
@@ -431,19 +415,14 @@ export class Package extends ModelElement
     return binaryRelation;
   }
 
-  createDerivationRelation(
-    derivingRelation: Relation,
-    derivedClass: Class,
-    name?: MultilingualText,
-    base?: Partial<Relation>
-  ): Relation {
+  createDerivationRelation(derivingRelation: Relation, derivedClass: Class, name?: string, base?: Partial<Relation>): Relation {
     const derivationRelation = this.createRelation(Object.assign({}, base, { name, stereotype: RelationStereotype.DERIVATION }));
     derivationRelation.createSourceEnd({ propertyType: derivingRelation });
     derivationRelation.createTargetEnd({ propertyType: derivedClass });
     return derivationRelation;
   }
 
-  createTernaryRelation(relata: Class[], name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createTernaryRelation(relata: Class[], name?: string, base?: Partial<Relation>): Relation {
     if (relata.length < 3) {
       throw new Error('Ternary relations must involve at least 3 members');
     }
@@ -453,7 +432,7 @@ export class Package extends ModelElement
     return ternaryRelation;
   }
 
-  createMaterialRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createMaterialRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.MATERIAL, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -473,7 +452,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createComparativeRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createComparativeRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.COMPARATIVE, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -484,7 +463,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createMediationRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createMediationRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.MEDIATION, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -501,7 +480,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createCharacterizationRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createCharacterizationRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.CHARACTERIZATION, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -513,7 +492,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createExternalDependencyRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createExternalDependencyRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.EXTERNAL_DEPENDENCE, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -525,7 +504,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createComponentOfRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createComponentOfRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.COMPONENT_OF, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -537,7 +516,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createMemberOfRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createMemberOfRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.MEMBER_OF, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -549,7 +528,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createSubCollectionOfRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createSubCollectionOfRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.SUBCOLLECTION_OF, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -561,7 +540,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createSubQuantityOfRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createSubQuantityOfRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.SUBQUANTITY_OF, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -573,7 +552,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createInstantiationRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createInstantiationRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.INSTANTIATION, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -584,7 +563,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createTerminationRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createTerminationRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.TERMINATION, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -597,7 +576,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createParticipationalRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createParticipationalRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.PARTICIPATIONAL, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -611,7 +590,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createParticipationRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createParticipationRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.PARTICIPATION, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -628,7 +607,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createHistoricalDependenceRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createHistoricalDependenceRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.HISTORICAL_DEPENDENCE, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -640,7 +619,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createCreationRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createCreationRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.CREATION, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -653,7 +632,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createManifestationRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createManifestationRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.MANIFESTATION, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -665,7 +644,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createBringsAboutRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createBringsAboutRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.BRINGS_ABOUT, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -678,7 +657,7 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createTriggersRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createTriggersRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, RelationStereotype.TRIGGERS, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -690,12 +669,12 @@ export class Package extends ModelElement
     return relation;
   }
 
-  createPartWholeRelation(source: Class, target: Class, name?: MultilingualText, base?: Partial<Relation>): Relation {
+  createPartWholeRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
     const relation = this.createBinaryRelation(source, target, name, null, base);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    sourceEnd.cardinality.setCardinalityFromNumbers(2, CARDINALITY_MAX_AS_NUMBER);
+    sourceEnd.cardinality.setCardinalityFromNumbers(2);
     targetEnd.cardinality.setOneToOne();
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
@@ -705,14 +684,13 @@ export class Package extends ModelElement
   createGeneralization<T extends Class | Relation>(
     general: T,
     specific: T,
-    name?: MultilingualText,
+    name?: string,
     base?: Partial<Generalization>
   ): Generalization {
-    return containerUtils.addContentToArray<ModelElement, Generalization>(
-      this,
-      'contents',
-      new Generalization(Object.assign({}, base, { name, general, specific, container: this, project: this.project }))
+    let generalization = new Generalization(
+      Object.assign({}, base, { name, general, specific, container: this, project: this.project })
     );
+    return this.addContent(generalization);
   }
 
   createGeneralizationSet(
@@ -720,47 +698,37 @@ export class Package extends ModelElement
     isDisjoint: boolean = false,
     isComplete: boolean = false,
     categorizer?: Class,
-    name?: MultilingualText,
+    name?: string,
     base?: Partial<GeneralizationSet>
   ): GeneralizationSet {
     isDisjoint = isDisjoint || false; // avoids issues when receiving undefined or null
     isComplete = isComplete || false;
     categorizer = categorizer || null;
 
-    return containerUtils.addContentToArray<ModelElement, GeneralizationSet>(
-      this,
-      'contents',
-      new GeneralizationSet(
-        Object.assign({}, base, {
-          name,
-          isDisjoint,
-          isComplete,
-          categorizer,
-          generalizations: utils.arrayFrom(generalizations),
-          container: this,
-          project: this.project
-        })
-      )
+    let gs = new GeneralizationSet(
+      Object.assign({}, base, {
+        name,
+        isDisjoint,
+        isComplete,
+        categorizer,
+        generalizations: utils.arrayFrom(generalizations),
+        container: this,
+        project: this.project
+      })
     );
+
+    return this.addContent(gs);
   }
 
   createPartition(
     generalizations: Generalization | Generalization[],
     categorizer?: Class,
-    name?: MultilingualText,
+    name?: string,
     base?: Partial<GeneralizationSet>
   ): GeneralizationSet {
     categorizer = categorizer || null;
 
     return this.createGeneralizationSet(generalizations, true, true, categorizer, name, Object.assign({}, base));
-  }
-
-  setContainer(newContainer: Package): void {
-    if (this.container instanceof Project) {
-      throw new Error('This method cannot be used on a root package');
-    }
-
-    containerUtils.setContainer(this, newContainer, 'contents', true);
   }
 
   /**

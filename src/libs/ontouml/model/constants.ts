@@ -1,18 +1,3 @@
-export const CARDINALITY_MAX = '*';
-
-export const CARDINALITY_MAX_AS_NUMBER = Infinity;
-
-export enum CardinalityValues {
-  ZERO_TO_ONE = '0..1',
-  ZERO_TO_MANY = '0..*',
-  ONE = '1',
-  ONE_TO_ONE = '1..1',
-  ONE_TO_MANY = '1..*',
-  MANY = '*'
-}
-
-export const ORDERLESS_LEVEL = Infinity;
-
 export enum OntologicalNature {
   functional_complex = 'functional-complex',
   collective = 'collective',
@@ -82,15 +67,4 @@ export enum AggregationKind {
   NONE = 'NONE',
   SHARED = 'SHARED',
   COMPOSITE = 'COMPOSITE'
-}
-
-export enum OntoumlType {
-  PROJECT_TYPE = 'Project',
-  PACKAGE_TYPE = 'Package',
-  CLASS_TYPE = 'Class',
-  RELATION_TYPE = 'Relation',
-  GENERALIZATION_TYPE = 'Generalization',
-  GENERALIZATION_SET_TYPE = 'GeneralizationSet',
-  PROPERTY_TYPE = 'Property',
-  LITERAL_TYPE = 'Literal'
 }

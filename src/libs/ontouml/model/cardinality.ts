@@ -1,6 +1,15 @@
-import { CardinalityValues, CARDINALITY_MAX, CARDINALITY_MAX_AS_NUMBER } from './';
-
 const SEPARATOR = '..';
+const CARDINALITY_MAX = '*';
+const CARDINALITY_MAX_AS_NUMBER = Infinity;
+
+enum CardinalityValues {
+  ZERO_TO_ONE = '0..1',
+  ZERO_TO_MANY = '0..*',
+  ONE = '1',
+  ONE_TO_ONE = '1..1',
+  ONE_TO_MANY = '1..*',
+  MANY = '*'
+}
 
 export class Cardinality {
   value: string;
@@ -140,13 +149,13 @@ export class Cardinality {
     return this.value || null;
   }
 
-  setCardinalityFromNumbers(lowerBound: number, upperBound: number): void {
+  setCardinalityFromNumbers(lowerBound: number, upperBound?: number): void {
     if (lowerBound > upperBound) {
       throw new Error('Lower bound cannot be greater than upper bound');
     }
 
     this.lowerBound = `${lowerBound}`;
-    this.upperBound = `${upperBound === CARDINALITY_MAX_AS_NUMBER ? CARDINALITY_MAX : upperBound}`;
+    this.upperBound = `${upperBound || CARDINALITY_MAX}`;
   }
 
   isOptional(): boolean {

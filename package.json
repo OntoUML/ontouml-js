@@ -28,13 +28,6 @@
     "test:clear": "jest --clearCache",
     "test:watch": "jest --watch"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run format",
-      "pre-push": "npm run test",
-      "prepublish": "npm run build"
-    }
-  },
   "_moduleAliases": {
     "@test-models": "test_models",
     "@constants": "src/constants",
@@ -69,6 +62,7 @@
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-module-resolver": "^4.0.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "dotenv": "^8.2.0",
     "husky": "^3.1.0",
     "jest": "^24.9.0",

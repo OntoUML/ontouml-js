@@ -1,44 +1,77 @@
-import {
-  Relation,
-  OntoumlElement,
-  containerUtils,
-  Package,
-  Diagram,
-  Class,
-  Generalization,
-  GeneralizationSet,
-  Literal,
-  ModelElement,
-  Property,
-  PackageContainer,
-  OntoumlType,
-  PropertyStereotype,
-  ClassStereotype,
-  RelationStereotype,
-  OntologicalNature
-} from './';
+import { Class } from './model/class';
+import { ClassStereotype, OntologicalNature, PropertyStereotype, RelationStereotype } from './model/constants';
+import { Generalization } from './model/generalization';
+import { GeneralizationSet } from './model/generalization_set';
+import { Literal } from './model/literal';
+import { ModelElement } from './model/model_element';
+import { ModelElementContainer } from './model/model_element_container';
+import { Package } from './model/package';
+import { Property } from './model/property';
+import { Relation } from './model/relation';
+import { OntoumlElement } from './ontouml_element';
+import { OntoumlType } from './ontouml_type';
+import { Diagram } from './view/diagram';
 
-export class Project extends OntoumlElement implements PackageContainer<Package, ModelElement> {
-  type: OntoumlType.PROJECT_TYPE;
+export class Project extends OntoumlElement implements ModelElementContainer {
   model: Package;
   diagrams: Diagram[];
 
   constructor(base?: Partial<Project>) {
-    super(base);
-
-    Object.defineProperty(this, 'type', { value: OntoumlType.PROJECT_TYPE, enumerable: true });
+    super(OntoumlType.PROJECT_TYPE, base);
 
     this.model = this.model || null;
-    this.diagrams = this.diagrams || null;
+    this.diagrams = this.diagrams || [];
   }
 
-  // TODO: add support to diagrams element
-  getContents(): Package[] {
-    return this.model ? [this.model] : [];
+  createModel(base?: Partial<Package>): Package {
+    if (this.model) {
+      throw new Error('Model already defined');
+    }
+
+    this.model = new Package({ ...base, container: null, project: this });
+    return this.model;
   }
 
-  getAllContents(contentsFilter?: (modelElement: ModelElement) => boolean): ModelElement[] {
-    return containerUtils.getAllContents(this, ['model'], contentsFilter);
+  setModel(pkg: Package): void {
+    this.model = pkg;
+    if (pkg != null) {
+      this.model.setContainer(this);
+    }
+  }
+
+  addDiagram(diagram: Diagram) {
+    if (diagram === null) return;
+
+    diagram.setContainer(this);
+    this.diagrams.push(diagram);
+  }
+
+  addDiagrams(diagrams: Diagram[]) {
+    if (diagrams === null) return;
+
+    diagrams.forEach(d => this.addDiagram(d));
+  }
+
+  setDiagrams(diagrams: Diagram[]) {
+    this.diagrams = [];
+
+    if (diagrams === null) return;
+
+    this.addDiagrams(diagrams);
+  }
+
+  getContents(): OntoumlElement[] {
+    let contents: OntoumlElement[] = [];
+
+    if (this.model) {
+      contents.push(this.model);
+    }
+
+    if (this.diagrams) {
+      contents = [...contents, ...this.diagrams];
+    }
+
+    return contents;
   }
 
   getAllAttributes(): Property[] {
@@ -62,8 +95,7 @@ export class Project extends OntoumlElement implements PackageContainer<Package,
   }
 
   getAllPackages(): Package[] {
-    const packagesFilter = (modelElement: ModelElement) => modelElement instanceof Package;
-    return this.getAllContents(packagesFilter) as Package[];
+    return this.getAllContents().filter(e => e instanceof Package) as Package[];
   }
 
   getAllClasses(): Class[] {
@@ -78,7 +110,11 @@ export class Project extends OntoumlElement implements PackageContainer<Package,
     return this.model.getAllLiterals();
   }
 
-  getAllContentsByType(type: OntoumlType | OntoumlType[]): ModelElement[] {
+  getAllModelElements(): ModelElement[] {
+    return this.getAllContents().filter(e => e instanceof ModelElement) as ModelElement[];
+  }
+
+  getAllContentsByType(type: OntoumlType | OntoumlType[]): OntoumlElement[] {
     return this.model.getAllContentsByType(type);
   }
 
@@ -214,26 +250,6 @@ export class Project extends OntoumlElement implements PackageContainer<Package,
     return this.model.getClassesRestrictedToRelator();
   }
 
-  toJSON(): any {
-    const projectSerialization = {
-      model: null,
-      diagrams: null
-    };
-
-    Object.assign(projectSerialization, super.toJSON());
-
-    return projectSerialization;
-  }
-
-  createModel(base?: Partial<Package>): Package {
-    if (this.model) {
-      throw new Error('Model already defined');
-    }
-
-    this.model = new Package({ ...base, container: null, project: this });
-    return this.model;
-  }
-
   lock(): void {
     throw new Error('Unimplemented method');
   }
@@ -244,5 +260,16 @@ export class Project extends OntoumlElement implements PackageContainer<Package,
 
   getClassesByNature(): Class[] {
     throw new Error('Method unimplemented!');
+  }
+
+  toJSON(): any {
+    const projectSerialization = {
+      model: null,
+      diagrams: null
+    };
+
+    Object.assign(projectSerialization, super.toJSON());
+
+    return projectSerialization;
   }
 }

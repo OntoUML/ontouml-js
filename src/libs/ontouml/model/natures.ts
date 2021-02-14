@@ -1,4 +1,4 @@
-import { OntologicalNature } from './';
+import { OntologicalNature } from './constants';
 
 const EndurantNatures = [
   OntologicalNature.functional_complex,

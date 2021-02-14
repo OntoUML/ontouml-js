@@ -1,22 +1,14 @@
-import {
-  IPackage,
-  IClass,
-  IGeneralizationSet,
-  IGeneralization,
-  IRelation,
-  IElement,
-  IReference,
-} from '@types';
-import { Diagram } from './diagram';
+import { Package, Class, GeneralizationSet, Generalization, Relation, ModelElement } from '@libs/ontouml';
+import { Diagram } from '@libs/ontouml/view';
 import { uniqBy } from 'lodash';
 
-export class Cluster {
+export class Module {
   id: string;
   name: string;
-  classes: IClass[];
-  relations: IRelation[];
-  generalizations: IGeneralization[];
-  generalizationSets: IGeneralizationSet[];
+  classes: Class[];
+  relations: Relation[];
+  generalizations: Generalization[];
+  generalizationSets: GeneralizationSet[];
 
   constructor(id: string, name: string) {
     this.id = id;
@@ -27,7 +19,7 @@ export class Cluster {
     this.generalizationSets = [];
   }
 
-  createDiagram(owner: IPackage): Diagram {
+  createDiagram(owner: Package): Diagram {
     let diagram = new Diagram(this.id, this.name, null, owner);
     diagram.addShapes(this.classes);
     diagram.addLines(this.relations);
@@ -37,70 +29,70 @@ export class Cluster {
     return diagram;
   }
 
-  addClass(_class: IClass): boolean {
+  addClass(_class: Class): boolean {
     if (!_class) return false;
 
     this.classes.push(_class);
     return true;
   }
 
-  containsClass(_class: IElement | IReference): boolean {
+  containsClass(_class: ModelElement): boolean {
     return this.classes.findIndex(c => c.id === _class.id) >= 0;
   }
 
-  addClasses(classes: IClass[]) {
+  addClasses(classes: Class[]) {
     this.classes = this.classes.concat(classes);
   }
 
-  addRelation(relation: IRelation): boolean {
+  addRelation(relation: Relation): boolean {
     if (!relation) return false;
 
     this.relations.push(relation);
     return true;
   }
 
-  containsRelation(relation: IElement): boolean {
+  containsRelation(relation: ModelElement): boolean {
     return this.relations.findIndex(r => r.id === relation.id) >= 0;
   }
 
-  addRelations(relations: IRelation[]) {
+  addRelations(relations: Relation[]) {
     this.relations = this.relations.concat(relations);
   }
 
-  addGeneralization(generalization: IGeneralization): boolean {
+  addGeneralization(generalization: Generalization): boolean {
     if (!generalization) return false;
 
     this.generalizations.push(generalization);
     return true;
   }
 
-  addGeneralizations(generalizations: IGeneralization[]) {
+  addGeneralizations(generalizations: Generalization[]) {
     this.generalizations = this.generalizations.concat(generalizations);
   }
 
-  addGeneralizationSet(generalizationSet: IGeneralizationSet): boolean {
+  addGeneralizationSet(generalizationSet: GeneralizationSet): boolean {
     if (!generalizationSet) return false;
 
     this.generalizationSets.push(generalizationSet);
     return true;
   }
 
-  addGeneralizationSets(generalizationSets: IGeneralizationSet[]) {
+  addGeneralizationSets(generalizationSets: GeneralizationSet[]) {
     this.generalizationSets = this.generalizationSets.concat(generalizationSets);
   }
 
   removeDuplicates() {
-    this.classes = Cluster.removeDuplicatesArray(this.classes);
-    this.relations = Cluster.removeDuplicatesArray(this.relations);
-    this.generalizations = Cluster.removeDuplicatesArray(this.generalizations);
-    this.generalizationSets = Cluster.removeDuplicatesArray(this.generalizationSets);
+    this.classes = Module.removeDuplicatesArray(this.classes);
+    this.relations = Module.removeDuplicatesArray(this.relations);
+    this.generalizations = Module.removeDuplicatesArray(this.generalizations);
+    this.generalizationSets = Module.removeDuplicatesArray(this.generalizationSets);
   }
 
-  static removeDuplicatesArray<T extends IElement>(elements: T[]): T[] {
+  static removeDuplicatesArray<T extends ModelElement>(elements: T[]): T[] {
     return uniqBy(elements, 'id');
   }
 
-  addAll(cluster: Cluster): boolean {
+  addAll(cluster: Module): boolean {
     if (!cluster) return false;
 
     this.addClasses(cluster.classes);

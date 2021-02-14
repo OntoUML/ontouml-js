@@ -1,33 +1,41 @@
 import tags from 'language-tags';
-import _ from 'lodash';
 
-export type MultilingualText = string | { [bcpLanguageTag: string]: string };
+export class MultilingualText {
+  static defaultLanguage: string = 'en';
+  static languagePreference: string[] = ['en'];
 
-function getText(multilingualText: MultilingualText, orderedLanguagePreferences: string[] = ['en']): string {
-  for (const lang of orderedLanguagePreferences) {
-    if (!tags.check(lang)) {
-      throw new Error('Invalid language code');
+  textMap: Map<string, string>;
+
+  constructor(base?: Partial<MultilingualText>) {
+    this.textMap = !base ? new Map<string, string>() : new Map<string, string>(base.textMap);
+  }
+
+  getText(language?: string): string {
+    if (tags.check(language)) {
+      return this.textMap.get(language);
     }
-  }
 
-  if (!multilingualText || (typeof multilingualText !== 'string' && typeof multilingualText !== 'object')) {
-    return null;
-  }
-
-  if (typeof multilingualText === 'string') {
-    return multilingualText;
-  }
-
-  for (const lang of orderedLanguagePreferences) {
-    if (typeof multilingualText[lang] === 'string') {
-      return multilingualText[lang];
+    for (const lang of MultilingualText.languagePreference) {
+      if (this.textMap.has(lang)) {
+        return this.textMap.get(lang);
+      }
     }
+
+    return this.textMap.size > 0 ? this.textMap.entries().next().value : null;
   }
 
-  let keys = Object.keys(multilingualText).sort();
-  return multilingualText[keys[0]] || null;
+  addText(value: string, language?: string): void {
+    language = tags.check(language) ? language : MultilingualText.defaultLanguage;
+    this.textMap.set(language, value);
+  }
+
+  clear(): void {
+    this.textMap.clear();
+  }
+
+  toJSON(): any {
+    if (this.textMap.size == 0) return null;
+    if (this.textMap.size == 1) return this.getText('en');
+    return this.textMap;
+  }
 }
-
-export const multilingualTextUtils = {
-  getText
-};

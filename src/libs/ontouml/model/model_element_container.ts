@@ -1,21 +1,16 @@
-import {
-  Package,
-  Class,
-  Property,
-  Literal,
-  Relation,
-  Generalization,
-  GeneralizationSet,
-  ModelElement,
-  OntoumlType,
-  PropertyStereotype,
-  ClassStereotype,
-  RelationStereotype,
-  OntologicalNature,
-  Container
-} from './';
+import { OntoumlElement } from '../ontouml_element';
+import { OntoumlType } from '../ontouml_type';
+import { Class } from './class';
+import { ClassStereotype, OntologicalNature, PropertyStereotype, RelationStereotype } from './constants';
+import { Generalization } from './generalization';
+import { GeneralizationSet } from './generalization_set';
+import { Literal } from './literal';
+import { ModelElement } from './model_element';
+import { Package } from './package';
+import { Property } from './property';
+import { Relation } from './relation';
 
-export interface PackageContainer<ContentType, DeepContentType> extends Container<ContentType, DeepContentType> {
+export interface ModelElementContainer {
   getAllPackages(): Package[];
   getAllClasses(): Class[];
   getAllEnumerations(): Class[];
@@ -25,7 +20,8 @@ export interface PackageContainer<ContentType, DeepContentType> extends Containe
   getAllRelationEnds(): Property[];
   getAllGeneralizations(): Generalization[];
   getAllGeneralizationSets(): GeneralizationSet[];
-  getAllContentsByType(type: OntoumlType | OntoumlType[]): ModelElement[];
+  getAllModelElements(): ModelElement[];
+  getAllContentsByType(type: OntoumlType | OntoumlType[]): OntoumlElement[];
   getAllAttributesByStereotype(stereotype: PropertyStereotype | PropertyStereotype[]): Property[];
   getAllClassesByStereotype(stereotype: ClassStereotype | ClassStereotype[]): Class[];
   getAllRelationsByStereotype(stereotype: RelationStereotype | RelationStereotype[]): Relation[];

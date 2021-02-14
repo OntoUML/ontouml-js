@@ -1,103 +1,24 @@
-import {
-  Property,
-  ModelElement,
-  Generalization,
-  Classifier,
-  Class,
-  Decoratable,
-  decoratableUtils,
-  Container,
-  containerUtils,
-  Package,
-  stereotypeUtils,
-  ClassStereotype,
-  RelationStereotype,
-  classifierUtils,
-  GeneralizationSet,
-  OntoumlType
-} from './';
+import { OntoumlElement } from '../ontouml_element';
+import { OntoumlType } from '../ontouml_type';
+import { Class } from './class';
+import { Classifier } from './classifier';
+import { ClassStereotype, RelationStereotype } from './constants';
+import { ModelElement } from './model_element';
+import { Package } from './package';
+import { Property } from './property';
+import { stereotypeUtils } from './stereotypes';
 
-export class Relation extends ModelElement
-  implements Container<Property, Property>, Decoratable<RelationStereotype>, Classifier<Relation> {
-  stereotype: RelationStereotype;
-  properties: Property[];
-  isAbstract: boolean;
-  isDerived: boolean;
-
+export class Relation extends Classifier<Relation, RelationStereotype> {
   constructor(base?: Partial<Relation>) {
-    super(base);
-
-    Object.defineProperty(this, 'type', { value: OntoumlType.RELATION_TYPE, enumerable: true });
-
-    this.properties = this.properties || null;
-    this.stereotype = this.stereotype || null;
-
-    this.isAbstract = this.isAbstract || false;
-    this.isDerived = this.isDerived || false;
+    super(OntoumlType.RELATION_TYPE, base);
   }
 
-  getGeneralizations(): Generalization[] {
-    return classifierUtils.getGeneralizationsInvolvingClassifier(this);
+  getContents(): OntoumlElement[] {
+    return [...this.properties];
   }
 
-  getGeneralizationSets(): GeneralizationSet[] {
-    return classifierUtils.getGeneralizationSetsInvolvingClassifier(this);
-  }
-
-  getGeneralizationsWhereGeneral(): Generalization[] {
-    return classifierUtils.getGeneralizationsWhereGeneral(this);
-  }
-
-  getGeneralizationsWhereSpecific(): Generalization[] {
-    return classifierUtils.getGeneralizationsWhereSpecific(this);
-  }
-
-  getGeneralizationSetsWhereGeneral(): GeneralizationSet[] {
-    return classifierUtils.getGeneralizationSetsWhereGeneral(this);
-  }
-
-  getGeneralizationSetsWhereSpecific(): GeneralizationSet[] {
-    return classifierUtils.getGeneralizationSetsWhereSpecific(this);
-  }
-
-  getParents(): Relation[] {
-    return classifierUtils.getParents(this);
-  }
-
-  getChildren(): Relation[] {
-    return classifierUtils.getChildren(this);
-  }
-
-  getAncestors(): Relation[] {
-    return classifierUtils.getAncestors<Relation>(this);
-  }
-
-  getDescendants(): Relation[] {
-    return classifierUtils.getDescendants<Relation>(this);
-  }
-
-  getFilteredAncestors(filter: (ancestor: Relation) => boolean): Relation[] {
-    return classifierUtils.getFilteredAncestors(this, filter);
-  }
-
-  getFilteredDescendants(filter: (descendent: Relation) => boolean): Relation[] {
-    return classifierUtils.getFilteredDescendants(this, filter);
-  }
-
-  getContents(contentsFilter?: (property: Property) => boolean): Property[] {
-    return containerUtils.getContents(this, ['properties'], contentsFilter);
-  }
-
-  getAllContents(contentsFilter?: (property: Property) => boolean): Property[] {
-    return containerUtils.getAllContents(this, ['properties'], contentsFilter);
-  }
-
-  hasValidStereotypeValue(): boolean {
-    return decoratableUtils.hasValidStereotypeValue<RelationStereotype>(this, stereotypeUtils.RelationStereotypes, true);
-  }
-
-  hasStereotypeContainedIn(stereotypes: RelationStereotype | RelationStereotype[]): boolean {
-    return decoratableUtils.hasStereotypeContainedIn<RelationStereotype>(this, stereotypes);
+  getAllowedStereotypes(): RelationStereotype[] {
+    return stereotypeUtils.RelationStereotypes;
   }
 
   toJSON(): any {
@@ -167,26 +88,22 @@ export class Relation extends ModelElement
     return memberEnd;
   }
 
-  setContainer(newContainer: Package): void {
-    containerUtils.setContainer(this, newContainer, 'contents', true);
-  }
-
   getSourceEnd(): Property {
-    if (!this.isBinaryRelation()) {
+    if (!this.isBinary()) {
       throw new Error('Unable to retrieve source end on a non-binary relation');
     }
     return this.properties[0];
   }
 
   getTargetEnd(): Property {
-    if (!this.isBinaryRelation()) {
+    if (!this.isBinary()) {
       throw new Error('Unable to retrieve target end on a non-binary relation');
     }
     return this.properties[1];
   }
 
   getMemberEnd(position: number): Property {
-    if (!this.isTernaryRelation()) {
+    if (!this.isTernary()) {
       throw new Error('Unable to retrieve member end on a non-ternary relation');
     }
     return this.properties[position];
@@ -207,14 +124,14 @@ export class Relation extends ModelElement
   }
 
   getDerivingRelationEnd(): Property {
-    if (!this.isDerivationRelation()) {
+    if (!this.isDerivation()) {
       throw new Error('Unable to retrieve source end on a non-binary relation');
     }
     return this.properties[0];
   }
 
   getDerivedClassEnd(): Property {
-    if (!this.isDerivationRelation()) {
+    if (!this.isDerivation()) {
       throw new Error('Unable to retrieve target end on a non-binary relation');
     }
     return this.properties[1];
@@ -227,15 +144,15 @@ export class Relation extends ModelElement
     return this.properties[position];
   }
 
-  getSource(): Relation | Class {
+  getSource(): Classifier<any, any> {
     return this.getSourceEnd().propertyType;
   }
 
-  getTarget(): Relation | Class {
+  getTarget(): Classifier<any, any> {
     return this.getTargetEnd().propertyType;
   }
 
-  getMember(position: number): Relation | Class {
+  getMember(position: number): Classifier<any, any> {
     if (this.hasDerivationStereotype()) {
       throw new Error('Unable to retrieve class from derivation relation');
     }
@@ -306,40 +223,34 @@ export class Relation extends ModelElement
   }
 
   // TODO: check whether isBinaryRelation() is a better name
-  isBinaryRelation(): boolean {
+  isBinary(): boolean {
     return this.properties && this.properties.length === 2;
   }
 
   // TODO: check whether isTernaryRelation() is a better name
-  isTernaryRelation(): boolean {
+  isTernary(): boolean {
     return this.properties && this.properties.length > 2;
   }
 
   isBinaryClassRelation(): boolean {
     return (
-      this.isBinaryRelation() &&
-      this.properties[0].propertyType instanceof Class &&
-      this.properties[1].propertyType instanceof Class
+      this.isBinary() && this.properties[0].propertyType instanceof Class && this.properties[1].propertyType instanceof Class
     );
   }
 
   // TODO: check whether isDerivationRelation() is a better name
-  isDerivationRelation(): boolean {
+  isDerivation(): boolean {
     return (
-      this.isBinaryRelation() &&
-      this.properties[0].propertyType instanceof Relation &&
-      this.properties[1].propertyType instanceof Class
+      this.isBinary() && this.properties[0].propertyType instanceof Relation && this.properties[1].propertyType instanceof Class
     );
   }
 
   isTernaryClassRelation(): boolean {
-    return (
-      this.isTernaryRelation() && this.properties.every((relationEnd: Property) => relationEnd.propertyType instanceof Class)
-    );
+    return this.isTernary() && this.properties.every((relationEnd: Property) => relationEnd.propertyType instanceof Class);
   }
 
   isPartWholeRelation(): boolean {
-    return this.isBinaryRelation() && this.getTargetEnd().isAggregationEnd();
+    return this.isBinary() && this.getTargetEnd().isAggregationEnd();
   }
 
   // TODO: check weather ternary relations may denote existential dependencies
@@ -355,11 +266,11 @@ export class Relation extends ModelElement
     return this.getSourceEnd().isReadOnly;
   }
 
-  isExistentialDependenceRelation(): boolean {
+  isBinaryExistentialDependency(): boolean {
     return this.isSourceExistentiallyDependent() || this.isTargetExistentiallyDependent();
   }
 
-  hasExistentialDependenceStereotype(): boolean {
+  hasExistentialDependencyStereotype(): boolean {
     const stereotype = this.stereotype;
     return stereotypeUtils.ExistentialDependencyRelationStereotypes.includes(stereotype);
   }
@@ -448,7 +359,7 @@ export class Relation extends ModelElement
   }
 
   holdsBetweenEvents(): boolean {
-    if (!this.isBinaryClassRelation() || this.isDerivationRelation()) {
+    if (!this.isBinaryClassRelation() || this.isDerivation()) {
       return false;
     }
 
@@ -458,7 +369,7 @@ export class Relation extends ModelElement
   }
 
   holdsBetweenMoments(): boolean {
-    if (!this.isBinaryClassRelation() || this.isDerivationRelation()) {
+    if (!this.isBinaryClassRelation() || this.isDerivation()) {
       return false;
     }
 
@@ -468,7 +379,7 @@ export class Relation extends ModelElement
   }
 
   holdsBetweenSubstantials(): boolean {
-    if (!this.isBinaryClassRelation() || this.isDerivationRelation()) {
+    if (!this.isBinaryClassRelation() || this.isDerivation()) {
       return false;
     }
 
@@ -494,41 +405,6 @@ export class Relation extends ModelElement
 
     this.getContents().forEach((content: ModelElement) => content.replace(originalElement, newElement));
   }
-
-  // getGeneralizationAsGeneral(): Generalization[] {
-  //   throw new Error('Method unimplemented!');
-  // }
-
-  // getGeneralizationAsSpecific(): Generalization[] {
-  //   throw new Error('Method unimplemented!');
-  // }
-
-  // getFilteredAncestors(filter: (ancestor: Classifier) => boolean): Classifier[] {
-  //   throw new Error('Method not implemented.');
-  // }
-  // getFilteredDescendants(filter: (descendent: Classifier) => boolean): Classifier[] {
-  //   throw new Error('Method not implemented.');
-  // }
-
-  // getParents(): Relation[] {
-  //   throw new Error('Method unimplemented!');
-  // }
-
-  // getChildren(): Relation[] {
-  //   throw new Error('Method unimplemented!');
-  // }
-
-  // getAncestors(knownAncestors: Relation[]): Relation[] {
-  //   throw new Error('Method unimplemented!');
-  // }
-
-  // getDescendants(knownDescendants: Relation[]): Relation[] {
-  //   throw new Error('Method unimplemented!');
-  // }
-
-  // getRelations(): Relation[] {
-  //   throw new Error('Method unimplemented!');
-  // }
 
   /**
    * Returns `true` if the relation is binary and relates two IClass objects

@@ -8,7 +8,7 @@ import {
   serializationUtils,
   Literal,
   Relation
-} from '@libs/ontouml/';
+} from '@libs/ontouml';
 
 describe('Serialization tests', () => {
   it('Project serialization', () => {

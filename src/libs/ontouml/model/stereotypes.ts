@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { ClassStereotype, RelationStereotype, PropertyStereotype } from './';
+import { ClassStereotype, PropertyStereotype, RelationStereotype } from './constants';
 
 const NonSortalStereotypes = [
   ClassStereotype.CATEGORY,

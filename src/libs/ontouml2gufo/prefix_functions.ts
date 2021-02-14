@@ -1,4 +1,4 @@
-import { Package } from '@libs/ontouml/';
+import { Package } from '@libs/ontouml';
 import { Ontouml2Gufo, normalizeName } from './';
 
 import _ from 'lodash';

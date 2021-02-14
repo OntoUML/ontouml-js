@@ -1,7 +1,6 @@
 import {
   Project,
   OntoumlType,
-  Container,
   OntoumlElement,
   ModelElement,
   Package,
@@ -11,7 +10,7 @@ import {
   GeneralizationSet,
   Property,
   Literal
-} from './';
+} from '@libs/ontouml';
 import Ajv from 'ajv';
 
 const schemaJson = require('./../../../resources/schema.json');
@@ -54,23 +53,19 @@ function isReferenceObject(value: any): boolean {
   return typeof value.type === 'string' && typeof value.id === 'string' && Object.keys(value).length === 2;
 }
 
-function getContentsMap(element: ModelElement) {
-  const contentsMap: { [id: string]: OntoumlElement } = { [element.id]: element };
+function getElementMap(element: OntoumlElement): Map<string, OntoumlElement> {
+  const map: Map<string, OntoumlElement> = new Map();
+  map.set(element.id, element);
+  element.getAllContents().forEach(element => map.set(element.id, element));
 
-  if (element.isContainer()) {
-    ((element as unknown) as Container<any, any>)
-      .getAllContents()
-      .forEach((content: ModelElement) => (contentsMap[content.id] = content));
-  }
-
-  return contentsMap;
+  return map;
 }
 
-function resolveReferences(contentsMap: { [id: string]: OntoumlElement }, contents: OntoumlElement[]) {
+function resolveReferences(contentsMap: Map<string, OntoumlElement>, contents: OntoumlElement[]) {
   for (const content of contents) {
     for (const [key, value] of Object.entries(content)) {
       if (isReferenceObject(value)) {
-        const referencedElement = contentsMap[value.id];
+        const referencedElement = contentsMap.get(value.id);
 
         if (!referencedElement) {
           throw new Error('Object contains broken references');
@@ -81,7 +76,7 @@ function resolveReferences(contentsMap: { [id: string]: OntoumlElement }, conten
         value.forEach((item, index) => {
           // TODO: refactoring
           if (isReferenceObject(item)) {
-            const referencedElement = contentsMap[item.id];
+            const referencedElement = contentsMap.get(item.id);
 
             if (!referencedElement) {
               throw new Error('Object contains broken references');
@@ -126,24 +121,16 @@ function revive(_key: any, value: any): any {
   }
 
   if (element instanceof Project || (!_key && element instanceof ModelElement)) {
-    if (element.isContainer()) {
-      const project = element instanceof Project ? (element as Project) : null;
-      const allContents: OntoumlElement[] = (element as any).getAllContents();
-      const contentsMap = getContentsMap(element as ModelElement);
+    const project = element instanceof Project ? (element as Project) : null;
+    const allContents: OntoumlElement[] = (element as any).getAllContents();
 
-      allContents.forEach((content: ModelElement) => {
-        content.project = project;
+    allContents.forEach((content: ModelElement) => {
+      content.project = project;
+      (content as any).getContents().forEach((ownContent: ModelElement) => (ownContent.container = content));
+    });
 
-        if (content.isContainer()) {
-          (content as any).getContents().forEach((ownContent: ModelElement) => (ownContent.container = content));
-        }
-      });
-
-      resolveReferences(contentsMap, [element, ...allContents]);
-    } else {
-      const contentsMap = getContentsMap(element as ModelElement);
-      resolveReferences(contentsMap, [element]);
-    }
+    const contentsMap = getElementMap(element as ModelElement);
+    resolveReferences(contentsMap, [element, ...allContents]);
   }
 
   return element ? element : value;

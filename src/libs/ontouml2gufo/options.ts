@@ -1,4 +1,4 @@
-import { ModelElement, Package } from '@libs/ontouml/';
+import { ModelElement, Package } from '@libs/ontouml';
 import { ServiceOptions } from '@libs/service_options';
 
 export class Options implements ServiceOptions {

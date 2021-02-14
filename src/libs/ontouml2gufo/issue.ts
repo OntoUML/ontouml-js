@@ -1,4 +1,4 @@
-import { ModelElement, Relation, Class, Property, OntoumlType } from '@libs/ontouml/';
+import { ModelElement, Relation, Class, Property, OntoumlType } from '@libs/ontouml';
 import { ServiceIssue } from '@libs/service_issue';
 import { ServiceIssueSeverity } from '@libs/service_issue_severity';
 
