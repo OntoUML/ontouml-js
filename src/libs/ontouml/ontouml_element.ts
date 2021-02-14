@@ -21,13 +21,12 @@ export abstract class OntoumlElement {
       Object.assign(this, base);
     }
 
-    console.log(this);
-    console.log(base);
-
     this.name = this.name || null;
     this.description = this.description || null;
     this.project = this.project || null;
     this.container = this.container || null;
+
+    console.log('OE 1 ===', this);
 
     Object.defineProperty(this, 'type', {
       value: type,
@@ -35,6 +34,8 @@ export abstract class OntoumlElement {
       writable: false,
       configurable: false
     });
+    this['x'] = 999;
+    console.log('OE 2 ===', this);
   }
 
   getName(language?: string): string {

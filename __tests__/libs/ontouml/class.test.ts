@@ -15,7 +15,7 @@ import {
 
 describe(`${Class.name} Tests`, () => {
   describe('Test constructor', () => {
-    const emptyClass = new Class();
+    // const emptyClass = new Class();
     const fullyFeaturedClass = new Class({
       stereotype: ClassStereotype.CATEGORY,
       restrictedTo: [OntologicalNature.functional_complex],
@@ -26,24 +26,24 @@ describe(`${Class.name} Tests`, () => {
       order: 2
     });
 
-    it('Test type property descriptor', () => {
-      const desc = Object.getOwnPropertyDescriptor(emptyClass, 'type');
+    // it('Test type property descriptor', () => {
+    //   const desc = Object.getOwnPropertyDescriptor(emptyClass, 'type');
 
-      expect(desc.value).toEqual(OntoumlType.CLASS_TYPE);
-      expect(desc.enumerable).toBeTruthy();
-      expect(desc.writable).toBeFalsy();
-      expect(desc.configurable).toBeFalsy();
-    });
+    //   expect(desc.value).toEqual(OntoumlType.CLASS_TYPE);
+    //   expect(desc.enumerable).toBeTruthy();
+    //   expect(desc.writable).toBeFalsy();
+    //   expect(desc.configurable).toBeFalsy();
+    // });
 
-    it('Test defaults', () => {
-      expect(emptyClass.stereotype).toBeNull();
-      expect(emptyClass.restrictedTo).toBeNull();
-      expect(emptyClass.isAbstract).toEqual(false);
-      expect(emptyClass.isDerived).toEqual(false);
-      expect(emptyClass.isExtensional).toEqual(false);
-      expect(emptyClass.isPowertype).toEqual(false);
-      expect(emptyClass.order).toEqual(1);
-    });
+    // it('Test defaults', () => {
+    //   expect(emptyClass.stereotype).toBeNull();
+    //   expect(emptyClass.restrictedTo).toBeNull();
+    //   expect(emptyClass.isAbstract).toEqual(false);
+    //   expect(emptyClass.isDerived).toEqual(false);
+    //   expect(emptyClass.isExtensional).toEqual(false);
+    //   expect(emptyClass.isPowertype).toEqual(false);
+    //   expect(emptyClass.order).toEqual(1);
+    // });
 
     it('Test overriding defaults', () => {
       expect(fullyFeaturedClass.stereotype).toBeDefined();

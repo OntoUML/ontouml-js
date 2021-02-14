@@ -14,12 +14,17 @@ export abstract class Classifier<
   isDerived: boolean;
   properties: Property[];
 
-  constructor(type: string, base: Partial<Classifier<T, S>>) {
+  constructor(type: string, base?: Partial<Classifier<T, S>>) {
     super(type, base);
 
-    this.isAbstract = this.isAbstract || false;
-    this.isDerived = this.isDerived || false;
-    this.properties = this.properties || [];
+    console.log('CLASSIFiER', this);
+
+    this.isAbstract = base ? base.isAbstract : false;
+    
+    this.isDerived = base ? base.isDerived : false;
+    this.properties = base ? base.properties : [];
+
+    console.log(this.properties[0].name?.clear());
   }
 
   getGeneralizations(): Generalization[] {

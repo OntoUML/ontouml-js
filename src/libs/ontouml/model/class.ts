@@ -24,6 +24,8 @@ export class Class extends Classifier<Class, ClassStereotype> {
   constructor(base?: Partial<Class>) {
     super(OntoumlType.CLASS_TYPE, base);
 
+    console.log('CLASS', this);
+
     this.literals = this.literals || null;
     this.stereotype = this.stereotype || null;
     this.restrictedTo = this.restrictedTo || null;
