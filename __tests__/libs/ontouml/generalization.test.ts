@@ -5,7 +5,7 @@ describe(`${Generalization.name} Tests`, () => {
     const model = new Project().createModel();
     const agent = model.createClass();
     const person = model.createClass();
-    const gen = model.createGeneralization(agent, person, { en: 'agentType' });
+    const gen = model.createGeneralization(agent, person, 'agentType');
 
     it('Test serialization', () => expect(() => JSON.stringify(gen)).not.toThrow());
     it('Test serialization', () => expect(serializationUtils.validate(gen.project)).toBeTruthy());
@@ -24,7 +24,7 @@ describe(`${Generalization.name} Tests`, () => {
       expect(model.getContents()).toContain(gen);
       expect(pkg.getContents()).not.toContain(gen);
 
-      gen.setContainer(pkg);
+      pkg.addContent(gen);
 
       expect(gen.container).toBe(pkg);
       expect(gen.container).not.toBe(model);

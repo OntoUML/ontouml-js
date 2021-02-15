@@ -14,8 +14,8 @@ export class Generalization extends ModelElement {
   constructor(base?: Partial<Generalization>) {
     super(OntoumlType.GENERALIZATION_TYPE, base);
 
-    this.general = this.general || null;
-    this.specific = this.specific || null;
+    this.general = base?.general || null;
+    this.specific = base?.specific || null;
   }
 
   getContents(): OntoumlElement[] {

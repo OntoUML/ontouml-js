@@ -6,7 +6,7 @@ export abstract class ModelElement extends OntoumlElement {
   constructor(type: string, base?: Partial<ModelElement>) {
     super(type, base);
 
-    this.propertyAssignments = this.propertyAssignments || {};
+    this.propertyAssignments = base?.propertyAssignments || {};
   }
 
   toJSON(): any {

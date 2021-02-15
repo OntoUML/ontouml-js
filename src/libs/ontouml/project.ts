@@ -19,8 +19,8 @@ export class Project extends OntoumlElement implements ModelElementContainer {
   constructor(base?: Partial<Project>) {
     super(OntoumlType.PROJECT_TYPE, base);
 
-    this.model = this.model || null;
-    this.diagrams = this.diagrams || [];
+    this.model = base?.model || null;
+    this.diagrams = base?.diagrams || [];
   }
 
   createModel(base?: Partial<Package>): Package {
@@ -49,7 +49,7 @@ export class Project extends OntoumlElement implements ModelElementContainer {
   addDiagrams(diagrams: Diagram[]) {
     if (diagrams === null) return;
 
-    diagrams.forEach(d => this.addDiagram(d));
+    diagrams.forEach((d) => this.addDiagram(d));
   }
 
   setDiagrams(diagrams: Diagram[]) {
@@ -95,7 +95,7 @@ export class Project extends OntoumlElement implements ModelElementContainer {
   }
 
   getAllPackages(): Package[] {
-    return this.getAllContents().filter(e => e instanceof Package) as Package[];
+    return this.getAllContents().filter((e) => e instanceof Package) as Package[];
   }
 
   getAllClasses(): Class[] {
@@ -111,7 +111,7 @@ export class Project extends OntoumlElement implements ModelElementContainer {
   }
 
   getAllModelElements(): ModelElement[] {
-    return this.getAllContents().filter(e => e instanceof ModelElement) as ModelElement[];
+    return this.getAllContents().filter((e) => e instanceof ModelElement) as ModelElement[];
   }
 
   getAllContentsByType(type: OntoumlType | OntoumlType[]): OntoumlElement[] {
@@ -271,5 +271,10 @@ export class Project extends OntoumlElement implements ModelElementContainer {
     Object.assign(projectSerialization, super.toJSON());
 
     return projectSerialization;
+  }
+
+  toString(): string {
+    let object = { id: this.id, type: this.type, name: this.getName() };
+    return JSON.stringify(object, null, 2);
   }
 }

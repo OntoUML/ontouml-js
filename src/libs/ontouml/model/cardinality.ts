@@ -153,9 +153,8 @@ export class Cardinality {
     if (lowerBound > upperBound) {
       throw new Error('Lower bound cannot be greater than upper bound');
     }
-
     this.lowerBound = `${lowerBound}`;
-    this.upperBound = `${upperBound || CARDINALITY_MAX}`;
+    this.upperBound = !upperBound || upperBound === CARDINALITY_MAX_AS_NUMBER ? `${CARDINALITY_MAX}` : `${upperBound}`;
   }
 
   isOptional(): boolean {

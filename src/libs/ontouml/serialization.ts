@@ -56,7 +56,7 @@ function isReferenceObject(value: any): boolean {
 function getElementMap(element: OntoumlElement): Map<string, OntoumlElement> {
   const map: Map<string, OntoumlElement> = new Map();
   map.set(element.id, element);
-  element.getAllContents().forEach(element => map.set(element.id, element));
+  element.getAllContents().forEach((element) => map.set(element.id, element));
 
   return map;
 }
@@ -122,11 +122,11 @@ function revive(_key: any, value: any): any {
 
   if (element instanceof Project || (!_key && element instanceof ModelElement)) {
     const project = element instanceof Project ? (element as Project) : null;
-    const allContents: OntoumlElement[] = (element as any).getAllContents();
+    const allContents: OntoumlElement[] = element.getAllContents();
 
     allContents.forEach((content: ModelElement) => {
       content.project = project;
-      (content as any).getContents().forEach((ownContent: ModelElement) => (ownContent.container = content));
+      content.getContents().forEach((ownContent: ModelElement) => (ownContent.container = content));
     });
 
     const contentsMap = getElementMap(element as ModelElement);

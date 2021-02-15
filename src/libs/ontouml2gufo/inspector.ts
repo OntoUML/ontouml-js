@@ -90,10 +90,10 @@ export class Inspector {
     const relations = this.transformer.model.getAllRelations();
 
     relations.forEach((relation: Relation) => {
-      const sourceAssociationName = relation.properties[0].name;
-      const targetAssociationName = relation.properties[1].name;
+      const sourceAssociationName = relation.properties[0].getName();
+      const targetAssociationName = relation.properties[1].getName();
 
-      if (!relation.name && !targetAssociationName) {
+      if (!relation.getName() && !targetAssociationName) {
         const issue = Issue.createMissingRelationName(relation);
         this.issues.push(issue);
       }

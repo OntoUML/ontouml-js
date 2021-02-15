@@ -12,16 +12,19 @@ import {
 
 describe('Serialization tests', () => {
   it('Project serialization', () => {
-    const project = new Project({ name: 'Project' });
-    const model = project.createModel({ name: 'Model' });
+    const project = new Project();
+    project.addName('Name');
+
+    const model = project.createModel();
+    model.addName('Model');
 
     const agent = model.createCategory('Agent');
     const person = model.createKind('Person');
     const organization = model.createKind('Organization');
     const text = model.createDatatype('Text');
 
-    agent.createAttribute(text, { name: 'name' });
-    person.createAttribute(text, { name: 'surname' });
+    agent.createAttribute(text, 'name');
+    person.createAttribute(text, 'surname');
 
     model.createBinaryRelation(person, organization, 'works-for');
 
@@ -131,16 +134,19 @@ describe('Serialization tests', () => {
     });
 
     it(`Test full project de-serialization`, () => {
-      const project = new Project({ name: 'Project' });
-      const model = project.createModel({ name: 'Model' });
+      const project = new Project();
+      project.addName('MyProject');
+
+      const model = project.createModel();
+      model.addName('Model');
 
       const agent = model.createCategory('Agent');
       const person = model.createKind('Person');
       const organization = model.createKind('Organization');
       const text = model.createDatatype('Text');
 
-      agent.createAttribute(text, { name: 'name' });
-      person.createAttribute(text, { name: 'surname' });
+      agent.createAttribute(text, 'name');
+      person.createAttribute(text, 'surname');
 
       model.createMaterialRelation(person, organization, 'works-for');
 

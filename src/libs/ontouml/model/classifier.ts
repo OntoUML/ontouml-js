@@ -17,14 +17,9 @@ export abstract class Classifier<
   constructor(type: string, base?: Partial<Classifier<T, S>>) {
     super(type, base);
 
-    console.log('CLASSIFiER', this);
-
-    this.isAbstract = base ? base.isAbstract : false;
-    
-    this.isDerived = base ? base.isDerived : false;
-    this.properties = base ? base.properties : [];
-
-    console.log(this.properties[0].name?.clear());
+    this.isAbstract = base?.isAbstract || false;
+    this.isDerived = base?.isDerived || false;
+    this.properties = base?.properties || [];
   }
 
   getGeneralizations(): Generalization[] {
@@ -100,7 +95,7 @@ export abstract class Classifier<
 
     return this.getModelOrRootPackage()
       .getAllGeneralizationSets()
-      .filter(gs => gs.categorizer === thisClass);
+      .filter((gs) => gs.categorizer === thisClass);
   }
 
   getParents(): T[] {

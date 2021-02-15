@@ -16,10 +16,10 @@ export enum AggregationKind {
 }
 
 export class Property extends Decoratable<PropertyStereotype> {
-  cardinality: Cardinality;
   propertyType: Classifier<any, any>;
   subsettedProperties: Property[]; // TODO: update null when deserializing
   redefinedProperties: Property[];
+  cardinality: Cardinality;
   aggregationKind: AggregationKind;
   isDerived: boolean;
   isOrdered: boolean;
@@ -28,13 +28,14 @@ export class Property extends Decoratable<PropertyStereotype> {
   constructor(base?: Partial<Property>) {
     super(OntoumlType.PROPERTY_TYPE, base);
 
-    this.cardinality = new Cardinality(this.cardinality);
-    this.subsettedProperties = this.subsettedProperties || [];
-    this.redefinedProperties = this.redefinedProperties || [];
-    this.aggregationKind = this.aggregationKind || AggregationKind.NONE;
-    this.isDerived = this.isDerived || false;
-    this.isOrdered = this.isOrdered || false;
-    this.isReadOnly = this.isReadOnly || false;
+    this.propertyType = base?.propertyType;
+    this.cardinality = new Cardinality(base?.cardinality);
+    this.subsettedProperties = base?.subsettedProperties || [];
+    this.redefinedProperties = base?.redefinedProperties || [];
+    this.aggregationKind = base?.aggregationKind || AggregationKind.NONE;
+    this.isDerived = base?.isDerived || false;
+    this.isOrdered = base?.isOrdered || false;
+    this.isReadOnly = base?.isReadOnly || false;
   }
 
   getContents(): OntoumlElement[] {
@@ -43,6 +44,10 @@ export class Property extends Decoratable<PropertyStereotype> {
 
   getAllowedStereotypes(): PropertyStereotype[] {
     return stereotypeUtils.PropertyStereotypes;
+  }
+
+  isStereotypeValid(allowsNone: boolean = true): boolean {
+    return super.isStereotypeValid(allowsNone);
   }
 
   isAttribute(): boolean {

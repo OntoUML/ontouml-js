@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _, { remove } from 'lodash';
 import { OntoumlElement } from '..';
 import { OntoumlType } from '..';
 import { utils } from '..';
@@ -11,6 +11,7 @@ import { ModelElement } from '..';
 import { ModelElementContainer } from '..';
 import { Property } from '..';
 import { Relation } from '..';
+import { MultilingualText } from '../multilingual_text';
 
 export class Package extends ModelElement implements ModelElementContainer {
   contents: ModelElement[];
@@ -18,78 +19,85 @@ export class Package extends ModelElement implements ModelElementContainer {
   constructor(base?: Partial<Package>) {
     super(OntoumlType.PACKAGE_TYPE, base);
 
-    this.contents = this.contents || [];
+    this.contents = base?.contents || [];
   }
 
   addContent<T extends ModelElement>(child: T): T {
-    if (child == null) throw new Error('Cannot add a null element to the package.');
+    if (child == null) return null;
+
+    if (child.container instanceof Package) child.container.removeContent(child);
 
     child.setContainer(this);
     this.contents.push(child);
     return child;
   }
 
-  // public void addContents(Collection<? extends ModelElement> contents) {
-  //   if (contents == null) return;
-  //   contents.stream().filter(Objects::nonNull).forEach(x -> addContent(x));
-  // }
+  addContents<T extends ModelElement>(contents: T[]): T[] {
+    if (!contents) return [];
+    return contents.filter((x) => x !== null).map((x) => this.addContent(x));
+  }
 
-  // public void setContents(Collection<? extends ModelElement> contents) {
-  //   this.contents.clear();
-  //   addContents(contents);
-  // }
+  setContents<T extends ModelElement>(contents: T[]): T[] {
+    this.contents = [];
+    return this.addContents(contents);
+  }
+
+  removeContent<T extends ModelElement>(child: T): T {
+    let removed = _.remove(this.contents, (x) => child === x);
+    return remove?.[0] || null;
+  }
 
   getContents(): OntoumlElement[] {
     return this.contents ? [...this.contents] : [];
   }
 
   getAllProperties(): Property[] {
-    return this.getAllContents().filter(e => e instanceof Property) as Property[];
+    return this.getAllContents().filter((e) => e instanceof Property) as Property[];
   }
 
   getAllAttributes(): Property[] {
-    return this.getAllProperties().filter(p => p.isAttribute());
+    return this.getAllProperties().filter((p) => p.isAttribute());
   }
 
   getAllRelationEnds(): Property[] {
-    return this.getAllProperties().filter(p => p.isRelationEnd());
+    return this.getAllProperties().filter((p) => p.isRelationEnd());
   }
 
   getAllRelations(): Relation[] {
-    return this.getAllContents().filter(e => e instanceof Relation) as Relation[];
+    return this.getAllContents().filter((e) => e instanceof Relation) as Relation[];
   }
 
   getAllGeneralizations(): Generalization[] {
-    return this.getAllContents().filter(e => e instanceof Generalization) as Generalization[];
+    return this.getAllContents().filter((e) => e instanceof Generalization) as Generalization[];
   }
 
   getAllGeneralizationSets(): GeneralizationSet[] {
-    return this.getAllContents().filter(e => e instanceof GeneralizationSet) as GeneralizationSet[];
+    return this.getAllContents().filter((e) => e instanceof GeneralizationSet) as GeneralizationSet[];
   }
 
   getAllPackages(): Package[] {
-    return this.getAllContents().filter(e => e instanceof Package) as Package[];
+    return this.getAllContents().filter((e) => e instanceof Package) as Package[];
   }
 
   getAllClasses(): Class[] {
-    return this.getAllContents().filter(e => e instanceof Class) as Class[];
+    return this.getAllContents().filter((e) => e instanceof Class) as Class[];
   }
 
   getAllEnumerations(): Class[] {
-    return this.getAllClasses().filter(c => c.hasEnumerationStereotype()) as Class[];
+    return this.getAllClasses().filter((c) => c.hasEnumerationStereotype()) as Class[];
   }
 
   getAllLiterals(): Literal[] {
-    return this.getAllContents().filter(e => e instanceof Literal) as Literal[];
+    return this.getAllContents().filter((e) => e instanceof Literal) as Literal[];
   }
 
   getAllModelElements(): ModelElement[] {
-    return this.getAllContents().filter(e => e instanceof ModelElement) as ModelElement[];
+    return this.getAllContents().filter((e) => e instanceof ModelElement) as ModelElement[];
   }
 
   getAllContentsByType(type: OntoumlType | OntoumlType[]): OntoumlElement[] {
     const types = utils.arrayFrom(type);
-    return this.getAllContents().filter(e => types.includes(e.type));
+    return this.getAllContents().filter((e) => types.includes(e.type));
   }
 
   getAllAttributesByStereotype(stereotype: PropertyStereotype | PropertyStereotype[]): Property[] {
@@ -243,7 +251,7 @@ export class Package extends ModelElement implements ModelElementContainer {
   }
 
   createPackage(name?: string, base?: Partial<Package>): Package {
-    let pkg = new Package(Object.assign({}, base, { name, container: this, project: this.project }));
+    let pkg = new Package(Object.assign({}, base, { name: new MultilingualText(name), container: this, project: this.project }));
     return this.addContent(pkg);
   }
 
@@ -256,7 +264,7 @@ export class Package extends ModelElement implements ModelElementContainer {
   ): Class {
     let clazz = new Class(
       Object.assign({}, base, {
-        name,
+        name: new MultilingualText(name),
         stereotype,
         restrictedTo: utils.arrayFrom(natures),
         container: this,

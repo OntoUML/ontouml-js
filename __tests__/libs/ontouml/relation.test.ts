@@ -1,7 +1,7 @@
-import { Project, Relation, RelationStereotype, serializationUtils, ClassStereotype, Property } from '@libs/ontouml';
+import { Project, Relation, RelationStereotype, ClassStereotype, Property } from '@libs/ontouml';
 
-describe(`${Relation.name} Tests`, () => {
-  describe(`Test ${Relation.prototype.getGeneralizations.name}()`, () => {
+describe('Relation Tests', () => {
+  describe('Test getGeneralizations()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const knows = model.createBinaryRelation(person, person);
@@ -12,7 +12,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(knows.getGeneralizations().length).toBe(1));
   });
 
-  describe(`Test ${Relation.prototype.getGeneralizationSets.name}()`, () => {
+  describe('Test getGeneralizationSets()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const knows = model.createBinaryRelation(person, person);
@@ -24,7 +24,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(knows.getGeneralizationSets().length).toBe(1));
   });
 
-  describe(`Test ${Relation.prototype.getGeneralizationsWhereGeneral.name}()`, () => {
+  describe('Test getGeneralizationsWhereGeneral()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const knows = model.createBinaryRelation(person, person);
@@ -35,7 +35,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(knows.getGeneralizationsWhereGeneral().length).toBe(1));
   });
 
-  describe(`Test ${Relation.prototype.getGeneralizationsWhereSpecific.name}()`, () => {
+  describe('Test getGeneralizationsWhereSpecific()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const knows = model.createBinaryRelation(person, person);
@@ -46,7 +46,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(isFriendsWith.getGeneralizationsWhereSpecific().length).toBe(1));
   });
 
-  describe(`Test ${Relation.prototype.getGeneralizationSetsWhereGeneral.name}()`, () => {
+  describe('Test getGeneralizationSetsWhereGeneral()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const knows = model.createBinaryRelation(person, person);
@@ -58,7 +58,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(knows.getGeneralizationSetsWhereGeneral().length).toBe(1));
   });
 
-  describe(`Test ${Relation.prototype.getGeneralizationSetsWhereSpecific.name}()`, () => {
+  describe('Test getGeneralizationSetsWhereSpecific()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const knows = model.createBinaryRelation(person, person);
@@ -70,89 +70,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(isFriendsWith.getGeneralizationSetsWhereSpecific().length).toBe(1));
   });
 
-  describe(`Test ${Relation.prototype.getParents.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const knows = model.createBinaryRelation(person, person);
-    const isFriendsWith = model.createBinaryRelation(person, person);
-    const isBestFriendsWith = model.createBinaryRelation(person, person);
-    model.createGeneralization(knows, isFriendsWith);
-    model.createGeneralization(isFriendsWith, isBestFriendsWith);
-
-    it('Test function call', () => expect(isBestFriendsWith.getParents()).toContain(isFriendsWith));
-    it('Test function call', () => expect(isBestFriendsWith.getParents().length).toBe(1));
-  });
-
-  describe(`Test ${Relation.prototype.getChildren.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const knows = model.createBinaryRelation(person, person);
-    const isFriendsWith = model.createBinaryRelation(person, person);
-    const isBestFriendsWith = model.createBinaryRelation(person, person);
-    model.createGeneralization(knows, isFriendsWith);
-    model.createGeneralization(isFriendsWith, isBestFriendsWith);
-
-    it('Test function call', () => expect(knows.getChildren()).toContain(isFriendsWith));
-    it('Test function call', () => expect(knows.getChildren().length).toBe(1));
-  });
-
-  describe(`Test ${Relation.prototype.getAncestors.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const knows = model.createBinaryRelation(person, person);
-    const isFriendsWith = model.createBinaryRelation(person, person);
-    const isBestFriendsWith = model.createBinaryRelation(person, person);
-    model.createGeneralization(knows, isFriendsWith);
-    model.createGeneralization(isFriendsWith, isBestFriendsWith);
-
-    it('Test function call', () => expect(isBestFriendsWith.getAncestors()).toContain(isFriendsWith));
-    it('Test function call', () => expect(isBestFriendsWith.getAncestors()).toContain(knows));
-    it('Test function call', () => expect(isBestFriendsWith.getAncestors().length).toBe(2));
-  });
-
-  describe(`Test ${Relation.prototype.getDescendants.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const knows = model.createBinaryRelation(person, person);
-    const isFriendsWith = model.createBinaryRelation(person, person);
-    const isBestFriendsWith = model.createBinaryRelation(person, person);
-    model.createGeneralization(knows, isFriendsWith);
-    model.createGeneralization(isFriendsWith, isBestFriendsWith);
-
-    it('Test function call', () => expect(knows.getDescendants()).toContain(isFriendsWith));
-    it('Test function call', () => expect(knows.getDescendants()).toContain(isBestFriendsWith));
-    it('Test function call', () => expect(knows.getDescendants().length).toBe(2));
-  });
-
-  describe(`Test ${Relation.prototype.getFilteredAncestors.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const knows = model.createBinaryRelation(person, person);
-    const isFriendsWith = model.createBinaryRelation(person, person);
-    const isBestFriendsWith = model.createBinaryRelation(person, person);
-    model.createGeneralization(knows, isFriendsWith);
-    model.createGeneralization(isFriendsWith, isBestFriendsWith);
-    const filter = (ancestor: Relation) => ancestor === knows;
-
-    it('Test function call', () => expect(isBestFriendsWith.getFilteredAncestors(filter)).toContain(knows));
-    it('Test function call', () => expect(isBestFriendsWith.getFilteredAncestors(filter).length).toBe(1));
-  });
-
-  describe(`Test ${Relation.prototype.getFilteredDescendants.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const knows = model.createBinaryRelation(person, person);
-    const isFriendsWith = model.createBinaryRelation(person, person);
-    const isBestFriendsWith = model.createBinaryRelation(person, person);
-    model.createGeneralization(knows, isFriendsWith);
-    model.createGeneralization(isFriendsWith, isBestFriendsWith);
-    const filter = (descendent: Relation) => descendent === isBestFriendsWith;
-
-    it('Test function call', () => expect(knows.getFilteredDescendants(filter)).toContain(isBestFriendsWith));
-    it('Test function call', () => expect(knows.getFilteredDescendants(filter).length).toBe(1));
-  });
-
-  describe(`Test ${Relation.prototype.getContents.name}()`, () => {
+  describe('Test getContents()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const knows = model.createBinaryRelation(person, person);
@@ -162,7 +80,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(knows.getContents().length).toBe(2));
   });
 
-  describe(`Test ${Relation.prototype.getAllContents.name}()`, () => {
+  describe('Test getAllContents()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const knows = model.createBinaryRelation(person, person);
@@ -172,34 +90,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(knows.getAllContents().length).toBe(2));
   });
 
-  describe(`Test ${Relation.prototype.hasValidStereotypeValue.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const knows = model.createMaterialRelation(person, person);
-    const worksFor = model.createBinaryRelation(person, person);
-
-    it('Test function call', () => expect(knows.hasValidStereotypeValue()).toBe(true));
-    it('Test function call', () => expect(worksFor.hasValidStereotypeValue()).toBe(true));
-  });
-
-  describe(`Test ${Relation.prototype.hasStereotypeContainedIn.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const knows = model.createMaterialRelation(person, person);
-
-    it('Test function call', () => expect(knows.hasStereotypeContainedIn([RelationStereotype.MATERIAL])).toBe(true));
-  });
-
-  describe(`Test ${Relation.prototype.toJSON.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const knows = model.createMaterialRelation(person, person);
-
-    it('Test serialization', () => expect(() => JSON.stringify(knows)).not.toThrow());
-    it('Test serialization validation', () => expect(serializationUtils.validate(knows.project)).toBeTruthy());
-  });
-
-  describe(`Test ${Relation.prototype.createSourceEnd.name}()`, () => {
+  describe('Test createSourceEnd()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const knows = model.createRelation();
@@ -211,7 +102,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on second creation', () => expect(() => knows.createSourceEnd()).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.createTargetEnd.name}()`, () => {
+  describe('Test createTargetEnd()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const knows = model.createRelation();
@@ -223,7 +114,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on second creation', () => expect(() => knows.createTargetEnd()).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.createMemberEnd.name}()`, () => {
+  describe('Test createMemberEnd()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -238,28 +129,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on invalid creation position', () => expect(() => metPersonAt.createMemberEnd(-1)).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.setContainer.name}()`, () => {
-    const model = new Project().createModel();
-    const pkg = model.createPackage();
-    const person = model.createClass();
-    const knows = model.createBinaryRelation(person, person);
-
-    it('Test function call', () => {
-      expect(knows.container).toBe(model);
-      expect(knows.container).not.toBe(pkg);
-      expect(model.getContents()).toContain(knows);
-      expect(pkg.getContents()).not.toContain(knows);
-
-      knows.setContainer(pkg);
-
-      expect(knows.container).toBe(pkg);
-      expect(knows.container).not.toBe(model);
-      expect(pkg.getContents()).toContain(knows);
-      expect(model.getContents()).not.toContain(knows);
-    });
-  });
-
-  describe(`Test ${Relation.prototype.getSourceEnd.name}()`, () => {
+  describe('Test getSourceEnd()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -273,7 +143,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on ternary relation', () => expect(() => metPersonAt.getSourceEnd()).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.getTargetEnd.name}()`, () => {
+  describe('Test getTargetEnd()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -287,7 +157,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on ternary relation', () => expect(() => metPersonAt.getTargetEnd()).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.getMemberEnd.name}()`, () => {
+  describe('Test getMemberEnd()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -301,7 +171,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on derivation relation', () => expect(() => derivation.getMemberEnd(0)).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.getSourceClassEnd.name}()`, () => {
+  describe('Test getSourceClassEnd()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -315,7 +185,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on ternary relation', () => expect(() => metPersonAt.getSourceClassEnd()).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.getTargetClassEnd.name}()`, () => {
+  describe('Test getTargetClassEnd()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -329,7 +199,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on ternary relation', () => expect(() => metPersonAt.getTargetClassEnd()).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.getDerivingRelationEnd.name}()`, () => {
+  describe('Test getDerivingRelationEnd()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -343,7 +213,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on ternary relation', () => expect(() => metPersonAt.getDerivingRelationEnd()).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.getDerivedClassEnd.name}()`, () => {
+  describe('Test getDerivedClassEnd()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -357,7 +227,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on ternary relation', () => expect(() => metPersonAt.getDerivedClassEnd()).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.getMemberClassEnd.name}()`, () => {
+  describe('Test getMemberClassEnd()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -371,7 +241,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on derivation relation', () => expect(() => derivation.getMemberClassEnd(0)).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.getSource.name}()`, () => {
+  describe('Test getSource()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -385,7 +255,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on ternary relation', () => expect(() => metPersonAt.getSource()).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.getTarget.name}()`, () => {
+  describe('Test getTarget()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -399,7 +269,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on ternary relation', () => expect(() => metPersonAt.getTarget()).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.getMember.name}()`, () => {
+  describe('Test getMember()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -413,7 +283,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on derivation relation', () => expect(() => derivation.getMember(0)).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.getSourceClass.name}()`, () => {
+  describe('Test getSourceClass()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -427,7 +297,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on ternary relation', () => expect(() => metPersonAt.getSourceClass()).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.getTargetClass.name}()`, () => {
+  describe('Test getTargetClass()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -441,7 +311,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on ternary relation', () => expect(() => metPersonAt.getTargetClass()).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.getMemberClass.name}()`, () => {
+  describe('Test getMemberClass()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -455,7 +325,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on derivation relation', () => expect(() => derivation.getMemberClass(0)).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.getDerivingRelation.name}()`, () => {
+  describe('Test getDerivingRelation()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -469,7 +339,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on ternary relation', () => expect(() => metPersonAt.getDerivingRelation()).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.getDerivedClass.name}()`, () => {
+  describe('Test getDerivedClass()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -483,7 +353,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test exception on ternary relation', () => expect(() => metPersonAt.getDerivedClass()).toThrow());
   });
 
-  describe(`Test ${Relation.prototype.getSourceStereotype.name}()`, () => {
+  describe('Test getSourceStereotype()', () => {
     const model = new Project().createModel();
     const person = model.createKind();
     const heavierThan = model.createBinaryRelation(person, person);
@@ -491,7 +361,7 @@ describe(`${Relation.name} Tests`, () => {
     it("Test retrieve source's stereotype", () => expect(heavierThan.getSourceStereotype()).toBe(ClassStereotype.KIND));
   });
 
-  describe(`Test ${Relation.prototype.getTargetStereotype.name}()`, () => {
+  describe('Test getTargetStereotype()', () => {
     const model = new Project().createModel();
     const person = model.createKind();
     const heavierThan = model.createBinaryRelation(person, person);
@@ -499,7 +369,7 @@ describe(`${Relation.name} Tests`, () => {
     it("Test retrieve target's stereotype", () => expect(heavierThan.getTargetStereotype()).toBe(ClassStereotype.KIND));
   });
 
-  describe(`Test ${Relation.prototype.getSourceClassStereotype.name}()`, () => {
+  describe('Test getSourceClassStereotype()', () => {
     const model = new Project().createModel();
     const person = model.createKind();
     const heavierThan = model.createBinaryRelation(person, person);
@@ -507,7 +377,7 @@ describe(`${Relation.name} Tests`, () => {
     it("Test retrieve source's stereotype", () => expect(heavierThan.getSourceClassStereotype()).toBe(ClassStereotype.KIND));
   });
 
-  describe(`Test ${Relation.prototype.getTargetClassStereotype.name}()`, () => {
+  describe('Test getTargetClassStereotype()', () => {
     const model = new Project().createModel();
     const person = model.createKind();
     const heavierThan = model.createBinaryRelation(person, person);
@@ -515,7 +385,7 @@ describe(`${Relation.name} Tests`, () => {
     it("Test retrieve target's stereotype", () => expect(heavierThan.getTargetClassStereotype()).toBe(ClassStereotype.KIND));
   });
 
-  describe(`Test ${Relation.prototype.getMemberClassStereotype.name}()`, () => {
+  describe('Test getMemberClassStereotype()', () => {
     const model = new Project().createModel();
     const person = model.createKind();
     const place = model.createKind();
@@ -524,7 +394,7 @@ describe(`${Relation.name} Tests`, () => {
     it("Test retrieve member's stereotype", () => expect(metPersonAt.getMemberClassStereotype(2)).toBe(ClassStereotype.KIND));
   });
 
-  describe(`Test ${Relation.prototype.getDerivingRelationStereotype.name}()`, () => {
+  describe('Test getDerivingRelationStereotype()', () => {
     const model = new Project().createModel();
     const person = model.createKind();
     const weight = model.createQuality();
@@ -535,7 +405,7 @@ describe(`${Relation.name} Tests`, () => {
       expect(derivation.getDerivingRelationStereotype()).toBe(RelationStereotype.COMPARATIVE));
   });
 
-  describe(`Test ${Relation.prototype.getDerivedClassStereotype.name}()`, () => {
+  describe('Test getDerivedClassStereotype()', () => {
     const model = new Project().createModel();
     const person = model.createKind();
     const weight = model.createQuality();
@@ -546,7 +416,7 @@ describe(`${Relation.name} Tests`, () => {
       expect(derivation.getDerivedClassStereotype()).toBe(ClassStereotype.QUALITY));
   });
 
-  describe(`Test ${Relation.prototype.isBinaryRelation.name}()`, () => {
+  describe('Test isBinary()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -555,12 +425,12 @@ describe(`${Relation.name} Tests`, () => {
     const derivation = model.createDerivationRelation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
-    it('Test binary relation', () => expect(heavierThan.isBinaryRelation()).toBe(true));
-    it('Test derivation relation', () => expect(derivation.isBinaryRelation()).toBe(true));
-    it('Test ternary relation', () => expect(metPersonAt.isBinaryRelation()).toBe(false));
+    it('Test binary relation', () => expect(heavierThan.isBinary()).toBe(true));
+    it('Test derivation relation', () => expect(derivation.isBinary()).toBe(true));
+    it('Test ternary relation', () => expect(metPersonAt.isBinary()).toBe(false));
   });
 
-  describe(`Test ${Relation.prototype.isTernaryRelation.name}()`, () => {
+  describe('Test isTernary()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -569,12 +439,12 @@ describe(`${Relation.name} Tests`, () => {
     const derivation = model.createDerivationRelation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
-    it('Test binary relation', () => expect(heavierThan.isTernaryRelation()).toBe(false));
-    it('Test derivation relation', () => expect(derivation.isTernaryRelation()).toBe(false));
-    it('Test ternary relation', () => expect(metPersonAt.isTernaryRelation()).toBe(true));
+    it('Test binary relation', () => expect(heavierThan.isTernary()).toBe(false));
+    it('Test derivation relation', () => expect(derivation.isTernary()).toBe(false));
+    it('Test ternary relation', () => expect(metPersonAt.isTernary()).toBe(true));
   });
 
-  describe(`Test ${Relation.prototype.isBinaryClassRelation.name}()`, () => {
+  describe('Test isBinaryClassRelation()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -588,7 +458,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test ternary relation', () => expect(metPersonAt.isBinaryClassRelation()).toBe(false));
   });
 
-  describe(`Test ${Relation.prototype.isDerivationRelation.name}()`, () => {
+  describe('Test isDerivation()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -597,12 +467,12 @@ describe(`${Relation.name} Tests`, () => {
     const derivation = model.createDerivationRelation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
-    it('Test binary relation', () => expect(heavierThan.isDerivationRelation()).toBe(false));
-    it('Test derivation relation', () => expect(derivation.isDerivationRelation()).toBe(true));
-    it('Test ternary relation', () => expect(metPersonAt.isDerivationRelation()).toBe(false));
+    it('Test binary relation', () => expect(heavierThan.isDerivation()).toBe(false));
+    it('Test derivation relation', () => expect(derivation.isDerivation()).toBe(true));
+    it('Test ternary relation', () => expect(metPersonAt.isDerivation()).toBe(false));
   });
 
-  describe(`Test ${Relation.prototype.isTernaryClassRelation.name}()`, () => {
+  describe('Test isTernaryClassRelation()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const place = model.createClass();
@@ -616,7 +486,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test ternary relation', () => expect(metPersonAt.isTernaryClassRelation()).toBe(true));
   });
 
-  describe(`Test ${Relation.prototype.isPartWholeRelation.name}()`, () => {
+  describe('Test isPartWholeRelation()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const organization = model.createClass();
@@ -630,7 +500,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(partOf.isPartWholeRelation()).toBe(true));
   });
 
-  describe(`Test ${Relation.prototype.isExistentialDependency.name}()`, () => {
+  describe('Test isExistentialDependency()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const weight = model.createClass();
@@ -641,7 +511,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(characterization.isExistentialDependency()).toBe(true));
   });
 
-  describe(`Test ${Relation.prototype.isSourceExistentiallyDependent.name}()`, () => {
+  describe('Test isSourceExistentiallyDependent()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const weight = model.createClass();
@@ -652,7 +522,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(characterization.isSourceExistentiallyDependent()).toBe(true));
   });
 
-  describe(`Test ${Relation.prototype.isTargetExistentiallyDependent.name}()`, () => {
+  describe('Test isTargetExistentiallyDependent()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const weight = model.createClass();
@@ -663,256 +533,18 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(characterization.isTargetExistentiallyDependent()).toBe(false));
   });
 
-  describe(`Test ${Relation.prototype.isExistentialDependenceRelation.name}()`, () => {
+  describe('Test isExistentialDependenceRelation()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const weight = model.createClass();
     const worksFor = model.createMaterialRelation(person, person);
     const characterization = model.createCharacterizationRelation(weight, person);
 
-    it('Test function call', () => expect(worksFor.isExistentialDependenceRelation()).toBe(false));
-    it('Test function call', () => expect(characterization.isExistentialDependenceRelation()).toBe(true));
+    it('Test function call', () => expect(worksFor.isExistentialDependency()).toBe(false));
+    it('Test function call', () => expect(characterization.isExistentialDependency()).toBe(true));
   });
 
-  describe(`Test ${Relation.prototype.hasExistentialDependenceStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const weight = model.createClass();
-    const worksFor = model.createMaterialRelation(person, person);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(worksFor.hasExistentialDependenceStereotype()).toBe(false));
-    it('Test function call', () => expect(characterization.hasExistentialDependenceStereotype()).toBe(true));
-  });
-
-  describe(`Test ${Relation.prototype.hasMaterialStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const weight = model.createClass();
-    const worksFor = model.createMaterialRelation(person, person);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(worksFor.hasMaterialStereotype()).toBe(true));
-    it('Test function call', () => expect(characterization.hasMaterialStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasDerivationStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const weight = model.createClass();
-    const heavierThan = model.createComparativeRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
-
-    it('Test function call', () => expect(derivation.hasDerivationStereotype()).toBe(true));
-    it('Test function call', () => expect(heavierThan.hasDerivationStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasComparativeStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const weight = model.createClass();
-    const heavierThan = model.createComparativeRelation(person, person);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(heavierThan.hasComparativeStereotype()).toBe(true));
-    it('Test function call', () => expect(characterization.hasComparativeStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasMediationStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const enrollment = model.createClass();
-    const weight = model.createClass();
-    const mediation = model.createMediationRelation(enrollment, person);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(mediation.hasMediationStereotype()).toBe(true));
-    it('Test function call', () => expect(characterization.hasMediationStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasCharacterizationStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const weight = model.createClass();
-    const worksFor = model.createMaterialRelation(person, person);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(characterization.hasCharacterizationStereotype()).toBe(true));
-    it('Test function call', () => expect(worksFor.hasCharacterizationStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasExternalDependenceStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const commitment = model.createClass();
-    const worksFor = model.createMaterialRelation(person, person);
-    const externalDependence = model.createExternalDependencyRelation(commitment, person);
-
-    it('Test function call', () => expect(externalDependence.hasExternalDependenceStereotype()).toBe(true));
-    it('Test function call', () => expect(worksFor.hasExternalDependenceStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasComponentOfStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const organ = model.createClass();
-    const weight = model.createClass();
-    const componentOf = model.createComponentOfRelation(organ, person);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(componentOf.hasComponentOfStereotype()).toBe(true));
-    it('Test function call', () => expect(characterization.hasComponentOfStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasMemberOfStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const person = model.createClass();
-    const organization = model.createClass();
-    const weight = model.createClass();
-    const memberOf = model.createMemberOfRelation(person, organization);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(memberOf.hasMemberOfStereotype()).toBe(true));
-    it('Test function call', () => expect(characterization.hasMemberOfStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasSubCollectionOfStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const organization = model.createClass();
-    const person = model.createClass();
-    const weight = model.createClass();
-    const subCollectionOf = model.createSubCollectionOfRelation(organization, organization);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(subCollectionOf.hasSubCollectionOfStereotype()).toBe(true));
-    it('Test function call', () => expect(characterization.hasSubCollectionOfStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasSubQuantityOfStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const wine = model.createClass();
-    const water = model.createClass();
-    const person = model.createClass();
-    const weight = model.createClass();
-    const subQuantityOf = model.createSubQuantityOfRelation(water, wine);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(subQuantityOf.hasSubQuantityOfStereotype()).toBe(true));
-    it('Test function call', () => expect(characterization.hasSubQuantityOfStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasInstantiationStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const personType = model.createClass();
-    const person = model.createClass();
-    const weight = model.createClass();
-    const instantiation = model.createInstantiationRelation(person, personType);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(instantiation.hasInstantiationStereotype()).toBe(true));
-    it('Test function call', () => expect(characterization.hasInstantiationStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasTerminationStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const death = model.createClass();
-    const person = model.createClass();
-    const weight = model.createClass();
-    const terminates = model.createTerminationRelation(death, person);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(terminates.hasTerminationStereotype()).toBe(true));
-    it('Test function call', () => expect(characterization.hasTerminationStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasParticipationalStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const soccerMatch = model.createClass();
-    const goalEvent = model.createClass();
-    const person = model.createClass();
-    const weight = model.createClass();
-    const participational = model.createParticipationalRelation(goalEvent, soccerMatch);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(participational.hasParticipationalStereotype()).toBe(true));
-    it('Test function call', () => expect(characterization.hasParticipationalStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasParticipationStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const soccerMatch = model.createClass();
-    const person = model.createClass();
-    const weight = model.createClass();
-    const participation = model.createParticipationRelation(person, soccerMatch);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(participation.hasParticipationStereotype()).toBe(true));
-    it('Test function call', () => expect(characterization.hasParticipationStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasHistoricalDependenceStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const presidencyEvent = model.createClass();
-    const person = model.createClass();
-    const weight = model.createClass();
-    const historicalDependence = model.createHistoricalDependenceRelation(person, presidencyEvent); // former president
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(historicalDependence.hasHistoricalDependenceStereotype()).toBe(true));
-    it('Test function call', () => expect(characterization.hasHistoricalDependenceStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasCreationStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const birth = model.createClass();
-    const person = model.createClass();
-    const weight = model.createClass();
-    const creation = model.createCreationRelation(birth, person);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(creation.hasCreationStereotype()).toBe(true));
-    it('Test function call', () => expect(characterization.hasCreationStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasManifestationStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const weightMeasurement = model.createClass();
-    const person = model.createClass();
-    const weight = model.createClass();
-    const manifestation = model.createManifestationRelation(weightMeasurement, weight);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(manifestation.hasManifestationStereotype()).toBe(true));
-    it('Test function call', () => expect(characterization.hasManifestationStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasBringsAboutStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const conceptionEvent = model.createClass();
-    const pregnancySituation = model.createClass();
-    const person = model.createClass();
-    const weight = model.createClass();
-    const bringsAbout = model.createBringsAboutRelation(conceptionEvent, pregnancySituation);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(bringsAbout.hasBringsAboutStereotype()).toBe(true));
-    it('Test function call', () => expect(characterization.hasBringsAboutStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.hasTriggersStereotype.name}()`, () => {
-    const model = new Project().createModel();
-    const birthEvent = model.createClass();
-    const pregnancySituation = model.createClass();
-    const person = model.createClass();
-    const weight = model.createClass();
-    const bringsAbout = model.createTriggersRelation(pregnancySituation, birthEvent);
-    const characterization = model.createCharacterizationRelation(weight, person);
-
-    it('Test function call', () => expect(bringsAbout.hasTriggersStereotype()).toBe(true));
-    it('Test function call', () => expect(characterization.hasTriggersStereotype()).toBe(false));
-  });
-
-  describe(`Test ${Relation.prototype.holdsBetween.name}()`, () => {
+  describe('Test holdsBetween()', () => {
     const model = new Project().createModel();
     const person = model.createClass();
     const weight = model.createClass();
@@ -925,7 +557,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(characterization.holdsBetween(condition, condition)).toBe(false));
   });
 
-  describe(`Test ${Relation.prototype.holdsBetweenEvents.name}()`, () => {
+  describe('Test holdsBetweenEvents()', () => {
     const model = new Project().createModel();
     const soccerMatch = model.createEvent();
     const goalEvent = model.createEvent();
@@ -938,7 +570,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(characterization.holdsBetweenEvents()).toBe(false));
   });
 
-  describe(`Test ${Relation.prototype.holdsBetweenMoments.name}()`, () => {
+  describe('Test holdsBetweenMoments()', () => {
     const model = new Project().createModel();
     const person = model.createKind();
     const enrollment = model.createRelator();
@@ -950,7 +582,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(characterization.holdsBetweenMoments()).toBe(true));
   });
 
-  describe(`Test ${Relation.prototype.holdsBetweenSubstantials.name}()`, () => {
+  describe('Test holdsBetweenSubstantials()', () => {
     const model = new Project().createModel();
     const person = model.createKind();
     const organization = model.createKind();
@@ -962,7 +594,7 @@ describe(`${Relation.name} Tests`, () => {
     it('Test function call', () => expect(characterization.holdsBetweenSubstantials()).toBe(false));
   });
 
-  describe(`Test ${Relation.prototype.clone.name}()`, () => {
+  describe('Test clone()', () => {
     const model = new Project().createModel();
     const classA = model.createClass();
     const relationA = model.createBinaryRelation(classA, classA);

@@ -16,8 +16,10 @@ export class GeneralizationSet extends ModelElement {
   constructor(base?: Partial<GeneralizationSet>) {
     super(OntoumlType.GENERALIZATION_SET_TYPE, base);
 
-    this.isDisjoint = this.isDisjoint || false;
-    this.isComplete = this.isComplete || false;
+    this.isDisjoint = base?.isDisjoint || false;
+    this.isComplete = base?.isComplete || false;
+    this.categorizer = base?.categorizer || null;
+    this.generalizations = base?.generalizations || null;
   }
 
   getContents(): OntoumlElement[] {
@@ -50,7 +52,8 @@ export class GeneralizationSet extends ModelElement {
 
   getSpecifics(): Classifier<any, any>[] {
     if (this.generalizations) {
-      return this.generalizations.map((gen: Generalization) => gen.specific);
+      let specifics = this.generalizations.map((gen: Generalization) => gen.specific);
+      return [...new Set(specifics)];
     }
 
     return [];

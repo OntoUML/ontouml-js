@@ -19,9 +19,9 @@ describe(`${Literal.name} Tests`, () => {
 
     it('Test function call', () => {
       expect(lit.container).not.toBe(_enum);
-      expect(_enum.literals).toBeNull();
+      expect(_enum.literals).toHaveLength(0);
 
-      lit.setContainer(_enum);
+      _enum.addLiteral(lit);
 
       expect(lit.container).toBe(_enum);
       expect(lit.project).toBe(_enum.project);

@@ -11,6 +11,7 @@ import { Package } from '..';
 import { Property } from '..';
 import { Relation } from '..';
 import { stereotypeUtils } from '..';
+import { MultilingualText } from '../multilingual_text';
 
 export const ORDERLESS_LEVEL = Infinity;
 
@@ -24,18 +25,18 @@ export class Class extends Classifier<Class, ClassStereotype> {
   constructor(base?: Partial<Class>) {
     super(OntoumlType.CLASS_TYPE, base);
 
-    console.log('CLASS', this);
+    this.literals = base?.literals || [];
+    this.restrictedTo = base?.restrictedTo || [];
+    this.isExtensional = base?.isExtensional || false;
+    this.isPowertype = base?.isPowertype || false;
 
-    this.literals = this.literals || null;
-    this.stereotype = this.stereotype || null;
-    this.restrictedTo = this.restrictedTo || null;
-
-    this.isExtensional = this.isExtensional || false;
-    this.isPowertype = this.isPowertype || false;
-    this.order = this.order || 1;
-
-    if (typeof this.order === 'string') {
-      this.order = Class.parseOrder(this.order);
+    let order = base?.order;
+    if (typeof order === 'number') {
+      this.order = order;
+    } else if (typeof order === 'string') {
+      this.order = Class.parseOrder(order);
+    } else {
+      this.order = 1;
     }
   }
 
@@ -92,13 +93,17 @@ export class Class extends Classifier<Class, ClassStereotype> {
     // if (this.hasEnumerationStereotype()) {
     //   throw new Error('Cannot create an attribute on an enumeration class.');
     // }
-    let attribute = new Property(Object.assign({}, base, { propertyType, name, container: this, project: this.project }));
+    let attribute = new Property(
+      Object.assign({}, base, { propertyType, name: new MultilingualText(name), container: this, project: this.project })
+    );
     this.addAttribute(attribute);
     return attribute;
   }
 
   createLiteral(name?: string, base?: Partial<Literal>): Literal {
-    let literal = new Literal(Object.assign({}, base, { name, container: this, project: this.project }));
+    let literal = new Literal(
+      Object.assign({}, base, { name: new MultilingualText(name), container: this, project: this.project })
+    );
     this.addLiteral(literal);
     return literal;
   }
@@ -213,15 +218,6 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
   isRestrictedToAbstract(): boolean {
     return this.restrictedToContainedIn(OntologicalNature.abstract);
-  }
-
-  /** Checks if `this.stereotype` is contained in the set of values in
-   * `stereotypes`.
-   *
-   * @throws error when the class has multiple stereotypes
-   * */
-  hasAnyStereotype(stereotypes: ClassStereotype | ClassStereotype[]): boolean {
-    return this.hasAnyStereotype(stereotypes);
   }
 
   hasTypeStereotype(): boolean {
@@ -363,11 +359,11 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   getUltimateSortalAncestors(): Class[] {
-    return this.getFilteredAncestors(ancestor => ancestor.hasUltimateSortalStereotype());
+    return this.getFilteredAncestors((ancestor) => ancestor.hasUltimateSortalStereotype());
   }
 
   getUltimateSortalsDescendants(): Class[] {
-    return this.getFilteredDescendants(descendent => descendent.hasUltimateSortalStereotype());
+    return this.getFilteredDescendants((descendent) => descendent.hasUltimateSortalStereotype());
   }
 
   getSortalAncestors(): Class[] {

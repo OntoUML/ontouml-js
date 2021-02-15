@@ -201,10 +201,12 @@ export class Issue implements ServiceIssue {
           const source = relation.getSource();
           const target = relation.getTarget();
 
-          return `association end "${element.name}" of relation "${relation.name}" between classes "${source.name}" and "${target.name}"`;
+          return `association end "${element.getName()}" of relation "${relation.name}" between classes "${source.name}" and "${
+            target.name
+          }"`;
         }
 
-        return `attribute "${element.name}" of class ${parent.name}`;
+        return `attribute "${element.getName()}" of class ${parent.name}`;
       }
 
       if (element.type === OntoumlType.RELATION_TYPE) {
@@ -215,7 +217,7 @@ export class Issue implements ServiceIssue {
         return `relation "${relation.name}" between classes "${source.name}" and "${target.name}"`;
       }
 
-      return `${element.type.toLowerCase()} "${element.name}"`;
+      return `${element.type.toLowerCase()} "${element.getName()}"`;
     });
 
     const warning = {
@@ -224,7 +226,7 @@ export class Issue implements ServiceIssue {
         .join(', ')
         .replace(/,(?!.*,)/gim, ' and')}.`,
       data: {
-        elements: repeatedElements.map(elem => ({ id: elem.id, name: elem.name }))
+        elements: repeatedElements.map((elem) => ({ id: elem.id, name: elem.name }))
       }
     };
 
@@ -253,7 +255,7 @@ export class Issue implements ServiceIssue {
   static getIdName(element) {
     return {
       id: element.id,
-      name: element.name
+      name: element.getName()
     };
   }
 }

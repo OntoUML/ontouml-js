@@ -14,19 +14,25 @@ export abstract class OntoumlElement {
   container: OntoumlElement;
 
   constructor(type: string, base?: Partial<OntoumlElement>) {
-    this.id = uniqid();
+    this.id = base?.id || uniqid();
+    this.project = base?.project || null;
+    this.container = base?.container || null;
 
-    // if base has an id, the generated one is overwritten
-    if (base) {
-      Object.assign(this, base);
+    if (typeof base?.name === 'string') {
+      this.name = new MultilingualText(base.name);
+    } else if (base?.name instanceof MultilingualText) {
+      this.name = base.name;
+    } else {
+      this.name = new MultilingualText();
     }
 
-    this.name = this.name || null;
-    this.description = this.description || null;
-    this.project = this.project || null;
-    this.container = this.container || null;
-
-    console.log('OE 1 ===', this);
+    if (typeof base?.description === 'string') {
+      this.description = new MultilingualText(base.description);
+    } else if (base?.description instanceof MultilingualText) {
+      this.description = base.description;
+    } else {
+      this.description = new MultilingualText();
+    }
 
     Object.defineProperty(this, 'type', {
       value: type,
@@ -34,8 +40,6 @@ export abstract class OntoumlElement {
       writable: false,
       configurable: false
     });
-    this['x'] = 999;
-    console.log('OE 2 ===', this);
   }
 
   getName(language?: string): string {
@@ -58,7 +62,7 @@ export abstract class OntoumlElement {
     return this.getName(language) || this.id;
   }
 
-  public getReference(): { type: OntoumlType; id: string } {
+  getReference(): { type: OntoumlType; id: string } {
     return {
       type: this.type,
       id: this.id
@@ -67,13 +71,12 @@ export abstract class OntoumlElement {
 
   setContainer(container: OntoumlElement): void {
     this.container = container;
-    let project: Project = container != null ? container.project : null;
-    this.setProject(project);
+    this.setProject(container?.project);
   }
 
   setProject(project: Project): void {
     this.project = project;
-    this.getContents().forEach(element => element.setProject(project));
+    this.getContents().forEach((element) => element.setProject(project));
   }
 
   getAllContents(): OntoumlElement[] {
@@ -83,7 +86,7 @@ export abstract class OntoumlElement {
       return children;
     }
 
-    let descendants = children.flatMap(child => child.getAllContents());
+    let descendants = children.flatMap((child) => child.getAllContents());
 
     return children.concat(descendants);
   }

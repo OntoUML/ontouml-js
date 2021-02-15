@@ -7,7 +7,7 @@ export abstract class Decoratable<S extends ClassStereotype | RelationStereotype
   constructor(type: string, base: Partial<Decoratable<S>>) {
     super(type, base);
 
-    this.stereotype = this.stereotype || null;
+    this.stereotype = base?.stereotype || null;
   }
 
   abstract getAllowedStereotypes(): S[];

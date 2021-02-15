@@ -1,19 +1,17 @@
 import { complexityNonSortals } from '@test-models/valids';
-import { Class } from '@types';
+import { Class, Project, ClassStereotype, serializationUtils } from '@libs/ontouml';
 import { Modularizer } from '@libs/complexity';
-import { ModelManager } from '@libs/model';
-import { ClassStereotype } from '@constants/.';
 
 function expectToContainClass(array: Class[], name: string, stereotype: ClassStereotype) {
-  const _class = array.find(c => c.name === name);
+  const _class = array.find((c) => c.getName() === name);
   expect(_class).toBeTruthy();
-  expect(_class.stereotypes[0]).toBe(stereotype);
+  expect(_class.stereotype).toBe(stereotype);
 }
 
 describe('getDescendantsNonSortalLine()', () => {
   it('Should return direct sortal children only', () => {
-    const modelCopy = JSON.parse(JSON.stringify(complexityNonSortals));
-    const modelManager = new ModelManager(modelCopy);
+    const modelCopy: string = JSON.parse(JSON.stringify(complexityNonSortals));
+    const project: Project = serializationUtils.parse(modelCopy) as Project;
 
     const musicalArtist = modelManager.getElementById('R2SB0c6GAqACAg52');
     const children = Modularizer.getNonSortalLine(musicalArtist);
@@ -26,7 +24,7 @@ describe('getDescendantsNonSortalLine()', () => {
 
   it('Should return leaf sortal descendants', () => {
     const modelCopy = JSON.parse(JSON.stringify(complexityNonSortals));
-    const modelManager = new ModelManager(modelCopy);
+    const project: Project = serializationUtils.parse(modelCopy) as Project;
 
     const physicalObject = modelManager.getElementById('tvoJ0c6GAqACAhO5');
     const children = Modularizer.getNonSortalLine(physicalObject);
@@ -42,7 +40,7 @@ describe('getDescendantsNonSortalLine()', () => {
 
   it('Should return non-leaf non-sortal descendants', () => {
     const modelCopy = JSON.parse(JSON.stringify(complexityNonSortals));
-    const modelManager = new ModelManager(modelCopy);
+    const project: Project = serializationUtils.parse(modelCopy) as Project;
 
     const physicalObject = modelManager.getElementById('tvoJ0c6GAqACAhO5');
     const children = Modularizer.getNonSortalLine(physicalObject);
@@ -55,7 +53,7 @@ describe('getDescendantsNonSortalLine()', () => {
 
   it('Should return sortal and non-sortal descendants', () => {
     const modelCopy = JSON.parse(JSON.stringify(complexityNonSortals));
-    const modelManager = new ModelManager(modelCopy);
+    const project: Project = serializationUtils.parse(modelCopy) as Project;
 
     const agent = modelManager.getElementById('Lb0.0c6GAqACAgv9');
     const children = Modularizer.getNonSortalLine(agent);

@@ -21,6 +21,10 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     return stereotypeUtils.RelationStereotypes;
   }
 
+  isStereotypeValid(allowsNone: boolean = true): boolean {
+    return super.isStereotypeValid(allowsNone);
+  }
+
   toJSON(): any {
     const relationSerialization = {
       stereotype: null,

@@ -1,15 +1,30 @@
 import { Property, Cardinality, CARDINALITY_MAX_AS_NUMBER } from '@libs/ontouml';
 
-describe(`${Cardinality.name} Tests`, () => {
-  describe(`Test ${Cardinality.prototype.setCardinalityFromNumbers.name}()`, () => {
+describe(`Cardinality Tests`, () => {
+  describe(`Test setCardinalityFromNumbers()`, () => {
     const prop = new Property();
 
-    it('Test prop', () => {
+    it('Test 0..* (CARDINALITY_MAX_AS_NUMBER)', () => {
+      prop.cardinality.setCardinalityFromNumbers(0, CARDINALITY_MAX_AS_NUMBER);
       expect(prop.cardinality.isZeroToMany()).toBe(true);
+    });
+
+    it('Test 0..* (lowerBound only)', () => {
+      prop.cardinality.setCardinalityFromNumbers(0);
+      expect(prop.cardinality.isZeroToMany()).toBe(true);
+    });
+
+    it('Test 0..1', () => {
       prop.cardinality.setCardinalityFromNumbers(0, 1);
       expect(prop.cardinality.isZeroToOne()).toBe(true);
+    });
+
+    it('Test 1..*', () => {
       prop.cardinality.setCardinalityFromNumbers(1, CARDINALITY_MAX_AS_NUMBER);
       expect(prop.cardinality.isOneToMany()).toBe(true);
+    });
+
+    it('Test 1..1', () => {
       prop.cardinality.setCardinalityFromNumbers(1, 1);
       expect(prop.cardinality.isOneToOne()).toBe(true);
     });

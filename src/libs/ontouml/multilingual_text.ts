@@ -6,12 +6,13 @@ export class MultilingualText {
 
   textMap: Map<string, string>;
 
-  constructor(base?: Partial<MultilingualText>) {
-    this.textMap = !base ? new Map<string, string>() : new Map<string, string>(base.textMap);
+  constructor(value?: string, language?: string) {
+    this.textMap = new Map<string, string>();
+    if (value != null) this.addText(value, language);
   }
 
   getText(language?: string): string {
-    if (tags.check(language)) {
+    if (language && tags.check(language)) {
       return this.textMap.get(language);
     }
 
@@ -21,12 +22,22 @@ export class MultilingualText {
       }
     }
 
-    return this.textMap.size > 0 ? this.textMap.entries().next().value : null;
+    return this.textMap.size > 0 ? [...this.textMap.entries()][0][1] : null;
   }
 
   addText(value: string, language?: string): void {
-    language = tags.check(language) ? language : MultilingualText.defaultLanguage;
+    language = language && tags.check(language) ? language : MultilingualText.defaultLanguage;
     this.textMap.set(language, value);
+  }
+
+  addAll(obj: object) {
+    Object.entries(obj).forEach((entry) => {
+      this.addText(entry[1], entry[0]);
+    });
+  }
+
+  entries(): [string, string][] {
+    return [...this.textMap.entries()];
   }
 
   clear(): void {
