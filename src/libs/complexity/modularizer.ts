@@ -1,17 +1,33 @@
 import { Class, GeneralizationSet, Generalization, Diagram, Project } from '@libs/ontouml';
+import { Service } from '@libs/service';
+import { ServiceIssue } from '@libs/service_issue';
 import { Module } from './module';
 
 /**
- * Class that implements clustering algorithms for OntoUML model
+ * Class that implements the relation-based modulariztion strategy proposed in:
+ *
+ * Guizzardi G., Prince Sales T., Almeida J.P.A., Poels G. (2020) Relational Contexts and Conceptual Model Clustering.
+ * In: Grabis J., Bork D. (eds) The Practice of Enterprise Modeling. PoEM 2020. Lecture Notes in Business Information
+ * Processing, vol 400. Springer, Cham. https://doi.org/10.1007/978-3-030-63479-7_15
  *
  * @author Tiago Sales
  */
 
-export class Modularizer {
+export class Modularizer implements Service {
   project: Project;
 
   constructor(project: Project) {
     this.project = project;
+  }
+
+  run(): { result: any; issues?: ServiceIssue[] } {
+    let generatedDiagrams = this.buildAll();
+    this.project.addDiagrams(generatedDiagrams);
+
+    return {
+      result: JSON.stringify(this.project),
+      issues: null
+    };
   }
 
   buildAll(): Diagram[] {
