@@ -1,7 +1,5 @@
 import { ModelElement } from '..';
-import { OntoumlElement } from '..';
-import { DiagramElement } from '..';
-import { Shape } from '..';
+import { OntoumlElement, DiagramElement, Shape } from '..';
 
 export abstract class ElementView<T extends ModelElement, S extends Shape> extends DiagramElement {
   modelElement: T;
@@ -10,33 +8,14 @@ export abstract class ElementView<T extends ModelElement, S extends Shape> exten
   constructor(type: string, base?: Partial<ElementView<T, S>>) {
     super(type, base);
 
-    if (!this.shape) this.shape = this.createShape();
+    this.modelElement = base?.modelElement || null;
+    this.shape = base?.shape || this.createShape();
+
+    this.shape.setContainer(this);
   }
 
   getContents(): OntoumlElement[] {
-    let contents = [];
-    if (this.modelElement) {
-      contents = [this.modelElement];
-    }
-    if (this.shape) contents.push(this.shape);
-
-    return contents;
-  }
-
-  getModelElement(): T {
-    return this.modelElement;
-  }
-
-  setModelElement(modelElement: T): void {
-    this.modelElement = modelElement;
-  }
-
-  getShape(): S {
-    return this.shape;
-  }
-
-  setShape(shape: S): void {
-    if (shape != null) this.shape = shape;
+    return [this.shape];
   }
 
   abstract createShape(): S;

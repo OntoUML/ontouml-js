@@ -1,15 +1,9 @@
 import _ from 'lodash';
-import { ClassStereotype, PropertyStereotype, RelationStereotype } from '..';
-import { Decoratable } from '..';
-import { Generalization } from '..';
-import { GeneralizationSet } from '..';
-import { Property } from '..';
-import { Class } from '..';
+import { Package, Stereotype, Decoratable, Generalization, GeneralizationSet, Property, Class, Relation } from '..';
+import {} from './package';
+import {} from './stereotypes';
 
-export abstract class Classifier<
-  T extends Classifier<T, S>,
-  S extends ClassStereotype | RelationStereotype | PropertyStereotype
-> extends Decoratable<S> {
+export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotype> extends Decoratable<S> {
   isAbstract: boolean;
   isDerived: boolean;
   properties: Property[];
@@ -20,6 +14,18 @@ export abstract class Classifier<
     this.isAbstract = base?.isAbstract || false;
     this.isDerived = base?.isDerived || false;
     this.properties = base?.properties || [];
+  }
+
+  addParent(parent: T): Generalization {
+    if (this.container instanceof Package) return this.container.createGeneralization(parent, this);
+    if (this.project) return this.project.model.createGeneralization(parent, this);
+    return new Generalization({ general: parent, specific: this });
+  }
+
+  addChild(child: T): Generalization {
+    if (this.container instanceof Package) return this.container.createGeneralization(this, child);
+    if (this.project) return this.project.model.createGeneralization(this, child);
+    return new Generalization({ general: this, specific: child });
   }
 
   getGeneralizations(): Generalization[] {
@@ -95,7 +101,7 @@ export abstract class Classifier<
 
     return this.getModelOrRootPackage()
       .getAllGeneralizationSets()
-      .filter((gs) => gs.categorizer === thisClass);
+      .filter(gs => gs.categorizer === thisClass);
   }
 
   getParents(): T[] {
@@ -144,5 +150,61 @@ export abstract class Classifier<
 
   getFilteredDescendants(filter: (descendent: T) => boolean): T[] {
     return this.getDescendants().filter(filter);
+  }
+
+  getOwnRelations(_filter?: Function): Relation[] {
+    let relations = this.project.getAllRelations().filter(r => r.getMembers().includes(this));
+    return [...new Set(relations)];
+  }
+
+  getOwnIncomingRelations(): Relation[] {
+    return this.project
+      .getAllRelations()
+      .filter(r => r.isBinary())
+      .filter(r => r.getTarget() === this);
+  }
+
+  getOwnOutgoingRelations(): Relation[] {
+    return this.project
+      .getAllRelations()
+      .filter(r => r.isBinary())
+      .filter(r => r.getSource() === this);
+  }
+
+  getAllRelations(_filter?: Function): Relation[] {
+    let relations = this.getAncestors().flatMap(a => a.getOwnRelations());
+    return [...new Set(relations)];
+  }
+
+  getAllIncomingRelations(): Relation[] {
+    return this.getAncestors().flatMap(a => a.getOwnIncomingRelations());
+  }
+
+  getAllOutgoingRelations(): Relation[] {
+    return this.getAncestors().flatMap(a => a.getOwnOutgoingRelations());
+  }
+
+  getOwnNaryRelations(): { position: number; relation: Relation }[] {
+    throw new Error('Method unimplemented!');
+  }
+
+  getAllNaryRelations(): { position: number; relation: Relation }[] {
+    throw new Error('Method unimplemented!');
+  }
+
+  getOwnDerivations(): Relation[] {
+    throw new Error('Method unimplemented!');
+  }
+
+  getAllDerivations(): Relation[] {
+    throw new Error('Method unimplemented!');
+  }
+
+  getAllOppositeRelationEnds(): Property[] {
+    throw new Error('Method unimplemented!');
+  }
+
+  getOwnOppositeRelationEnds(): Property[] {
+    throw new Error('Method unimplemented!');
   }
 }

@@ -1,7 +1,4 @@
-import { GeneralizationSet } from '..';
-import { OntoumlType } from '..';
-import { ElementView } from '..';
-import { Text } from '..';
+import { GeneralizationSet, OntoumlType, ElementView, Text } from '..';
 
 export class GeneralizationSetView extends ElementView<GeneralizationSet, Text> {
   constructor(base?: Partial<GeneralizationSetView>) {

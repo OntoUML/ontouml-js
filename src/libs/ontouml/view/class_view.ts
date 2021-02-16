@@ -1,10 +1,6 @@
-import { Class } from '..';
-import { OntoumlElement } from '..';
-import { OntoumlType } from '..';
-import { ElementView } from '..';
-import { Rectangle } from '..';
+import { Class, OntoumlElement, OntoumlType, NodeView, Rectangle } from '..';
 
-export class ClassView extends ElementView<Class, Rectangle> {
+export class ClassView extends NodeView<Class, Rectangle> {
   constructor(base?: Partial<ClassView>) {
     super(OntoumlType.CLASS_VIEW, base);
   }

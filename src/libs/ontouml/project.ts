@@ -11,6 +11,9 @@ import { Relation } from '.';
 import { OntoumlElement } from '.';
 import { OntoumlType } from '.';
 import { Diagram } from '.';
+import { Classifier } from './model/classifier';
+
+import { every, some } from 'lodash';
 
 export class Project extends OntoumlElement implements ModelElementContainer {
   model: Package;
@@ -49,7 +52,7 @@ export class Project extends OntoumlElement implements ModelElementContainer {
   addDiagrams(diagrams: Diagram[]) {
     if (diagrams === null) return;
 
-    diagrams.forEach((d) => this.addDiagram(d));
+    diagrams.forEach(d => this.addDiagram(d));
   }
 
   setDiagrams(diagrams: Diagram[]) {
@@ -74,8 +77,40 @@ export class Project extends OntoumlElement implements ModelElementContainer {
     return contents;
   }
 
+  getElementById(id: String): OntoumlElement {
+    return this.getAllContents().filter(e => e.id === id)?.[0];
+  }
+
+  getClassById(id: String): Class {
+    return this.getAllClasses().filter(e => e.id === id)?.[0];
+  }
+
+  getRelationById(id: String): Relation {
+    return this.getAllRelations().filter(e => e.id === id)?.[0];
+  }
+
+  getPropertyById(id: String): Property {
+    return this.getAllProperties().filter(e => e.id === id)?.[0];
+  }
+
+  getGeneralizationById(id: String): Generalization {
+    return this.getAllGeneralizations().filter(e => e.id === id)?.[0];
+  }
+
+  getGeneralizationSetById(id: String): GeneralizationSet {
+    return this.getAllGeneralizationSets().filter(e => e.id === id)?.[0];
+  }
+
+  getPackageById(id: String): Package {
+    return this.getAllPackages().filter(e => e.id === id)?.[0];
+  }
+
   getAllAttributes(): Property[] {
     return this.model.getAllAttributes();
+  }
+
+  getAllProperties(): Property[] {
+    return this.model.getAllProperties();
   }
 
   getAllRelationEnds(): Property[] {
@@ -90,12 +125,35 @@ export class Project extends OntoumlElement implements ModelElementContainer {
     return this.model.getAllGeneralizations();
   }
 
+  /** Returns every generalization in the project that connects any two classifiers in the input array. */
+  getGeneralizationsBetween(classifiers: Classifier<any, any>[]): Generalization[] {
+    return this.getAllGeneralizations().filter(gen => {
+      const childSelected = classifiers.findIndex(c => c.id === gen.specific.id) >= 0;
+      const parentSelected = classifiers.findIndex(c => c.id === gen.general.id) >= 0;
+      return childSelected && parentSelected;
+    });
+  }
+
   getAllGeneralizationSets(): GeneralizationSet[] {
     return this.model.getAllGeneralizationSets();
   }
 
+  /** Returns every generalization set that involves at least of the generalizations in the input array */
+  getGeneralizationSetsInvolvingAny(generalizations: Generalization[]): GeneralizationSet[] {
+    return this.getAllGeneralizationSets().filter(gs =>
+      some(gs.generalizations, gen => generalizations.find(refGen => refGen.id === gen.id))
+    );
+  }
+
+  /** Returns every generalization set that involves at least of the generalizations in the input array */
+  getGeneralizationSetsInvolvingAll(generalizations: Generalization[]): GeneralizationSet[] {
+    return this.getAllGeneralizationSets().filter(gs =>
+      every(gs.generalizations, gen => generalizations.find(refGen => refGen.id === gen.id))
+    );
+  }
+
   getAllPackages(): Package[] {
-    return this.getAllContents().filter((e) => e instanceof Package) as Package[];
+    return this.getAllContents().filter(e => e instanceof Package) as Package[];
   }
 
   getAllClasses(): Class[] {
@@ -111,7 +169,7 @@ export class Project extends OntoumlElement implements ModelElementContainer {
   }
 
   getAllModelElements(): ModelElement[] {
-    return this.getAllContents().filter((e) => e instanceof ModelElement) as ModelElement[];
+    return this.getAllContents().filter(e => e instanceof ModelElement) as ModelElement[];
   }
 
   getAllContentsByType(type: OntoumlType | OntoumlType[]): OntoumlElement[] {

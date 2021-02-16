@@ -1,10 +1,12 @@
-import { OntoumlElement } from '..';
-import { OntoumlType } from '..';
-import { RectangularShape } from '..';
+import { OntoumlElement, OntoumlType, RectangularShape } from '..';
 
 export class Text extends RectangularShape {
+  value: string;
+
   constructor(base?: Partial<Text>) {
     super(OntoumlType.TEXT, base);
+
+    this.value = base?.value || '';
   }
 
   getContents(): OntoumlElement[] {

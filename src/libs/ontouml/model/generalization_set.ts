@@ -27,10 +27,22 @@ export class GeneralizationSet extends ModelElement {
   }
 
   /**
-   * A disjoint complete set of phase subclasses
+   * A disjoint complete set of subclasses
    */
   isPartition(): boolean {
     return this.isComplete && this.isDisjoint;
+  }
+
+  isPhasePartition(): boolean {
+    return (
+      this.isPartition() &&
+      this.involvesClasses() &&
+      ((this.getSpecificClasses().every((specific) => specific.hasPhaseStereotype()) &&
+        this.getGeneralClass().hasSortalStereotype()) ||
+        (this.getSpecificClasses().every((specific) => specific.hasPhaseMixinStereotype()) &&
+          this.getGeneralClass().hasCategoryStereotype()))
+      //
+    );
   }
 
   /**
@@ -67,7 +79,7 @@ export class GeneralizationSet extends ModelElement {
     return this.getGeneral() as Class;
   }
 
-  getSpecificClasses(): Classifier<any, any>[] {
+  getSpecificClasses(): Class[] {
     if (!this.involvesClasses()) {
       throw new Error('Generalization set does not involve classes');
     }
@@ -107,6 +119,18 @@ export class GeneralizationSet extends ModelElement {
     }
 
     return involvedClassifiers;
+  }
+
+  /** Collects specifics from all input generalization sets. Removes duplicates. */
+  static collectSpecifics(generalizations: Generalization[]): Classifier<any, any>[] {
+    let specifics = generalizations.map((g) => g.specific);
+    return [...new Set(specifics)];
+  }
+
+  /** Collects generalizations from all input generalization sets. Removes duplicates. */
+  static collectGeneralizations(genSets: GeneralizationSet[]): Generalization[] {
+    let generalizations = genSets.flatMap((gs) => gs.generalizations);
+    return [...new Set(generalizations)];
   }
 
   involvesClasses(): boolean {

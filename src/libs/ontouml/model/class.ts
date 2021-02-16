@@ -124,10 +124,6 @@ export class Class extends Classifier<Class, ClassStereotype> {
     this.literals.push(literal);
   }
 
-  static areAbstract(classes: Class[]): boolean {
-    return !_.isEmpty(classes) && classes.every((_class: Class) => _class.isAbstract);
-  }
-
   hasAttributes(): boolean {
     return !_.isEmpty(this.properties);
   }
@@ -265,11 +261,6 @@ export class Class extends Classifier<Class, ClassStereotype> {
     return this.hasAnyStereotype(stereotypeUtils.SubstantialOnlyStereotypes);
   }
 
-  // TODO: expand support
-  static haveRigidStereotypes(classes: Class[]): boolean {
-    return classes.every((_class: Class) => _class.hasRigidStereotype());
-  }
-
   hasRigidStereotype(): boolean {
     return this.hasAnyStereotype(stereotypeUtils.RigidStereotypes);
   }
@@ -359,31 +350,27 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   getUltimateSortalAncestors(): Class[] {
-    return this.getFilteredAncestors((ancestor) => ancestor.hasUltimateSortalStereotype());
+    return this.getFilteredAncestors(ancestor => ancestor.hasUltimateSortalStereotype());
   }
 
   getUltimateSortalsDescendants(): Class[] {
-    return this.getFilteredDescendants((descendent) => descendent.hasUltimateSortalStereotype());
+    return this.getFilteredDescendants(descendent => descendent.hasUltimateSortalStereotype());
   }
 
   getSortalAncestors(): Class[] {
-    const ancestorsFilter = (ancestor: Class) => ancestor.hasSortalStereotype();
-    return this.getFilteredAncestors(ancestorsFilter);
+    return this.getFilteredAncestors(ancestor => ancestor.hasSortalStereotype());
   }
 
   getSortalDescendants(): Class[] {
-    const descendantsFilter = (descendent: Class) => descendent.hasSortalStereotype();
-    return this.getFilteredDescendants(descendantsFilter);
+    return this.getFilteredDescendants(descendent => descendent.hasSortalStereotype());
   }
 
   getBaseSortalAncestors(): Class[] {
-    const ancestorsFilter = (ancestor: Class) => ancestor.hasBaseSortalStereotype();
-    return this.getFilteredAncestors(ancestorsFilter);
+    return this.getFilteredAncestors(ancestor => ancestor.hasBaseSortalStereotype());
   }
 
   getBaseSortalDescendants(): Class[] {
-    const descendantsFilter = (descendent: Class) => descendent.hasBaseSortalStereotype();
-    return this.getFilteredDescendants(descendantsFilter);
+    return this.getFilteredDescendants(descendent => descendent.hasBaseSortalStereotype());
   }
 
   getNonSortalAncestors(): Class[] {
@@ -500,49 +487,13 @@ export class Class extends Classifier<Class, ClassStereotype> {
     throw new Error('Method unimplemented!');
   }
 
-  getAllRelations(_filter?: Function): Relation[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  getOwnIncomingRelations(): Relation[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  getOwnOutgoingRelations(): Relation[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  getAllIncomingRelations(): Relation[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  getAllOutgoingRelations(): Relation[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  getOwnNaryRelations(): { position: number; relation: Relation }[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  getAllNaryRelations(): { position: number; relation: Relation }[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  getOwnDerivations(): Relation[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  getAllDerivations(): Relation[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  getAllOppositeRelationEnds(): Property[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  getOwnOppositeRelationEnds(): Property[] {
-    throw new Error('Method unimplemented!');
-  }
-
   // TODO: add static version of factory methods present in class here
+  // TODO: expand support
+  static haveRigidStereotypes(classes: Class[]): boolean {
+    return classes.every((_class: Class) => _class.hasRigidStereotype());
+  }
+
+  static areAbstract(classes: Class[]): boolean {
+    return !_.isEmpty(classes) && classes.every((_class: Class) => _class.isAbstract);
+  }
 }

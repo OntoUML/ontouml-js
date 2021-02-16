@@ -1,5 +1,4 @@
-import { Package, Class, GeneralizationSet, Generalization, Relation, ModelElement } from '@libs/ontouml';
-import { Diagram } from '@libs/ontouml';
+import { Package, Class, GeneralizationSet, Generalization, Relation, ModelElement, Diagram } from '@libs/ontouml';
 import { uniqBy } from 'lodash';
 
 export class Module {
@@ -20,38 +19,24 @@ export class Module {
   }
 
   createDiagram(owner: Package): Diagram {
-    let diagram = new Diagram(this.id, this.name, null, owner);
-    diagram.addShapes(this.classes);
-    diagram.addLines(this.relations);
-    diagram.addLines(this.generalizations);
-    diagram.addLabels(this.generalizationSets);
+    let diagram = new Diagram();
+    diagram.id = this.id;
+    diagram.setName(this.name);
+    diagram.owner = owner;
+
+    diagram.addModelElements(this.classes);
+    diagram.addModelElements(this.relations);
+    diagram.addModelElements(this.generalizations);
+    diagram.addModelElements(this.generalizationSets);
 
     return diagram;
-  }
-
-  addClass(_class: Class): boolean {
-    if (!_class) return false;
-
-    this.classes.push(_class);
-    return true;
-  }
-
-  containsClass(_class: ModelElement): boolean {
-    return this.classes.findIndex(c => c.id === _class.id) >= 0;
   }
 
   addClasses(classes: Class[]) {
     this.classes = this.classes.concat(classes);
   }
 
-  addRelation(relation: Relation): boolean {
-    if (!relation) return false;
-
-    this.relations.push(relation);
-    return true;
-  }
-
-  containsRelation(relation: ModelElement): boolean {
+  containsRelation(relation: Relation): boolean {
     return this.relations.findIndex(r => r.id === relation.id) >= 0;
   }
 
@@ -59,22 +44,8 @@ export class Module {
     this.relations = this.relations.concat(relations);
   }
 
-  addGeneralization(generalization: Generalization): boolean {
-    if (!generalization) return false;
-
-    this.generalizations.push(generalization);
-    return true;
-  }
-
   addGeneralizations(generalizations: Generalization[]) {
     this.generalizations = this.generalizations.concat(generalizations);
-  }
-
-  addGeneralizationSet(generalizationSet: GeneralizationSet): boolean {
-    if (!generalizationSet) return false;
-
-    this.generalizationSets.push(generalizationSet);
-    return true;
   }
 
   addGeneralizationSets(generalizationSets: GeneralizationSet[]) {

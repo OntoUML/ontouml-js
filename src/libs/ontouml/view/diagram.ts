@@ -1,25 +1,52 @@
-import { ModelElement } from '..';
-import { OntoumlElement } from '..';
-import { OntoumlType } from '..';
-import { ElementView } from '..';
+import { ModelElement, OntoumlElement, OntoumlType, ElementView } from '..';
+import { Class } from '../model/class';
+import { Generalization } from '../model/generalization';
+import { GeneralizationSet } from '../model/generalization_set';
+import { Package } from '../model/package';
+import { Relation } from '../model/relation';
+import { ClassView } from './class_view';
+import { GeneralizationSetView } from './generalization_set_view';
+import { GeneralizationView } from './generalization_view';
+import { PackageView } from './package_view';
+import { RelationView } from './relation_view';
 
 export class Diagram extends OntoumlElement {
   owner: ModelElement;
   contents: ElementView<any, any>[];
 
-  constructor(base: Partial<Diagram>) {
+  constructor(base?: Partial<Diagram>) {
     super(OntoumlType.DIAGRAM, base);
-    this.owner = base.owner || null;
-    this.contents = base.contents || [];
+    this.owner = base?.owner || null;
+    this.contents = base?.contents || [];
   }
 
   getContents(): OntoumlElement[] {
     return [...this.contents];
   }
 
+  getClassViews(): ClassView[] {
+    return this.contents?.filter(view => view instanceof ClassView) as ClassView[];
+  }
+
+  getRelationViews(): RelationView[] {
+    return this.contents?.filter(view => view instanceof RelationView) as RelationView[];
+  }
+
+  getGeneralizationViews(): GeneralizationView[] {
+    return this.contents?.filter(view => view instanceof GeneralizationView) as GeneralizationView[];
+  }
+
+  getGeneralizationSetViews(): GeneralizationSetView[] {
+    return this.contents?.filter(view => view instanceof GeneralizationSetView) as GeneralizationSetView[];
+  }
+
+  getRealizedModelElements(): ModelElement[] {
+    return this.contents.map(view => view.modelElement);
+  }
+
   addElement(element: ElementView<any, any>): void {
     if (!element) return;
-    this.setContainer(element);
+    element.setContainer(this);
     this.contents.push(element);
   }
 
@@ -34,27 +61,80 @@ export class Diagram extends OntoumlElement {
     this.addElements(elements);
   }
 
-  // addShape(_class: Class) {
-  //   this.addElement(new Shape(_class));
-  // }
+  findElementById(id: string): ElementView<any, any> {
+    return this.contents.find(view => view.modelElement.id === id);
+  }
 
-  // addShapes(classes: Class[]) {
-  //   classes.forEach(_class => this.addShape(_class));
-  // }
+  findView(modelElement: ModelElement): ElementView<any, any> {
+    return this.contents.find(view => view.modelElement === modelElement);
+  }
 
-  // addLine(relation: Relation | Generalization) {
-  //   this.addElement(new Line(relation));
-  // }
+  containsView(modelElement: ModelElement): boolean {
+    return this.findView(modelElement) !== null;
+  }
 
-  // addLines(relations: Relation[] | Generalization[]) {
-  //   relations.forEach(relation => this.addLine(relation));
-  // }
+  addModelElements(modelElements: ModelElement[]): ElementView<any, any>[] {
+    return modelElements?.filter(e => e !== null).map(e => this.addModelElement(e));
+  }
 
-  // addLabel(genSet: GeneralizationSet) {
-  //   this.addElement(new Label(genSet));
-  // }
+  addModelElement(modelElement: ModelElement): ElementView<any, any> {
+    if (modelElement instanceof Class) return this.addClass(modelElement);
+    if (modelElement instanceof Relation && modelElement.isBinary()) return this.addBinaryRelation(modelElement);
+    if (modelElement instanceof Generalization) return this.addGeneralization(modelElement);
+    if (modelElement instanceof GeneralizationSet) return this.addGeneralizationSet(modelElement);
+    if (modelElement instanceof Package) return this.addPackage(modelElement);
 
-  // addLabels(genSets: GeneralizationSet[]) {
-  //   genSets.forEach(genSet => this.addLabel(genSet));
-  // }
+    return null;
+  }
+
+  findOrCreateView(modelElement: ModelElement): ElementView<any, any> {
+    if (!modelElement) throw new Error('Failed to get or add view. Input element is null or undefined.');
+    return this.findView(modelElement) || this.addModelElement(modelElement);
+  }
+
+  addClass(clazz: Class): ClassView {
+    let view = new ClassView({ modelElement: clazz });
+    this.addElement(view);
+    return view;
+  }
+
+  addGeneralizationSet(gs: GeneralizationSet): GeneralizationSetView {
+    let view = new GeneralizationSetView({ modelElement: gs });
+    this.addElement(view);
+    return view;
+  }
+
+  addPackage(gs: Package): PackageView {
+    let view = new PackageView({ modelElement: gs });
+    this.addElement(view);
+    return view;
+  }
+
+  addBinaryRelation(relation: Relation): RelationView {
+    let sourceView = this.findOrCreateView(relation.getSource());
+    let targetView = this.findOrCreateView(relation.getTarget());
+
+    let relationView = new RelationView({
+      modelElement: relation,
+      source: sourceView,
+      target: targetView
+    });
+
+    this.addElement(relationView);
+    return relationView;
+  }
+
+  addGeneralization(generalization: Generalization): GeneralizationView {
+    let sourceView = this.findOrCreateView(generalization.general);
+    let targetView = this.findOrCreateView(generalization.specific);
+
+    let generalizationView = new GeneralizationView({
+      modelElement: generalization,
+      source: sourceView,
+      target: targetView
+    });
+
+    this.addElement(generalizationView);
+    return generalizationView;
+  }
 }

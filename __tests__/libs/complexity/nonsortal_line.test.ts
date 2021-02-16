@@ -1,68 +1,94 @@
-import { complexityNonSortals } from '@test-models/valids';
-import { Class, Project, ClassStereotype, serializationUtils } from '@libs/ontouml';
+import { Project } from '@libs/ontouml';
 import { Modularizer } from '@libs/complexity';
-
-function expectToContainClass(array: Class[], name: string, stereotype: ClassStereotype) {
-  const _class = array.find((c) => c.getName() === name);
-  expect(_class).toBeTruthy();
-  expect(_class.stereotype).toBe(stereotype);
-}
 
 describe('getDescendantsNonSortalLine()', () => {
   it('Should return direct sortal children only', () => {
-    const modelCopy: string = JSON.parse(JSON.stringify(complexityNonSortals));
-    const project: Project = serializationUtils.parse(modelCopy) as Project;
+    const model = new Project().createModel();
 
-    const musicalArtist = modelManager.getElementById('R2SB0c6GAqACAg52');
+    const musicalArtist = model.createMixin('Musical Artist');
+    const singer = model.createRole('Singer');
+    singer.addParent(musicalArtist);
+    const person = model.createKind('Person');
+    singer.addParent(person);
+    const band = model.createCollective('Band');
+    band.addParent(musicalArtist);
+
     const children = Modularizer.getNonSortalLine(musicalArtist);
 
     expect(children).toHaveLength(2);
-
-    expectToContainClass(children, 'Band', ClassStereotype.COLLECTIVE);
-    expectToContainClass(children, 'Singer', ClassStereotype.ROLE);
+    expect(children).toEqual(expect.arrayContaining([singer, band]));
   });
 
-  it('Should return leaf sortal descendants', () => {
-    const modelCopy = JSON.parse(JSON.stringify(complexityNonSortals));
-    const project: Project = serializationUtils.parse(modelCopy) as Project;
+  it('Should return non-sortal descendants and leaf sortal descendants', () => {
+    const model = new Project().createModel();
 
-    const physicalObject = modelManager.getElementById('tvoJ0c6GAqACAhO5');
+    const physicalObject = model.createCategory('Physical Object');
+    const machine = model.createCategory('Machine');
+    machine.addParent(physicalObject);
+    const vehicle = model.createCategory('Vehicle');
+    vehicle.addParent(machine);
+    const car = model.createKind('Car');
+    car.addParent(vehicle);
+    const computer = model.createCategory('Computer');
+    computer.addParent(machine);
+    const laptop = model.createKind('Laptop');
+    laptop.addParent(computer);
+    const desktop = model.createKind('Desktop');
+    desktop.addParent(computer);
+
+    const furniture = model.createCategory('Furniture');
+    furniture.addParent(physicalObject);
+    const bed = model.createKind('Bed');
+    bed.addParent(furniture);
+    const table = model.createKind('Table');
+    table.addParent(furniture);
+
     const children = Modularizer.getNonSortalLine(physicalObject);
-
-    expectToContainClass(children, 'Airplane', ClassStereotype.KIND);
-    expectToContainClass(children, 'Car', ClassStereotype.KIND);
-    expectToContainClass(children, 'Desktop', ClassStereotype.KIND);
-    expectToContainClass(children, 'Laptop', ClassStereotype.KIND);
-    expectToContainClass(children, 'Bed', ClassStereotype.KIND);
-    expectToContainClass(children, 'Table', ClassStereotype.KIND);
-    expectToContainClass(children, 'Chair', ClassStereotype.KIND);
-  });
-
-  it('Should return non-leaf non-sortal descendants', () => {
-    const modelCopy = JSON.parse(JSON.stringify(complexityNonSortals));
-    const project: Project = serializationUtils.parse(modelCopy) as Project;
-
-    const physicalObject = modelManager.getElementById('tvoJ0c6GAqACAhO5');
-    const children = Modularizer.getNonSortalLine(physicalObject);
-
-    expectToContainClass(children, 'Machine', ClassStereotype.CATEGORY);
-    expectToContainClass(children, 'Vehicle', ClassStereotype.CATEGORY);
-    expectToContainClass(children, 'Computer', ClassStereotype.CATEGORY);
-    expectToContainClass(children, 'Furniture', ClassStereotype.CATEGORY);
+    expect(children).toEqual(expect.arrayContaining([car, desktop, laptop, bed, table, machine, vehicle, computer, furniture]));
   });
 
   it('Should return sortal and non-sortal descendants', () => {
-    const modelCopy = JSON.parse(JSON.stringify(complexityNonSortals));
-    const project: Project = serializationUtils.parse(modelCopy) as Project;
+    const model = new Project().createModel();
 
-    const agent = modelManager.getElementById('Lb0.0c6GAqACAgv9');
+    const agent = model.createCategory('Agent');
+    const animal = model.createCategory('Animal');
+    const robot = model.createKind('Robot');
+    const person = model.createKind('Person');
+    const dog = model.createKind('Dog');
+    const bigRobot = model.createKind('Big Robot');
+
+    agent.addChild(animal);
+    agent.addChild(robot);
+    animal.addChild(person);
+    animal.addChild(dog);
+    robot.addChild(bigRobot);
+
     const children = Modularizer.getNonSortalLine(agent);
 
     expect(children).toHaveLength(4);
+    expect(children).toEqual(expect.arrayContaining([animal, person, dog, robot]));
+  });
 
-    expectToContainClass(children, 'Animal', ClassStereotype.CATEGORY);
-    expectToContainClass(children, 'Person', ClassStereotype.KIND);
-    expectToContainClass(children, 'Dog', ClassStereotype.KIND);
-    expectToContainClass(children, 'Robot', ClassStereotype.KIND);
+  it('Should return sortal and non-sortal descendants', () => {
+    const model = new Project().createModel();
+
+    const customer = model.createRoleMixin('Customer');
+    const goodCustomer = model.createRoleMixin('Good Customer');
+    customer.addChild(goodCustomer);
+    const badCustomer = model.createRoleMixin('Bad Customer');
+    customer.addChild(badCustomer);
+    const corporateCustomer = model.createRole('Corporate Customer');
+    customer.addChild(corporateCustomer);
+    const organization = model.createKind('Organization');
+    organization.addChild(corporateCustomer);
+    const personalCustomer = model.createRole('Personal Customer');
+    customer.addChild(personalCustomer);
+    const person = model.createKind('Person');
+    person.addChild(personalCustomer);
+
+    const children = Modularizer.getNonSortalLine(customer);
+
+    expect(children).toHaveLength(4);
+    expect(children).toEqual(expect.arrayContaining([goodCustomer, badCustomer, corporateCustomer, personalCustomer]));
   });
 });

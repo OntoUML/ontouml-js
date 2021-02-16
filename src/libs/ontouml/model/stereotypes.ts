@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+export type Stereotype = ClassStereotype | RelationStereotype | PropertyStereotype;
+
 export enum ClassStereotype {
   TYPE = 'type',
   HISTORICAL_ROLE = 'historicalRole',

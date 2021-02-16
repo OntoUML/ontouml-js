@@ -47,7 +47,12 @@ export abstract class OntoumlElement {
   }
 
   addName(value: string, language?: string): void {
+    if (!this.name) this.name = new MultilingualText();
     this.name.addText(value, language);
+  }
+
+  setName(value: string, language?: string): void {
+    this.name = new MultilingualText(value);
   }
 
   getDescription(language?: string): string {
@@ -55,7 +60,12 @@ export abstract class OntoumlElement {
   }
 
   addDescription(value: string, language?: string): void {
+    if (!this.description) this.description = new MultilingualText();
     this.description.addText(value, language);
+  }
+
+  setDescription(value: string, language?: string): void {
+    this.description = new MultilingualText(value);
   }
 
   getNameOrId(language?: string): string {

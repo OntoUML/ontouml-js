@@ -1,12 +1,12 @@
-import { OntoumlType } from '@libs/ontouml';
-import { ElementView, Relation, Path } from '..';
+import { OntoumlType, ConnectorView, Relation, OntoumlElement } from '..';
 
-export class RelationView extends ElementView<Relation, Path> {
+//TODO: This only works for binary relations. We still need to create a view for n-ary relations.
+export class RelationView extends ConnectorView<Relation> {
   constructor(base?: Partial<RelationView>) {
     super(OntoumlType.RELATION_VIEW, base);
   }
 
-  createShape(): Path {
-    return new Path();
+  getContents(): OntoumlElement[] {
+    return super.getContents();
   }
 }

@@ -1,7 +1,6 @@
-import { ClassStereotype, PropertyStereotype, RelationStereotype } from '..';
-import { ModelElement } from '..';
+import { ModelElement, Stereotype } from '..';
 
-export abstract class Decoratable<S extends ClassStereotype | RelationStereotype | PropertyStereotype> extends ModelElement {
+export abstract class Decoratable<S extends Stereotype> extends ModelElement {
   stereotype: S;
 
   constructor(type: string, base: Partial<Decoratable<S>>) {

@@ -156,6 +156,11 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     return this.getTargetEnd().propertyType;
   }
 
+  getMembers(): Classifier<any, any>[] {
+    let members = this.properties?.map(prop => prop.propertyType).filter(type => type !== null) || [];
+    return [...new Set(members)];
+  }
+
   getMember(position: number): Classifier<any, any> {
     if (this.hasDerivationStereotype()) {
       throw new Error('Unable to retrieve class from derivation relation');
@@ -228,18 +233,16 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
 
   // TODO: check whether isBinaryRelation() is a better name
   isBinary(): boolean {
-    return this.properties && this.properties.length === 2;
+    return this.properties?.length === 2;
   }
 
   // TODO: check whether isTernaryRelation() is a better name
   isTernary(): boolean {
-    return this.properties && this.properties.length > 2;
+    return this.properties?.length > 2;
   }
 
   isBinaryClassRelation(): boolean {
-    return (
-      this.isBinary() && this.properties[0].propertyType instanceof Class && this.properties[1].propertyType instanceof Class
-    );
+    return this.isBinary() && this.getSource() instanceof Class && this.getTarget() instanceof Class;
   }
 
   // TODO: check whether isDerivationRelation() is a better name
@@ -255,6 +258,10 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
 
   isPartWholeRelation(): boolean {
     return this.isBinary() && this.getTargetEnd().isAggregationEnd();
+  }
+
+  isMediation(): boolean {
+    return this.stereotype === RelationStereotype.MEDIATION;
   }
 
   // TODO: check weather ternary relations may denote existential dependencies
@@ -409,36 +416,6 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
 
     this.getContents().forEach((content: ModelElement) => content.replace(originalElement, newElement));
   }
-
-  /**
-   * Returns `true` if the relation is binary and relates two IClass objects
-   */
-  // isBinary?: () => boolean;
-
-  /**
-   * Returns `true` if the relation is ternary and relates multiple IClass objects
-   */
-  // isTernary?: () => boolean;
-
-  /**
-   * Returns `true` if the relation is binary and relates an IRelation object to an IClass object
-   */
-  // isDerivation?: () => boolean;
-
-  /**
-   * Returns the `propertyType` of `properties[0]` if the relation is binary (see `isBinary()`).
-   */
-  // getSource?: () => Class;
-
-  /**
-   * Returns the `propertyType` of `properties[1]` if the relation is binary (see `isBinary()`).
-   */
-  // getTarget?: () => Class;
-
-  /**
-   * Returns the `propertyType` of `properties[0]` if the relation is a derivation relation (see `isDerivation()`).
-   */
-  // getDerivedRelation?: () => Relation;
 
   /**
    * Returns the `propertyType` of `properties[1]` if the relation is a derivation relation (see `isDerivation()`).

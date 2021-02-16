@@ -11,9 +11,17 @@ import { Property } from '..';
 import { Relation } from '..';
 
 export interface ModelElementContainer {
+  getElementById(id: String): OntoumlElement;
+  getClassById(id: String): Class;
+  getRelationById(id: String): Relation;
+  getPropertyById(id: String): Property;
+  getGeneralizationById(id: String): Generalization;
+  getGeneralizationSetById(id: String): GeneralizationSet;
+  getPackageById(id: String): Package;
   getAllPackages(): Package[];
   getAllClasses(): Class[];
   getAllEnumerations(): Class[];
+  getAllProperties(): Property[];
   getAllAttributes(): Property[];
   getAllLiterals(): Literal[];
   getAllRelations(): Relation[];

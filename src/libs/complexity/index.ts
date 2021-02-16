@@ -1,2 +1,2 @@
-export * from './module';
 export * from './modularizer';
+export * from './module';

@@ -12,6 +12,8 @@ import { ModelElementContainer } from '..';
 import { Property } from '..';
 import { Relation } from '..';
 import { MultilingualText } from '../multilingual_text';
+import { Classifier } from './classifier';
+import { Stereotype } from './stereotypes';
 
 export class Package extends ModelElement implements ModelElementContainer {
   contents: ModelElement[];
@@ -34,7 +36,7 @@ export class Package extends ModelElement implements ModelElementContainer {
 
   addContents<T extends ModelElement>(contents: T[]): T[] {
     if (!contents) return [];
-    return contents.filter((x) => x !== null).map((x) => this.addContent(x));
+    return contents.filter(x => x !== null).map(x => this.addContent(x));
   }
 
   setContents<T extends ModelElement>(contents: T[]): T[] {
@@ -43,7 +45,7 @@ export class Package extends ModelElement implements ModelElementContainer {
   }
 
   removeContent<T extends ModelElement>(child: T): T {
-    let removed = _.remove(this.contents, (x) => child === x);
+    let removed = _.remove(this.contents, x => child === x);
     return remove?.[0] || null;
   }
 
@@ -51,53 +53,81 @@ export class Package extends ModelElement implements ModelElementContainer {
     return this.contents ? [...this.contents] : [];
   }
 
+  getElementById(id: String): OntoumlElement {
+    return this.getAllContents().filter(e => e.id === id)?.[0];
+  }
+
+  getClassById(id: String): Class {
+    return this.getAllClasses().filter(e => e.id === id)?.[0];
+  }
+
+  getRelationById(id: String): Relation {
+    return this.getAllRelations().filter(e => e.id === id)?.[0];
+  }
+
+  getPropertyById(id: String): Property {
+    return this.getAllProperties().filter(e => e.id === id)?.[0];
+  }
+
+  getGeneralizationById(id: String): Generalization {
+    return this.getAllGeneralizations().filter(e => e.id === id)?.[0];
+  }
+
+  getGeneralizationSetById(id: String): GeneralizationSet {
+    return this.getAllGeneralizationSets().filter(e => e.id === id)?.[0];
+  }
+
+  getPackageById(id: String): Package {
+    return this.getAllPackages().filter(e => e.id === id)?.[0];
+  }
+
   getAllProperties(): Property[] {
-    return this.getAllContents().filter((e) => e instanceof Property) as Property[];
+    return this.getAllContents().filter(e => e instanceof Property) as Property[];
   }
 
   getAllAttributes(): Property[] {
-    return this.getAllProperties().filter((p) => p.isAttribute());
+    return this.getAllProperties().filter(p => p.isAttribute());
   }
 
   getAllRelationEnds(): Property[] {
-    return this.getAllProperties().filter((p) => p.isRelationEnd());
+    return this.getAllProperties().filter(p => p.isRelationEnd());
   }
 
   getAllRelations(): Relation[] {
-    return this.getAllContents().filter((e) => e instanceof Relation) as Relation[];
+    return this.getAllContents().filter(e => e instanceof Relation) as Relation[];
   }
 
   getAllGeneralizations(): Generalization[] {
-    return this.getAllContents().filter((e) => e instanceof Generalization) as Generalization[];
+    return this.getAllContents().filter(e => e instanceof Generalization) as Generalization[];
   }
 
   getAllGeneralizationSets(): GeneralizationSet[] {
-    return this.getAllContents().filter((e) => e instanceof GeneralizationSet) as GeneralizationSet[];
+    return this.getAllContents().filter(e => e instanceof GeneralizationSet) as GeneralizationSet[];
   }
 
   getAllPackages(): Package[] {
-    return this.getAllContents().filter((e) => e instanceof Package) as Package[];
+    return this.getAllContents().filter(e => e instanceof Package) as Package[];
   }
 
   getAllClasses(): Class[] {
-    return this.getAllContents().filter((e) => e instanceof Class) as Class[];
+    return this.getAllContents().filter(e => e instanceof Class) as Class[];
   }
 
   getAllEnumerations(): Class[] {
-    return this.getAllClasses().filter((c) => c.hasEnumerationStereotype()) as Class[];
+    return this.getAllClasses().filter(c => c.hasEnumerationStereotype()) as Class[];
   }
 
   getAllLiterals(): Literal[] {
-    return this.getAllContents().filter((e) => e instanceof Literal) as Literal[];
+    return this.getAllContents().filter(e => e instanceof Literal) as Literal[];
   }
 
   getAllModelElements(): ModelElement[] {
-    return this.getAllContents().filter((e) => e instanceof ModelElement) as ModelElement[];
+    return this.getAllContents().filter(e => e instanceof ModelElement) as ModelElement[];
   }
 
   getAllContentsByType(type: OntoumlType | OntoumlType[]): OntoumlElement[] {
     const types = utils.arrayFrom(type);
-    return this.getAllContents().filter((e) => types.includes(e.type));
+    return this.getAllContents().filter(e => types.includes(e.type));
   }
 
   getAllAttributesByStereotype(stereotype: PropertyStereotype | PropertyStereotype[]): Property[] {
@@ -689,9 +719,9 @@ export class Package extends ModelElement implements ModelElementContainer {
     return relation;
   }
 
-  createGeneralization<T extends Class | Relation>(
-    general: T,
-    specific: T,
+  createGeneralization(
+    general: Classifier<any, any>,
+    specific: Classifier<any, any>,
     name?: string,
     base?: Partial<Generalization>
   ): Generalization {
@@ -737,6 +767,22 @@ export class Package extends ModelElement implements ModelElementContainer {
     categorizer = categorizer || null;
 
     return this.createGeneralizationSet(generalizations, true, true, categorizer, name, Object.assign({}, base));
+  }
+
+  createPartitionFromClasses(general: Class, specifics: Class[], name?: string): GeneralizationSet {
+    const generalizations = specifics.map(s => s.addParent(general));
+    return this.createGeneralizationSet(generalizations, true, true, null, name);
+  }
+
+  createGeneralizationSetFromClasses(
+    general: Class,
+    specifics: Class[],
+    isDisjoint: boolean = false,
+    isComplete: boolean = false,
+    name?: string
+  ): GeneralizationSet {
+    const generalizations = specifics.map(s => s.addParent(general));
+    return this.createGeneralizationSet(generalizations, isDisjoint, isComplete, null, name);
   }
 
   /**
