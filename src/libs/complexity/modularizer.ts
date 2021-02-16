@@ -4,7 +4,7 @@ import { ServiceIssue } from '@libs/service_issue';
 import { Module } from './module';
 
 /**
- * Class that implements the relation-based modulariztion strategy proposed in:
+ * Class that implements the relation-based model clustering strategy proposed in:
  *
  * Guizzardi G., Prince Sales T., Almeida J.P.A., Poels G. (2020) Relational Contexts and Conceptual Model Clustering.
  * In: Grabis J., Bork D. (eds) The Practice of Enterprise Modeling. PoEM 2020. Lecture Notes in Business Information
