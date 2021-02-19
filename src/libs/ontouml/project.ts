@@ -332,8 +332,8 @@ export class Project extends OntoumlElement implements ModelElementContainer {
     return projectSerialization;
   }
 
-  toString(): string {
-    let object = { id: this.id, type: this.type, name: this.getName() };
-    return JSON.stringify(object, null, 2);
-  }
+  // toString(): string {
+  //   let object = { id: this.id, type: this.type, name: this.getName() };
+  //   return JSON.stringify(object, null, 2);
+  // }
 }

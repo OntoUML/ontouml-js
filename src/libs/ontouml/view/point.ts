@@ -12,7 +12,7 @@ export class Point {
   }
 
   setX(x: number): void {
-    this.x = x != null ? x : 0;
+    this.x = x ?? 0;
   }
 
   getY(): number {
@@ -20,7 +20,7 @@ export class Point {
   }
 
   setY(y: number): void {
-    this.y = y != null ? y : 0;
+    this.y = y ?? 0;
   }
 
   toString(): string {

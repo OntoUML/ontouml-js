@@ -21,6 +21,7 @@ import { PackageView } from './view/package_view';
 import { Rectangle } from './view/rectangle';
 import { Text } from './view/text';
 import { Path } from './view/path';
+import { RectangularShape } from './view/rectangular_shape';
 
 const schemaJson = require('./../../../resources/schema.json');
 Object.freeze(schemaJson);
@@ -144,6 +145,13 @@ function revive(_key: any, value: any): any {
   let element: OntoumlElement;
 
   if (isOntoumlElement(value)) {
+    if (value?.type === OntoumlType.TEXT || value?.type === OntoumlType.RECTANGLE) {
+      value.topLeft = {
+        x: value.x,
+        y: value.y
+      };
+    }
+
     element = clone(value);
   }
 

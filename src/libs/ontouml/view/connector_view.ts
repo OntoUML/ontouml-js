@@ -14,4 +14,18 @@ export abstract class ConnectorView<T extends ModelElement> extends ElementView<
   createShape(): Path {
     return new Path();
   }
+
+  toJSON(): any {
+    const serialization = {
+      source: null,
+      target: null
+    };
+
+    Object.assign(serialization, super.toJSON());
+
+    serialization.source = this.source?.getReference();
+    serialization.target = this.target?.getReference();
+
+    return serialization;
+  }
 }

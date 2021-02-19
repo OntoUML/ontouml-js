@@ -19,4 +19,17 @@ export abstract class ElementView<T extends ModelElement, S extends Shape> exten
   }
 
   abstract createShape(): S;
+
+  toJSON(): any {
+    const serialization = {
+      modelElement: null,
+      shape: null
+    };
+
+    Object.assign(serialization, super.toJSON());
+
+    serialization.modelElement = this.modelElement?.getReference();
+
+    return serialization;
+  }
 }

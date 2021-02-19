@@ -6,6 +6,9 @@ export class GeneralizationSetView extends ElementView<GeneralizationSet, Text> 
   }
 
   createShape(): Text {
-    return new Text();
+    const text = new Text();
+    text.width = 100;
+    text.height = 50;
+    return text;
   }
 }

@@ -137,4 +137,17 @@ export class Diagram extends OntoumlElement {
     this.addElement(generalizationView);
     return generalizationView;
   }
+
+  toJSON(): any {
+    const serialization = {
+      owner: null,
+      contents: null
+    };
+
+    Object.assign(serialization, super.toJSON());
+
+    serialization.owner = this.owner?.getReference();
+
+    return serialization;
+  }
 }

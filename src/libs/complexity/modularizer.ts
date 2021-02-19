@@ -38,7 +38,7 @@ export class Modularizer implements Service {
   }
 
   buildModule(id: string, relator: Class): Module {
-    let cluster = new Module(id, 'Cluster of ' + relator.getName());
+    let cluster = new Module('Cluster of ' + relator.getName());
 
     let relatorChain = Modularizer.getRelatorChain(relator);
     cluster.addAll(relatorChain);
@@ -82,16 +82,11 @@ export class Modularizer implements Service {
 
     cluster.removeDuplicates();
 
-    cluster.generalizations.forEach(g => {
-      let name = g?.specific?.getName()?.toLowerCase() + '-|>' + g?.general?.getName()?.toLowerCase();
-      g.setName(name);
-    });
-
     return cluster;
   }
 
   static getRelatorChain(relator: Class): Module {
-    let module = new Module('0', null);
+    let module = new Module('Relator chain: ' + relator.getName());
     return this.traverseRelatorChain(relator, module);
   }
 

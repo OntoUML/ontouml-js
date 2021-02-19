@@ -1,16 +1,23 @@
-import { Package, Class, GeneralizationSet, Generalization, Relation, ModelElement, Diagram } from '@libs/ontouml';
+import {
+  Package,
+  Class,
+  GeneralizationSet,
+  Generalization,
+  Relation,
+  ModelElement,
+  Diagram,
+  DiagramElement
+} from '@libs/ontouml';
 import { uniqBy } from 'lodash';
 
 export class Module {
-  id: string;
   name: string;
   classes: Class[];
   relations: Relation[];
   generalizations: Generalization[];
   generalizationSets: GeneralizationSet[];
 
-  constructor(id: string, name: string) {
-    this.id = id;
+  constructor(name: string) {
     this.name = name;
     this.classes = [];
     this.relations = [];
@@ -20,11 +27,17 @@ export class Module {
 
   createDiagram(owner: Package): Diagram {
     let diagram = new Diagram();
-    diagram.id = this.id;
     diagram.setName(this.name);
     diagram.owner = owner;
 
-    diagram.addModelElements(this.classes);
+    let pos: number = 40;
+    this?.classes.forEach(clazz => {
+      let view = diagram.addClass(clazz);
+      view.setX(pos);
+      view.setY(40);
+      pos += 120;
+    });
+
     diagram.addModelElements(this.relations);
     diagram.addModelElements(this.generalizations);
     diagram.addModelElements(this.generalizationSets);

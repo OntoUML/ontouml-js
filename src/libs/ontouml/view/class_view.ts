@@ -6,7 +6,10 @@ export class ClassView extends NodeView<Class, Rectangle> {
   }
 
   createShape(): Rectangle {
-    return new Rectangle();
+    const rectangle = new Rectangle();
+    rectangle.width = 100;
+    rectangle.height = 50;
+    return rectangle;
   }
 
   getContents(): OntoumlElement[] {

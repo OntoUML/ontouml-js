@@ -45,4 +45,22 @@ export abstract class RectangularShape extends Shape {
   setHeight(height: number): void {
     this.height = height;
   }
+
+  toJSON(): any {
+    const serialization = {
+      width: null,
+      height: null,
+      x: null,
+      y: null
+    };
+
+    Object.assign(serialization, super.toJSON());
+
+    delete serialization['topLeft'];
+
+    serialization.x = this.topLeft?.x;
+    serialization.y = this.topLeft?.y;
+
+    return serialization;
+  }
 }

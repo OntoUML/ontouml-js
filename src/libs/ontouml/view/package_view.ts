@@ -6,7 +6,10 @@ export class PackageView extends NodeView<Package, Rectangle> {
   }
 
   createShape(): Rectangle {
-    return new Rectangle();
+    const rectangle = new Rectangle();
+    rectangle.width = 60;
+    rectangle.height = 30;
+    return rectangle;
   }
 
   getContents(): OntoumlElement[] {
