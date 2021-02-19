@@ -9,9 +9,18 @@ import {
   Generalization,
   GeneralizationSet,
   Property,
-  Literal
+  Literal,
+  Diagram
 } from '.';
 import Ajv from 'ajv';
+import { ClassView } from './view/class_view';
+import { RelationView } from './view/relation_view';
+import { GeneralizationView } from './view/generalization_view';
+import { GeneralizationSetView } from './view/generalization_set_view';
+import { PackageView } from './view/package_view';
+import { Rectangle } from './view/rectangle';
+import { Text } from './view/text';
+import { Path } from './view/path';
 
 const schemaJson = require('./../../../resources/schema.json');
 Object.freeze(schemaJson);
@@ -56,7 +65,7 @@ function isReferenceObject(value: any): boolean {
 function getElementMap(element: OntoumlElement): Map<string, OntoumlElement> {
   const map: Map<string, OntoumlElement> = new Map();
   map.set(element.id, element);
-  element.getAllContents().forEach((element) => map.set(element.id, element));
+  element.getAllContents().forEach(element => map.set(element.id, element));
 
   return map;
 }
@@ -108,6 +117,24 @@ function clone(original: Partial<OntoumlElement>): OntoumlElement {
       return new Property(original as any);
     case OntoumlType.LITERAL_TYPE:
       return new Literal(original);
+    case OntoumlType.DIAGRAM:
+      return new Diagram(original);
+    case OntoumlType.CLASS_VIEW:
+      return new ClassView(original);
+    case OntoumlType.RELATION_VIEW:
+      return new RelationView(original);
+    case OntoumlType.GENERALIZATION_VIEW:
+      return new GeneralizationView(original);
+    case OntoumlType.GENERALIZATION_SET_VIEW:
+      return new GeneralizationSetView(original);
+    case OntoumlType.PACKAGE_VIEW:
+      return new PackageView(original);
+    case OntoumlType.RECTANGLE:
+      return new Rectangle(original);
+    case OntoumlType.TEXT:
+      return new Text(original);
+    case OntoumlType.PATH:
+      return new Path(original);
     default:
       throw new Error("No match for parameter's type");
   }

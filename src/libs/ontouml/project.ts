@@ -24,6 +24,7 @@ export class Project extends OntoumlElement implements ModelElementContainer {
 
     this.model = base?.model || null;
     this.diagrams = base?.diagrams || [];
+    this.project = this;
   }
 
   createModel(base?: Partial<Package>): Package {

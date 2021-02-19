@@ -1,17 +1,20 @@
 import _ from 'lodash';
-import { OntoumlElement } from '..';
-import { OntoumlType } from '..';
-import { utils } from '..';
-import { Classifier } from '..';
-import { ClassStereotype, OntologicalNature } from '..';
-import { Literal } from '..';
-import { ModelElement } from '..';
-import { natureUtils } from '..';
-import { Package } from '..';
-import { Property } from '..';
-import { Relation } from '..';
-import { stereotypeUtils } from '..';
-import { MultilingualText } from '../multilingual_text';
+import {
+  ClassStereotype,
+  OntologicalNature,
+  OntoumlElement,
+  OntoumlType,
+  utils,
+  Classifier,
+  Literal,
+  ModelElement,
+  natureUtils,
+  Package,
+  Property,
+  Relation,
+  stereotypeUtils,
+  MultilingualText
+} from '..';
 
 export const ORDERLESS_LEVEL = Infinity;
 
