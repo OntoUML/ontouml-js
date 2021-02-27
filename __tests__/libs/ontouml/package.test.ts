@@ -184,7 +184,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test serialization validation', () => {
-      expect(serializationUtils.validate(model.project)).toBeTruthy();
+      expect(serializationUtils.validate(model.project)).toBe(true);
     });
   });
 

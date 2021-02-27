@@ -1,11 +1,4 @@
-import { OntoumlElement } from '..';
-import { OntoumlType } from '..';
-import { Class } from '..';
-import { Classifier } from '..';
-import { GeneralizationSet } from '..';
-import { ModelElement } from '..';
-import { Package } from '..';
-import { Relation } from '..';
+import { OntoumlElement, OntoumlType, Class, Classifier, GeneralizationSet, ModelElement, Package, Relation } from '..';
 
 export class Generalization extends ModelElement {
   general: Classifier<any, any>;

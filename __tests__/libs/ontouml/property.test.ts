@@ -47,7 +47,7 @@ describe(`${Property.name} Tests`, () => {
 
     it('Test serialization', () => expect(() => JSON.stringify(startDate)).not.toThrow());
     it('Test serialization', () => expect(() => JSON.stringify(precedes)).not.toThrow());
-    it('Test serialization', () => expect(serializationUtils.validate(endDate.project)).toBeTruthy());
+    it('Test serialization', () => expect(serializationUtils.validate(endDate.project)).toBe(true));
   });
 
   describe(`Test ${Property.prototype.setContainer.name}()`, () => {

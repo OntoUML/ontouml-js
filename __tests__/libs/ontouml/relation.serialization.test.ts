@@ -6,5 +6,5 @@ describe('Test toJSON()', () => {
   const knows = model.createMaterialRelation(person, person);
 
   it('Test serialization', () => expect(() => JSON.stringify(knows)).not.toThrow());
-  it('Test serialization validation', () => expect(serializationUtils.validate(knows.project)).toBeTruthy());
+  it('Test serialization validation', () => expect(serializationUtils.validate(knows.project)).toBe(true));
 });

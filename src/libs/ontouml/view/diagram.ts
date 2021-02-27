@@ -1,14 +1,19 @@
-import { ModelElement, OntoumlElement, OntoumlType, ElementView } from '..';
-import { Class } from '../model/class';
-import { Generalization } from '../model/generalization';
-import { GeneralizationSet } from '../model/generalization_set';
-import { Package } from '../model/package';
-import { Relation } from '../model/relation';
-import { ClassView } from './class_view';
-import { GeneralizationSetView } from './generalization_set_view';
-import { GeneralizationView } from './generalization_view';
-import { PackageView } from './package_view';
-import { RelationView } from './relation_view';
+import {
+  ModelElement,
+  OntoumlElement,
+  OntoumlType,
+  ElementView,
+  Class,
+  Generalization,
+  GeneralizationSet,
+  Package,
+  Relation,
+  ClassView,
+  GeneralizationSetView,
+  GeneralizationView,
+  PackageView,
+  RelationView
+} from '..';
 
 export class Diagram extends OntoumlElement {
   owner: ModelElement;
@@ -146,7 +151,7 @@ export class Diagram extends OntoumlElement {
 
     Object.assign(serialization, super.toJSON());
 
-    serialization.owner = this.owner?.getReference();
+    serialization.owner = this.owner?.getReference() ?? null;
 
     return serialization;
   }

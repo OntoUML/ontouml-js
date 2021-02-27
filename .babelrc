@@ -17,7 +17,8 @@
           "@error": "./src/error",
           "@libs": "./src/libs",
           "@rules": "./src/rules",
-          "@utils": "./src/utils"
+          "@utils": "./src/utils",
+          "@resources": "./resources"
         }
       }
     ]

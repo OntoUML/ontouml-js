@@ -1,18 +1,22 @@
-import { Class } from '.';
-import { ClassStereotype, OntologicalNature, PropertyStereotype, RelationStereotype } from '.';
-import { Generalization } from '.';
-import { GeneralizationSet } from '.';
-import { Literal } from '.';
-import { ModelElement } from '.';
-import { ModelElementContainer } from '.';
-import { Package } from '.';
-import { Property } from '.';
-import { Relation } from '.';
-import { OntoumlElement } from '.';
-import { OntoumlType } from '.';
-import { Diagram } from '.';
-import { Classifier } from './model/classifier';
-
+import {
+  ClassStereotype,
+  OntologicalNature,
+  PropertyStereotype,
+  RelationStereotype,
+  Class,
+  Generalization,
+  GeneralizationSet,
+  Literal,
+  ModelElement,
+  ModelElementContainer,
+  Package,
+  Property,
+  Relation,
+  OntoumlElement,
+  OntoumlType,
+  Diagram,
+  Classifier
+} from '.';
 import { every, some } from 'lodash';
 
 export class Project extends OntoumlElement implements ModelElementContainer {
@@ -41,6 +45,16 @@ export class Project extends OntoumlElement implements ModelElementContainer {
     if (pkg != null) {
       this.model.setContainer(this);
     }
+  }
+
+  createDiagram(base?: Partial<Diagram>): Diagram {
+    if (!this.diagrams) {
+      this.diagrams = [];
+    }
+
+    const diagram = new Diagram({ ...base, container: null, project: this });
+    this.diagrams.push(diagram);
+    return diagram;
   }
 
   addDiagram(diagram: Diagram) {
@@ -331,9 +345,4 @@ export class Project extends OntoumlElement implements ModelElementContainer {
 
     return projectSerialization;
   }
-
-  // toString(): string {
-  //   let object = { id: this.id, type: this.type, name: this.getName() };
-  //   return JSON.stringify(object, null, 2);
-  // }
 }

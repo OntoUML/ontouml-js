@@ -227,6 +227,6 @@ describe(`GeneralizationSet Tests`, () => {
     const genSet = model.createGeneralizationSet([gen], true, false, agentType);
 
     it('Test serialization', () => expect(() => JSON.stringify(genSet)).not.toThrow());
-    it('Test serialization validation', () => expect(serializationUtils.validate(genSet.project)).toBeTruthy());
+    it('Test serialization validation', () => expect(serializationUtils.validate(genSet.project)).toBe(true));
   });
 });

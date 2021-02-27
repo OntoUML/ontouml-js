@@ -1,13 +1,15 @@
-import { OntoumlElement } from '..';
-import { OntoumlType } from '..';
-import { Cardinality } from '..';
-import { Class } from '..';
-import { Classifier } from '..';
-import { PropertyStereotype } from '..';
-import { Decoratable } from '..';
-import { ModelElement } from '..';
-import { Relation } from '..';
-import { stereotypeUtils } from '..';
+import {
+  OntoumlElement,
+  OntoumlType,
+  Cardinality,
+  Class,
+  Classifier,
+  PropertyStereotype,
+  Decoratable,
+  ModelElement,
+  Relation,
+  stereotypeUtils
+} from '..';
 
 export enum AggregationKind {
   NONE = 'NONE',
@@ -138,8 +140,7 @@ export class Property extends Decoratable<PropertyStereotype> {
 
     Object.assign(propertySerialization, super.toJSON());
 
-    const propertyType = this.propertyType;
-    propertySerialization.propertyType = propertyType.getReference();
+    propertySerialization.propertyType = this.propertyType?.getReference();
 
     return propertySerialization;
   }

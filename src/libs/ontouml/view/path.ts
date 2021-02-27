@@ -6,7 +6,7 @@ export class Path extends Shape {
   constructor(base?: Partial<Path>) {
     super(OntoumlType.PATH, base);
 
-    this.points = base?.points || [];
+    this.points = base?.points || null;
   }
 
   getContents(): OntoumlElement[] {
@@ -23,7 +23,7 @@ export class Path extends Shape {
   }
 
   addPoints(points: Point[]): void {
-    if (points != null) points.forEach((p) => this.addPoint(p));
+    if (points != null) points.forEach(p => this.addPoint(p));
   }
 
   addPoint(point: Point): void {

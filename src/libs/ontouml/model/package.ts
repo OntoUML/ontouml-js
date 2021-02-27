@@ -1,19 +1,24 @@
 import _, { remove } from 'lodash';
-import { OntoumlElement } from '..';
-import { OntoumlType } from '..';
-import { utils } from '..';
-import { Class } from '..';
-import { AggregationKind, ClassStereotype, OntologicalNature, PropertyStereotype, RelationStereotype } from '..';
-import { Generalization } from '..';
-import { GeneralizationSet } from '..';
-import { Literal } from '..';
-import { ModelElement } from '..';
-import { ModelElementContainer } from '..';
-import { Property } from '..';
-import { Relation } from '..';
-import { MultilingualText } from '../multilingual_text';
-import { Classifier } from './classifier';
-import { Stereotype } from './stereotypes';
+import {
+  OntoumlElement,
+  OntoumlType,
+  utils,
+  Class,
+  AggregationKind,
+  ClassStereotype,
+  OntologicalNature,
+  PropertyStereotype,
+  RelationStereotype,
+  Generalization,
+  GeneralizationSet,
+  Literal,
+  ModelElement,
+  ModelElementContainer,
+  Property,
+  Relation,
+  MultilingualText,
+  Classifier
+} from '..';
 
 export class Package extends ModelElement implements ModelElementContainer {
   contents: ModelElement[];

@@ -30,7 +30,6 @@ export class Cardinality {
         this.value = arg1;
       } else {
         const msg = 'Bad cardinality input';
-        console.log(msg, arg1);
         throw new Error(msg);
       }
     } else if (arg1 !== undefined && arg2 !== undefined) {
@@ -42,7 +41,6 @@ export class Cardinality {
         this.value = `${arg1}..${arg2}`;
       } else {
         const msg = 'Bad cardinality input';
-        console.log(msg, arg1, arg2);
         throw new Error(msg);
       }
     } else {
@@ -141,7 +139,6 @@ export class Cardinality {
 
   isBounded(): boolean {
     const bounds = this.getCardinalityBounds();
-    console.log('isBounded', this.value, bounds, bounds.upperBound !== CARDINALITY_MAX);
     return bounds && bounds.upperBound !== CARDINALITY_MAX;
   }
 

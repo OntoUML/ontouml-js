@@ -1,11 +1,4 @@
-import { OntoumlElement } from '..';
-import { OntoumlType } from '..';
-import { Class } from '..';
-import { Classifier } from '..';
-import { Generalization } from '..';
-import { ModelElement } from '..';
-import { Package } from '..';
-import { Relation } from '..';
+import { OntoumlElement, OntoumlType, Class, Classifier, Generalization, ModelElement, Package, Relation } from '..';
 
 export class GeneralizationSet extends ModelElement {
   isDisjoint: boolean;
@@ -16,10 +9,10 @@ export class GeneralizationSet extends ModelElement {
   constructor(base?: Partial<GeneralizationSet>) {
     super(OntoumlType.GENERALIZATION_SET_TYPE, base);
 
-    this.isDisjoint = base?.isDisjoint || false;
-    this.isComplete = base?.isComplete || false;
-    this.categorizer = base?.categorizer || null;
-    this.generalizations = base?.generalizations || null;
+    this.isDisjoint = base?.isDisjoint ?? false;
+    this.isComplete = base?.isComplete ?? false;
+    this.categorizer = base?.categorizer ?? null;
+    this.generalizations = base?.generalizations ?? null;
   }
 
   getContents(): OntoumlElement[] {
@@ -37,9 +30,9 @@ export class GeneralizationSet extends ModelElement {
     return (
       this.isPartition() &&
       this.involvesClasses() &&
-      ((this.getSpecificClasses().every((specific) => specific.hasPhaseStereotype()) &&
+      ((this.getSpecificClasses().every(specific => specific.hasPhaseStereotype()) &&
         this.getGeneralClass().hasSortalStereotype()) ||
-        (this.getSpecificClasses().every((specific) => specific.hasPhaseMixinStereotype()) &&
+        (this.getSpecificClasses().every(specific => specific.hasPhaseMixinStereotype()) &&
           this.getGeneralClass().hasCategoryStereotype()))
       //
     );
@@ -123,13 +116,13 @@ export class GeneralizationSet extends ModelElement {
 
   /** Collects specifics from all input generalization sets. Removes duplicates. */
   static collectSpecifics(generalizations: Generalization[]): Classifier<any, any>[] {
-    let specifics = generalizations.map((g) => g.specific);
+    let specifics = generalizations.map(g => g.specific);
     return [...new Set(specifics)];
   }
 
   /** Collects generalizations from all input generalization sets. Removes duplicates. */
   static collectGeneralizations(genSets: GeneralizationSet[]): Generalization[] {
-    let generalizations = genSets.flatMap((gs) => gs.generalizations);
+    let generalizations = genSets.flatMap(gs => gs.generalizations);
     return [...new Set(generalizations)];
   }
 
@@ -177,7 +170,9 @@ export class GeneralizationSet extends ModelElement {
     Object.assign(object, super.toJSON());
 
     object.categorizer = this.categorizer && this.categorizer.getReference();
-    object.generalizations = [...this.generalizations].map((generalization: Generalization) => generalization.getReference());
+    object.generalizations = this.generalizations
+      ? [...this.generalizations].map((generalization: Generalization) => generalization.getReference())
+      : null;
 
     return object;
   }

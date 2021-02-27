@@ -1,7 +1,5 @@
 import _ from 'lodash';
 import { Package, Stereotype, Decoratable, Generalization, GeneralizationSet, Property, Class, Relation } from '..';
-import {} from './package';
-import {} from './stereotypes';
 
 export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotype> extends Decoratable<S> {
   isAbstract: boolean;

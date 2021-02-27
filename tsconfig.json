@@ -20,7 +20,8 @@
       "@constants/*": ["src/constants/*"],
       "@error/*": ["src/error/*"],
       "@libs/*": ["src/libs/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@resources/*": ["resources/*"]
     }
   },
   "include": ["src/**/*", "@types/**/*", "__tests__/**/*"]

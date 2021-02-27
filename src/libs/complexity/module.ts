@@ -5,8 +5,7 @@ import {
   Generalization,
   Relation,
   ModelElement,
-  Diagram,
-  DiagramElement
+  Diagram
 } from '@libs/ontouml';
 import { uniqBy } from 'lodash';
 
@@ -31,8 +30,8 @@ export class Module {
     diagram.owner = owner;
 
     let pos: number = 40;
-    this?.classes.forEach(clazz => {
-      let view = diagram.addClass(clazz);
+    this?.classes.forEach(_class => {
+      let view = diagram.addClass(_class);
       view.setX(pos);
       view.setY(40);
       pos += 120;

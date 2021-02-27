@@ -10,40 +10,86 @@ import {
   GeneralizationSet,
   Property,
   Literal,
-  Diagram
+  Diagram,
+  ClassView,
+  RelationView,
+  GeneralizationView,
+  GeneralizationSetView,
+  PackageView,
+  Rectangle,
+  Text,
+  Path
 } from '.';
 import Ajv from 'ajv';
-import { ClassView } from './view/class_view';
-import { RelationView } from './view/relation_view';
-import { GeneralizationView } from './view/generalization_view';
-import { GeneralizationSetView } from './view/generalization_set_view';
-import { PackageView } from './view/package_view';
-import { Rectangle } from './view/rectangle';
-import { Text } from './view/text';
-import { Path } from './view/path';
-import { RectangularShape } from './view/rectangular_shape';
 
-const schemaJson = require('./../../../resources/schema.json');
-Object.freeze(schemaJson);
+const schemas = {
+  'https://ontouml.org/ontouml-schema/2021-02-26/Project': require('@resources/schemas/project.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/Package': require('@resources/schemas/package.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/Class': require('@resources/schemas/class.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/Relation': require('@resources/schemas/relation.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/Generalization': require('@resources/schemas/generalization.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/GeneralizationSet': require('@resources/schemas/generalization_set.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/Property': require('@resources/schemas/property.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/Literal': require('@resources/schemas/literal.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/Diagram': require('@resources/schemas/diagram.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/ClassView': require('@resources/schemas/class_view.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/RelationView': require('@resources/schemas/relation_view.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/GeneralizationView': require('@resources/schemas/generalization_view.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/GeneralizationSetView': require('@resources/schemas/generalization_set_view.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/PackageView': require('@resources/schemas/package_view.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/RectangleShape': require('@resources/schemas/rectangle_shape.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/TextShape': require('@resources/schemas/text_shape.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/PathShape': require('@resources/schemas/path_shape.schema.json'),
+  'https://ontouml.org/ontouml-schema/2021-02-26/definitions': require('@resources/schemas/definitions.schema.json')
+};
 
-export const schema = schemaJson;
+const typeToSchemaId = {
+  [`${OntoumlType.PROJECT_TYPE}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/Project',
+  [`${OntoumlType.PACKAGE_TYPE}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/Package',
+  [`${OntoumlType.CLASS_TYPE}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/Class',
+  [`${OntoumlType.RELATION_TYPE}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/Relation',
+  [`${OntoumlType.GENERALIZATION_TYPE}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/Generalization',
+  [`${OntoumlType.GENERALIZATION_SET_TYPE}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/GeneralizationSet',
+  [`${OntoumlType.PROPERTY_TYPE}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/Property',
+  [`${OntoumlType.LITERAL_TYPE}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/Literal',
+  [`${OntoumlType.DIAGRAM}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/Diagram',
+  [`${OntoumlType.CLASS_VIEW}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/ClassView',
+  [`${OntoumlType.RELATION_VIEW}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/RelationView',
+  [`${OntoumlType.GENERALIZATION_VIEW}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/GeneralizationView',
+  [`${OntoumlType.GENERALIZATION_SET_VIEW}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/GeneralizationSetView',
+  [`${OntoumlType.PACKAGE_VIEW}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/PackageView',
+  [`${OntoumlType.RECTANGLE}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/RectangleShape',
+  [`${OntoumlType.TEXT}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/TextShape',
+  [`${OntoumlType.PATH}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/PathShape',
+  definitions: 'https://ontouml.org/ontouml-schema/2021-02-26/definitions'
+};
 
-const ajv = new Ajv();
-const validator = ajv.compile(schema);
+const ajv = new Ajv({
+  schemas: Object.values(schemas)
+});
 
-function validate(project: Project): true | object | PromiseLike<any>;
+function validate(element: OntoumlElement): true | object | PromiseLike<any>;
 function validate(serializedProject: object): true | object | PromiseLike<any>;
 function validate(serializedProject: string): true | object | PromiseLike<any>;
 function validate(input: any): true | object | PromiseLike<any> {
+  if (!input) {
+    throw new Error('Unexpected parameter');
+  }
+  
+  let schemaId = typeToSchemaId[OntoumlType.PROJECT_TYPE];
+
   if (typeof input === 'string') {
     input = JSON.parse(input);
-  } else if (input instanceof Project) {
+  } else if (input instanceof OntoumlElement) {
+    schemaId = typeToSchemaId[input.type];
     input = JSON.parse(JSON.stringify(input));
   } else if (typeof input !== 'object') {
     throw new Error('Unexpected parameter');
   }
 
+  let validator = ajv.getSchema(schemaId);
   let isValid = validator(input);
+
   return isValid ? isValid : validator.errors;
 }
 
@@ -173,9 +219,9 @@ function revive(_key: any, value: any): any {
 
 function parse(serializedElement: string, validateProject: boolean = false): OntoumlElement {
   if (validateProject) {
-    const isValid = validate(JSON.parse(serializedElement));
+    const result = validate(serializedElement);
 
-    if (!isValid) {
+    if (result !== true) {
       throw new Error('Invalid input');
     }
   }
@@ -184,7 +230,6 @@ function parse(serializedElement: string, validateProject: boolean = false): Ont
 }
 
 export const serializationUtils = {
-  schema,
   validate,
   revive,
   parse

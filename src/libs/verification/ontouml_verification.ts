@@ -51,7 +51,7 @@ export class OntoumlVerification implements Service {
   }
 
   static verify(element: ModelElement | Project): VerificationIssue[] {
-    switch (element.constructor) {
+    switch (element && element.constructor) {
       case Class:
         return ClassVerification.verifyClass(element as Class);
       case GeneralizationSet:

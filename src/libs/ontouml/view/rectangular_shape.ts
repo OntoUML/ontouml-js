@@ -1,5 +1,4 @@
-import { Shape } from '..';
-import { Point } from './point';
+import { Shape, Point } from '..';
 
 export abstract class RectangularShape extends Shape {
   topLeft: Point;

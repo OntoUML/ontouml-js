@@ -8,7 +8,7 @@ describe(`${Generalization.name} Tests`, () => {
     const gen = model.createGeneralization(agent, person, 'agentType');
 
     it('Test serialization', () => expect(() => JSON.stringify(gen)).not.toThrow());
-    it('Test serialization', () => expect(serializationUtils.validate(gen.project)).toBeTruthy());
+    it('Test serialization', () => expect(serializationUtils.validate(gen.project)).toBe(true));
   });
 
   describe(`Test ${Generalization.prototype.setContainer.name}()`, () => {

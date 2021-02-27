@@ -1,14 +1,19 @@
-import { OntoumlElement } from '..';
-import { OntoumlType } from '..';
-import { Class } from '..';
-import { ClassStereotype, OntologicalNature, PropertyStereotype, RelationStereotype } from '..';
-import { Generalization } from '..';
-import { GeneralizationSet } from '..';
-import { Literal } from '..';
-import { ModelElement } from '..';
-import { Package } from '..';
-import { Property } from '..';
-import { Relation } from '..';
+import {
+  OntoumlElement,
+  OntoumlType,
+  Class,
+  ClassStereotype,
+  OntologicalNature,
+  PropertyStereotype,
+  RelationStereotype,
+  Generalization,
+  GeneralizationSet,
+  Literal,
+  ModelElement,
+  Package,
+  Property,
+  Relation
+} from '..';
 
 export interface ModelElementContainer {
   getElementById(id: String): OntoumlElement;

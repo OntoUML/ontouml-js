@@ -6,7 +6,7 @@ export class Text extends RectangularShape {
   constructor(base?: Partial<Text>) {
     super(OntoumlType.TEXT, base);
 
-    this.value = base?.value || '';
+    this.value = base?.value || null;
   }
 
   getContents(): OntoumlElement[] {

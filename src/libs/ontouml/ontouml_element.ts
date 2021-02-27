@@ -1,9 +1,6 @@
 import uniqid from 'uniqid';
 import _ from 'lodash';
-import { OntoumlType } from '.';
-import { MultilingualText } from '.';
-import { Project } from '.';
-import { Package } from '.';
+import { OntoumlType, MultilingualText, Project } from '.';
 
 export abstract class OntoumlElement {
   type: OntoumlType;
@@ -86,7 +83,7 @@ export abstract class OntoumlElement {
 
   setProject(project: Project): void {
     this.project = project;
-    this.getContents().forEach((element) => element.setProject(project));
+    this.getContents().forEach(element => element.setProject(project));
   }
 
   getAllContents(): OntoumlElement[] {
@@ -96,30 +93,9 @@ export abstract class OntoumlElement {
       return children;
     }
 
-    let descendants = children.flatMap((child) => child.getAllContents());
+    let descendants = children.flatMap(child => child.getAllContents());
 
     return children.concat(descendants);
-  }
-
-  // TODO: add documentation
-  getModelOrRootPackage(): Package {
-    if (this.project) {
-      return this.project.model;
-    }
-
-    let packageReference = this.container;
-
-    while (packageReference && packageReference.container) {
-      packageReference = packageReference.container;
-    }
-
-    if (packageReference instanceof Package) {
-      return packageReference;
-    } else if (this instanceof Package) {
-      return this;
-    } else {
-      return null;
-    }
   }
 
   abstract getContents(): OntoumlElement[];

@@ -9,7 +9,7 @@ describe(`${Literal.name} Tests`, () => {
     gameStatus.createLiteral();
 
     it('Test serialization', () => expect(() => JSON.stringify(started)).not.toThrow());
-    it('Test serialization validation', () => expect(serializationUtils.validate(started.project)).toBeTruthy());
+    it('Test serialization validation', () => expect(serializationUtils.validate(started.project)).toBe(true));
   });
 
   describe(`Test ${Literal.prototype.setContainer.name}()`, () => {

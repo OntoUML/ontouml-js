@@ -3,6 +3,7 @@
   "version": "0.3.0",
   "description": "Javascript library utility for manipulating OntoUML models.",
   "license": "Apache-2.0",
+  "repository": "github:OntoUML/ontouml-js",
   "engines": {
     "node": ">= 14"
   },
@@ -21,6 +22,7 @@
     "build": "rm -rf ./dist && npm run build:js",
     "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",
     "build:watch": "TS_NODE_FILES=true tsc -w -p tsconfig.release.json",
+    "tsdoc": "typedoc --out tsdoc src/index.ts",
     "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'",
     "test": "jest",
     "test:coverage": "jest --coverage",
@@ -32,19 +34,20 @@
     "@constants": "src/constants",
     "@error": "src/error",
     "@libs": "src/libs",
-    "@utils": "src/utils"
+    "@utils": "src/utils",
+    "@resources": "resources"
   },
   "dependencies": {
     "@babel/runtime": "^7.12.13",
     "@types/n3": "^1.4.4",
-    "ajv": "^6.12.6",
+    "ajv": "^7.1.1",
     "esm": "^3.2.25",
     "language-tags": "^1.0.5",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "n3": "^1.8.0",
     "ontouml-schema": "^0.2.4",
     "tslib": "~1.10.0",
-    "uniqid": "^5.2.0",
+    "uniqid": "^5.3.0",
     "validate.io-uri": "^1.0.0"
   },
   "devDependencies": {
@@ -77,6 +80,7 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-microsoft-contrib": "^6.2.0",
     "tsutils": "^3.20.0",
+    "typedoc": "^0.20.28",
     "typescript": "^4.1"
   }
 }

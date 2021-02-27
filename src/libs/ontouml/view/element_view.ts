@@ -1,5 +1,4 @@
-import { ModelElement } from '..';
-import { OntoumlElement, DiagramElement, Shape } from '..';
+import { ModelElement, OntoumlElement, DiagramElement, Shape } from '..';
 
 export abstract class ElementView<T extends ModelElement, S extends Shape> extends DiagramElement {
   modelElement: T;

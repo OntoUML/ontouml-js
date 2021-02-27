@@ -16,8 +16,12 @@ import { Module } from './module';
 export class Modularizer implements Service {
   project: Project;
 
-  constructor(project: Project) {
+  constructor(project: Project, _options?: any) {
     this.project = project;
+
+    if (_options) {
+      console.log('Options ignored: this service does not support options');
+    }
   }
 
   run(): { result: any; issues?: ServiceIssue[] } {
@@ -25,7 +29,7 @@ export class Modularizer implements Service {
     this.project.addDiagrams(generatedDiagrams);
 
     return {
-      result: JSON.stringify(this.project),
+      result: this.project,
       issues: null
     };
   }
