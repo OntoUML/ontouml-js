@@ -1,7 +1,7 @@
-import { ModelElement, Package } from '@libs/ontouml/';
+import { ModelElement, Package } from '@libs/ontouml';
 import { ServiceOptions } from '@libs/service_options';
 
-export class Options implements ServiceOptions {
+export class Ontouml2GufoOptions implements ServiceOptions {
   format: string;
   baseIri: string;
   basePrefix: string;
@@ -24,7 +24,7 @@ export class Options implements ServiceOptions {
     };
   };
 
-  constructor(base: Partial<Options> = {}) {
+  constructor(base: Partial<Ontouml2GufoOptions> = {}) {
     this.format = 'Turtle';
     this.baseIri = 'https://example.com';
     this.uriFormatBy = 'name';

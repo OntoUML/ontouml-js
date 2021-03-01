@@ -10,8 +10,8 @@ export function transformRelationCardinalities(transformer: Ontouml2Gufo, relati
     !(relation.getTarget() instanceof Class) ||
     relation.hasInstantiationStereotype() ||
     relation.hasDerivationStereotype() ||
-    !relation.isBinaryRelation() ||
-    !relation.isExistentialDependenceRelation()
+    !relation.isBinary() ||
+    !relation.isBinaryExistentialDependency()
   ) {
     return;
   }
@@ -30,7 +30,7 @@ export function transformRelationCardinalities(transformer: Ontouml2Gufo, relati
 function getObjectPropertyNodes(transformer: Ontouml2Gufo, relation: Relation, propertyPosition) {
   const { options } = transformer;
 
-  if (relation.hasInstantiationStereotype() || relation.isDerivationRelation() || relation.isTernaryRelation()) {
+  if (relation.hasInstantiationStereotype() || relation.isDerivation() || relation.isTernary()) {
     throw new Error('Cannot get property nodes for n-ary, «instantation», or «derivation» relations');
   }
 

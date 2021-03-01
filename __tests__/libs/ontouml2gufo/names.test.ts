@@ -4,6 +4,8 @@ import { Package } from '@libs/ontouml';
 describe('Names to labels', () => {
   it('should generate labels without language tags when names are simple strings', () => {
     const model = new Package();
+    model.addName('My Model');
+
     model.createKind('Person');
     const result = generateGufo(model);
 
@@ -12,10 +14,12 @@ describe('Names to labels', () => {
 
   it('should generate language labels on classess using 2-letter IANA language tags (e.g. en, it)', () => {
     const model = new Package();
-    model.createKind({
+    const clazz = model.createKind();
+    clazz.name.addAll({
       en: 'Person',
       it: 'Persona'
     });
+
     const result = generateGufo(model);
 
     expect(result).toContain('<:Person> <rdfs:label> "Person"@en');
@@ -24,10 +28,14 @@ describe('Names to labels', () => {
 
   it('should generate language labels on classess using composed IANA language tags (e.g. en-us, pt-br)', () => {
     const model = new Package();
-    model.createKind({
+    model.addName('My Model');
+
+    const clazz = model.createKind();
+    clazz.name.addAll({
       'en-us': 'Person',
       'pt-br': 'Pessoa'
     });
+
     const result = generateGufo(model);
 
     expect(result).toContain('<:Person> <rdfs:label> "Person"@en-us');
@@ -36,14 +44,13 @@ describe('Names to labels', () => {
 
   it('should NOT generate language labels for invalid IANA language tags (e.g. ens, it-trento, xyz)', () => {
     const model = new Package();
-    model.createKind(
-      {
-        ens: 'Person',
-        'it-trento': 'Persona',
-        xyz: 'Persoon'
-      },
-      { id: '123' }
-    );
+    const clazz = model.createKind(null, { id: '123' });
+    clazz.name.addAll({
+      ens: 'Person',
+      'it-trento': 'Persona',
+      xyz: 'Persoon'
+    });
+
     const result = generateGufo(model);
 
     expect(result).not.toContain('<:123> <rdfs:label> "Persona"@it-trento');
@@ -56,7 +63,8 @@ describe('Names to labels', () => {
     const person = model.createKind('Person');
     const datatype = model.createKind('string');
 
-    person.createAttribute(datatype, { nl: 'naam', pt: 'nome' });
+    const attr = person.createAttribute(datatype);
+    attr.name.addAll({ nl: 'naam', pt: 'nome' });
 
     const result = generateGufo(model);
 
@@ -68,7 +76,8 @@ describe('Names to labels', () => {
     const model = new Package();
     const person = model.createKind('Person');
 
-    model.createMaterialRelation(person, person, { de: 'kennt', sv: 'känner' });
+    const rel = model.createMaterialRelation(person, person);
+    rel.name.addAll({ de: 'kennt', sv: 'känner' });
 
     const result = generateGufo(model);
 

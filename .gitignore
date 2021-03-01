@@ -41,3 +41,6 @@ __tests__/libs/ontouml2gufo/examples/*
 
 # Manually exported packages
 ontouml-js-*.tgz
+
+# Ignore TSDoc output
+tsdoc/

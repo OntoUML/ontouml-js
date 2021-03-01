@@ -4,7 +4,8 @@ import { Package } from '@libs/ontouml';
 describe('URI generation', () => {
   describe("{ uriFormatBy = 'id' }", () => {
     it('should generate id-based uri for classes', () => {
-      const model = new Package({ name: 'Model' });
+      const model = new Package();
+      model.addName('Model');
       const _class = model.createKind('Person', { id: '123' });
 
       const uriManager = getUriManager(model, { uriFormatBy: 'id' });
@@ -13,9 +14,11 @@ describe('URI generation', () => {
     });
 
     it('should generate id-based uri for attribute', () => {
-      const model = new Package({ name: 'Model' });
+      const model = new Package();
+      model.addName('Model');
       const _class = model.createKind('Person');
       const attr = _class.createAttribute(_class, 'name', { id: '456' });
+      3;
 
       const uriManager = getUriManager(model, { uriFormatBy: 'id' });
       const uri = uriManager.getUri(attr);
@@ -23,7 +26,8 @@ describe('URI generation', () => {
     });
 
     it('should generate id-based uri for relations', () => {
-      const model = new Package({ name: 'Model' });
+      const model = new Package();
+      model.addName('Model');
       const _class = model.createKind('Person');
       const relation = model.createMaterialRelation(_class, _class, 'knows', { id: 'abc' });
 
@@ -37,7 +41,8 @@ describe('URI generation', () => {
 
   describe("{uriFormatBy = 'name'}", () => {
     it('should generate name-based uri for classes', () => {
-      const model = new Package({ name: 'Model' });
+      const model = new Package();
+      model.addName('Model');
       const _class = model.createKind('Person');
 
       const uriManager = getUriManager(model, { uriFormatBy: 'name' });
@@ -46,7 +51,8 @@ describe('URI generation', () => {
     });
 
     it('should generate normalized name-based uri for classes', () => {
-      const model = new Package({ name: 'Model' });
+      const model = new Package();
+      model.addName('Model');
       const _class = model.createKind('Happy Person');
 
       const uriManager = getUriManager(model, { uriFormatBy: 'name' });
@@ -55,7 +61,8 @@ describe('URI generation', () => {
     });
 
     it('should generate name-based uri for attribute', () => {
-      const model = new Package({ name: 'Model' });
+      const model = new Package();
+      model.addName('Model');
       const _class = model.createKind('Person');
       const attr = _class.createAttribute(_class, 'name');
 
@@ -65,7 +72,8 @@ describe('URI generation', () => {
     });
 
     it('should generate normalized name-based uri for attribute', () => {
-      const model = new Package({ name: 'Model' });
+      const model = new Package();
+      model.addName('Model');
       const _class = model.createKind('Person');
       const attr = _class.createAttribute(_class, 'last name');
 
@@ -75,7 +83,8 @@ describe('URI generation', () => {
     });
 
     it('should generate name-based uri for relations', () => {
-      const model = new Package({ name: 'Model' });
+      const model = new Package();
+      model.addName('Model');
       const _class = model.createKind('Person');
       const relation = model.createMaterialRelation(_class, _class, 'knows');
 
@@ -85,7 +94,8 @@ describe('URI generation', () => {
     });
 
     it('should generate normalized name-based uri for relations', () => {
-      const model = new Package({ name: 'Model' });
+      const model = new Package();
+      model.addName('Model');
       const _class = model.createKind('Person');
       const relation = model.createMaterialRelation(_class, _class, 'has friend');
 
@@ -95,11 +105,12 @@ describe('URI generation', () => {
     });
 
     it('should use target role name when relation name is empty', () => {
-      const model = new Package({ name: 'Model' });
+      const model = new Package();
+      model.addName('Model');
       const _class = model.createKind('Person');
       const relation = model.createMaterialRelation(_class, _class, '   ');
 
-      relation.getTargetEnd().name = 'friend';
+      relation.getTargetEnd().addName('friend');
 
       const uriManager = getUriManager(model, { uriFormatBy: 'name' });
       const uri = uriManager.getUri(relation);
@@ -107,11 +118,12 @@ describe('URI generation', () => {
     });
 
     it('should use target role name when relation name is null', () => {
-      const model = new Package({ name: 'Model' });
+      const model = new Package();
+      model.addName('Model');
       const _class = model.createKind('Person');
       const relation = model.createMaterialRelation(_class, _class, null);
 
-      relation.getTargetClassEnd().name = 'friend';
+      relation.getTargetClassEnd().addName('friend');
 
       const uriManager = getUriManager(model, { uriFormatBy: 'name' });
       const uri = uriManager.getUri(relation);
@@ -119,7 +131,8 @@ describe('URI generation', () => {
     });
 
     it("When the relation name and the target role name are missing, should create the relation's URI based on its stereotype, source and target classes: «material»", () => {
-      const model = new Package({ name: 'Model' });
+      const model = new Package();
+      model.addName('Model');
       const class1 = model.createKind('Person');
       const class2 = model.createKind('Car');
       const relation = model.createMaterialRelation(class1, class2, null);
@@ -130,7 +143,8 @@ describe('URI generation', () => {
     });
 
     it("When the relation name and the target role name are missing, should create the relation's URI based on its stereotype, source and target classes: «characterization»", () => {
-      const model = new Package({ name: 'Model' });
+      const model = new Package();
+      model.addName('Model');
       const class1 = model.createKind('Love');
       const class2 = model.createKind('Person');
       const relation = model.createCharacterizationRelation(class1, class2, null);

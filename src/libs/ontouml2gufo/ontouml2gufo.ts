@@ -1,7 +1,7 @@
-import { Project, Package, Relation } from '@libs/ontouml/';
+import { Project, Package, Relation } from '@libs/ontouml';
 import {
   Issue,
-  Options,
+  Ontouml2GufoOptions,
   Inspector,
   UriManager,
   getPrefixes,
@@ -30,24 +30,24 @@ const { namedNode, quad, literal } = N3.DataFactory;
  */
 export class Ontouml2Gufo implements Service {
   model: Package;
-  options: Options;
+  options: Ontouml2GufoOptions;
   inspector: Inspector;
   owlCode: string;
   writer: Writer;
   uriManager: UriManager;
 
-  constructor(project: Project, options?: Partial<Options>);
-  constructor(model: Package, options?: Partial<Options>);
-  constructor(project: Project, options?: Partial<Options>);
-  constructor(input: Project | Package, options?: Partial<Options>);
-  constructor(input: Project | Package, options?: Partial<Options>) {
+  constructor(project: Project, options?: Partial<Ontouml2GufoOptions>);
+  constructor(model: Package, options?: Partial<Ontouml2GufoOptions>);
+  constructor(project: Project, options?: Partial<Ontouml2GufoOptions>);
+  constructor(input: Project | Package, options?: Partial<Ontouml2GufoOptions>);
+  constructor(input: Project | Package, options?: Partial<Ontouml2GufoOptions>) {
     if (input instanceof Project) {
       this.model = input.model;
     } else if (input instanceof Package) {
       this.model = input;
     }
 
-    this.options = options ? new Options(options) : new Options();
+    this.options = options ? new Ontouml2GufoOptions(options) : new Ontouml2GufoOptions();
     this.inspector = new Inspector(this);
     this.uriManager = new UriManager(this);
   }

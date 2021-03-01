@@ -39,7 +39,7 @@ describe('Custom labels', () => {
     const model = new Package();
     const _class = model.createKind('Person');
     model.createMaterialRelation(_class, _class, 'likes');
-    model.name = 'Model';
+    model.addName('Model');
 
     const result = generateGufo(model, {
       customElementMapping: {
@@ -57,7 +57,7 @@ describe('Custom labels', () => {
     const model = new Package();
     const _class = model.createKind('Person');
     model.createMaterialRelation(_class, _class, 'likes');
-    model.name = 'Model';
+    model.addName('Model');
 
     const result = generateGufo(model, {
       customElementMapping: {

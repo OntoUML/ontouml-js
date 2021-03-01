@@ -1,4 +1,4 @@
-import { Relation } from '@libs/ontouml/';
+import { Relation } from '@libs/ontouml';
 import { Ontouml2Gufo, transformInverseAnnotations } from './';
 
 // TODO: check method name updated for disambiguation
@@ -40,7 +40,7 @@ export function getInverseSuperProperty(relation: Relation): string {
 }
 
 export function transformInverseRelation(transformer: Ontouml2Gufo, relation: Relation) {
-  if (relation.hasInstantiationStereotype() || relation.isDerivationRelation()) {
+  if (relation.hasInstantiationStereotype() || relation.isDerivation()) {
     return;
   }
 

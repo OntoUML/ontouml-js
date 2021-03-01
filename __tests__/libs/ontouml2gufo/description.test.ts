@@ -6,7 +6,7 @@ describe('Descriptions to rdfs:comments', () => {
     const model = new Package();
     const _class = model.createKind('Person');
     const description = 'This is a description of the person class.';
-    _class.description = description;
+    _class.addDescription(description);
 
     const result = generateGufo(model);
 
@@ -20,7 +20,7 @@ describe('Descriptions to rdfs:comments', () => {
     const attr = _class.createAttribute(datatype, 'name');
     const description = 'This is the description of the attribute name in of the person class.';
 
-    attr.description = description;
+    attr.addDescription(description);
 
     const result = generateGufo(model);
 
@@ -33,7 +33,7 @@ describe('Descriptions to rdfs:comments', () => {
     const relation = model.createMaterialRelation(_class, _class, 'knows');
     const description = 'This is the description of the relation knows.';
 
-    relation.description = description;
+    relation.addDescription(description);
 
     const result = generateGufo(model);
 

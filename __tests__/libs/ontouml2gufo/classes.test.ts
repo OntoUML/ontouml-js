@@ -1,9 +1,16 @@
 import { generateGufo } from './helpers';
-import { ClassStereotype, OntologicalNature, Package } from '@libs/ontouml';
+import { ClassStereotype, OntologicalNature, Package, Project } from '@libs/ontouml';
 
 describe('Classes', () => {
+  let project: Project;
+  let model: Package;
+
+  beforeEach(() => {
+    project = new Project();
+    model = project.createModel();
+  });
+
   it('should generate a label with the original name of the class', () => {
-    const model = new Package();
     model.createKind('Happy Person');
     const result = generateGufo(model);
 
@@ -11,7 +18,6 @@ describe('Classes', () => {
   });
 
   it('should generate a owl:Class and an owl:NamedIndividual', () => {
-    const model = new Package();
     model.createKind('Person');
     const result = generateGufo(model);
 
@@ -20,7 +26,6 @@ describe('Classes', () => {
   });
 
   it('should transform «kind» class', () => {
-    const model = new Package();
     model.createKind('Person');
     const result = generateGufo(model);
 
@@ -29,7 +34,6 @@ describe('Classes', () => {
   });
 
   it('should transform «collective» class { isExtensional=false }', () => {
-    const model = new Package();
     model.createCollective('Group', false);
     const result = generateGufo(model);
 
@@ -38,7 +42,6 @@ describe('Classes', () => {
   });
 
   it('should transform «collective» class { isExtensional=true }', () => {
-    const model = new Package();
     model.createCollective('FixedGroup', true);
     const result = generateGufo(model);
 
@@ -47,7 +50,6 @@ describe('Classes', () => {
   });
 
   it('should transform «quantity» class', () => {
-    const model = new Package();
     model.createQuantity('Wine');
     const result = generateGufo(model);
 
@@ -56,7 +58,6 @@ describe('Classes', () => {
   });
 
   it('should transform «relator» class', () => {
-    const model = new Package();
     model.createRelator('Marriage');
     const result = generateGufo(model);
 
@@ -65,7 +66,6 @@ describe('Classes', () => {
   });
 
   it('should transform «mode» class { allowed=[intrinsic-mode] }', () => {
-    const model = new Package();
     model.createIntrinsicMode('Skill');
     const result = generateGufo(model);
 
@@ -74,7 +74,6 @@ describe('Classes', () => {
   });
 
   it('should transform «mode» class { allowed=[extrinsic-mode] }', () => {
-    const model = new Package();
     model.createExtrinsicMode('Love');
     const result = generateGufo(model);
 
@@ -84,7 +83,6 @@ describe('Classes', () => {
 
   it('should transform «mode» class { allowed=[intrinsic-mode, extrinsic-mode] }', () => {
     // const _class = OntoumlFactory.createMode('Belief');
-    const model = new Package();
     model.createClass('Belief', ClassStereotype.MODE, [OntologicalNature.intrinsic_mode, OntologicalNature.extrinsic_mode]);
     const result = generateGufo(model);
 
@@ -94,7 +92,6 @@ describe('Classes', () => {
   });
 
   it('should transform «role» class', () => {
-    const model = new Package();
     model.createRole('Student');
     const result = generateGufo(model);
 
@@ -102,7 +99,6 @@ describe('Classes', () => {
   });
 
   it('should transform «phase» class', () => {
-    const model = new Package();
     model.createPhase('Child');
     const result = generateGufo(model);
 
@@ -110,7 +106,6 @@ describe('Classes', () => {
   });
 
   it('should transform «roleMixin» class', () => {
-    const model = new Package();
     model.createRoleMixin('Customer');
     const result = generateGufo(model);
 
@@ -118,7 +113,6 @@ describe('Classes', () => {
   });
 
   it('should transform «phaseMixin» class', () => {
-    const model = new Package();
     model.createPhaseMixin('Infant');
     const result = generateGufo(model);
 
@@ -126,7 +120,6 @@ describe('Classes', () => {
   });
 
   it('should transform «mixin» class', () => {
-    const model = new Package();
     model.createMixin('Seatable');
     const result = generateGufo(model);
 
@@ -134,7 +127,6 @@ describe('Classes', () => {
   });
 
   it('should transform «event» class', () => {
-    const model = new Package();
     model.createEvent('Wedding');
     const result = generateGufo(model);
 
@@ -143,7 +135,6 @@ describe('Classes', () => {
   });
 
   it('should transform «situation» class', () => {
-    const model = new Package();
     model.createSituation('Hazard');
     const result = generateGufo(model);
 

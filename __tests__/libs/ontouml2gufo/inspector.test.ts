@@ -1,10 +1,11 @@
-import { getIssues } from './helpers';
+import { generateGufo, getIssues } from './helpers';
 import { Package, Property } from '@libs/ontouml';
 import { IssueType } from '@libs/ontouml2gufo';
 
 describe('PreAnalysis', () => {
   it('should return invalid base IRI error', () => {
-    const model = new Package({ name: 'My Ontology' });
+    const model = new Package();
+    model.addName('My Ontology');
 
     model.createKind('Person');
 
@@ -15,7 +16,9 @@ describe('PreAnalysis', () => {
   });
 
   it('should return invalid custom package prefix error', () => {
-    const model = new Package({ name: 'My Ontology' });
+    const model = new Package();
+    model.addName('My Ontology');
+
     const subpackage = model.createPackage('Subpackage');
 
     subpackage.createKind('Person');
@@ -33,7 +36,8 @@ describe('PreAnalysis', () => {
   });
 
   it('should return invalid custom package uri error', () => {
-    const model = new Package({ name: 'My Ontology' });
+    const model = new Package();
+    model.addName('My Ontology');
     const subpackage = model.createPackage('Subpackage');
 
     subpackage.createKind('Person');
@@ -51,7 +55,8 @@ describe('PreAnalysis', () => {
   });
 
   it('should return invalid package prefix error', () => {
-    const model = new Package({ name: 'My Ontology' });
+    const model = new Package();
+    model.addName('My Ontology');
     const owlpackage = model.createPackage('owl');
 
     owlpackage.createKind('Person');
@@ -63,20 +68,22 @@ describe('PreAnalysis', () => {
   });
 
   it('should return invalid package uri error', () => {
-    const model = new Package({ name: 'My Ontology' });
+    const model = new Package();
+    model.addName('My Ontology');
     const owlpackage = model.createPackage('owl#');
 
     owlpackage.createKind('Person');
 
     const issues = getIssues(model, { baseIri: 'http://www.w3.org/2002/07', prefixPackages: true });
-    const issue = issues.find(i => i.code === IssueType.INVALID_PACKAGE_URI.code);
+    const issue = issues.find((i) => i.code === IssueType.INVALID_PACKAGE_URI.code);
 
     expect(issue).toBeTruthy();
     expect(issue.data.uri).toEqual('http://www.w3.org/2002/07/owl#');
   });
 
   it('should return repeated names error: 2 classes named "Person"', () => {
-    const model = new Package({ name: 'My Ontology' });
+    const model = new Package();
+    model.addName('My Ontology');
 
     model.createKind('Person');
     model.createKind('Person');
@@ -89,7 +96,8 @@ describe('PreAnalysis', () => {
   });
 
   it('should return repeated names error: 1 class and 1 attribute named "Person"', () => {
-    const model = new Package({ name: 'My Ontology' });
+    const model = new Package();
+    model.addName('My Ontology');
     const person = model.createKind('Person');
     person.createAttribute(person, 'Person');
 
@@ -101,7 +109,8 @@ describe('PreAnalysis', () => {
   });
 
   it('should return missing relation name error', () => {
-    const model = new Package({ name: 'My Ontology' });
+    const model = new Package();
+    model.addName('My Ontology');
     const person = model.createKind('Person');
     const knows = model.createMaterialRelation(person, person);
 
@@ -112,7 +121,8 @@ describe('PreAnalysis', () => {
   });
 
   it('should return missing inverse relation name error', () => {
-    const model = new Package({ name: 'My Ontology' });
+    const model = new Package();
+    model.addName('My Ontology');
     const person = model.createKind('Person');
     const knows = model.createMaterialRelation(person, person, 'knows');
 
@@ -123,7 +133,8 @@ describe('PreAnalysis', () => {
   });
 
   it('should return missing source cardinality error', () => {
-    const model = new Package({ name: 'My Ontology' });
+    const model = new Package();
+    model.addName('My Ontology');
     const person = model.createKind('Person');
     const knows = model.createMaterialRelation(person, person, 'knows');
     knows.getSourceEnd().cardinality = null;
@@ -135,7 +146,8 @@ describe('PreAnalysis', () => {
   });
 
   it('should return missing target cardinality error', () => {
-    const model = new Package({ name: 'My Ontology' });
+    const model = new Package();
+    model.addName('My Ontology');
     const person = model.createKind('Person');
     const knows = model.createMaterialRelation(person, person, 'knows');
     knows.getTargetEnd().cardinality = null;
@@ -147,11 +159,10 @@ describe('PreAnalysis', () => {
   });
 
   it('should return inexistent attribute type error', () => {
-    const model = new Package({ name: 'My Ontology' });
+    const model = new Package();
+    model.addName('My Ontology');
     const person = model.createKind('Person');
-
-    person.properties = [new Property({ name: 'name' })];
-
+    person.createAttribute(null, 'name');
     const issue = getIssues(model)[0];
 
     expect(issue.code).toEqual(IssueType.MISSING_ATTRIBUTE_TYPE.code);

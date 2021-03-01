@@ -126,7 +126,7 @@ describe('URI generation duplicate names', () => {
       const model = new Package();
       const class1 = model.createKind('Person');
       const relation = model.createMaterialRelation(class1, class1, 'knows');
-      relation.getTargetEnd().name = 'Person';
+      relation.getTargetEnd().addName('Person');
 
       const uriManager = getUriManager(model);
       const classUri = uriManager.getUri(class1);

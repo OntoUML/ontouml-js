@@ -44,8 +44,11 @@ describe(`${OntoumlVerification.name} tests`, () => {
     });
 
     it('Verifying a fully-featured model should not throw exceptions', () => {
-      const project = new Project({ name: 'Project' });
-      const model = project.createModel({ name: 'Model' });
+      const project = new Project();
+      const model = project.createModel();
+
+      project.setName('Project');
+      model.setName('Model');
 
       const agent = model.createCategory('Agent');
       const person = model.createKind('Person');
@@ -55,9 +58,9 @@ describe(`${OntoumlVerification.name} tests`, () => {
 
       status.createLiteral('Active');
       status.createLiteral('Inactive');
-      agent.createAttribute(text, { name: 'name' });
-      agent.createAttribute(status, { name: 'status' });
-      person.createAttribute(text, { name: 'surname' });
+      agent.createAttribute(text, 'name');
+      agent.createAttribute(status, 'status');
+      person.createAttribute(text, 'surname');
 
       model.createMaterialRelation(person, organization, 'works-for');
 

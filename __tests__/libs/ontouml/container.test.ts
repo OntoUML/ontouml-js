@@ -1,9 +1,9 @@
-import { Class, ModelElement, Package, Project, Relation } from '@libs/ontouml/';
+import { Class, OntoumlElement, Package, Project, Relation } from '@libs/ontouml';
 
 describe('Container tests', () => {
   it('Get project contents - empty project', () => {
     const project: Project = new Project();
-    let contents: ModelElement[] = project.getContents();
+    let contents: OntoumlElement[] = project.getContents();
     expect(contents).toBeInstanceOf(Array);
     expect(contents.length).toEqual(0);
 
@@ -25,7 +25,7 @@ describe('Container tests', () => {
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    let contents: ModelElement[] = project.getContents();
+    let contents: OntoumlElement[] = project.getContents();
     expect(contents).toBeInstanceOf(Array);
     expect(contents.length).toEqual(1);
 
@@ -52,14 +52,18 @@ describe('Container tests', () => {
     const packageThree = new Package();
 
     // Multiple container for "levelTwoPackage"
-    packageOne.contents = [packageTwo, packageThree];
-    packageTwo.contents = [packageThree];
+    packageOne.setContents([packageTwo, packageThree]);
+    packageTwo.setContents([packageThree]);
 
-    expect(() => packageOne.getAllContents()).toThrowError();
+    expect(() => packageOne.getAllContents()).not.toThrowError();
+    expect(packageOne.getContents()).toHaveLength(1);
+    expect(packageOne.getContents()).toContain(packageTwo);
+    expect(packageTwo.getContents()).toHaveLength(1);
+    expect(packageTwo.getContents()).toContain(packageThree);
 
     // Circular containment of "model"
-    packageOne.contents = [packageTwo];
-    packageTwo.contents = [packageOne];
+    packageOne.setContents([packageTwo]);
+    packageTwo.setContents([packageOne]);
 
     expect(() => packageOne.getAllContents()).toThrowError();
   });
@@ -107,7 +111,7 @@ describe('Container tests', () => {
     const admired = admires.createTargetEnd({ propertyType: person });
 
     // TODO: consider bringing jest-extended into the project for matchers like toIncludeAllMembers([members])
-    let contents: ModelElement[] = admires.getContents();
+    let contents: OntoumlElement[] = admires.getContents();
     expect(contents).toContain(admiree);
     expect(contents).toContain(admired);
     expect(contents.length).toEqual(2);
