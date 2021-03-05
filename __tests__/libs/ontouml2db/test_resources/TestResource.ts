@@ -6,6 +6,4 @@ export interface TestResource {
   title: string;
   checker: GraphChecker;
   project: Project;
-  // model: object;
-  // modelManager: ModelManager;
 }

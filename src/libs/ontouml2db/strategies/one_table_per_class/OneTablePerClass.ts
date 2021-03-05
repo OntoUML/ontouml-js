@@ -1,7 +1,6 @@
 import { IStrategy } from '@libs/ontouml2db/strategies/IStrategy';
 import { Graph } from '@libs/ontouml2db/graph/Graph';
 import { GraphGeneralization } from '@libs/ontouml2db/graph/GraphGeneralization';
-import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
 import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
 import { Increment } from '@libs/ontouml2db/util/Increment';
 import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
@@ -32,7 +31,6 @@ export class OneTablePerClass implements IStrategy {
         generalization.getSpecific().addRelation(newRelation);
         graph.addRelation(newRelation);
 
-        //graph.removeAssociation( generalization );
         toDestroy.push(generalization);
       }
     }

@@ -11,6 +11,7 @@ import { Oracle } from '@libs/ontouml2db/supported_database/Oracle';
 import { Postgre } from '@libs/ontouml2db/supported_database/Postgre';
 import { SqlServer } from '@libs/ontouml2db/supported_database/SqlServer';
 import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
+import { Generic } from '../supported_database/Generic';
 
 export class GenerateConnection {
   static getFile(options: OntoUML2DBOptions): string {
@@ -23,6 +24,9 @@ export class GenerateConnection {
 
   static getDatabase(db: DBMSSupported): IDBMS {
     switch (db) {
+      case DBMSSupported.GENERIC_SCHEMA: {
+        return new Generic();
+      }
       case DBMSSupported.H2: {
         return new H2();
       }

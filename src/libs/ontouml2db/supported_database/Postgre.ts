@@ -9,13 +9,10 @@ import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 import { OntoUML2DBOptions } from '@libs/ontouml2db/OntoUML2DBOptions';
 import { NodePropertyEnumeration } from '@libs/ontouml2db/graph/NodePropertyEnumeration';
 import { Util } from '@libs/ontouml2db/util/Util';
-import { Graph } from '@libs/ontouml2db/graph/Graph';
-import { Increment } from '@libs/ontouml2db/util/Increment';
 
 export class Postgre extends Generic implements IDBMS {
   constructor() {
     super();
-    this.types = new Map();
     this.types.set('boolean', 'BOOLEAN');
     this.types.set('byte', 'BYTEA(4)');
     this.types.set('double', 'FLOAT(8)');
@@ -63,7 +60,7 @@ export class Postgre extends Generic implements IDBMS {
 
     return ddl;
   }
-
+  /*
   createForeignKeys(graph: Graph): string {
     let ddl: string = '';
 
@@ -93,7 +90,7 @@ export class Postgre extends Generic implements IDBMS {
     }
     return ddl;
   }
-
+*/
   getConnectionToProtege(options: OntoUML2DBOptions): string {
     let stringConnection: string = '';
 

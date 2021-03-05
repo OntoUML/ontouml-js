@@ -4,7 +4,6 @@
  */
 
 import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
-//import { Tracker } from '@libs/ontouml2db/graph/REM_Tracker';
 
 export class TrackerChecker {
   private sourceNodeName: string;

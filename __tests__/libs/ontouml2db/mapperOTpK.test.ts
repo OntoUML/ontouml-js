@@ -3,11 +3,10 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { StrategyType } from '@libs/ontouml2db/constants/StrategyType';
-import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
-import { OntoUML2DB } from '@libs/ontouml2db/OntoUML2DB';
-import { OntoUML2DBOptions } from '@libs/ontouml2db/OntoUML2DBOptions';
 import { TestResource } from './test_resources/TestResource';
+import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
+
+import { OntoUML2DB, OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
 import { baseExample } from './test_resources/baseExample';
 import { test_001 } from './test_resources/001_simple_flattening';
 import { test_002 } from './test_resources/002_flatting_with_duplicate_attributes';
@@ -37,11 +36,10 @@ import { test_025 } from './test_resources/025_lifting_gs_overlapping_incomplete
 import { test_026 } from './test_resources/026_flatting_to_class_association';
 import { test_027 } from './test_resources/027_lifting_multiple_relations_to_remake';
 import { test_028 } from './test_resources/028_multivalued_property';
+import { test_034 } from './test_resources/034_lifting_with_duplicate_attributes';
 
-const testResources: TestResource[] = [
-  baseExample,
+const testResourcesRight: TestResource[] = [
   test_001,
-  test_002,
   test_003,
   test_004,
   test_005,
@@ -67,10 +65,14 @@ const testResources: TestResource[] = [
   test_025,
   test_026,
   test_027,
-  test_028
+  test_028,
+  //test_029,30,31,32,33 are tested in dbms_script.test
+  baseExample
 ];
 
-let options: Partial<OntoUML2DBOptions> = {
+const testResourcesWrong: TestResource[] = [test_002, test_034];
+
+const options: Partial<OntoUML2DBOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
   targetDBMS: DBMSSupported.GENERIC_SCHEMA,
   isStandardizeNames: true,
@@ -80,24 +82,36 @@ let options: Partial<OntoUML2DBOptions> = {
   passwordConnection: 'sa'
 };
 
-function testTransformation(model, checker) {
-  let mapper = new OntoUML2DB(model, options);
-  mapper.getRelationalSchema();
+describe('Testing One Table per Kind mapper.', () => {
+  let service: OntoUML2DB;
+  let files;
 
-  checker.setTransformation(mapper);
+  describe('Correct models', () => {
+    for (const testResource of testResourcesRight) {
+      it(`Test model: '${testResource.title}'`, () => {
+        expect(() => {
+          service = new OntoUML2DB(testResource.project, options);
+          files = service.run();
+        }).not.toThrow();
 
-  let result = checker.check();
+        //console.log(files.result.schema);
 
-  if (result != '') {
-    console.log(mapper.getSourceGraph().toString());
-    expect(result).toBe('');
-  }
-}
+        testResource.checker.setTransformation(service);
+        testResource.checker.setSchema(files.result.schema);
 
-describe('Database transformation test', () => {
-  let title: string;
-  for (const testResource of testResources) {
-    title = testResource.title;
-    test(title, () => testTransformation(testResource.modelManager, testResource.checker));
-  }
+        expect(testResource.checker.check()).toBe('');
+      });
+    }
+  });
+
+  describe('Wrong models', () => {
+    for (const testResource of testResourcesWrong) {
+      it(`Test model: '${testResource.title}'`, () => {
+        expect(() => {
+          service = new OntoUML2DB(testResource.project, options);
+          service.run();
+        }).toThrow(Error);
+      });
+    }
+  });
 });

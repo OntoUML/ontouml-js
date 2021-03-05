@@ -16,6 +16,11 @@ export class PropertyContainer implements IPropertyContainer {
 
   addProperty(property: NodeProperty): void {
     if (!this.existsPropertyName(property.getName())) {
+      if (this.existsPropertyName(property.getName())) {
+        throw new Error(
+          `The '${property.getName()}' attribute is repeated between two classes of a generalization.[PropertyContainer.addProperty]`
+        );
+      }
       this.properties.push(property);
     }
   }
@@ -27,17 +32,23 @@ export class PropertyContainer implements IPropertyContainer {
   }
 
   addPropertyAt(index: number, property: NodeProperty): void {
-    if (!this.existsPropertyName(property.getName())) {
-      this.properties.splice(index, 0, property);
+    if (this.existsPropertyName(property.getName())) {
+      throw new Error(
+        `The '${property.getName()}' attribute is repeated between two classes of a generalization.[PropertyContainer.addPropertyAt]`
+      );
     }
+    this.properties.splice(index, 0, property);
   }
 
   addPropertiesAt(index: number, properties: NodeProperty[]): void {
     properties.forEach((property: NodeProperty) => {
-      if (!this.existsPropertyName(property.getName())) {
-        this.addPropertyAt(index, property);
-        index++;
+      if (this.existsPropertyName(property.getName())) {
+        throw new Error(
+          `The '${property.getName()}' attribute is repeated between two classes of a generalization.[PropertyContainer.addPropertiesAt]`
+        );
       }
+      this.addPropertyAt(index, property);
+      index++;
     });
   }
 

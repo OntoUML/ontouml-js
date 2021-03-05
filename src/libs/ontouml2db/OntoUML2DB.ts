@@ -32,9 +32,6 @@ export class OntoUML2DB implements Service {
     this.tracker = new Tracker(this.graph);
 
     this.options = opt ? new OntoUML2DBOptions(opt) : new OntoUML2DBOptions();
-
-    this.doMapping();
-    this.transformToEntityRelationship();
   }
 
   /**
@@ -60,10 +57,12 @@ export class OntoUML2DB implements Service {
 
   // TODO: review the implementation of run(), move the actual behavior into the method, and delete unnecessary methods.
   run(): { result: any; issues?: ServiceIssue[] } {
+    this.doMapping();
+    this.transformToEntityRelationship();
     return {
       result: {
         schema: this.getRelationalSchema(),
-        odba: this.getOBDAFile(),
+        obda: this.getOBDAFile(),
         connection: this.getProtegeConnection()
       }
     };

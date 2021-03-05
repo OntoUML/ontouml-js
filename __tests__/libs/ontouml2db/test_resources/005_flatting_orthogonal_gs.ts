@@ -1,12 +1,55 @@
-import { ModelManager } from '@libs/model';
+/**
+ *
+ * Author: Gustavo Ludovico Guidoni
+ */
+
+import { Project } from '@libs/ontouml';
 import { GraphChecker } from './graph_tester/GraphChecker';
 import { NodeChecker } from './graph_tester/NodeChecker';
 import { PropertyChecker } from './graph_tester/PropertyChecker';
+import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
-const jsonModel = require('./test_005_flatting_orthogonal_gs.json');
+// ****************************************
+//       FOR SCHEMA VALIDATION
+// ****************************************
+const scriptPerson =
+  'CREATE TABLE person ( ' +
+  '         person_id               INTEGER        NOT NULL PRIMARY KEY' +
+  ',        name                    VARCHAR(20)    NOT NULL' +
+  ',        birth_date              DATE           NOT NULL' +
+  '); ';
 
+const scriptOrganization =
+  'CREATE TABLE organization ( ' +
+  '         organization_id         INTEGER        NOT NULL PRIMARY KEY' +
+  ',        name                    VARCHAR(20)    NOT NULL' +
+  ',        address                 VARCHAR(20)    NOT NULL' +
+  '); ';
+
+const scriptPersonX =
+  'CREATE TABLE person_x ( ' +
+  '         person_x_id             INTEGER        NOT NULL PRIMARY KEY' +
+  ',        name                    VARCHAR(20)    NOT NULL' +
+  '); ';
+
+const scriptOrganizationX =
+  'CREATE TABLE organization_x ( ' +
+  '         organization_x_id       INTEGER        NOT NULL PRIMARY KEY' +
+  ',        name                    VARCHAR(20)    NOT NULL' +
+  '); ';
+
+const scriptTestX =
+  'CREATE TABLE test_x ( ' +
+  '         test_x_id               INTEGER        NOT NULL PRIMARY KEY' +
+  ',        name                    VARCHAR(20)    NOT NULL' +
+  ',        test                    BIT            NULL' +
+  '); ';
+
+// ****************************************
+//       CHECK RESULTING GRAPH
+// ****************************************
 const gChecker_005_flatting_orthogonal_gs = new GraphChecker()
   .addNode(
     new NodeChecker('person')
@@ -45,11 +88,60 @@ const gChecker_005_flatting_orthogonal_gs = new GraphChecker()
   .addTracker(new TrackerChecker('Organization', 'organization'))
   .addTracker(new TrackerChecker('PersonX', 'person_x'))
   .addTracker(new TrackerChecker('OrganizationX', 'organization_x'))
-  .addTracker(new TrackerChecker('TestX', 'test_x'));
+  .addTracker(new TrackerChecker('TestX', 'test_x'))
+  .setNumberOfTablesToFindInScript(5)
+  .setNumberOfFkToFindInScript(0)
+  .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'))
+  .addScriptChecker(new ScriptChecker(scriptOrganization, 'The ORFANIZATION table is different than expected.'))
+  .addScriptChecker(new ScriptChecker(scriptPersonX, 'The PERSON_X table is different than expected.'))
+  .addScriptChecker(new ScriptChecker(scriptOrganizationX, 'The ORFANIZATION_X table is different than expected.'))
+  .addScriptChecker(new ScriptChecker(scriptTestX, 'The TEST_X table is different than expected.'));
 
+// ****************************************
+//       M O D E L
+// ****************************************
+const disjoint = true;
+const overlappig = false;
+const complete = true;
+const incomplete = false;
+
+const project = new Project();
+const model = project.createModel();
+// CREATE TYPES
+const _string = model.createDatatype('string');
+const _date = model.createDatatype('Date');
+const _boolean = model.createDatatype('boolean');
+// CREATE CLASSES
+const namedEntity = model.createCategory('NamedEntity');
+const person = model.createKind('Person');
+const organization = model.createKind('Organization');
+const personX = model.createKind('PersonX');
+const organizationX = model.createKind('OrganizationX');
+const testX = model.createKind('TestX');
+// CREATE PROPERTIES
+namedEntity.createAttribute(_string, 'name').cardinality.setOneToOne();
+person.createAttribute(_date, 'birthDate').cardinality.setOneToOne();
+organization.createAttribute(_string, 'address').cardinality.setOneToOne();
+testX.createAttribute(_boolean, 'test').cardinality.setZeroToOne();
+// CREATE GENERALIZATIONS
+const genNamedEntityPerson = model.createGeneralization(namedEntity, person);
+const genNamedEntityOrganization = model.createGeneralization(namedEntity, organization);
+const genNamedEntityPersonX = model.createGeneralization(namedEntity, personX);
+const genNamedEntityOrganizationX = model.createGeneralization(namedEntity, organizationX);
+const genNamedEntityTestX = model.createGeneralization(namedEntity, testX);
+// CRETATE GENERALIZATION SET
+model.createGeneralizationSet([genNamedEntityPerson, genNamedEntityOrganization], disjoint, complete, null, 'NamedEntityType');
+model.createGeneralizationSet(
+  [genNamedEntityPersonX, genNamedEntityOrganizationX, genNamedEntityTestX],
+  overlappig,
+  incomplete,
+  null,
+  'GSType'
+);
+
+// ****************************************
 export const test_005: TestResource = {
-  title: '005 Evaluates flattening involving two orthogonal generalizations sets to each other',
+  title: '005 - Flattening involving two orthogonal generalizations sets to each other',
   checker: gChecker_005_flatting_orthogonal_gs,
-  model: jsonModel,
-  modelManager: new ModelManager(jsonModel)
+  project
 };

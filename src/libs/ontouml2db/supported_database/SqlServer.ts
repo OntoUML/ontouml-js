@@ -11,7 +11,6 @@ import { OntoUML2DBOptions } from '@libs/ontouml2db/OntoUML2DBOptions';
 export class SqlServer extends Generic implements IDBMS {
   constructor() {
     super();
-    this.types = new Map();
     this.types.set('boolean', 'BIT');
     this.types.set('byte', 'BINARY(8)');
     this.types.set('double', 'REAL');
@@ -36,8 +35,8 @@ export class SqlServer extends Generic implements IDBMS {
     let today = new Date();
 
     stringConnection += '#Ontouml2DB ' + today.toDateString() + '\n';
-    stringConnection += 'jdbc.url=jdbc:h2:tcp:' + '//' + options.hostName + '/' + options.databaseName + '\n';
-    stringConnection += 'jdbc.driver=org.h2.Driver' + '\n';
+    stringConnection += 'jdbc.url=jdbc:sqlserver:tcp:' + '//' + options.hostName + '/' + options.databaseName + '\n';
+    stringConnection += 'jdbc.driver=org.sqlserver.Driver' + '\n';
     stringConnection += 'jdbc.user=' + options.userConnection + '\n';
     stringConnection += 'jdbc.name=ontouml2-db00-ufes-nemo-000000000001' + '\n';
     stringConnection += 'jdbc.password=' + options.passwordConnection + '\n';

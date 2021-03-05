@@ -1,10 +1,32 @@
-import { ModelManager } from '@libs/model';
+/**
+ *
+ * Author: Gustavo Ludovico Guidoni
+ */
+
+import { Project } from '@libs/ontouml';
 import { GraphChecker } from './graph_tester/GraphChecker';
 import { NodeChecker } from './graph_tester/NodeChecker';
 import { PropertyChecker } from './graph_tester/PropertyChecker';
+import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
+// ****************************************
+//       FOR SCHEMA VALIDATION
+// ****************************************
+const scriptPerson =
+  'CREATE TABLE person ( ' +
+  '         person_id               INTEGER        NOT NULL PRIMARY KEY' +
+  ',        birth_date              DATE           NOT NULL' +
+  ',        test_role_x             INTEGER        NULL' +
+  ',        is_role_x               BIT            NOT NULL DEFAULT FALSE' +
+  ',        test_employee           INTEGER        NULL' +
+  ',        is_employee             BIT            NOT NULL DEFAULT FALSE' +
+  '); ';
+
+// ****************************************
+//       CHECK RESULTING GRAPH
+// ****************************************
 const gChecker_013_lifting_cascade_generalization = new GraphChecker()
   .addNode(
     new NodeChecker('person')
@@ -17,13 +39,34 @@ const gChecker_013_lifting_cascade_generalization = new GraphChecker()
   )
   .addTracker(new TrackerChecker('Person', 'person'))
   .addTracker(new TrackerChecker('RoleX', 'person'))
-  .addTracker(new TrackerChecker('Employee', 'person'));
+  .addTracker(new TrackerChecker('Employee', 'person'))
+  .setNumberOfTablesToFindInScript(1)
+  .setNumberOfFkToFindInScript(0)
+  .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'));
 
-const jsonModel = require('./test_013_lifting_cascade_generalization.json');
+// ****************************************
+//       M O D E L
+// ****************************************
+const project = new Project();
+const model = project.createModel();
+// CREATE TYPES
+const _date = model.createDatatype('Date');
+const _int = model.createDatatype('int');
+// CREATE CLASSES
+const person = model.createKind('Person');
+const roleX = model.createRole('RoleX');
+const employee = model.createRole('Employee');
+// CREATE PROPERTIES
+person.createAttribute(_date, 'birthDate').cardinality.setOneToOne();
+roleX.createAttribute(_int, 'testRoleX').cardinality.setOneToOne();
+employee.createAttribute(_int, 'testEmployee').cardinality.setOneToOne();
+// CREATE GENERALIZATIONS
+model.createGeneralization(person, roleX);
+model.createGeneralization(person, employee);
 
+// ****************************************
 export const test_013: TestResource = {
-  title: '013 Evaluate the lifting with cascading generalizations',
+  title: '013 - Lifting with cascading generalizations',
   checker: gChecker_013_lifting_cascade_generalization,
-  model: jsonModel,
-  modelManager: new ModelManager(jsonModel)
+  project
 };

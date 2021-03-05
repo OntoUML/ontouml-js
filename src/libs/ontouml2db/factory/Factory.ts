@@ -11,12 +11,7 @@ import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
 import { GraphGeneralization } from '@libs/ontouml2db/graph/GraphGeneralization';
 import { GraphGeneralizationSet } from '@libs/ontouml2db/graph/GraphGeneralizationSet';
-
-// import { ModelManager } from '@libs/model';
-// import { IClass, IGeneralization, IRelation, IGeneralizationSet } from '@types';
-// import { OntoumlType, ClassStereotype } from '@constants/.';
-
-import { Project, ClassStereotype, Class, Generalization, Relation, GeneralizationSet, CARDINALITY_MAX } from '@libs/ontouml';
+import { Project, ClassStereotype, Class, Generalization, Relation, GeneralizationSet } from '@libs/ontouml';
 
 export class Factory {
   graph: Graph;
@@ -45,7 +40,6 @@ export class Factory {
    *********************************************************************/
   putClasses(): void {
     let classes: Class[];
-    // classes = this.modelManager.rootPackage.getAllContentsByType([OntoumlType.CLASS_TYPE]) as Class[];
     classes = this.project.getAllClasses();
 
     classes.forEach((_class: Class) => {
@@ -99,7 +93,16 @@ export class Factory {
   }
 
   getUfoStereotype(_class: Class): ClassStereotype {
-    return _class.stereotype;
+    if (Object.values(ClassStereotype).includes(_class.stereotype)) {
+      if (
+        _class.stereotype != ClassStereotype.TYPE &&
+        _class.stereotype != ClassStereotype.DATATYPE &&
+        _class.stereotype != ClassStereotype.ABSTRACT
+      )
+        return _class.stereotype;
+      else return null;
+    }
+    return null;
   }
 
   /********************************************************************

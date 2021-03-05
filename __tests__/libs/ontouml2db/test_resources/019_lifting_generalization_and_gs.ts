@@ -1,10 +1,33 @@
-import { ModelManager } from '@libs/model';
+/**
+ *
+ * Author: Gustavo Ludovico Guidoni
+ */
+
+import { Project } from '@libs/ontouml';
 import { GraphChecker } from './graph_tester/GraphChecker';
 import { NodeChecker } from './graph_tester/NodeChecker';
 import { PropertyChecker } from './graph_tester/PropertyChecker';
+import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 
+// ****************************************
+//       FOR SCHEMA VALIDATION
+// ****************************************
+const scriptPerson =
+  'CREATE TABLE person ( ' +
+  '         person_id               INTEGER        NOT NULL PRIMARY KEY' +
+  ',        birth_date              DATE           NOT NULL' +
+  ',        rg                      VARCHAR(20)    NULL' +
+  ',        is_brazilian_citizen    BIT            NOT NULL DEFAULT FALSE' +
+  ',        ci                      VARCHAR(20)    NULL' +
+  ',        is_italian_citizen      BIT            NOT NULL DEFAULT FALSE' +
+  ",        life_phase_enum         ENUM('CHILD','TEENAGER','ADULT')  NOT NULL" +
+  '); ';
+
+// ****************************************
+//       CHECK RESULTING GRAPH
+// ****************************************
 const gChecker_019_lifting_generalization_and_gs = new GraphChecker()
   .addNode(
     new NodeChecker('person')
@@ -21,13 +44,45 @@ const gChecker_019_lifting_generalization_and_gs = new GraphChecker()
   .addTracker(new TrackerChecker('Teenager', 'person'))
   .addTracker(new TrackerChecker('Child', 'person'))
   .addTracker(new TrackerChecker('BrazilianCitizen', 'person'))
-  .addTracker(new TrackerChecker('ItalianCitizen', 'person'));
+  .addTracker(new TrackerChecker('ItalianCitizen', 'person'))
+  .setNumberOfTablesToFindInScript(1)
+  .setNumberOfFkToFindInScript(0)
+  .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'));
 
-const jsonModel = require('./test_019_lifting_generalization_and_gs.json');
+// ****************************************
+//       M O D E L
+// ****************************************
+const disjoint = true;
+const complete = true;
 
+const project = new Project();
+const model = project.createModel();
+// CREATE TYPES
+const _string = model.createDatatype('string');
+const _date = model.createDatatype('Date');
+// CREATE CLASSES
+const person = model.createKind('Person');
+const child = model.createPhase('Child');
+const teenager = model.createPhase('Teenager');
+const adult = model.createPhase('Adult');
+const brazilian = model.createRole('BrazilianCitizen');
+const italian = model.createRole('ItalianCitizen');
+// CREATE PROPERTIES
+person.createAttribute(_date, 'birthDate').cardinality.setOneToOne();
+brazilian.createAttribute(_string, 'RG').cardinality.setOneToOne();
+italian.createAttribute(_string, 'CI').cardinality.setOneToOne();
+// CREATE GENERALIZATIONS
+model.createGeneralization(person, brazilian);
+model.createGeneralization(person, italian);
+const genChild = model.createGeneralization(person, child);
+const genTeenager = model.createGeneralization(person, teenager);
+const genAdult = model.createGeneralization(person, adult);
+// CRETATE GENERALIZATION SET
+model.createGeneralizationSet([genChild, genTeenager, genAdult], disjoint, complete, null, 'LifePhase');
+
+// ****************************************
 export const test_019: TestResource = {
-  title: '019 Evaluate the lifting with one generalization set and two simple generalizations',
+  title: '019 - Lifting with one generalization set and two simple generalizations',
   checker: gChecker_019_lifting_generalization_and_gs,
-  model: jsonModel,
-  modelManager: new ModelManager(jsonModel)
+  project
 };

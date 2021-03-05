@@ -15,27 +15,33 @@ import { ScriptChecker } from './graph_tester/ScriptChecker';
 //       FOR SCHEMA VALIDATION
 // ****************************************
 const scriptPerson =
-  '    CREATE TABLE person ( ' +
+  'CREATE TABLE person ( ' +
   '         person_id               INTEGER        NOT NULL PRIMARY KEY' +
-  ',        x2                      VARCHAR(20)    NULL' +
-  ',        x1                      INTEGER        NULL' +
-  ',        x3                      VARCHAR(20)    NULL' +
-  ');';
+  ',        name                    VARCHAR(20)    NULL' +
+  ',        x1                      VARCHAR(20)    NULL' +
+  '); ';
 
 // ****************************************
 //       CHECK RESULTING GRAPH
 // ****************************************
 
-const gChecker_002_flatting_with_duplicate_attributes = new GraphChecker()
+const gChecker_034_lifting_with_duplicate_attributes = new GraphChecker()
   .addNode(
     new NodeChecker('person')
       .addProperty(new PropertyChecker('person_id', false))
+      .addProperty(new PropertyChecker('name', true))
       .addProperty(new PropertyChecker('x1', true))
-      .addProperty(new PropertyChecker('x2', true))
-      .addProperty(new PropertyChecker('x3', true))
   )
-  .addTracker(new TrackerChecker('NamedEntity', 'person'))
+  .addNode(
+    new NodeChecker('nationality')
+      .addProperty(new PropertyChecker('nationality_id', false))
+      .addProperty(new PropertyChecker('person_id', false))
+      .addProperty(new PropertyChecker('nationality_enum', false, ['BRAZILIANCITIZEN', 'ITALIANCITIZEN']))
+  )
   .addTracker(new TrackerChecker('Person', 'person'))
+  .addTracker(new TrackerChecker('BrazilianCitizen', 'person'))
+  .addTracker(new TrackerChecker('ItalianCitizen', 'person'))
+
   .setNumberOfTablesToFindInScript(1)
   .setNumberOfFkToFindInScript(0)
   .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'));
@@ -43,27 +49,33 @@ const gChecker_002_flatting_with_duplicate_attributes = new GraphChecker()
 // ****************************************
 //       M O D E L
 // ****************************************
+const overlappig = false;
+const incomplete = false;
+
 const project = new Project();
 const model = project.createModel();
 
 // CREATE TYPES
 const _int = model.createDatatype('int');
 const _string = model.createDatatype('string');
-
 // CREATE CLASSES
-const namedEntity = model.createCategory('NamedEntity');
 const person = model.createKind('Person');
+const brazilianCitizen = model.createSubkind('BrazilianCitizen');
+const italianCitizen = model.createSubkind('ItalianCitizen');
 // CREATE PROPERTIES
-namedEntity.createAttribute(_int, 'x1');
-namedEntity.createAttribute(_string, 'x2');
-person.createAttribute(_int, 'x1');
-person.createAttribute(_string, 'x3');
+person.createAttribute(_string, 'name');
+brazilianCitizen.createAttribute(_int, 'x1');
+italianCitizen.createAttribute(_int, 'x1');
 // CREATE GENERALIZATIONS
-model.createGeneralization(namedEntity, person);
+const genPersonBrazilian = model.createGeneralization(person, brazilianCitizen);
+const genersonItalian = model.createGeneralization(person, italianCitizen);
+// CRETATE GENERALIZATION SET
+model.createGeneralizationSet([genPersonBrazilian, genersonItalian], overlappig, incomplete, null, 'Nationality');
 
-// ****************************************
-export const test_002: TestResource = {
-  title: '002 - Flattening where there are attributes with the same name in the superclass and subclass',
-  checker: gChecker_002_flatting_with_duplicate_attributes,
+// ******************************
+
+export const test_034: TestResource = {
+  title: '034 - Evaluates lifting involving generalizations where there are attributes with the same name in the subclasses',
+  checker: gChecker_034_lifting_with_duplicate_attributes,
   project
 };
