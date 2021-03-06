@@ -169,7 +169,7 @@ export class Tracker {
    * @param sourceNodeName
    * @param targetNodeName
    */
-   existsTracerByName(sourceNodeName: string, targetNodeName: string): boolean {
+  existsTracerByName(sourceNodeName: string, targetNodeName: string): boolean {
     for (let trace of this.traceMap.values()) {
       if (trace.getSourceNode().getName() === sourceNodeName) {
         for (let tracedNode of trace.getTargetNodes().values()) {
