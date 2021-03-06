@@ -23,7 +23,7 @@ export class TrackerChecker {
   }
 
   check(tracker: Tracker): string {
-    if (!tracker.existsTracer(this.sourceNodeName, this.targetNodeName)) {
+    if (!tracker.existsTracerByName(this.sourceNodeName, this.targetNodeName)) {
       return 'Not find the tracer: ' + this.sourceNodeName + ' - ' + this.targetNodeName;
     }
 

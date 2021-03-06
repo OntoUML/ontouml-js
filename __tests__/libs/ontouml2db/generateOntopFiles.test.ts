@@ -20,7 +20,7 @@ let options: Partial<OntoUML2DBOptions> = {
 };
 
 test('Run Example', () => {
-  let ontoUML2DB = new OntoUML2DB(baseExample.modelManager, options);
+  let ontoUML2DB = new OntoUML2DB(baseExample.project, options);
 
   let text = ontoUML2DB.getOBDAFile();
 

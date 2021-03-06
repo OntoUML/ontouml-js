@@ -31,7 +31,7 @@ export class Flatten {
     }
 
     //for tracking
-    tracker.removeNodeFromTraces(node.getId());
+    tracker.removeNodeFromTraces(node);
 
     for (let relation of node.getRelations()) {
       Flatten.flattenAssociation(node, relation, graph);
@@ -44,7 +44,7 @@ export class Flatten {
     generalization.getSpecific().addPropertiesAt(0, generalization.getGeneral().getProperties());
 
     //for tracking between graphs
-    tracker.copyTracesFromTo(generalization.getGeneral().getId(), generalization.getSpecific().getId());
+    tracker.copyTracesFromTo(generalization.getGeneral(), generalization.getSpecific());
   }
 
   static flattenAssociation(flattenNode: Node, relation: GraphRelation, graph: Graph): void {

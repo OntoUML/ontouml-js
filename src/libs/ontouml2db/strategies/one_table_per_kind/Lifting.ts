@@ -64,7 +64,7 @@ export class Lifting {
       node.addProperty(newProperty);
 
       //for the tracking
-      tracker.moveTraceFromTo(generalization.getSpecific().getId(), generalization.getGeneral().getId(), newProperty, true, null);
+      tracker.moveTraceFromTo(generalization.getSpecific(), generalization.getGeneral(), newProperty, true, null);
     }
   }
 
@@ -134,7 +134,7 @@ export class Lifting {
           newEnumerationField.addValue(specializationNode.getName());
           //for the tracking
           tracker.addFilterAtNode(
-            specializationNode.getId(),
+            specializationNode,
             specializationNode,
             newEnumerationField,
             specializationNode.getName(),
@@ -188,8 +188,8 @@ export class Lifting {
     }
 
     //for the tracking
-    tracker.copyTracesFromTo(node.getId(), superNode.getId());
-    tracker.removeNodeFromTraces(node.getId());
+    tracker.copyTracesFromTo(node, superNode);
+    tracker.removeNodeFromTraces(node);
   }
 
   static getNewCardinality(oldCardinality: Cardinality): Cardinality {

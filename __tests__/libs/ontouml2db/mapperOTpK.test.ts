@@ -65,7 +65,7 @@ const testResourcesRight: TestResource[] = [
   test_025,
   test_026,
   test_027,
-  test_028,
+  //test_028,
   //test_029,30,31,32,33 are tested in dbms_script.test
   baseExample
 ];

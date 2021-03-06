@@ -65,7 +65,7 @@ export class SolvesEnumeration {
     }
 
     //for the tracking
-    tracker.removePropertyBelongsToOtherNode(enumNode.getId());
+    tracker.removePropertyBelongsToOtherNode(enumNode);
   }
 
   static getTargetNode(node: Node, relation: GraphRelation): Node {

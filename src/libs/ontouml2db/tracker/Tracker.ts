@@ -12,11 +12,11 @@ import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 
 export class Tracker {
   private traceMap: Map<string, Tracer>;
-  private nodeMap: Map<string, Node>; //important only for search.
+  //private nodeMap: Map<string, Node>; //important only for search.
 
   constructor(graph: Graph) {
     this.traceMap = new Map();
-    this.nodeMap = new Map();
+    //this.nodeMap = new Map();
 
     for (let node of graph.getNodes()) {
       this.createNewTracerForTheSourceNode(node);
@@ -36,7 +36,7 @@ export class Tracker {
 
     this.traceMap.set(node.getId(), trace); //puts the new trace
 
-    this.nodeMap.set(node.getId(), node); //puts the traced nodes
+    //this.nodeMap.set(node.getId(), node); //puts the traced nodes
   }
 
   /**
@@ -54,10 +54,10 @@ export class Tracker {
    * @param value
    * @param propertyBelongsToTheNode
    */
-  moveTraceFromTo(fromID: string, toID: string, property: NodeProperty, value: any, propertyBelongsToTheNode: Node): void {
-    this.addFilterAtNode(fromID, this.nodeMap.get(toID), property, value, propertyBelongsToTheNode);
-    this.copyTracesFromTo(fromID, toID);
-    this.removeNodeFromTraces(fromID);
+  moveTraceFromTo(from: Node, to: Node, property: NodeProperty, value: any, propertyBelongsToTheNode: Node): void {
+    this.addFilterAtNode(from, to, property, value, propertyBelongsToTheNode);
+    this.copyTracesFromTo(from, to);
+    this.removeNodeFromTraces(from);
   }
 
   /**
@@ -65,16 +65,16 @@ export class Tracker {
    * @param fromID
    * @param toID
    */
-  copyTracesFromTo(fromID: string, toID: string): void {
-    let trace = this.traceMap.get(fromID);
+  copyTracesFromTo(from: Node, to: Node): void {
+    let trace = this.traceMap.get(from.getId());
 
-    trace.addTargetNode(this.nodeMap.get(toID));
+    trace.addTargetNode(to);
 
     //change the references presents in the others traces
     for (trace of this.traceMap.values()) {
-      if (trace.existsTraceFor(fromID)) {
-        trace.addTargetNode(this.nodeMap.get(toID));
-        trace.updateSourceRulesToFrom(this.nodeMap.get(fromID), this.nodeMap.get(toID));
+      if (trace.existsTraceFor(from)) {
+        trace.addTargetNode(to);
+        trace.updateSourceRulesToFrom(from, to);
       }
     }
   }
@@ -83,9 +83,9 @@ export class Tracker {
    * Deletes a node from all tracers.
    * @param id
    */
-  removeNodeFromTraces(id: string): void {
+  removeNodeFromTraces(node: Node): void {
     for (let trace of this.traceMap.values()) {
-      trace.removeTrace(id);
+      trace.removeTrace(node);
     }
   }
 
@@ -97,8 +97,8 @@ export class Tracker {
    * @param value
    * @param belongsToTheNode
    */
-  addFilterAtNode(id: string, mappedToTheNode: Node, property: NodeProperty, value: any, belongsToTheNode: Node): void {
-    let trace = this.traceMap.get(id);
+  addFilterAtNode(from: Node, mappedToTheNode: Node, property: NodeProperty, value: any, belongsToTheNode: Node): void {
+    let trace = this.traceMap.get(from.getId());
     trace.newFilter(mappedToTheNode, property, value, belongsToTheNode);
 
     let nextTrace = this.traceMap.get(mappedToTheNode.getId());
@@ -152,11 +152,11 @@ export class Tracker {
    * all traced nodes that the node passed as an argument is not the owner of the property.
    * @param id
    */
-  removePropertyBelongsToOtherNode(id: string) {
+  removePropertyBelongsToOtherNode(node: Node) {
     for (let tracer of this.traceMap.values()) {
       for (let filter of tracer.getFilters()) {
         if (filter.getBelongToOtherNode() != null) {
-          if (filter.getBelongToOtherNode().getId() === id) {
+          if (filter.getBelongToOtherNode().getId() === node.getId()) {
             filter.setBelongToOtherNode(null);
           }
         }
@@ -169,7 +169,7 @@ export class Tracker {
    * @param sourceNodeName
    * @param targetNodeName
    */
-  existsTracer(sourceNodeName: string, targetNodeName: string): boolean {
+   existsTracerByName(sourceNodeName: string, targetNodeName: string): boolean {
     for (let trace of this.traceMap.values()) {
       if (trace.getSourceNode().getName() === sourceNodeName) {
         for (let tracedNode of trace.getTargetNodes().values()) {

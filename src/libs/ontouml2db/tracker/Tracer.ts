@@ -38,8 +38,8 @@ export class Tracer {
    * Informs if the identifies is tracked from the original node.
    * @param id. Identifier to be verified.
    */
-  existsTraceFor(id: string): boolean {
-    return this.targetNodes.has(id);
+  existsTraceFor(node: Node): boolean {
+    return this.targetNodes.has(node.getId());
   }
 
   /**
@@ -47,9 +47,9 @@ export class Tracer {
    * return true. If the node is not tracked, this method do nothing and return false.
    * @param id Node identifier to be removed
    */
-  removeTrace(id: string): boolean {
-    if (this.targetNodes.has(id)) {
-      this.targetNodes.delete(id);
+  removeTrace(node: Node): boolean {
+    if (this.targetNodes.has(node.getId())) {
+      this.targetNodes.delete(node.getId());
       return true;
     } else {
       return false;
