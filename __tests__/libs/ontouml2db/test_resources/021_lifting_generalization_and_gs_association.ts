@@ -12,6 +12,8 @@ import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { Project } from '@libs/ontouml';
+import { OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
+import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -126,8 +128,22 @@ relationB.getSourceEnd().cardinality.setOneToOne();
 relationB.getTargetEnd().cardinality.setZeroToMany();
 
 // ****************************************
+// ** O P T I O N S
+// ****************************************
+const options: Partial<OntoUML2DBOptions> = {
+  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
+  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  isStandardizeNames: true,
+  hostName: 'localhost/~',
+  databaseName: 'RunExample',
+  userConnection: 'sa',
+  passwordConnection: 'sa'
+};
+
+// ****************************************
 export const test_021: TestResource = {
   title: '021 - Lifting with generalizations, one generalization set and association in the subclasses',
   checker: gChecker_021_lifting_generalization_and_gs_association,
-  project
+  project,
+  options
 };

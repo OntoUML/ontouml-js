@@ -12,6 +12,8 @@ import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { Project } from '@libs/ontouml';
+import { OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
+import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -98,9 +100,22 @@ relation.getSourceEnd().cardinality.setOneToOne();
 relation.getTargetEnd().cardinality.setOneToMany();
 
 // ****************************************
+// ** O P T I O N S
+// ****************************************
+const options: Partial<OntoUML2DBOptions> = {
+  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
+  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  isStandardizeNames: true,
+  hostName: 'localhost/~',
+  databaseName: 'RunExample',
+  userConnection: 'sa',
+  passwordConnection: 'sa'
+};
 
+// ****************************************
 export const test_025: TestResource = {
   title: '025 - Lifting with a overlapping and incomplete generalization set',
   checker: gChecker_025_lifting_gs_overlapping_incomplete,
-  project
+  project,
+  options
 };

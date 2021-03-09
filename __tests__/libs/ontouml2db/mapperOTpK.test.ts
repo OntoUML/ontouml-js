@@ -4,9 +4,7 @@
  */
 
 import { TestResource } from './test_resources/TestResource';
-import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
-
-import { OntoUML2DB, OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
+import { OntoUML2DB } from '@libs/ontouml2db';
 import { baseExample } from './test_resources/baseExample';
 import { test_001 } from './test_resources/001_simple_flattening';
 import { test_002 } from './test_resources/002_flatting_with_duplicate_attributes';
@@ -36,6 +34,11 @@ import { test_025 } from './test_resources/025_lifting_gs_overlapping_incomplete
 import { test_026 } from './test_resources/026_flatting_to_class_association';
 import { test_027 } from './test_resources/027_lifting_multiple_relations_to_remake';
 import { test_028 } from './test_resources/028_multivalued_property';
+import { test_029 } from './test_resources/029_h2_script';
+import { test_030 } from './test_resources/030_mysql_script';
+import { test_031 } from './test_resources/031_oracle_script';
+import { test_032 } from './test_resources/032_postgre.script';
+import { test_033 } from './test_resources/033_sqlserver_script';
 import { test_034 } from './test_resources/034_lifting_with_duplicate_attributes';
 
 const testResourcesRight: TestResource[] = [
@@ -65,22 +68,16 @@ const testResourcesRight: TestResource[] = [
   test_025,
   test_026,
   test_027,
-  //test_028,
-  //test_029,30,31,32,33 are tested in dbms_script.test
+  test_028,
+  test_029,
+  test_030,
+  test_031,
+  test_032,
+  test_033,
   baseExample
 ];
 
 const testResourcesWrong: TestResource[] = [test_002, test_034];
-
-const options: Partial<OntoUML2DBOptions> = {
-  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
-  isStandardizeNames: true,
-  hostName: 'localhost/~',
-  databaseName: 'RunExample',
-  userConnection: 'sa',
-  passwordConnection: 'sa'
-};
 
 describe('Testing One Table per Kind mapper.', () => {
   let service: OntoUML2DB;
@@ -90,7 +87,7 @@ describe('Testing One Table per Kind mapper.', () => {
     for (const testResource of testResourcesRight) {
       it(`Test model: '${testResource.title}'`, () => {
         expect(() => {
-          service = new OntoUML2DB(testResource.project, options);
+          service = new OntoUML2DB(testResource.project, testResource.options);
           files = service.run();
         }).not.toThrow();
 
@@ -108,7 +105,7 @@ describe('Testing One Table per Kind mapper.', () => {
     for (const testResource of testResourcesWrong) {
       it(`Test model: '${testResource.title}'`, () => {
         expect(() => {
-          service = new OntoUML2DB(testResource.project, options);
+          service = new OntoUML2DB(testResource.project, testResource.options);
           service.run();
         }).toThrow(Error);
       });

@@ -10,6 +10,8 @@ import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 import { Project } from '@libs/ontouml';
 import { ScriptChecker } from './graph_tester/ScriptChecker';
+import { OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
+import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -62,8 +64,22 @@ person.createAttribute(_string, 'x3');
 model.createGeneralization(namedEntity, person);
 
 // ****************************************
+// ** O P T I O N S
+// ****************************************
+const options: Partial<OntoUML2DBOptions> = {
+  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
+  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  isStandardizeNames: true,
+  hostName: 'localhost/~',
+  databaseName: 'RunExample',
+  userConnection: 'sa',
+  passwordConnection: 'sa'
+};
+
+// ****************************************
 export const test_002: TestResource = {
   title: '002 - Flattening where there are attributes with the same name in the superclass and subclass',
   checker: gChecker_002_flatting_with_duplicate_attributes,
-  project
+  project,
+  options
 };

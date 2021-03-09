@@ -10,6 +10,8 @@ import { PropertyChecker } from './graph_tester/PropertyChecker';
 import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
+import { OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
+import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -65,8 +67,22 @@ model.createGeneralization(person, roleX);
 model.createGeneralization(person, employee);
 
 // ****************************************
+// ** O P T I O N S
+// ****************************************
+const options: Partial<OntoUML2DBOptions> = {
+  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
+  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  isStandardizeNames: true,
+  hostName: 'localhost/~',
+  databaseName: 'RunExample',
+  userConnection: 'sa',
+  passwordConnection: 'sa'
+};
+
+// ****************************************
 export const test_013: TestResource = {
   title: '013 - Lifting with cascading generalizations',
   checker: gChecker_013_lifting_cascade_generalization,
-  project
+  project,
+  options
 };

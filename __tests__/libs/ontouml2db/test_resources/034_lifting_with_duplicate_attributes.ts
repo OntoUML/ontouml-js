@@ -10,6 +10,8 @@ import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 import { Project } from '@libs/ontouml';
 import { ScriptChecker } from './graph_tester/ScriptChecker';
+import { OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
+import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -72,10 +74,23 @@ const genersonItalian = model.createGeneralization(person, italianCitizen);
 // CRETATE GENERALIZATION SET
 model.createGeneralizationSet([genPersonBrazilian, genersonItalian], overlappig, incomplete, null, 'Nationality');
 
-// ******************************
+// ****************************************
+// ** O P T I O N S
+// ****************************************
+const options: Partial<OntoUML2DBOptions> = {
+  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
+  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  isStandardizeNames: true,
+  hostName: 'localhost/~',
+  databaseName: 'RunExample',
+  userConnection: 'sa',
+  passwordConnection: 'sa'
+};
 
+// ******************************
 export const test_034: TestResource = {
   title: '034 - Evaluates lifting involving generalizations where there are attributes with the same name in the subclasses',
   checker: gChecker_034_lifting_with_duplicate_attributes,
-  project
+  project,
+  options
 };

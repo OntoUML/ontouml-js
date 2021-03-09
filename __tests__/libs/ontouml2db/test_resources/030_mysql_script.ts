@@ -7,6 +7,13 @@ import { GraphChecker } from './graph_tester/GraphChecker';
 import { TestResource } from './TestResource';
 import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { baseExample } from './baseExample';
+import { OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
+import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
+import { NodeChecker } from './graph_tester/NodeChecker';
+import { PropertyChecker } from './graph_tester/PropertyChecker';
+import { RelationshipChecker } from './graph_tester/RelationshipChecker';
+import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
+import { TrackerChecker } from './graph_tester/TrackerChecker';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -14,22 +21,22 @@ import { baseExample } from './baseExample';
 const scriptPerson =
   'CREATE TABLE IF NOT EXISTS person ( ' +
   '         person_id               INTEGER        NOT NULL AUTO_INCREMENT PRIMARY KEY' +
-  ',        name                    VARCHAR(20)    NULL' +
-  ',        birth_date              DATE           NULL' +
+  ',        name                    VARCHAR(20)    NOT NULL' +
+  ',        birth_date              DATE           NOT NULL' +
   ',        rg                      VARCHAR(20)    NULL' +
   ',        ci                      VARCHAR(20)    NULL' +
   ',        is_employee             TINYINT(1)     NOT NULL DEFAULT FALSE' +
   ',        credit_rating           DOUBLE         NULL' +
   ',        credit_card             VARCHAR(20)    NULL' +
   ',        is_personal_customer    TINYINT(1)     NOT NULL DEFAULT FALSE' +
-  ",        life_phase_enum         ENUM('CHILD','ADULT')  NULL" +
+  ",        life_phase_enum         ENUM('CHILD','ADULT')  NOT NULL" +
   '); ';
 
 const scriptOrganization =
   'CREATE TABLE IF NOT EXISTS organization ( ' +
   '         organization_id         INTEGER        NOT NULL AUTO_INCREMENT PRIMARY KEY' +
-  ',        name                    VARCHAR(20)    NULL' +
-  ',        address                 VARCHAR(20)    NULL' +
+  ',        name                    VARCHAR(20)    NOT NULL' +
+  ',        address                 VARCHAR(20)    NOT NULL' +
   ',        playground_size         INTEGER        NULL' +
   ',        capacity                INTEGER        NULL' +
   ',        credit_rating           DOUBLE         NULL' +
@@ -44,7 +51,7 @@ const scriptEmployment =
   '        employment_id           INTEGER        NOT NULL AUTO_INCREMENT PRIMARY KEY' +
   ',        organization_id        INTEGER        NOT NULL' +
   ',        person_id              INTEGER        NOT NULL' +
-  ',        salary                 DOUBLE         NULL' +
+  ',        salary                 DOUBLE         NOT NULL' +
   '); ';
 
 const scriptEnrollment =
@@ -52,7 +59,7 @@ const scriptEnrollment =
   '         enrollment_id           INTEGER        NOT NULL AUTO_INCREMENT PRIMARY KEY' +
   ',        organization_id         INTEGER        NOT NULL' +
   ',        person_id               INTEGER        NOT NULL' +
-  ',        grade                   INTEGER        NULL' +
+  ',        grade                   INTEGER        NOT NULL' +
   '); ';
 
 const scriptSupply =
@@ -61,7 +68,7 @@ const scriptSupply =
   ',        organization_customer_id INTEGER        NULL' +
   ',        person_id               INTEGER        NULL' +
   ',        organization_id         INTEGER        NOT NULL' +
-  ',        contract_value          DOUBLE         NULL' +
+  ',        contract_value          DOUBLE         NOT NULL' +
   '); ';
 
 const scriptNationality =
@@ -95,6 +102,88 @@ const scriptFKNationalityPerson = 'ALTER TABLE nationality ADD FOREIGN KEY ( per
 //       CHECK RESULTING GRAPH
 // ****************************************
 const gChecker_run_example = new GraphChecker()
+  .addNode(
+    new NodeChecker('person')
+      .addProperty(new PropertyChecker('person_id', false))
+      .addProperty(new PropertyChecker('name', false))
+      .addProperty(new PropertyChecker('birth_date', false))
+      .addProperty(new PropertyChecker('rg', true))
+      .addProperty(new PropertyChecker('ci', true))
+      .addProperty(new PropertyChecker('is_employee', false))
+      .addProperty(new PropertyChecker('is_personal_customer', false))
+      .addProperty(new PropertyChecker('credit_rating', true))
+      .addProperty(new PropertyChecker('credit_card', true))
+      .addProperty(new PropertyChecker('life_phase_enum', false, ['CHILD', 'ADULT']))
+  )
+  .addNode(
+    new NodeChecker('organization')
+      .addProperty(new PropertyChecker('organization_id', false))
+      .addProperty(new PropertyChecker('name', false))
+      .addProperty(new PropertyChecker('address', false))
+      .addProperty(new PropertyChecker('is_corporate_customer', false))
+      .addProperty(new PropertyChecker('credit_rating', true))
+      .addProperty(new PropertyChecker('credit_limit', true))
+      .addProperty(new PropertyChecker('is_contractor', false))
+      .addProperty(new PropertyChecker('playground_size', true))
+      .addProperty(new PropertyChecker('capacity', true))
+      .addProperty(new PropertyChecker('organization_type_enum', true, ['PRIMARYSCHOOL', 'HOSPITAL']))
+  )
+  .addNode(
+    new NodeChecker('employment')
+      .addProperty(new PropertyChecker('employment_id', false))
+      .addProperty(new PropertyChecker('organization_id', false))
+      .addProperty(new PropertyChecker('person_id', false))
+      .addProperty(new PropertyChecker('salary', false))
+  )
+  .addNode(
+    new NodeChecker('supply_contract')
+      .addProperty(new PropertyChecker('supply_contract_id', false))
+      .addProperty(new PropertyChecker('organization_id', false))
+      .addProperty(new PropertyChecker('organization_customer_id', true))
+      .addProperty(new PropertyChecker('person_id', true))
+      .addProperty(new PropertyChecker('contract_value', false))
+  )
+  .addNode(
+    new NodeChecker('enrollment')
+      .addProperty(new PropertyChecker('enrollment_id', false))
+      .addProperty(new PropertyChecker('organization_id', false))
+      .addProperty(new PropertyChecker('person_id', false))
+      .addProperty(new PropertyChecker('grade', false))
+  )
+  .addNode(
+    new NodeChecker('nationality')
+      .addProperty(new PropertyChecker('nationality_id', false))
+      .addProperty(new PropertyChecker('person_id', false))
+      .addProperty(new PropertyChecker('nationality_enum', false, ['BRAZILIANCITIZEN', 'ITALIANCITIZEN']))
+  )
+  .addRelationship(new RelationshipChecker('nationality', Cardinality.C0_N, 'person', Cardinality.C1))
+  .addRelationship(new RelationshipChecker('enrollment', Cardinality.C0_N, 'person', Cardinality.C1))
+  .addRelationship(new RelationshipChecker('employment', Cardinality.C0_N, 'person', Cardinality.C1))
+  .addRelationship(new RelationshipChecker('supply_contract', Cardinality.C0_N, 'person', Cardinality.C0_1))
+  .addRelationship(new RelationshipChecker('organization', Cardinality.C1, 'employment', Cardinality.C0_N))
+  .addRelationship(new RelationshipChecker('organization', Cardinality.C1, 'supply_contract', Cardinality.C0_N))
+  .addRelationship(new RelationshipChecker('organization', Cardinality.C0_1, 'supply_contract', Cardinality.C0_N))
+  .addRelationship(new RelationshipChecker('organization', Cardinality.C1, 'enrollment', Cardinality.C0_N))
+
+  .addTracker(new TrackerChecker('NamedEntity', 'person'))
+  .addTracker(new TrackerChecker('NamedEntity', 'organization'))
+  .addTracker(new TrackerChecker('Person', 'person'))
+  .addTracker(new TrackerChecker('Organization', 'organization'))
+  .addTracker(new TrackerChecker('BrazilianCitizen', 'person'))
+  .addTracker(new TrackerChecker('ItalianCitizen', 'person'))
+  .addTracker(new TrackerChecker('Child', 'person'))
+  .addTracker(new TrackerChecker('Adult', 'person'))
+  .addTracker(new TrackerChecker('Employee', 'person'))
+  .addTracker(new TrackerChecker('Customer', 'person'))
+  .addTracker(new TrackerChecker('Customer', 'organization'))
+  .addTracker(new TrackerChecker('PersonalCustomer', 'person'))
+  .addTracker(new TrackerChecker('CorporateCustomer', 'organization'))
+  .addTracker(new TrackerChecker('Employment', 'employment'))
+  .addTracker(new TrackerChecker('SupplyContract', 'supply_contract'))
+  .addTracker(new TrackerChecker('Contractor', 'organization'))
+  .addTracker(new TrackerChecker('PrimarySchool', 'organization'))
+  .addTracker(new TrackerChecker('Hospital', 'organization'))
+  .addTracker(new TrackerChecker('Enrollment', 'enrollment'))
   .setNumberOfTablesToFindInScript(6)
   .setNumberOfFkToFindInScript(8)
   .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'))
@@ -150,9 +239,22 @@ const gChecker_run_example = new GraphChecker()
 const project = baseExample.project;
 
 // ****************************************
+// ** O P T I O N S
+// ****************************************
+const options: Partial<OntoUML2DBOptions> = {
+  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
+  targetDBMS: DBMSSupported.MYSQL,
+  isStandardizeNames: true,
+  hostName: 'localhost/~',
+  databaseName: 'RunExample',
+  userConnection: 'sa',
+  passwordConnection: 'sa'
+};
 
+// ****************************************
 export const test_030: TestResource = {
-  title: 'Base Example Test',
+  title: '030 - Evaluates MySql script',
   checker: gChecker_run_example,
-  project
+  project,
+  options
 };

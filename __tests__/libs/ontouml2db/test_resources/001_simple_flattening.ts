@@ -10,6 +10,8 @@ import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 import { Project } from '@libs/ontouml';
 import { ScriptChecker } from './graph_tester/ScriptChecker';
+import { OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
+import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -55,8 +57,22 @@ name.cardinality.setOneToOne();
 birthDate.cardinality.setOneToOne();
 
 // ****************************************
+// ** O P T I O N S
+// ****************************************
+const options: Partial<OntoUML2DBOptions> = {
+  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
+  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  isStandardizeNames: true,
+  hostName: 'localhost/~',
+  databaseName: 'RunExample',
+  userConnection: 'sa',
+  passwordConnection: 'sa'
+};
+
+// ****************************************
 export const test_001: TestResource = {
   title: '001 - Flattening involving only one generalization test',
   checker: gChecker_001_simple_flattening,
-  project
+  project,
+  options
 };

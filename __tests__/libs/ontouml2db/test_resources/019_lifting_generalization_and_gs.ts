@@ -10,6 +10,8 @@ import { PropertyChecker } from './graph_tester/PropertyChecker';
 import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
+import { OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
+import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -81,8 +83,22 @@ const genAdult = model.createGeneralization(person, adult);
 model.createGeneralizationSet([genChild, genTeenager, genAdult], disjoint, complete, null, 'LifePhase');
 
 // ****************************************
+// ** O P T I O N S
+// ****************************************
+const options: Partial<OntoUML2DBOptions> = {
+  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
+  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  isStandardizeNames: true,
+  hostName: 'localhost/~',
+  databaseName: 'RunExample',
+  userConnection: 'sa',
+  passwordConnection: 'sa'
+};
+
+// ****************************************
 export const test_019: TestResource = {
   title: '019 - Lifting with one generalization set and two simple generalizations',
   checker: gChecker_019_lifting_generalization_and_gs,
-  project
+  project,
+  options
 };

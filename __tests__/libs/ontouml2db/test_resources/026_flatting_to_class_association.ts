@@ -12,7 +12,12 @@ import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { Project } from '@libs/ontouml';
+import { OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
+import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 
+// ****************************************
+//       FOR SCHEMA VALIDATION
+// ****************************************
 const scriptPerson = 'CREATE TABLE person ( ' + '          person_id               INTEGER        NOT NULL PRIMARY KEY' + '); ';
 
 const scriptAssociatedClass1 =
@@ -170,8 +175,22 @@ relation4.getSourceEnd().cardinality.setOneToOne();
 relation4.getTargetEnd().cardinality.setOneToOne();
 
 // ****************************************
+// ** O P T I O N S
+// ****************************************
+const options: Partial<OntoUML2DBOptions> = {
+  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
+  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  isStandardizeNames: true,
+  hostName: 'localhost/~',
+  databaseName: 'RunExample',
+  userConnection: 'sa',
+  passwordConnection: 'sa'
+};
+
+// ****************************************
 export const test_026: TestResource = {
   title: '026 - Evaluates the cardinality of the association with the superclass in the event of a flattening',
   checker: gChecker_026_flatting_to_class_association,
-  project
+  project,
+  options
 };

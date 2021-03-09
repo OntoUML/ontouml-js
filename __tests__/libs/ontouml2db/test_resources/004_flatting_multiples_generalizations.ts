@@ -10,6 +10,9 @@ import { PropertyChecker } from './graph_tester/PropertyChecker';
 import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
+import { OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
+import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
+
 // ****************************************
 //       FOR SCHEMA VALIDATION
 // ****************************************
@@ -93,9 +96,22 @@ model.createGeneralization(namedEntity, test);
 model.createGeneralizationSet([genNamedEntityPerson, genNamedEntityOrganization], disjoint, complete, null, 'NamedEntityType');
 
 // ****************************************
+// ** O P T I O N S
+// ****************************************
+const options: Partial<OntoUML2DBOptions> = {
+  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
+  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  isStandardizeNames: true,
+  hostName: 'localhost/~',
+  databaseName: 'RunExample',
+  userConnection: 'sa',
+  passwordConnection: 'sa'
+};
 
+// ****************************************
 export const test_004: TestResource = {
   title: '004 - Flattening involving one generalizations set and one simple generalization',
   checker: gChecker_004_flatting_multiples_generalizations,
-  project
+  project,
+  options
 };

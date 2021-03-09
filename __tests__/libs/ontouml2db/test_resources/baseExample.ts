@@ -12,6 +12,8 @@ import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { TestResource } from './TestResource';
 import { Project } from '@libs/ontouml';
 import { ScriptChecker } from './graph_tester/ScriptChecker';
+import { OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
+import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -307,9 +309,22 @@ model.createMediationRelation(supplyConstract, contractor, 'hasContractor');
 model.createMediationRelation(supplyConstract, customer, 'hasCustomer');
 
 // ****************************************
+// ** O P T I O N S
+// ****************************************
+const options: Partial<OntoUML2DBOptions> = {
+  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
+  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  isStandardizeNames: true,
+  hostName: 'localhost/~',
+  databaseName: 'RunExample',
+  userConnection: 'sa',
+  passwordConnection: 'sa'
+};
 
+// ****************************************
 export const baseExample: TestResource = {
   title: 'Base Example Test',
   checker: gChecker_run_example,
-  project
+  project,
+  options
 };

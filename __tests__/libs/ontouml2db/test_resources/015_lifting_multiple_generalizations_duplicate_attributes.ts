@@ -10,6 +10,8 @@ import { PropertyChecker } from './graph_tester/PropertyChecker';
 import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
+import { OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
+import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -68,8 +70,22 @@ const genPersonAdult = model.createGeneralization(person, adult);
 model.createGeneralizationSet([genPersonChild, genPersonAdult], disjoint, complete, null, 'PersonPhase');
 
 // ****************************************
+// ** O P T I O N S
+// ****************************************
+const options: Partial<OntoUML2DBOptions> = {
+  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
+  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  isStandardizeNames: true,
+  hostName: 'localhost/~',
+  databaseName: 'RunExample',
+  userConnection: 'sa',
+  passwordConnection: 'sa'
+};
+
+// ****************************************
 export const test_015: TestResource = {
   title: '015 - Lifting a generalization set with the attribute name repeated in both subclasses',
   checker: gChecker_015_lifting_multiple_generalizations_duplicate_attributes,
-  project
+  project,
+  options
 };
