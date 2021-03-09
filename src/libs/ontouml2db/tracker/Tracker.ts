@@ -12,11 +12,9 @@ import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 
 export class Tracker {
   private traceMap: Map<string, Tracer>;
-  //private nodeMap: Map<string, Node>; //important only for search.
 
   constructor(graph: Graph) {
     this.traceMap = new Map();
-    //this.nodeMap = new Map();
 
     for (let node of graph.getNodes()) {
       this.createNewTracerForTheSourceNode(node);
@@ -35,8 +33,6 @@ export class Tracker {
     trace.addTargetNode(node); //initially, each class references itself.
 
     this.traceMap.set(node.getId(), trace); //puts the new trace
-
-    //this.nodeMap.set(node.getId(), node); //puts the traced nodes
   }
 
   /**
@@ -136,10 +132,12 @@ export class Tracker {
     for (let tracer of this.traceMap.values()) {
       //for not put on yourself
       if (tracer.getSourceNode().getId() != id) {
-        for (let targetNode of tracer.getTargetNodes().values()) {
-          if (targetNode.getId() === id) {
-            for (let filter of originalTracer.getFilters()) {
-              tracer.addFilter(filter);
+        for (let tracedNode of tracer.getTargetNodes().values()) {
+          for(let targetNode of tracedNode.getNodes()){
+            if (targetNode.getId() === id) {
+              for (let filter of originalTracer.getFilters()) {
+                tracer.addFilter(filter);
+              }
             }
           }
         }
@@ -173,9 +171,11 @@ export class Tracker {
     for (let trace of this.traceMap.values()) {
       if (trace.getSourceNode().getName() === sourceNodeName) {
         for (let tracedNode of trace.getTargetNodes().values()) {
-          if (tracedNode.getName() === targetNodeName) {
-            return true;
-          }
+          for(let targetNode of tracedNode.getNodes()){
+            if (targetNode.getName() === targetNodeName) {
+              return true;
+            }
+          }          
         }
       }
     }
@@ -184,6 +184,11 @@ export class Tracker {
 
   putNewNode(newNode: Node): void {
     this.createNewTracerForTheSourceNode(newNode);
+  }
+
+  addJoinedNode(tracerNode: Node, tracedNode: Node, joinedNode: Node, innerJoin: boolean): void{
+    let trace = this.traceMap.get(tracerNode.getId());
+    trace.addJoinedNode(tracedNode, joinedNode, innerJoin);
   }
 
   toString(): string {

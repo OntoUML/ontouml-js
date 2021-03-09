@@ -102,6 +102,15 @@ export class PropertyContainer implements IPropertyContainer {
     return false;
   }
 
+  existsProperty(property: NodeProperty): boolean{
+    for (let value of this.properties) {
+      if (value.getID() === property.getID()){
+        return true;
+      }
+    }
+    return false;
+  }
+
   clonePropertyContainer(): IPropertyContainer {
     let container: IPropertyContainer = new PropertyContainer();
 
@@ -110,6 +119,15 @@ export class PropertyContainer implements IPropertyContainer {
     });
 
     return container;
+  }
+
+  getFKRelatedOfNodeID(id: string): NodeProperty{
+    for(let property of this.properties){
+      if(property.getForeignKeyNodeID() === id ){
+        return property;
+      }
+    }
+    return null;
   }
 
   toString(): string {

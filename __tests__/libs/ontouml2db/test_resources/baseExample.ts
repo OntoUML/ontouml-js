@@ -302,7 +302,7 @@ model.createGeneralizationSet([genOrganizationPrimary, genOrganizationHospital],
 model.createMediationRelation(employment, employee, 'hasEmployee');
 model.createMediationRelation(employment, organization, 'hasOrganization');
 model.createMediationRelation(enrollment, child, 'hasChild');
-model.createMediationRelation(enrollment, primarySchool, 'hasPrimatySchool');
+model.createMediationRelation(enrollment, primarySchool, 'hasPrimarySchool');
 model.createMediationRelation(supplyConstract, contractor, 'hasContractor');
 model.createMediationRelation(supplyConstract, customer, 'hasCustomer');
 

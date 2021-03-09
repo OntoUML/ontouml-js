@@ -26,14 +26,14 @@ const scriptTel =
   'CREATE TABLE tel ( ' +
   '         tel_id                  INTEGER        NOT NULL PRIMARY KEY' +
   ',        person_id               INTEGER        NOT NULL' +
-  ',        tel                     VARCHAR(20)    NULL' +
+  ',        tel                     VARCHAR(20)    NOT NULL' +
   '); ';
 
 const scriptAddress =
   'CREATE TABLE address ( ' +
   '         address_id              INTEGER        NOT NULL PRIMARY KEY' +
   ',        person_id               INTEGER        NOT NULL' +
-  ',        address                 VARCHAR(20)    NULL' +
+  ',        address                 VARCHAR(20)    NOT NULL' +
   '); ';
 
 const scriptFKTel = 'ALTER TABLE tel ADD FOREIGN KEY ( person_id ) REFERENCES person ( person_id );';
@@ -44,7 +44,9 @@ const scriptFKAddress = 'ALTER TABLE address ADD FOREIGN KEY ( person_id ) REFER
 // ****************************************
 const gChecker_028_multivalued_property = new GraphChecker()
   .addNode(
-    new NodeChecker('person').addProperty(new PropertyChecker('person_id', false)).addProperty(new PropertyChecker('name', false))
+    new NodeChecker('person')
+      .addProperty(new PropertyChecker('person_id', false))
+      .addProperty(new PropertyChecker('name', false))
   )
   .addNode(
     new NodeChecker('tel')
@@ -87,7 +89,7 @@ model.createGeneralization(namedEntity, person);
 // CREATE PROPERTIES
 namedEntity.createAttribute(_string, 'name').cardinality.setOneToOne();
 namedEntity.createAttribute(_string, 'tel').cardinality.setZeroToMany();
-person.createAttribute(_string, 'address').cardinality.setZeroToMany();
+person.createAttribute(_string, 'address').cardinality.setOneToMany();
 
 // ****************************************
 export const test_028: TestResource = {

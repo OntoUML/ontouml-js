@@ -7,56 +7,58 @@ import { Node } from '@libs/ontouml2db/graph/Node';
 import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
 import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
+import { TracedNode } from '../tracker/TracedNode';
 
 export class GenerateOBDATarget {
-  public static generate(originalNode: Node, project: string, trackedNode: Node): string {
-    if (originalNode.getAssociationNameNtoN() == null) {
-      return 'target       ' + this.generateTarget(originalNode, project, trackedNode);
+  //public static generate(originalNode: Node, project: string, trackedNode: Node): string {
+    public static generate(sourceNode: Node, project: string, tracedNode: TracedNode): string {
+    if (sourceNode.getAssociationNameNtoN() == null) {
+      return 'target       ' + this.generateTarget(sourceNode, project, tracedNode);
     } else {
-      return 'target       ' + this.generateTargetNtoN(originalNode, project, trackedNode);
+      return 'target       ' + this.generateTargetNtoN(sourceNode, project, tracedNode);
     }
   }
 
-  static generateTarget(originalNode: Node, project: string, trackedNode: Node): string {
+  static generateTarget(sourceNode: Node, project: string, tracedNode: TracedNode): string {
     let text: string = '';
 
-    text += this.generateSource(originalNode, project, trackedNode);
+    text += this.generateSource(sourceNode, project, tracedNode);
 
-    text += this.generatePredicateAndObjects(originalNode, trackedNode);
+    text += this.generatePredicateAndObjects(sourceNode, tracedNode);
 
-    text += this.generateForeignKeyAssociations(project, trackedNode);
+    text += this.generateForeignKeyAssociations(project, tracedNode);
 
     text += '.\n';
 
     return text;
   }
 
-  static generateSource(originalNode: Node, project: string, trackedNode: Node): string {
+  static generateSource(sourceNode: Node, project: string, tracedNode: TracedNode): string {
     let text: string = '';
     text += ':';
     text += project;
     text += '/';
-    text += trackedNode.getName();
+    text += tracedNode.getNodes()[0].getName();
     text += '/';
     text += '{';
-    text += trackedNode.getPKName();
+    text += tracedNode.getNodes()[0].getPKName();
     text += '}';
     text += ' a ';
     text += ':';
-    text += originalNode.getName();
+    text += sourceNode.getName();
     text += ' ';
     return text;
   }
 
-  static generatePredicateAndObjects(originalNode: Node, trackedNode: Node): string {
+  static generatePredicateAndObjects(sourceNode: Node, tracedNode: TracedNode): string {
     let text: string = '';
 
-    for (let property of originalNode.getProperties()) {
+    for (let property of sourceNode.getProperties()) {
       if (!property.isPrimaryKey()) {
         text += '; ';
         text += this.generatePredicateFromProperty(property);
         text += ' ';
-        text += this.generateObject(property, trackedNode);
+        text += this.generateObject(property, tracedNode);
       }
     }
     return text;
@@ -68,10 +70,19 @@ export class GenerateOBDATarget {
     return text;
   }
 
-  static generateObject(property: NodeProperty, trackedNode: Node): string {
+  static generateObject(property: NodeProperty, tracedNode: TracedNode): string {
     let text: string = '';
+    let targetProperty: string = '';
+    let tracedProperty: NodeProperty = tracedNode.getPropertyByID(property.getID());
+
+    if(tracedProperty != null){
+      targetProperty = tracedProperty.getName();
+    }else{
+      targetProperty = '[CAN NOT FIND '+ property.getName() + ' property at the target node.]';
+    }
+
     text += '{';
-    text += trackedNode.getPropertyByID(property.getID()).getName();
+    text += targetProperty; //tracedNode.getPropertyByID(property.getID()).getName();
     text += '}';
     text += this.getType(property);
     text += ' ';
@@ -79,11 +90,11 @@ export class GenerateOBDATarget {
     return text;
   }
 
-  static generateForeignKeyAssociations(project: string, trackedNode: Node): string {
+  static generateForeignKeyAssociations(project: string, tracedNode: TracedNode): string {
     let text: string = '';
     let association: GraphRelation;
 
-    for (let property of trackedNode.getProperties()) {
+    for (let property of tracedNode.getMainNode().getProperties()) {
       if (property.isForeignKey()) {
         association = property.getAssociationRelatedOfFK() as GraphRelation;
 
@@ -97,17 +108,17 @@ export class GenerateOBDATarget {
             ? association.getSourceNode().getName()
             : association.getTargetNode().getName();
         text += '/';
-        text += this.generateReferencedObject(property, trackedNode);
+        text += this.generateReferencedObject(property, tracedNode);
         text += ' ';
       }
     }
     return text;
   }
 
-  static generateReferencedObject(property: NodeProperty, trackedNode: Node): string {
+  static generateReferencedObject(property: NodeProperty, tracedNode: TracedNode): string {
     let text: string = '';
     text += '{';
-    text += trackedNode.getPropertyByID(property.getID()).getName();
+    text += tracedNode.getPropertyByID(property.getID()).getName();
     text += '}';
     text += ' ';
 
@@ -136,13 +147,11 @@ export class GenerateOBDATarget {
     return '^^xsd:' + property.getDataType();
   }
 
-  static generateTargetNtoN(originalNode: Node, project: string, trackedNode: Node): string {
+  static generateTargetNtoN(sourceNode: Node, project: string, tracedNode: TracedNode): string {
     let text: string = '';
     let association: GraphRelation;
 
-    let propertiesFK = trackedNode.getProperties().filter((element: NodeProperty) => {
-      return element.isForeignKey();
-    });
+    let propertiesFK = tracedNode.getFKPropertiesOfMainNode();
 
     if (propertiesFK.length != 2) {
       return '[ERROR: must exists tow FKs]';
@@ -160,7 +169,7 @@ export class GenerateOBDATarget {
 
     text += ' ';
     text += ':';
-    text += originalNode.getAssociationNameNtoN();
+    text += sourceNode.getAssociationNameNtoN();
     text += ' ';
 
     association = propertiesFK[1].getAssociationRelatedOfFK() as GraphRelation;

@@ -8,7 +8,7 @@ import { GenerateOBDAMappingID } from '@libs/ontouml2db/obda/GenerateOBDAMapping
 import { GenerateOBDATarget } from '@libs/ontouml2db/obda/GenerateOBDATarget';
 import { GenerateOBDASource } from '@libs/ontouml2db/obda/GenerateOBDASource';
 import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
-import { Node } from '@libs/ontouml2db/graph/Node';
+import { TracedNode } from '../tracker/TracedNode';
 
 export class GenerateOBDA {
   static getFile(options: OntoUML2DBOptions, tracker: Tracker): string {
@@ -42,16 +42,17 @@ export class GenerateOBDA {
 
     for (let trace of tracker.getTraceMap().values()) {
       first = true;
-      trace.getTargetNodes().forEach((node: Node) => {
+      trace.getTargetNodes().forEach((tracedNode: TracedNode) => {
+
         text += GenerateOBDAMappingID.generate(trace.getSourceNode(), projectName, first);
 
-        text += GenerateOBDATarget.generate(trace.getSourceNode(), projectName, node);
+        text += GenerateOBDATarget.generate(trace.getSourceNode(), projectName, tracedNode);
 
-        text += GenerateOBDASource.generate(trace, node);
+        text += GenerateOBDASource.generate(trace, tracedNode);
 
         first = false;
 
-        text += '\n';
+        text += '\n';  
       });
     }
     text += ']]\n';

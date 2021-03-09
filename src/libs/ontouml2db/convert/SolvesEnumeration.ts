@@ -26,12 +26,11 @@ export class SolvesEnumeration {
             SolvesEnumeration.addEnumerationColumn(node, relation, tracker);
             nodesToDestroy.push(node);
             associationsToRemove.push(relation);
-          } else if (relation.isHighCardinalityOfNode(node)) {
-            // Transforms the enumeration into a table.
+          } else{ // if (relation.isHighCardinalityOfNode(node)) {
+            // Let the enumeration be a table.
             // This table now represents the intermediate table of the N:N
             // relationship. The cardinality 1 is associated with the ENUM
             // field of the table and N with the table itself.
-            //node.setStereotype("table");
             if (relation.getSourceNode() === node) relation.setTargetCardinality(Cardinality.C1);
             else relation.setSourceCardinality(Cardinality.C1);
           }

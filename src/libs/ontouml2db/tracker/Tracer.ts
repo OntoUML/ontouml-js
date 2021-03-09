@@ -1,5 +1,6 @@
 /**
  * This class is responsible for storing the tracked nodes.
+ * A node can trace more than one node on the target graph.
  *
  * Author: Gustavo L. Guidoni
  */
@@ -7,11 +8,12 @@
 import { Node } from '@libs/ontouml2db/graph/Node';
 import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 import { Filter } from '@libs/ontouml2db/tracker/Filter';
+import { TracedNode } from './TracedNode';
 
 export class Tracer {
   private sourceNode: Node;
   private filters: Filter[];
-  private targetNodes: Map<string, Node>;
+  private targetNodes: Map<string, TracedNode>;
 
   constructor(newNode: Node) {
     this.sourceNode = newNode;
@@ -22,7 +24,7 @@ export class Tracer {
   /**
    * Returns the tracked nodes from the original node.
    */
-  getTargetNodes(): Map<string, Node> {
+  getTargetNodes(): Map<string, TracedNode> {
     return this.targetNodes;
   }
 
@@ -31,15 +33,44 @@ export class Tracer {
    * @param newNode. Node to be tracked.
    */
   addTargetNode(newNode: Node): void {
-    this.targetNodes.set(newNode.getId(), newNode);
+    this.targetNodes.set(newNode.getId(), new TracedNode(newNode));
   }
 
   /**
-   * Informs if the identifies is tracked from the original node.
+   * Informs that a join between the traced node and another node must be performed.
+   * 
+   * @param tracedNode 
+   * @param joinedNode 
+   * @param innerJoin 
+   */
+  addJoinedNode(tracedNode: Node, joinedNode: Node, innerJoin: boolean): void{
+    for (let trace of this.targetNodes.values()) {
+      if(trace.isNodeTraced(tracedNode)){
+        trace.addJoinedNode(joinedNode, innerJoin);
+      }
+    }
+  }
+
+  /**
+   * Informs if the node is a tracer node.
    * @param id. Identifier to be verified.
    */
   existsTraceFor(node: Node): boolean {
     return this.targetNodes.has(node.getId());
+  }
+
+  /**
+   * Informs if the node is traced from the source node.
+   * @param node 
+   * @returns 
+   */
+  isNodeTraced(node: Node): boolean{
+    for (let tracedNode of this.targetNodes.values()) {
+      if(tracedNode.isNodeTraced(node)){
+        return true;
+      }
+    }
+    return false
   }
 
   /**
@@ -134,7 +165,7 @@ export class Tracer {
   toString(): string {
     let msg: string = this.sourceNode.getName() + ' -> ';
     for (let tracedNode of this.targetNodes.values()) {
-      msg += tracedNode.getName() + ' | ';
+      msg += tracedNode.toString();
     }
 
     this.filters.forEach(filter => {

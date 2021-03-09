@@ -66,7 +66,7 @@ export class Factory {
       node.addProperty(property);
     }
 
-    this.graph.addNode(node);
+    this.graph.putNode(node);
   }
 
   getAcceptNull(cardinality: string): boolean {

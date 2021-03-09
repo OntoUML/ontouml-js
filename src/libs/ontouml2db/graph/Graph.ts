@@ -14,22 +14,34 @@ import { Node } from '@libs/ontouml2db/graph/Node';
 
 export class Graph {
   private nodes: Node[];
+  private sourceNodes: Node[];
   private associations: GraphAssociation[];
   private generalizationSets: GraphGeneralizationSet[];
 
-  constructor(nodes?: Node[], associations?: GraphAssociation[], gs?: GraphGeneralizationSet[]) {
-    if (nodes) this.nodes = nodes;
-    else this.nodes = [];
-
-    if (associations) this.associations = associations;
-    else this.associations = [];
-
-    if (gs) this.generalizationSets = gs;
-    else this.generalizationSets = [];
+  constructor() {
+    this.nodes = [];
+    this.sourceNodes = [];
+    this.associations = [];
+    this.generalizationSets = [];
   }
 
   /**
    * Adds a new node (class) on the graph.
+   * Method used to create the original graph. It should not be used 
+   * to perform the transformations. This method identifies that the 
+   * node passed as an argument belongs to the original model.
+   *
+   * @param Node. Node to be added in the graph.
+   */
+  putNode(newNode: Node): void {
+    this.nodes.push(newNode);
+    this.sourceNodes.push(newNode.clone());
+  }
+
+  /**
+   * Adds a new node (class) on the graph.
+   * This method NOT identifies that the node passed as an argument 
+   * belongs to the original model.
    *
    * @param Node. Node to be added in the graph.
    */
@@ -68,6 +80,16 @@ export class Graph {
    */
   getNodes(): Node[] {
     return this.nodes;
+  }
+
+  /**
+   * Returns all nodes of the graph added by the putNode 
+   * method, in their original form.
+   * 
+   * @returns An array with all original nodes.
+   */
+  getSourceNodes(): Node[]{
+    return this.sourceNodes;
   }
 
   /**
@@ -267,32 +289,6 @@ export class Graph {
 
   private removeGeneralization(generalization: GraphGeneralization): void {
     generalization.deleteAssociation();
-  }
-
-  /**
-   * Clone the graph by establishing a reference between the nodes of the current
-   * graph for the cloned graph.
-   *
-   * @return An graph identical to the current graph.
-   */
-  clone(): Graph {
-    let newNodes: Node[] = [];
-    let newAssociations: GraphAssociation[] = [];
-    let newGS: GraphGeneralizationSet[] = [];
-
-    this.nodes.forEach((node: Node) => {
-      newNodes.push(node.clone());
-    });
-
-    this.associations.forEach((association: GraphAssociation) => {
-      newAssociations.push(association.cloneChangingReferencesTo(newNodes));
-    });
-
-    this.generalizationSets.forEach((gs: GraphGeneralizationSet) => {
-      newGS.push(gs.cloneChangingReferencesTo(newNodes) as GraphGeneralizationSet);
-    });
-
-    return new Graph(newNodes, newAssociations, newGS);
   }
 
   toString(): string {
