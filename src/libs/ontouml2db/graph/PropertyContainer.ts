@@ -102,9 +102,9 @@ export class PropertyContainer implements IPropertyContainer {
     return false;
   }
 
-  existsProperty(property: NodeProperty): boolean{
+  existsProperty(property: NodeProperty): boolean {
     for (let value of this.properties) {
-      if (value.getID() === property.getID()){
+      if (value.getID() === property.getID()) {
         return true;
       }
     }
@@ -121,9 +121,9 @@ export class PropertyContainer implements IPropertyContainer {
     return container;
   }
 
-  getFKRelatedOfNodeID(id: string): NodeProperty{
-    for(let property of this.properties){
-      if(property.getForeignKeyNodeID() === id ){
+  getFKRelatedOfNodeID(id: string): NodeProperty {
+    for (let property of this.properties) {
+      if (property.getForeignKeyNodeID() === id) {
         return property;
       }
     }

@@ -136,7 +136,7 @@ export class GraphChecker {
     for (let tracer of map.values()) {
       sourceNodeName = tracer.getSourceNode().getName();
       for (let tracedNode of tracer.getTargetNodes().values()) {
-        targetNodeName = tracedNode.getMainNode().getName();//takes only the original target node.
+        targetNodeName = tracedNode.getMainNode().getName(); //takes only the original target node.
         if (!this.existsTrace(sourceNodeName, targetNodeName)) {
           return (
             'The trace ' + sourceNodeName + ' - ' + targetNodeName + ' was produced in the graph and not evaluated in the check.'

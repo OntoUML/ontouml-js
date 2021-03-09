@@ -57,14 +57,14 @@ export class SolvesMultivaluedProperty {
     SolvesMultivaluedProperty.doTracking(node, newNode, property, graph, tracker);
   }
 
-  static doTracking(tracedNode: Node, joinedNode: Node, property: NodeProperty, graph: Graph, tracker: Tracker): void{
+  static doTracking(tracedNode: Node, joinedNode: Node, property: NodeProperty, graph: Graph, tracker: Tracker): void {
     let sourceNodes: Node[] = graph.getSourceNodes();
 
-    sourceNodes.forEach( (tracerNode) =>{
-      if(tracerNode.existsProperty(property)){
-        if(property.isNullable()){
+    sourceNodes.forEach(tracerNode => {
+      if (tracerNode.existsProperty(property)) {
+        if (property.isNullable()) {
           tracker.addJoinedNode(tracerNode, tracedNode, joinedNode, false);
-        }else{
+        } else {
           tracker.addJoinedNode(tracerNode, tracedNode, joinedNode, true);
         }
       }

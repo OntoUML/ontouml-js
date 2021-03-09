@@ -38,10 +38,10 @@ export class GenerateOBDASource {
 
     //put the foreign keys
     for (let property of tracedNode.getFKPropertiesOfMainNode()) {
-        text += ', ';
-        text += tracedNode.getMainNode().getName();
-        text += '.';
-        text += property.getName();
+      text += ', ';
+      text += tracedNode.getMainNode().getName();
+      text += '.';
+      text += property.getName();
     }
     text += ' \n';
 
@@ -60,14 +60,14 @@ export class GenerateOBDASource {
 
     text += smallTab;
     first = true;
-    for(let node of tracedNode.getNodes()){
-      if(first){
+    for (let node of tracedNode.getNodes()) {
+      if (first) {
         text += 'FROM ';
         text += node.getName();
         text += ' ';
         first = false;
         lastNode = node;
-      }else{
+      } else {
         text += '\n';
         text += smallTab;
         text += 'INNER JOIN ';

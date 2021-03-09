@@ -194,11 +194,11 @@ export class Node implements IPropertyContainer, IAssociationContainer {
     return this.propertyContainer.existsPropertyName(propertyName);
   }
 
-  existsProperty(property: NodeProperty): boolean{
+  existsProperty(property: NodeProperty): boolean {
     return this.propertyContainer.existsProperty(property);
   }
 
-  getFKRelatedOfNodeID(id: string): NodeProperty{
+  getFKRelatedOfNodeID(id: string): NodeProperty {
     return this.propertyContainer.getFKRelatedOfNodeID(id);
   }
 

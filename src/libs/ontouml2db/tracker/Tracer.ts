@@ -38,14 +38,14 @@ export class Tracer {
 
   /**
    * Informs that a join between the traced node and another node must be performed.
-   * 
-   * @param tracedNode 
-   * @param joinedNode 
-   * @param innerJoin 
+   *
+   * @param tracedNode
+   * @param joinedNode
+   * @param innerJoin
    */
-  addJoinedNode(tracedNode: Node, joinedNode: Node, innerJoin: boolean): void{
+  addJoinedNode(tracedNode: Node, joinedNode: Node, innerJoin: boolean): void {
     for (let trace of this.targetNodes.values()) {
-      if(trace.isNodeTraced(tracedNode)){
+      if (trace.isNodeTraced(tracedNode)) {
         trace.addJoinedNode(joinedNode, innerJoin);
       }
     }
@@ -61,16 +61,16 @@ export class Tracer {
 
   /**
    * Informs if the node is traced from the source node.
-   * @param node 
-   * @returns 
+   * @param node
+   * @returns
    */
-  isNodeTraced(node: Node): boolean{
+  isNodeTraced(node: Node): boolean {
     for (let tracedNode of this.targetNodes.values()) {
-      if(tracedNode.isNodeTraced(node)){
+      if (tracedNode.isNodeTraced(node)) {
         return true;
       }
     }
-    return false
+    return false;
   }
 
   /**

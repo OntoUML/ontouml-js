@@ -97,19 +97,19 @@ export interface IPropertyContainer {
   existsPropertyName(propertyName: string): boolean;
 
   /**
-   * Checks if the property exists in the container. The verification 
+   * Checks if the property exists in the container. The verification
    * is done by the ID property.
-   * 
+   *
    * @param property Property to be searched.
    */
   existsProperty(property: NodeProperty): boolean;
 
   /**
    * Returns the FK related to the node ID.
-   * 
-   * @param node 
+   *
+   * @param node
    */
-   getFKRelatedOfNodeID(id: string): NodeProperty;
+  getFKRelatedOfNodeID(id: string): NodeProperty;
 
   /**
    * Returns all properties formatted as a string.

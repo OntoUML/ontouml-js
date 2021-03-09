@@ -27,8 +27,8 @@ export class Graph {
 
   /**
    * Adds a new node (class) on the graph.
-   * Method used to create the original graph. It should not be used 
-   * to perform the transformations. This method identifies that the 
+   * Method used to create the original graph. It should not be used
+   * to perform the transformations. This method identifies that the
    * node passed as an argument belongs to the original model.
    *
    * @param Node. Node to be added in the graph.
@@ -40,7 +40,7 @@ export class Graph {
 
   /**
    * Adds a new node (class) on the graph.
-   * This method NOT identifies that the node passed as an argument 
+   * This method NOT identifies that the node passed as an argument
    * belongs to the original model.
    *
    * @param Node. Node to be added in the graph.
@@ -83,12 +83,12 @@ export class Graph {
   }
 
   /**
-   * Returns all nodes of the graph added by the putNode 
+   * Returns all nodes of the graph added by the putNode
    * method, in their original form.
-   * 
+   *
    * @returns An array with all original nodes.
    */
-  getSourceNodes(): Node[]{
+  getSourceNodes(): Node[] {
     return this.sourceNodes;
   }
 

@@ -11,7 +11,7 @@ import { TracedNode } from '../tracker/TracedNode';
 
 export class GenerateOBDATarget {
   //public static generate(originalNode: Node, project: string, trackedNode: Node): string {
-    public static generate(sourceNode: Node, project: string, tracedNode: TracedNode): string {
+  public static generate(sourceNode: Node, project: string, tracedNode: TracedNode): string {
     if (sourceNode.getAssociationNameNtoN() == null) {
       return 'target       ' + this.generateTarget(sourceNode, project, tracedNode);
     } else {
@@ -75,10 +75,10 @@ export class GenerateOBDATarget {
     let targetProperty: string = '';
     let tracedProperty: NodeProperty = tracedNode.getPropertyByID(property.getID());
 
-    if(tracedProperty != null){
+    if (tracedProperty != null) {
       targetProperty = tracedProperty.getName();
-    }else{
-      targetProperty = '[CAN NOT FIND '+ property.getName() + ' property at the target node.]';
+    } else {
+      targetProperty = '[CAN NOT FIND ' + property.getName() + ' property at the target node.]';
     }
 
     text += '{';

@@ -44,9 +44,7 @@ const scriptFKAddress = 'ALTER TABLE address ADD FOREIGN KEY ( person_id ) REFER
 // ****************************************
 const gChecker_028_multivalued_property = new GraphChecker()
   .addNode(
-    new NodeChecker('person')
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('name', false))
+    new NodeChecker('person').addProperty(new PropertyChecker('person_id', false)).addProperty(new PropertyChecker('name', false))
   )
   .addNode(
     new NodeChecker('tel')

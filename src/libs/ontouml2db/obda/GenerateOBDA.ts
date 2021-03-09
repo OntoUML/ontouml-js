@@ -43,7 +43,6 @@ export class GenerateOBDA {
     for (let trace of tracker.getTraceMap().values()) {
       first = true;
       trace.getTargetNodes().forEach((tracedNode: TracedNode) => {
-
         text += GenerateOBDAMappingID.generate(trace.getSourceNode(), projectName, first);
 
         text += GenerateOBDATarget.generate(trace.getSourceNode(), projectName, tracedNode);
@@ -52,7 +51,7 @@ export class GenerateOBDA {
 
         first = false;
 
-        text += '\n';  
+        text += '\n';
       });
     }
     text += ']]\n';

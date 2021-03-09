@@ -133,7 +133,7 @@ export class Tracker {
       //for not put on yourself
       if (tracer.getSourceNode().getId() != id) {
         for (let tracedNode of tracer.getTargetNodes().values()) {
-          for(let targetNode of tracedNode.getNodes()){
+          for (let targetNode of tracedNode.getNodes()) {
             if (targetNode.getId() === id) {
               for (let filter of originalTracer.getFilters()) {
                 tracer.addFilter(filter);
@@ -171,11 +171,11 @@ export class Tracker {
     for (let trace of this.traceMap.values()) {
       if (trace.getSourceNode().getName() === sourceNodeName) {
         for (let tracedNode of trace.getTargetNodes().values()) {
-          for(let targetNode of tracedNode.getNodes()){
+          for (let targetNode of tracedNode.getNodes()) {
             if (targetNode.getName() === targetNodeName) {
               return true;
             }
-          }          
+          }
         }
       }
     }
@@ -186,7 +186,7 @@ export class Tracker {
     this.createNewTracerForTheSourceNode(newNode);
   }
 
-  addJoinedNode(tracerNode: Node, tracedNode: Node, joinedNode: Node, innerJoin: boolean): void{
+  addJoinedNode(tracerNode: Node, tracedNode: Node, joinedNode: Node, innerJoin: boolean): void {
     let trace = this.traceMap.get(tracerNode.getId());
     trace.addJoinedNode(tracedNode, joinedNode, innerJoin);
   }
