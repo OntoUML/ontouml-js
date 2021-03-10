@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontouml.org/ontouml-schema/2021-02-26/PathShape",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "Path"
+    },
+    "id": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#id"
+    },
+    "name": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
+    },
+    "description": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
+    },
+    "points": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "x": {
+                "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#natural"
+              },
+              "y": {
+                "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#natural"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["x", "y"]
+          }
+        }
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": ["type", "id", "name", "description", "points"]
+}

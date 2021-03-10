@@ -1,5 +1,0 @@
-@startuml
-
-enum Enumeration <<Enum>>
-
-@enduml

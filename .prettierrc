@@ -1,11 +1,14 @@
 {
   "singleQuote": true,
-  "trailingComma": "all",
+  "trailingComma": "none",
+  "arrowParens": "avoid",
+  "printWidth": 130,
   "overrides": [
     {
       "files": "*.ts",
       "options": {
-        "parser": "typescript"
+        "parser": "typescript",
+        "printWidth": 130
       }
     }
   ]
