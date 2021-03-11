@@ -20,6 +20,7 @@ import { GenerateConnection } from './obda/GenerateConnection';
 
 import { Project } from '@libs/ontouml';
 import { Service, ServiceIssue } from './../';
+import { DBMSSupported } from './constants/DBMSSupported';
 
 export class OntoUML2DB implements Service {
   private graph: Graph;
@@ -32,6 +33,31 @@ export class OntoUML2DB implements Service {
     this.tracker = new Tracker(this.graph);
 
     this.options = opt ? new OntoUML2DBOptions(opt) : new OntoUML2DBOptions();
+  }
+
+  // TODO: review the implementation of run(), move the actual behavior into the method, and delete unnecessary methods.
+  run(): { result: any; issues?: ServiceIssue[] } {
+    this.validate();
+    this.doMapping();
+    this.transformToEntityRelationship();
+    return {
+      result: {
+        schema: this.getRelationalSchema(),
+        obda: this.getOBDAFile(),
+        connection: this.getProtegeConnection()
+      }
+    };
+  }
+
+  /**
+   * Validte if is possible to make the transformation.
+   */
+  validate():void{
+    if((this.options.targetDBMS === DBMSSupported.GENERIC_SCHEMA) &&
+      (!this.options.enumFieldToLoocupTable) 
+      ){
+        throw new Error('It is not possible to make lookup tables for a GENERIC database.');
+    }
   }
 
   /**
@@ -55,24 +81,11 @@ export class OntoUML2DB implements Service {
     strategy.run(this.graph, this.tracker);
   }
 
-  // TODO: review the implementation of run(), move the actual behavior into the method, and delete unnecessary methods.
-  run(): { result: any; issues?: ServiceIssue[] } {
-    this.doMapping();
-    this.transformToEntityRelationship();
-    return {
-      result: {
-        schema: this.getRelationalSchema(),
-        obda: this.getOBDAFile(),
-        connection: this.getProtegeConnection()
-      }
-    };
-  }
-
   /**
    * Adds database constructs to the graph.
    */
   transformToEntityRelationship(): void {
-    ToEntityRelationship.run(this.graph, this.options.isStandardizeNames, this.tracker);
+    ToEntityRelationship.run(this.graph, this.tracker, this.options.isStandardizeNames, this.options.enumFieldToLoocupTable);
   }
 
   /**

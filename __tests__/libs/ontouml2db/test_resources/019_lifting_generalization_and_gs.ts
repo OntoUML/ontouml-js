@@ -17,13 +17,13 @@ import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 //       FOR SCHEMA VALIDATION
 // ****************************************
 const scriptPerson =
-  'CREATE TABLE person ( ' +
-  '         person_id               INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS person ( ' +
+  '         person_id               INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        birth_date              DATE           NOT NULL' +
   ',        rg                      VARCHAR(20)    NULL' +
-  ',        is_brazilian_citizen    BIT            NOT NULL DEFAULT FALSE' +
+  ',        is_brazilian_citizen    BOOLEAN        NOT NULL DEFAULT FALSE' +
   ',        ci                      VARCHAR(20)    NULL' +
-  ',        is_italian_citizen      BIT            NOT NULL DEFAULT FALSE' +
+  ',        is_italian_citizen      BOOLEAN        NOT NULL DEFAULT FALSE' +
   ",        life_phase_enum         ENUM('CHILD','TEENAGER','ADULT')  NOT NULL" +
   '); ';
 
@@ -87,14 +87,14 @@ model.createGeneralizationSet([genChild, genTeenager, genAdult], disjoint, compl
 // ****************************************
 const options: Partial<OntoUML2DBOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  targetDBMS: DBMSSupported.H2,
   isStandardizeNames: true,
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',
-  passwordConnection: 'sa'
+  passwordConnection: 'sa',
+  enumFieldToLoocupTable: false
 };
-
 // ****************************************
 export const test_019: TestResource = {
   title: '019 - Lifting with one generalization set and two simple generalizations',

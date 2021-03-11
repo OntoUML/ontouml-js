@@ -27,20 +27,13 @@ export class TracedNode {
   }
 
   /**
-   *
-   * @param node
-   */
-  // addNewNode(node: Node): void{
-  //     this.nodes.push(node);
-  // }
-
-  /**
-   * Return the nodes traced.
+   * Return the nodes traced. The result is a clone of the original structure.
    *
    * @returns
    */
   getNodes(): Node[] {
-    return this.nodes;
+    return [...this.nodes];
+    //return this.nodes;
   }
 
   /**
@@ -129,6 +122,22 @@ export class TracedNode {
       }
     }
     return null;
+  }
+
+  /**
+   * Informs if there is a node traced to the given node name.
+   * 
+   * @param nodeName 
+   * @returns 
+   */
+  existsTracedNodeByName(nodeName: string): boolean{
+    for (let node of this.nodes) {
+      if (node.getName() === nodeName) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   toString(): string {

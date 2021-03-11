@@ -27,6 +27,11 @@ export class PropertyContainer implements IPropertyContainer {
 
   addProperties(properties: NodeProperty[]): void {
     for (let property of properties) {
+      if (this.existsPropertyName(property.getName())) {
+        throw new Error(
+          `The '${property.getName()}' attribute is repeated between two classes of a generalization.[PropertyContainer.addProperties]`
+        );
+      }
       this.addProperty(property);
     }
   }

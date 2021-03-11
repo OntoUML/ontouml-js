@@ -17,8 +17,8 @@ import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 //       FOR SCHEMA VALIDATION
 // ****************************************
 const scriptPerson =
-  'CREATE TABLE person ( ' +
-  '         person_id               INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS person ( ' +
+  '         person_id               INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        birth_date              DATE           NOT NULL' +
   ',        test1                   INTEGER        NULL' +
   ',        test2                   INTEGER        NULL' +
@@ -74,12 +74,13 @@ model.createGeneralizationSet([genPersonChild, genPersonAdult], disjoint, comple
 // ****************************************
 const options: Partial<OntoUML2DBOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  targetDBMS: DBMSSupported.H2,
   isStandardizeNames: true,
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',
-  passwordConnection: 'sa'
+  passwordConnection: 'sa',
+  enumFieldToLoocupTable: false
 };
 
 // ****************************************

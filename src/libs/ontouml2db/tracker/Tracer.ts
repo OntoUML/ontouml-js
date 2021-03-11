@@ -21,6 +21,16 @@ export class Tracer {
     this.filters = [];
   }
 
+  // /**
+  //  * Returns the tracked nodes from the original node.
+  //  */
+  // getTargetNodes(): Node[] {
+  //   let nodes: Node[] = [];
+  //   for(let tracedNode of this.targetNodes.values()){
+  //     nodes = nodes.concat(tracedNode.getNodes());
+  //   }
+  //   return nodes;
+  // }
   /**
    * Returns the tracked nodes from the original node.
    */
@@ -82,9 +92,8 @@ export class Tracer {
     if (this.targetNodes.has(node.getId())) {
       this.targetNodes.delete(node.getId());
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   /**
@@ -160,6 +169,92 @@ export class Tracer {
         filter.setSourceNode(toNode);
       }
     }
+  }
+
+  isNodeToApplyFilter(node: Node): boolean{
+    for(let filter of this.filters){
+      if(filter.isNodeToApplyFilter(node)){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Informs that it will be necessary to make a junction with one more node for the 
+   * filter to be made in the desired node from the tracked node.
+   * 
+   * @param nodoFilter 
+   * @param joinedNode 
+   */
+  addJoinedNodeToDoFilter(nodoFilter: Node, joinedNode: Node): void{
+    for(let filter of this.filters){
+      if(filter.isNodeToApplyFilter(nodoFilter)){
+        filter.addJoinedNodeToDoFilter(joinedNode);
+      }
+    }
+  }
+
+  /**
+   * Change the field in which the filter will be performed.
+   * 
+   * @param oldProperty 
+   * @param newProperty 
+   */
+  changeFieldToFilter(oldProperty: NodeProperty, newProperty: NodeProperty){
+    for(let filter of this.filters){
+      if(filter.getProperty().getID() === oldProperty.getID()){
+        filter.setProperty(newProperty);
+      }
+    }
+  }
+
+  /**
+   * Informs if the informed property is used in any filter.
+   * 
+   * @param property 
+   * @returns 
+   */
+  isFiltredByProperty(property: NodeProperty): boolean{
+    for(let filter of this.filters){
+      if(filter.isFiltredByProperty(property)){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Removes the property belongs to another Node.
+   * 
+   * @param node 
+   */
+  removeNodeToApplyFilter(node: Node): void{
+    for(let filter of this.filters){
+      if (filter.getNodeToApplyFilter() != null) {
+        if (filter.getNodeToApplyFilter().getId() === node.getId()) {
+          filter.removeNodeToApplyFilter();
+        }
+      }
+   }
+  }
+
+  /**
+   * Informs if there is a node tracer between the given source and target node name.
+   * 
+   * @param sourceNodeName 
+   * @param targetNodeName 
+   * @returns 
+   */
+  existsTracerByName(sourceNodeName: string, targetNodeName: string): boolean{
+    if (this.sourceNode.getName() === sourceNodeName) {
+      for (let tracedNode of this.targetNodes.values()) {
+        if(tracedNode.existsTracedNodeByName(targetNodeName)){
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   toString(): string {

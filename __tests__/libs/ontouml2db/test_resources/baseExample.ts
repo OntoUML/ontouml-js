@@ -19,52 +19,52 @@ import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 //       FOR SCHEMA VALIDATION
 // ****************************************
 const scriptPerson =
-  'CREATE TABLE person ( ' +
-  '         person_id               INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS person ( ' +
+  '         person_id               INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        name                    VARCHAR(20)    NOT NULL' +
   ',        birth_date              DATE           NOT NULL' +
   ',        rg                      VARCHAR(20)    NULL' +
   ',        ci                      VARCHAR(20)    NULL' +
-  ',        is_employee             BIT            NOT NULL DEFAULT FALSE' +
+  ',        is_employee             BOOLEAN        NOT NULL DEFAULT FALSE' +
   ',        credit_rating           DOUBLE         NULL' +
   ',        credit_card             VARCHAR(20)    NULL' +
-  ',        is_personal_customer    BIT            NOT NULL DEFAULT FALSE' +
+  ',        is_personal_customer    BOOLEAN        NOT NULL DEFAULT FALSE' +
   ",        life_phase_enum         ENUM('CHILD','ADULT') NOT NULL" +
   '); ';
 
 const scriptOrganization =
-  'CREATE TABLE organization ( ' +
-  '         organization_id         INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS organization ( ' +
+  '         organization_id         INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        name                    VARCHAR(20)    NOT NULL' +
   ',        address                 VARCHAR(20)    NOT NULL' +
   ',        playground_size         INTEGER        NULL' +
   ',        capacity                INTEGER        NULL' +
   ',        credit_rating           DOUBLE         NULL' +
   ',        credit_limit            DOUBLE         NULL' +
-  ',        is_corporate_customer   BIT            NOT NULL DEFAULT FALSE' +
-  ',        is_contractor           BIT            NOT NULL DEFAULT FALSE' +
+  ',        is_corporate_customer   BOOLEAN        NOT NULL DEFAULT FALSE' +
+  ',        is_contractor           BOOLEAN        NOT NULL DEFAULT FALSE' +
   ",        organization_type_enum  ENUM('PRIMARYSCHOOL','HOSPITAL')  NULL" +
   '); ';
 
 const scriptEmployment =
-  'CREATE TABLE employment ( ' +
-  '        employment_id           INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS employment ( ' +
+  '        employment_id           INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',       organization_id         INTEGER        NOT NULL' +
   ',       person_id               INTEGER        NOT NULL' +
   ',       salary                  DOUBLE         NOT NULL' +
   '); ';
 
 const scriptEnrollment =
-  'CREATE TABLE enrollment ( ' +
-  '         enrollment_id           INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS enrollment ( ' +
+  '         enrollment_id           INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        organization_id         INTEGER        NOT NULL' +
   ',        person_id               INTEGER        NOT NULL' +
   ',        grade                   INTEGER        NOT NULL' +
   '); ';
 
 const scriptSupply =
-  'CREATE TABLE supply_contract ( ' +
-  '         supply_contract_id      INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS supply_contract ( ' +
+  '         supply_contract_id      INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        organization_customer_id INTEGER        NULL' +
   ',        person_id               INTEGER        NULL' +
   ',        organization_id         INTEGER        NOT NULL' +
@@ -72,8 +72,8 @@ const scriptSupply =
   '); ';
 
 const scriptNationality =
-  'CREATE TABLE nationality ( ' +
-  '         nationality_id          INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS nationality ( ' +
+  '         nationality_id          INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        person_id               INTEGER        NOT NULL' +
   ",        nationality_enum        ENUM('BRAZILIANCITIZEN','ITALIANCITIZEN')  NOT NULL" +
   '); ';
@@ -313,12 +313,13 @@ model.createMediationRelation(supplyConstract, customer, 'hasCustomer');
 // ****************************************
 const options: Partial<OntoUML2DBOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  targetDBMS: DBMSSupported.H2,
   isStandardizeNames: true,
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',
-  passwordConnection: 'sa'
+  passwordConnection: 'sa',
+  enumFieldToLoocupTable: false,
 };
 
 // ****************************************

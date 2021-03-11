@@ -19,17 +19,17 @@ import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 //       FOR SCHEMA VALIDATION
 // ****************************************
 const scriptSuper =
-  'CREATE TABLE super_class ( ' + '         super_class_id          INTEGER        NOT NULL PRIMARY KEY' + '); ';
+  'CREATE TABLE IF NOT EXISTS super_class ( ' + '         super_class_id          INTEGER        NOT NULL IDENTITY PRIMARY KEY' + '); ';
 
 const scriptAssociatedClass =
-  'CREATE TABLE associated_class ( ' +
-  '         associated_class_id     INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS associated_class ( ' +
+  '         associated_class_id     INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        super_class_id          INTEGER        NOT NULL' +
   '); ';
 
 const scriptSuperClassType =
-  'CREATE TABLE super_class_type ( ' +
-  '         super_class_type_id     INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS super_class_type ( ' +
+  '         super_class_type_id     INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        super_class_id          INTEGER        NOT NULL' +
   ",        super_class_type_enum   ENUM('SUBCLASS1','SUBCLASS2')  NOT NULL" +
   '); ';
@@ -104,12 +104,13 @@ relation.getTargetEnd().cardinality.setOneToMany();
 // ****************************************
 const options: Partial<OntoUML2DBOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  targetDBMS: DBMSSupported.H2,
   isStandardizeNames: true,
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',
-  passwordConnection: 'sa'
+  passwordConnection: 'sa',
+  enumFieldToLoocupTable: false
 };
 
 // ****************************************

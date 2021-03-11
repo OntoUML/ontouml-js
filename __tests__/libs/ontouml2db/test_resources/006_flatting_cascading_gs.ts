@@ -17,16 +17,16 @@ import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 //       FOR SCHEMA VALIDATION
 // ****************************************
 const scriptPerson =
-  'CREATE TABLE person ( ' +
-  '         person_id               INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS person ( ' +
+  '         person_id               INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        name                    VARCHAR(20)    NOT NULL' +
   ',        name_b                  VARCHAR(20)    NULL' +
   ',        birth_date              DATE           NOT NULL' +
   '); ';
 
 const scriptOrganization =
-  'CREATE TABLE organization ( ' +
-  '         organization_id         INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS organization ( ' +
+  '         organization_id         INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        name                    VARCHAR(20)    NOT NULL' +
   ',        name_a                  VARCHAR(20)    NULL' +
   ',        address                 VARCHAR(20)    NOT NULL' +
@@ -98,12 +98,13 @@ model.createGeneralizationSet([genNamedEntityEntityA, genNamedEntityEntityB], di
 // ****************************************
 const options: Partial<OntoUML2DBOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  targetDBMS: DBMSSupported.H2,
   isStandardizeNames: true,
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',
-  passwordConnection: 'sa'
+  passwordConnection: 'sa',
+  enumFieldToLoocupTable: false
 };
 
 // ****************************************

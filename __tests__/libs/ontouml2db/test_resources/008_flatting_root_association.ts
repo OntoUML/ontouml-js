@@ -19,22 +19,22 @@ import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 //       FOR SCHEMA VALIDATION
 // ****************************************
 const scriptPerson =
-  'CREATE TABLE person ( ' +
-  '         person_id               INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS person ( ' +
+  '         person_id               INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        name                    VARCHAR(20)    NOT NULL' +
   ',        birth_date              DATE           NOT NULL' +
   '); ';
 
 const scriptOrganization =
-  'CREATE TABLE organization ( ' +
-  '         organization_id         INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS organization ( ' +
+  '         organization_id         INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        name                    VARCHAR(20)    NOT NULL' +
   ',        address                 VARCHAR(20)    NOT NULL' +
   '); ';
 
 const scriptTest =
-  'CREATE TABLE test ( ' +
-  '         test_id                 INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS test ( ' +
+  '         test_id                 INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        organization_id         INTEGER        NULL' +
   ',        person_id               INTEGER        NULL' +
   '); ';
@@ -121,12 +121,13 @@ relation.getTargetEnd().cardinality.setZeroToMany();
 // ****************************************
 const options: Partial<OntoUML2DBOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  targetDBMS: DBMSSupported.H2,
   isStandardizeNames: true,
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',
-  passwordConnection: 'sa'
+  passwordConnection: 'sa',
+  enumFieldToLoocupTable: false
 };
 
 // ****************************************

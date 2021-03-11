@@ -19,23 +19,24 @@ import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 //       FOR SCHEMA VALIDATION
 // ****************************************
 const scriptPerson =
-  'CREATE TABLE person ( ' +
-  '         person_id               INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS person ( ' +
+  '         person_id               INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        birth_date              DATE           NOT NULL' +
-  ',        is_test1                BIT            NOT NULL DEFAULT FALSE' +
+  ',        is_test1                BOOLEAN        NOT NULL DEFAULT FALSE' +
   ',        test2                   INTEGER        NULL' +
-  ',        is_test2                BIT            NOT NULL DEFAULT FALSE' +
+  ',        is_test2                BOOLEAN        NOT NULL DEFAULT FALSE' +
   ",        life_phase_enum         ENUM('CHILD','TEENAGER','ADULT')  NOT NULL" +
   '); ';
 
 const scriptEmploymentA =
-  'CREATE TABLE employment_a ( ' +
-  '         employment_a_id         INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS employment_a ( ' +
+  '         employment_a_id         INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        person_id               INTEGER        NOT NULL' +
   '); ';
 
-const scriptEmploymentB = 'CREATE TABLE employment_b ( ';
-'employment_b_id         INTEGER        NOT NULL PRIMARY KEY';
+const scriptEmploymentB = 
+'CREATE TABLE IF NOT EXISTS employment_b ( ';
+'         employment_b_id         INTEGER        NOT NULL IDENTITY PRIMARY KEY';
 ',        person_id               INTEGER        NOT NULL';
 '); ';
 
@@ -90,9 +91,7 @@ const gChecker_021_lifting_generalization_and_gs_association = new GraphChecker(
 //       M O D E L
 // ****************************************
 const disjoint = true;
-const overlapping = false;
 const complete = true;
-const incomplete = false;
 
 const project = new Project();
 const model = project.createModel();
@@ -132,12 +131,13 @@ relationB.getTargetEnd().cardinality.setZeroToMany();
 // ****************************************
 const options: Partial<OntoUML2DBOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  targetDBMS: DBMSSupported.H2,
   isStandardizeNames: true,
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',
-  passwordConnection: 'sa'
+  passwordConnection: 'sa',
+  enumFieldToLoocupTable: false
 };
 
 // ****************************************

@@ -18,30 +18,36 @@ import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 // ****************************************
 //       FOR SCHEMA VALIDATION
 // ****************************************
-const scriptPerson = 'CREATE TABLE person ( ' + '          person_id               INTEGER        NOT NULL PRIMARY KEY' + '); ';
+const scriptPerson = 
+'CREATE TABLE IF NOT EXISTS person ( ' + 
+'          person_id               INTEGER        NOT NULL IDENTITY PRIMARY KEY' + '); ';
 
 const scriptAssociatedClass1 =
-  'CREATE TABLE associated_class1 ( ' + '          associated_class1_id    INTEGER        NOT NULL PRIMARY KEY' + '); ';
+  'CREATE TABLE IF NOT EXISTS associated_class1 ( ' + 
+  '          associated_class1_id    INTEGER        NOT NULL IDENTITY PRIMARY KEY' + '); ';
 
 const scriptAssociatedClass2 =
-  'CREATE TABLE associated_class2 ( ' + '          associated_class2_id    INTEGER        NOT NULL PRIMARY KEY' + '); ';
+  'CREATE TABLE IF NOT EXISTS associated_class2 ( ' + 
+  '          associated_class2_id    INTEGER        NOT NULL IDENTITY PRIMARY KEY' + '); ';
 
 const scriptAssociatedClass3 =
-  'CREATE TABLE associated_class3 ( ' + '          person_id               INTEGER        NOT NULL PRIMARY KEY' + '); ';
+  'CREATE TABLE IF NOT EXISTS associated_class3 ( ' + 
+  '          person_id               INTEGER        NOT NULL PRIMARY KEY' + '); ';
 
 const scriptAssociatedClass4 =
-  'CREATE TABLE associated_class4 ( ' + '          person_id               INTEGER        NOT NULL PRIMARY KEY' + '); ';
+  'CREATE TABLE IF NOT EXISTS associated_class4 ( ' + 
+  '          person_id               INTEGER        NOT NULL PRIMARY KEY' + '); ';
 
 const scriptPersonassociatedclass1 =
-  'CREATE TABLE person_associated_class1 ( ' +
-  '         person_associated_class1_id INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS person_associated_class1 ( ' +
+  '         person_associated_class1_id INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        associated_class1_id    INTEGER        NOT NULL' +
   ',        person_id               INTEGER        NOT NULL' +
   '); ';
 
 const SCRIPTpersonassociatedclass2 =
-  'CREATE TABLE person_associated_class2 ( ' +
-  '         person_associated_class2_id INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS person_associated_class2 ( ' +
+  '         person_associated_class2_id INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        associated_class2_id    INTEGER        NOT NULL' +
   ',        person_id               INTEGER        NOT NULL' +
   '); ';
@@ -179,12 +185,13 @@ relation4.getTargetEnd().cardinality.setOneToOne();
 // ****************************************
 const options: Partial<OntoUML2DBOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  targetDBMS: DBMSSupported.H2,
   isStandardizeNames: true,
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',
-  passwordConnection: 'sa'
+  passwordConnection: 'sa',
+  enumFieldToLoocupTable: false
 };
 
 // ****************************************

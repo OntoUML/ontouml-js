@@ -7,6 +7,7 @@ import { Node } from '@libs/ontouml2db/graph/Node';
 import { Util } from '@libs/ontouml2db/util/Util';
 import { Tracer } from '@libs/ontouml2db/tracker/Tracer';
 import { TracedNode } from '@libs/ontouml2db/tracker/TracedNode';
+import { NodeProperty } from '../graph/NodeProperty';
 
 export class GenerateOBDASource {
   static generate(tracer: Tracer, tracedNode: TracedNode): string {
@@ -60,6 +61,7 @@ export class GenerateOBDASource {
 
     text += smallTab;
     first = true;
+    // To dismembered nodes (when a multivalued attribute occurs, for example).
     for (let node of tracedNode.getNodes()) {
       if (first) {
         text += 'FROM ';
@@ -87,27 +89,32 @@ export class GenerateOBDASource {
       }
     }
 
+    let fkField: string;// The name of the FK is always the same in both tables.
     for (let filter of tracer.getFilters()) {
-      if (filter.getBelongToOtherNode() != null) {
-        text += '\n';
-        text += smallTab;
-        text += 'INNER JOIN ';
-        text += filter.getBelongToOtherNode().getName();
-        text += '\n';
-        text += largeTab;
-        text += 'ON ';
-        text += tracedNode.getMainNode().getName();
-        text += '.';
-        text += tracedNode.getMainNode().getPKName();
-        text += ' = ';
-        text += filter.getBelongToOtherNode().getName();
-        text += '.';
-        text += this.getReferencePkTable(filter.getBelongToOtherNode(), tracedNode.getMainNode().getId());
-
+      if (filter.getNodeToApplyFilter() != null) {
+        let lastNode = tracedNode.getMainNode();
+        for(let joinedNode of filter.getChainOfNodesToApplyFilter()){
+          fkField = this.getFKFields(lastNode, joinedNode);
+          text += '\n';
+          text += smallTab;
+          text += 'INNER JOIN ';
+          text += joinedNode.getName();
+          text += '\n';
+          text += largeTab;
+          text += 'ON ';
+          text += lastNode.getName();
+          text += '.';
+          text += fkField;
+          text += ' = ';
+          text += joinedNode.getName();
+          text += '.';
+          text += fkField;
+          lastNode = joinedNode;
+        }
         text += '\n';
         text += largeTab;
         text += 'AND ';
-        text += filter.getBelongToOtherNode().getName();
+        text += lastNode.getName();
         text += '.';
         text += filter.getProperty().getName();
         text += ' = ';
@@ -127,7 +134,7 @@ export class GenerateOBDASource {
 
     for (let filter of tracer.getFilters()) {
       if (
-        filter.getBelongToOtherNode() == null && //Done as inner join
+        filter.getNodeToApplyFilter() == null && //Done as inner join
         tracedNode.getMainNode().getId() === filter.getSourceNode().getId()
       ) {
         //only if the rule refers to the tracked node. When a class is flattened, it can reference several classes
@@ -150,15 +157,19 @@ export class GenerateOBDASource {
     return text;
   }
 
-  static getReferencePkTable(node: Node, fkNodeID: string): string {
-    for (let property of node.getProperties()) {
-      if (property.isForeignKey()) {
-        if (property.getForeignKeyNodeID() === fkNodeID) {
-          return property.getName();
-        }
+  static getFKFields(sourceNode: Node, targetNode: Node): string {
+    let fk: NodeProperty;
+
+    fk = sourceNode.getFKRelatedOfNodeID(targetNode.getId());
+    if(fk != null){
+      return fk.getName();
+    }else{
+      fk = targetNode.getFKRelatedOfNodeID(sourceNode.getId());
+      if(fk != null){
+        return fk.getName();
       }
     }
-    return '[Did not find the pk of the referenced table]';
+    return 'Did not find the fk of the referenced table';
   }
 
   static getStringValue(value: any): string {

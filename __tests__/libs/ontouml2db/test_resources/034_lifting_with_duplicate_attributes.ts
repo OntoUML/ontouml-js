@@ -17,8 +17,8 @@ import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 //       FOR SCHEMA VALIDATION
 // ****************************************
 const scriptPerson =
-  'CREATE TABLE person ( ' +
-  '         person_id               INTEGER        NOT NULL PRIMARY KEY' +
+  'CREATE TABLE IF NOT EXISTS person ( ' +
+  '         person_id               INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
   ',        name                    VARCHAR(20)    NULL' +
   ',        x1                      VARCHAR(20)    NULL' +
   '); ';
@@ -65,9 +65,9 @@ const person = model.createKind('Person');
 const brazilianCitizen = model.createSubkind('BrazilianCitizen');
 const italianCitizen = model.createSubkind('ItalianCitizen');
 // CREATE PROPERTIES
-person.createAttribute(_string, 'name');
-brazilianCitizen.createAttribute(_int, 'x1');
-italianCitizen.createAttribute(_int, 'x1');
+person.createAttribute(_string, 'name').cardinality.setOneToOne();
+brazilianCitizen.createAttribute(_int, 'x1').cardinality.setOneToOne();
+italianCitizen.createAttribute(_int, 'x1').cardinality.setOneToOne();
 // CREATE GENERALIZATIONS
 const genPersonBrazilian = model.createGeneralization(person, brazilianCitizen);
 const genersonItalian = model.createGeneralization(person, italianCitizen);
@@ -79,17 +79,18 @@ model.createGeneralizationSet([genPersonBrazilian, genersonItalian], overlappig,
 // ****************************************
 const options: Partial<OntoUML2DBOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  targetDBMS: DBMSSupported.H2,
   isStandardizeNames: true,
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',
-  passwordConnection: 'sa'
+  passwordConnection: 'sa',
+  enumFieldToLoocupTable: false
 };
 
 // ******************************
 export const test_034: TestResource = {
-  title: '034 - Evaluates lifting involving generalizations where there are attributes with the same name in the subclasses',
+  title: '034 - Evaluates lifting of generalizations where there are attributes with the same name in the subclasses',
   checker: gChecker_034_lifting_with_duplicate_attributes,
   project,
   options

@@ -49,7 +49,7 @@ const scriptOrganization =
   '); ';
 
 const scriptEmployment =
-  'CREATE TABLEemployment ( ' +
+  'CREATE TABLE employment ( ' +
   '        employment_id           NUMBER(10,0)    NOT NULL GENERATED ALWAYS AS IDENTITY' +
   ',        organization_id        NUMBER(10,0)    NOT NULL' +
   ',        person_id              NUMBER(10,0)    NOT NULL' +
@@ -254,7 +254,8 @@ const options: Partial<OntoUML2DBOptions> = {
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',
-  passwordConnection: 'sa'
+  passwordConnection: 'sa',
+  enumFieldToLoocupTable: false
 };
 
 // ****************************************

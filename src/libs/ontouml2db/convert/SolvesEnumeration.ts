@@ -8,12 +8,25 @@ import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
 import { Node } from '@libs/ontouml2db/graph/Node';
 import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
 
-// import { ClassStereotype } from '@constants/.';
-
 import { ClassStereotype } from '@libs/ontouml';
+import { NodePropertyEnumeration } from '../graph/NodePropertyEnumeration';
+import { NodeProperty } from '../graph/NodeProperty';
+import { Increment } from '../util/Increment';
 
 export class SolvesEnumeration {
-  static solves(graph: Graph, tracker: Tracker): void {
+
+  static solves(graph: Graph, tracker: Tracker, enumFiledToLookupTable: boolean): void {
+    if(enumFiledToLookupTable){
+      this.transformEnumToLookupTables(graph, tracker);
+    }else{
+      this.applyEnumToFilds(graph, tracker);
+    }
+  }
+
+  // **********************************************************
+  // *** Methodos to apply enumerations to fields
+  // **********************************************************
+  static applyEnumToFilds(graph: Graph, tracker: Tracker){
     let nodesToDestroy: Node[] = [];
     let associationsToRemove: GraphRelation[] = [];
 
@@ -77,4 +90,27 @@ export class SolvesEnumeration {
     if (relation.getSourceNode() === node) return relation.getSourceCardinality();
     else return relation.getTargetCardinality();
   }
+
+  // **********************************************************
+  // *** Methodos to transform enumerations to lookup tables
+  // **********************************************************
+  static transformEnumToLookupTables(graph: Graph, tracker: Tracker){
+    let newField: NodeProperty;
+
+    for (let node of graph.getNodes()) {
+      if (node.getStereotype() === ClassStereotype.ENUMERATION) {
+
+        for(let property of node.getProperties()){
+          if(property instanceof NodePropertyEnumeration){
+            node.removeProperty(property.getID());
+            newField = new NodeProperty(Increment.getNext().toString(), node.getName(), 'string', false, false);
+            node.addProperty(newField);
+            tracker.changeFieldToFilter(property, newField);
+          }
+        }
+
+      }
+    }
+  }
+
 }

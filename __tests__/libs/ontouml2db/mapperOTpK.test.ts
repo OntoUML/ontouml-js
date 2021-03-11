@@ -40,6 +40,9 @@ import { test_031 } from './test_resources/031_oracle_script';
 import { test_032 } from './test_resources/032_postgre.script';
 import { test_033 } from './test_resources/033_sqlserver_script';
 import { test_034 } from './test_resources/034_lifting_with_duplicate_attributes';
+import { test_035 } from './test_resources/035_enum_field_to_lookup_table';
+import { test_036 } from './test_resources/036_enum_field_to_lookup_tables_h2';
+import { test_037 } from '../ontouml2db/test_resources/037_test_lookup_tabel_for_generic_db';
 
 const testResourcesRight: TestResource[] = [
   test_001,
@@ -74,10 +77,15 @@ const testResourcesRight: TestResource[] = [
   test_031,
   test_032,
   test_033,
+  test_035,
+  test_036,
   baseExample
 ];
 
-const testResourcesWrong: TestResource[] = [test_002, test_034];
+const testResourcesWrong: TestResource[] = [
+  test_002, 
+  test_034, 
+  test_037];
 
 describe('Testing One Table per Kind mapper.', () => {
   let service: OntoUML2DB;
@@ -90,8 +98,6 @@ describe('Testing One Table per Kind mapper.', () => {
           service = new OntoUML2DB(testResource.project, testResource.options);
           files = service.run();
         }).not.toThrow();
-
-        //console.log(files.result.schema);
 
         testResource.checker.setTransformation(service);
         testResource.checker.setSchema(files.result.schema);
