@@ -126,11 +126,11 @@ export class TracedNode {
 
   /**
    * Informs if there is a node traced to the given node name.
-   * 
-   * @param nodeName 
-   * @returns 
+   *
+   * @param nodeName
+   * @returns
    */
-  existsTracedNodeByName(nodeName: string): boolean{
+  existsTracedNodeByName(nodeName: string): boolean {
     for (let node of this.nodes) {
       if (node.getName() === nodeName) {
         return true;

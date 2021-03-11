@@ -19,7 +19,9 @@ import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 //       FOR SCHEMA VALIDATION
 // ****************************************
 const scriptSuper =
-  'CREATE TABLE IF NOT EXISTS super_class ( ' + '         super_class_id          INTEGER        NOT NULL IDENTITY PRIMARY KEY' + '); ';
+  'CREATE TABLE IF NOT EXISTS super_class ( ' +
+  '         super_class_id          INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
+  '); ';
 
 const scriptAssociatedClass =
   'CREATE TABLE IF NOT EXISTS associated_class ( ' +

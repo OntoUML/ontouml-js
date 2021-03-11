@@ -34,8 +34,7 @@ const scriptEmploymentA =
   ',        person_id               INTEGER        NOT NULL' +
   '); ';
 
-const scriptEmploymentB = 
-'CREATE TABLE IF NOT EXISTS employment_b ( ';
+const scriptEmploymentB = 'CREATE TABLE IF NOT EXISTS employment_b ( ';
 '         employment_b_id         INTEGER        NOT NULL IDENTITY PRIMARY KEY';
 ',        person_id               INTEGER        NOT NULL';
 '); ';

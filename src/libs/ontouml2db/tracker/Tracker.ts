@@ -163,7 +163,7 @@ export class Tracker {
    */
   existsTracerByName(sourceNodeName: string, targetNodeName: string): boolean {
     for (let tracer of this.traceMap.values()) {
-      if(tracer.existsTracerByName(sourceNodeName, targetNodeName)){
+      if (tracer.existsTracerByName(sourceNodeName, targetNodeName)) {
         return true;
       }
     }
@@ -171,15 +171,15 @@ export class Tracker {
   }
 
   /**
-   * Adds a node to the set of nodes traced by the origin node. This method must be 
-   * used when the source node always references a set of nodes. Ex .: when a node 
-   * has a multivalued attribute, it is divided into two nodes, thus, it will be 
+   * Adds a node to the set of nodes traced by the origin node. This method must be
+   * used when the source node always references a set of nodes. Ex .: when a node
+   * has a multivalued attribute, it is divided into two nodes, thus, it will be
    * necessary to join the destination nodes to reflect the same set of the origin node.
-   * 
-   * @param tracerNode 
-   * @param tracedNode 
-   * @param joinedNode 
-   * @param innerJoin 
+   *
+   * @param tracerNode
+   * @param tracedNode
+   * @param joinedNode
+   * @param innerJoin
    */
   addJoinedNode(tracerNode: Node, tracedNode: Node, joinedNode: Node, innerJoin: boolean): void {
     let tracer = this.traceMap.get(tracerNode.getId());
@@ -187,15 +187,15 @@ export class Tracker {
   }
 
   /**
-   * Informs that it will be necessary to make a junction with one more node for the 
+   * Informs that it will be necessary to make a junction with one more node for the
    * filter to be made in the desired node from the tracked node.
-   * 
-   * @param nodeFilter 
-   * @param joinedNode 
+   *
+   * @param nodeFilter
+   * @param joinedNode
    */
-  addJoinedNodeToApplyFilter(nodeFilter: Node, joinedNode: Node): void{
+  addJoinedNodeToApplyFilter(nodeFilter: Node, joinedNode: Node): void {
     for (let tracer of this.traceMap.values()) {
-      if(tracer.isNodeToApplyFilter(nodeFilter)){
+      if (tracer.isNodeToApplyFilter(nodeFilter)) {
         tracer.addJoinedNodeToDoFilter(nodeFilter, joinedNode);
       }
     }
@@ -203,15 +203,15 @@ export class Tracker {
 
   /**
    * Change the field in which the filter will be performed.
-   * This method goes through all the filters linked to the nodes and, if it finds the 
+   * This method goes through all the filters linked to the nodes and, if it finds the
    * old field, it substitutes for the new field.
-   * 
-   * @param oldProperty 
-   * @param newProperty 
+   *
+   * @param oldProperty
+   * @param newProperty
    */
-  changeFieldToFilter(oldProperty: NodeProperty, newProperty: NodeProperty){
-    for(let tracer of this.traceMap.values()){
-      if(tracer.isFiltredByProperty(oldProperty)){
+  changeFieldToFilter(oldProperty: NodeProperty, newProperty: NodeProperty) {
+    for (let tracer of this.traceMap.values()) {
+      if (tracer.isFiltredByProperty(oldProperty)) {
         tracer.changeFieldToFilter(oldProperty, newProperty);
       }
     }

@@ -15,7 +15,6 @@ import { ClassStereotype } from '@libs/ontouml';
 
 export class SolvesCardinalityNtoN {
   static solves(graph: Graph, tracker: Tracker): void {
-    
     let relations = graph.getAssociations().filter(this.filterNtoN) as GraphRelation[];
 
     for (let relation of relations) {
@@ -77,7 +76,7 @@ export class SolvesCardinalityNtoN {
     else return false;
   }
 
-  static getAssociationName(relation: GraphRelation): string{
+  static getAssociationName(relation: GraphRelation): string {
     let associationName: string;
     if (relation.getName() != null) {
       associationName = relation.getName();
@@ -98,29 +97,31 @@ export class SolvesCardinalityNtoN {
     return associationName;
   }
 
-  static adjustTraceability(tracker: Tracker, relation: GraphRelation, newNode: Node): void{
+  static adjustTraceability(tracker: Tracker, relation: GraphRelation, newNode: Node): void {
     // To create a join between the classes of the N:N relation
     tracker.createNewTracerForTheSourceNode(newNode);
 
     // Adjust to do a join (filter) with the enumeration
-    if(! this.existsEnumAtRelation(relation)) return;
+    if (!this.existsEnumAtRelation(relation)) return;
 
     let enumNode = this.getEnumNode(relation);
     tracker.addJoinedNodeToApplyFilter(enumNode, newNode);
   }
 
-  static existsEnumAtRelation(relation: GraphRelation): boolean{
-    if(relation.getSourceNode().getStereotype() === ClassStereotype.ENUMERATION ||
-       relation.getTargetNode().getStereotype() === ClassStereotype.ENUMERATION)
-       return true;
+  static existsEnumAtRelation(relation: GraphRelation): boolean {
+    if (
+      relation.getSourceNode().getStereotype() === ClassStereotype.ENUMERATION ||
+      relation.getTargetNode().getStereotype() === ClassStereotype.ENUMERATION
+    )
+      return true;
     else return false;
   }
 
-  static getEnumNode(relation: GraphRelation): Node{
-    if(relation.getSourceNode().getStereotype() === ClassStereotype.ENUMERATION){
+  static getEnumNode(relation: GraphRelation): Node {
+    if (relation.getSourceNode().getStereotype() === ClassStereotype.ENUMERATION) {
       return relation.getSourceNode();
     }
-    if(relation.getTargetNode().getStereotype() === ClassStereotype.ENUMERATION){
+    if (relation.getTargetNode().getStereotype() === ClassStereotype.ENUMERATION) {
       return relation.getTargetNode();
     }
     return null;

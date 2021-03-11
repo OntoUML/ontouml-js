@@ -89,11 +89,11 @@ export class GenerateOBDASource {
       }
     }
 
-    let fkField: string;// The name of the FK is always the same in both tables.
+    let fkField: string; // The name of the FK is always the same in both tables.
     for (let filter of tracer.getFilters()) {
       if (filter.getNodeToApplyFilter() != null) {
         let lastNode = tracedNode.getMainNode();
-        for(let joinedNode of filter.getChainOfNodesToApplyFilter()){
+        for (let joinedNode of filter.getChainOfNodesToApplyFilter()) {
           fkField = this.getFKFields(lastNode, joinedNode);
           text += '\n';
           text += smallTab;
@@ -161,11 +161,11 @@ export class GenerateOBDASource {
     let fk: NodeProperty;
 
     fk = sourceNode.getFKRelatedOfNodeID(targetNode.getId());
-    if(fk != null){
+    if (fk != null) {
       return fk.getName();
-    }else{
+    } else {
       fk = targetNode.getFKRelatedOfNodeID(sourceNode.getId());
-      if(fk != null){
+      if (fk != null) {
         return fk.getName();
       }
     }

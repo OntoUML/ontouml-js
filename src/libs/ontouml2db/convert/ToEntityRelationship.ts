@@ -17,7 +17,7 @@ export class ToEntityRelationship {
   static run(graph: Graph, tracker: Tracker, applyStandardizeNames: boolean, enumFiledToLookupTable: boolean): void {
     SolvesMultivaluedProperty.solves(graph, tracker);
 
-    SolvesEnumeration.solves(graph, tracker,enumFiledToLookupTable);
+    SolvesEnumeration.solves(graph, tracker, enumFiledToLookupTable);
 
     SolvesCardinalityNtoN.solves(graph, tracker);
 

@@ -52,11 +52,9 @@ export class OntoUML2DB implements Service {
   /**
    * Validte if is possible to make the transformation.
    */
-  validate():void{
-    if((this.options.targetDBMS === DBMSSupported.GENERIC_SCHEMA) &&
-      (!this.options.enumFieldToLoocupTable) 
-      ){
-        throw new Error('It is not possible to make lookup tables for a GENERIC database.');
+  validate(): void {
+    if (this.options.targetDBMS === DBMSSupported.GENERIC_SCHEMA && !this.options.enumFieldToLoocupTable) {
+      throw new Error('It is not possible to make lookup tables for a GENERIC database.');
     }
   }
 

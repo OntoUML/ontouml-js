@@ -82,10 +82,7 @@ const testResourcesRight: TestResource[] = [
   baseExample
 ];
 
-const testResourcesWrong: TestResource[] = [
-  test_002, 
-  test_034, 
-  test_037];
+const testResourcesWrong: TestResource[] = [test_002, test_034, test_037];
 
 describe('Testing One Table per Kind mapper.', () => {
   let service: OntoUML2DB;

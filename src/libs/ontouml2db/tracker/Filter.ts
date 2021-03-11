@@ -23,7 +23,7 @@ export class Filter {
     this.value = value;
     this.nodeToApplyFilter = belongsToOtherNode;
     this.chainOfNodesToApplyFilter = [];
-    if(belongsToOtherNode != null){
+    if (belongsToOtherNode != null) {
       this.chainOfNodesToApplyFilter.push(belongsToOtherNode);
     }
   }
@@ -82,16 +82,16 @@ export class Filter {
   /**
    * Informs that the filter must be applied in another class. This occurs when the
    * property to be filtered has been transferred to another class, requiring a join.
-   * If the given node is null, it will have the same behavior as removeNodeToApplayFilter() 
+   * If the given node is null, it will have the same behavior as removeNodeToApplayFilter()
    * methodo.
-   * 
+   *
    * @param node
    */
-  setNodeToApplyFilter(node: Node): void{
-    if(node != null){
+  setNodeToApplyFilter(node: Node): void {
+    if (node != null) {
       this.nodeToApplyFilter = node;
-    this.chainOfNodesToApplyFilter.push(node);
-    }else{
+      this.chainOfNodesToApplyFilter.push(node);
+    } else {
       this.removeNodeToApplyFilter();
     }
   }
@@ -99,19 +99,19 @@ export class Filter {
   /**
    * Informs that the filter will be applied to the node it belongs to.
    */
-  removeNodeToApplyFilter(): void{
+  removeNodeToApplyFilter(): void {
     this.nodeToApplyFilter = null;
     this.chainOfNodesToApplyFilter = [];
   }
 
   /**
-   * Adds an intermediate node to perform the filter. The tracking process will make joins 
-   * from the source node until it arrives at the node to be carried out the filter. The 
-   * node is added at the beginning of the chain, that is, the node to be filtered is the 
+   * Adds an intermediate node to perform the filter. The tracking process will make joins
+   * from the source node until it arrives at the node to be carried out the filter. The
+   * node is added at the beginning of the chain, that is, the node to be filtered is the
    * last one in the chain.
-   * @param node 
+   * @param node
    */
-  addJoinedNodeToDoFilter(node: Node): void{
+  addJoinedNodeToDoFilter(node: Node): void {
     this.chainOfNodesToApplyFilter.unshift(node);
   }
 
@@ -125,36 +125,35 @@ export class Filter {
 
   /**
    * Informs if the nodo is the same as the filter will be applied.
-   * @param node 
-   * @returns 
+   * @param node
+   * @returns
    */
-  isNodeToApplyFilter(node: Node): boolean{
-    if(this.nodeToApplyFilter == null){
+  isNodeToApplyFilter(node: Node): boolean {
+    if (this.nodeToApplyFilter == null) {
       return false;
     }
-    if(this.nodeToApplyFilter.getId() === node.getId())
-      return true;
-    else return false
+    if (this.nodeToApplyFilter.getId() === node.getId()) return true;
+    else return false;
   }
 
   /**
-   * Returns the nodes that make the connection between the tracked node and the node 
+   * Returns the nodes that make the connection between the tracked node and the node
    * that will be applied to the filter (including).
-   * 
-   * @returns 
+   *
+   * @returns
    */
-  getChainOfNodesToApplyFilter(): Node[]{
+  getChainOfNodesToApplyFilter(): Node[] {
     return this.chainOfNodesToApplyFilter;
   }
 
   /**
    * Informs if the filter will be applied on the informed property.
-   * 
-   * @param property 
-   * @returns 
+   *
+   * @param property
+   * @returns
    */
-  isFiltredByProperty(property: NodeProperty): boolean{
-    if(this.filterProperty.getID() === property.getID()){
+  isFiltredByProperty(property: NodeProperty): boolean {
+    if (this.filterProperty.getID() === property.getID()) {
       return true;
     }
     return false;
@@ -166,7 +165,7 @@ export class Filter {
     msg = '[' + this.filterProperty.getName() + ' = ' + this.value;
 
     if (this.nodeToApplyFilter != null) {
-      for(let node of this.chainOfNodesToApplyFilter){
+      for (let node of this.chainOfNodesToApplyFilter) {
         msg += ' linked to ' + node.getName();
       }
     }

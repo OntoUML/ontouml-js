@@ -14,11 +14,10 @@ import { NodeProperty } from '../graph/NodeProperty';
 import { Increment } from '../util/Increment';
 
 export class SolvesEnumeration {
-
   static solves(graph: Graph, tracker: Tracker, enumFiledToLookupTable: boolean): void {
-    if(enumFiledToLookupTable){
+    if (enumFiledToLookupTable) {
       this.transformEnumToLookupTables(graph, tracker);
-    }else{
+    } else {
       this.applyEnumToFilds(graph, tracker);
     }
   }
@@ -26,7 +25,7 @@ export class SolvesEnumeration {
   // **********************************************************
   // *** Methodos to apply enumerations to fields
   // **********************************************************
-  static applyEnumToFilds(graph: Graph, tracker: Tracker){
+  static applyEnumToFilds(graph: Graph, tracker: Tracker) {
     let nodesToDestroy: Node[] = [];
     let associationsToRemove: GraphRelation[] = [];
 
@@ -94,23 +93,20 @@ export class SolvesEnumeration {
   // **********************************************************
   // *** Methodos to transform enumerations to lookup tables
   // **********************************************************
-  static transformEnumToLookupTables(graph: Graph, tracker: Tracker){
+  static transformEnumToLookupTables(graph: Graph, tracker: Tracker) {
     let newField: NodeProperty;
 
     for (let node of graph.getNodes()) {
       if (node.getStereotype() === ClassStereotype.ENUMERATION) {
-
-        for(let property of node.getProperties()){
-          if(property instanceof NodePropertyEnumeration){
+        for (let property of node.getProperties()) {
+          if (property instanceof NodePropertyEnumeration) {
             node.removeProperty(property.getID());
             newField = new NodeProperty(Increment.getNext().toString(), node.getName(), 'string', false, false);
             node.addProperty(newField);
             tracker.changeFieldToFilter(property, newField);
           }
         }
-
       }
     }
   }
-
 }

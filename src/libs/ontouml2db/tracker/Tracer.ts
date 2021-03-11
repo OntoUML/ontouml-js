@@ -171,9 +171,9 @@ export class Tracer {
     }
   }
 
-  isNodeToApplyFilter(node: Node): boolean{
-    for(let filter of this.filters){
-      if(filter.isNodeToApplyFilter(node)){
+  isNodeToApplyFilter(node: Node): boolean {
+    for (let filter of this.filters) {
+      if (filter.isNodeToApplyFilter(node)) {
         return true;
       }
     }
@@ -181,15 +181,15 @@ export class Tracer {
   }
 
   /**
-   * Informs that it will be necessary to make a junction with one more node for the 
+   * Informs that it will be necessary to make a junction with one more node for the
    * filter to be made in the desired node from the tracked node.
-   * 
-   * @param nodoFilter 
-   * @param joinedNode 
+   *
+   * @param nodoFilter
+   * @param joinedNode
    */
-  addJoinedNodeToDoFilter(nodoFilter: Node, joinedNode: Node): void{
-    for(let filter of this.filters){
-      if(filter.isNodeToApplyFilter(nodoFilter)){
+  addJoinedNodeToDoFilter(nodoFilter: Node, joinedNode: Node): void {
+    for (let filter of this.filters) {
+      if (filter.isNodeToApplyFilter(nodoFilter)) {
         filter.addJoinedNodeToDoFilter(joinedNode);
       }
     }
@@ -197,13 +197,13 @@ export class Tracer {
 
   /**
    * Change the field in which the filter will be performed.
-   * 
-   * @param oldProperty 
-   * @param newProperty 
+   *
+   * @param oldProperty
+   * @param newProperty
    */
-  changeFieldToFilter(oldProperty: NodeProperty, newProperty: NodeProperty){
-    for(let filter of this.filters){
-      if(filter.getProperty().getID() === oldProperty.getID()){
+  changeFieldToFilter(oldProperty: NodeProperty, newProperty: NodeProperty) {
+    for (let filter of this.filters) {
+      if (filter.getProperty().getID() === oldProperty.getID()) {
         filter.setProperty(newProperty);
       }
     }
@@ -211,13 +211,13 @@ export class Tracer {
 
   /**
    * Informs if the informed property is used in any filter.
-   * 
-   * @param property 
-   * @returns 
+   *
+   * @param property
+   * @returns
    */
-  isFiltredByProperty(property: NodeProperty): boolean{
-    for(let filter of this.filters){
-      if(filter.isFiltredByProperty(property)){
+  isFiltredByProperty(property: NodeProperty): boolean {
+    for (let filter of this.filters) {
+      if (filter.isFiltredByProperty(property)) {
         return true;
       }
     }
@@ -226,30 +226,30 @@ export class Tracer {
 
   /**
    * Removes the property belongs to another Node.
-   * 
-   * @param node 
+   *
+   * @param node
    */
-  removeNodeToApplyFilter(node: Node): void{
-    for(let filter of this.filters){
+  removeNodeToApplyFilter(node: Node): void {
+    for (let filter of this.filters) {
       if (filter.getNodeToApplyFilter() != null) {
         if (filter.getNodeToApplyFilter().getId() === node.getId()) {
           filter.removeNodeToApplyFilter();
         }
       }
-   }
+    }
   }
 
   /**
    * Informs if there is a node tracer between the given source and target node name.
-   * 
-   * @param sourceNodeName 
-   * @param targetNodeName 
-   * @returns 
+   *
+   * @param sourceNodeName
+   * @param targetNodeName
+   * @returns
    */
-  existsTracerByName(sourceNodeName: string, targetNodeName: string): boolean{
+  existsTracerByName(sourceNodeName: string, targetNodeName: string): boolean {
     if (this.sourceNode.getName() === sourceNodeName) {
       for (let tracedNode of this.targetNodes.values()) {
-        if(tracedNode.existsTracedNodeByName(targetNodeName)){
+        if (tracedNode.existsTracedNodeByName(targetNodeName)) {
           return true;
         }
       }

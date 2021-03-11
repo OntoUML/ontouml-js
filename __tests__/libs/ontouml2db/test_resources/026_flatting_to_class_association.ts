@@ -18,25 +18,30 @@ import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
 // ****************************************
 //       FOR SCHEMA VALIDATION
 // ****************************************
-const scriptPerson = 
-'CREATE TABLE IF NOT EXISTS person ( ' + 
-'          person_id               INTEGER        NOT NULL IDENTITY PRIMARY KEY' + '); ';
+const scriptPerson =
+  'CREATE TABLE IF NOT EXISTS person ( ' +
+  '          person_id               INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
+  '); ';
 
 const scriptAssociatedClass1 =
-  'CREATE TABLE IF NOT EXISTS associated_class1 ( ' + 
-  '          associated_class1_id    INTEGER        NOT NULL IDENTITY PRIMARY KEY' + '); ';
+  'CREATE TABLE IF NOT EXISTS associated_class1 ( ' +
+  '          associated_class1_id    INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
+  '); ';
 
 const scriptAssociatedClass2 =
-  'CREATE TABLE IF NOT EXISTS associated_class2 ( ' + 
-  '          associated_class2_id    INTEGER        NOT NULL IDENTITY PRIMARY KEY' + '); ';
+  'CREATE TABLE IF NOT EXISTS associated_class2 ( ' +
+  '          associated_class2_id    INTEGER        NOT NULL IDENTITY PRIMARY KEY' +
+  '); ';
 
 const scriptAssociatedClass3 =
-  'CREATE TABLE IF NOT EXISTS associated_class3 ( ' + 
-  '          person_id               INTEGER        NOT NULL PRIMARY KEY' + '); ';
+  'CREATE TABLE IF NOT EXISTS associated_class3 ( ' +
+  '          person_id               INTEGER        NOT NULL PRIMARY KEY' +
+  '); ';
 
 const scriptAssociatedClass4 =
-  'CREATE TABLE IF NOT EXISTS associated_class4 ( ' + 
-  '          person_id               INTEGER        NOT NULL PRIMARY KEY' + '); ';
+  'CREATE TABLE IF NOT EXISTS associated_class4 ( ' +
+  '          person_id               INTEGER        NOT NULL PRIMARY KEY' +
+  '); ';
 
 const scriptPersonassociatedclass1 =
   'CREATE TABLE IF NOT EXISTS person_associated_class1 ( ' +
