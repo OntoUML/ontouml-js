@@ -5,9 +5,12 @@
 
 import { Node } from '@libs/ontouml2db/graph/Node';
 
-// import { ClassStereotype } from '@constants/.';
-
 import { ClassStereotype } from '@libs/ontouml';
+import { Graph } from '../graph/Graph';
+import { GraphGeneralization } from '../graph/GraphGeneralization';
+import { GraphRelation } from '../graph/GraphRelation';
+import { Increment } from './Increment';
+import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 
 export class Util {
   static findNodeById(id: string, nodes: Node[]): Node {
@@ -48,5 +51,39 @@ export class Util {
       tam++;
     }
     return spaces;
+  }
+
+  static transformGeneralizationToRelation1to1(graph: Graph): void{
+    let generalization: GraphGeneralization;
+    let newRelation: GraphRelation;
+    let id: string;
+    let toDestroy: GraphGeneralization[] = [];
+
+    for (let association of graph.getAssociations()) {
+      if (association instanceof GraphGeneralization) {
+        generalization = association;
+
+        id = Increment.getNext().toString();
+
+        newRelation = new GraphRelation(
+          id, //ID
+          id, //association name
+          generalization.getGeneral(), //sourceNode
+          Cardinality.C1, //sourceCardinality
+          generalization.getSpecific(), //targetNode
+          Cardinality.C1 //targetCardinality
+        );
+
+        generalization.getGeneral().addRelation(newRelation);
+        generalization.getSpecific().addRelation(newRelation);
+        graph.addRelation(newRelation);
+
+        toDestroy.push(generalization);
+      }
+    }
+
+    for (generalization of toDestroy) {
+      graph.removeAssociation(generalization);
+    }
   }
 }

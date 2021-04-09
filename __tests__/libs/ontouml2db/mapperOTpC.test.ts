@@ -23,7 +23,8 @@ let options: Partial<OntoUML2DBOptions> = {
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',
-  passwordConnection: 'sa'
+  passwordConnection: 'sa',
+  enumFieldToLoocupTable: true
 };
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -509,9 +510,6 @@ test('Run Example', () => {
     service = new OntoUML2DB(project, options);
     files = service.run();
   }).not.toThrow();
-
-  //console.log(files.result.schema);
-  //console.log(service.getSourceGraph().toString())
 
   graphChecker.setTransformation(service);
   graphChecker.setSchema(files.result.schema);

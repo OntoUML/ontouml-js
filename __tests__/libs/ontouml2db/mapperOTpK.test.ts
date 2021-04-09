@@ -42,7 +42,7 @@ import { test_033 } from './test_resources/033_sqlserver_script';
 import { test_034 } from './test_resources/034_lifting_with_duplicate_attributes';
 import { test_035 } from './test_resources/035_enum_field_to_lookup_table';
 import { test_036 } from './test_resources/036_enum_field_to_lookup_tables_h2';
-import { test_037 } from '../ontouml2db/test_resources/037_test_lookup_tabel_for_generic_db';
+import { test_037 } from '../ontouml2db/test_resources/037_test_generic_db_without_lookup_tabele_for_enums';
 
 const testResourcesRight: TestResource[] = [
   test_001,

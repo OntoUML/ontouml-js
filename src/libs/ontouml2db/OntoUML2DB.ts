@@ -6,9 +6,9 @@
  */
 
 import { Factory } from '@libs/ontouml2db/factory/Factory';
-import { IStrategy } from '@libs/ontouml2db/strategies/IStrategy';
-import { OneTablePerClass } from '@libs/ontouml2db/strategies/one_table_per_class/OneTablePerClass';
-import { OneTablePerKind } from '@libs/ontouml2db/strategies/one_table_per_kind/OneTablePerKind';
+import { IStrategy } from '@libs/ontouml2db/approaches/IStrategy';
+import { OneTablePerClass } from '@libs/ontouml2db/approaches/one_table_per_class/OneTablePerClass';
+import { OneTablePerKind } from '@libs/ontouml2db/approaches/one_table_per_kind/OneTablePerKind';
 import { ToEntityRelationship } from '@libs/ontouml2db/convert/ToEntityRelationship';
 import { StrategyType } from '@libs/ontouml2db/constants/StrategyType';
 import { ToRelationalSchema } from '@libs/ontouml2db/convert/ToRelationalSchema';
@@ -21,6 +21,7 @@ import { GenerateConnection } from './obda/GenerateConnection';
 import { Project } from '@libs/ontouml';
 import { Service, ServiceIssue } from './../';
 import { DBMSSupported } from './constants/DBMSSupported';
+import { OneTablePerConcreteClass } from './approaches/one_table_per_concrete_class/OneTablePerConcreteClass';
 
 export class OntoUML2DB implements Service {
   private graph: Graph;
@@ -53,7 +54,7 @@ export class OntoUML2DB implements Service {
    * Validte if is possible to make the transformation.
    */
   validate(): void {
-    if (this.options.targetDBMS === DBMSSupported.GENERIC_SCHEMA && !this.options.enumFieldToLoocupTable) {
+    if (this.options.targetDBMS === DBMSSupported.GENERIC_SCHEMA && this.options.enumFieldToLoocupTable === false) {
       throw new Error('It is not possible to make lookup tables for a GENERIC database.');
     }
   }
@@ -71,6 +72,9 @@ export class OntoUML2DB implements Service {
       case StrategyType.ONE_TABLE_PER_KIND:
         strategy = new OneTablePerKind();
         break;
+      case StrategyType.ONE_TABLE_PER_CONCRETE_CLASS:
+          strategy = new OneTablePerConcreteClass();
+          break;
       default:
         console.log('ops');
         break;
