@@ -53,7 +53,7 @@ export class Util {
     return spaces;
   }
 
-  static transformGeneralizationToRelation1to1(graph: Graph): void{
+  static transformGeneralizationToRelation1to1(graph: Graph): void {
     let generalization: GraphGeneralization;
     let newRelation: GraphRelation;
     let id: string;

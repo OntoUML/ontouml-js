@@ -73,8 +73,8 @@ export class OntoUML2DB implements Service {
         strategy = new OneTablePerKind();
         break;
       case StrategyType.ONE_TABLE_PER_CONCRETE_CLASS:
-          strategy = new OneTablePerConcreteClass();
-          break;
+        strategy = new OneTablePerConcreteClass();
+        break;
       default:
         console.log('ops');
         break;

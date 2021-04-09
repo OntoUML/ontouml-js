@@ -8,9 +8,7 @@ import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
 import { Util } from '@libs/ontouml2db/util/Util';
 
 export class OneTablePerClass implements IStrategy {
-
   run(graph: Graph, tracker: Tracker): void {
     Util.transformGeneralizationToRelation1to1(graph);
-    
   }
 }
