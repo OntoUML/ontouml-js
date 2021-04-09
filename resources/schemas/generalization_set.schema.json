@@ -32,7 +32,6 @@
       "oneOf": [
         {
           "type": "array",
-          "minItems": 1,
           "items": {
             "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#reference"
           }
