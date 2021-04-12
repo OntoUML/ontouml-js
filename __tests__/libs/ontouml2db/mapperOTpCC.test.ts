@@ -24,7 +24,7 @@ let options: Partial<OntoUML2DBOptions> = {
   databaseName: 'RunExample',
   userConnection: 'sa',
   passwordConnection: 'sa',
-  enumFieldToLoocupTable: true
+  enumFieldToLookupTable: true
 };
 // ****************************************
 //       FOR SCHEMA VALIDATION
