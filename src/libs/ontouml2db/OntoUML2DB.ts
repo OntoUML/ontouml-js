@@ -54,7 +54,7 @@ export class OntoUML2DB implements Service {
    * Validte if is possible to make the transformation.
    */
   validate(): void {
-    if (this.options.targetDBMS === DBMSSupported.GENERIC_SCHEMA && this.options.enumFieldToLoocupTable === false) {
+    if (this.options.targetDBMS === DBMSSupported.GENERIC_SCHEMA && this.options.enumFieldToLookupTable === false) {
       throw new Error('It is not possible to make lookup tables for a GENERIC database.');
     }
   }
@@ -87,7 +87,7 @@ export class OntoUML2DB implements Service {
    * Adds database constructs to the graph.
    */
   transformToEntityRelationship(): void {
-    ToEntityRelationship.run(this.graph, this.tracker, this.options.isStandardizeNames, this.options.enumFieldToLoocupTable);
+    ToEntityRelationship.run(this.graph, this.tracker, this.options.isStandardizeNames, this.options.enumFieldToLookupTable);
   }
 
   /**

@@ -18,7 +18,7 @@ export class OntoUML2DBOptions implements ServiceOptions {
   databaseName: string;
   userConnection: string;
   passwordConnection: string;
-  enumFieldToLoocupTable: boolean;
+  enumFieldToLookupTable: boolean;
 
   constructor(base: Partial<OntoUML2DBOptions> = {}) {
     this.mappingStrategy = StrategyType.ONE_TABLE_PER_KIND;
@@ -27,7 +27,7 @@ export class OntoUML2DBOptions implements ServiceOptions {
     this.baseIri = 'https://example.com';
     this.generateSchema = true;
     this.generateConnection = false;
-    this.enumFieldToLoocupTable = false;
+    this.enumFieldToLookupTable = false;
 
     Object.keys(base).forEach(key => (this[key] = base[key]));
   }

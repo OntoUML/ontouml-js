@@ -127,7 +127,7 @@ const options: Partial<OntoUML2DBOptions> = {
   databaseName: 'RunExample',
   userConnection: 'sa',
   passwordConnection: 'sa',
-  enumFieldToLoocupTable: false
+  enumFieldToLookupTable: false
 };
 
 // ****************************************
