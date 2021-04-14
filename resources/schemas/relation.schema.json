@@ -33,5 +33,5 @@
     }
   },
   "additionalProperties": false,
-  "required": ["type", "id", "name", "description", "stereotype", "propertyAssignments", "isAbstract", "isDerived", "properties"]
+  "required": ["type", "id"]
 }

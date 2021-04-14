@@ -45,13 +45,6 @@
   "additionalProperties": false,
   "required": [
     "type",
-    "id",
-    "name",
-    "description",
-    "propertyAssignments",
-    "isDisjoint",
-    "isComplete",
-    "categorizer",
-    "generalizations"
+    "id"
   ]
 }

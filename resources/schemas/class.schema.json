@@ -75,18 +75,6 @@
   "additionalProperties": false,
   "required": [
     "type",
-    "id",
-    "name",
-    "description",
-    "propertyAssignments",
-    "stereotype",
-    "isAbstract",
-    "isDerived",
-    "properties",
-    "literals",
-    "restrictedTo",
-    "isExtensional",
-    "isPowertype",
-    "order"
+    "id"
   ]
 }

@@ -32,5 +32,5 @@
     }
   },
   "additionalProperties": false,
-  "required": ["type", "id", "name", "description", "x", "y", "width", "height", "value"]
+  "required": ["type", "id"]
 }

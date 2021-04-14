@@ -50,5 +50,5 @@
     }
   },
   "additionalProperties": false,
-  "required": ["type", "id", "name", "description", "contents", "propertyAssignments"]
+  "required": ["type", "id"]
 }

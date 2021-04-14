@@ -40,5 +40,5 @@
     }
   },
   "additionalProperties": false,
-  "required": ["type", "id", "name", "description", "points"]
+  "required": ["type", "id"]
 }

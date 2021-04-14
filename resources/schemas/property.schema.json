@@ -78,20 +78,5 @@
     }
   },
   "additionalProperties": false,
-  "required": [
-    "type",
-    "id",
-    "name",
-    "description",
-    "cardinality",
-    "stereotype",
-    "propertyAssignments",
-    "propertyType",
-    "subsettedProperties",
-    "redefinedProperties",
-    "aggregationKind",
-    "isDerived",
-    "isOrdered",
-    "isReadOnly"
-  ]
+  "required": ["type", "id"]
 }
