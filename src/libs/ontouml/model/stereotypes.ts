@@ -115,7 +115,13 @@ const EndurantStereotypes = [...SortalStereotypes, ...NonSortalStereotypes];
 
 const AbstractStereotypes = [ClassStereotype.ABSTRACT, ClassStereotype.DATATYPE, ClassStereotype.ENUMERATION];
 
-const ClassStereotypes = [...EndurantStereotypes, ...AbstractStereotypes, ClassStereotype.EVENT, ClassStereotype.SITUATION];
+const ClassStereotypes = [
+  ...EndurantStereotypes,
+  ...AbstractStereotypes,
+  ClassStereotype.EVENT,
+  ClassStereotype.SITUATION,
+  ClassStereotype.TYPE
+];
 
 const RelationStereotypes = [
   RelationStereotype.MATERIAL,

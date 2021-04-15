@@ -65,4 +65,8 @@ export abstract class ModelElement extends OntoumlElement {
       return null;
     }
   }
+
+  resolveReferences(_elementReferenceMap: Map<string, OntoumlElement>): void {
+    // TODO: resolve references within propertyAssignments
+  }
 }

@@ -3,19 +3,22 @@ import { ClassVerification, VerificationIssueCode } from '@libs/verification';
 
 describe(`${ClassVerification.name} tests`, () => {
   describe(`Test ClassVerification.${ClassVerification.verifyClass.name}`, () => {
-    it(`Class verification stops when minimal check raises issues`, () => {
+    it(`Class verification stops when minimal check raises issues, but continues additional verification otherwise.`, () => {
       const stereotypelessClass = new Class();
-      let issues = ClassVerification.verifyClass(stereotypelessClass);
+      const issuesOfStereotypeless = ClassVerification.verifyClass(stereotypelessClass);
 
-      expect(issues).toHaveLength(1);
-      expect(issues[0]).toMatchObject({ code: VerificationIssueCode.class_not_unique_stereotype });
+      expect(issuesOfStereotypeless).toHaveLength(1);
+      expect(issuesOfStereotypeless[0]).toMatchObject({ code: VerificationIssueCode.class_not_unique_stereotype });
 
       const model = new Package();
       const agent = model.createSubkind();
-      issues = ClassVerification.verifyClass(agent);
+      const agentType = model.createType();
+      const issuesOfAgent = ClassVerification.verifyClass(agent);
+      const issuesOfAgentType = ClassVerification.verifyClass(agentType);
 
-      expect(issues).toHaveLength(1);
-      expect(issues[0]).toMatchObject({ code: VerificationIssueCode.class_missing_identity_provider });
+      expect(issuesOfAgent).toHaveLength(1);
+      expect(issuesOfAgent[0]).toMatchObject({ code: VerificationIssueCode.class_missing_identity_provider });
+      expect(issuesOfAgentType).toHaveLength(0);
     });
   });
 

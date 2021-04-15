@@ -48,9 +48,6 @@
     "owner": {
       "oneOf": [
         {
-          "type": "null"
-        },
-        {
           "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#reference"
         }
       ]
