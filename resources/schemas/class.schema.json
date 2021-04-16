@@ -72,9 +72,6 @@
       "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableString"
     }
   },
-  "additionalProperties": false,
-  "required": [
-    "type",
-    "id"
-  ]
+  "additionalProperties": true,
+  "required": ["type", "id"]
 }

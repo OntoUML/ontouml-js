@@ -222,6 +222,7 @@ function parse(serializedElement: string, validateElement: boolean = false): Ont
     }
   }
 
+  // TODO: check reference type on parse
   return JSON.parse(serializedElement, revive);
 }
 

@@ -20,6 +20,6 @@
       "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#propertyAssignments"
     }
   },
-  "additionalProperties": false,
+  "additionalProperties": true,
   "required": ["type", "id"]
 }

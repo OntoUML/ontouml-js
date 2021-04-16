@@ -26,6 +26,6 @@
       "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#reference"
     }
   },
-  "additionalProperties": false,
+  "additionalProperties": true,
   "required": ["type", "id", "general", "specific"]
 }

@@ -23,24 +23,36 @@
       "type": "integer",
       "minimum": 0
     },
-    "nullableString": {
-      "$id": "#nullableString",
-      "description": "A auxiliary definition for nullable string fields.",
-      "oneOf": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "null"
-        }
-      ]
-    },
     "nullableBoolean": {
       "$id": "#nullableBoolean",
       "description": "A auxiliary definition for nullable boolean fields.",
       "oneOf": [
         {
           "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nullableNatural": {
+      "$id": "#nullableNatural",
+      "description": "A auxiliary definition for nullable natural number fields.",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/natural"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nullableString": {
+      "$id": "#nullableString",
+      "description": "A auxiliary definition for nullable string fields.",
+      "oneOf": [
+        {
+          "type": "string"
         },
         {
           "type": "null"

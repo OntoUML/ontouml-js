@@ -26,19 +26,19 @@
             "type": "object",
             "properties": {
               "x": {
-                "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#natural"
+                "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableNatural"
               },
               "y": {
-                "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#natural"
+                "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableNatural"
               }
             },
-            "additionalProperties": false,
+            "additionalProperties": true,
             "required": ["x", "y"]
           }
         }
       ]
     }
   },
-  "additionalProperties": false,
+  "additionalProperties": true,
   "required": ["type", "id"]
 }

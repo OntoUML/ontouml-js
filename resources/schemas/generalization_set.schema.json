@@ -42,9 +42,6 @@
       ]
     }
   },
-  "additionalProperties": false,
-  "required": [
-    "type",
-    "id"
-  ]
+  "additionalProperties": true,
+  "required": ["type", "id"]
 }

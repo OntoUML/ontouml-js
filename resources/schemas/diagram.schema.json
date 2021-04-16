@@ -53,6 +53,6 @@
       ]
     }
   },
-  "additionalProperties": false,
+  "additionalProperties": true,
   "required": ["type", "id"]
 }
