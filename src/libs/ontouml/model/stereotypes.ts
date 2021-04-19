@@ -80,7 +80,7 @@ const BaseSortalStereotypes = [
 
 const SortalStereotypes = [...UltimateSortalStereotypes, ...BaseSortalStereotypes];
 
-// By rigid. anti-rigid, and semi-rigid stereotypes we only classify those presented as such in UFO (i.e., if you don't specialize the taxonomy you are out)
+// TODO: review if we should consider as rigid/anti-rigid/semi-rigid only those stereotypes whose respective types specialize Rigid/Anti-Rigid/Semi-Rigid in UFO. This introduces breaks to the gUFO transformation
 const RigidStereotypes = [
   ClassStereotype.KIND,
   ClassStereotype.QUANTITY,
@@ -89,7 +89,13 @@ const RigidStereotypes = [
   ClassStereotype.QUALITY,
   ClassStereotype.RELATOR,
   ClassStereotype.SUBKIND,
-  ClassStereotype.CATEGORY
+  ClassStereotype.CATEGORY,
+  ClassStereotype.EVENT,
+  ClassStereotype.SITUATION,
+  ClassStereotype.TYPE,
+  ClassStereotype.ABSTRACT,
+  ClassStereotype.DATATYPE,
+  ClassStereotype.ENUMERATION
 ];
 
 const AntiRigidStereotypes = [

@@ -126,7 +126,7 @@ describe(`Test stereotype handling utility`, () => {
   });
 
   describe('Test rigid stereotypes array', () => {
-    it('There should be a know number of stereotypes', () => expect(stereotypeUtils.RigidStereotypes).toHaveLength(8));
+    it('There should be a know number of stereotypes', () => expect(stereotypeUtils.RigidStereotypes).toHaveLength(14));
     it('Each of these must be a in the array', () => {
       expect(stereotypeUtils.RigidStereotypes).toContain(ClassStereotype.CATEGORY);
       expect(stereotypeUtils.RigidStereotypes).toContain(ClassStereotype.KIND);
@@ -136,6 +136,12 @@ describe(`Test stereotype handling utility`, () => {
       expect(stereotypeUtils.RigidStereotypes).toContain(ClassStereotype.QUALITY);
       expect(stereotypeUtils.RigidStereotypes).toContain(ClassStereotype.MODE);
       expect(stereotypeUtils.RigidStereotypes).toContain(ClassStereotype.SUBKIND);
+      expect(stereotypeUtils.RigidStereotypes).toContain(ClassStereotype.EVENT);
+      expect(stereotypeUtils.RigidStereotypes).toContain(ClassStereotype.SITUATION);
+      expect(stereotypeUtils.RigidStereotypes).toContain(ClassStereotype.TYPE);
+      expect(stereotypeUtils.RigidStereotypes).toContain(ClassStereotype.ABSTRACT);
+      expect(stereotypeUtils.RigidStereotypes).toContain(ClassStereotype.DATATYPE);
+      expect(stereotypeUtils.RigidStereotypes).toContain(ClassStereotype.ENUMERATION);
     });
   });
 
