@@ -28,6 +28,6 @@
       "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/PathShape"
     }
   },
-  "additionalProperties": false,
-  "required": ["type", "id", "name", "description", "modelElement", "source", "target", "shape"]
+  "additionalProperties": true,
+  "required": ["type", "id", "modelElement", "source", "target"]
 }

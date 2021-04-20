@@ -38,6 +38,6 @@
       ]
     }
   },
-  "additionalProperties": false,
-  "required": ["type", "id", "name", "description", "model", "diagrams"]
+  "additionalProperties": true,
+  "required": ["type", "id"]
 }

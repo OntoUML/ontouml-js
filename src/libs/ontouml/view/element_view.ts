@@ -31,4 +31,12 @@ export abstract class ElementView<T extends ModelElement, S extends Shape> exten
 
     return serialization;
   }
+
+  resolveReferences(elementReferenceMap: Map<string, OntoumlElement>): void {
+    const { modelElement } = this;
+
+    if (modelElement) {
+      this.modelElement = OntoumlElement.resolveReference(modelElement, elementReferenceMap, this, 'modelElement');
+    }
+  }
 }

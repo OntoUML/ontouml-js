@@ -155,4 +155,12 @@ export class Diagram extends OntoumlElement {
 
     return serialization;
   }
+
+  resolveReferences(elementReferenceMap: Map<string, OntoumlElement>): void {
+    const { owner } = this;
+
+    if (owner) {
+      this.owner = OntoumlElement.resolveReference(owner, elementReferenceMap, this, 'owner');
+    }
+  }
 }

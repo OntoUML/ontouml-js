@@ -23,7 +23,6 @@
         },
         {
           "type": "array",
-          "minItems": 1,
           "items": {
             "oneOf": [
               {
@@ -47,9 +46,13 @@
       ]
     },
     "owner": {
-      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#reference"
+      "oneOf": [
+        {
+          "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#reference"
+        }
+      ]
     }
   },
-  "additionalProperties": false,
-  "required": ["type", "id", "name", "description", "contents", "owner"]
+  "additionalProperties": true,
+  "required": ["type", "id"]
 }

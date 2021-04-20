@@ -22,6 +22,7 @@ import {
 } from '.';
 import Ajv from 'ajv';
 
+/** An object containing a map JSON Schema ids and their corresponding schemas. */
 const schemas = {
   'https://ontouml.org/ontouml-schema/2021-02-26/Project': require('@resources/schemas/project.schema.json'),
   'https://ontouml.org/ontouml-schema/2021-02-26/Package': require('@resources/schemas/package.schema.json'),
@@ -43,6 +44,8 @@ const schemas = {
   'https://ontouml.org/ontouml-schema/2021-02-26/definitions': require('@resources/schemas/definitions.schema.json')
 };
 
+/** An object containing a map between `OntoumlType` values and the ids of their
+ * corresponding JSON Schemas. */
 const typeToSchemaId = {
   [`${OntoumlType.PROJECT_TYPE}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/Project',
   [`${OntoumlType.PACKAGE_TYPE}`]: 'https://ontouml.org/ontouml-schema/2021-02-26/Package',
@@ -68,45 +71,44 @@ const ajv = new Ajv({
   schemas: Object.values(schemas)
 });
 
+/** Function that validates an `OntoumlElement` object against its corresponding
+ * JSON Schema. */
 function validate(element: OntoumlElement): true | object | PromiseLike<any>;
+
+/** Function that validates an object against its corresponding JSON Schema
+ * based on the value of its `type` field. */
 function validate(serializedProject: object): true | object | PromiseLike<any>;
+
+/** Function that validates a string representing a serialized `OntoumlElement`
+ * object against its corresponding JSON Schema. */
 function validate(serializedProject: string): true | object | PromiseLike<any>;
+
 function validate(input: any): true | object | PromiseLike<any> {
   if (!input) {
     throw new Error('Unexpected parameter');
   }
-  
-  let schemaId = typeToSchemaId[OntoumlType.PROJECT_TYPE];
+
+  if (input instanceof OntoumlElement) {
+    // a normal OntoumlElement will always fail the schemas due to additional properties
+    input = JSON.stringify(input);
+  }
 
   if (typeof input === 'string') {
+    // the schemas only accept objects
     input = JSON.parse(input);
-  } else if (input instanceof OntoumlElement) {
-    schemaId = typeToSchemaId[input.type];
-    input = JSON.parse(JSON.stringify(input));
-  } else if (typeof input !== 'object') {
+  }
+
+  if (typeof input !== 'object') {
+    // if the input is not an object at this point, the input was invalid
     throw new Error('Unexpected parameter');
   }
 
-  let validator = ajv.getSchema(schemaId);
-  let isValid = validator(input);
+  // we'll always have a schema to check even in the absence of a valid `type` field
+  const schemaId = typeToSchemaId[input.type] || typeToSchemaId[OntoumlType.PROJECT_TYPE];
+  const validator = ajv.getSchema(schemaId);
+  const isValid = validator(input);
 
   return isValid ? isValid : validator.errors;
-}
-
-function isOntoumlElement(value: any): boolean {
-  if (!value || typeof value !== 'object') {
-    return false;
-  }
-
-  return typeof value.type === 'string' && typeof value.id === 'string' && Object.keys(value).length > 2;
-}
-
-function isReferenceObject(value: any): boolean {
-  if (!value || typeof value !== 'object') {
-    return false;
-  }
-
-  return typeof value.type === 'string' && typeof value.id === 'string' && Object.keys(value).length === 2;
 }
 
 function getElementMap(element: OntoumlElement): Map<string, OntoumlElement> {
@@ -117,39 +119,13 @@ function getElementMap(element: OntoumlElement): Map<string, OntoumlElement> {
   return map;
 }
 
-function resolveReferences(contentsMap: Map<string, OntoumlElement>, contents: OntoumlElement[]) {
-  for (const content of contents) {
-    for (const [key, value] of Object.entries(content)) {
-      if (isReferenceObject(value)) {
-        const referencedElement = contentsMap.get(value.id);
-
-        if (!referencedElement) {
-          throw new Error('Object contains broken references');
-        } else {
-          content[key] = referencedElement;
-        }
-      } else if (Array.isArray(value)) {
-        value.forEach((item, index) => {
-          // TODO: refactoring
-          if (isReferenceObject(item)) {
-            const referencedElement = contentsMap.get(item.id);
-
-            if (!referencedElement) {
-              throw new Error('Object contains broken references');
-            } else {
-              value[index] = referencedElement;
-            }
-          }
-        });
-      }
-    }
-  }
-}
-
+/** Function that receives an object represent an `OntoumlElement` and returns
+ * an instance of the corresponding class based on the value of its `type`
+ * field. */
 function clone(original: Partial<OntoumlElement>): OntoumlElement {
   switch (original.type) {
     case OntoumlType.PROJECT_TYPE:
-      return new Project(original as any);
+      return new Project(original);
     case OntoumlType.PACKAGE_TYPE:
       return new Package(original);
     case OntoumlType.CLASS_TYPE:
@@ -161,7 +137,7 @@ function clone(original: Partial<OntoumlElement>): OntoumlElement {
     case OntoumlType.GENERALIZATION_SET_TYPE:
       return new GeneralizationSet(original);
     case OntoumlType.PROPERTY_TYPE:
-      return new Property(original as any);
+      return new Property(original);
     case OntoumlType.LITERAL_TYPE:
       return new Literal(original);
     case OntoumlType.DIAGRAM:
@@ -187,10 +163,16 @@ function clone(original: Partial<OntoumlElement>): OntoumlElement {
   }
 }
 
+/** Parsing function to be passed as argument to `JSON.stringify` to support the
+ * de-serialization of `OntoumlElement` objects. */
 function revive(_key: any, value: any): any {
   let element: OntoumlElement;
 
-  if (isOntoumlElement(value)) {
+  /* It is not possible to distinguish a reference from an object with
+   * missing fields, so let's clone everything that has type and id and later
+   * resolve the references where only objects returned in getContents() are not
+   * references. */
+  if (value?.type && value?.id) {
     if (value?.type === OntoumlType.TEXT || value?.type === OntoumlType.RECTANGLE) {
       value.topLeft = {
         x: value.x,
@@ -201,24 +183,38 @@ function revive(_key: any, value: any): any {
     element = clone(value);
   }
 
-  if (element instanceof Project || (!_key && element instanceof ModelElement)) {
+  if (element instanceof Project || (!_key && element instanceof OntoumlElement)) {
     const project = element instanceof Project ? (element as Project) : null;
     const allContents: OntoumlElement[] = element.getAllContents();
 
+    // Set references to container and project
     allContents.forEach((content: ModelElement) => {
       content.project = project;
       content.getContents().forEach((ownContent: ModelElement) => (ownContent.container = content));
     });
 
     const contentsMap = getElementMap(element as ModelElement);
-    resolveReferences(contentsMap, [element, ...allContents]);
+    const allElements = [element, ...allContents];
+
+    // Resolves reference fields replacing objects that are created to
+    // temporarily hold a type and an id
+    allElements.forEach((content: ModelElement) => content.resolveReferences(contentsMap));
   }
 
   return element ? element : value;
 }
 
-function parse(serializedElement: string, validateProject: boolean = false): OntoumlElement {
-  if (validateProject) {
+/** Parse function that receives a `OntoumlElement` serialized into a string and
+ * returns an object instance of `OntoumlElement`. The function also tries to
+ * resolve references to other elements if present and an exception is thrown
+ * in case of failure.
+ *
+ * @param serializedElement - the string to be parsed
+ * @param validateElement - an optional boolean identifying whether the
+ * `serializedElement` should be validate against the corresponding JSON Schema.
+ * Default `false`.  */
+function parse(serializedElement: string, validateElement: boolean = false): OntoumlElement {
+  if (validateElement) {
     const result = validate(serializedElement);
 
     if (result !== true) {
@@ -226,11 +222,16 @@ function parse(serializedElement: string, validateProject: boolean = false): Ont
     }
   }
 
+  // TODO: check reference type on parse
   return JSON.parse(serializedElement, revive);
 }
 
+/** A utility module designed to support the de-serialization and validation of
+ * `OntoumlElement` objects. */
 export const serializationUtils = {
   validate,
   revive,
-  parse
+  parse,
+  schemas,
+  typeToSchemaId
 };

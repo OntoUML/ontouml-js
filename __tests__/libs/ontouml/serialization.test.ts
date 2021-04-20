@@ -88,6 +88,7 @@ describe('Serialization tests', () => {
     });
     it(`Validate basic ${Literal.name}`, () => expect(serializationUtils.validate(new Literal())).toBe(true));
     it(`Validate basic ${Diagram.name}`, () => expect(serializationUtils.validate(new Diagram())).toBe(true));
+
     it(`Validate basic ${ClassView.name}`, () => {
       const classView = new ClassView();
       classView.modelElement = new Class();
@@ -151,10 +152,10 @@ describe('Serialization tests', () => {
     });
 
     it(`Test ${Generalization.name} de-serialization`, () => {
-      const pkg = new Package();
-      const agent = new Class();
-      const person = new Class();
-      const gen = new Generalization({ general: agent, specific: person });
+      const pkg = new Package({ id: 'pkg_id' });
+      const agent = new Class({ id: 'agent_id' });
+      const person = new Class({ id: 'person_id' });
+      const gen = new Generalization({ id: 'gen_id', general: agent, specific: person });
 
       pkg.contents = [agent, person, gen];
 

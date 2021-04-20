@@ -176,4 +176,20 @@ export class GeneralizationSet extends ModelElement {
 
     return object;
   }
+
+  resolveReferences(elementReferenceMap: Map<string, OntoumlElement>): void {
+    super.resolveReferences(elementReferenceMap);
+
+    const { categorizer, generalizations } = this;
+
+    if (categorizer) {
+      this.categorizer = OntoumlElement.resolveReference(categorizer, elementReferenceMap, this, 'categorizer');
+    }
+
+    if (Array.isArray(generalizations)) {
+      this.generalizations = generalizations.map((generalization: Generalization) =>
+        OntoumlElement.resolveReference(generalization, elementReferenceMap, this, 'generalizations')
+      );
+    }
+  }
 }

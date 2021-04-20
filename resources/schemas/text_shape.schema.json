@@ -16,21 +16,21 @@
       "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
     },
     "x": {
-      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#natural"
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableNatural"
     },
     "y": {
-      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#natural"
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableNatural"
     },
     "width": {
-      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#natural"
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableNatural"
     },
     "height": {
-      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#natural"
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableNatural"
     },
     "value": {
       "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableString"
     }
   },
-  "additionalProperties": false,
-  "required": ["type", "id", "name", "description", "x", "y", "width", "height", "value"]
+  "additionalProperties": true,
+  "required": ["type", "id"]
 }

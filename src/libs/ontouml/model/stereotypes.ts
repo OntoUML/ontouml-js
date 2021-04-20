@@ -70,6 +70,7 @@ const UltimateSortalStereotypes = [
   ClassStereotype.MODE
 ];
 
+// TODO: consider renaming "base" to "lower"
 const BaseSortalStereotypes = [
   ClassStereotype.SUBKIND,
   ClassStereotype.PHASE,
@@ -79,6 +80,7 @@ const BaseSortalStereotypes = [
 
 const SortalStereotypes = [...UltimateSortalStereotypes, ...BaseSortalStereotypes];
 
+// TODO: review if we should consider as rigid/anti-rigid/semi-rigid only those stereotypes whose respective types specialize Rigid/Anti-Rigid/Semi-Rigid in UFO. This introduces breaks to the gUFO transformation
 const RigidStereotypes = [
   ClassStereotype.KIND,
   ClassStereotype.QUANTITY,
@@ -115,7 +117,13 @@ const EndurantStereotypes = [...SortalStereotypes, ...NonSortalStereotypes];
 
 const AbstractStereotypes = [ClassStereotype.ABSTRACT, ClassStereotype.DATATYPE, ClassStereotype.ENUMERATION];
 
-const ClassStereotypes = [...EndurantStereotypes, ...AbstractStereotypes, ClassStereotype.EVENT, ClassStereotype.SITUATION];
+const ClassStereotypes = [
+  ...EndurantStereotypes,
+  ...AbstractStereotypes,
+  ClassStereotype.EVENT,
+  ClassStereotype.SITUATION,
+  ClassStereotype.TYPE
+];
 
 const RelationStereotypes = [
   RelationStereotype.MATERIAL,

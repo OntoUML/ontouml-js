@@ -94,4 +94,18 @@ export class Generalization extends ModelElement {
 
     return generalizationSerialization;
   }
+
+  resolveReferences(elementReferenceMap: Map<string, OntoumlElement>): void {
+    super.resolveReferences(elementReferenceMap);
+
+    const { general, specific } = this;
+
+    if (general) {
+      this.general = OntoumlElement.resolveReference(general, elementReferenceMap, this, 'general');
+    }
+
+    if (specific) {
+      this.specific = OntoumlElement.resolveReference(specific, elementReferenceMap, this, 'specific');
+    }
+  }
 }

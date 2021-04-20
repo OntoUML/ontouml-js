@@ -26,7 +26,6 @@
         },
         {
           "type": "array",
-          "minItems": 1,
           "items": {
             "oneOf": [
               {
@@ -50,6 +49,6 @@
       ]
     }
   },
-  "additionalProperties": false,
-  "required": ["type", "id", "name", "description", "contents", "propertyAssignments"]
+  "additionalProperties": true,
+  "required": ["type", "id"]
 }

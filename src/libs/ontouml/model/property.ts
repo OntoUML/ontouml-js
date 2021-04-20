@@ -144,4 +144,14 @@ export class Property extends Decoratable<PropertyStereotype> {
 
     return propertySerialization;
   }
+
+  resolveReferences(elementReferenceMap: Map<string, OntoumlElement>): void {
+    super.resolveReferences(elementReferenceMap);
+
+    const { propertyType } = this;
+
+    if (propertyType) {
+      this.propertyType = OntoumlElement.resolveReference(propertyType, elementReferenceMap, this, 'propertyType');
+    }
+  }
 }

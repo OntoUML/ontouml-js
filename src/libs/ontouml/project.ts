@@ -345,4 +345,7 @@ export class Project extends OntoumlElement implements ModelElementContainer {
 
     return projectSerialization;
   }
+
+  // No reference fields to resolve/replace
+  resolveReferences(_elementReferenceMap: Map<string, OntoumlElement>): void {}
 }

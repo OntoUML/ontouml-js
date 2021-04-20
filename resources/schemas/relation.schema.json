@@ -32,6 +32,6 @@
       "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#properties"
     }
   },
-  "additionalProperties": false,
-  "required": ["type", "id", "name", "description", "stereotype", "propertyAssignments", "isAbstract", "isDerived", "properties"]
+  "additionalProperties": true,
+  "required": ["type", "id"]
 }

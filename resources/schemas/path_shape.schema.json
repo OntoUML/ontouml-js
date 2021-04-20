@@ -22,24 +22,23 @@
         },
         {
           "type": "array",
-          "minItems": 1,
           "items": {
             "type": "object",
             "properties": {
               "x": {
-                "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#natural"
+                "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableNatural"
               },
               "y": {
-                "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#natural"
+                "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableNatural"
               }
             },
-            "additionalProperties": false,
+            "additionalProperties": true,
             "required": ["x", "y"]
           }
         }
       ]
     }
   },
-  "additionalProperties": false,
-  "required": ["type", "id", "name", "description", "points"]
+  "additionalProperties": true,
+  "required": ["type", "id"]
 }

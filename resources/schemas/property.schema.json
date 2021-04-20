@@ -52,7 +52,6 @@
       "oneOf": [
         {
           "type": "array",
-          "minItems": 1,
           "uniqueItems": true,
           "items": {
             "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#reference"
@@ -67,7 +66,6 @@
       "oneOf": [
         {
           "type": "array",
-          "minItems": 1,
           "uniqueItems": true,
           "items": {
             "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#reference"
@@ -79,21 +77,6 @@
       ]
     }
   },
-  "additionalProperties": false,
-  "required": [
-    "type",
-    "id",
-    "name",
-    "description",
-    "cardinality",
-    "stereotype",
-    "propertyAssignments",
-    "propertyType",
-    "subsettedProperties",
-    "redefinedProperties",
-    "aggregationKind",
-    "isDerived",
-    "isOrdered",
-    "isReadOnly"
-  ]
+  "additionalProperties": true,
+  "required": ["type", "id"]
 }
