@@ -4,8 +4,8 @@
  */
 
 import { Graph } from '@libs/ontouml2db/graph/Graph';
-import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
-import { IDBMS } from '@libs/ontouml2db/supported_database/IDBMS';
+import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
+import { DbmsInterface } from '@libs/ontouml2db/supported_database/DbmsInterface';
 import { Generic } from '@libs/ontouml2db/supported_database/Generic';
 import { H2 } from '@libs/ontouml2db/supported_database/H2';
 import { MySql } from '../supported_database/MySql';
@@ -14,27 +14,27 @@ import { Postgre } from '../supported_database/Postgre';
 import { SqlServer } from '../supported_database/SqlServer';
 
 export class ToRelationalSchema {
-  static getSchema(graph: Graph, dbms: DBMSSupported): string {
-    let targetDBMS: IDBMS;
+  static getSchema(graph: Graph, dbms: DbmsSupported): string {
+    let targetDBMS: DbmsInterface;
 
     switch (dbms) {
-      case DBMSSupported.H2: {
+      case DbmsSupported.H2: {
         targetDBMS = new H2();
         break;
       }
-      case DBMSSupported.MYSQL: {
+      case DbmsSupported.MYSQL: {
         targetDBMS = new MySql();
         break;
       }
-      case DBMSSupported.ORACLE: {
+      case DbmsSupported.ORACLE: {
         targetDBMS = new Oracle();
         break;
       }
-      case DBMSSupported.POSTGRE: {
+      case DbmsSupported.POSTGRE: {
         targetDBMS = new Postgre();
         break;
       }
-      case DBMSSupported.SQLSERVER: {
+      case DbmsSupported.SQLSERVER: {
         targetDBMS = new SqlServer();
         break;
       }

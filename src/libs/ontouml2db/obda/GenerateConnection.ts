@@ -3,43 +3,43 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { OntoUML2DBOptions } from '@libs/ontouml2db/OntoUML2DBOptions';
+import { Ontouml2DbOptions } from '@libs/ontouml2db/Ontouml2DbOptions';
 import { H2 } from '@libs/ontouml2db/supported_database/H2';
-import { IDBMS } from '@libs/ontouml2db/supported_database/IDBMS';
+import { DbmsInterface } from '@libs/ontouml2db/supported_database/DbmsInterface';
 import { MySql } from '@libs/ontouml2db/supported_database/MySql';
 import { Oracle } from '@libs/ontouml2db/supported_database/Oracle';
 import { Postgre } from '@libs/ontouml2db/supported_database/Postgre';
 import { SqlServer } from '@libs/ontouml2db/supported_database/SqlServer';
-import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
+import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 import { Generic } from '../supported_database/Generic';
 
 export class GenerateConnection {
-  static getFile(options: OntoUML2DBOptions): string {
-    let database: IDBMS;
+  static getFile(options: Ontouml2DbOptions): string {
+    let database: DbmsInterface;
 
     database = this.getDatabase(options.targetDBMS);
 
     return database.getConnectionToProtege(options);
   }
 
-  static getDatabase(db: DBMSSupported): IDBMS {
+  static getDatabase(db: DbmsSupported): DbmsInterface {
     switch (db) {
-      case DBMSSupported.GENERIC_SCHEMA: {
+      case DbmsSupported.GENERIC_SCHEMA: {
         return new Generic();
       }
-      case DBMSSupported.H2: {
+      case DbmsSupported.H2: {
         return new H2();
       }
-      case DBMSSupported.MYSQL: {
+      case DbmsSupported.MYSQL: {
         return new MySql();
       }
-      case DBMSSupported.ORACLE: {
+      case DbmsSupported.ORACLE: {
         return new Oracle();
       }
-      case DBMSSupported.POSTGRE: {
+      case DbmsSupported.POSTGRE: {
         return new Postgre();
       }
-      case DBMSSupported.SQLSERVER: {
+      case DbmsSupported.SQLSERVER: {
         return new SqlServer();
       }
       default:

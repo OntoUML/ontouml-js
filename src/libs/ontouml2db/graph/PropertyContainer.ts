@@ -4,10 +4,10 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { IPropertyContainer } from '@libs/ontouml2db/graph/IPropertyContainer';
+import { PropertyContainerInterface } from '@libs/ontouml2db/graph/PropertyContainerInterface';
 import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 
-export class PropertyContainer implements IPropertyContainer {
+export class PropertyContainer implements PropertyContainerInterface {
   private properties: NodeProperty[];
 
   constructor() {
@@ -116,8 +116,8 @@ export class PropertyContainer implements IPropertyContainer {
     return false;
   }
 
-  clonePropertyContainer(): IPropertyContainer {
-    let container: IPropertyContainer = new PropertyContainer();
+  clonePropertyContainer(): PropertyContainerInterface {
+    let container: PropertyContainerInterface = new PropertyContainer();
 
     this.properties.forEach((property: NodeProperty) => {
       container.addProperty(property.clone());

@@ -6,7 +6,7 @@
 import { Increment } from '@libs/ontouml2db/util/Increment';
 import { Node } from '@libs/ontouml2db/graph/Node';
 
-export class GenerateOBDAMappingID {
+export class GenerateObdaMappingId {
   static generate(sourceNode: Node, project: string, first: boolean): string {
     let text: string = '';
 

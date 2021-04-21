@@ -2,6 +2,6 @@
  *
  * Author: Gustavo Ludovico Guidoni
  */
-export * from './OntoUML2DB';
-export * from './OntoUML2DBOptions';
+export * from './Ontouml2Db';
+export * from './Ontouml2DbOptions';
 export * from './constants/StrategyType';

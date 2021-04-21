@@ -7,8 +7,8 @@ import { GraphChecker } from './graph_tester/GraphChecker';
 import { TestResource } from './TestResource';
 import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { baseExample } from './baseExample';
-import { OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
-import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
+import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
+import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 import { NodeChecker } from './graph_tester/NodeChecker';
 import { PropertyChecker } from './graph_tester/PropertyChecker';
 import { RelationshipChecker } from './graph_tester/RelationshipChecker';
@@ -241,9 +241,9 @@ const project = baseExample.project;
 // ****************************************
 // ** O P T I O N S
 // ****************************************
-const options: Partial<OntoUML2DBOptions> = {
+const options: Partial<Ontouml2DbOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DBMSSupported.MYSQL,
+  targetDBMS: DbmsSupported.MYSQL,
   isStandardizeNames: true,
   hostName: 'localhost/~',
   databaseName: 'RunExample',

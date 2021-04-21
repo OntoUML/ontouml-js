@@ -3,12 +3,12 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { IDBMS } from '@libs/ontouml2db/supported_database/IDBMS';
+import { DbmsInterface } from '@libs/ontouml2db/supported_database/DbmsInterface';
 import { Generic } from '@libs/ontouml2db/supported_database/Generic';
 import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
-import { OntoUML2DBOptions } from '@libs/ontouml2db/OntoUML2DBOptions';
+import { Ontouml2DbOptions } from '@libs/ontouml2db/Ontouml2DbOptions';
 
-export class MySql extends Generic implements IDBMS {
+export class MySql extends Generic implements DbmsInterface {
   constructor() {
     super();
     this.types.set('boolean', 'TINYINT(1)');
@@ -27,7 +27,7 @@ export class MySql extends Generic implements IDBMS {
     return '';
   }
 
-  getConnectionToProtege(options: OntoUML2DBOptions): string {
+  getConnectionToProtege(options: Ontouml2DbOptions): string {
     let stringConnection: string = '';
 
     let today = new Date();

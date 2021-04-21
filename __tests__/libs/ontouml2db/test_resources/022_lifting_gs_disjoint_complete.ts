@@ -12,8 +12,8 @@ import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { Project } from '@libs/ontouml';
-import { OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
-import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
+import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
+import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -85,9 +85,9 @@ relation.getTargetEnd().cardinality.setOneToMany();
 // ****************************************
 // ** O P T I O N S
 // ****************************************
-const options: Partial<OntoUML2DBOptions> = {
+const options: Partial<Ontouml2DbOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DBMSSupported.H2,
+  targetDBMS: DbmsSupported.H2,
   isStandardizeNames: true,
   hostName: 'localhost/~',
   databaseName: 'RunExample',

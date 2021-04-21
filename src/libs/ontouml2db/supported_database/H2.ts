@@ -3,13 +3,13 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { IDBMS } from '@libs/ontouml2db/supported_database/IDBMS';
+import { DbmsInterface } from '@libs/ontouml2db/supported_database/DbmsInterface';
 import { Graph } from '@libs/ontouml2db/graph/Graph';
 import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 import { Generic } from '@libs/ontouml2db/supported_database/Generic';
-import { OntoUML2DBOptions } from '@libs/ontouml2db/OntoUML2DBOptions';
+import { Ontouml2DbOptions } from '@libs/ontouml2db/Ontouml2DbOptions';
 
-export class H2 extends Generic implements IDBMS {
+export class H2 extends Generic implements DbmsInterface {
   constructor() {
     super();
     this.types.set('boolean', 'BOOLEAN');
@@ -39,7 +39,7 @@ export class H2 extends Generic implements IDBMS {
   }
 
   //*****************************************************************************************
-  getConnectionToProtege(options: OntoUML2DBOptions): string {
+  getConnectionToProtege(options: Ontouml2DbOptions): string {
     let stringConnection: string = '';
 
     let today = new Date();

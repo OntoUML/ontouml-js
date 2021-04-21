@@ -3,15 +3,15 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { OntoUML2DBOptions } from '@libs/ontouml2db/OntoUML2DBOptions';
-import { GenerateOBDAMappingID } from '@libs/ontouml2db/obda/GenerateOBDAMappingID';
-import { GenerateOBDATarget } from '@libs/ontouml2db/obda/GenerateOBDATarget';
-import { GenerateOBDASource } from '@libs/ontouml2db/obda/GenerateOBDASource';
+import { Ontouml2DbOptions } from '@libs/ontouml2db/Ontouml2DbOptions';
+import { GenerateObdaMappingId } from '@libs/ontouml2db/obda/GenerateObdaMappingId';
+import { GenerateObdaTarget } from '@libs/ontouml2db/obda/GenerateObdaTarget';
+import { GenerateObdaSource } from '@libs/ontouml2db/obda/GenerateObdaSource';
 import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
 import { TracedNode } from '../tracker/TracedNode';
 
-export class GenerateOBDA {
-  static getFile(options: OntoUML2DBOptions, tracker: Tracker): string {
+export class GenerateObda {
+  static getFile(options: Ontouml2DbOptions, tracker: Tracker): string {
     let file: string;
     file = this.generatePrefixDeclaration(options);
 
@@ -20,7 +20,7 @@ export class GenerateOBDA {
     return file;
   }
 
-  static generatePrefixDeclaration(options: OntoUML2DBOptions): string {
+  static generatePrefixDeclaration(options: Ontouml2DbOptions): string {
     return (
       '[PrefixDeclaration]\n' +
       ':       ' +
@@ -35,7 +35,7 @@ export class GenerateOBDA {
     );
   }
 
-  static generateMappingDeclaration(options: OntoUML2DBOptions, tracker: Tracker): string {
+  static generateMappingDeclaration(options: Ontouml2DbOptions, tracker: Tracker): string {
     let projectName: string = options.databaseName;
     let first: boolean;
     let text: string = '[MappingDeclaration] @collection [[\n\n';
@@ -43,11 +43,11 @@ export class GenerateOBDA {
     for (let trace of tracker.getTraceMap().values()) {
       first = true;
       trace.getTargetNodes().forEach((tracedNode: TracedNode) => {
-        text += GenerateOBDAMappingID.generate(trace.getSourceNode(), projectName, first);
+        text += GenerateObdaMappingId.generate(trace.getSourceNode(), projectName, first);
 
-        text += GenerateOBDATarget.generate(trace.getSourceNode(), projectName, tracedNode);
+        text += GenerateObdaTarget.generate(trace.getSourceNode(), projectName, tracedNode);
 
-        text += GenerateOBDASource.generate(trace, tracedNode);
+        text += GenerateObdaSource.generate(trace, tracedNode);
 
         first = false;
 

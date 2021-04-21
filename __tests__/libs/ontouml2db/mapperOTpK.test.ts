@@ -4,7 +4,7 @@
  */
 
 import { TestResource } from './test_resources/TestResource';
-import { OntoUML2DB } from '@libs/ontouml2db';
+import { Ontouml2Db } from '@libs/ontouml2db';
 import { baseExample } from './test_resources/baseExample';
 import { test_001 } from './test_resources/001_simple_flattening';
 import { test_002 } from './test_resources/002_flatting_with_duplicate_attributes';
@@ -85,14 +85,14 @@ const testResourcesRight: TestResource[] = [
 const testResourcesWrong: TestResource[] = [test_002, test_034, test_037];
 
 describe('Testing One Table per Kind mapper.', () => {
-  let service: OntoUML2DB;
+  let service: Ontouml2Db;
   let files;
 
   describe('Correct models', () => {
     for (const testResource of testResourcesRight) {
       it(`Test model: '${testResource.title}'`, () => {
         expect(() => {
-          service = new OntoUML2DB(testResource.project, testResource.options);
+          service = new Ontouml2Db(testResource.project, testResource.options);
           files = service.run();
         }).not.toThrow();
 
@@ -108,7 +108,7 @@ describe('Testing One Table per Kind mapper.', () => {
     for (const testResource of testResourcesWrong) {
       it(`Test model: '${testResource.title}'`, () => {
         expect(() => {
-          service = new OntoUML2DB(testResource.project, testResource.options);
+          service = new Ontouml2Db(testResource.project, testResource.options);
           service.run();
         }).toThrow(Error);
       });

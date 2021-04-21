@@ -9,7 +9,7 @@ import { Tracer } from '@libs/ontouml2db/tracker/Tracer';
 import { TracedNode } from '@libs/ontouml2db/tracker/TracedNode';
 import { NodeProperty } from '../graph/NodeProperty';
 
-export class GenerateOBDASource {
+export class GenerateObdaSource {
   static generate(tracer: Tracer, tracedNode: TracedNode): string {
     let text: string = '';
 

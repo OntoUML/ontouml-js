@@ -11,7 +11,7 @@ import { GraphGeneralization } from '@libs/ontouml2db/graph/GraphGeneralization'
 import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
 import { GraphGeneralizationSet } from '@libs/ontouml2db/graph/GraphGeneralizationSet';
 
-export interface IAssociationContainer {
+export interface AssociationContainerInterface {
   /**
    * Adds a new association to the node. Each node has a list of its associations. In
    * this way, a association is referenced by the origin and destination node, forming

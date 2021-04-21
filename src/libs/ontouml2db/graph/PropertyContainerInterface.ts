@@ -7,7 +7,7 @@
 
 import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
 
-export interface IPropertyContainer {
+export interface PropertyContainerInterface {
   /**
    * Adds a new property in the container.
    *
@@ -65,7 +65,7 @@ export interface IPropertyContainer {
    * @param sourceNode. Node to which the container belongs.
    * @return A new container with new properties.
    */
-  clonePropertyContainer(): IPropertyContainer;
+  clonePropertyContainer(): PropertyContainerInterface;
 
   /**
    * Removes a specific property of the container.

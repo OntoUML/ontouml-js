@@ -9,7 +9,7 @@ import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
 import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
 import { TracedNode } from '../tracker/TracedNode';
 
-export class GenerateOBDATarget {
+export class GenerateObdaTarget {
   //public static generate(originalNode: Node, project: string, trackedNode: Node): string {
   public static generate(sourceNode: Node, project: string, tracedNode: TracedNode): string {
     if (sourceNode.getAssociationNameNtoN() == null) {

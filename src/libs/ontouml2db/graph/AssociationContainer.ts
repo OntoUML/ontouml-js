@@ -10,10 +10,10 @@ import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
 import { GraphGeneralization } from '@libs/ontouml2db/graph/GraphGeneralization';
 import { Node } from '@libs/ontouml2db/graph/Node';
 import { GraphGeneralizationSet } from '@libs/ontouml2db/graph/GraphGeneralizationSet';
-import { IAssociationContainer } from '@libs/ontouml2db/graph/IAssociationContainer';
+import { AssociationContainerInterface } from '@libs/ontouml2db/graph/AssociationContainerInterface';
 import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
 
-export class AssociationContainer implements IAssociationContainer {
+export class AssociationContainer implements AssociationContainerInterface {
   private parentNode: Node;
   private relations: GraphRelation[];
   private generalizations: GraphGeneralization[];

@@ -3,10 +3,10 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
-import { OntoUML2DBOptions } from '@libs/ontouml2db/OntoUML2DBOptions';
+import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
+import { Ontouml2DbOptions } from '@libs/ontouml2db/Ontouml2DbOptions';
 import { StrategyType } from '@libs/ontouml2db/constants/StrategyType';
-import { OntoUML2DB } from '@libs/ontouml2db/OntoUML2DB';
+import { Ontouml2Db } from '@libs/ontouml2db/Ontouml2Db';
 import { GraphChecker } from './test_resources/graph_tester/GraphChecker';
 import { NodeChecker } from './test_resources/graph_tester/NodeChecker';
 import { PropertyChecker } from './test_resources/graph_tester/PropertyChecker';
@@ -16,9 +16,9 @@ import { TrackerChecker } from './test_resources/graph_tester/TrackerChecker';
 import { Project } from '@libs/ontouml';
 import { ScriptChecker } from './test_resources/graph_tester/ScriptChecker';
 
-let options: Partial<OntoUML2DBOptions> = {
+let options: Partial<Ontouml2DbOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_CLASS,
-  targetDBMS: DBMSSupported.GENERIC_SCHEMA,
+  targetDBMS: DbmsSupported.GENERIC_SCHEMA,
   isStandardizeNames: true,
   hostName: 'localhost/~',
   databaseName: 'RunExample',
@@ -503,11 +503,11 @@ model.createMediationRelation(supplyConstract, customer, 'hasCustomer');
 // ****************************************
 
 test('Run Example', () => {
-  let service: OntoUML2DB;
+  let service: Ontouml2Db;
   let files;
 
   expect(() => {
-    service = new OntoUML2DB(project, options);
+    service = new Ontouml2Db(project, options);
     files = service.run();
   }).not.toThrow();
 

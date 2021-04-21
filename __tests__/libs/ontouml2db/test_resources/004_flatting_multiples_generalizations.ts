@@ -10,8 +10,8 @@ import { PropertyChecker } from './graph_tester/PropertyChecker';
 import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
-import { OntoUML2DBOptions, StrategyType } from '@libs/ontouml2db';
-import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
+import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
+import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -98,9 +98,9 @@ model.createGeneralizationSet([genNamedEntityPerson, genNamedEntityOrganization]
 // ****************************************
 // ** O P T I O N S
 // ****************************************
-const options: Partial<OntoUML2DBOptions> = {
+const options: Partial<Ontouml2DbOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DBMSSupported.H2,
+  targetDBMS: DbmsSupported.H2,
   isStandardizeNames: true,
   hostName: 'localhost/~',
   databaseName: 'RunExample',

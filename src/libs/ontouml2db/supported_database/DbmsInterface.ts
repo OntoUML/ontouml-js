@@ -4,9 +4,9 @@
  */
 
 import { Graph } from '@libs/ontouml2db/graph/Graph';
-import { OntoUML2DBOptions } from '@libs/ontouml2db/OntoUML2DBOptions';
+import { Ontouml2DbOptions } from '@libs/ontouml2db/Ontouml2DbOptions';
 
-export interface IDBMS {
+export interface DbmsInterface {
   /**
    * Returns the relational schema script for the graph (ER).
    *
@@ -17,5 +17,5 @@ export interface IDBMS {
   /**
    * Returns the connection from the database to Protege.
    */
-  getConnectionToProtege(options: OntoUML2DBOptions): string;
+  getConnectionToProtege(options: Ontouml2DbOptions): string;
 }

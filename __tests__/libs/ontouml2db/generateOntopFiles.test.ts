@@ -3,15 +3,15 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
-import { OntoUML2DBOptions } from '@libs/ontouml2db/OntoUML2DBOptions';
+import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
+import { Ontouml2DbOptions } from '@libs/ontouml2db/Ontouml2DbOptions';
 import { StrategyType } from '@libs/ontouml2db/constants/StrategyType';
 import { baseExample } from './test_resources/baseExample';
-import { OntoUML2DB } from '@libs/ontouml2db';
+import { Ontouml2Db } from '@libs/ontouml2db';
 
-let options: Partial<OntoUML2DBOptions> = {
+let options: Partial<Ontouml2DbOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DBMSSupported.H2,
+  targetDBMS: DbmsSupported.H2,
   isStandardizeNames: true,
   hostName: 'localhost/~',
   databaseName: 'RunExample',
@@ -20,7 +20,7 @@ let options: Partial<OntoUML2DBOptions> = {
 };
 
 test('Run Example', () => {
-  let ontoUML2DB = new OntoUML2DB(baseExample.project, options);
+  let ontoUML2DB = new Ontouml2Db(baseExample.project, options);
 
   let text = ontoUML2DB.getOBDAFile();
 

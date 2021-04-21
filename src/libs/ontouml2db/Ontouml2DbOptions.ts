@@ -4,12 +4,12 @@
  */
 
 import { StrategyType } from '@libs/ontouml2db/constants/StrategyType';
-import { DBMSSupported } from '@libs/ontouml2db/constants/DBMSSupported';
-import { ServiceOptions } from './../';
+import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
+import { ServiceOptions } from '..';
 
-export class OntoUML2DBOptions implements ServiceOptions {
+export class Ontouml2DbOptions implements ServiceOptions {
   mappingStrategy: StrategyType;
-  targetDBMS: DBMSSupported;
+  targetDBMS: DbmsSupported;
   isStandardizeNames: boolean;
   baseIri: String;
   generateSchema: boolean;
@@ -20,9 +20,9 @@ export class OntoUML2DBOptions implements ServiceOptions {
   passwordConnection: string;
   enumFieldToLookupTable: boolean;
 
-  constructor(base: Partial<OntoUML2DBOptions> = {}) {
+  constructor(base: Partial<Ontouml2DbOptions> = {}) {
     this.mappingStrategy = StrategyType.ONE_TABLE_PER_KIND;
-    this.targetDBMS = DBMSSupported.GENERIC_SCHEMA;
+    this.targetDBMS = DbmsSupported.GENERIC_SCHEMA;
     this.isStandardizeNames = true;
     this.baseIri = 'https://example.com';
     this.generateSchema = true;

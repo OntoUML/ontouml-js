@@ -7,8 +7,8 @@
  * Author: Gustavo L. Guidoni
  */
 
-import { IPropertyContainer } from '@libs/ontouml2db/graph/IPropertyContainer';
-import { IAssociationContainer } from '@libs/ontouml2db/graph/IAssociationContainer';
+import { PropertyContainerInterface } from '@libs/ontouml2db/graph/PropertyContainerInterface';
+import { AssociationContainerInterface } from '@libs/ontouml2db/graph/AssociationContainerInterface';
 import { PropertyContainer } from '@libs/ontouml2db/graph/PropertyContainer';
 import { AssociationContainer } from '@libs/ontouml2db/graph/AssociationContainer';
 import { NodeProperty } from '@libs/ontouml2db/graph/NodeProperty';
@@ -21,13 +21,13 @@ import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
 
 import { ClassStereotype } from '@libs/ontouml';
 
-export class Node implements IPropertyContainer, IAssociationContainer {
+export class Node implements PropertyContainerInterface, AssociationContainerInterface {
   private id: string;
   private name: string;
   private stereotype: ClassStereotype;
   private resolved: boolean;
 
-  private propertyContainer: IPropertyContainer;
+  private propertyContainer: PropertyContainerInterface;
   private associationContainer: AssociationContainer;
 
   private associationNameNtoN: string; //This property should only be filled in when the node originates from an N to N association.
@@ -92,7 +92,7 @@ export class Node implements IPropertyContainer, IAssociationContainer {
    *
    * @param container Container to be put on the node.
    */
-  setPropertyContainer(container: IPropertyContainer): void {
+  setPropertyContainer(container: PropertyContainerInterface): void {
     this.propertyContainer = container;
   }
 
@@ -174,7 +174,7 @@ export class Node implements IPropertyContainer, IAssociationContainer {
     return this.propertyContainer.getProperties();
   }
 
-  clonePropertyContainer(): IPropertyContainer {
+  clonePropertyContainer(): PropertyContainerInterface {
     return this.propertyContainer.clonePropertyContainer();
   }
 

@@ -13,27 +13,27 @@ import { ToEntityRelationship } from '@libs/ontouml2db/convert/ToEntityRelations
 import { StrategyType } from '@libs/ontouml2db/constants/StrategyType';
 import { ToRelationalSchema } from '@libs/ontouml2db/convert/ToRelationalSchema';
 import { Graph } from '@libs/ontouml2db/graph/Graph';
-import { OntoUML2DBOptions } from '@libs/ontouml2db/OntoUML2DBOptions';
+import { Ontouml2DbOptions } from '@libs/ontouml2db/Ontouml2DbOptions';
 import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
-import { GenerateOBDA } from '@libs/ontouml2db/obda/GenerateOBDA';
+import { GenerateObda } from '@libs/ontouml2db/obda/GenerateObda';
 import { GenerateConnection } from './obda/GenerateConnection';
 
 import { Project } from '@libs/ontouml';
-import { Service, ServiceIssue } from './../';
-import { DBMSSupported } from './constants/DBMSSupported';
+import { Service, ServiceIssue } from '..';
+import { DbmsSupported } from './constants/DbmsSupported';
 import { OneTablePerConcreteClass } from './approaches/one_table_per_concrete_class/OneTablePerConcreteClass';
 
-export class OntoUML2DB implements Service {
+export class Ontouml2Db implements Service {
   private graph: Graph;
   private tracker: Tracker;
-  private options: OntoUML2DBOptions;
+  private options: Ontouml2DbOptions;
 
-  constructor(project: Project, opt?: Partial<OntoUML2DBOptions>) {
+  constructor(project: Project, opt?: Partial<Ontouml2DbOptions>) {
     let factory = new Factory(project);
     this.graph = factory.mountGraph();
     this.tracker = new Tracker(this.graph);
 
-    this.options = opt ? new OntoUML2DBOptions(opt) : new OntoUML2DBOptions();
+    this.options = opt ? new Ontouml2DbOptions(opt) : new Ontouml2DbOptions();
   }
 
   // TODO: review the implementation of run(), move the actual behavior into the method, and delete unnecessary methods.
@@ -54,7 +54,7 @@ export class OntoUML2DB implements Service {
    * Validte if is possible to make the transformation.
    */
   validate(): void {
-    if (this.options.targetDBMS === DBMSSupported.GENERIC_SCHEMA && this.options.enumFieldToLookupTable === false) {
+    if (this.options.targetDBMS === DbmsSupported.GENERIC_SCHEMA && this.options.enumFieldToLookupTable === false) {
       throw new Error('It is not possible to make lookup tables for a GENERIC database.');
     }
   }
@@ -104,7 +104,7 @@ export class OntoUML2DB implements Service {
    * @param options
    */
   getOBDAFile(): string {
-    return GenerateOBDA.getFile(this.options, this.tracker);
+    return GenerateObda.getFile(this.options, this.tracker);
   }
 
   /**
@@ -131,7 +131,7 @@ export class OntoUML2DB implements Service {
   /**
    * Returns the configuration options.
    */
-  getOptions(): OntoUML2DBOptions {
+  getOptions(): Ontouml2DbOptions {
     return this.options;
   }
 }

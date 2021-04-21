@@ -4,7 +4,7 @@
  */
 
 import { Graph } from '@libs/ontouml2db/graph/Graph';
-import { OntoUML2DB } from '@libs/ontouml2db/OntoUML2DB';
+import { Ontouml2Db } from '@libs/ontouml2db/Ontouml2Db';
 import { NodeChecker } from './NodeChecker';
 import { TrackerChecker } from './TrackerChecker';
 import { RelationshipChecker } from './RelationshipChecker';
@@ -38,7 +38,7 @@ export class GraphChecker {
     this.schema = '';
   }
 
-  setTransformation(transformation: OntoUML2DB): GraphChecker {
+  setTransformation(transformation: Ontouml2Db): GraphChecker {
     this.sourceGraph = transformation.getSourceGraph();
     this.tracker = transformation.getTracker();
     return this;
