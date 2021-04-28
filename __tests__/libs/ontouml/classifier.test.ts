@@ -1,33 +1,65 @@
-import { Class, Project, classifierUtils } from '@libs/ontouml';
+import { Class, Generalization, GeneralizationSet, Package, Project } from '@libs/ontouml';
 
 describe('Classifier Tests', () => {
-  describe(`Test ${classifierUtils.getGeneralizationsInvolvingClassifier.name}()`, () => {
-    const model = new Project().createModel();
-    const pkg = model.createPackage();
-    const agent = model.createClass();
-    const person = model.createClass();
-    const organization = pkg.createClass();
-    const agentIntoPerson = model.createGeneralization(agent, person);
-    const agentIntoOrganization = model.createGeneralization(agent, organization);
-    const car = model.createClass();
+  let project: Project;
+  let model, pkg: Package;
+  let agent, person, organization, car, student, phdStudent, nonProfitOrganization, forProfitOrganization, lemonadeStand: Class;
+  let agentToPerson,
+    agentToOrganization,
+    personToStudent,
+    organizationToNpo,
+    organizationToFpo,
+    fpoToLemonadeStand: Generalization;
+  let genset: GeneralizationSet;
 
+  beforeAll(() => {
+    project = new Project();
+    model = project.createModel();
+    pkg = model.createPackage();
+
+    agent = model.createCategory('Agent');
+    person = model.createKind('Person');
+    student = model.createRole('Student');
+    phdStudent = model.createRole('PhdStudent');
+    organization = pkg.createKind('Organization');
+    nonProfitOrganization = model.createSubkind('nonProfitOrganization');
+    forProfitOrganization = model.createSubkind('forProfitOrganization');
+    lemonadeStand = model.createSubkind('lemonadeStand');
+    car = model.createKind('Car');
+
+    agentToPerson = model.createGeneralization(agent, person);
+    agentToOrganization = model.createGeneralization(agent, organization);
+    personToStudent = model.createGeneralization(person, student);
+    model.createGeneralization(student, phdStudent);
+    organizationToNpo = model.createGeneralization(organization, nonProfitOrganization);
+    organizationToFpo = model.createGeneralization(organization, forProfitOrganization);
+    fpoToLemonadeStand = model.createGeneralization(forProfitOrganization, lemonadeStand);
+    model.createGeneralization(lemonadeStand, forProfitOrganization);
+
+    genset = pkg.createGeneralizationSet([agentToPerson, agentToOrganization]);
+  });
+
+  describe(`Test getGeneralizationsInvolvingClassifier()`, () => {
     it('Test agent generalization', () => {
       const agentGeneralizations = agent.getGeneralizations();
-      expect(agentGeneralizations).toContain(agentIntoPerson);
-      expect(agentGeneralizations).toContain(agentIntoOrganization);
+      expect(agentGeneralizations).toContain(agentToPerson);
+      expect(agentGeneralizations).toContain(agentToOrganization);
       expect(agentGeneralizations.length).toBe(2);
     });
 
     it('Test person generalizations', () => {
       const personGeneralizations = person.getGeneralizations();
-      expect(personGeneralizations).toContain(agentIntoPerson);
-      expect(personGeneralizations.length).toBe(1);
+      expect(personGeneralizations).toContain(agentToPerson);
+      expect(personGeneralizations).toContain(personToStudent);
+      expect(personGeneralizations.length).toBe(2);
     });
 
     it('Test organization generalizations', () => {
       const organizationGeneralizations = organization.getGeneralizations();
-      expect(organizationGeneralizations).toContain(agentIntoOrganization);
-      expect(organizationGeneralizations.length).toBe(1);
+      expect(organizationGeneralizations).toContain(agentToOrganization);
+      expect(organizationGeneralizations).toContain(organizationToNpo);
+      expect(organizationGeneralizations).toContain(organizationToFpo);
+      expect(organizationGeneralizations.length).toBe(3);
     });
 
     it('Test car generalizations', () => {
@@ -36,17 +68,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifierUtils.getGeneralizationSetsInvolvingClassifier.name}()`, () => {
-    const model = new Project().createModel();
-    const pkg = model.createPackage();
-    const agent = model.createClass();
-    const person = model.createClass();
-    const organization = pkg.createClass();
-    const agentIntoPerson = model.createGeneralization(agent, person);
-    const agentIntoOrganization = model.createGeneralization(agent, organization);
-    const genset = pkg.createGeneralizationSet([agentIntoPerson, agentIntoOrganization]);
-    const car = model.createClass();
-
+  describe(`Test getGeneralizationSetsInvolvingClassifier()`, () => {
     it('Test agent generalization sets', () => {
       const agentGeneralizationSets = agent.getGeneralizationSets();
       expect(agentGeneralizationSets).toContain(genset);
@@ -71,42 +93,26 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifierUtils.getGeneralizationsWhereGeneral.name}()`, () => {
-    const model = new Project().createModel();
-    const pkg = model.createPackage();
-    const agent = model.createClass();
-    const person = model.createClass();
-    const organization = pkg.createClass();
-    const agentIntoPerson = model.createGeneralization(agent, person);
-    const agentIntoOrganization = model.createGeneralization(agent, organization);
-
+  describe(`Test getGeneralizationsWhereGeneral()`, () => {
     it('Test agent generalizations', () => {
       const agentGeneralizations = agent.getGeneralizationsWhereGeneral();
-      expect(agentGeneralizations).toContain(agentIntoPerson);
-      expect(agentGeneralizations).toContain(agentIntoOrganization);
+      expect(agentGeneralizations).toContain(agentToPerson);
+      expect(agentGeneralizations).toContain(agentToOrganization);
       expect(agentGeneralizations.length).toBe(2);
     });
 
-    it('Test person generalizations', () => {
-      const personGeneralizations = person.getGeneralizationsWhereGeneral();
-      expect(personGeneralizations.length).toBe(0);
+    it('Test car generalizations', () => {
+      const carGeneralizations = car.getGeneralizationsWhereGeneral();
+      expect(carGeneralizations.length).toBe(0);
     });
 
     it('Test organization generalizations', () => {
       const organizationGeneralizations = organization.getGeneralizationsWhereGeneral();
-      expect(organizationGeneralizations.length).toBe(0);
+      expect(organizationGeneralizations.length).toBe(2);
     });
   });
 
-  describe(`Test ${classifierUtils.getGeneralizationsWhereSpecific.name}()`, () => {
-    const model = new Project().createModel();
-    const pkg = model.createPackage();
-    const agent = model.createClass();
-    const person = model.createClass();
-    const organization = pkg.createClass();
-    const agentIntoPerson = model.createGeneralization(agent, person);
-    const agentIntoOrganization = model.createGeneralization(agent, organization);
-
+  describe(`Test getGeneralizationsWhereSpecific()`, () => {
     it('Test agent generalizations', () => {
       const agentGeneralizations = agent.getGeneralizationsWhereSpecific();
       expect(agentGeneralizations.length).toBe(0);
@@ -114,27 +120,18 @@ describe('Classifier Tests', () => {
 
     it('Test person generalizations', () => {
       const personGeneralizations = person.getGeneralizationsWhereSpecific();
-      expect(personGeneralizations).toContain(agentIntoPerson);
+      expect(personGeneralizations).toContain(agentToPerson);
       expect(personGeneralizations.length).toBe(1);
     });
 
     it('Test organization generalizations', () => {
       const organizationGeneralizations = organization.getGeneralizationsWhereSpecific();
-      expect(organizationGeneralizations).toContain(agentIntoOrganization);
+      expect(organizationGeneralizations).toContain(agentToOrganization);
       expect(organizationGeneralizations.length).toBe(1);
     });
   });
 
-  describe(`Test ${classifierUtils.getGeneralizationSetsWhereGeneral.name}()`, () => {
-    const model = new Project().createModel();
-    const pkg = model.createPackage();
-    const agent = model.createClass();
-    const person = model.createClass();
-    const organization = pkg.createClass();
-    const agentIntoPerson = model.createGeneralization(agent, person);
-    const agentIntoOrganization = model.createGeneralization(agent, organization);
-    const genset = pkg.createGeneralizationSet([agentIntoPerson, agentIntoOrganization]);
-
+  describe(`Test getGeneralizationSetsWhereGeneral()`, () => {
     it('Test agent generalization sets', () => {
       const agentGeneralizationSets = agent.getGeneralizationSetsWhereGeneral();
       expect(agentGeneralizationSets).toContain(genset);
@@ -152,16 +149,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifierUtils.getGeneralizationSetsWhereSpecific.name}()`, () => {
-    const model = new Project().createModel();
-    const pkg = model.createPackage();
-    const agent = model.createClass();
-    const person = model.createClass();
-    const organization = pkg.createClass();
-    const agentIntoPerson = model.createGeneralization(agent, person);
-    const agentIntoOrganization = model.createGeneralization(agent, organization);
-    const genset = pkg.createGeneralizationSet([agentIntoPerson, agentIntoOrganization]);
-
+  describe(`Test getGeneralizationSetsWhereSpecific()`, () => {
     it('Test agent generalization sets', () => {
       const agentGeneralizationSets = agent.getGeneralizationSetsWhereSpecific();
       expect(agentGeneralizationSets.length).toBe(0);
@@ -180,18 +168,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifierUtils.getParents.name}()`, () => {
-    const model = new Project().createModel();
-    const pkg = model.createPackage();
-    const agent = model.createClass();
-    const person = model.createClass();
-    const organization = pkg.createClass();
-    model.createGeneralization(agent, person);
-    model.createGeneralization(agent, organization);
-
-    const selfParent = model.createClass();
-    model.createGeneralization(selfParent, selfParent);
-
+  describe(`Test getParents()`, () => {
     it('Test agent parents', () => {
       const agentParents = agent.getParents();
       expect(agentParents.length).toBe(0);
@@ -210,24 +187,15 @@ describe('Classifier Tests', () => {
     });
 
     it('Test selfParent parents', () => {
+      const selfParent = model.createClass();
+      model.createGeneralization(selfParent, selfParent);
       const selfParentParents = selfParent.getParents();
       expect(selfParentParents).toContain(selfParent);
       expect(selfParentParents.length).toBe(1);
     });
   });
 
-  describe(`Test ${classifierUtils.getChildren.name}()`, () => {
-    const model = new Project().createModel();
-    const pkg = model.createPackage();
-    const agent = model.createClass();
-    const person = model.createClass();
-    const organization = pkg.createClass();
-    model.createGeneralization(agent, person);
-    model.createGeneralization(agent, organization);
-
-    const selfParent = model.createClass();
-    model.createGeneralization(selfParent, selfParent);
-
+  describe(`Test getChildren()`, () => {
     it('Test agent children', () => {
       const agentChildren = agent.getChildren();
       expect(agentChildren).toContain(person);
@@ -237,41 +205,24 @@ describe('Classifier Tests', () => {
 
     it('Test person children', () => {
       const personChildren = person.getChildren();
-      expect(personChildren.length).toBe(0);
+      expect(personChildren.length).toBe(1);
     });
 
     it('Test organization children', () => {
       const organizationChildren = organization.getChildren();
-      expect(organizationChildren.length).toBe(0);
+      expect(organizationChildren.length).toBe(2);
     });
 
     it('Test selfParent children', () => {
+      const selfParent = model.createClass();
+      model.createGeneralization(selfParent, selfParent);
       const selfParentChildren = selfParent.getChildren();
       expect(selfParentChildren).toContain(selfParent);
       expect(selfParentChildren.length).toBe(1);
     });
   });
 
-  describe(`Test ${classifierUtils.getAncestors.name}()`, () => {
-    const model = new Project().createModel();
-    const agent = model.createClass('agent');
-    const person = model.createClass('person');
-    const student = model.createClass('student');
-    const phdStudent = model.createClass('phdStudent');
-    const organization = model.createClass('organization');
-    const nonProfitOrganization = model.createClass('nonProfitOrganization');
-    const forProfitOrganization = model.createClass('forProfitOrganization');
-    const lemonadeStand = model.createClass('lemonadeStand');
-
-    model.createGeneralization(agent, person);
-    model.createGeneralization(person, student);
-    model.createGeneralization(student, phdStudent);
-    model.createGeneralization(agent, organization);
-    model.createGeneralization(organization, nonProfitOrganization);
-    model.createGeneralization(organization, forProfitOrganization);
-    model.createGeneralization(forProfitOrganization, lemonadeStand);
-    model.createGeneralization(lemonadeStand, forProfitOrganization);
-
+  describe(`Test getAncestors()`, () => {
     it('Test agent ancestors', () => {
       const agentAncestors = agent.getAncestors();
       expect(agentAncestors.length).toBe(0);
@@ -300,26 +251,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifierUtils.getDescendants.name}()`, () => {
-    const model = new Project().createModel();
-    const agent = model.createClass('agent');
-    const person = model.createClass('person');
-    const student = model.createClass('student');
-    const phdStudent = model.createClass('phdStudent');
-    const organization = model.createClass('organization');
-    const nonProfitOrganization = model.createClass('nonProfitOrganization');
-    const forProfitOrganization = model.createClass('forProfitOrganization');
-    const lemonadeStand = model.createClass('lemonadeStand');
-
-    model.createGeneralization(agent, person);
-    model.createGeneralization(person, student);
-    model.createGeneralization(student, phdStudent);
-    model.createGeneralization(agent, organization);
-    model.createGeneralization(organization, nonProfitOrganization);
-    model.createGeneralization(organization, forProfitOrganization);
-    model.createGeneralization(forProfitOrganization, lemonadeStand);
-    model.createGeneralization(lemonadeStand, forProfitOrganization);
-
+  describe(`Test getDescendants()`, () => {
     it('Test agent descendants', () => {
       const agentDescendants = agent.getDescendants();
       expect(agentDescendants).toContain(phdStudent);
@@ -348,26 +280,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifierUtils.getFilteredAncestors.name}()`, () => {
-    const model = new Project().createModel();
-    const agent = model.createCategory('agent');
-    const person = model.createKind('person');
-    const student = model.createRole('student');
-    const phdStudent = model.createRole('phdStudent');
-    const organization = model.createKind('organization');
-    const nonProfitOrganization = model.createSubkind('nonProfitOrganization');
-    const forProfitOrganization = model.createSubkind('forProfitOrganization');
-    const lemonadeStand = model.createSubkind('lemonadeStand');
-
-    model.createGeneralization(agent, person);
-    model.createGeneralization(person, student);
-    model.createGeneralization(student, phdStudent);
-    model.createGeneralization(agent, organization);
-    model.createGeneralization(organization, nonProfitOrganization);
-    model.createGeneralization(organization, forProfitOrganization);
-    model.createGeneralization(forProfitOrganization, lemonadeStand);
-    model.createGeneralization(lemonadeStand, forProfitOrganization);
-
+  describe(`Test getFilteredAncestors()`, () => {
     it('Test phdStudent ancestors', () => {
       const ultimateSortalFilter = (_class: Class) => _class.hasUltimateSortalStereotype();
       const phdStudentAncestors = phdStudent.getFilteredAncestors(ultimateSortalFilter);
@@ -384,26 +297,7 @@ describe('Classifier Tests', () => {
     });
   });
 
-  describe(`Test ${classifierUtils.getFilteredDescendants.name}()`, () => {
-    const model = new Project().createModel();
-    const agent = model.createCategory('agent');
-    const person = model.createKind('person');
-    const student = model.createRole('student');
-    const phdStudent = model.createRole('phdStudent');
-    const organization = model.createKind('organization');
-    const nonProfitOrganization = model.createSubkind('nonProfitOrganization');
-    const forProfitOrganization = model.createSubkind('forProfitOrganization');
-    const lemonadeStand = model.createSubkind('lemonadeStand');
-
-    model.createGeneralization(agent, person);
-    model.createGeneralization(person, student);
-    model.createGeneralization(student, phdStudent);
-    model.createGeneralization(agent, organization);
-    model.createGeneralization(organization, nonProfitOrganization);
-    model.createGeneralization(organization, forProfitOrganization);
-    model.createGeneralization(forProfitOrganization, lemonadeStand);
-    model.createGeneralization(lemonadeStand, forProfitOrganization);
-
+  describe(`Test getFilteredDescendants()`, () => {
     it('Test agent descendants', () => {
       const ultimateSortalFilter = (_class: Class) => _class.hasUltimateSortalStereotype();
       const agentDescendants = agent.getFilteredDescendants(ultimateSortalFilter);

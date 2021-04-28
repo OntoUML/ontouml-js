@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontouml.org/ontouml-schema/2021-02-26/Diagram",
+  "description": "An array containing the values defined for an enumeration. Should only be used if the class is stereotyped as <<enumeration>>, otherwise, the value of this field should be null.",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "Diagram"
+    },
+    "id": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#id"
+    },
+    "name": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
+    },
+    "description": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
+    },
+    "contents": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/ClassView"
+              },
+              {
+                "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/RelationView"
+              },
+              {
+                "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/GeneralizationView"
+              },
+              {
+                "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/GeneralizationSetView"
+              },
+              {
+                "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/PackageView"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "owner": {
+      "oneOf": [
+        {
+          "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#reference"
+        }
+      ]
+    }
+  },
+  "additionalProperties": true,
+  "required": ["type", "id"]
+}

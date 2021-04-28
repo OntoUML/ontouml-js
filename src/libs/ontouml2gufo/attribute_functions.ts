@@ -1,4 +1,4 @@
-import { OntoumlType, Property, Class } from '@libs/ontouml/';
+import { OntoumlType, Property, Class } from '@libs/ontouml';
 import { Ontouml2Gufo, transformAnnotations } from './';
 
 export function transformAttribute(transformer: Ontouml2Gufo, attribute: Property): boolean {

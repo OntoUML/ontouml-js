@@ -143,7 +143,7 @@ describe('An attribute', () => {
       const address = model.createDatatype('Address');
 
       // TODO: review if we should support typeless attributes
-      address.properties = [new Property({ name: 'street', container: address })];
+      address.createAttribute(null, 'street');
 
       result = generateGufo(model);
     });

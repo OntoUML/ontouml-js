@@ -9,7 +9,7 @@ describe(`${Literal.name} Tests`, () => {
     gameStatus.createLiteral();
 
     it('Test serialization', () => expect(() => JSON.stringify(started)).not.toThrow());
-    it('Test serialization validation', () => expect(serializationUtils.validate(started.project)).toBeTruthy());
+    it('Test serialization validation', () => expect(serializationUtils.validate(started.project)).toBe(true));
   });
 
   describe(`Test ${Literal.prototype.setContainer.name}()`, () => {
@@ -19,9 +19,9 @@ describe(`${Literal.name} Tests`, () => {
 
     it('Test function call', () => {
       expect(lit.container).not.toBe(_enum);
-      expect(_enum.literals).toBeNull();
+      expect(_enum.literals).toHaveLength(0);
 
-      lit.setContainer(_enum);
+      _enum.addLiteral(lit);
 
       expect(lit.container).toBe(_enum);
       expect(lit.project).toBe(_enum.project);

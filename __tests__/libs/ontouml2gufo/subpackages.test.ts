@@ -6,9 +6,7 @@ describe('Subpackages', () => {
 
   beforeEach(() => {
     model = new Package();
-
     const universityPkg = model.createPackage('University');
-
     universityPkg.createKind('Person');
   });
 

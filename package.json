@@ -1,11 +1,11 @@
 {
   "name": "ontouml-js",
-  "version": "0.3.0",
+  "version": "0.4.1",
   "description": "Javascript library utility for manipulating OntoUML models.",
   "license": "Apache-2.0",
-  "engineStrict": true,
+  "repository": "github:OntoUML/ontouml-js",
   "engines": {
-    "node": ">= 0.12"
+    "node": ">= 14"
   },
   "main": "dist/index.js",
   "files": [
@@ -22,52 +22,49 @@
     "build": "rm -rf ./dist && npm run build:js",
     "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",
     "build:watch": "TS_NODE_FILES=true tsc -w -p tsconfig.release.json",
-    "bundle": "webpack",
+    "tsdoc": "typedoc --out tsdoc src/index.ts",
     "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:clear": "jest --clearCache",
     "test:watch": "jest --watch"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run format"
-    }
-  },
   "_moduleAliases": {
     "@test-models": "test_models",
     "@constants": "src/constants",
     "@error": "src/error",
     "@libs": "src/libs",
-    "@utils": "src/utils"
+    "@utils": "src/utils",
+    "@resources": "resources"
   },
   "dependencies": {
-    "@babel/runtime": "^7.11.2",
+    "@babel/runtime": "^7.12.13",
     "@types/n3": "^1.4.4",
-    "ajv": "^6.12.6",
+    "ajv": "^7.1.1",
     "esm": "^3.2.25",
     "language-tags": "^1.0.5",
-    "lodash": "^4.17.20",
-    "memoizee": "^0.4.14",
-    "n3": "^1.6.3",
+    "lodash": "^4.17.21",
+    "n3": "^1.8.0",
     "ontouml-schema": "^0.2.4",
     "tslib": "~1.10.0",
-    "uniqid": "^5.2.0",
+    "uniqid": "^5.3.0",
     "validate.io-uri": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.11.6",
-    "@babel/core": "^7.11.6",
-    "@babel/plugin-transform-runtime": "^7.11.5",
-    "@babel/preset-env": "^7.11.5",
-    "@babel/preset-typescript": "^7.10.4",
-    "@babel/register": "^7.11.5",
+    "@babel/cli": "^7.12.16",
+    "@babel/core": "^7.12.16",
+    "@babel/plugin-proposal-class-properties": "^7.12.13",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.16",
+    "@babel/plugin-transform-runtime": "^7.12.15",
+    "@babel/preset-env": "^7.12.16",
+    "@babel/preset-typescript": "^7.12.16",
+    "@babel/register": "^7.12.13",
     "@types/jest": "^24.9.1",
-    "@types/lodash": "^4.14.164",
-    "@types/node": "^10.17.39",
+    "@types/lodash": "^4.14.168",
+    "@types/node": "^10.17.51",
     "babel-jest": "^24.9.0",
-    "babel-loader": "^8.1.0",
-    "babel-plugin-module-resolver": "^4.0.0",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-module-resolver": "^4.1.0",
     "dotenv": "^8.2.0",
     "husky": "^3.1.0",
     "jest": "^26.3.0",
@@ -75,16 +72,15 @@
     "nodemon": "^1.19.4",
     "npm-run-all": "^4.1.5",
     "onchange": "^6.1.1",
-    "prettier": "~1.18.2",
+    "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^24.3.0",
     "ts-node": "^8.10.2",
-    "tslint": "~5.19.0",
-    "tslint-config-prettier": "1.18.0",
-    "tslint-microsoft-contrib": "~6.2.0",
-    "tsutils": "~3.17.0",
-    "typescript": "^3.6.5",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12"
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-microsoft-contrib": "^6.2.0",
+    "tsutils": "^3.20.0",
+    "typedoc": "^0.20.28",
+    "typescript": "^4.1"
   }
 }

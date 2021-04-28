@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontouml.org/ontouml-schema/2021-02-26/RectangleShape",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "Rectangle"
+    },
+    "id": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#id"
+    },
+    "name": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
+    },
+    "description": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
+    },
+    "x": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableNatural"
+    },
+    "y": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableNatural"
+    },
+    "width": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableNatural"
+    },
+    "height": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableNatural"
+    }
+  },
+  "additionalProperties": true,
+  "required": ["type", "id"]
+}

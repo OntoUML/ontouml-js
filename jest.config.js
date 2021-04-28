@@ -20,7 +20,8 @@ module.exports = {
     "^@constants(.*)": "<rootDir>/src/constants$1",
     "^@error(.*)": "<rootDir>/src/error$1",
     "^@libs(.*)": "<rootDir>/src/libs$1",
-    "^@utils(.*)": "<rootDir>/src/utils$1"
+    "^@utils(.*)": "<rootDir>/src/utils$1",
+    "^@resources(.*)": "<rootDir>/resources$1"
   },
   testRegex: '/__tests__/libs/.*\\.test\\.(ts|js)$',
   coverageDirectory: 'coverage',

@@ -1,0 +1,199 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontouml.org/ontouml-schema/2021-02-26/definitions",
+  "definitions": {
+    "id": {
+      "$id": "#id",
+      "description": "A non-empty and non-nullable string that uniquely identifies an object of a given type. Thus, two objects of the same type (e.g. two classes, two relations, two properties) may not have the same id, even if they have different containers.",
+      "type": "string",
+      "minLength": 1
+    },
+    "isAbstract": {
+      "$id": "#isAbstract",
+      "description": "A boolean meta-property that identifies whether or not the class or relation can have direct instances. If set to true, the class or relation is deemed abstract and it cannot have direct instances, i.e., for it must be specialized before being instantiated. If set to false, the class is deemed concrete and it can have direct instances.",
+      "$ref": "#/definitions/nullableBoolean"
+    },
+    "isDerived": {
+      "$id": "#isDerived",
+      "description": "A boolean meta-property that identifies whether or not the extension of the class (or relation) can be \"computed\" by means of a derivation rule. If set to true, they can, if set to false, they cannot. For instance, the Child can be modelled as a derived class, if it is considered that a child is a person whose age is less or equal to 10.",
+      "$ref": "#/definitions/nullableBoolean"
+    },
+    "natural": {
+      "$id": "#natural",
+      "type": "integer",
+      "minimum": 0
+    },
+    "nullableBoolean": {
+      "$id": "#nullableBoolean",
+      "description": "A auxiliary definition for nullable boolean fields.",
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nullableNatural": {
+      "$id": "#nullableNatural",
+      "description": "A auxiliary definition for nullable natural number fields.",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/natural"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nullableString": {
+      "$id": "#nullableString",
+      "description": "A auxiliary definition for nullable string fields.",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "ontoumlType": {
+      "$id": "ontoumlType",
+      "type": "string",
+      "enum": [
+        "Project",
+        "Package",
+        "Class",
+        "Relation",
+        "Generalization",
+        "GeneralizationSet",
+        "Property",
+        "Enumeration",
+        "Literal",
+        "Diagram",
+        "ClassView",
+        "RelationView",
+        "GeneralizationView",
+        "GeneralizationSetView",
+        "PackageView",
+        "Rectangle",
+        "Text",
+        "Path"
+      ]
+    },
+    "properties": {
+      "$id": "#properties",
+      "description": "A non-empty array of Property elements representing properties exhibited by instances of the container model element. Nullable. If the container object of his field is a class, the properties in this array are the attributes of the class. Alternatively, if the container is a relation, the properties in this array are the association ends of the relation.",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/Property"
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "propertyAssignments": {
+      "$id": "#propertyAssignments",
+      "description": "An object that contains assignments to properties instantiated by the container object. Each field in this object corresponds to an assigment, whose possible values are restricted to null, boolean, number, string, reference, or an array containing any of the former. Assignments are analogous to UML's notion of tagged values. Nullable.",
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "$ref": "#/definitions/reference"
+              },
+              {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "$ref": "#/definitions/reference"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "reference": {
+      "$id": "#reference",
+      "description": "An object representing a singular reference to a model element. Mandatory fields: \"type\", \"id\".",
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "$ref": "#/definitions/ontoumlType"
+            },
+            "id": {
+              "$ref": "#/definitions/id"
+            }
+          },
+          "required": ["type", "id"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "stereotype": {
+      "$id": "#stereotype",
+      "description": "A nullable string containing the stereotype applied to its container object. If no stereotype is applied to the object, the value of this field must be null.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/nullableString"
+        }
+      ]
+    },
+    "text": {
+      "$id": "#text",
+      "description": "A nullable field that may contain either a text string or a non-empty object where each key must indicate a language code conforming to the BCP 47 recommendations.",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/nullableString"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/nullableString"
+          }
+        }
+      ]
+    }
+  }
+}

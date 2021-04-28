@@ -1,7 +1,7 @@
 import { AggregationKind, Project, Property, PropertyStereotype, serializationUtils, stereotypeUtils } from '@libs/ontouml';
 
 describe(`${Property.name} Tests`, () => {
-  describe(`Test ${Property.prototype.hasStereotypeContainedIn.name}()`, () => {
+  describe(`Test ${Property.prototype.hasAnyStereotype.name}()`, () => {
     const model = new Project().createModel();
     const date = model.createDatatype();
     const summerFestival = model.createEvent();
@@ -9,23 +9,29 @@ describe(`${Property.name} Tests`, () => {
 
     startDate.stereotype = PropertyStereotype.BEGIN;
 
-    it('Test function call', () => expect(startDate.hasStereotypeContainedIn(stereotypeUtils.PropertyStereotypes)).toBe(true));
+    it('Test function call', () => expect(startDate.hasAnyStereotype(stereotypeUtils.PropertyStereotypes)).toBe(true));
   });
 
-  describe(`Test ${Property.prototype.hasValidStereotypeValue.name}()`, () => {
+  describe(`Test ${Property.prototype.isStereotypeValid.name}()`, () => {
     const model = new Project().createModel();
     const date = model.createDatatype();
     const summerFestival = model.createEvent();
     const startDate = summerFestival.createAttribute(date);
-    const endDate = summerFestival.createAttribute(date);
     const precedes = summerFestival.createAttribute(summerFestival);
 
     startDate.stereotype = PropertyStereotype.BEGIN;
-    endDate.stereotype = PropertyStereotype.END;
 
-    it('Test function call', () => expect(startDate.hasValidStereotypeValue()).toBe(true));
-    it('Test function call', () => expect(endDate.hasValidStereotypeValue()).toBe(true));
-    it('Test function call', () => expect(precedes.hasValidStereotypeValue()).toBe(true));
+    it('should return true for an attribute with an OntoUML stereotype', () => {
+      expect(startDate.isStereotypeValid()).toBe(true);
+    });
+
+    it('should return true for an attribute without a stereotype (by default; allowsNone: true)', () => {
+      expect(precedes.isStereotypeValid()).toBe(true);
+    });
+
+    it('should return false for an attribute without a stereotype (allowsNone: false)', () => {
+      expect(precedes.isStereotypeValid(false)).toBe(false);
+    });
   });
 
   describe(`Test ${Property.prototype.toJSON.name}()`, () => {
@@ -41,7 +47,7 @@ describe(`${Property.name} Tests`, () => {
 
     it('Test serialization', () => expect(() => JSON.stringify(startDate)).not.toThrow());
     it('Test serialization', () => expect(() => JSON.stringify(precedes)).not.toThrow());
-    it('Test serialization', () => expect(serializationUtils.validate(endDate.project)).toBeTruthy());
+    it('Test serialization', () => expect(serializationUtils.validate(endDate.project)).toBe(true));
   });
 
   describe(`Test ${Property.prototype.setContainer.name}()`, () => {
@@ -54,7 +60,7 @@ describe(`${Property.name} Tests`, () => {
       expect(startDate.container).not.toBe(summerFestival);
       expect(summerFestival.getContents()).not.toContain(startDate);
 
-      startDate.setContainer(summerFestival);
+      summerFestival.addAttribute(startDate);
 
       expect(startDate.container).toBe(summerFestival);
       expect(summerFestival.getContents()).toContain(startDate);
@@ -97,7 +103,7 @@ describe(`${Property.name} Tests`, () => {
     it('Test prop', () => expect(prop.isPropertyTypeDefined()).toBe(false));
   });
 
-  describe(`Test ${Property.prototype.isSharedAggregationEnd.name}()`, () => {
+  describe(`Test ${Property.prototype.isShared.name}()`, () => {
     const model = new Project().createModel();
     const date = model.createDatatype();
     const event = model.createEvent();
@@ -107,13 +113,13 @@ describe(`${Property.name} Tests`, () => {
 
     partOf.getTargetEnd().aggregationKind = AggregationKind.SHARED;
 
-    it('Test startDate', () => expect(startDate.isSharedAggregationEnd()).toBe(false));
-    it('Test partOf', () => expect(partOf.getSourceEnd().isSharedAggregationEnd()).toBe(false));
-    it('Test partOf', () => expect(partOf.getTargetEnd().isSharedAggregationEnd()).toBe(true));
-    it('Test prop', () => expect(prop.isSharedAggregationEnd()).toBe(false));
+    it('Test startDate', () => expect(startDate.isShared()).toBe(false));
+    it('Test partOf', () => expect(partOf.getSourceEnd().isShared()).toBe(false));
+    it('Test partOf', () => expect(partOf.getTargetEnd().isShared()).toBe(true));
+    it('Test prop', () => expect(prop.isShared()).toBe(false));
   });
 
-  describe(`Test ${Property.prototype.isCompositeAggregationEnd.name}()`, () => {
+  describe(`Test ${Property.prototype.isComposite.name}()`, () => {
     const model = new Project().createModel();
     const date = model.createDatatype();
     const event = model.createEvent();
@@ -123,10 +129,10 @@ describe(`${Property.name} Tests`, () => {
 
     partOf.getTargetEnd().aggregationKind = AggregationKind.COMPOSITE;
 
-    it('Test startDate', () => expect(startDate.isCompositeAggregationEnd()).toBe(false));
-    it('Test partOf', () => expect(partOf.getSourceEnd().isCompositeAggregationEnd()).toBe(false));
-    it('Test partOf', () => expect(partOf.getTargetEnd().isCompositeAggregationEnd()).toBe(true));
-    it('Test prop', () => expect(prop.isCompositeAggregationEnd()).toBe(false));
+    it('Test startDate', () => expect(startDate.isComposite()).toBe(false));
+    it('Test partOf', () => expect(partOf.getSourceEnd().isComposite()).toBe(false));
+    it('Test partOf', () => expect(partOf.getTargetEnd().isComposite()).toBe(true));
+    it('Test prop', () => expect(prop.isComposite()).toBe(false));
   });
 
   describe(`Test ${Property.prototype.isAggregationEnd.name}()`, () => {

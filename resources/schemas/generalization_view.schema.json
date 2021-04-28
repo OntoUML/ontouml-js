@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontouml.org/ontouml-schema/2021-02-26/GeneralizationView",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "GeneralizationView"
+    },
+    "id": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#id"
+    },
+    "name": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
+    },
+    "description": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
+    },
+    "modelElement": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#reference"
+    },
+    "source": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#reference"
+    },
+    "target": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#reference"
+    },
+    "shape": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/PathShape"
+    }
+  },
+  "additionalProperties": true,
+  "required": ["type", "id", "modelElement", "source", "target"]
+}

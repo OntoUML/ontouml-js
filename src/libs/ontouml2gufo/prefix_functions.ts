@@ -1,4 +1,4 @@
-import { Package } from '@libs/ontouml/';
+import { Package } from '@libs/ontouml';
 import { Ontouml2Gufo, normalizeName } from './';
 
 import _ from 'lodash';
@@ -56,7 +56,7 @@ export const getPackagePrefix = (ontouml2gufo: Ontouml2Gufo, pkg: Package): stri
   }
 
   if (ontouml2gufo.options.prefixPackages) {
-    let prefix: string = normalizeName(pkg.getName());
+    let prefix: string = normalizeName(pkg.getNameOrId());
     prefix = prefix.charAt(0).toLowerCase() + prefix.slice(1);
     return prefix;
   }

@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontouml.org/ontouml-schema/2021-02-26/Literal",
+  "description": "An array containing the values defined for an enumeration. Should only be used if the class is stereotyped as <<enumeration>>, otherwise, the value of this field should be null.",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "Literal"
+    },
+    "id": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#id"
+    },
+    "name": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
+    },
+    "description": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
+    },
+    "propertyAssignments": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#propertyAssignments"
+    }
+  },
+  "additionalProperties": true,
+  "required": ["type", "id"]
+}

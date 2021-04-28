@@ -1,33 +1,52 @@
 import tags from 'language-tags';
-import _ from 'lodash';
 
-export type MultilingualText = string | { [bcpLanguageTag: string]: string };
+export class MultilingualText {
+  static defaultLanguage: string = 'en';
+  static languagePreference: string[] = ['en'];
 
-function getText(multilingualText: MultilingualText, orderedLanguagePreferences: string[] = ['en']): string {
-  for (const lang of orderedLanguagePreferences) {
-    if (!tags.check(lang)) {
-      throw new Error('Invalid language code');
+  textMap: Map<string, string>;
+
+  constructor(value?: string, language?: string) {
+    this.textMap = new Map<string, string>();
+    if (value != null) this.addText(value, language);
+  }
+
+  getText(language?: string): string {
+    if (language && tags.check(language)) {
+      return this.textMap.get(language);
     }
-  }
 
-  if (!multilingualText || (typeof multilingualText !== 'string' && typeof multilingualText !== 'object')) {
-    return null;
-  }
-
-  if (typeof multilingualText === 'string') {
-    return multilingualText;
-  }
-
-  for (const lang of orderedLanguagePreferences) {
-    if (typeof multilingualText[lang] === 'string') {
-      return multilingualText[lang];
+    for (const lang of MultilingualText.languagePreference) {
+      if (this.textMap.has(lang)) {
+        return this.textMap.get(lang);
+      }
     }
+
+    return this.textMap.size > 0 ? [...this.textMap.entries()][0][1] : null;
   }
 
-  let keys = Object.keys(multilingualText).sort();
-  return multilingualText[keys[0]] || null;
+  addText(value: string, language?: string): void {
+    language = language && tags.check(language) ? language : MultilingualText.defaultLanguage;
+    this.textMap.set(language, value);
+  }
+
+  addAll(obj: object) {
+    Object.entries(obj).forEach((entry) => {
+      this.addText(entry[1], entry[0]);
+    });
+  }
+
+  entries(): [string, string][] {
+    return [...this.textMap.entries()];
+  }
+
+  clear(): void {
+    this.textMap.clear();
+  }
+
+  toJSON(): any {
+    if (this.textMap.size == 0) return null;
+    if (this.textMap.size == 1) return this.getText('en');
+    return this.textMap;
+  }
 }
-
-export const multilingualTextUtils = {
-  getText
-};

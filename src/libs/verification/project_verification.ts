@@ -5,10 +5,11 @@ import _ from 'lodash';
 export class ProjectVerification {
   static verifyProject(project: Project): VerificationIssue[] {
     let foundIssues: VerificationIssue[] = [];
+    const model = project.model;
 
-    project
-      .getContents()
-      .forEach((element: ModelElement) => (foundIssues = _.concat(foundIssues, OntoumlVerification.verify(element))));
+    if (model) {
+      foundIssues = _.concat(foundIssues, OntoumlVerification.verify(model));
+    }
 
     return foundIssues;
   }

@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontouml.org/ontouml-schema/2021-02-26/Project",
+  "title": "Project",
+  "description": "A project of an ontology in OntoUML 2, which may contain both model and diagrammatic data.",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "Project"
+    },
+    "id": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#id"
+    },
+    "name": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
+    },
+    "description": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
+    },
+    "model": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/Package"
+        }
+      ]
+    },
+    "diagrams": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array"
+        }
+      ]
+    }
+  },
+  "additionalProperties": true,
+  "required": ["type", "id"]
+}

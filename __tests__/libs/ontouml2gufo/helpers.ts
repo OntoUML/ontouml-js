@@ -1,7 +1,7 @@
 import { Package, Project } from '@libs/ontouml';
-import { Ontouml2Gufo, Options, Issue, UriManager } from '@libs/ontouml2gufo';
+import { Ontouml2Gufo, Ontouml2GufoOptions, Issue, UriManager } from '@libs/ontouml2gufo';
 
-export function generateGufo(modelOrProject: Package | Project, options?: Partial<Options>): string {
+export function generateGufo(modelOrProject: Package | Project, options?: Partial<Ontouml2GufoOptions>): string {
   const optionsWithDefaults = {
     baseIri: 'https://example.com',
     format: 'N-Triple',
@@ -15,7 +15,7 @@ export function generateGufo(modelOrProject: Package | Project, options?: Partia
   // TODO: replace with static method
 }
 
-export function getIssues(modelOrProject: Package | Project, options?: Partial<Options>): Issue[] {
+export function getIssues(modelOrProject: Package | Project, options?: Partial<Ontouml2GufoOptions>): Issue[] {
   const optionsWithDefaults = {
     baseIri: 'https://example.com',
     format: 'Turtle',
@@ -28,7 +28,7 @@ export function getIssues(modelOrProject: Package | Project, options?: Partial<O
   return ontouml2gufo.getIssues();
 }
 
-export function getUriManager(modelOrProject: Package | Project, options?: Partial<Options>): UriManager {
+export function getUriManager(modelOrProject: Package | Project, options?: Partial<Ontouml2GufoOptions>): UriManager {
   const optionsWithDefaults = {
     baseIri: 'https://example.com',
     format: 'Turtle',

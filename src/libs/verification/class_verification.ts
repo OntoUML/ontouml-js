@@ -62,9 +62,9 @@ export class ClassVerification {
       issues.push(VerificationIssue.createClassInvalidOntoumlStereotype(_class));
     }
 
-    if (_class.hasEnumerationStereotype() && _class.properties) {
+    if (_class.hasEnumerationStereotype() && _class.hasAttributes()) {
       issues.push(VerificationIssue.createClassEnumerationWithProperties(_class));
-    } else if (!_class.hasEnumerationStereotype() && _class.literals) {
+    } else if (!_class.hasEnumerationStereotype() && _class.hasLiterals()) {
       issues.push(VerificationIssue.createClassNonEnumerationWithLiterals(_class));
     }
 

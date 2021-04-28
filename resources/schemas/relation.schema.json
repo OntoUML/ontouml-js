@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontouml.org/ontouml-schema/2021-02-26/Relation",
+  "description": "An object representing an relation element. Mandatory fields: constant \"type\": \"Class\", \"id\", \"name\", \"stereotype\", \"properties\", \"propertyAssignments\". The \"properties\" array must have at least two items and is not nullable. The order of these items represents their position on a equivalent predicate, e.g., in the ternary relation \"buys-product-from(buyer,product,seller)\", the order of items representing these entities must follow the order \"buyer\" (in properties[0]), \"product\" (in properties[1]), and \"seller\" (in properties[2]). Relation elements are also used to represent derivation relations, in which case they must contain the stereotype \"derivation\" and have only 2 properties, the first being a Relation element and the second a Class element. Additional fields NOT allowed. Ordered properties.",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "Relation"
+    },
+    "id": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#id"
+    },
+    "name": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
+    },
+    "description": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
+    },
+    "propertyAssignments": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#propertyAssignments"
+    },
+    "stereotype": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#stereotype"
+    },
+    "isAbstract": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#isAbstract"
+    },
+    "isDerived": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#isDerived"
+    },
+    "properties": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#properties"
+    }
+  },
+  "additionalProperties": true,
+  "required": ["type", "id"]
+}

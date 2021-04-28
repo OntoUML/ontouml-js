@@ -3,11 +3,13 @@ import { Project, serializationUtils } from '@libs/ontouml';
 it('Test the example presented in the "Usage" section of the README file', () =>
   expect(() => {
     // Every OntoUML element can be created from a constructor that can receive a partial object as references for its creation
-    const project = new Project({ name: 'My Project' }); // creates an OntoUML projects
+    const project = new Project(); // creates an OntoUML project
+    project.addName('My Project');
 
     // Projects contain an instance of Package  dubbed model that contains all model elements in the project
     // Container elements, e.g., projects and packages, also serve as factories for their contents
-    const model = project.createModel({ name: 'Model a.k.a. Root Package' }); // creates a "model" Package
+    const model = project.createModel(); // creates a "model" Package
+    model.addName('Model a.k.a. Root Package');
 
     // Instead of partial objects, "factory" methods receive more suitable lists of arguments to facilitating populating elements
     const person = model.createKind('Person');
@@ -20,9 +22,9 @@ it('Test the example presented in the "Usage" section of the README file', () =>
     model.createMediationRelation(enrollment, school);
 
     // the API is constantly updated to include helpful methods to facilitate building OntoUML models
-    studiesAt.getTargetEnd().name = 'school';
+    studiesAt.getTargetEnd().addName('school');
     studiesAt.getTargetEnd().cardinality.setZeroToMany();
-    studiesAt.getSourceEnd().name = 'student';
+    studiesAt.getSourceEnd().addName('student');
     studiesAt.getSourceEnd().cardinality.setOneToMany();
 
     enrollment.createAttribute(date, 'enrollment date');

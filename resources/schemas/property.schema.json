@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontouml.org/ontouml-schema/2021-02-26/Property",
+  "description": "An object representing a property element. This represents properties exhibited by instances of classes, relations and derivation relations, where in the first case properties are analougous to attrbutes while in the second and third cases properties are analogous to association ends. Mandatory fields: constant \"type\": \"Property\", \"id\", \"name\" \"cardinality\", \"stereotype\", \"propertyAssignments\", \"subsettedProperties\", \"redefinedProperties\", \"aggregationKind\", \"isDerived\", \"isOrdered\", \"isReadOnly\". Additional fields NOT allowed.",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "Property"
+    },
+    "id": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#id"
+    },
+    "name": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
+    },
+    "description": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#text"
+    },
+    "propertyAssignments": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#propertyAssignments"
+    },
+    "stereotype": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#stereotype"
+    },
+    "aggregationKind": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": ["NONE", "SHARED", "COMPOSITE"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "cardinality": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableString"
+    },
+    "isDerived": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableBoolean"
+    },
+    "isOrdered": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableBoolean"
+    },
+    "isReadOnly": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#nullableBoolean"
+    },
+    "propertyType": {
+      "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#reference"
+    },
+    "redefinedProperties": {
+      "oneOf": [
+        {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#reference"
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "subsettedProperties": {
+      "oneOf": [
+        {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "https://ontouml.org/ontouml-schema/2021-02-26/definitions#reference"
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "additionalProperties": true,
+  "required": ["type", "id"]
+}
