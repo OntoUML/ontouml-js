@@ -109,13 +109,13 @@ export class Tracker {
   putCascateRules(sourcelTrace: Tracer, currentTrace: Tracer): void {
     let nextTrace = this.traceMap.get(currentTrace.getSourceNode().getId());
 
-    if (sourcelTrace.getSourceNode().getId() != currentTrace.getSourceNode().getId()) {
+    if (sourcelTrace.getSourceNode().getId() !== currentTrace.getSourceNode().getId()) {
       for (let filter of currentTrace.getFilters()) {
         sourcelTrace.addFilter(filter);
       }
     }
 
-    if (currentTrace.getSourceNode().getId() != nextTrace.getSourceNode().getId()) {
+    if (currentTrace.getSourceNode().getId() !== nextTrace.getSourceNode().getId()) {
       this.putCascateRules(sourcelTrace, nextTrace);
     }
   }
@@ -131,7 +131,7 @@ export class Tracker {
 
     for (let tracer of this.traceMap.values()) {
       //for not put on yourself
-      if (tracer.getSourceNode().getId() != id) {
+      if (tracer.getSourceNode().getId() !== id) {
         for (let tracedNode of tracer.getTargetNodes().values()) {
           for (let targetNode of tracedNode.getNodes()) {
             if (targetNode.getId() === id) {

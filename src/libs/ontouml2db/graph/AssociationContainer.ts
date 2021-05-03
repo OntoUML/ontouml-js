@@ -95,7 +95,7 @@ export class AssociationContainer implements AssociationContainerInterface {
   deleteAssociation(association: GraphAssociation): void {
     if (association instanceof GraphRelation) {
       let index = this.relations.indexOf(association);
-      if (index != -1) this.relations.splice(index, 1);
+      if (index !== -1) this.relations.splice(index, 1);
     } else {
       if (association instanceof GraphGeneralization) {
         let index = this.generalizations.indexOf(association);

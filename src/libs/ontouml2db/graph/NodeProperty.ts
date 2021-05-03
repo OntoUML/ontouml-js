@@ -128,7 +128,7 @@ export class NodeProperty {
    * @param foreignNode. Node to be referenced.
    */
   setForeignNodeID(foreignNodeID: string, associationRelated: GraphAssociation): void {
-    if (foreignNodeID != null) {
+    if (foreignNodeID !== null) {
       this.isFK = true;
       this.foreignNodeID = foreignNodeID;
       this.associationRelated = associationRelated;

@@ -91,7 +91,7 @@ export class GenerateObdaSource {
 
     let fkField: string; // The name of the FK is always the same in both tables.
     for (let filter of tracer.getFilters()) {
-      if (filter.getNodeToApplyFilter() != null) {
+      if (filter.getNodeToApplyFilter() !== null) {
         let lastNode = tracedNode.getMainNode();
         for (let joinedNode of filter.getChainOfNodesToApplyFilter()) {
           fkField = this.getFKFields(lastNode, joinedNode);
@@ -161,11 +161,11 @@ export class GenerateObdaSource {
     let fk: NodeProperty;
 
     fk = sourceNode.getFKRelatedOfNodeID(targetNode.getId());
-    if (fk != null) {
+    if (fk !== null) {
       return fk.getName();
     } else {
       fk = targetNode.getFKRelatedOfNodeID(sourceNode.getId());
-      if (fk != null) {
+      if (fk !== null) {
         return fk.getName();
       }
     }

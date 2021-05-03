@@ -27,7 +27,7 @@ export class Ontouml2DbOptions implements ServiceOptions {
     this.baseIri = 'https://example.com';
     this.generateSchema = true;
     this.generateConnection = false;
-    this.enumFieldToLookupTable = false;
+    this.enumFieldToLookupTable = true;
 
     Object.keys(base).forEach(key => (this[key] = base[key]));
   }

@@ -23,7 +23,7 @@ export class Filter {
     this.value = value;
     this.nodeToApplyFilter = belongsToOtherNode;
     this.chainOfNodesToApplyFilter = [];
-    if (belongsToOtherNode != null) {
+    if (belongsToOtherNode !== null) {
       this.chainOfNodesToApplyFilter.push(belongsToOtherNode);
     }
   }
@@ -88,7 +88,7 @@ export class Filter {
    * @param node
    */
   setNodeToApplyFilter(node: Node): void {
-    if (node != null) {
+    if (node !== null) {
       this.nodeToApplyFilter = node;
       this.chainOfNodesToApplyFilter.push(node);
     } else {
@@ -164,7 +164,7 @@ export class Filter {
 
     msg = '[' + this.filterProperty.getName() + ' = ' + this.value;
 
-    if (this.nodeToApplyFilter != null) {
+    if (this.nodeToApplyFilter !== null) {
       for (let node of this.chainOfNodesToApplyFilter) {
         msg += ' linked to ' + node.getName();
       }

@@ -117,7 +117,7 @@ export class Generic implements DbmsInterface {
   }
 
   getDefaultValue(property: NodeProperty): string {
-    if (property.getDefaultValue() != null) return (' DEFAULT ' + property.getDefaultValue()).toUpperCase();
+    if (property.getDefaultValue() !== null) return (' DEFAULT ' + property.getDefaultValue()).toUpperCase();
     else return '';
   }
 

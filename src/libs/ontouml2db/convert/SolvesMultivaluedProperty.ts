@@ -26,7 +26,7 @@ export class SolvesMultivaluedProperty {
         }
       }
 
-      while (idToRemove.length != 0) {
+      while (idToRemove.length !== 0) {
         node.removeProperty(idToRemove.pop());
       }
     }

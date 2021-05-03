@@ -78,19 +78,12 @@ export class SolvesCardinalityNtoN {
 
   static getAssociationName(relation: GraphRelation): string {
     let associationName: string;
-    if (relation.getName() != null) {
+    if (relation.getName() !== null) {
       associationName = relation.getName();
     } else {
       associationName =
-        relation
-          .getSourceNode()
-          .getName()
-          .substring(0, 1)
-          .toLowerCase() +
-        relation
-          .getSourceNode()
-          .getName()
-          .substring(1) +
+        relation.getSourceNode().getName().substring(0, 1).toLowerCase() +
+        relation.getSourceNode().getName().substring(1) +
         'Has' +
         relation.getTargetNode().getName();
     }

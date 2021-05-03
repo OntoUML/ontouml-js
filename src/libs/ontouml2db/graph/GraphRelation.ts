@@ -108,7 +108,7 @@ export class GraphRelation extends GraphAssociation {
   clone(newID?: string): GraphRelation {
     let newRelation: GraphRelation;
     newRelation = new GraphRelation(
-      newID != null ? newID : this.getAssociationID(),
+      newID !== null ? newID : this.getAssociationID(),
       this.getName(),
       this.sourceNode,
       this.sourceCardinality,

@@ -27,7 +27,7 @@ export class SolvesForeignKey {
     for (let relation of graph.getAssociations() as GraphRelation[]) {
       if (SolvesForeignKey.is1To1(relation)) {
         node = relation.getTargetNode();
-        if (node.getPrimaryKey() != null) {
+        if (node.getPrimaryKey() !== null) {
           //The primary key has already been removed if the node has more than one superclass.
           node.removeProperty(node.getPrimaryKey().getID());
         }
@@ -55,7 +55,7 @@ export class SolvesForeignKey {
         relations.splice(i, 1);
 
         //It may present a problem if start to solve the subclass primary key.
-        if (relation.getSourceNode().getPrimaryKey() != null) {
+        if (relation.getSourceNode().getPrimaryKey() !== null) {
           SolvesForeignKey.propagateKey(
             relation.getSourceNode(),
             relation.getTargetCardinality(),
@@ -161,7 +161,7 @@ export class SolvesForeignKey {
     }
 
     associationName = associationName.trim();
-    if (associationName != '') {
+    if (associationName !== '') {
       result += associationName.substring(0, 1).toUpperCase() + associationName.substring(1);
     }
 

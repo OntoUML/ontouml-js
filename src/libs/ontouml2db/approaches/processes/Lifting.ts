@@ -22,7 +22,7 @@ export class Lifting {
   static doLifting(graph: Graph, tracker: Tracker): void {
     let node = graph.getLeafSortalNonKind();
 
-    while (node != null) {
+    while (node !== null) {
       Lifting.liftNode(node, graph, tracker);
       graph.removeNode(node);
       node = graph.getLeafSortalNonKind();
@@ -174,7 +174,7 @@ export class Lifting {
 
     let superNode = generalization.getGeneral();
 
-    while (node.getRelations().length != 0) {
+    while (node.getRelations().length !== 0) {
       let relation = node.getRelations()[0];
       if (relation.getSourceNode() === node) {
         relation.setSourceNode(superNode);

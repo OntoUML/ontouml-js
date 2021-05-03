@@ -231,7 +231,7 @@ export class Tracer {
    */
   removeNodeToApplyFilter(node: Node): void {
     for (let filter of this.filters) {
-      if (filter.getNodeToApplyFilter() != null) {
+      if (filter.getNodeToApplyFilter() !== null) {
         if (filter.getNodeToApplyFilter().getId() === node.getId()) {
           filter.removeNodeToApplyFilter();
         }

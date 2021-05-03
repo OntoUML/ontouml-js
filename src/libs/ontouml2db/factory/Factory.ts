@@ -43,14 +43,14 @@ export class Factory {
     classes = this.project.getAllClasses();
 
     classes.forEach((_class: Class) => {
-      if (this.getUfoStereotype(_class) != null) {
+      if (this.getUfoStereotype(_class)) {
         this.putClass(_class);
       }
     });
   }
 
   putClass(_class: Class): void {
-    const node: Node = new Node(_class.id, _class.name.toString(), this.getUfoStereotype(_class));
+    const node: Node = new Node(_class.id, _class.getNameOrId(), this.getUfoStereotype(_class));
 
     for (const attribute of _class.getOwnAttributes()) {
       const cardinality = attribute.cardinality.lowerBound + '..' + attribute.cardinality.upperBound;
@@ -93,16 +93,9 @@ export class Factory {
   }
 
   getUfoStereotype(_class: Class): ClassStereotype {
-    if (Object.values(ClassStereotype).includes(_class.stereotype)) {
-      if (
-        _class.stereotype != ClassStereotype.TYPE &&
-        _class.stereotype != ClassStereotype.DATATYPE &&
-        _class.stereotype != ClassStereotype.ABSTRACT
-      )
-        return _class.stereotype;
-      else return null;
-    }
-    return null;
+    return [ClassStereotype.TYPE, ClassStereotype.DATATYPE, ClassStereotype.ABSTRACT].includes(_class.stereotype)
+      ? null
+      : _class.stereotype;
   }
 
   /********************************************************************
@@ -204,7 +197,7 @@ export class Factory {
 
     //informs the generalization set that the generalizations belong to.
     generalizationSets.forEach((gs: GeneralizationSet) => {
-      newGeneralizationSet = new GraphGeneralizationSet(gs.id, gs.name.toString(), gs.isDisjoint, gs.isComplete);
+      newGeneralizationSet = new GraphGeneralizationSet(gs.id, gs.getNameOrId(), gs.isDisjoint, gs.isComplete);
       newGeneralizationSet.setGeneral(this.graph.getNodeById((gs.getGeneral() as Class).id));
 
       gs.generalizations.forEach((generalization: Generalization) => {

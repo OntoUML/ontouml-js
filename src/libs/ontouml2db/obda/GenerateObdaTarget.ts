@@ -75,7 +75,7 @@ export class GenerateObdaTarget {
     let targetProperty: string = '';
     let tracedProperty: NodeProperty = tracedNode.getPropertyByID(property.getID());
 
-    if (tracedProperty != null) {
+    if (tracedProperty !== null) {
       targetProperty = tracedProperty.getName();
     } else {
       targetProperty = '[CAN NOT FIND ' + property.getName() + ' property at the target node.]';
@@ -127,7 +127,7 @@ export class GenerateObdaTarget {
 
   static generatePredicateFromAssociation(association: GraphAssociation): string {
     let text: string = ':';
-    text += association.getName() != null ? association.getName() : 'unnamed_association';
+    text += association.getName() !== null ? association.getName() : 'unnamed_association';
     return text;
   }
 
@@ -153,7 +153,7 @@ export class GenerateObdaTarget {
 
     let propertiesFK = tracedNode.getFKPropertiesOfMainNode();
 
-    if (propertiesFK.length != 2) {
+    if (propertiesFK.length !== 2) {
       return '[ERROR: must exists tow FKs]';
     }
 

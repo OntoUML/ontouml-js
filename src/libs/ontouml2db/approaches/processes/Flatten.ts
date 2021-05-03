@@ -18,7 +18,7 @@ export class Flatten {
     // flattens all top-level non-sortals
     node = graph.getTopLevelNonSortal();
 
-    while (node != null) {
+    while (node !== null) {
       Flatten.flattenNode(node, graph, tracker);
       graph.removeNode(node);
       node = graph.getTopLevelNonSortal();
