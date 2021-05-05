@@ -11,37 +11,39 @@ import { TracedNode } from '../tracker/TracedNode';
 
 export class GenerateObdaTarget {
   //public static generate(originalNode: Node, project: string, trackedNode: Node): string {
-  public static generate(sourceNode: Node, project: string, tracedNode: TracedNode): string {
+  public static generate(sourceNode: Node, projectName: string, tracedNode: TracedNode): string {
     if (sourceNode.getAssociationNameNtoN() == null) {
-      return 'target       ' + this.generateTarget(sourceNode, project, tracedNode);
+      return 'target       ' + this.generateTarget(sourceNode, projectName, tracedNode);
     } else {
-      return 'target       ' + this.generateTargetNtoN(sourceNode, project, tracedNode);
+      return 'target       ' + this.generateTargetNtoN(sourceNode, projectName, tracedNode);
     }
   }
 
-  static generateTarget(sourceNode: Node, project: string, tracedNode: TracedNode): string {
+  static generateTarget(sourceNode: Node, projectName: string, tracedNode: TracedNode): string {
     let text: string = '';
 
-    text += this.generateSource(sourceNode, project, tracedNode);
+    text += this.generateSubject(sourceNode, projectName, tracedNode);
 
     text += this.generatePredicateAndObjects(sourceNode, tracedNode);
 
-    text += this.generateForeignKeyAssociations(project, tracedNode);
+    text += this.generateForeignKeyAssociations(projectName, tracedNode);
 
     text += '.\n';
 
     return text;
   }
 
-  static generateSource(sourceNode: Node, project: string, tracedNode: TracedNode): string {
+  static generateSubject(sourceNode: Node, projectName: string, tracedNode: TracedNode): string {
     let text: string = '';
     text += ':';
-    text += project;
+    text += projectName;
     text += '/';
-    text += tracedNode.getNodes()[0].getName();
+    //text += tracedNode.getNodes()[0].getName();
+    text += tracedNode.getSubject().getName();
     text += '/';
     text += '{';
-    text += tracedNode.getNodes()[0].getPKName();
+    //text += tracedNode.getNodes()[0].getPKName();
+    text += tracedNode.getSubject().getPKName();
     text += '}';
     text += ' a ';
     text += ':';
@@ -97,19 +99,20 @@ export class GenerateObdaTarget {
     for (let property of tracedNode.getMainNode().getProperties()) {
       if (property.isForeignKey()) {
         association = property.getAssociationRelatedOfFK() as GraphRelation;
-
-        text += '; ';
-        text += this.generatePredicateFromAssociation(association);
-        text += ' :';
-        text += project;
-        text += '/';
-        text +=
-          association.getSourceNode().getId() === property.getForeignKeyNodeID()
-            ? association.getSourceNode().getName()
-            : association.getTargetNode().getName();
-        text += '/';
-        text += this.generateReferencedObject(property, tracedNode);
-        text += ' ';
+        if(!association.isDerivedFromGeneralization()){
+          text += '; ';
+          text += this.generatePredicateFromAssociation(association);
+          text += ' :';
+          text += project;
+          text += '/';
+          text +=
+            association.getSourceNode().getId() === property.getForeignKeyNodeID()
+              ? association.getSourceNode().getName()
+              : association.getTargetNode().getName();
+          text += '/';
+          text += this.generateReferencedObject(property, tracedNode);
+          text += ' ';
+        }
       }
     }
     return text;

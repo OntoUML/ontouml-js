@@ -13,6 +13,7 @@ export class GraphAssociation {
   private associationType: AssociationType;
   private resolved: boolean;
   private nodeNameRemoved: string; //this is important when there is a name collision in the FK name propagation process.
+  private derivedFromGeneralization: boolean;
 
   constructor(id: string, name: string, associationType: AssociationType) {
     this.id = id;
@@ -20,6 +21,7 @@ export class GraphAssociation {
     this.associationType = associationType;
     this.resolved = false;
     this.nodeNameRemoved = null;
+    this.derivedFromGeneralization = false;
   }
 
   /**
@@ -91,6 +93,22 @@ export class GraphAssociation {
    */
   getNodeNameRemoved(): string {
     return this.nodeNameRemoved;
+  }
+
+  /**
+   * Informs if the association was created from a generalization.
+   * @param falg 
+   */
+  setDerivedFromGeneralization(falg: boolean):void{
+    this.derivedFromGeneralization = falg;
+  }
+
+  /**
+   * Returns if the association was created from a generalization.
+   * @returns 
+   */
+  isDerivedFromGeneralization():boolean{
+    return this.derivedFromGeneralization;
   }
 
   /**

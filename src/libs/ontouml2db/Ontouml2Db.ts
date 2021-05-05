@@ -26,26 +26,31 @@ import { OneTablePerConcreteClass } from './approaches/one_table_per_concrete_cl
 export class Ontouml2Db implements Service {
   private graph: Graph;
   private tracker: Tracker;
+  private project: Project;
   private options: Ontouml2DbOptions;
+  private projectName: string;
 
   constructor(project: Project, opt?: Partial<Ontouml2DbOptions>) {
-    let factory = new Factory(project);
-    this.graph = factory.mountGraph();
-    this.tracker = new Tracker(this.graph);
-
+    this.project = project;
+    
     this.options = opt ? new Ontouml2DbOptions(opt) : new Ontouml2DbOptions();
+    this.projectName = project.getName() || "UndefinedProjectName";
   }
 
   // TODO: review the implementation of run(), move the actual behavior into the method, and delete unnecessary methods.
   run(): { result: any; issues?: ServiceIssue[] } {
     this.validate();
+    let factory = new Factory(this.project);
+    this.graph = factory.mountGraph();
+    this.tracker = new Tracker(this.graph);
+
     this.doMapping();
     this.transformToEntityRelationship();
     return {
       result: {
-        schema: this.getRelationalSchema(),
-        obda: this.getOBDAFile(),
-        connection: this.getProtegeConnection()
+        schema: this.options.generateSchema ? this.getRelationalSchema() : "",
+        obda: this.options.generateObdaFile ? this.getOBDAFile() : "",
+        connection: this.options.generateConnection ? this.getProtegeConnection() : ""
       }
     };
   }
@@ -87,7 +92,7 @@ export class Ontouml2Db implements Service {
    * Adds database constructs to the graph.
    */
   transformToEntityRelationship(): void {
-    ToEntityRelationship.run(this.graph, this.tracker, this.options.isStandardizeNames, this.options.enumFieldToLookupTable);
+    ToEntityRelationship.run(this.graph, this.tracker, this.options.standardizeNames, this.options.enumFieldToLookupTable, this.options.generateIndexes);
   }
 
   /**
@@ -104,7 +109,7 @@ export class Ontouml2Db implements Service {
    * @param options
    */
   getOBDAFile(): string {
-    return GenerateObda.getFile(this.options, this.tracker);
+    return GenerateObda.getFile(this.projectName, this.options, this.tracker);
   }
 
   /**

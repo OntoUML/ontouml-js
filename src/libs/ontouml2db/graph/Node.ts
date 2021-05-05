@@ -242,6 +242,10 @@ export class Node implements PropertyContainerInterface, AssociationContainerInt
     this.associationContainer.deleteAssociation(association);
   }
 
+  getGeneralizationNodes(): Node[]{
+    return this.associationContainer.getGeneralizationNodes();
+  }
+
   //----------------------------------------------------
 
   toString(): string {

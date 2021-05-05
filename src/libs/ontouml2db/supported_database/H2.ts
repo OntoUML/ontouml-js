@@ -16,16 +16,6 @@ export class H2 extends Generic implements DbmsInterface {
     this.types.set('byte', 'BINARY(8)');
   }
 
-  getSchema(graph: Graph): string {
-    let ddl: string = '';
-
-    ddl = this.createTables(graph);
-
-    ddl += this.createForeignKeys(graph);
-
-    return ddl;
-  }
-
   createTableDescription() {
     return 'CREATE TABLE IF NOT EXISTS ';
   }

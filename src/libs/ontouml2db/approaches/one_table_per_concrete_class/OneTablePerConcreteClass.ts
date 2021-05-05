@@ -12,11 +12,14 @@ import { Graph } from '@libs/ontouml2db/graph/Graph';
 import { Flatten } from '@libs/ontouml2db/approaches/processes/Flatten';
 import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
 import { Util } from '@libs/ontouml2db/util/Util';
+import { Tracer } from '@libs/ontouml2db/tracker/Tracer';
+import { TracedNode } from '@libs/ontouml2db/tracker/TracedNode';
+import { Node } from '@libs/ontouml2db/graph/Node';
 
 export class OneTablePerConcreteClass implements IStrategy {
   run(graph: Graph, tracker: Tracker): void {
     Flatten.doFlattening(graph, tracker);
 
-    Util.transformGeneralizationToRelation1to1(graph);
+    Util.updateSubjectForRootClass(graph, tracker);
   }
 }

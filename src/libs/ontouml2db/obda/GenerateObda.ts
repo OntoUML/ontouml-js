@@ -11,11 +11,11 @@ import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
 import { TracedNode } from '../tracker/TracedNode';
 
 export class GenerateObda {
-  static getFile(options: Ontouml2DbOptions, tracker: Tracker): string {
+  static getFile(projectName: string, options: Ontouml2DbOptions, tracker: Tracker): string {
     let file: string;
     file = this.generatePrefixDeclaration(options);
 
-    file += this.generateMappingDeclaration(options, tracker);
+    file += this.generateMappingDeclaration(projectName, options, tracker);
 
     return file;
   }
@@ -35,8 +35,7 @@ export class GenerateObda {
     );
   }
 
-  static generateMappingDeclaration(options: Ontouml2DbOptions, tracker: Tracker): string {
-    let projectName: string = options.databaseName;
+  static generateMappingDeclaration(projectName: string, options: Ontouml2DbOptions, tracker: Tracker): string {
     let first: boolean;
     let text: string = '[MappingDeclaration] @collection [[\n\n';
 

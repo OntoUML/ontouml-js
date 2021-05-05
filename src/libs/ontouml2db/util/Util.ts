@@ -6,11 +6,14 @@
 import { Node } from '@libs/ontouml2db/graph/Node';
 
 import { ClassStereotype } from '@libs/ontouml';
-import { Graph } from '../graph/Graph';
-import { GraphGeneralization } from '../graph/GraphGeneralization';
-import { GraphRelation } from '../graph/GraphRelation';
-import { Increment } from './Increment';
+import { Graph } from '@libs/ontouml2db/graph/Graph';
+import { GraphGeneralization } from '@libs/ontouml2db/graph/GraphGeneralization';
+import { GraphRelation } from '@libs/ontouml2db/graph/GraphRelation';
+import { Increment } from '@libs/ontouml2db/util/Increment';
 import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
+import { Tracker } from '@libs/ontouml2db/tracker/Tracker';
+import { Tracer } from '@libs/ontouml2db/tracker/Tracer';
+import { TracedNode } from '@libs/ontouml2db/tracker/TracedNode';
 
 export class Util {
   static findNodeById(id: string, nodes: Node[]): Node {
@@ -73,6 +76,7 @@ export class Util {
           generalization.getSpecific(), //targetNode
           Cardinality.C1 //targetCardinality
         );
+        newRelation.setDerivedFromGeneralization(true);
 
         generalization.getGeneral().addRelation(newRelation);
         generalization.getSpecific().addRelation(newRelation);
@@ -85,5 +89,22 @@ export class Util {
     for (generalization of toDestroy) {
       graph.removeAssociation(generalization);
     }
+  }
+
+  static updateSubjectForRootClass(graph: Graph, tracker: Tracker): void{
+    let rootNode: Node;
+    tracker.getTraceMap().forEach( (trace: Tracer) => {
+      trace.getTargetNodes().forEach((tracedNode: TracedNode) => {
+        tracedNode.getNodes().forEach( (node: Node) => {
+          if(node.isSpecialization()){
+            rootNode = node;
+            while( rootNode.isSpecialization()){
+              rootNode = rootNode.getGeneralizationNodes()[0];
+            }
+            tracedNode.setSubject(rootNode);
+          }
+        });
+      });
+    } );
   }
 }

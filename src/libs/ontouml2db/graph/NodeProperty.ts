@@ -21,6 +21,7 @@ export class NodeProperty {
   private foreignNodeID: string;
   private associationRelated: GraphAssociation;
   private defaultValue: any;
+  private createIndex: boolean;
 
   private resolved: boolean;
 
@@ -37,10 +38,13 @@ export class NodeProperty {
     this.defaultValue = null;
     this.resolved = false;
     this.associationRelated = null;
+    this.createIndex = false;
   }
 
   /**
    * Returns the property ID. This ID is the same as the json file.
+   * 
+   * @return string
    */
   getID(): string {
     return this.id;
@@ -58,7 +62,7 @@ export class NodeProperty {
   /**
    * Returns the property name.
    *
-   * @return string with the property name.
+   * @return string
    */
   getName(): string {
     return this.name;
@@ -76,7 +80,7 @@ export class NodeProperty {
   /**
    * Returns the property data type.
    *
-   * @return string with the property data type.
+   * @return string
    */
   getDataType(): string {
     return this.dataType;
@@ -98,7 +102,7 @@ export class NodeProperty {
   /**
    * Returns whether the property is marked as primary key.
    *
-   * @return True if the property is a primary key, otherwise false.
+   * @return boolean
    */
   isPrimaryKey(): boolean {
     return this.isPK;
@@ -114,6 +118,8 @@ export class NodeProperty {
 
   /**
    * Returns whether the primary key is auto-increment.
+   * 
+   * @return boolean
    */
   isPrimaryKeyAutoIncrement(): boolean {
     return this.isPKAutoIncrement;
@@ -143,7 +149,7 @@ export class NodeProperty {
   /**
    * Returns the ID of the node referenced as foreign key.
    *
-   * @return A string with the node name.
+   * @return string
    */
   getForeignKeyNodeID(): string {
     return this.foreignNodeID;
@@ -152,7 +158,7 @@ export class NodeProperty {
   /**
    * Returns if the property is marked as a foreign key.
    *
-   * @return True if the property is a foreign key, otherwise false.
+   * @return boolean
    */
   isForeignKey(): boolean {
     return this.isFK;
@@ -160,6 +166,8 @@ export class NodeProperty {
 
   /**
    * Returns the association related of Foreign Key.
+   * 
+   * @return GraphAssociation
    */
   getAssociationRelatedOfFK(): GraphAssociation {
     return this.associationRelated;
@@ -177,7 +185,7 @@ export class NodeProperty {
   /**
    * Returns whether the property accepts null.
    *
-   * @return True if the property accepts null, otherwise false.
+   * @return boolean
    */
   isNullable(): boolean {
     return this.acceptNull;
@@ -195,7 +203,7 @@ export class NodeProperty {
   /**
    * Returns whether the property is multivalued.
    *
-   * @return True if the property is multivalued, otherwise false.
+   * @return boolean
    */
   isMultivalued(): boolean {
     return this.multivalued;
@@ -213,9 +221,9 @@ export class NodeProperty {
   /**
    * Returns the default value of the property.
    *
-   * @return An object with de default value.
+   * @return any
    */
-  getDefaultValue() {
+  getDefaultValue(): any {
     return this.defaultValue;
   }
 
@@ -232,10 +240,26 @@ export class NodeProperty {
   /**
    * Returns whether the property has been resolved.
    *
-   * @return True if the property has been resolved.
+   * @return boolean.
    */
   isResolved(): boolean {
     return this.resolved;
+  }
+
+  /**
+   * Informs if an index will be created for this field.
+   * @param flag 
+   */
+  setCreateIndex(flag: boolean): void{
+    this.createIndex = flag;
+  }
+
+  /**
+   * Returns whether it is necessary to create an index for this field.
+   * @returns boolean
+   */
+  isCreateIndex(): boolean{
+    return this.createIndex;
   }
 
   /**

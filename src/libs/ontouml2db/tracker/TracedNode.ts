@@ -19,11 +19,13 @@ import { Node } from '@libs/ontouml2db/graph/Node';
 export class TracedNode {
   private nodes: Node[];
   private innerJoin: boolean; //true do a join; false do a left join
+  private subject: Node; //to generate OBDA file
 
   constructor(node: Node) {
     this.nodes = [];
     this.nodes.push(node);
     this.innerJoin = true;
+    this.subject = node;
   }
 
   /**
@@ -33,7 +35,6 @@ export class TracedNode {
    */
   getNodes(): Node[] {
     return [...this.nodes];
-    //return this.nodes;
   }
 
   /**
@@ -45,6 +46,22 @@ export class TracedNode {
       return this.nodes[0];
     }
     return null;
+  }
+  
+  /**
+   * Informs the subject node for OBDA file.
+   * @param node 
+   */
+  setSubject(node: Node): void{
+    this.subject = node;
+  }
+
+  /**
+   * Returns the subject node for OBDA file.
+   * @returns 
+   */
+  getSubject(): Node{
+    return this.subject;
   }
 
   /**

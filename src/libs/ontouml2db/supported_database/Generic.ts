@@ -34,6 +34,8 @@ export class Generic implements DbmsInterface {
 
     ddl += this.createForeignKeys(graph);
 
+    ddl += this.createIndexes(graph);
+
     return ddl;
   }
   // ************************************************************************
@@ -170,6 +172,54 @@ export class Generic implements DbmsInterface {
       }
     }
     return ddl;
+  }
+
+// ***************************************************************************
+  createIndexes(graph: Graph) : string{
+    let ddl: string = '\n\n';
+    let fkFieldName = '';
+    let index: number = 0;
+
+    for (let node of graph.getNodes()) {
+      index = 0;
+      fkFieldName = '';
+      for (let property of node.getProperties()) {
+        if (property.isCreateIndex()) {
+          index++;
+          ddl += 'CREATE INDEX ';
+          ddl += 'ix_' + node.getName() + '_' + index;
+          ddl += ' ON ' + node.getName() ;
+          ddl += ' ( ';
+          ddl += property.getName();
+          ddl += ', ';
+          fkFieldName = this.getFKFieldName(node);
+          if( fkFieldName !== ''){
+            ddl += fkFieldName;
+            ddl += ', ';
+          }
+          ddl += node.getPKName();
+          ddl += ' );\n\n'
+        }
+      }
+    }
+    return ddl;
+  }
+
+  getFKFieldName(node: Node): string{
+    let fkNames: string = '';
+    let first: boolean = true;
+
+    for (let property of node.getProperties()) {
+      if (property.isForeignKey()) {
+        if(!first){
+          fkNames += ', ';  
+        }
+        fkNames += property.getName();
+        first = false;
+      }
+    }
+
+    return fkNames;
   }
 
   //*****************************************************************************************

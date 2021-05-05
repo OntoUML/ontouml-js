@@ -80,7 +80,7 @@ model.createGeneralization(person, roleY);
 const options: Partial<Ontouml2DbOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
   targetDBMS: DbmsSupported.H2,
-  isStandardizeNames: true,
+  standardizeNames: true,
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',

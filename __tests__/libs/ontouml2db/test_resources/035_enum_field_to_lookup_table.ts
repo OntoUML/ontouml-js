@@ -12,7 +12,7 @@ import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { TestResource } from './TestResource';
 import { Project } from '@libs/ontouml';
 import { ScriptChecker } from './graph_tester/ScriptChecker';
-import { Ontoumo2DbOptions, StrategyType } from '@libs/ontouml2db';
+import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
 import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
@@ -154,7 +154,7 @@ model.createGeneralizationSet([genPersonChild, genPersonAdult], disjoint, comple
 const options: Partial<Ontouml2DbOptions> = {
   mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
   targetDBMS: DbmsSupported.GENERIC_SCHEMA,
-  isStandardizeNames: true,
+  standardizeNames: true,
   hostName: 'localhost/~',
   databaseName: 'RunExample',
   userConnection: 'sa',

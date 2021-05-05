@@ -9,6 +9,9 @@ import { Util } from '@libs/ontouml2db/util/Util';
 
 export class OneTablePerClass implements IStrategy {
   run(graph: Graph, tracker: Tracker): void {
+    
+    Util.updateSubjectForRootClass(graph, tracker);
+
     Util.transformGeneralizationToRelation1to1(graph);
   }
 }

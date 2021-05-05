@@ -14,7 +14,7 @@ import { AssociationContainerInterface } from '@libs/ontouml2db/graph/Associatio
 import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
 
 export class AssociationContainer implements AssociationContainerInterface {
-  private parentNode: Node;
+  private parentNode: Node; //Node to which the container belongs.
   private relations: GraphRelation[];
   private generalizations: GraphGeneralization[];
 
@@ -126,6 +126,18 @@ export class AssociationContainer implements AssociationContainerInterface {
       if (generalization.getGeneral().getId() === this.parentNode.getId()) return true;
     }
     return false;
+  }
+
+  getGeneralizationNodes(): Node[]{
+    let generalizations: Node[] = [];
+
+    for (let generalization of this.generalizations) {
+      if (generalization.getSpecific().getId() === this.parentNode.getId()) 
+        generalizations.push( generalization.getGeneral() );
+    }
+    if(generalizations.length > 0)
+      return generalizations;
+    else return null;
   }
 
   /**

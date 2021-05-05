@@ -59,6 +59,7 @@ export class Lifting {
         false
       );
       newProperty.setDefaultValue(false);
+      newProperty.setCreateIndex(true);
 
       //The new property is put in the generalization node node by liftAttribute method.
       node.addProperty(newProperty);
@@ -113,6 +114,7 @@ export class Lifting {
 
         newEnumerationField = new NodePropertyEnumeration(Increment.getNext().toString(), enumFieldName, 'int', false, false);
         newNode = new Node(Increment.getNext().toString(), enumTableName, ClassStereotype.ENUMERATION);
+        newEnumerationField.setCreateIndex(true);
         newNode.addProperty(newEnumerationField);
 
         newRelation = new GraphRelation(
