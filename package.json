@@ -16,7 +16,7 @@
   "scripts": {
     "start": "npm-run-all -p format:watch start:watch",
     "start:watch": "TS_NODE_FILES=true nodemon index.ts",
-    "format": "prettier --write '**/*.ts' '**/*.json'",
+    "format": "prettier --write \"**/*.ts\" \"**/*.json\"",
     "format:watch": "onchange '**/*.ts' '**/*.json' -- prettier --write {{changed}}",
     "clean": "rimraf coverage dist tmp",
     "build": "rm -rf ./dist && npm run build:js",
@@ -67,7 +67,7 @@
     "babel-plugin-module-resolver": "^4.1.0",
     "dotenv": "^8.2.0",
     "husky": "^3.1.0",
-    "jest": "^24.9.0",
+    "jest": "^26.3.0",
     "module-alias": "^2.2.2",
     "nodemon": "^1.19.4",
     "npm-run-all": "^4.1.5",

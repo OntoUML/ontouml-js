@@ -50,6 +50,12 @@ export class Ontouml2Gufo implements Service {
     this.options = options ? new Ontouml2GufoOptions(options) : new Ontouml2GufoOptions();
     this.inspector = new Inspector(this);
     this.uriManager = new UriManager(this);
+
+    if (input instanceof Project) {
+      this.model = input.model;
+    } else if (input instanceof Package) {
+      this.model = input;
+    }
   }
 
   getIssues(): Issue[] {
