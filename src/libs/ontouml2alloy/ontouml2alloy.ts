@@ -324,8 +324,12 @@ export class Ontouml2Alloy implements Service {
     this.transform();
 
     return {
-      result: this.getAlloyCode(), // [mainModule, worldStructureModule, ontologicalPropertiesModule]
-      issues: undefined
+      result: {
+        mainModule: this.getAlloyCode()[0],
+        worldStructureModule: this.getAlloyCode()[1],
+        ontologicalPropertiesModule: this.getAlloyCode()[2]
+      },
+        issues: undefined
     };
   }
 }
