@@ -95,7 +95,7 @@ describe('Basic clusterization example', () => {
       expect(diagram.getClassViews()).toHaveLength(19);
     });
 
-    it('Should not contain the expected relations (6)', () => {
+   it('Should not contain the expected relations (6)', () => {
       expect(diagram.findView(medMarriageWife)).toBeFalsy();
       expect(diagram.findView(medMarriagHusband)).toBeFalsy();
       expect(diagram.findView(medRentalRentalCar)).toBeFalsy();
@@ -106,5 +106,18 @@ describe('Basic clusterization example', () => {
     });
 
     
+  });
+  
+  describe('Non Sortal Abstraction Test', () => {
+    let diagram: Diagram = diagrams.find(d => d.getName() === 'Non Sortal Abstraction');
+
+    it('Should not contain the main relator: Ownership', () => {
+      expect(diagram.findView(customer)).toBeFalsy();
+    });
+
+    it('Should not contain the expected relations (1)', () => {
+      expect(diagram.findView(medRentalCustomer)).toBeFalsy();
+    });
+
   });
 });
