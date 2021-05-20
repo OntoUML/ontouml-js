@@ -3,17 +3,8 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { GraphChecker } from './graph_tester/GraphChecker';
-import { NodeChecker } from './graph_tester/NodeChecker';
-import { PropertyChecker } from './graph_tester/PropertyChecker';
-import { RelationshipChecker } from './graph_tester/RelationshipChecker';
-import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
-import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
-import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { Project } from '@libs/ontouml';
-import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
-import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -40,46 +31,13 @@ const scriptEmployment =
 
 const scriptFK = 'ALTER TABLE employment ADD FOREIGN KEY ( person_id ) REFERENCES person ( person_id );';
 
+const scripts: string[] = [scriptPerson, scriptEmployment, scriptFK];
+
+
 // ****************************************
-//       CHECK RESULTING GRAPH
+//       FOR OBDA VALIDATION
 // ****************************************
-const gChecker_020_lifting_hierarchy_gs = new GraphChecker()
-  .addNode(
-    new NodeChecker('person')
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('birth_date', false))
-      .addProperty(new PropertyChecker('is_employee', false))
-      .addProperty(new PropertyChecker('life_phase_enum', false, ['CHILD', 'TEENAGER', 'ADULT']))
-      .addProperty(new PropertyChecker('teenager_phase_enum', true, ['TEENAGERA', 'TEENAGERB']))
-      .addProperty(new PropertyChecker('adult_phase_enum', true, ['ADULTA', 'ADULTB']))
-      .addProperty(new PropertyChecker('test_teenager_b', true))
-      .addProperty(new PropertyChecker('test_adult_a', true))
-      .addProperty(new PropertyChecker('test_adult_b', true))
-  )
-  .addNode(
-    new NodeChecker('employment')
-      .addProperty(new PropertyChecker('employment_id', false))
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('salary', false))
-  )
-  .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'employment', Cardinality.C0_N))
-  .addTracker(new TrackerChecker('Person', 'person'))
-  .addTracker(new TrackerChecker('Adult', 'person'))
-  .addTracker(new TrackerChecker('Teenager', 'person'))
-  .addTracker(new TrackerChecker('Child', 'person'))
-  .addTracker(new TrackerChecker('TeenagerA', 'person'))
-  .addTracker(new TrackerChecker('TeenagerB', 'person'))
-  .addTracker(new TrackerChecker('AdultA', 'person'))
-  .addTracker(new TrackerChecker('AdultB', 'person'))
-  .addTracker(new TrackerChecker('Employee', 'person'))
-  .addTracker(new TrackerChecker('Employment', 'employment'))
-  .setNumberOfTablesToFindInScript(2)
-  .setNumberOfFkToFindInScript(1)
-  .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptEmployment, 'The PERSON table is different than expected.'))
-  .addScriptChecker(
-    new ScriptChecker(scriptFK, 'The FK between PERSON and NATIONALITY not exists or is different than expected.')
-  );
+const obdaMapping: string[] = [];
 
 // ****************************************
 //       M O D E L
@@ -129,24 +87,11 @@ const relation = model.createMediationRelation(employee, employment, 'has');
 relation.getSourceEnd().cardinality.setOneToOne();
 relation.getTargetEnd().cardinality.setOneToMany();
 
-// ****************************************
-// ** O P T I O N S
-// ****************************************
-const options: Partial<Ontouml2DbOptions> = {
-  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DbmsSupported.H2,
-  standardizeNames: true,
-  hostName: 'localhost/~',
-  databaseName: 'RunExample',
-  userConnection: 'sa',
-  passwordConnection: 'sa',
-  enumFieldToLookupTable: false
-};
 
 // ****************************************
 export const test_020: TestResource = {
   title: '020 - Lifting with hierarchy of generalization sets',
-  checker: gChecker_020_lifting_hierarchy_gs,
   project,
-  options
+  scripts,
+  obdaMapping,
 };

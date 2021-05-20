@@ -4,14 +4,7 @@
  */
 
 import { Project } from '@libs/ontouml';
-import { GraphChecker } from './graph_tester/GraphChecker';
-import { NodeChecker } from './graph_tester/NodeChecker';
-import { PropertyChecker } from './graph_tester/PropertyChecker';
-import { ScriptChecker } from './graph_tester/ScriptChecker';
-import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
-import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
-import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -24,27 +17,34 @@ const scriptPerson =
   ',        is_employee             BOOLEAN        NOT NULL DEFAULT FALSE' +
   '); ';
 
+const scripts: string[] = [scriptPerson];
+
 // ****************************************
-//       CHECK RESULTING GRAPH
+//       FOR OBDA VALIDATION
 // ****************************************
-const gChecker_012_simple_lifting = new GraphChecker()
-  .addNode(
-    new NodeChecker('person')
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('birth_date', false))
-      .addProperty(new PropertyChecker('test', true))
-      .addProperty(new PropertyChecker('is_employee', false))
-  )
-  .addTracker(new TrackerChecker('Person', 'person'))
-  .addTracker(new TrackerChecker('Employee', 'person'))
-  .setNumberOfTablesToFindInScript(1)
-  .setNumberOfFkToFindInScript(0)
-  .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'));
+const obdatPerson = 
+'mappingId    test012-Person' +
+'target       :test012/person/{person_id} a :Person ; :birthDate {birth_date}^^xsd:dateTime .' +
+'source       SELECT person.person_id, person.birth_date ' +
+'             FROM person ';
+
+const obdaEmployee =
+'mappingId    test012-Employee' +
+'target       :test012/person/{person_id} a :Employee ; :test {test}^^xsd:string .' +
+'source       SELECT person.person_id, person.test ' +
+'             FROM person '+
+'             WHERE is_employee = TRUE ';
+
+// ****************************************
+//       FOR OBDA VALIDATION
+// ****************************************
+const obdaMapping: string[] = [obdatPerson, obdaEmployee];
 
 // ****************************************
 //       M O D E L
 // ****************************************
 const project = new Project();
+project.setName('test012');
 const model = project.createModel();
 // CREATE TYPES
 const _string = model.createDatatype('string');
@@ -59,23 +59,9 @@ employee.createAttribute(_string, 'test').cardinality.setOneToOne();
 model.createGeneralization(person, employee);
 
 // ****************************************
-// ** O P T I O N S
-// ****************************************
-const options: Partial<Ontouml2DbOptions> = {
-  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DbmsSupported.H2,
-  standardizeNames: true,
-  hostName: 'localhost/~',
-  databaseName: 'RunExample',
-  userConnection: 'sa',
-  passwordConnection: 'sa',
-  enumFieldToLookupTable: false
-};
-
-// ****************************************
 export const test_012: TestResource = {
   title: '012 - Lifting with a simple generalization',
-  checker: gChecker_012_simple_lifting,
   project,
-  options
+  scripts,
+  obdaMapping,
 };

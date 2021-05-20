@@ -73,9 +73,9 @@ export class NodeProperty {
    *
    * @param dataType. Name of the property type.
    */
-  setDataType(dataType: string): void {
-    this.dataType = dataType;
-  }
+  // setDataType(dataType: string): void {
+  //   this.dataType = dataType;
+  // }
 
   /**
    * Returns the property data type.
@@ -134,16 +134,9 @@ export class NodeProperty {
    * @param foreignNode. Node to be referenced.
    */
   setForeignNodeID(foreignNodeID: string, associationRelated: GraphAssociation): void {
-    if (foreignNodeID !== null) {
-      this.isFK = true;
-      this.foreignNodeID = foreignNodeID;
-      this.associationRelated = associationRelated;
-    } else {
-      //removes the foreign key
-      this.isFK = false;
-      this.foreignNodeID = null;
-      this.associationRelated = null;
-    }
+    this.isFK = true;
+    this.foreignNodeID = foreignNodeID;
+    this.associationRelated = associationRelated;
   }
 
   /**
@@ -228,25 +221,6 @@ export class NodeProperty {
   }
 
   /**
-   * Informs that the property has already been resolved. Important
-   * for the graph operations.
-   *
-   * @param flag. True if the property has been resolved.
-   */
-  setResolved(flag: boolean): void {
-    this.resolved = flag;
-  }
-
-  /**
-   * Returns whether the property has been resolved.
-   *
-   * @return boolean.
-   */
-  isResolved(): boolean {
-    return this.resolved;
-  }
-
-  /**
    * Informs if an index will be created for this field.
    * @param flag 
    */
@@ -282,7 +256,7 @@ export class NodeProperty {
     return newProperty;
   }
 
-  toString(): string {
-    return this.name + ': ' + this.dataType + ', ' + (this.acceptNull === true ? 'NULL' : 'NOT NULL');
-  }
+  // toString(): string {
+  //   return this.name + ': ' + this.dataType + ', ' + (this.acceptNull === true ? 'NULL' : 'NOT NULL');
+  // }
 }

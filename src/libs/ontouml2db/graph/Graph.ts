@@ -58,19 +58,7 @@ export class Graph {
     for (let val of this.nodes) {
       if (val.getId() === id) return val;
     }
-    return null;
-  }
-
-  /**
-   * Returns the node instance. If not find, returns null.
-   *
-   * @param name. The class name to search for.
-   */
-  getNodeByName(name: string): Node {
-    for (let val of this.nodes) {
-      if (val.getName() === name) return val;
-    }
-    return null;
+    throw new Error('IThe class could not be found [Graph.getNodeById].');
   }
 
   /**
@@ -90,28 +78,6 @@ export class Graph {
    */
   getSourceNodes(): Node[] {
     return this.sourceNodes;
-  }
-
-  /**
-   * Verifies whether the node exists on the graph.
-   *
-   * @param node. Node to be verified.
-   * @return True if the node exists in the graph, otherwise false.
-   */
-  existsNode(node: Node): boolean {
-    return this.nodes.includes(node);
-  }
-
-  /**
-   * Verifies whether the association name exists on the graph.
-   *
-   * @param name Association name.
-   */
-  existsAssociationName(name: string): boolean {
-    for (let association of this.associations) {
-      if (association.getName() === name) return true;
-    }
-    return false;
   }
 
   /**
@@ -271,18 +237,6 @@ export class Graph {
     }
   }
 
-  /**
-   * Marks all nodes as unsolved.
-   */
-  setAllNodesUnsolved(): void {
-    this.nodes.forEach((node: Node) => {
-      node.setResolved(false);
-    });
-    this.associations.forEach((association: GraphAssociation) => {
-      association.setResolved(false);
-    });
-  }
-
   private removeRelation(relation: GraphRelation): void {
     relation.deleteAssociation();
   }
@@ -291,12 +245,12 @@ export class Graph {
     generalization.deleteAssociation();
   }
 
-  toString(): string {
-    let msg = '';
+  // toString(): string {
+  //   let msg = '';
 
-    this.nodes.forEach((node: Node) => {
-      msg += node.toString() + '\n';
-    });
-    return msg;
-  }
+  //   this.nodes.forEach((node: Node) => {
+  //     msg += node.toString() + '\n';
+  //   });
+  //   return msg;
+  // }
 }

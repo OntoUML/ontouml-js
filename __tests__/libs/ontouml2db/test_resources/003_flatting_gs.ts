@@ -3,15 +3,8 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { GraphChecker } from './graph_tester/GraphChecker';
-import { PropertyChecker } from './graph_tester/PropertyChecker';
-import { NodeChecker } from './graph_tester/NodeChecker';
-import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
 import { Project } from '@libs/ontouml';
-import { ScriptChecker } from './graph_tester/ScriptChecker';
-import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
-import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -30,30 +23,36 @@ const scriptOrganization =
   ',        address                 VARCHAR(20)    NULL' +
   '); ';
 
+const scripts: string[] = [scriptPerson, scriptOrganization];
+
 // ****************************************
-//       CHECK RESULTING GRAPH
+//       FOR OBDA VALIDATION
 // ****************************************
-const gChecker_003_flatting_gs = new GraphChecker()
-  .addNode(
-    new NodeChecker('person')
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('birth_date', true))
-  )
-  .addNode(
-    new NodeChecker('organization')
-      .addProperty(new PropertyChecker('organization_id', false))
-      .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('address', true))
-  )
-  .addTracker(new TrackerChecker('NamedEntity', 'person'))
-  .addTracker(new TrackerChecker('NamedEntity', 'organization'))
-  .addTracker(new TrackerChecker('Person', 'person'))
-  .addTracker(new TrackerChecker('Organization', 'organization'))
-  .setNumberOfTablesToFindInScript(2)
-  .setNumberOfFkToFindInScript(0)
-  .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptOrganization, 'The ORFANIZATION table is different than expected.'));
+const obdaE1 =
+'mappingId    UndefinedProjectName-NamedEntity'+
+'target       :UndefinedProjectName/person/{person_id} a :NamedEntity ; :name {name}^^xsd:string .'+
+'source       SELECT person.person_id, person.name '+
+'             FROM person ';
+
+const obdaE2 = 
+'mappingId    UndefinedProjectName-NamedEntity3'+
+'target       :UndefinedProjectName/organization/{organization_id} a :NamedEntity ; :name {name}^^xsd:string .'+
+'source       SELECT organization.organization_id, organization.name '+
+'             FROM organization ';
+
+const obdaP =
+'mappingId    UndefinedProjectName-Person'+
+'target       :UndefinedProjectName/person/{person_id} a :Person ; :birthDate {birth_date}^^xsd:dateTime .'+
+'source       SELECT person.person_id, person.birth_date '+
+'             FROM person ';
+
+const obdaO =
+'mappingId    UndefinedProjectName-Organization'+
+'target       :UndefinedProjectName/organization/{organization_id} a :Organization ; :address {address}^^xsd:string .'+
+'source       SELECT organization.organization_id, organization.address '+
+'             FROM organization ';
+
+const obdaMapping: string[] = [obdaE1, obdaE2, obdaP, obdaO];
 
 // ****************************************
 //       M O D E L
@@ -80,24 +79,11 @@ const genNamedEntityOrganization = model.createGeneralization(namedEntity, organ
 // CRETATE GENERALIZATION SET
 model.createGeneralizationSet([genNamedEntityPerson, genNamedEntityOrganization], disjoint, complete, null, 'NamedEntityType');
 
-// ****************************************
-// ** O P T I O N S
-// ****************************************
-const options: Partial<Ontouml2DbOptions> = {
-  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DbmsSupported.H2,
-  standardizeNames: true,
-  hostName: 'localhost/~',
-  databaseName: 'RunExample',
-  userConnection: 'sa',
-  passwordConnection: 'sa',
-  enumFieldToLookupTable: false
-};
 
 // ****************************************
 export const test_003: TestResource = {
   title: '003 - Flattening involving only one generalizations set',
-  checker: gChecker_003_flatting_gs,
   project,
-  options
+  scripts,
+  obdaMapping,
 };

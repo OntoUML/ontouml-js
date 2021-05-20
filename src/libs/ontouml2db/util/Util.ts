@@ -16,15 +16,6 @@ import { Tracer } from '@libs/ontouml2db/tracker/Tracer';
 import { TracedNode } from '@libs/ontouml2db/tracker/TracedNode';
 
 export class Util {
-  static findNodeById(id: string, nodes: Node[]): Node {
-    let i: number = 0;
-
-    while (i < nodes.length) {
-      if (nodes[i].getId() === id) return nodes[i];
-      i++;
-    }
-    return null;
-  }
 
   static isNonSortal(type: ClassStereotype): boolean {
     if (

@@ -39,20 +39,6 @@ export interface PropertyContainerInterface {
   addPropertiesAt(index: number, properties: NodeProperty[]): void;
 
   /**
-   * Returns the property.
-   *
-   * @param id. Property id to search for.
-   */
-  getPropertyByID(id: string): NodeProperty;
-
-  /**
-   * Returns the property.
-   *
-   * @param name. Property name to search for.
-   */
-  getPropertyByName(name: string): NodeProperty;
-
-  /**
    * Returns all properties of the container.
    *
    * @return An ArrayList with all properties.
@@ -114,5 +100,5 @@ export interface PropertyContainerInterface {
   /**
    * Returns all properties formatted as a string.
    */
-  toString(): string;
+  //toString(): string;
 }

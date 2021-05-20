@@ -65,35 +65,10 @@ export class Filter {
   }
 
   /**
-   * Informs the value of the property.
-   * @param value
-   */
-  setValue(value: any): void {
-    this.value = value;
-  }
-
-  /**
    * Return the value of the property.
    */
   getValue(): any {
     return this.value;
-  }
-
-  /**
-   * Informs that the filter must be applied in another class. This occurs when the
-   * property to be filtered has been transferred to another class, requiring a join.
-   * If the given node is null, it will have the same behavior as removeNodeToApplayFilter()
-   * methodo.
-   *
-   * @param node
-   */
-  setNodeToApplyFilter(node: Node): void {
-    if (node !== null) {
-      this.nodeToApplyFilter = node;
-      this.chainOfNodesToApplyFilter.push(node);
-    } else {
-      this.removeNodeToApplyFilter();
-    }
   }
 
   /**
@@ -124,7 +99,7 @@ export class Filter {
   }
 
   /**
-   * Informs if the nodo is the same as the filter will be applied.
+   * Informs if the node is the same as the filter will be applied.
    * @param node
    * @returns
    */
@@ -158,7 +133,7 @@ export class Filter {
     }
     return false;
   }
-
+/*
   toString(): string {
     let msg: string;
 
@@ -174,4 +149,5 @@ export class Filter {
     msg += '] ';
     return msg;
   }
+  */
 }

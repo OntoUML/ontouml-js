@@ -70,15 +70,6 @@ export class Node implements PropertyContainerInterface, AssociationContainerInt
   }
 
   /**
-   * Informs the node stereotype.
-   *
-   * @param stereotype. The stereotype name.
-   */
-  setStereotype(stereotype: ClassStereotype): void {
-    this.stereotype = stereotype;
-  }
-
-  /**
    * Returns the stereotype name.
    *
    * @return The name of the stereotype.
@@ -104,15 +95,6 @@ export class Node implements PropertyContainerInterface, AssociationContainerInt
    */
   setResolved(flag: boolean): void {
     this.resolved = flag;
-  }
-
-  /**
-   * Returns if the node was resolved.
-   *
-   * @return A boolean indicating whether the node has been resolved.
-   */
-  isResolved(): boolean {
-    return this.resolved;
   }
 
   /**
@@ -160,14 +142,6 @@ export class Node implements PropertyContainerInterface, AssociationContainerInt
 
   addPropertiesAt(index: number, properties: NodeProperty[]): void {
     this.propertyContainer.addPropertiesAt(index, properties);
-  }
-
-  getPropertyByID(id: string): NodeProperty {
-    return this.propertyContainer.getPropertyByID(id);
-  }
-
-  getPropertyByName(name: string): NodeProperty {
-    return this.propertyContainer.getPropertyByName(name);
   }
 
   getProperties(): NodeProperty[] {
@@ -226,10 +200,6 @@ export class Node implements PropertyContainerInterface, AssociationContainerInt
     return this.associationContainer.getRelations();
   }
 
-  getAssociationWithNode(nodeID: string): GraphAssociation {
-    return this.associationContainer.getAssociationWithNode(nodeID);
-  }
-
   isSpecialization(): boolean {
     return this.associationContainer.isSpecialization();
   }
@@ -248,13 +218,14 @@ export class Node implements PropertyContainerInterface, AssociationContainerInt
 
   //----------------------------------------------------
 
-  toString(): string {
-    let msg = '\n' + this.name + ' <<' + this.stereotype + '>>';
+  // toString(): string {
+  //   let msg = '\n' + this.name + ' <<' + this.stereotype + '>>';
 
-    msg += this.propertyContainer.toString();
+  //   msg += this.propertyContainer.toString();
 
-    msg += this.associationContainer.toString();
+  //   msg += this.associationContainer.toString();
 
-    return msg;
-  }
+  //   return msg;
+  // }
+  
 }

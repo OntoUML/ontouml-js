@@ -3,17 +3,8 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { GraphChecker } from './graph_tester/GraphChecker';
-import { NodeChecker } from './graph_tester/NodeChecker';
-import { PropertyChecker } from './graph_tester/PropertyChecker';
-import { TrackerChecker } from './graph_tester/TrackerChecker';
-import { RelationshipChecker } from './graph_tester/RelationshipChecker';
-import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { TestResource } from './TestResource';
 import { Project } from '@libs/ontouml';
-import { ScriptChecker } from './graph_tester/ScriptChecker';
-import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
-import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -98,139 +89,151 @@ const scriptFKSupplyOrganization =
 
 const scriptFKNationalityPerson = 'ALTER TABLE nationality ADD FOREIGN KEY ( person_id ) REFERENCES person ( person_id )';
 
-// ****************************************
-//       CHECK RESULTING GRAPH
-// ****************************************
-const gChecker_run_example = new GraphChecker()
-  .addNode(
-    new NodeChecker('person')
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('birth_date', false))
-      .addProperty(new PropertyChecker('rg', true))
-      .addProperty(new PropertyChecker('ci', true))
-      .addProperty(new PropertyChecker('is_employee', false))
-      .addProperty(new PropertyChecker('is_personal_customer', false))
-      .addProperty(new PropertyChecker('credit_rating', true))
-      .addProperty(new PropertyChecker('credit_card', true))
-      .addProperty(new PropertyChecker('life_phase_enum', false, ['CHILD', 'ADULT']))
-  )
-  .addNode(
-    new NodeChecker('organization')
-      .addProperty(new PropertyChecker('organization_id', false))
-      .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('address', false))
-      .addProperty(new PropertyChecker('is_corporate_customer', false))
-      .addProperty(new PropertyChecker('credit_rating', true))
-      .addProperty(new PropertyChecker('credit_limit', true))
-      .addProperty(new PropertyChecker('is_contractor', false))
-      .addProperty(new PropertyChecker('playground_size', true))
-      .addProperty(new PropertyChecker('capacity', true))
-      .addProperty(new PropertyChecker('organization_type_enum', true, ['PRIMARYSCHOOL', 'HOSPITAL']))
-  )
-  .addNode(
-    new NodeChecker('employment')
-      .addProperty(new PropertyChecker('employment_id', false))
-      .addProperty(new PropertyChecker('organization_id', false))
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('salary', false))
-  )
-  .addNode(
-    new NodeChecker('supply_contract')
-      .addProperty(new PropertyChecker('supply_contract_id', false))
-      .addProperty(new PropertyChecker('organization_id', false))
-      .addProperty(new PropertyChecker('organization_customer_id', true))
-      .addProperty(new PropertyChecker('person_id', true))
-      .addProperty(new PropertyChecker('contract_value', false))
-  )
-  .addNode(
-    new NodeChecker('enrollment')
-      .addProperty(new PropertyChecker('enrollment_id', false))
-      .addProperty(new PropertyChecker('organization_id', false))
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('grade', false))
-  )
-  .addNode(
-    new NodeChecker('nationality')
-      .addProperty(new PropertyChecker('nationality_id', false))
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('nationality_enum', false, ['BRAZILIANCITIZEN', 'ITALIANCITIZEN']))
-  )
-  .addRelationship(new RelationshipChecker('nationality', Cardinality.C0_N, 'person', Cardinality.C1))
-  .addRelationship(new RelationshipChecker('enrollment', Cardinality.C0_N, 'person', Cardinality.C1))
-  .addRelationship(new RelationshipChecker('employment', Cardinality.C0_N, 'person', Cardinality.C1))
-  .addRelationship(new RelationshipChecker('supply_contract', Cardinality.C0_N, 'person', Cardinality.C0_1))
-  .addRelationship(new RelationshipChecker('organization', Cardinality.C1, 'employment', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('organization', Cardinality.C1, 'supply_contract', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('organization', Cardinality.C0_1, 'supply_contract', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('organization', Cardinality.C1, 'enrollment', Cardinality.C0_N))
+const scripts: string[] = [scriptPerson, scriptOrganization, scriptEmployment, scriptEnrollment,
+  scriptSupply, scriptNationality, scriptFKEmploymentOrganization, scriptFKEmploymentPerson,
+  scriptFKEnrollmentOrganization, scritpFKEnrollmentPerson, scriptFKSupplyOrganizationCustomer,
+  scriptFKSupplyPerson, scriptFKSupplyOrganization, scriptFKNationalityPerson];
 
-  .addTracker(new TrackerChecker('NamedEntity', 'person'))
-  .addTracker(new TrackerChecker('NamedEntity', 'organization'))
-  .addTracker(new TrackerChecker('Person', 'person'))
-  .addTracker(new TrackerChecker('Organization', 'organization'))
-  .addTracker(new TrackerChecker('BrazilianCitizen', 'person'))
-  .addTracker(new TrackerChecker('ItalianCitizen', 'person'))
-  .addTracker(new TrackerChecker('Child', 'person'))
-  .addTracker(new TrackerChecker('Adult', 'person'))
-  .addTracker(new TrackerChecker('Employee', 'person'))
-  .addTracker(new TrackerChecker('Customer', 'person'))
-  .addTracker(new TrackerChecker('Customer', 'organization'))
-  .addTracker(new TrackerChecker('PersonalCustomer', 'person'))
-  .addTracker(new TrackerChecker('CorporateCustomer', 'organization'))
-  .addTracker(new TrackerChecker('Employment', 'employment'))
-  .addTracker(new TrackerChecker('SupplyContract', 'supply_contract'))
-  .addTracker(new TrackerChecker('Contractor', 'organization'))
-  .addTracker(new TrackerChecker('PrimarySchool', 'organization'))
-  .addTracker(new TrackerChecker('Hospital', 'organization'))
-  .addTracker(new TrackerChecker('Enrollment', 'enrollment'))
-  .setNumberOfTablesToFindInScript(6)
-  .setNumberOfFkToFindInScript(8)
-  .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptOrganization, 'The ORFANIZATION table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptEmployment, 'The EMPLOYMENT table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptEnrollment, 'The ENROLLMENT table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptSupply, 'The SUPPLY_CONTRACT table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptNationality, 'The Nationality table is different than expected.'))
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKEmploymentOrganization,
-      'The FK between Employment and Organization not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(scriptFKEmploymentPerson, 'The FK between Employment and Person not exists or is different than expected.')
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKEnrollmentOrganization,
-      'The FK between Enrollment and Organization not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(scritpFKEnrollmentPerson, 'The FK between Enrollment and Person not exists or is different than expected.')
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKSupplyOrganizationCustomer,
-      'The FK between SupplyContract and Organization like Customer not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(scriptFKSupplyPerson, 'The FK between SupplyContract and Person not exists or is different than expected.')
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKSupplyOrganization,
-      'The FK between SupplyContract and Organization not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKNationalityPerson,
-      'The FK between Nationality and Person not exists or is different than expected.'
-    )
-  );
+// ****************************************
+//       FOR OBDA VALIDATION
+// ****************************************
+
+const obdaNamedEntity = 
+'mappingId    RunExample-NamedEntity'+
+'target       :RunExample/person/{person_id} a :NamedEntity ; :name {name}^^xsd:string .'+
+'source       SELECT person.person_id, person.name '+
+'             FROM person ';
+
+const obdaNamedEntity52 = 
+'mappingId    RunExample-NamedEntity40'+
+'target       :RunExample/organization/{organization_id} a :NamedEntity ; :name {name}^^xsd:string   .'+
+'source       SELECT organization.organization_id, organization.name '+
+'             FROM organization ';
+
+const obdaCustomer = 
+'mappingId    RunExample-Customer'+
+'target       :RunExample/organization/{organization_id} a :Customer ; :creditRating {credit_rating}^^xsd:decimal .'+
+'source       SELECT organization.organization_id, organization.credit_rating '+
+'             FROM organization '+
+'             WHERE is_corporate_customer = TRUE ';
+
+const obdaCustomer2 = 
+'mappingId    RunExample-Customer41'+
+'target       :RunExample/person/{person_id} a :Customer ; :creditRating {credit_rating}^^xsd:decimal  .'+
+'source       SELECT person.person_id, person.credit_rating '+
+'             FROM person '+
+'             WHERE is_personal_customer = TRUE ';
+
+const obdaPerson = 
+'mappingId    RunExample-Person'+
+'target       :RunExample/person/{person_id} a :Person ; :birthDate {birth_date}^^xsd:dateTime .'+
+'source       SELECT person.person_id, person.birth_date'+
+'             FROM person ';
+
+const obdaOrganization = 
+'mappingId    RunExample-Organization'+
+'target       :RunExample/organization/{organization_id} a :Organization ; :address {address}^^xsd:string .'+
+'source       SELECT organization.organization_id, organization.address'+
+'             FROM organization ';
+
+const obdaSchool = 
+'mappingId    RunExample-PrimarySchool'+ 
+'target       :RunExample/organization/{organization_id} a :PrimarySchool ; :playgroundSize {playground_size}^^xsd:int .'+
+'source       SELECT organization.organization_id, organization.playground_size'+
+'             FROM organization '+
+"             WHERE organization_type_enum = 'PRIMARYSCHOOL' ";
+
+const obdaHospital = 
+'mappingId    RunExample-Hospital'+
+'target       :RunExample/organization/{organization_id} a :Hospital ; :capacity {capacity}^^xsd:int .'+
+'source       SELECT organization.organization_id, organization.capacity '+
+'             FROM organization '+
+"              WHERE organization_type_enum = 'HOSPITAL' ";
+
+const obdaBrazilian = 
+'mappingId    RunExample-BrazilianCitizen'+
+'target       :RunExample/person/{person_id} a :BrazilianCitizen ; :RG {rg}^^xsd:string .'+
+'source       SELECT person.person_id, person.rg '+
+'             FROM person '+
+'             INNER JOIN nationality'+
+'                      ON person.person_id = nationality.person_id'+
+"                      AND nationality.nationality_enum = 'BRAZILIANCITIZEN' ";
+
+const obdaItalian = 
+'mappingId    RunExample-ItalianCitizen'+
+'target       :RunExample/person/{person_id} a :ItalianCitizen ; :CI {ci}^^xsd:string .'+
+'source       SELECT person.person_id, person.ci'+
+'             FROM person '+
+'             INNER JOIN nationality'+
+'                      ON person.person_id = nationality.person_id'+
+"                      AND nationality.nationality_enum = 'ITALIANCITIZEN' ";
+
+const obdaEmployee = 
+'mappingId    RunExample-Employee'+
+'target       :RunExample/person/{person_id} a :Employee .'+
+'source       SELECT person.person_id '+
+'             FROM person '+
+'             WHERE is_employee = TRUE '+
+"             AND   life_phase_enum = 'ADULT'" ;
+
+const obdaPersonal = 
+'mappingId    RunExample-PersonalCustomer'+
+'target       :RunExample/person/{person_id} a :PersonalCustomer ; :creditCard {credit_card}^^xsd:string .'+
+'source       SELECT person.person_id, person.credit_card'+
+'             FROM person '+
+'             WHERE is_personal_customer = TRUE '+
+"             AND   life_phase_enum = 'ADULT' ";
+
+const obdaCorporate = 
+'mappingId    RunExample-CorporateCustomer'+
+'target       :RunExample/organization/{organization_id} a :CorporateCustomer ; :creditLimit {credit_limit}^^xsd:decimal .'+
+'source       SELECT organization.organization_id, organization.credit_limit'+
+'             FROM organization '+
+'             WHERE is_corporate_customer = TRUE ';
+
+const obdaContractor = 
+'mappingId    RunExample-Contractor'+
+'target       :RunExample/organization/{organization_id} a :Contractor .'+
+'source       SELECT organization.organization_id'+
+'             FROM organization '+
+'             WHERE is_contractor = TRUE ';
+
+const obdaChild = 
+'mappingId    RunExample-Child'+
+'target       :RunExample/person/{person_id} a :Child .'+
+'source       SELECT person.person_id'+
+'             FROM person '+
+"             WHERE life_phase_enum = 'CHILD' ";
+
+const obdaAdult = 
+'mappingId    RunExample-Adult'+
+'target       :RunExample/person/{person_id} a :Adult .'+
+'source       SELECT person.person_id'+
+'             FROM person '+
+"             WHERE life_phase_enum = 'ADULT'" ;
+
+const obdaEmployment = 
+'mappingId    RunExample-Employment'+
+'target       :RunExample/employment/{employment_id} a :Employment ; :salary {salary}^^xsd:decimal ; :hasOrganization :RunExample/organization/{organization_id}  ; :hasEmployee :RunExample/person/{person_id}  .'+
+'source       SELECT employment.employment_id, employment.salary, employment.organization_id, employment.person_id '+
+'             FROM employment ';
+
+const obdaEnrollment = 
+'mappingId    RunExample-Enrollment'+
+'target       :RunExample/enrollment/{enrollment_id} a :Enrollment ; :grade {grade}^^xsd:int ; :hasPrimarySchool :RunExample/organization/{organization_id}  ; :hasChild :RunExample/person/{person_id}  .'+
+'source       SELECT enrollment.enrollment_id, enrollment.grade, enrollment.organization_id, enrollment.person_id '+
+'             FROM enrollment ';
+
+const abdaContract = 
+'mappingId    RunExample-SupplyContract'+
+'target       :RunExample/supply_contract/{supply_contract_id} a :SupplyContract ; :contractValue {contract_value}^^xsd:decimal ; :hasCustomer :RunExample/organization/{organization_customer_id}  ; :hasCustomer :RunExample/person/{person_id}  ; :hasContractor :RunExample/organization/{organization_id}  .'+
+'source       SELECT supply_contract.supply_contract_id, supply_contract.contract_value, supply_contract.organization_customer_id, supply_contract.person_id, supply_contract.organization_id '+
+'             FROM supply_contract ';
+
+
+const obdaMapping: string[] = [obdaNamedEntity, obdaNamedEntity52, obdaCustomer, obdaCustomer2, obdaPerson, 
+  obdaOrganization, obdaSchool, obdaHospital, obdaBrazilian, obdaItalian, obdaEmployee, obdaPersonal, 
+  obdaCorporate, obdaContractor, obdaChild, obdaAdult, obdaEmployment, obdaEnrollment, abdaContract];
 
 // ****************************************
 //       M O D E L
@@ -241,6 +244,7 @@ const complete = true;
 const incomplete = false;
 
 const project = new Project();
+project.setName('RunExample');
 const model = project.createModel();
 // CREATE TYPES
 const _string = model.createDatatype('string');
@@ -309,23 +313,9 @@ model.createMediationRelation(supplyConstract, contractor, 'hasContractor');
 model.createMediationRelation(supplyConstract, customer, 'hasCustomer');
 
 // ****************************************
-// ** O P T I O N S
-// ****************************************
-const options: Partial<Ontouml2DbOptions> = {
-  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DbmsSupported.H2,
-  standardizeNames: true,
-  hostName: 'localhost/~',
-  databaseName: 'RunExample',
-  userConnection: 'sa',
-  passwordConnection: 'sa',
-  enumFieldToLookupTable: false
-};
-
-// ****************************************
 export const baseExample: TestResource = {
   title: 'Base Example Test',
-  checker: gChecker_run_example,
   project,
-  options
+  scripts,
+  obdaMapping,
 };

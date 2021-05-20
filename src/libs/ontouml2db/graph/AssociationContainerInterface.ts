@@ -30,13 +30,6 @@ export interface AssociationContainerInterface {
   getRelations(): GraphRelation[];
 
   /**
-   * Returns the association that references the node.
-   *
-   * @param nodeID Node identifier to be searched.
-   */
-  getAssociationWithNode(nodeID: string): GraphAssociation;
-
-  /**
    * Adds a new generalization to the node's association set.
    *
    * @param generalization Generalization to be added

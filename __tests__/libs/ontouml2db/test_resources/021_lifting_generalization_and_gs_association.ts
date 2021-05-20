@@ -3,17 +3,8 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { GraphChecker } from './graph_tester/GraphChecker';
-import { NodeChecker } from './graph_tester/NodeChecker';
-import { PropertyChecker } from './graph_tester/PropertyChecker';
-import { RelationshipChecker } from './graph_tester/RelationshipChecker';
-import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
-import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
-import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { Project } from '@libs/ontouml';
-import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
-import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -41,50 +32,13 @@ const scriptEmploymentB = 'CREATE TABLE IF NOT EXISTS employment_b ( ';
 
 const scriptFKA = 'ALTER TABLE employment_a ADD FOREIGN KEY ( person_id ) REFERENCES person ( person_id );';
 const scriptFKB = 'ALTER TABLE employment_b ADD FOREIGN KEY ( person_id ) REFERENCES person ( person_id );';
+
+const scripts: string[] = [scriptPerson, scriptEmploymentA, scriptEmploymentB, scriptFKA, scriptFKB];
+
 // ****************************************
-//       CHECK RESULTING GRAPH
+//       FOR OBDA VALIDATION
 // ****************************************
-const gChecker_021_lifting_generalization_and_gs_association = new GraphChecker()
-  .addNode(
-    new NodeChecker('person')
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('birth_date', false))
-      .addProperty(new PropertyChecker('life_phase_enum', false, ['CHILD', 'TEENAGER', 'ADULT']))
-      .addProperty(new PropertyChecker('is_test1', false))
-      .addProperty(new PropertyChecker('is_test2', false))
-      .addProperty(new PropertyChecker('test2', true))
-  )
-  .addNode(
-    new NodeChecker('employment_a')
-      .addProperty(new PropertyChecker('employment_a_id', false))
-      .addProperty(new PropertyChecker('person_id', false))
-  )
-  .addNode(
-    new NodeChecker('employment_b')
-      .addProperty(new PropertyChecker('employment_b_id', false))
-      .addProperty(new PropertyChecker('person_id', false))
-  )
-  .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'employment_a', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'employment_b', Cardinality.C0_N))
-  .addTracker(new TrackerChecker('Person', 'person'))
-  .addTracker(new TrackerChecker('Adult', 'person'))
-  .addTracker(new TrackerChecker('Teenager', 'person'))
-  .addTracker(new TrackerChecker('Child', 'person'))
-  .addTracker(new TrackerChecker('Test1', 'person'))
-  .addTracker(new TrackerChecker('Test2', 'person'))
-  .addTracker(new TrackerChecker('EmploymentA', 'employment_a'))
-  .addTracker(new TrackerChecker('EmploymentB', 'employment_b'))
-  .setNumberOfTablesToFindInScript(3)
-  .setNumberOfFkToFindInScript(2)
-  .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptEmploymentA, 'The EMPLOYMENT_A table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptEmploymentB, 'The EMPLOYMENT_B table is different than expected.'))
-  .addScriptChecker(
-    new ScriptChecker(scriptFKA, 'The FK between PERSON and EMPLOYMENT_A not exists or is different than expected.')
-  )
-  .addScriptChecker(
-    new ScriptChecker(scriptFKB, 'The FK between PERSON and EMPLOYMENT_B not exists or is different than expected.')
-  );
+const obdaMapping: string[] = [];
 
 // ****************************************
 //       M O D E L
@@ -125,24 +79,11 @@ const relationB = model.createMediationRelation(test2, employmentB, 'has');
 relationB.getSourceEnd().cardinality.setOneToOne();
 relationB.getTargetEnd().cardinality.setZeroToMany();
 
-// ****************************************
-// ** O P T I O N S
-// ****************************************
-const options: Partial<Ontouml2DbOptions> = {
-  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DbmsSupported.H2,
-  standardizeNames: true,
-  hostName: 'localhost/~',
-  databaseName: 'RunExample',
-  userConnection: 'sa',
-  passwordConnection: 'sa',
-  enumFieldToLookupTable: false
-};
 
 // ****************************************
 export const test_021: TestResource = {
   title: '021 - Lifting with generalizations, one generalization set and association in the subclasses',
-  checker: gChecker_021_lifting_generalization_and_gs_association,
   project,
-  options
+  scripts,
+  obdaMapping,
 };

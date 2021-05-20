@@ -3,17 +3,8 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { GraphChecker } from './graph_tester/GraphChecker';
-import { NodeChecker } from './graph_tester/NodeChecker';
-import { PropertyChecker } from './graph_tester/PropertyChecker';
-import { TrackerChecker } from './graph_tester/TrackerChecker';
-import { RelationshipChecker } from './graph_tester/RelationshipChecker';
-import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { TestResource } from './TestResource';
-import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { Project } from '@libs/ontouml';
-import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
-import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -64,79 +55,13 @@ const scriptFKTestPersonB = 'ALTER TABLE test ADD FOREIGN KEY ( person_id ) REFE
 const scriptFKTestOrganizationB =
   'ALTER TABLE test ADD FOREIGN KEY ( organization_id ) REFERENCES organization ( organization_id );';
 
-// ****************************************
-//       CHECK RESULTING GRAPH
-// ****************************************
+const scripts: string[] = [scriptPerson, scriptOrganization, scriptTest, scriptPersonB, scriptOrganizationB,
+  scriptFKTestPerson, scriptFKTestOrganization, scriptFKTestPersonB, scriptFKTestOrganizationB];
 
-const gChecker_009_flatting_with_association = new GraphChecker()
-  .addNode(
-    new NodeChecker('person')
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('birth_date', false))
-  )
-  .addNode(
-    new NodeChecker('organization')
-      .addProperty(new PropertyChecker('organization_id', false))
-      .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('address', false))
-  )
-  .addNode(
-    new NodeChecker('person_b')
-      .addProperty(new PropertyChecker('person_b_id', false))
-      .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('name_b', false))
-      .addProperty(new PropertyChecker('birth_date_b', false))
-  )
-  .addNode(
-    new NodeChecker('organization_b')
-      .addProperty(new PropertyChecker('organization_b_id', false))
-      .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('name_b', false))
-      .addProperty(new PropertyChecker('address', false))
-  )
-  .addNode(
-    new NodeChecker('test')
-      .addProperty(new PropertyChecker('test_id', false))
-      .addProperty(new PropertyChecker('organization_id', true))
-      .addProperty(new PropertyChecker('person_id', true))
-      .addProperty(new PropertyChecker('organization_b_id', true))
-      .addProperty(new PropertyChecker('person_b_id', true))
-  )
-  .addRelationship(new RelationshipChecker('organization', Cardinality.C0_1, 'test', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('person', Cardinality.C0_1, 'test', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('organization_b', Cardinality.C0_1, 'test', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('person_b', Cardinality.C0_1, 'test', Cardinality.C0_N))
-  .addTracker(new TrackerChecker('NamedEntity', 'person'))
-  .addTracker(new TrackerChecker('NamedEntity', 'organization'))
-  .addTracker(new TrackerChecker('NamedEntity', 'person_b'))
-  .addTracker(new TrackerChecker('NamedEntity', 'organization_b'))
-  .addTracker(new TrackerChecker('NamedEntityB', 'person_b'))
-  .addTracker(new TrackerChecker('NamedEntityB', 'organization_b'))
-  .addTracker(new TrackerChecker('Person', 'person'))
-  .addTracker(new TrackerChecker('Organization', 'organization'))
-  .addTracker(new TrackerChecker('PersonB', 'person_b'))
-  .addTracker(new TrackerChecker('OrganizationB', 'organization_b'))
-  .addTracker(new TrackerChecker('Test', 'test'))
-  .setNumberOfTablesToFindInScript(5)
-  .setNumberOfFkToFindInScript(4)
-  .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptOrganization, 'The ORGANIZATION table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptTest, 'The TEST table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptPersonB, 'The PERSON_B table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptOrganizationB, 'The ORGANIZATION_B table is different than expected.'))
-  .addScriptChecker(
-    new ScriptChecker(scriptFKTestPerson, 'The FK between Test and Person not exists or is different than expected.')
-  )
-  .addScriptChecker(
-    new ScriptChecker(scriptFKTestOrganization, 'The FK between Test and Organization not exists or is different than expected.')
-  )
-  .addScriptChecker(
-    new ScriptChecker(scriptFKTestPersonB, 'The FK between Test and PersonB not exists or is different than expected.')
-  )
-  .addScriptChecker(
-    new ScriptChecker(scriptFKTestOrganizationB, 'The FK between Test and OrganiationB not exists or is different than expected.')
-  );
+// ****************************************
+//       FOR OBDA VALIDATION
+// ****************************************
+const obdaMapping: string[] = [];
 
 // ****************************************
 //       M O D E L
@@ -185,23 +110,9 @@ relation.getSourceEnd().cardinality.setOneToOne();
 relation.getTargetEnd().cardinality.setZeroToMany();
 
 // ****************************************
-// ** O P T I O N S
-// ****************************************
-const options: Partial<Ontouml2DbOptions> = {
-  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DbmsSupported.H2,
-  standardizeNames: true,
-  hostName: 'localhost/~',
-  databaseName: 'RunExample',
-  userConnection: 'sa',
-  passwordConnection: 'sa',
-  enumFieldToLookupTable: false
-};
-
-// ****************************************
 export const test_009: TestResource = {
   title: '009 - Flattening involving a generalization set and a hierarchy of nonSortals',
-  checker: gChecker_009_flatting_with_association,
   project,
-  options
+  scripts,
+  obdaMapping,
 };

@@ -3,17 +3,8 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { GraphChecker } from './graph_tester/GraphChecker';
-import { NodeChecker } from './graph_tester/NodeChecker';
-import { PropertyChecker } from './graph_tester/PropertyChecker';
-import { RelationshipChecker } from './graph_tester/RelationshipChecker';
-import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
-import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
-import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { Project } from '@libs/ontouml';
-import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
-import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -41,42 +32,13 @@ const scriptFKAssociated =
 const scriptFKSuper =
   'ALTER TABLE super_class_type ADD FOREIGN KEY ( super_class_id ) REFERENCES super_class ( super_class_id );';
 
+const scripts: string[] = [scriptSuper, scriptAssociatedClass, scriptSuperClassType,
+  scriptFKAssociated, scriptFKSuper];
+
 // ****************************************
-//       CHECK RESULTING GRAPH
+//       FOR OBDA VALIDATION
 // ****************************************
-const gChecker_024_lifting_gs_overlapping_complete = new GraphChecker()
-  .addNode(new NodeChecker('super_class').addProperty(new PropertyChecker('super_class_id', false)))
-  .addNode(
-    new NodeChecker('super_class_type')
-      .addProperty(new PropertyChecker('super_class_type_id', false))
-      .addProperty(new PropertyChecker('super_class_id', false))
-      .addProperty(new PropertyChecker('super_class_type_enum', false, ['SUBCLASS1', 'SUBCLASS2']))
-  )
-  .addNode(
-    new NodeChecker('associated_class')
-      .addProperty(new PropertyChecker('associated_class_id', false))
-      .addProperty(new PropertyChecker('super_class_id', false))
-  )
-  .addRelationship(new RelationshipChecker('super_class', Cardinality.C1, 'associated_class', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('super_class_type', Cardinality.C1_N, 'super_class', Cardinality.C1))
-  .addTracker(new TrackerChecker('SuperClass', 'super_class'))
-  .addTracker(new TrackerChecker('SubClass1', 'super_class'))
-  .addTracker(new TrackerChecker('SubClass2', 'super_class'))
-  .addTracker(new TrackerChecker('AssociatedClass', 'associated_class'))
-  .setNumberOfTablesToFindInScript(3)
-  .setNumberOfFkToFindInScript(2)
-  .addScriptChecker(new ScriptChecker(scriptSuper, 'The SUPER_CLASS table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptAssociatedClass, 'The ASSOCIATED_CLASS table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptSuperClassType, 'The SUPER_CLASS_TYPE table is different than expected.'))
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKAssociated,
-      'The FK between SUPER_CLASS and ASSOCIATED_CLASS not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(scriptFKSuper, 'The FK between SUPER_CLASS and SUPER_CLASS_TYPE not exists or is different than expected.')
-  );
+const obdaMapping: string[] = [];
 
 // ****************************************
 //       M O D E L
@@ -95,30 +57,17 @@ const assocated = model.createRelator('AssociatedClass');
 const genSubClass1 = model.createGeneralization(superClass, subClass1);
 const genSubClass2 = model.createGeneralization(superClass, subClass2);
 // CRETATE GENERALIZATION SET
-model.createGeneralizationSet([genSubClass1, genSubClass2], overlapping, complete, null, 'SuperClassType');
+model.createGeneralizationSet([genSubClass1, genSubClass2], overlapping, complete, null);
 // CREATE ASSOCIATIONS
 const relation = model.createMediationRelation(subClass2, assocated, 'has');
 relation.getSourceEnd().cardinality.setOneToOne();
 relation.getTargetEnd().cardinality.setOneToMany();
 
-// ****************************************
-// ** O P T I O N S
-// ****************************************
-const options: Partial<Ontouml2DbOptions> = {
-  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DbmsSupported.H2,
-  standardizeNames: true,
-  hostName: 'localhost/~',
-  databaseName: 'RunExample',
-  userConnection: 'sa',
-  passwordConnection: 'sa',
-  enumFieldToLookupTable: false
-};
 
 // ****************************************
 export const test_024: TestResource = {
   title: '024 - Lifting with a overlapping and complete generalization set',
-  checker: gChecker_024_lifting_gs_overlapping_complete,
   project,
-  options
+  scripts,
+  obdaMapping,
 };

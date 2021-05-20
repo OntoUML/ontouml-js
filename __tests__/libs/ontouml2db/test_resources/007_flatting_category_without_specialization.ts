@@ -4,14 +4,7 @@
  */
 
 import { Project } from '@libs/ontouml';
-import { GraphChecker } from './graph_tester/GraphChecker';
-import { NodeChecker } from './graph_tester/NodeChecker';
-import { PropertyChecker } from './graph_tester/PropertyChecker';
-import { ScriptChecker } from './graph_tester/ScriptChecker';
-import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
-import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
-import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -37,40 +30,13 @@ const scriptNamedEntityA =
   ',        name_a                  VARCHAR(20)    NULL' +
   '); ';
 
-// ****************************************
-//       CHECK RESULTING GRAPH
-// ****************************************
+const scripts: string[] = [scriptPerson, scriptOrganization, scriptNamedEntityA];
 
-const gChecker_007_flatting_category_without_specialization = new GraphChecker()
-  .addNode(
-    new NodeChecker('person')
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('birth_date', false))
-  )
-  .addNode(
-    new NodeChecker('organization')
-      .addProperty(new PropertyChecker('organization_id', false))
-      .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('address', false))
-  )
-  .addNode(
-    new NodeChecker('named_entity_a')
-      .addProperty(new PropertyChecker('named_entity_a_id', false))
-      .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('name_a', true))
-  )
-  .addTracker(new TrackerChecker('NamedEntity', 'person'))
-  .addTracker(new TrackerChecker('NamedEntity', 'organization'))
-  .addTracker(new TrackerChecker('NamedEntity', 'named_entity_a'))
-  .addTracker(new TrackerChecker('NamedEntityA', 'named_entity_a'))
-  .addTracker(new TrackerChecker('Person', 'person'))
-  .addTracker(new TrackerChecker('Organization', 'organization'))
-  .setNumberOfTablesToFindInScript(3)
-  .setNumberOfFkToFindInScript(0)
-  .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptOrganization, 'The ORFANIZATION table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptNamedEntityA, 'The NAMED_ENTITY_A table is different than expected.'));
+// ****************************************
+//       FOR OBDA VALIDATION
+// ****************************************
+const obdaMapping: string[] = [];
+
 
 // ****************************************
 //       M O D E L
@@ -100,25 +66,12 @@ model.createGeneralization(namedEntity, namedEntityA);
 // CRETATE GENERALIZATION SET
 model.createGeneralizationSet([genNamedEntityPerson, genNamedEntityOrganization], disjoint, complete, null, 'NamedEntityType');
 
-// ****************************************
-// ** O P T I O N S
-// ****************************************
-const options: Partial<Ontouml2DbOptions> = {
-  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DbmsSupported.H2,
-  standardizeNames: true,
-  hostName: 'localhost/~',
-  databaseName: 'RunExample',
-  userConnection: 'sa',
-  passwordConnection: 'sa',
-  enumFieldToLookupTable: false
-};
 
 // ****************************************
 export const test_007: TestResource = {
   title:
     '007 - Flattening involving one generalization set, where the superclass has one generalization relationship with another non-sortal class',
-  checker: gChecker_007_flatting_category_without_specialization,
   project,
-  options
+  scripts,
+  obdaMapping,
 };

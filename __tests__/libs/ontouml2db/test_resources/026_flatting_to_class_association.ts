@@ -3,17 +3,8 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { GraphChecker } from './graph_tester/GraphChecker';
-import { NodeChecker } from './graph_tester/NodeChecker';
-import { PropertyChecker } from './graph_tester/PropertyChecker';
-import { RelationshipChecker } from './graph_tester/RelationshipChecker';
-import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
-import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
-import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { Project } from '@libs/ontouml';
-import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
-import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -72,95 +63,70 @@ const scritpAssociatedClass3 =
 const acriptAssociatedClass4 =
   'ALTER TABLE person_associated_class2 ADD FOREIGN KEY ( person_id ) REFERENCES person ( person_id );';
 
+const scripts: string[] = [scriptPerson, scriptAssociatedClass1, scriptAssociatedClass2,
+  scriptAssociatedClass3, scriptAssociatedClass4, scriptPersonassociatedclass1,
+  SCRIPTpersonassociatedclass2, scriptFKAssociatedClass3, scriptFKAssociatedClass4,
+  scriptAssociated1, scriptAssociated2, scritpAssociatedClass3, acriptAssociatedClass4];
+
 // ****************************************
-//       CHECK RESULTING GRAPH
+//       FOR OBDA VALIDATION
 // ****************************************
-const gChecker_026_flatting_to_class_association = new GraphChecker()
-  .addNode(new NodeChecker('person').addProperty(new PropertyChecker('person_id', false)))
-  .addNode(new NodeChecker('associated_class1').addProperty(new PropertyChecker('associated_class1_id', false)))
-  .addNode(new NodeChecker('associated_class2').addProperty(new PropertyChecker('associated_class2_id', false)))
-  .addNode(new NodeChecker('associated_class3').addProperty(new PropertyChecker('person_id', false)))
-  .addNode(new NodeChecker('associated_class4').addProperty(new PropertyChecker('person_id', false)))
-  .addNode(
-    new NodeChecker('person_associated_class1')
-      .addProperty(new PropertyChecker('person_associated_class1_id', false))
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('associated_class1_id', false))
-  )
-  .addNode(
-    new NodeChecker('person_associated_class2')
-      .addProperty(new PropertyChecker('person_associated_class2_id', false))
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('associated_class2_id', false))
-  )
-  .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'person_associated_class1', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'person_associated_class2', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('person', Cardinality.C0_1, 'associated_class3', Cardinality.C0_1))
-  .addRelationship(new RelationshipChecker('person', Cardinality.C0_1, 'associated_class4', Cardinality.C1))
-  .addRelationship(new RelationshipChecker('person_associated_class1', Cardinality.C0_N, 'associated_class1', Cardinality.C1))
-  .addRelationship(new RelationshipChecker('person_associated_class2', Cardinality.C0_N, 'associated_class2', Cardinality.C1))
-  .addTracker(new TrackerChecker('NamedEntity', 'person'))
-  .addTracker(new TrackerChecker('Person', 'person'))
-  .addTracker(new TrackerChecker('AssociatedClass1', 'associated_class1'))
-  .addTracker(new TrackerChecker('AssociatedClass2', 'associated_class2'))
-  .addTracker(new TrackerChecker('AssociatedClass3', 'associated_class3'))
-  .addTracker(new TrackerChecker('AssociatedClass4', 'associated_class4'))
-  .addTracker(new TrackerChecker('PersonAssociatedClass1', 'person_associated_class1'))
-  .addTracker(new TrackerChecker('PersonAssociatedClass2', 'person_associated_class2'))
-  .setNumberOfTablesToFindInScript(7)
-  .setNumberOfFkToFindInScript(6)
-  .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptAssociatedClass1, 'The ASSOCIATED_CLASS1 table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptAssociatedClass2, 'The ASSOCIATED_CLASS2 table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptAssociatedClass3, 'The ASSOCIATED_CLASS3 table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptAssociatedClass4, 'The ASSOCIATED_CLASS4 table is different than expected.'))
-  .addScriptChecker(
-    new ScriptChecker(scriptPersonassociatedclass1, 'The PERSON_ASSOCIATED_CLASS1 table is different than expected.')
-  )
-  .addScriptChecker(
-    new ScriptChecker(SCRIPTpersonassociatedclass2, 'The PERSON_ASSOCIATED_CLASS2 table is different than expected.')
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKAssociatedClass3,
-      'The FK between ASSOCIATED_CLASS3 and PERSON not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKAssociatedClass4,
-      'The FK between ASSOCIATED_CLASS4 and PERSON not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptAssociated1,
-      'The FK between PERSON_ASSOCIATED_CLASS1 and ASSOCIATED_CLASS1 not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptAssociated2,
-      'The FK between PERSON_ASSOCIATED_CLASS1 and PERSON not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      scritpAssociatedClass3,
-      'The FK between PERSON_ASSOCIATED_CLASS2 and ASSOCIATED_CLASS2 not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      acriptAssociatedClass4,
-      'The FK between PERSON_ASSOCIATED_CLASS2 and PERSON not exists or is different than expected.'
-    )
-  );
+const obdaNamedEntity = 
+'mappingId    Test26-NamedEntity'+
+'target       :Test26/person/{person_id} a :NamedEntity .'+
+'source       SELECT person.person_id '+
+'             FROM person ';
+
+const obdaPerson = 
+'mappingId    Test26-Person'+
+'target       :Test26/person/{person_id} a :Person .'+
+'source       SELECT person.person_id '+
+'             FROM person ';
+
+const obdaAssociated1 = 
+'mappingId    Test26-AssociatedClass1'+
+'target       :Test26/associated_class1/{associated_class1_id} a :AssociatedClass1 .'+
+'source       SELECT associated_class1.associated_class1_id '+
+'             FROM associated_class1 ';
+
+const obdaAssociated2 = 
+'mappingId    Test26-AssociatedClass2'+
+'target       :Test26/associated_class2/{associated_class2_id} a :AssociatedClass2 .'+
+'source       SELECT associated_class2.associated_class2_id '+
+'             FROM associated_class2 ';
+
+const obdaAssociated3 = 
+'mappingId    Test26-AssociatedClass3'+
+'target       :Test26/associated_class3/{person_id} a :AssociatedClass3 ; :hasAssociatedClass3 :Test26/person/{person_id}  .'+
+'source       SELECT associated_class3.person_id, associated_class3.person_id '+
+'             FROM associated_class3 ';
+
+const obdaAssociated4 = 
+'mappingId    Test26-AssociatedClass4'+
+'target       :Test26/associated_class4/{person_id} a :AssociatedClass4 ; :hasAssociatedClass4 :Test26/person/{person_id}  .'+
+'source       SELECT associated_class4.person_id, associated_class4.person_id '+
+'             FROM associated_class4 ';
+
+const obdaAssociated5 = 
+'mappingId    Test26-hasAssociatedClass1'+
+'target       :Test26/associated_class1/{associated_class1_id} :hasAssociatedClass1 :Test26/person/{person_id}.'+
+'source       SELECT person_associated_class1.person_associated_class1_id, person_associated_class1.associated_class1_id, person_associated_class1.person_id '+
+'             FROM person_associated_class1 ';
+
+const obdaAssociated6 = 
+'mappingId    Test26-personHasAssociatedClass2'+
+'target       :Test26/associated_class2/{associated_class2_id} :personHasAssociatedClass2 :Test26/person/{person_id}.'+
+'source       SELECT person_associated_class2.person_associated_class2_id, person_associated_class2.associated_class2_id, person_associated_class2.person_id '+
+'             FROM person_associated_class2 ';
+
+const obdaMapping: string[] = [obdaNamedEntity, obdaPerson, obdaAssociated1, obdaAssociated2,
+  obdaAssociated3, obdaAssociated4, obdaAssociated5, obdaAssociated6];
 
 // ****************************************
 //       M O D E L
 // ****************************************
 const project = new Project();
+project.setName('Test26')
 const model = project.createModel();
 // CREATE CLASSES
 const namedEntity = model.createCategory('NamedEntity');
@@ -175,7 +141,7 @@ model.createGeneralization(namedEntity, person);
 const relation1 = model.createMediationRelation(namedEntity, assocatedClass1, 'hasAssociatedClass1');
 relation1.getSourceEnd().cardinality.setZeroToMany();
 relation1.getTargetEnd().cardinality.setZeroToMany();
-const relation2 = model.createMediationRelation(namedEntity, assocatedClass2, 'hasAssociatedClass2');
+const relation2 = model.createMediationRelation(namedEntity, assocatedClass2);
 relation2.getSourceEnd().cardinality.setOneToMany();
 relation2.getTargetEnd().cardinality.setOneToMany();
 const relation3 = model.createMediationRelation(namedEntity, assocatedClass3, 'hasAssociatedClass3');
@@ -185,24 +151,11 @@ const relation4 = model.createMediationRelation(namedEntity, assocatedClass4, 'h
 relation4.getSourceEnd().cardinality.setOneToOne();
 relation4.getTargetEnd().cardinality.setOneToOne();
 
-// ****************************************
-// ** O P T I O N S
-// ****************************************
-const options: Partial<Ontouml2DbOptions> = {
-  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DbmsSupported.H2,
-  standardizeNames: true,
-  hostName: 'localhost/~',
-  databaseName: 'RunExample',
-  userConnection: 'sa',
-  passwordConnection: 'sa',
-  enumFieldToLookupTable: false
-};
 
 // ****************************************
 export const test_026: TestResource = {
   title: '026 - Evaluates the cardinality of the association with the superclass in the event of a flattening',
-  checker: gChecker_026_flatting_to_class_association,
   project,
-  options
+  scripts,
+  obdaMapping,
 };

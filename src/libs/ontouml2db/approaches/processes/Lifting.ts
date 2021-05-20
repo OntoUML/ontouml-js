@@ -76,8 +76,6 @@ export class Lifting {
   static liftAttributes(node: Node): void {
     //here, each note must have only one generalization
 
-    if (node.getGeneralizations().length === 0) return;
-
     let generalization = node.getGeneralizations()[0];
 
     let properties = generalization.getSpecific().getProperties();
@@ -150,7 +148,9 @@ export class Lifting {
   }
 
   static getEnumName(gs: GraphGeneralizationSet): string {
-    if (gs.getName() === null || gs.getName().trim() === '') return 'Enum' + Increment.getNext();
+    gs.getGeneral().getName()
+    if (gs.getName() === null || gs.getName().trim() === '') 
+        return gs.getGeneral().getName() + 'Type';
     else return gs.getName();
   }
 
@@ -161,10 +161,8 @@ export class Lifting {
       return Cardinality.C0_1;
     } else if (!gs.isDisjoint() && gs.isComplete()) {
       return Cardinality.C1_N;
-    } else if (!gs.isDisjoint() && !gs.isComplete()) {
+    } else //if (!gs.isDisjoint() && !gs.isComplete()) {
       return Cardinality.C0_N;
-    }
-    return null;
   }
 
   // **************************************************************************************

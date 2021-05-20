@@ -157,20 +157,6 @@ export class Tracker {
   }
 
   /**
-   * Informs if exists the tracer from the source node to the target node.
-   * @param sourceNodeName
-   * @param targetNodeName
-   */
-  existsTracerByName(sourceNodeName: string, targetNodeName: string): boolean {
-    for (let tracer of this.traceMap.values()) {
-      if (tracer.existsTracerByName(sourceNodeName, targetNodeName)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
    * Adds a node to the set of nodes traced by the origin node. This method must be
    * used when the source node always references a set of nodes. Ex .: when a node
    * has a multivalued attribute, it is divided into two nodes, thus, it will be
@@ -216,7 +202,7 @@ export class Tracker {
       }
     }
   }
-
+/*
   toString(): string {
     let msg = '\n : Tracker ';
 
@@ -224,5 +210,5 @@ export class Tracker {
       msg += '\n\t\t' + trace.toString();
     }
     return msg;
-  }
+  }*/
 }

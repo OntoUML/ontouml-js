@@ -79,8 +79,6 @@ export class GenerateObdaTarget {
 
     if (tracedProperty !== null) {
       targetProperty = tracedProperty.getName();
-    } else {
-      targetProperty = '[CAN NOT FIND ' + property.getName() + ' property at the target node.]';
     }
 
     text += '{';
@@ -155,10 +153,6 @@ export class GenerateObdaTarget {
     let association: GraphRelation;
 
     let propertiesFK = tracedNode.getFKPropertiesOfMainNode();
-
-    if (propertiesFK.length !== 2) {
-      return '[ERROR: must exists tow FKs]';
-    }
 
     association = propertiesFK[0].getAssociationRelatedOfFK() as GraphRelation;
     text += ':';

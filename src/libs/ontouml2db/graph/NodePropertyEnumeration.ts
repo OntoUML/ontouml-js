@@ -37,14 +37,16 @@ export class NodePropertyEnumeration extends NodeProperty {
   /**
    * Returns the enumerations as string.
    */
-  toString(): string {
-    let result = this.getName() + ': ' + this.getDataType() + ' [';
+  
+  // toString(): string {
+  //   let result = this.getName() + ': ' + this.getDataType() + ' [';
 
-    for (let str of this.values) {
-      result += str + ' | ';
-    }
-    result += ']';
+  //   for (let str of this.values) {
+  //     result += str + ' | ';
+  //   }
+  //   result += ']';
 
-    return result;
-  }
+  //   return result;
+  // }
+  
 }

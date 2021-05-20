@@ -21,16 +21,6 @@ export class Tracer {
     this.filters = [];
   }
 
-  // /**
-  //  * Returns the tracked nodes from the original node.
-  //  */
-  // getTargetNodes(): Node[] {
-  //   let nodes: Node[] = [];
-  //   for(let tracedNode of this.targetNodes.values()){
-  //     nodes = nodes.concat(tracedNode.getNodes());
-  //   }
-  //   return nodes;
-  // }
   /**
    * Returns the tracked nodes from the original node.
    */
@@ -70,20 +60,6 @@ export class Tracer {
   }
 
   /**
-   * Informs if the node is traced from the source node.
-   * @param node
-   * @returns
-   */
-  isNodeTraced(node: Node): boolean {
-    for (let tracedNode of this.targetNodes.values()) {
-      if (tracedNode.isNodeTraced(node)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
    * Removes the tracked node. If the node is tracked, it will be removed and will
    * return true. If the node is not tracked, this method do nothing and return false.
    * @param id Node identifier to be removed
@@ -103,15 +79,6 @@ export class Tracer {
    */
   getSourceNode(): Node {
     return this.sourceNode;
-  }
-
-  /**
-   * Informs a node to be tracked in the target graph.
-   *
-   * @param node. Node to be tracked.
-   */
-  setSourceNode(node: Node): void {
-    this.sourceNode = node;
   }
 
   /**
@@ -238,25 +205,7 @@ export class Tracer {
       }
     }
   }
-
-  /**
-   * Informs if there is a node tracer between the given source and target node name.
-   *
-   * @param sourceNodeName
-   * @param targetNodeName
-   * @returns
-   */
-  existsTracerByName(sourceNodeName: string, targetNodeName: string): boolean {
-    if (this.sourceNode.getName() === sourceNodeName) {
-      for (let tracedNode of this.targetNodes.values()) {
-        if (tracedNode.existsTracedNodeByName(targetNodeName)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
+/*
   toString(): string {
     let msg: string = this.sourceNode.getName() + ' -> ';
     for (let tracedNode of this.targetNodes.values()) {
@@ -267,5 +216,5 @@ export class Tracer {
       msg += filter.toString();
     });
     return msg;
-  }
+  }*/
 }

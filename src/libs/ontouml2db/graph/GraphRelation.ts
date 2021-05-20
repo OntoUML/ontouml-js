@@ -6,7 +6,6 @@
 
 import { Cardinality, AssociationType } from '@libs/ontouml2db/constants/enumerations';
 import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
-import { Util } from '@libs/ontouml2db/util/Util';
 import { Node } from '@libs/ontouml2db/graph/Node';
 
 export class GraphRelation extends GraphAssociation {
@@ -126,26 +125,6 @@ export class GraphRelation extends GraphAssociation {
    * @param nodes. New nodes to be linked.
    * @return IGraphAssociation
    */
-  cloneChangingReferencesTo(nodes: Node[]): GraphAssociation {
-    let source: Node = Util.findNodeById(this.sourceNode.getId(), nodes);
-    let target: Node = Util.findNodeById(this.targetNode.getId(), nodes);
-
-    let relation = new GraphRelation(
-      this.getAssociationID(),
-      this.getName(),
-      source,
-      this.sourceCardinality,
-      target,
-      this.targetCardinality
-    );
-
-    relation.setNodeNameRemoved(this.getNodeNameRemoved());
-
-    source.addRelation(relation);
-    target.addRelation(relation);
-
-    return relation;
-  }
 
   /**
    * Delete the association from the nodes.
@@ -174,39 +153,19 @@ export class GraphRelation extends GraphAssociation {
   }
 
   /**
-   * Checks if the cardinality with node is high (1..N; 0..N).
-   *
-   * @param node. Side of the relationship with the node to be evaluated.
-   */
-  isHighCardinalityOfNode(node: Node): boolean {
-    if (
-      this.sourceNode === node &&
-      (this.sourceCardinality === Cardinality.C0_N || this.sourceCardinality === Cardinality.C1_N)
-    ) {
-      return true;
-    }
-
-    if (
-      this.targetNode === node &&
-      (this.targetCardinality === Cardinality.C0_N || this.targetCardinality === Cardinality.C1_N)
-    ) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
    * Returns the relation formatted as string;
    */
-  toString(): string {
-    return (
-      this.sourceNode.getName() +
-      '(' +
-      this.sourceCardinality +
-      ') - (' +
-      this.targetCardinality +
-      ')' +
-      this.targetNode.getName()
-    );
-  }
+  
+  // toString(): string {
+  //   return (
+  //     this.sourceNode.getName() +
+  //     '(' +
+  //     this.sourceCardinality +
+  //     ') - (' +
+  //     this.targetCardinality +
+  //     ')' +
+  //     this.targetNode.getName()
+  //   );
+  // }
+  
 }

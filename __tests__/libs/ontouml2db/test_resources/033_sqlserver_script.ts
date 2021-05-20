@@ -3,17 +3,8 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { GraphChecker } from './graph_tester/GraphChecker';
 import { TestResource } from './TestResource';
-import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { baseExample } from './baseExample';
-import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
-import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
-import { TrackerChecker } from './graph_tester/TrackerChecker';
-import { NodeChecker } from './graph_tester/NodeChecker';
-import { PropertyChecker } from './graph_tester/PropertyChecker';
-import { RelationshipChecker } from './graph_tester/RelationshipChecker';
-import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -98,139 +89,30 @@ const scriptFKSupplyOrganization =
 
 const scriptFKNationalityPerson = 'ALTER TABLE nationality ADD FOREIGN KEY ( person_id ) REFERENCES person ( person_id )';
 
-// ****************************************
-//       CHECK RESULTING GRAPH
-// ****************************************
-const gChecker_run_example = new GraphChecker()
-  .addNode(
-    new NodeChecker('person')
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('birth_date', false))
-      .addProperty(new PropertyChecker('rg', true))
-      .addProperty(new PropertyChecker('ci', true))
-      .addProperty(new PropertyChecker('is_employee', false))
-      .addProperty(new PropertyChecker('is_personal_customer', false))
-      .addProperty(new PropertyChecker('credit_rating', true))
-      .addProperty(new PropertyChecker('credit_card', true))
-      .addProperty(new PropertyChecker('life_phase_enum', false, ['CHILD', 'ADULT']))
-  )
-  .addNode(
-    new NodeChecker('organization')
-      .addProperty(new PropertyChecker('organization_id', false))
-      .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('address', false))
-      .addProperty(new PropertyChecker('is_corporate_customer', false))
-      .addProperty(new PropertyChecker('credit_rating', true))
-      .addProperty(new PropertyChecker('credit_limit', true))
-      .addProperty(new PropertyChecker('is_contractor', false))
-      .addProperty(new PropertyChecker('playground_size', true))
-      .addProperty(new PropertyChecker('capacity', true))
-      .addProperty(new PropertyChecker('organization_type_enum', true, ['PRIMARYSCHOOL', 'HOSPITAL']))
-  )
-  .addNode(
-    new NodeChecker('employment')
-      .addProperty(new PropertyChecker('employment_id', false))
-      .addProperty(new PropertyChecker('organization_id', false))
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('salary', false))
-  )
-  .addNode(
-    new NodeChecker('supply_contract')
-      .addProperty(new PropertyChecker('supply_contract_id', false))
-      .addProperty(new PropertyChecker('organization_id', false))
-      .addProperty(new PropertyChecker('organization_customer_id', true))
-      .addProperty(new PropertyChecker('person_id', true))
-      .addProperty(new PropertyChecker('contract_value', false))
-  )
-  .addNode(
-    new NodeChecker('enrollment')
-      .addProperty(new PropertyChecker('enrollment_id', false))
-      .addProperty(new PropertyChecker('organization_id', false))
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('grade', false))
-  )
-  .addNode(
-    new NodeChecker('nationality')
-      .addProperty(new PropertyChecker('nationality_id', false))
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('nationality_enum', false, ['BRAZILIANCITIZEN', 'ITALIANCITIZEN']))
-  )
-  .addRelationship(new RelationshipChecker('nationality', Cardinality.C0_N, 'person', Cardinality.C1))
-  .addRelationship(new RelationshipChecker('enrollment', Cardinality.C0_N, 'person', Cardinality.C1))
-  .addRelationship(new RelationshipChecker('employment', Cardinality.C0_N, 'person', Cardinality.C1))
-  .addRelationship(new RelationshipChecker('supply_contract', Cardinality.C0_N, 'person', Cardinality.C0_1))
-  .addRelationship(new RelationshipChecker('organization', Cardinality.C1, 'employment', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('organization', Cardinality.C1, 'supply_contract', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('organization', Cardinality.C0_1, 'supply_contract', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('organization', Cardinality.C1, 'enrollment', Cardinality.C0_N))
+const indexP1 = 'CREATE INDEX ix_person_1 ON person ( is_employee, person_id );';
+    
+const indexP2 = 'CREATE INDEX ix_person_2 ON person ( is_personal_customer, person_id );';
 
-  .addTracker(new TrackerChecker('NamedEntity', 'person'))
-  .addTracker(new TrackerChecker('NamedEntity', 'organization'))
-  .addTracker(new TrackerChecker('Person', 'person'))
-  .addTracker(new TrackerChecker('Organization', 'organization'))
-  .addTracker(new TrackerChecker('BrazilianCitizen', 'person'))
-  .addTracker(new TrackerChecker('ItalianCitizen', 'person'))
-  .addTracker(new TrackerChecker('Child', 'person'))
-  .addTracker(new TrackerChecker('Adult', 'person'))
-  .addTracker(new TrackerChecker('Employee', 'person'))
-  .addTracker(new TrackerChecker('Customer', 'person'))
-  .addTracker(new TrackerChecker('Customer', 'organization'))
-  .addTracker(new TrackerChecker('PersonalCustomer', 'person'))
-  .addTracker(new TrackerChecker('CorporateCustomer', 'organization'))
-  .addTracker(new TrackerChecker('Employment', 'employment'))
-  .addTracker(new TrackerChecker('SupplyContract', 'supply_contract'))
-  .addTracker(new TrackerChecker('Contractor', 'organization'))
-  .addTracker(new TrackerChecker('PrimarySchool', 'organization'))
-  .addTracker(new TrackerChecker('Hospital', 'organization'))
-  .addTracker(new TrackerChecker('Enrollment', 'enrollment'))
-  .setNumberOfTablesToFindInScript(6)
-  .setNumberOfFkToFindInScript(8)
-  .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptOrganization, 'The ORFANIZATION table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptEmployment, 'The EMPLOYMENT table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptEnrollment, 'The ENROLLMENT table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptSupply, 'The SUPPLY_CONTRACT table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptNationality, 'The Nationality table is different than expected.'))
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKEmploymentOrganization,
-      'The FK between Employment and Organization not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(scriptFKEmploymentPerson, 'The FK between Employment and Person not exists or is different than expected.')
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKEnrollmentOrganization,
-      'The FK between Enrollment and Organization not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(scritpFKEnrollmentPerson, 'The FK between Enrollment and Person not exists or is different than expected.')
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKSupplyOrganizationCustomer,
-      'The FK between SupplyContract and Organization like Customer not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(scriptFKSupplyPerson, 'The FK between SupplyContract and Person not exists or is different than expected.')
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKSupplyOrganization,
-      'The FK between SupplyContract and Organization not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKNationalityPerson,
-      'The FK between Nationality and Person not exists or is different than expected.'
-    )
-  );
+const indexP3 = 'CREATE INDEX ix_person_3 ON person ( life_phase_enum, person_id );';
+
+const indexO1 = 'CREATE INDEX ix_organization_1 ON organization ( is_corporate_customer, organization_id );';
+
+const indexO2 = 'CREATE INDEX ix_organization_2 ON organization ( is_contractor, organization_id );';
+
+const indexO3 = 'CREATE INDEX ix_organization_3 ON organization ( organization_type_enum, organization_id );';
+
+const indexN1 = 'CREATE INDEX ix_nationality_1 ON nationality ( nationality_enum, person_id, nationality_id );';
+
+const scripts: string[] = [scriptPerson, scriptOrganization, scriptEmployment, scriptEnrollment,
+  scriptSupply, scriptNationality, scriptFKEmploymentOrganization, scriptFKEmploymentPerson,
+  scriptFKEnrollmentOrganization, scritpFKEnrollmentPerson, scriptFKSupplyOrganizationCustomer,
+  scriptFKSupplyPerson, scriptFKSupplyOrganization, scriptFKNationalityPerson, indexP1, indexP2,
+  indexP3, indexO1, indexO2, indexO3, indexN1];
+
+// ****************************************
+//       FOR OBDA VALIDATION
+// ****************************************
+const obdaMapping: string[] = [];
 
 // ****************************************
 //       M O D E L
@@ -238,24 +120,11 @@ const gChecker_run_example = new GraphChecker()
 // It is not the purpose of this test to evaluate the graph. The test will be done for the baseExamle.
 const project = baseExample.project;
 
-// ****************************************
-// ** O P T I O N S
-// ****************************************
-const options: Partial<Ontouml2DbOptions> = {
-  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DbmsSupported.SQLSERVER,
-  standardizeNames: true,
-  hostName: 'localhost/~',
-  databaseName: 'RunExample',
-  userConnection: 'sa',
-  passwordConnection: 'sa',
-  enumFieldToLookupTable: false
-};
 
 // ****************************************
 export const test_033: TestResource = {
   title: '033 - Evaluates SqlServer script',
-  checker: gChecker_run_example,
   project,
-  options
+  scripts,
+  obdaMapping,
 };

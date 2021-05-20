@@ -65,29 +65,6 @@ export class GraphGeneralization extends GraphAssociation {
   }
 
   /**
-   * Clone the association changing the associated nodes to the nodes in
-   * the array. This method generally used to clone the node.
-   *
-   * @param nodes. New nodes to be linked.
-   * @return IGraphAssociation
-   */
-  cloneChangingReferencesTo(nodes: Node[]): GraphGeneralization {
-    let newGeneralizationNode: Node = Util.findNodeById(this.generalizationNode.getId(), nodes);
-    let newSpecializationNode: Node = Util.findNodeById(this.specializationNode.getId(), nodes);
-
-    let newGeneralization: GraphGeneralization = new GraphGeneralization(
-      this.getAssociationID(),
-      newGeneralizationNode,
-      newSpecializationNode
-    );
-
-    newGeneralizationNode.addGeneralization(newGeneralization);
-    newSpecializationNode.addGeneralization(newGeneralization);
-
-    return newGeneralization;
-  }
-
-  /**
    * Delete the association from the nodes.
    *
    * @param node Node to be checked for its existence in the association.
@@ -97,14 +74,13 @@ export class GraphGeneralization extends GraphAssociation {
     this.specializationNode.deleteAssociation(this);
   }
 
-  /**
-   * Returns the generalization formatted as string;
-   */
-  toString(): string {
-    if (this.belongToGS === null) {
-      return '\n\t : ' + this.generalizationNode.getName() + ' <- ' + this.specializationNode.getName(); // +  gs;
-    } else {
-      return this.belongToGS.toString();
-    }
-  }
+  
+  // toString(): string {
+  //   if (this.belongToGS === null) {
+  //     return '\n\t : ' + this.generalizationNode.getName() + ' <- ' + this.specializationNode.getName(); // +  gs;
+  //   } else {
+  //     return this.belongToGS.toString();
+  //   }
+  // }
+  
 }

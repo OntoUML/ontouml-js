@@ -4,14 +4,7 @@
  */
 
 import { Project } from '@libs/ontouml';
-import { GraphChecker } from './graph_tester/GraphChecker';
-import { NodeChecker } from './graph_tester/NodeChecker';
-import { PropertyChecker } from './graph_tester/PropertyChecker';
-import { ScriptChecker } from './graph_tester/ScriptChecker';
-import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
-import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
-import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -28,28 +21,12 @@ const scriptPerson =
   ',        is_role_y               BOOLEAN        NOT NULL DEFAULT FALSE' +
   '); ';
 
+const scripts: string[] = [scriptPerson];
+
 // ****************************************
-//       CHECK RESULTING GRAPH
+//       FOR OBDA VALIDATION
 // ****************************************
-const gChecker_014_lifting_multiple_generalizations = new GraphChecker()
-  .addNode(
-    new NodeChecker('person')
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('birth_date', false))
-      .addProperty(new PropertyChecker('test1', true))
-      .addProperty(new PropertyChecker('test2', true))
-      .addProperty(new PropertyChecker('test3', true))
-      .addProperty(new PropertyChecker('is_employee', false))
-      .addProperty(new PropertyChecker('is_role_x', false))
-      .addProperty(new PropertyChecker('is_role_y', false))
-  )
-  .addTracker(new TrackerChecker('Person', 'person'))
-  .addTracker(new TrackerChecker('RoleX', 'person'))
-  .addTracker(new TrackerChecker('RoleY', 'person'))
-  .addTracker(new TrackerChecker('Employee', 'person'))
-  .setNumberOfTablesToFindInScript(1)
-  .setNumberOfFkToFindInScript(0)
-  .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'));
+const obdaMapping: string[] = [];
 
 // ****************************************
 //       M O D E L
@@ -74,24 +51,11 @@ model.createGeneralization(person, employee);
 model.createGeneralization(person, roleX);
 model.createGeneralization(person, roleY);
 
-// ****************************************
-// ** O P T I O N S
-// ****************************************
-const options: Partial<Ontouml2DbOptions> = {
-  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DbmsSupported.H2,
-  standardizeNames: true,
-  hostName: 'localhost/~',
-  databaseName: 'RunExample',
-  userConnection: 'sa',
-  passwordConnection: 'sa',
-  enumFieldToLookupTable: false
-};
 
 // ****************************************
 export const test_014: TestResource = {
   title: '014 - Lifting with multiple generalizations, without forming a generalization set',
-  checker: gChecker_014_lifting_multiple_generalizations,
   project,
-  options
+  scripts,
+  obdaMapping,
 };

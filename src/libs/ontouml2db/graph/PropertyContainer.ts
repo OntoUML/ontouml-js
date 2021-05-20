@@ -16,52 +16,45 @@ export class PropertyContainer implements PropertyContainerInterface {
 
   addProperty(property: NodeProperty): void {
     if (!this.existsPropertyName(property.getName())) {
-      if (this.existsPropertyName(property.getName())) {
-        throw new Error(
-          `The '${property.getName()}' attribute is repeated between two classes of a generalization.[PropertyContainer.addProperty]`
-        );
-      }
       this.properties.push(property);
+    }else{
+      throw new Error(
+        `The '${property.getName()}' attribute is repeated between two classes of a generalization.[PropertyContainer.addProperty]`
+      );
     }
   }
 
   addProperties(properties: NodeProperty[]): void {
     for (let property of properties) {
-      if (this.existsPropertyName(property.getName())) {
-        throw new Error(
-          `The '${property.getName()}' attribute is repeated between two classes of a generalization.[PropertyContainer.addProperties]`
-        );
-      }
       this.addProperty(property);
     }
   }
 
   addPropertyAt(index: number, property: NodeProperty): void {
-    if (this.existsPropertyName(property.getName())) {
-      throw new Error(
-        `The '${property.getName()}' attribute is repeated between two classes of a generalization.[PropertyContainer.addPropertyAt]`
-      );
+    let canPut: boolean = true;
+    let existingProperty = this.getPropertyByName(property.getName());
+    if (existingProperty !== null) {
+      if(existingProperty.getDataType() === property.getDataType()){
+        // If the attribute exists with the same type, we assume that it is not a 
+        //problem. The attribute is simply not copied.
+        canPut = false;
+      }
+      else{
+        throw new Error(
+          `The '${property.getName()}' attribute is repeated in the hierarchy.[PropertyContainer.addPropertyAt]`
+        );
+      }
     }
-    this.properties.splice(index, 0, property);
+    if(canPut){
+      this.properties.splice(index, 0, property);
+    }
   }
 
   addPropertiesAt(index: number, properties: NodeProperty[]): void {
     properties.forEach((property: NodeProperty) => {
-      if (this.existsPropertyName(property.getName())) {
-        throw new Error(
-          `The '${property.getName()}' attribute is repeated between two classes of a generalization.[PropertyContainer.addPropertiesAt]`
-        );
-      }
       this.addPropertyAt(index, property);
       index++;
     });
-  }
-
-  getPropertyByID(id: string): NodeProperty {
-    for (let val of this.properties) {
-      if (val.getID() === id) return val;
-    }
-    return null;
   }
 
   getPropertyByName(name: string): NodeProperty {
@@ -135,16 +128,16 @@ export class PropertyContainer implements PropertyContainerInterface {
     return null;
   }
 
-  toString(): string {
-    let msg = '';
+  // toString(): string {
+  //   let msg = '';
 
-    msg += '\n\t : [ ';
-    this.properties.forEach((property: NodeProperty) => {
-      msg += property.toString() + ' | ';
-    });
+  //   msg += '\n\t : [ ';
+  //   this.properties.forEach((property: NodeProperty) => {
+  //     msg += property.toString() + ' | ';
+  //   });
 
-    msg += ']';
+  //   msg += ']';
 
-    return msg;
-  }
+  //   return msg;
+  // }
 }

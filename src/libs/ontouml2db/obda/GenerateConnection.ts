@@ -24,9 +24,6 @@ export class GenerateConnection {
 
   static getDatabase(db: DbmsSupported): DbmsInterface {
     switch (db) {
-      case DbmsSupported.GENERIC_SCHEMA: {
-        return new Generic();
-      }
       case DbmsSupported.H2: {
         return new H2();
       }
@@ -42,8 +39,7 @@ export class GenerateConnection {
       case DbmsSupported.SQLSERVER: {
         return new SqlServer();
       }
-      default:
-        throw new Error('There is no support for the chosen database.');
-    }
+      default: return new Generic();
+    }    
   }
 }

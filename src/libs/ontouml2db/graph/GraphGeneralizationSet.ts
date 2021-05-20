@@ -7,8 +7,6 @@
 import { GraphAssociation } from '@libs/ontouml2db/graph/GraphAssociation';
 import { Node } from '@libs/ontouml2db/graph/Node';
 import { AssociationType } from '@libs/ontouml2db/constants/enumerations';
-import { Util } from '@libs/ontouml2db/util/Util';
-import { GraphGeneralization } from '@libs/ontouml2db/graph/GraphGeneralization';
 
 export class GraphGeneralizationSet extends GraphAssociation {
   private generalizationNode: Node;
@@ -42,13 +40,11 @@ export class GraphGeneralizationSet extends GraphAssociation {
   }
 
   /**
-   * Adds a new specialization node to the generalization set.,
+   * Adds a new specialization node to the generalization set.
    *
    * @param specialization Specialization node to be add in the generalization set
    */
   addSpecific(specialization: Node): void {
-    if (this.specializationNodes.includes(specialization)) return;
-
     this.specializationNodes.push(specialization);
   }
 
@@ -88,55 +84,21 @@ export class GraphGeneralizationSet extends GraphAssociation {
    * @param nodes. New nodes to be linked.
    * @return IGraphAssociation
    */
-  cloneChangingReferencesTo(nodes: Node[]): GraphGeneralizationSet {
-    let gs: GraphGeneralizationSet;
-    let superNode: Node;
-    let subNode: Node;
-    let generalization: GraphGeneralization;
-
-    gs = new GraphGeneralizationSet(this.getAssociationID(), this.getName(), this.disjoint, this.complete);
-
-    superNode = Util.findNodeById(this.generalizationNode.getId(), nodes);
-    gs.setGeneral(superNode);
-
-    this.specializationNodes.forEach((node: Node) => {
-      subNode = Util.findNodeById(node.getId(), nodes);
-      gs.addSpecific(subNode);
-
-      generalization = this.getGeneralization(superNode, subNode);
-      generalization.setBelongGeneralizationSet(gs);
-    });
-
-    return gs;
-  }
-
-  private getGeneralization(superNode: Node, subNode: Node): GraphGeneralization {
-    let i: number = 0;
-    let generalizations = superNode.getGeneralizations();
-
-    while (i < generalizations.length) {
-      if (
-        generalizations[i].getGeneral().getId() === superNode.getId() &&
-        generalizations[i].getSpecific().getId() === subNode.getId()
-      )
-        return generalizations[i];
-      i++;
-    }
-    return null;
-  }
 
   /**
    * Returns the generalization set formatted as string;
    */
-  toString(): string {
-    let msg: string = '\n\t : ';
+  
+  // toString(): string {
+  //   let msg: string = '\n\t : ';
 
-    msg += this.generalizationNode.getName() + ' <-GS- ';
+  //   msg += this.generalizationNode.getName() + ' <-GS-('+ this.getName() + ')- ';
 
-    this.specializationNodes.forEach((node: Node) => {
-      msg += node.getName() + '| ';
-    });
+  //   this.specializationNodes.forEach((node: Node) => {
+  //     msg += node.getName() + '| ';
+  //   });
 
-    return msg;
-  }
+  //   return msg;
+  // }
+  
 }

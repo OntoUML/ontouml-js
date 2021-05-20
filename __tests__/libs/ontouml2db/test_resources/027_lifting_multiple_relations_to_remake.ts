@@ -3,17 +3,8 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { GraphChecker } from './graph_tester/GraphChecker';
-import { NodeChecker } from './graph_tester/NodeChecker';
-import { PropertyChecker } from './graph_tester/PropertyChecker';
-import { RelationshipChecker } from './graph_tester/RelationshipChecker';
-import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
-import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
-import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { Project } from '@libs/ontouml';
-import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
-import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -41,45 +32,13 @@ const scriptTest =
 const scriptFKEmployment = 'ALTER TABLE employment ADD FOREIGN KEY ( person_id ) REFERENCES person ( person_id );';
 const scriptFKTest = 'ALTER TABLE test ADD FOREIGN KEY ( person_id ) REFERENCES person ( person_id );';
 
+const scripts: string[] = [scriptPerson, scriptEmployment, scriptTest, scriptFKEmployment,
+  scriptFKTest];
+
 // ****************************************
-//       CHECK RESULTING GRAPH
+//       FOR OBDA VALIDATION
 // ****************************************
-const gChecker_027_lifting_multiple_relations_to_remake = new GraphChecker()
-  .addNode(
-    new NodeChecker('person')
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('life_phase_enum', false, ['CHILD', 'ADULT']))
-      .addProperty(new PropertyChecker('is_employee', false))
-      .addProperty(new PropertyChecker('is_personal_customer', false))
-  )
-  .addNode(
-    new NodeChecker('employment')
-      .addProperty(new PropertyChecker('employment_id', false))
-      .addProperty(new PropertyChecker('person_id', false))
-  )
-  .addNode(
-    new NodeChecker('test')
-      .addProperty(new PropertyChecker('test_id', false))
-      .addProperty(new PropertyChecker('person_id', false))
-  )
-  .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'employment', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'test', Cardinality.C0_N))
-  .addTracker(new TrackerChecker('Person', 'person'))
-  .addTracker(new TrackerChecker('Child', 'person'))
-  .addTracker(new TrackerChecker('Adult', 'person'))
-  .addTracker(new TrackerChecker('Employee', 'person'))
-  .addTracker(new TrackerChecker('PersonalCustomer', 'person'))
-  .addTracker(new TrackerChecker('Employment', 'employment'))
-  .addTracker(new TrackerChecker('Test', 'test'))
-  .setNumberOfTablesToFindInScript(3)
-  .setNumberOfFkToFindInScript(2)
-  .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptEmployment, 'The EMPLOYMENT table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptTest, 'The TEST table is different than expected.'))
-  .addScriptChecker(
-    new ScriptChecker(scriptFKEmployment, 'The FK between EMPLOYMENT and PERSON not exists or is different than expected.')
-  )
-  .addScriptChecker(new ScriptChecker(scriptFKTest, 'The FK between TEST and PERSON not exists or is different than expected.'));
+const obdaMapping: string[] = [];
 
 // ****************************************
 //       M O D E L
@@ -113,23 +72,9 @@ relation2.getSourceEnd().cardinality.setOneToOne();
 relation2.getTargetEnd().cardinality.setOneToMany();
 
 // ****************************************
-// ** O P T I O N S
-// ****************************************
-const options: Partial<Ontouml2DbOptions> = {
-  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DbmsSupported.H2,
-  standardizeNames: true,
-  hostName: 'localhost/~',
-  databaseName: 'RunExample',
-  userConnection: 'sa',
-  passwordConnection: 'sa',
-  enumFieldToLookupTable: false
-};
-
-// ****************************************
 export const test_027: TestResource = {
   title: '027 - Lifting when one subclass has two indirect associations',
-  checker: gChecker_027_lifting_multiple_relations_to_remake,
   project,
-  options
+  scripts,
+  obdaMapping,
 };

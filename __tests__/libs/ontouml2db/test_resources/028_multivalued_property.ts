@@ -3,17 +3,8 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { GraphChecker } from './graph_tester/GraphChecker';
-import { NodeChecker } from './graph_tester/NodeChecker';
-import { PropertyChecker } from './graph_tester/PropertyChecker';
-import { RelationshipChecker } from './graph_tester/RelationshipChecker';
-import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
-import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
-import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { Project } from '@libs/ontouml';
-import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
-import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -41,43 +32,36 @@ const scriptAddress =
 const scriptFKTel = 'ALTER TABLE tel ADD FOREIGN KEY ( person_id ) REFERENCES person ( person_id );';
 const scriptFKAddress = 'ALTER TABLE address ADD FOREIGN KEY ( person_id ) REFERENCES person ( person_id );';
 
+const scripts: string[] = [scriptPerson, scriptTel, scriptAddress, scriptFKTel, scriptFKAddress];
+
 // ****************************************
-//       CHECK RESULTING GRAPH
+//       FOR OBDA VALIDATION
 // ****************************************
-const gChecker_028_multivalued_property = new GraphChecker()
-  .addNode(
-    new NodeChecker('person').addProperty(new PropertyChecker('person_id', false)).addProperty(new PropertyChecker('name', false))
-  )
-  .addNode(
-    new NodeChecker('tel')
-      .addProperty(new PropertyChecker('tel_id', false))
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('tel', false))
-  )
-  .addNode(
-    new NodeChecker('address')
-      .addProperty(new PropertyChecker('address_id', false))
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('address', false))
-  )
-  .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'tel', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('person', Cardinality.C1, 'address', Cardinality.C0_N))
-  .addTracker(new TrackerChecker('NamedEntity', 'person'))
-  .addTracker(new TrackerChecker('Person', 'person'))
-  .setNumberOfTablesToFindInScript(3)
-  .setNumberOfFkToFindInScript(2)
-  .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptTel, 'The TEL table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptAddress, 'The ADDRESS table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptFKTel, 'The FK between PERSONT and TEL not exists or is different than expected.'))
-  .addScriptChecker(
-    new ScriptChecker(scriptFKAddress, 'The FK between PERSON and ADDRESS not exists or is different than expected.')
-  );
+
+const obdaNamedEntity = 
+'mappingId    Test28-NamedEntity'+
+'target       :Test28/person/{person_id} a :NamedEntity ; :name {name}^^xsd:string ; :tel {tel}^^xsd:string .'+
+'source       SELECT person.person_id, person.name, tel.tel '+
+'             FROM person '+
+'             INNER JOIN tel'+
+'                     ON person.person_id = tel.person_id ';
+
+const obdaPerson = 
+'mappingId    Test28-Person'+
+'target       :Test28/person/{person_id} a :Person ; :address {address}^^xsd:string .'+
+'source       SELECT person.person_id, address.address '+
+'             FROM person '+
+'             INNER JOIN address'+
+'                     ON person.person_id = address.person_id ';
+
+
+const obdaMapping: string[] = [obdaNamedEntity, obdaPerson];
 
 // ****************************************
 //       M O D E L
 // ****************************************
 const project = new Project();
+project.setName('Test28');
 const model = project.createModel();
 // CREATE TYPES
 const _string = model.createDatatype('string');
@@ -91,24 +75,11 @@ namedEntity.createAttribute(_string, 'name').cardinality.setOneToOne();
 namedEntity.createAttribute(_string, 'tel').cardinality.setZeroToMany();
 person.createAttribute(_string, 'address').cardinality.setOneToMany();
 
-// ****************************************
-// ** O P T I O N S
-// ****************************************
-const options: Partial<Ontouml2DbOptions> = {
-  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DbmsSupported.H2,
-  standardizeNames: true,
-  hostName: 'localhost/~',
-  databaseName: 'RunExample',
-  userConnection: 'sa',
-  passwordConnection: 'sa',
-  enumFieldToLookupTable: false
-};
 
 // ****************************************
 export const test_028: TestResource = {
   title: '028 - Evaluates the multivalued property',
-  checker: gChecker_028_multivalued_property,
   project,
-  options
+  scripts,
+  obdaMapping,
 };

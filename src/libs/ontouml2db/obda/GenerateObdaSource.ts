@@ -159,17 +159,18 @@ export class GenerateObdaSource {
 
   static getFKFields(sourceNode: Node, targetNode: Node): string {
     let fk: NodeProperty;
+    let result: string = '';
 
     fk = sourceNode.getFKRelatedOfNodeID(targetNode.getId());
     if (fk !== null) {
-      return fk.getName();
+      result = fk.getName();
     } else {
       fk = targetNode.getFKRelatedOfNodeID(sourceNode.getId());
       if (fk !== null) {
-        return fk.getName();
+        result = fk.getName();
       }
     }
-    return 'Did not find the fk of the referenced table';
+    return result;
   }
 
   static getStringValue(value: any): string {

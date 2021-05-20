@@ -50,7 +50,7 @@ export class Factory {
   }
 
   putClass(_class: Class): void {
-    const node: Node = new Node(_class.id, _class.getNameOrId(), this.getUfoStereotype(_class));
+    const node: Node = new Node(_class.id, _class.getName(), this.getUfoStereotype(_class));
 
     for (const attribute of _class.getOwnAttributes()) {
       const cardinality = attribute.cardinality.lowerBound + '..' + attribute.cardinality.upperBound;
@@ -79,17 +79,15 @@ export class Factory {
   getIsMultivalued(cardinality: string): boolean {
     if (cardinality === null) return false;
 
-    if (cardinality.length > 3) {
-      let num = cardinality.substring(cardinality.length - 1, cardinality.length);
+    let num = cardinality.substring(cardinality.length - 1, cardinality.length);
 
-      if (num === '*') return true;
+    if (num === '*') return true;
 
-      if (!isNaN(parseFloat(num))) {
-        if (Number(num) > 1) return true;
-        else return false;
-      }
+    if (!isNaN(parseFloat(num))) {
+      if (Number(num) > 1) return true;
+      else return false;
     }
-    return false;
+    throw new Error('It is not possible to identify the cardinality [Factory.getIsMultivalued].');
   }
 
   getUfoStereotype(_class: Class): ClassStereotype {
@@ -142,12 +140,8 @@ export class Factory {
       if (upperCardinality === 1) return Cardinality.C0_1;
       else return Cardinality.C0_N; // 0..2, 0..3, ..., 0..*
     } else {
-      if (lowerCardinality === 1) {
-        if (upperCardinality === 1) return Cardinality.C1;
-        else return Cardinality.C1_N; // 1..2, 1..3, ..., 1..*
-      } else {
-        return Cardinality.C1_N;
-      }
+      if (upperCardinality === 1) return Cardinality.C1;
+      else return Cardinality.C1_N; // 1..2, 1..3, ..., 1..*
     }
   }
 
@@ -197,7 +191,7 @@ export class Factory {
 
     //informs the generalization set that the generalizations belong to.
     generalizationSets.forEach((gs: GeneralizationSet) => {
-      newGeneralizationSet = new GraphGeneralizationSet(gs.id, gs.getNameOrId(), gs.isDisjoint, gs.isComplete);
+      newGeneralizationSet = new GraphGeneralizationSet(gs.id, gs.getName(), gs.isDisjoint, gs.isComplete);
       newGeneralizationSet.setGeneral(this.graph.getNodeById((gs.getGeneral() as Class).id));
 
       gs.generalizations.forEach((generalization: Generalization) => {

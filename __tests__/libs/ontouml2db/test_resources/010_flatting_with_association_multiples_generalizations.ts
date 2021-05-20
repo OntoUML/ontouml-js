@@ -3,17 +3,8 @@
  * Author: Gustavo Ludovico Guidoni
  */
 
-import { GraphChecker } from './graph_tester/GraphChecker';
-import { NodeChecker } from './graph_tester/NodeChecker';
-import { PropertyChecker } from './graph_tester/PropertyChecker';
-import { TrackerChecker } from './graph_tester/TrackerChecker';
-import { RelationshipChecker } from './graph_tester/RelationshipChecker';
-import { Cardinality } from '@libs/ontouml2db/constants/enumerations';
 import { TestResource } from './TestResource';
-import { ScriptChecker } from './graph_tester/ScriptChecker';
 import { Project } from '@libs/ontouml';
-import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
-import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -62,85 +53,14 @@ const scriptFKTestOrganizationC =
 const scriptFKTestOrganizationD =
   'ALTER TABLE test ADD FOREIGN KEY ( organization_d_id ) REFERENCES organization_d ( organization_d_id );';
 
-// ****************************************
-//       CHECK RESULTING GRAPH
-// ****************************************
+const scripts: string[] = [scriptOrganizationA, scriptOrganizationB, scriptOrganizationC,
+  scriptOrganizationD, scriptTest, scriptFKTestOrganizationA, scriptFKTestOrganizationB,
+  scriptFKTestOrganizationC, scriptFKTestOrganizationD];
 
-const gChecker_010_flatting_with_association_multiples_generalizations = new GraphChecker()
-  .addNode(
-    new NodeChecker('organization_a')
-      .addProperty(new PropertyChecker('organization_a_id', false))
-      .addProperty(new PropertyChecker('name', false))
-      .addProperty(new PropertyChecker('address', false))
-  )
-  .addNode(
-    new NodeChecker('organization_b')
-      .addProperty(new PropertyChecker('organization_b_id', false))
-      .addProperty(new PropertyChecker('name', false))
-  )
-  .addNode(
-    new NodeChecker('organization_c')
-      .addProperty(new PropertyChecker('organization_c_id', false))
-      .addProperty(new PropertyChecker('name', false))
-  )
-  .addNode(
-    new NodeChecker('organization_d')
-      .addProperty(new PropertyChecker('organization_d_id', false))
-      .addProperty(new PropertyChecker('name', false))
-  )
-  .addNode(
-    new NodeChecker('test')
-      .addProperty(new PropertyChecker('test_id', false))
-      .addProperty(new PropertyChecker('test1', false))
-      .addProperty(new PropertyChecker('organization_a_id', true))
-      .addProperty(new PropertyChecker('organization_b_id', true))
-      .addProperty(new PropertyChecker('organization_c_id', true))
-      .addProperty(new PropertyChecker('organization_d_id', true))
-  )
-  .addRelationship(new RelationshipChecker('organization_a', Cardinality.C0_1, 'test', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('organization_b', Cardinality.C0_1, 'test', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('organization_c', Cardinality.C0_1, 'test', Cardinality.C0_N))
-  .addRelationship(new RelationshipChecker('organization_d', Cardinality.C0_1, 'test', Cardinality.C0_N))
-  .addTracker(new TrackerChecker('NamedEntity', 'organization_a'))
-  .addTracker(new TrackerChecker('NamedEntity', 'organization_b'))
-  .addTracker(new TrackerChecker('NamedEntity', 'organization_c'))
-  .addTracker(new TrackerChecker('NamedEntity', 'organization_d'))
-  .addTracker(new TrackerChecker('OrganizationA', 'organization_a'))
-  .addTracker(new TrackerChecker('OrganizationB', 'organization_b'))
-  .addTracker(new TrackerChecker('OrganizationC', 'organization_c'))
-  .addTracker(new TrackerChecker('OrganizationD', 'organization_d'))
-  .addTracker(new TrackerChecker('Test', 'test'))
-  .setNumberOfTablesToFindInScript(5)
-  .setNumberOfFkToFindInScript(4)
-  .addScriptChecker(new ScriptChecker(scriptOrganizationA, 'The ORGANIZATION_A table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptOrganizationB, 'The ORGANIZATION_B table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptOrganizationC, 'The ORGANIZATION_C table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptOrganizationD, 'The ORGANIZATION_D table is different than expected.'))
-  .addScriptChecker(new ScriptChecker(scriptTest, 'The TEST table is different than expected.'))
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKTestOrganizationA,
-      'The FK between Test and Organiation_A not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKTestOrganizationB,
-      'The FK between Test and Organiation_B not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKTestOrganizationC,
-      'The FK between Test and Organiation_C not exists or is different than expected.'
-    )
-  )
-  .addScriptChecker(
-    new ScriptChecker(
-      scriptFKTestOrganizationD,
-      'The FK between Test and Organiation_D not exists or is different than expected.'
-    )
-  );
+// ****************************************
+//       FOR OBDA VALIDATION
+// ****************************************
+const obdaMapping: string[] = [];
 
 // ****************************************
 //       M O D E L
@@ -172,23 +92,9 @@ relation.getSourceEnd().cardinality.setOneToOne();
 relation.getTargetEnd().cardinality.setZeroToMany();
 
 // ****************************************
-// ** O P T I O N S
-// ****************************************
-const options: Partial<Ontouml2DbOptions> = {
-  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DbmsSupported.H2,
-  standardizeNames: true,
-  hostName: 'localhost/~',
-  databaseName: 'RunExample',
-  userConnection: 'sa',
-  passwordConnection: 'sa',
-  enumFieldToLookupTable: false
-};
-
-// ****************************************
 export const test_010: TestResource = {
   title: '010 - Flatting with one association and multiples generalizations',
-  checker: gChecker_010_flatting_with_association_multiples_generalizations,
   project,
-  options
+  scripts,
+  obdaMapping,
 };

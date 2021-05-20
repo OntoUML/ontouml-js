@@ -42,10 +42,7 @@ export class TracedNode {
    * @returns
    */
   getMainNode(): Node {
-    if (this.nodes.length > 0) {
-      return this.nodes[0];
-    }
-    return null;
+    return this.nodes[0];
   }
   
   /**
@@ -99,14 +96,15 @@ export class TracedNode {
    * @returns
    */
   getPropertyByID(id: string): NodeProperty {
+    let result: NodeProperty = null;
     for (let node of this.nodes) {
       for (let property of node.getProperties()) {
         if (property.getID() === id) {
-          return property;
+          result = property;
         }
       }
     }
-    return null;
+    return result;
   }
 
   /**
@@ -131,32 +129,17 @@ export class TracedNode {
    * @returns
    */
   getNodeProperty(id: string): Node {
+    let result: Node = null;
     for (let node of this.nodes) {
       for (let property of node.getProperties()) {
         if (property.getID() === id) {
-          return node;
+          result = node;
         }
       }
     }
-    return null;
+    return result;
   }
-
-  /**
-   * Informs if there is a node traced to the given node name.
-   *
-   * @param nodeName
-   * @returns
-   */
-  existsTracedNodeByName(nodeName: string): boolean {
-    for (let node of this.nodes) {
-      if (node.getName() === nodeName) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
+/*
   toString(): string {
     let msg: string = '';
     let first: boolean = true;
@@ -174,4 +157,5 @@ export class TracedNode {
     }
     return msg;
   }
+  */
 }

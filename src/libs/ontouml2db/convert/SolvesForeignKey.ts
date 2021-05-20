@@ -54,7 +54,7 @@ export class SolvesForeignKey {
       if (SolvesForeignKey.is1To1(relation)) {
         relations.splice(i, 1);
 
-        //It may present a problem if start to solve the subclass primary key.
+        //Is a problem if start to solve the subclass primary key.
         if (relation.getSourceNode().getPrimaryKey() !== null) {
           SolvesForeignKey.propagateKey(
             relation.getSourceNode(),
@@ -104,8 +104,8 @@ export class SolvesForeignKey {
 
   static isNTo1(relation: GraphRelation): boolean {
     if (
-      (relation.getTargetCardinality() === Cardinality.C0_1 || relation.getTargetCardinality() === Cardinality.C1) &&
-      (relation.getSourceCardinality() === Cardinality.C0_N || relation.getSourceCardinality() === Cardinality.C1_N)
+      (relation.getSourceCardinality() === Cardinality.C0_N || relation.getSourceCardinality() === Cardinality.C1_N) &&
+      (relation.getTargetCardinality() === Cardinality.C0_1 || relation.getTargetCardinality() === Cardinality.C1)
     )
       return true;
     else return false;

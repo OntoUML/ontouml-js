@@ -46,18 +46,6 @@ export class AssociationContainer implements AssociationContainerInterface {
   }
 
   /**
-   * Returns the association that references the node.
-   *
-   * @param nodeID Node identifier to be searched.
-   */
-  getAssociationWithNode(nodeID: string): GraphAssociation {
-    for (let relation of this.relations) {
-      if (relation.getSourceNode().getId() === nodeID || relation.getTargetNode().getId() === nodeID) return relation;
-    }
-    return null;
-  }
-
-  /**
    * Adds a new generalization to the node's association set.
    *
    * @param generalization Generalization to be added
@@ -82,7 +70,7 @@ export class AssociationContainer implements AssociationContainerInterface {
 
     for (let generalization of this.generalizations) {
       if (generalization.isBelongGeneralizationSet()) {
-        if (!gSets.includes(generalization.getBelongGeneralizationSet())) gSets.push(generalization.getBelongGeneralizationSet());
+          gSets.push(generalization.getBelongGeneralizationSet());
       }
     }
     return gSets;
@@ -97,10 +85,8 @@ export class AssociationContainer implements AssociationContainerInterface {
       let index = this.relations.indexOf(association);
       if (index !== -1) this.relations.splice(index, 1);
     } else {
-      if (association instanceof GraphGeneralization) {
-        let index = this.generalizations.indexOf(association);
+        let index = this.generalizations.indexOf(association as GraphGeneralization);
         this.generalizations.splice(index, 1);
-      }
     }
   }
 
@@ -135,30 +121,30 @@ export class AssociationContainer implements AssociationContainerInterface {
       if (generalization.getSpecific().getId() === this.parentNode.getId()) 
         generalizations.push( generalization.getGeneral() );
     }
-    if(generalizations.length > 0)
-      return generalizations;
-    else return null;
+    return generalizations;
   }
 
   /**
    * Returns all associations formatted as a string.
    */
-  toString(): string {
-    let msg = '';
+  
+  // toString(): string {
+  //   let msg = '';
 
-    if (this.generalizations.length > 0) {
-      this.generalizations.forEach((generalization: GraphGeneralization) => {
-        msg += generalization.toString();
-      });
-    }
+  //   if (this.generalizations.length > 0) {
+  //     this.generalizations.forEach((generalization: GraphGeneralization) => {
+  //       msg += generalization.toString();
+  //     });
+  //   }
 
-    if (this.relations.length > 0) {
-      msg += '\n\t : ';
-      this.relations.forEach((relation: GraphRelation) => {
-        msg += relation.toString() + ' | ';
-      });
-    }
+  //   if (this.relations.length > 0) {
+  //     msg += '\n\t : ';
+  //     this.relations.forEach((relation: GraphRelation) => {
+  //       msg += relation.toString() + ' | ';
+  //     });
+  //   }
 
-    return msg;
-  }
+  //   return msg;
+  // }
+  
 }

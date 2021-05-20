@@ -60,7 +60,7 @@ export class Ontouml2Db implements Service {
    */
   validate(): void {
     if (this.options.targetDBMS === DbmsSupported.GENERIC_SCHEMA && this.options.enumFieldToLookupTable === false) {
-      throw new Error('It is not possible to make lookup tables for a GENERIC database.');
+      throw new Error('It is not possible to make lookup field for GENERIC database.');
     }
   }
 
@@ -79,9 +79,6 @@ export class Ontouml2Db implements Service {
         break;
       case StrategyType.ONE_TABLE_PER_CONCRETE_CLASS:
         strategy = new OneTablePerConcreteClass();
-        break;
-      default:
-        console.log('ops');
         break;
     }
 
@@ -117,26 +114,5 @@ export class Ontouml2Db implements Service {
    */
   getProtegeConnection(): string {
     return GenerateConnection.getFile(this.options);
-  }
-
-  /**
-   * Returns the model read from the json file as a graph
-   */
-  getSourceGraph(): Graph {
-    return this.graph;
-  }
-
-  /**
-   * Return the tracking between the source and target graph nodes
-   */
-  getTracker(): Tracker {
-    return this.tracker;
-  }
-
-  /**
-   * Returns the configuration options.
-   */
-  getOptions(): Ontouml2DbOptions {
-    return this.options;
   }
 }

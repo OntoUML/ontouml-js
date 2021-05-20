@@ -33,32 +33,12 @@ export class GraphAssociation {
   }
 
   /**
-   * Indicates the association name.
-   *
-   * @param name. Association name.
-   */
-  setName(name: string): void {
-    this.name = name;
-  }
-
-  /**
    * Returns the association name.
    *
    * @return A string with the association name.
    */
   getName(): string {
     return this.name;
-  }
-
-  /**
-   * Checks if the current association is the same type as the association
-   * passed as a parameter.
-   *
-   * @param associationType. association to be tested.
-   * @return boolean. Returns true if are the same, otherwise false.
-   */
-  isAssociationType(associationType: AssociationType): boolean {
-    return this.associationType === associationType;
   }
 
   /**
@@ -109,25 +89,5 @@ export class GraphAssociation {
    */
   isDerivedFromGeneralization():boolean{
     return this.derivedFromGeneralization;
-  }
-
-  /**
-   * Clone the association changing the associated nodes to the nodes in
-   * the array. This method generally used to clone the node.
-   *
-   * @param nodes. New nodes to be linked.
-   * @return IGraphAssociation
-   */
-  cloneChangingReferencesTo(nodes: Node[]): GraphAssociation {
-    throw new Error('This method must be called by the inheriting classes.');
-  }
-
-  /**
-   * Delete the association from the nodes.
-   *
-   * @param node Node to be checked for its existence in the association.
-   */
-  deleteAssociation(): void {
-    throw new Error('This method must be called by the inheriting classes.');
   }
 }

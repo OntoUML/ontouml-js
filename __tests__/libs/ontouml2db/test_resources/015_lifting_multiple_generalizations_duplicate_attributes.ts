@@ -4,14 +4,7 @@
  */
 
 import { Project } from '@libs/ontouml';
-import { GraphChecker } from './graph_tester/GraphChecker';
-import { NodeChecker } from './graph_tester/NodeChecker';
-import { PropertyChecker } from './graph_tester/PropertyChecker';
-import { ScriptChecker } from './graph_tester/ScriptChecker';
-import { TrackerChecker } from './graph_tester/TrackerChecker';
 import { TestResource } from './TestResource';
-import { Ontouml2DbOptions, StrategyType } from '@libs/ontouml2db';
-import { DbmsSupported } from '@libs/ontouml2db/constants/DbmsSupported';
 
 // ****************************************
 //       FOR SCHEMA VALIDATION
@@ -25,24 +18,12 @@ const scriptPerson =
   ",        person_phase_enum       ENUM('CHILD','ADULT')  NOT NULL" +
   '); ';
 
+const scripts: string[] = [scriptPerson];
+
 // ****************************************
-//       CHECK RESULTING GRAPH
+//       FOR OBDA VALIDATION
 // ****************************************
-const gChecker_015_lifting_multiple_generalizations_duplicate_attributes = new GraphChecker()
-  .addNode(
-    new NodeChecker('person')
-      .addProperty(new PropertyChecker('person_id', false))
-      .addProperty(new PropertyChecker('birth_date', false))
-      .addProperty(new PropertyChecker('test1', true))
-      .addProperty(new PropertyChecker('test2', true))
-      .addProperty(new PropertyChecker('person_phase_enum', false, ['CHILD', 'ADULT']))
-  )
-  .addTracker(new TrackerChecker('Person', 'person'))
-  .addTracker(new TrackerChecker('Child', 'person'))
-  .addTracker(new TrackerChecker('Adult', 'person'))
-  .setNumberOfTablesToFindInScript(1)
-  .setNumberOfFkToFindInScript(0)
-  .addScriptChecker(new ScriptChecker(scriptPerson, 'The PERSON table is different than expected.'));
+const obdaMapping: string[] = [];
 
 // ****************************************
 //       M O D E L
@@ -69,24 +50,11 @@ const genPersonAdult = model.createGeneralization(person, adult);
 // CRETATE GENERALIZATION SET
 model.createGeneralizationSet([genPersonChild, genPersonAdult], disjoint, complete, null, 'PersonPhase');
 
-// ****************************************
-// ** O P T I O N S
-// ****************************************
-const options: Partial<Ontouml2DbOptions> = {
-  mappingStrategy: StrategyType.ONE_TABLE_PER_KIND,
-  targetDBMS: DbmsSupported.H2,
-  standardizeNames: true,
-  hostName: 'localhost/~',
-  databaseName: 'RunExample',
-  userConnection: 'sa',
-  passwordConnection: 'sa',
-  enumFieldToLookupTable: false
-};
 
 // ****************************************
 export const test_015: TestResource = {
   title: '015 - Lifting a generalization set with the attribute name repeated in both subclasses',
-  checker: gChecker_015_lifting_multiple_generalizations_duplicate_attributes,
   project,
-  options
+  scripts,
+  obdaMapping,
 };
