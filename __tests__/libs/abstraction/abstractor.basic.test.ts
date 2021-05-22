@@ -120,4 +120,39 @@ describe('Basic clusterization example', () => {
     });
 
   });
+
+
+  describe('Sortal Abstraction Test', () => {
+    let diagram: Diagram = diagrams.find(d => d.getName() === 'Sortal Abstraction');
+
+    it('Should not contain classes', () => {
+      expect(diagram.findView(husband)).toBeFalsy();
+      expect(diagram.findView(wife)).toBeFalsy();
+      expect(diagram.findView(personalCustomer)).toBeFalsy();
+      expect(diagram.findView(rentalCar)).toBeFalsy();
+      expect(diagram.findView(corporateCustomer)).toBeFalsy();
+      
+
+    });
+
+   
+
+  });
+
+  describe('Subkind And Phase Partitions Abstraction Test', () => {
+    let diagram: Diagram = diagrams.find(d => d.getName() === 'Subkind And Phase Partitions Abstraction');
+
+    it('Should not contain classes', () => {
+      expect(diagram.findView(child)).toBeFalsy();
+      expect(diagram.findView(adult)).toBeFalsy();
+      expect(diagram.findView(teenager)).toBeFalsy();
+      expect(diagram.findView(available)).toBeFalsy();
+      expect(diagram.findView(underMaintenance)).toBeFalsy();
+      
+
+    });
+
+   
+
+  });
 });
