@@ -38,6 +38,16 @@ export class GeneralizationSet extends ModelElement {
     );
   }
 
+  isSubkindPartition(): boolean {
+    return (
+      this.isPartition() &&
+      this.involvesClasses() &&
+      ((this.getSpecificClasses().every(specific => specific.hasSubkindStereotype()) &&
+        this.getGeneralClass().hasSortalStereotype()))
+      //
+    );
+  }
+
   /**
    * @throws exception if different generals are present
    */
