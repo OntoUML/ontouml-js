@@ -606,4 +606,16 @@ describe('Relation Tests', () => {
     it('Test method', () => expect(relationA).toEqual(relationB));
     it('Test method', () => expect(relationC).toEqual(relationD));
   });
+
+  describe('Test involves(class)', () => {
+    const model = new Project().createModel();
+    const husband = model.createRole();
+    const man = model.createSubkind();
+    const wife = model.createRole();
+    const marriage = model.createMaterialRelation(husband, wife);
+
+    it('Test if Source is in relation', () => expect(marriage.involves(husband)).toBeTruthy())
+    it('Test if Target is in relation', () => expect(marriage.involves(wife)).toBeTruthy())
+    it('Test if a class if out of relation', () => expect(marriage.involves(man)).toBeFalsy())
+  })
 });

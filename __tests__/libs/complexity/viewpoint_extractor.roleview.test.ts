@@ -1,5 +1,5 @@
+import { ViewpointExtractor } from '@libs/complexity/viewpoint_extractor';
 import { Project, Diagram } from '@libs/ontouml';
-import { ViewpointExtractor } from '@libs/viewpoints';
 
 describe('Basic viewpoint example', () => {
   const project = new Project();
@@ -103,78 +103,6 @@ describe('Basic viewpoint example', () => {
 
   let diagrams: Diagram[] = new ViewpointExtractor(project).buildAll();
 
-  
-
-  describe('Kind View', () => {
-    let diagram: Diagram = diagrams.find(d => d.getName() === 'Kind View');
-
-    it('Should contain the expected classes (4)', () => {
-      expect(diagram.findView(k_harbor)).toBeTruthy();
-      expect(diagram.findView(k_organization)).toBeTruthy();
-      expect(diagram.findView(k_person)).toBeTruthy();
-      expect(diagram.findView(k_ship)).toBeTruthy();
-      expect(diagram.getClassViews()).toHaveLength(4);
-    });
-
-  });
-
-  describe('SubKind View', () => {
-    let diagram: Diagram = diagrams.find(d => d.getName() === 'SubKind View');
-
-    it('Should contain the expected classes (3)', () => {
-      expect(diagram.findView(sk_passengerShip)).toBeTruthy();
-      expect(diagram.findView(sk_cargoShip)).toBeTruthy();
-      expect(diagram.findView(k_ship)).toBeTruthy();
-      expect(diagram.getClassViews()).toHaveLength(3);
-    });
-
-    it('Should contain the expected generalizations (2)', () => {
-      expect(diagram.findView(gn_cargoShip)).toBeTruthy();
-      expect(diagram.findView(gn_passengerShip)).toBeTruthy();
-      expect(diagram.getGeneralizationViews()).toHaveLength(2);
-    })
-
-    it('Should contain ancestors of subkind class: «subkind» Cargo Ship', () => {
-      expect(diagram.findView(k_ship)).toBeTruthy();
-    });
-
-    it('Should contain ancestors of subkind class: «subkind» Passenger Ship', () => {
-      expect(diagram.findView(k_ship)).toBeTruthy();
-    });
-  });
-
-  describe('Phase View', () => {
-    let diagram: Diagram = diagrams.find(d => d.getName() === 'Phase View');
-
-    it('Should contain the expected classes (4)', () => {
-      expect(diagram.findView(p_activeHarbor)).toBeTruthy();
-      expect(diagram.findView(p_extinctHarbor)).toBeTruthy();
-      expect(diagram.findView(p_temporallyClosedHarbor)).toBeTruthy();
-      expect(diagram.findView(k_harbor)).toBeTruthy();
-      expect(diagram.getClassViews()).toHaveLength(4);
-    });
-
-    it('Should contain the expected generalizations (3)', () => {
-      expect(diagram.findView(gn_activeHarbor)).toBeTruthy();
-      expect(diagram.findView(gn_extinctHarbor)).toBeTruthy();
-      expect(diagram.findView(gn_temporallyClosedHarbor)).toBeTruthy();
-      expect(diagram.getGeneralizationViews()).toHaveLength(3);
-    })
-
-    it('Should contain ancestors of phase class: «phase» Active Harbor', () => {
-      expect(diagram.findView(k_harbor)).toBeTruthy();
-    });
-
-    it('Should contain ancestors of phase class: «phase» Extinct Harbor', () => {
-      expect(diagram.findView(k_harbor)).toBeTruthy();
-    });
-
-    it('Should contain ancestors of phase class: «phase» Temporarily Closed Harbor', () => {
-      expect(diagram.findView(k_harbor)).toBeTruthy();
-    });
-  });
-
-
   describe('Role View', () => {
     let diagram: Diagram = diagrams.find(d => d.getName() === 'Role View');
 
@@ -257,110 +185,15 @@ describe('Basic viewpoint example', () => {
 
   });
 
-  describe('Relator View', () => {
-    let diagram: Diagram;
+  describe('Test if there is no role in model', () => {
+    const project = new Project();
+    const model = project.createModel();
+    const man = model.createSubkind();
 
-    beforeAll(() => {
-      diagram = diagrams.find(d => d.getName() === 'Relator View');
-    });
 
-    it('Should contain the main relator: Transportation Contract', () => {
-      expect(diagram.findView(rl_transportationContract)).toBeTruthy();
-    });
+    let diagrams: Diagram[] = new ViewpointExtractor(project).buildAll();
+    let diagram: Diagram = diagrams.find(d => d.getName() === 'Role View');
 
-    it('Should contain classes mediated by the Transportation Contract relator', () => {
-      expect(diagram.findView(rm_transportationContractClient)).toBeTruthy();
-      expect(diagram.findView(rl_shipAdministration)).toBeTruthy();
-    });
-
-    it('Should contain the main relator: Ship Administration', () => {
-      expect(diagram.findView(rl_shipAdministration)).toBeTruthy();
-    });
-
-    it('Should contain classes mediated by the Ship Administration relator', () => {
-      expect(diagram.findView(rm_shipAdmininstrator)).toBeTruthy();
-      expect(diagram.findView(r_managedShip)).toBeTruthy();
-    });
-
-    it('Should contain the main relator: Trip', () => {
-      expect(diagram.findView(rl_trip)).toBeTruthy();
-    });
-
-    it('Should contain classes mediated by the Trip relator', () => {
-      expect(diagram.findView(r_travellingShip)).toBeTruthy();
-      expect(diagram.findView(r_destinationHarbor)).toBeTruthy();
-      expect(diagram.findView(r_departingHarbor)).toBeTruthy();
-    });
-
-    it('Should contain the main relator: Captain Designation', () => {
-      expect(diagram.findView(rl_captainDesignation)).toBeTruthy();
-    });
-
-    it('Should contain classes mediated by the Captain Designation relator', () => {
-      expect(diagram.findView(r_captain)).toBeTruthy();
-      expect(diagram.findView(r_captainAssignedShip)).toBeTruthy();
-    });
-
-    it('Should contain 12 shapes (classes)', () => {
-      expect(diagram.getClassViews()).toHaveLength(12);
-    });
-
-    it('Should contain 9 relations views', () => {
-      expect(diagram.getRelationViews()).toHaveLength(9);
-    });
-
-    
-  });
-
-  describe('Non Sortal View', () => {
-    let diagram: Diagram;
-
-    beforeAll(() => {
-      diagram = diagrams.find(d => d.getName() === 'Non Sortal View');
-    });
-
-    it('Should contain the non sortal: Ship Administrator', () => {
-      expect(diagram.findView(rm_shipAdmininstrator)).toBeTruthy();
-    });
-
-    it('Should contain descendants of non sortal class: «role mixin» Ship Administrator', () => {
-      expect(diagram.findView(r_corporateAdministrator)).toBeTruthy();
-      expect(diagram.findView(r_individualAdministrator)).toBeTruthy();
-    });
-
-    it('Should contain ancestors of sortal class: «role» Corporate Administrator', () => {
-      expect(diagram.findView(k_organization)).toBeTruthy();   
-    });
-
-    it('Should contain ancestors of sortal class: «role» Individual Administrator', () => {
-      expect(diagram.findView(k_person)).toBeTruthy();   
-    });
-
-    it('Should contain the non sortal: Transportation Contract Client', () => {
-      expect(diagram.findView(rm_shipAdmininstrator)).toBeTruthy();
-    });
-
-    it('Should contain descendants of non sortal class: «role mixin» Transportation Contract Client', () => {
-      expect(diagram.findView(r_corporteCargoClient)).toBeTruthy();
-      expect(diagram.findView(r_passenger)).toBeTruthy();
-    });
-
-    it('Should contain ancestors of sortal class: «role» Corporate Cargo Client', () => {
-      expect(diagram.findView(k_organization)).toBeTruthy();   
-    });
-
-    it('Should contain ancestors of sortal class: «role» Passenger', () => {
-      expect(diagram.findView(k_person)).toBeTruthy();   
-    });
-
-    it('Should contain 8 shapes (classes)', () => {
-      expect(diagram.getClassViews()).toHaveLength(8);
-    });
-
-    it('Should contain 8 generalizations views', () => {
-      expect(diagram.getGeneralizationViews()).toHaveLength(8);
-    });
-
-    
+    it('Test if Role is in model', () => expect(diagram.getClassViews()).toHaveLength(0));
   });
 });

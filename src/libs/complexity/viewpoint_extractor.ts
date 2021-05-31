@@ -1,7 +1,7 @@
 import { Class, GeneralizationSet, Generalization, Diagram, Project, ClassStereotype, ModelElement, Relation } from '@libs/ontouml';
 import { Service } from '@libs/service';
 import { ServiceIssue } from '@libs/service_issue';
-import { Viewpoint } from './viewpoint';
+import { Module } from '.';
 
 /**
  * Class that implements the pattern-based model clustering strategy proposed in:
@@ -39,18 +39,18 @@ export class ViewpointExtractor implements Service {
   buildAll(): Diagram[] {
     const allPatterns = [ClassStereotype.KIND, ClassStereotype.SUBKIND, ClassStereotype.ROLE, ClassStereotype.PHASE, ClassStereotype.RELATOR, ClassStereotype.MODE, 'NON_SORTAL'];
     return allPatterns.map((pattern, index) => this.extractViewpoint(String(index), pattern))
-      .map((viewpoint) => viewpoint.createDiagram(this.project.model));
+      .map((module) => module.createDiagram(this.project.model));
   }
 
   /**
-   * This methor will run the patter viewpoint extrator.
+   * This methor will run the pattern viewpoint extrator.
    * 
    * @param id The name of viewpoint extractor 
    * @param pattern The viewpoint extractor approach based on OntoUML Patterns
    * @returns A viewpoint based on a pattern choosen
    */
-  extractViewpoint(id: string, pattern: string): Viewpoint {
-    let viewpoint = new Viewpoint('Viewpoint of ' + pattern);
+  extractViewpoint(id: string, pattern: string): Module {
+    let viewpoint = new Module('Viewpoint of ' + pattern);
 
     switch (pattern) {
       case ClassStereotype.KIND: viewpoint = this.kindView();
@@ -78,21 +78,12 @@ export class ViewpointExtractor implements Service {
    * 
    * @returns A viewpoint extracted using the Kind Pattern
    */
-  kindView(): Viewpoint {
-    const viewpoint = new Viewpoint('Kind View');
+  kindView(): Module {
+    const viewpoint = new Module('Kind View');
 
-    /**Step 1 Get all Kinds in model
-     * 
-     * Step 2 Get all relations between Kinds
-     * 
-     * Step 3 Get all generalizations between Kinds
-     */
-
-    const classes = this.project.getAllClassesByStereotype(ClassStereotype.KIND);
+    const classes = this.project.getClassesWithKindStereotype();
 
     viewpoint.addClasses(classes);
-    viewpoint.addRelations(this.getRelationsBetweenClasses(classes));
-    viewpoint.addGeneralizations(this.getGeneralizationsBetweenClasses(classes));
 
     viewpoint.removeDuplicates();
 
@@ -104,8 +95,8 @@ export class ViewpointExtractor implements Service {
      * 
      * @returns A viewpoint extracted using the Subkind Pattern
      */
-  subKindView(): Viewpoint {
-    const viewpoint = new Viewpoint('SubKind View');
+  subKindView(): Module {
+    const viewpoint = new Module('SubKind View');
 
     /**Step 1 Get all Subkinds in model
      * 
@@ -116,11 +107,11 @@ export class ViewpointExtractor implements Service {
      * Step 4 Get all generalizations between all classes (subkinds and sortal ancestors)
      */
 
-    const classes = this.project.getAllClassesByStereotype(ClassStereotype.SUBKIND);
+    const classes = this.project.getClassesWithSubkindStereotype();
 
     let generals = [];
     for (let i = 0; i < classes.length; i++) {
-      generals = generals.concat(classes[i].getAncestors().filter((cl) => cl.hasSortalStereotype()));
+      generals = generals.concat(classes[i].getSortalAncestors());
     }
 
     viewpoint.addClasses(classes);
@@ -142,8 +133,8 @@ export class ViewpointExtractor implements Service {
      * 
      * @returns A viewpoint extracted using the Role Pattern
      */
-  roleView(): Viewpoint {
-    const viewpoint = new Viewpoint('Role View');
+  roleView(): Module {
+    const viewpoint = new Module('Role View');
 
     /**Step 1 Get all Roles in model
      * 
@@ -154,11 +145,11 @@ export class ViewpointExtractor implements Service {
      * Step 4 Get all generalizations between all classes (roles and sortal ancestors)
      */
 
-    const classes = this.project.getAllClassesByStereotype(ClassStereotype.ROLE);
+    const classes = this.project.getClassesWithRoleStereotype();
 
     let generals = [];
     for (let i = 0; i < classes.length; i++) {
-      generals = generals.concat(classes[i].getAncestors().filter((cl) => cl.hasSortalStereotype()));
+      generals = generals.concat(classes[i].getSortalAncestors());
     }
 
     viewpoint.addClasses(classes);
@@ -179,8 +170,8 @@ export class ViewpointExtractor implements Service {
      * 
      * @returns A viewpoint extracted using the Phase Pattern
      */
-  phaseView(): Viewpoint {
-    const viewpoint = new Viewpoint('Phase View');
+  phaseView(): Module {
+    const viewpoint = new Module('Phase View');
 
 
     /**Step 1 Get all Phases in model
@@ -191,11 +182,11 @@ export class ViewpointExtractor implements Service {
      * 
      * Step 4 Get all generalizations between all classes (phases and sortal ancestors)
      */
-    const classes = this.project.getAllClassesByStereotype(ClassStereotype.PHASE);
+    const classes = this.project.getClassesWithPhaseStereotype();
 
     let generals = [];
     for (let i = 0; i < classes.length; i++) {
-      generals = generals.concat(classes[i].getAncestors().filter((cl) => cl.hasSortalStereotype()));
+      generals = generals.concat(classes[i].getSortalAncestors());
     }
 
     viewpoint.addClasses(classes);
@@ -218,7 +209,7 @@ export class ViewpointExtractor implements Service {
      * @returns A viewpoint extracted using the Relator Pattern
      */
   relatorView = () => {
-    const viewpoint = new Viewpoint('Relator View');
+    const viewpoint = new Module('Relator View');
 
 
     /**Step 1 Get all Relators in model
@@ -231,25 +222,20 @@ export class ViewpointExtractor implements Service {
      * 
      * Step 5 Get all generalizations between all classes 
      */
-    let classes = this.project.getAllClassesByStereotype(ClassStereotype.RELATOR);
+    let classes = this.project.getClassesWithRelatorStereotype();
 
-    const relacoes = this.project.getAllRelations();
-    let mediacoes = [];
+    let mediations = [];
 
     for (let j = 0; j < classes.length; j++) {
-      for (let i = 0; i < relacoes.length; i++) {
-        if ((this.isClassInRelation(classes[j], relacoes[i])) && (relacoes[i].hasMediationStereotype())) {
-          mediacoes = mediacoes.concat(relacoes[i]);
-        }
-      }
+      mediations = mediations.concat(this.project.getMediations(classes[j]));
     }
 
-    for (let i = 0; i < mediacoes.length; i++) {
-      if (!mediacoes[i].getSourceClass().hasRelatorStereotype()) {
-        classes = classes.concat(mediacoes[i].getSourceClass());
+    for (let i = 0; i < mediations.length; i++) {
+      if (!mediations[i].getSourceClass().hasRelatorStereotype()) {
+        classes = classes.concat(mediations[i].getSourceClass());
       } else {
-        if (!mediacoes[i].getTargetClass().hasRelatorStereotype()) {
-          classes = classes.concat(mediacoes[i].getTargetClass());
+        if (!mediations[i].getTargetClass().hasRelatorStereotype()) {
+          classes = classes.concat(mediations[i].getTargetClass());
         }
       }
     }
@@ -273,8 +259,8 @@ export class ViewpointExtractor implements Service {
      * 
      * @returns A viewpoint extracted using the Non-Sortal Pattern
      */
-  nonSortalView(): Viewpoint {
-    const viewpoint = new Viewpoint('Non Sortal View');
+  nonSortalView(): Module {
+    const viewpoint = new Module('Non Sortal View');
 
     /**Step 1 Get all Non-Sortals in model
      * 
@@ -285,11 +271,11 @@ export class ViewpointExtractor implements Service {
      * Step 4 Get all relations between all classes 
      * 
      */
-    let classes = this.project.getAllClassesByStereotype(ClassStereotype.ROLE_MIXIN);
+    let classes = this.project.getClassesWithRoleMixinStereotype();
 
-    classes = classes.concat(this.project.getAllClassesByStereotype(ClassStereotype.MIXIN));
-    classes = classes.concat(this.project.getAllClassesByStereotype(ClassStereotype.CATEGORY));
-    classes = classes.concat(this.project.getAllClassesByStereotype(ClassStereotype.PHASE_MIXIN));
+    classes = classes.concat(this.project.getClassesWithMixinStereotype());
+    classes = classes.concat(this.project.getClassesWithCategoryStereotype());
+    classes = classes.concat(this.project.getClassesWithPhaseMixinStereotype());
 
     let decendentes = [];
     for (let i = 0; i < classes.length; i++) {
@@ -322,8 +308,8 @@ export class ViewpointExtractor implements Service {
      * 
      * @returns A viewpoint extracted using the Mode Pattern
      */
-  modeView(): Viewpoint {
-    const viewpoint = new Viewpoint('Mode View');
+  modeView(): Module {
+    const viewpoint = new Module('Mode View');
 
     /**Step 1 Get all Modes in model
       * 
@@ -334,7 +320,7 @@ export class ViewpointExtractor implements Service {
       * Step 4 Get all relations between all classes
       * 
       */
-    let classes = this.project.getAllClassesByStereotype(ClassStereotype.MODE);
+    let classes = this.project.getClassesWithModeStereotype();
 
     let decendentes = [];
     for (let i = 0; i < classes.length; i++) {
@@ -363,16 +349,7 @@ export class ViewpointExtractor implements Service {
     return viewpoint;
   }
 
-  /**
-   * Verify is a class participates in relation
-   * @param _class The classe to be verified
-   * @param relation The relation where the class may be participating
-   */
-  isClassInRelation(_class: Class, relation: Relation): boolean {
-    if (_class == relation.getSourceClass() || _class == relation.getTargetClass()) {
-      return true;
-    } else return false;
-  }
+  
 
   /**
    * This method will verify if any class is in Source of relation
