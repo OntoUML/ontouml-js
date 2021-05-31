@@ -142,4 +142,53 @@ describe('Project tests', () => {
   describe(`Test getClassesByNature()`, () => {
     // TODO: implement test
   });
+
+  describe('Test getNonSortals()', () => {
+    let project = new Project();
+
+    let model = project.createModel();
+
+    const client = model.createRoleMixin();
+    const crimeWeapon = model.createMixin();
+    const person = model.createKind();
+
+    it('Test nonSortals must be in list', () => {
+      expect(project.getNonSortals().includes(client)).toBeTruthy();
+      expect(project.getNonSortals().includes(crimeWeapon)).toBeTruthy();
+    });
+
+    it('Test sortal must not be in list', () => {
+      expect(project.getNonSortals().includes(person)).toBeFalsy();
+    });
+
+
+  })
+  
+  describe('Test getMediations()', () => {
+    let project = new Project();
+
+    const model = project.createModel();
+    
+    const husband = model.createRole();
+    const man = model.createSubkind();
+    const wife = model.createRole();
+    const marriage = model.createMaterialRelation(husband, wife);
+    const marriageContract = model.createRelator();
+    const husbandMarriages = model.createMediationRelation(husband, marriageContract);
+    const wifeMarriages = model.createMediationRelation(wife, marriageContract);
+    const derivationMarriage = model.createDerivationRelation(marriage, marriageContract);
+
+    it('Test mediations must be in list', () => {
+      expect(project.getMediations(husband).includes(husbandMarriages)).toBeTruthy();
+      expect(project.getMediations(wife).includes(wifeMarriages)).toBeTruthy();
+    });
+
+    it('Test relations must not be in list', () => {
+      expect(project.getMediations(husband).includes(marriage)).toBeFalsy();
+      expect(project.getMediations(wife).includes(marriage)).toBeFalsy();
+    });
+
+  })
+
+
 });
