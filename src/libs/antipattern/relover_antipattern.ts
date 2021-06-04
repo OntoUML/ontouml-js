@@ -1,4 +1,4 @@
-import { Project } from '@libs/ontouml';
+import { GeneralizationSet, Project } from '@libs/ontouml';
 import { Service } from '@libs/service';
 import { ServiceIssue } from '@libs/service_issue';
 
@@ -7,7 +7,7 @@ import { ServiceIssue } from '@libs/service_issue';
  * @author Mattia Fumagalli
  */
 
-export class RelOverAntipattern implements Service {
+export class RelOverAntiPattern implements Service {
   project: Project;
 
   constructor(project: Project) {
@@ -16,5 +16,11 @@ export class RelOverAntipattern implements Service {
 
   run(): { result: any; issues?: ServiceIssue[] } {
     return null;
+  }
+
+  static checkIncompleteGeneralizationSet(project: Project): boolean {
+    const genSets = project.getAllGeneralizationSets();
+
+    return Array.isArray(genSets) && genSets.some((genSet: GeneralizationSet) => !genSet.isComplete);
   }
 }
