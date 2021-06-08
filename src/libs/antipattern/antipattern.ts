@@ -1,7 +1,7 @@
 import { Project } from '@libs/ontouml';
 import { Service } from '@libs/service';
 import { ServiceIssue } from '@libs/service_issue';
-import { RelOverAntiPattern } from '.';
+import { RelOverFinder } from '.';
 
 /**
  * @author Tiago Sales
@@ -16,7 +16,7 @@ export class AntiPatternFinder implements Service {
   }
 
   run(): { result: any; issues?: ServiceIssue[] } {
-    const finder: RelOverAntiPattern = new RelOverAntiPattern(this.project);
+    const finder: RelOverFinder = new RelOverFinder(this.project);
     return finder.run();
   }
 }

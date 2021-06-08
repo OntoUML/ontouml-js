@@ -1,3 +1,3 @@
 export * from './relover_occurrence';
-export * from './relover_antipattern';
+export * from './relover_finder';
 export * from './antipattern';
