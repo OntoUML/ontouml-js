@@ -2,14 +2,20 @@ import { Class, Generalization, Relation, Diagram } from '@libs/ontouml';
 
 export class RelOverOccurrence {
   relator: Class;
+  mediations: Relation[];
+  targets: Class[];
+  ancestor: Class;
 
-  constructor(relator: Class) {
+  constructor(relator: Class, mediations: Relation[], targets: Class[], ancestor: Class) {
     this.relator = relator;
+    this.targets = targets;
+    this.ancestor = ancestor;
+    this.mediations = mediations;
   }
 
   createDiagram(): Diagram {
     let diagram = new Diagram();
-    diagram.setName("RelOver "+this.relator.getName());
+    diagram.setName('RelOver ' + this.relator.getName());
     // diagram.owner = owner;
 
     // let pos: number = 40;
