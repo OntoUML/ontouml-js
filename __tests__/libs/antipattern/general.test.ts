@@ -8,7 +8,7 @@ describe('RelOver Test', () => {
   const person = model.createKind('Person');
   const supervisor = model.createRole('Supervisor');
   const student = model.createRole('Student');
-  // const university = model.createKind('University');
+  const university = model.createKind('University'); //this generates the issue
   const supervision = model.createRelator('Supervision');
 
   const gen1 = model.createGeneralization(person, student);
@@ -20,8 +20,8 @@ describe('RelOver Test', () => {
   const med2 = model.createMediationRelation(supervision, student);
   med2.getTargetEnd().cardinality.setOneToOne();
 
-  // // const med3 = model.createMediationRelation(supervision, university);
-  // med3.getTargetEnd().cardinality.setOneToMany();
+  const med3 = model.createMediationRelation(supervision, university); //this generates the issue
+  med3.getTargetEnd().cardinality.setOneToMany(); //this generates the issue
 
   const relOver = new RelOverFinder(project);
   const output = relOver.run();

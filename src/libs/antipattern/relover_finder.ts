@@ -26,13 +26,11 @@ export class RelOverFinder implements Service {
     const relators = this.project.getClassesWithRelatorStereotype();
     const occurrences: RelOverOccurrence[] = [];
     // const allMediations = this.project.getAllRelationsByStereotype(RelationStereotype.MEDIATION);
-
     // console.log('relators: ', relators);
 
     for (const relator of relators) {
       const occurrencesOfOne = this.checkVariantOne(relator);
       const occurrencesOfTwo = this.checkVariantTwo(relator);
-
       if (!_.isEmpty(occurrencesOfOne)) occurrences.push(...occurrencesOfOne);
       // if(!_.isEmpty(occurrencesOfTwo))  occurrences.push(...occurrencesOfTwo);
     }
@@ -61,8 +59,8 @@ export class RelOverFinder implements Service {
     const overlap = _.intersection(...targetsAncestors); // start from here...
 
     // console.log('target: ', targets);
-    console.log('ancestor: ', targetsAncestors);
-    console.log('overlap: ', overlap);
+    // console.log('ancestor: ', targetsAncestors);
+    // console.log('overlap: ', overlap);
 
     return overlap.map((ancestor: Class) => new RelOverOccurrence(relator, mediations, targets, ancestor));
   }
