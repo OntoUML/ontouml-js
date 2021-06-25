@@ -1,5 +1,6 @@
 export * from './libs';
 export { Modularizer } from './libs/complexity';
+export { RefOntoumlImporter } from './libs/import_refontouml';
 export * from './libs/ontouml';
 export * from './libs';
 export { Ontouml2Db, Ontouml2DbOptions } from './libs/ontouml2db';
