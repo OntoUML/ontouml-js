@@ -44,3 +44,4 @@ ontouml-js-*.tgz
 
 # Ignore TSDoc output
 tsdoc/
+__tests__/libs/import_refontouml/mgic.json

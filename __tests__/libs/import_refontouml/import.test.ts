@@ -1,8 +1,9 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { parseString } from 'xml2js';
 
-import { Project, serializationUtils } from '@libs/ontouml';
+import { Diagram, Project, serializationUtils } from '@libs/ontouml';
 import { RefOntoumlImporter } from '@libs/import_refontouml';
+import { Modularizer } from '@libs/complexity';
 
 describe(`RefOntoumlImporter Tests`, () => {
   let sourceModel;
@@ -33,5 +34,9 @@ describe(`RefOntoumlImporter Tests`, () => {
     const isValid = serializationUtils.validate(targetProject);
     expect(isValid).toBeTruthy();
     expect(isValid).toHaveLength(0);
+  });
+
+  it('Should generate views', () => {
+    let diagrams: Diagram[] = new Modularizer(targetProject).buildAll();
   });
 });

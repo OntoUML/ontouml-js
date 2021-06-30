@@ -41,6 +41,8 @@ export class RefOntoumlImporter implements Service {
   import(): Project {
     const project = new Project({ name: this.refontouml['$'].name });
     this.transformPackage(this.refontouml, project);
+
+    // TODO: transform properties. Owned end can be a child of a class or a relation
     return project;
   }
 
@@ -67,6 +69,7 @@ export class RefOntoumlImporter implements Service {
     target.stereotype = this.getTargetClassStereotype(source);
     target.isAbstract = this.getIsAbstract(source);
     target.isDerived = this.getIsDerived(source);
+    this.fixDerivedName(target);
     target.restrictedTo = this.getDefaultRestrictedTo(source);
 
     source.generalization?.forEach(gen => this.transformGeneralization(gen, target, container));
@@ -82,6 +85,7 @@ export class RefOntoumlImporter implements Service {
     target.stereotype = this.getTargetRelationStereotype(source);
     target.isAbstract = this.getIsAbstract(source);
     target.isDerived = this.getIsDerived(source);
+    this.fixDerivedName(target);
 
     source.generalization?.forEach(gen => this.transformGeneralization(gen, target, container));
     source.ownedEnd?.forEach(associationEnd => this.transformProperty(associationEnd, target));
@@ -106,6 +110,7 @@ export class RefOntoumlImporter implements Service {
 
     target.isReadOnly = this.getIsReadOnly(source);
     target.isDerived = this.getIsDerived(source);
+    this.fixDerivedName(target);
     target.isOrdered = this.getIsOrdered(source);
     return target;
   }
@@ -146,6 +151,18 @@ export class RefOntoumlImporter implements Service {
 
   getName(source: any): string {
     return source['$']['name'];
+  }
+
+  fixDerivedName(target: any) {
+    if (target.isDerived) {
+      let name = target.getName();
+
+      if (name?.startsWith('/')) {
+        name = name.substring(1).trim();
+      }
+
+      target.setName(name);
+    }
   }
 
   getId(source: any): string {
@@ -259,6 +276,9 @@ export class RefOntoumlImporter implements Service {
       Relator: [OntologicalNature.relator],
       Mode: [OntologicalNature.intrinsic_mode, OntologicalNature.extrinsic_mode],
       Quality: [OntologicalNature.quality],
+      RoleMixin: [OntologicalNature.functional_complex, OntologicalNature.collective, OntologicalNature.quantity],
+      Category: [OntologicalNature.functional_complex, OntologicalNature.collective, OntologicalNature.quantity],
+      Mixin: [OntologicalNature.functional_complex, OntologicalNature.collective, OntologicalNature.quantity],
       DataType: [OntologicalNature.abstract],
       Enumeration: [OntologicalNature.abstract],
       PrimitiveType: [OntologicalNature.abstract]
