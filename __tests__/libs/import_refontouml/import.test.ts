@@ -1,13 +1,37 @@
-import {
-  Class,
-} from '@libs/ontouml';
+import { readFileSync, writeFileSync } from 'fs';
+import { parseString } from 'xml2js';
 
+import { Project, serializationUtils } from '@libs/ontouml';
 import { RefOntoumlImporter } from '@libs/import_refontouml';
 
 describe(`RefOntoumlImporter Tests`, () => {
-  it('Test type property descriptor', () => {
-    const emptyClass = new Class();
-    const importer = new RefOntoumlImporter(null);
+  let sourceModel;
+  let importer;
+  let targetProject;
 
+  beforeAll(() => {
+    try {
+      const xml = readFileSync('__tests__/libs/import_refontouml/mgic.refontouml', 'utf8');
+      parseString(xml, (err, result) => {
+        sourceModel = result['RefOntoUML:Model'];
+      });
+    } catch (err) {
+      console.error(err);
+    }
+
+    importer = new RefOntoumlImporter(sourceModel);
+    targetProject = importer.run().result;
+
+    writeFileSync('__tests__/libs/import_refontouml/mgic.json', JSON.stringify(targetProject, null, 2));
+  });
+
+  it('Should return a project', () => {
+    expect(targetProject).toBeInstanceOf(Project);
+  });
+
+  it('Should be validate against the ontouml-schema', () => {
+    const isValid = serializationUtils.validate(targetProject);
+    expect(isValid).toBeTruthy();
+    expect(isValid).toHaveLength(0);
   });
 });

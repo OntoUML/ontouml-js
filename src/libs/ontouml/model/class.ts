@@ -91,7 +91,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
     return classSerialization;
   }
 
-  createAttribute(propertyType: Class, name?: string, base?: Partial<Property>): Property {
+  createAttribute(propertyType?: Class, name?: string, base?: Partial<Property>): Property {
     // TODO: explain to claude why I removed this
     // if (this.hasEnumerationStereotype()) {
     //   throw new Error('Cannot create an attribute on an enumeration class.');

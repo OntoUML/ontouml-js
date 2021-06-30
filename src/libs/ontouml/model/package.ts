@@ -725,8 +725,8 @@ export class Package extends ModelElement implements ModelElementContainer {
   }
 
   createGeneralization(
-    general: Classifier<any, any>,
-    specific: Classifier<any, any>,
+    general?: Classifier<any, any>,
+    specific?: Classifier<any, any>,
     name?: string,
     base?: Partial<Generalization>
   ): Generalization {
@@ -737,7 +737,7 @@ export class Package extends ModelElement implements ModelElementContainer {
   }
 
   createGeneralizationSet(
-    generalizations: Generalization | Generalization[],
+    generalizations?: Generalization | Generalization[],
     isDisjoint: boolean = false,
     isComplete: boolean = false,
     categorizer?: Class,
