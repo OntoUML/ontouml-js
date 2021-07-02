@@ -16,6 +16,7 @@ module.exports = {
   ],
   watchPathIgnorePatterns: [
     "<rootDir>/node_modules",
+    ".*\\.json"
   ],
   moduleNameMapper: {
     "^@test-models(.*)": "<rootDir>/__tests__/test_models$1",

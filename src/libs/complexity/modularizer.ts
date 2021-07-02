@@ -35,56 +35,75 @@ export class Modularizer implements Service {
   }
 
   buildAll(): Diagram[] {
-    return this.project
-      .getClassesRestrictedToRelator()
-      .map((relator, index) => this.buildModule(String(index), relator))
-      .map(module => module.createDiagram(this.project.model));
+    console.time('timer');
+    console.log('Retrieving relators...');
+    const relators = this.project.getClassesRestrictedToRelator();
+    console.log('Relators retrieved! (' + relators.length + ')');
+    console.timeEnd('timer');
+
+    console.log('Building modules...');
+    const modules = relators.map((relator, index) => this.buildModule(String(index), relator));
+    console.log('Modules built! (' + modules.length + ')');
+
+    // console.log('Building diagrams...');
+    // const diagrams = modules.map(module => module.createDiagram(this.project.model));
+    // console.log('Diagrams built! (' + modules.length + ')');
+    // return diagrams;
+
+    return null;
+    // return this.project
+    //   .getClassesRestrictedToRelator()
+    //   .map((relator, index) => this.buildModule(String(index), relator))
+    //   .map(module => module.createDiagram(this.project.model));
   }
 
   buildModule(id: string, relator: Class): Module {
     let cluster = new Module('Cluster of ' + relator.getName());
 
+    console.time('timer');
+    console.log('Getting relator chain for ' + relator.getName());
     let relatorChain = Modularizer.getRelatorChain(relator);
     cluster.addAll(relatorChain);
+    console.timeEnd('timer');
 
-    const outgoingMediations = relatorChain.relations;
+    // const outgoingMediations = relatorChain.relations;
 
-    const directlyConnectedClasses = outgoingMediations
-      .filter(r => r.isBinaryClassRelation())
-      .map(relation => relation.getTargetClass());
-    cluster.addClasses(directlyConnectedClasses);
+    // const directlyConnectedClasses = outgoingMediations
+    //   .filter(r => r.isBinaryClassRelation())
+    //   .map(relation => relation.getTargetClass());
+    // cluster.addClasses(directlyConnectedClasses);
 
-    let ancestors: Class[] = [];
-    let descendants: Class[] = [];
-    directlyConnectedClasses.forEach(_class => {
-      if (_class.hasBaseSortalStereotype()) {
-        ancestors = ancestors.concat(_class.getSortalAncestors());
-      }
-      if (_class.hasNonSortalStereotype()) {
-        descendants = descendants.concat(Modularizer.getNonSortalLine(_class));
-      }
-    });
+    // let ancestors: Class[] = [];
+    // let descendants: Class[] = [];
+    // directlyConnectedClasses.forEach(_class => {
+    //   if (_class.hasBaseSortalStereotype()) {
+    //     ancestors = ancestors.concat(_class.getSortalAncestors());
+    //   }
+    //   if (_class.hasNonSortalStereotype()) {
+    //     descendants = descendants.concat(Modularizer.getNonSortalLine(_class));
+    //   }
+    // });
 
-    let descendantAncestors: Class[] = descendants
-      .flatMap(clazz => clazz.getAncestors())
-      .filter(clazz => clazz instanceof Class)
-      .filter(clazz => clazz.hasSortalStereotype());
+    // let descendantAncestors: Class[] = descendants
+    //   .flatMap(clazz => clazz.getAncestors())
+    //   .filter(clazz => clazz instanceof Class)
+    //   .filter(clazz => clazz.hasSortalStereotype());
 
-    cluster.addClasses(ancestors);
-    cluster.addClasses(descendants);
-    cluster.addClasses(descendantAncestors);
-    cluster.removeDuplicates();
+    // cluster.addClasses(ancestors);
+    // cluster.addClasses(descendants);
+    // cluster.addClasses(descendantAncestors);
+    // cluster.removeDuplicates();
 
-    cluster.addGeneralizations(this.project.getGeneralizationsBetween(cluster.classes));
+    // cluster.addGeneralizations(this.project.getGeneralizationsBetween(cluster.classes));
 
-    const genSets = this.getGeneralizationSetsFrom(cluster.generalizations);
-    cluster.addGeneralizationSets(genSets);
-    const complementGens = GeneralizationSet.collectGeneralizations(cluster.generalizationSets);
-    cluster.addGeneralizations(complementGens);
-    const complementClasses = GeneralizationSet.collectSpecifics(complementGens).filter(s => s instanceof Class) as Class[];
-    cluster.addClasses(complementClasses);
+    // const genSets = this.getGeneralizationSetsFrom(cluster.generalizations);
+    // cluster.addGeneralizationSets(genSets);
+    // const complementGens = GeneralizationSet.collectGeneralizations(cluster.generalizationSets);
+    // cluster.addGeneralizations(complementGens);
+    // const complementClasses = GeneralizationSet.collectSpecifics(complementGens).filter(s => s instanceof Class) as Class[];
+    // cluster.addClasses(complementClasses);
 
-    cluster.removeDuplicates();
+    // cluster.removeDuplicates();
 
     return cluster;
   }
