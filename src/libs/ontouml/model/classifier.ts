@@ -4,7 +4,19 @@ import { Package, Stereotype, Decoratable, Generalization, GeneralizationSet, Pr
 export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotype> extends Decoratable<S> {
   isAbstract: boolean;
   isDerived: boolean;
+  // owned properties, a.k.a attributes of classes and association ends of relations.
   properties: Property[];
+
+  // association ends of which the classifier is the type, i.e. the side of a relation connected to the classifier
+  isTypeOf: Set<Property>;
+
+  // association ends reachable by the classifier, i.e. the opposite side of a relation connected to the classifier
+  relationalProperties: Set<Property>;
+
+  // generalizations in which the classifier plays the role of general
+  generalizationsAsGeneral: Set<Generalization>;
+  // generalizations in which the classifier plays the role of specific
+  generalizationsAsSpecific: Set<Generalization>;
 
   constructor(type: string, base?: Partial<Classifier<T, S>>) {
     super(type, base);
@@ -12,6 +24,11 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
     this.isAbstract = base?.isAbstract || false;
     this.isDerived = base?.isDerived || false;
     this.properties = base?.properties || [];
+
+    this.isTypeOf = new Set<Property>();
+    this.relationalProperties = new Set<Property>();
+    this.generalizationsAsGeneral = new Set<Generalization>();
+    this.generalizationsAsSpecific = new Set<Generalization>();
   }
 
   addParent(parent: T): Generalization {
@@ -27,69 +44,76 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
   }
 
   getGeneralizations(): Generalization[] {
-    return this.getModelOrRootPackage()
-      .getAllGeneralizations()
-      .filter((gen: Generalization) => this === gen.specific || this === gen.general);
+    return [...new Set([...this.generalizationsAsSpecific, ...this.generalizationsAsGeneral])];
+    // return this.getModelOrRootPackage()
+    //   .getAllGeneralizations()
+    //   .filter((gen: Generalization) => this === gen.specific || this === gen.general);
   }
 
   getGeneralizationsWhereGeneral(): Generalization[] {
-    return this.getModelOrRootPackage()
-      .getAllGeneralizations()
-      .filter((gen: Generalization) => this === gen.general);
+    return [...this.generalizationsAsGeneral];
+    // return this.getModelOrRootPackage()
+    //   .getAllGeneralizations()
+    //   .filter((gen: Generalization) => this === gen.general);
   }
 
   getGeneralizationsWhereSpecific(): Generalization[] {
-    return this.getModelOrRootPackage()
-      .getAllGeneralizations()
-      .filter((gen: Generalization) => this === gen.specific);
+    return [...this.generalizationsAsSpecific];
+    // return this.getModelOrRootPackage()
+    //   .getAllGeneralizations()
+    //   .filter((gen: Generalization) => this === gen.specific);
   }
 
   getGeneralizationSets(): GeneralizationSet[] {
-    const root = this.getModelOrRootPackage();
-    const generalizationSets = root.getAllGeneralizationSets();
-    const generalizationSetsInvolvingClassifier: GeneralizationSet[] = [];
+    return [...this.getGeneralizationSetsWhereGeneral(), ...this.getGeneralizationSetsWhereSpecific()];
+    // const root = this.getModelOrRootPackage();
+    // const generalizationSets = root.getAllGeneralizationSets();
+    // const generalizationSetsInvolvingClassifier: GeneralizationSet[] = [];
 
-    if (generalizationSets) {
-      generalizationSets.forEach((genset: GeneralizationSet) => {
-        if (genset.getInvolvedClassifiers().includes(this)) {
-          generalizationSetsInvolvingClassifier.push(genset);
-        }
-      });
-    }
+    // if (generalizationSets) {
+    //   generalizationSets.forEach((genset: GeneralizationSet) => {
+    //     if (genset.getInvolvedClassifiers().includes(this)) {
+    //       generalizationSetsInvolvingClassifier.push(genset);
+    //     }
+    //   });
+    // }
 
-    return generalizationSetsInvolvingClassifier;
+    // return generalizationSetsInvolvingClassifier;
   }
 
   getGeneralizationSetsWhereGeneral(): GeneralizationSet[] {
-    const root = this.getModelOrRootPackage();
-    const generalizationSets = root.getAllGeneralizationSets();
-    const generalizationSetsInvolvingClassifier: GeneralizationSet[] = [];
+    const genSets = this.getGeneralizationsWhereGeneral().flatMap(gen => gen.getGeneralizationSets());
+    return [...new Set(genSets)];
 
-    if (generalizationSets) {
-      generalizationSets.forEach((genset: GeneralizationSet) => {
-        if (genset.getGeneral() === this) {
-          generalizationSetsInvolvingClassifier.push(genset);
-        }
-      });
-    }
-
-    return generalizationSetsInvolvingClassifier;
+    // const root = this.getModelOrRootPackage();
+    // const generalizationSets = root.getAllGeneralizationSets();
+    // const generalizationSetsInvolvingClassifier: GeneralizationSet[] = [];
+    // if (generalizationSets) {
+    //   generalizationSets.forEach((genset: GeneralizationSet) => {
+    //     if (genset.getGeneral() === this) {
+    //       generalizationSetsInvolvingClassifier.push(genset);
+    //     }
+    //   });
+    // }
+    // return generalizationSetsInvolvingClassifier;
   }
 
   getGeneralizationSetsWhereSpecific(): GeneralizationSet[] {
-    const root = this.getModelOrRootPackage();
-    const generalizationSets = root.getAllGeneralizationSets();
-    const generalizationSetsInvolvingClassifier: GeneralizationSet[] = [];
+    const genSets = this.getGeneralizationsWhereSpecific().flatMap(gen => gen.getGeneralizationSets());
+    return [...new Set(genSets)];
+    // const root = this.getModelOrRootPackage();
+    // const generalizationSets = root.getAllGeneralizationSets();
+    // const generalizationSetsInvolvingClassifier: GeneralizationSet[] = [];
 
-    if (generalizationSets) {
-      generalizationSets.forEach((genset: GeneralizationSet) => {
-        if (genset.getSpecifics().includes(this)) {
-          generalizationSetsInvolvingClassifier.push(genset);
-        }
-      });
-    }
+    // if (generalizationSets) {
+    //   generalizationSets.forEach((genset: GeneralizationSet) => {
+    //     if (genset.getSpecifics().includes(this)) {
+    //       generalizationSetsInvolvingClassifier.push(genset);
+    //     }
+    //   });
+    // }
 
-    return generalizationSetsInvolvingClassifier;
+    // return generalizationSetsInvolvingClassifier;
   }
 
   getGeneralizationSetsWhereCategorizer(): GeneralizationSet[] {
@@ -103,17 +127,20 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
   }
 
   getParents(): T[] {
-    return this.getModelOrRootPackage()
-      .getAllGeneralizations()
-      .filter((gen: Generalization) => this === gen.specific)
-      .map((gen: Generalization) => gen.general) as T[];
+    return this.getGeneralizationsWhereSpecific().map(gen => gen.general) as T[];
+    // return this.getModelOrRootPackage()
+    //   .getAllGeneralizations()
+    //   .filter((gen: Generalization) => this === gen.specific)
+    //   .map((gen: Generalization) => gen.general) as T[];
   }
 
   getChildren(): T[] {
-    return this.getModelOrRootPackage()
-      .getAllGeneralizations()
-      .filter((gen: Generalization) => this === gen.general)
-      .map((gen: Generalization) => gen.specific) as T[];
+    return this.getGeneralizationsWhereGeneral().map(gen => gen.specific) as T[];
+
+    // return this.getModelOrRootPackage()
+    //   .getAllGeneralizations()
+    //   .filter((gen: Generalization) => this === gen.general)
+    //   .map((gen: Generalization) => gen.specific) as T[];
   }
 
   getAncestors(knownAncestors: T[] = []): T[] {
@@ -151,22 +178,45 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
   }
 
   getOwnRelations(_filter?: Function): Relation[] {
-    let relations = this.project.getAllRelations().filter(r => r.getMembers().includes(this));
-    return [...new Set(relations)];
+    const ownRelations = [...this?.relationalProperties]
+      .map(property => property.container)
+      .filter(container => container instanceof Relation)
+      .map(container => container as Relation);
+
+    return [...new Set(ownRelations)];
+
+    // let relations = this.project.getAllRelations().filter(r => r.getMembers().includes(this));
+    // return [...new Set(relations)];
   }
 
   getOwnIncomingRelations(): Relation[] {
-    return this.project
-      .getAllRelations()
-      .filter(r => r.isBinary())
-      .filter(r => r.getTarget() === this);
+    const ownRelations = [...this?.relationalProperties]
+      .filter(property => property.isSource())
+      .map(property => property.container)
+      .filter(container => container instanceof Relation)
+      .map(container => container as Relation);
+
+    return [...new Set(ownRelations)];
+
+    // return this.project
+    //   .getAllRelations()
+    //   .filter(r => r.isBinary())
+    //   .filter(r => r.getTarget() === this);
   }
 
   getOwnOutgoingRelations(): Relation[] {
-    return this.project
-      .getAllRelations()
-      .filter(r => r.isBinary())
-      .filter(r => r.getSource() === this);
+    const ownRelations = [...this?.relationalProperties]
+      .filter(property => property.isTarget())
+      .map(property => property.container)
+      .filter(container => container instanceof Relation)
+      .map(container => container as Relation);
+
+    return [...new Set(ownRelations)];
+
+    // return this.project
+    //   .getAllRelations()
+    //   .filter(r => r.isBinary())
+    //   .filter(r => r.getSource() === this);
   }
 
   getAllRelations(_filter?: Function): Relation[] {
@@ -199,10 +249,10 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
   }
 
   getAllOppositeRelationEnds(): Property[] {
-    throw new Error('Method unimplemented!');
+    return this.getAncestors().flatMap(a => a.getOwnOppositeRelationEnds());
   }
 
   getOwnOppositeRelationEnds(): Property[] {
-    throw new Error('Method unimplemented!');
+    return [...this.relationalProperties];
   }
 }

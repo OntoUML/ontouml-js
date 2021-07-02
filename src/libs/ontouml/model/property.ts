@@ -60,6 +60,16 @@ export class Property extends Decoratable<PropertyStereotype> {
     return this.container instanceof Relation;
   }
 
+  isSource(): boolean {
+    if (!this.isRelationEnd()) return false;
+    return (this.container as Relation).getSourceEnd() === this;
+  }
+
+  isTarget(): boolean {
+    if (!this.isRelationEnd()) return false;
+    return (this.container as Relation).getTargetEnd() === this;
+  }
+
   isPropertyTypeDefined(): boolean {
     return this.propertyType instanceof Classifier;
   }

@@ -13,6 +13,8 @@ export class GeneralizationSet extends ModelElement {
     this.isComplete = base?.isComplete ?? false;
     this.categorizer = base?.categorizer ?? null;
     this.generalizations = base?.generalizations ?? null;
+
+    this.deriveFields();
   }
 
   getContents(): OntoumlElement[] {
@@ -48,7 +50,7 @@ export class GeneralizationSet extends ModelElement {
 
     let general = this.generalizations[0].general;
 
-    if (this.generalizations.some((gen: Generalization) => gen.general !== general)) {
+    if (this.generalizations.some(gen => gen.general !== general)) {
       throw new Error('Generalization set involving distinct general classifiers');
     }
 
@@ -57,7 +59,7 @@ export class GeneralizationSet extends ModelElement {
 
   getSpecifics(): Classifier<any, any>[] {
     if (this.generalizations) {
-      let specifics = this.generalizations.map((gen: Generalization) => gen.specific);
+      let specifics = this.generalizations.map(gen => gen.specific);
       return [...new Set(specifics)];
     }
 
@@ -112,6 +114,10 @@ export class GeneralizationSet extends ModelElement {
     }
 
     return involvedClassifiers;
+  }
+
+  deriveFields(): void {
+    this.generalizations?.forEach(gen => gen.generalizationSets.add(this));
   }
 
   /** Collects specifics from all input generalization sets. Removes duplicates. */

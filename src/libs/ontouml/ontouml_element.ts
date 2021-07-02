@@ -133,6 +133,8 @@ export abstract class OntoumlElement {
    * `OntoumlElement` in the same context or project. */
   abstract resolveReferences(elementReferenceMap: Map<string, OntoumlElement>): void;
 
+  deriveFields(): void {}
+
   /** Support method the returns an instance of `OntoumlElement` from a element
    * map based on the reference's id throwing an broken reference exception in
    * case an element with matching id is not found in the map.

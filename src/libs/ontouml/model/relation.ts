@@ -14,6 +14,7 @@ import {
 export class Relation extends Classifier<Relation, RelationStereotype> {
   constructor(base?: Partial<Relation>) {
     super(OntoumlType.RELATION_TYPE, base);
+    this.deriveFields();
   }
 
   getContents(): OntoumlElement[] {
@@ -49,9 +50,9 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     }
 
     const sourceEnd = new Property({ ...base, container: this, project: this.project });
-
     this.properties[0] = sourceEnd;
 
+    this.deriveFields();
     return sourceEnd;
   }
 
@@ -63,9 +64,9 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     }
 
     const targetEnd = new Property({ ...base, container: this, project: this.project });
-
     this.properties[1] = targetEnd;
 
+    this.deriveFields();
     return targetEnd;
   }
 
@@ -89,10 +90,21 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
 
     const memberEnd = new Property({ ...base, container: this, project: this.project });
     position = position;
-
     this.properties[position] = memberEnd;
 
+    this.deriveFields();
     return memberEnd;
+  }
+
+  deriveFields() {
+    for (let p1 of this.properties) {
+      p1?.propertyType?.isTypeOf?.add(p1);
+
+      for (let p2 of this.properties) {
+        if (p1 === p2) continue;
+        p2?.propertyType?.relationalProperties?.add(p1);
+      }
+    }
   }
 
   getSourceEnd(): Property {

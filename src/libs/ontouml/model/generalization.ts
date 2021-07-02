@@ -3,12 +3,16 @@ import { OntoumlElement, OntoumlType, Class, Classifier, GeneralizationSet, Mode
 export class Generalization extends ModelElement {
   general: Classifier<any, any>;
   specific: Classifier<any, any>;
+  generalizationSets: Set<GeneralizationSet>;
 
   constructor(base?: Partial<Generalization>) {
     super(OntoumlType.GENERALIZATION_TYPE, base);
 
     this.general = base?.general || null;
     this.specific = base?.specific || null;
+    this.generalizationSets = new Set<GeneralizationSet>();
+
+    this.deriveFields();
   }
 
   getContents(): OntoumlElement[] {
@@ -16,9 +20,10 @@ export class Generalization extends ModelElement {
   }
 
   getGeneralizationSets(): GeneralizationSet[] {
-    return this.getModelOrRootPackage()
-      .getAllGeneralizationSets()
-      .filter((genset: GeneralizationSet) => genset.generalizations && genset.generalizations.includes(this));
+    return [...this.generalizationSets];
+    // return this.getModelOrRootPackage()
+    //   .getAllGeneralizationSets()
+    //   .filter((genset: GeneralizationSet) => genset.generalizations && genset.generalizations.includes(this));
   }
 
   involvesClasses(): boolean {
@@ -79,6 +84,18 @@ export class Generalization extends ModelElement {
     }
   }
 
+  setSpecific(classifier: Classifier<any, any>): void {
+    this.specific.generalizationsAsSpecific.delete(this);
+    this.specific = classifier;
+    classifier.generalizationsAsSpecific.add(this);
+  }
+
+  setGeneral(classifier: Classifier<any, any>): void {
+    this.specific.generalizationsAsGeneral.delete(this);
+    this.specific = classifier;
+    classifier.generalizationsAsGeneral.add(this);
+  }
+
   toJSON(): any {
     const generalizationSerialization: any = {
       general: null,
@@ -107,5 +124,10 @@ export class Generalization extends ModelElement {
     if (specific) {
       this.specific = OntoumlElement.resolveReference(specific, elementReferenceMap, this, 'specific');
     }
+  }
+
+  deriveFields(): void {
+    this?.specific?.generalizationsAsSpecific.add(this);
+    this?.general?.generalizationsAsGeneral.add(this);
   }
 }

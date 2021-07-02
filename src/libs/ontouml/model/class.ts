@@ -485,11 +485,6 @@ export class Class extends Classifier<Class, ClassStereotype> {
     throw new Error('Method unimplemented!');
   }
 
-  // TODO: investigate TSLint error TS6133 "'filter' is declared but its value is never read"
-  getOwnRelations(_filter?: Function): Relation[] {
-    throw new Error('Method unimplemented!');
-  }
-
   // TODO: add static version of factory methods present in class here
   // TODO: expand support
   static haveRigidStereotypes(classes: Class[]): boolean {

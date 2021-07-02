@@ -6,59 +6,50 @@ import { RefOntoumlImporter } from '@libs/import_refontouml';
 import { Modularizer } from '@libs/complexity';
 
 describe(`RefOntoumlImporter Tests`, () => {
+  let proj;
   // let refontouml;
   // let importer;
   // let project: Project;
 
-  // beforeAll(() => {
-  //   try {
-  //     const xml = readFileSync('__tests__/libs/import_refontouml/mgic.refontouml', 'utf8');
-  //     parseString(xml, (err, result) => {
-  //       refontouml = result['RefOntoUML:Model'];
-  //     });
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-
-  //   importer = new RefOntoumlImporter(refontouml);
-  //   project = importer.run().result;
-
-  //   writeFileSync('__tests__/libs/import_refontouml/mgic.json', JSON.stringify(project, null, 2));
-  // });
-
-  // it('Should return a project', () => {
-  //   expect(project).toBeInstanceOf(Project);
-  // });
-
-  // it('Should be validate against the ontouml-schema', () => {
-  //   const isValid = serializationUtils.validate(project);
-  //   expect(isValid).not.toBeInstanceOf(Array);
-  //   expect(isValid).toBeTruthy();
-  // });
-
-  it('Should generate views', () => {
-    // console.time('timer');
-    // console.log('Reading input file...');
+  beforeAll(() => {
     const json = readFileSync('__tests__/libs/import_refontouml/mgic.json', 'utf8');
-    // console.timeEnd('timer');
-    //
-    //
-    // console.time('timer');
-    // console.log('Parsing project...');
-    let proj: Project = serializationUtils.parse(json) as Project;
-    // console.timeEnd('timer');
-    //
-    //
-    // console.time('timer');
-    // console.log('Generating modules...');
-    const modularizer = new Modularizer(proj);
-    modularizer.run();
-    // console.timeEnd('timer');
-    //
-    //
-    // console.time('timer');
-    // console.log('Writting output file...');
+    proj = serializationUtils.parse(json) as Project;
+    //   try {
+    //     const xml = readFileSync('__tests__/libs/import_refontouml/mgic.refontouml', 'utf8');
+    //     parseString(xml, (err, result) => {
+    //       refontouml = result['RefOntoUML:Model'];
+    //     });
+    //   } catch (err) {
+    //     console.error(err);
+    // }
+
+    //   importer = new RefOntoumlImporter(refontouml);
+    //   project = importer.run().result;
+
+    //   writeFileSync('__tests__/libs/import_refontouml/mgic.json', JSON.stringify(project, null, 2));
+    // });
+
+    // it('Should return a project', () => {
+    //   expect(project).toBeInstanceOf(Project);
+    // });
+
+    // it('Should be validate against the ontouml-schema', () => {
+    //   const isValid = serializationUtils.validate(project);
+    //   expect(isValid).not.toBeInstanceOf(Array);
+    //   expect(isValid).toBeTruthy();
+  });
+
+  describe('Should generate views', () => {
+    const max = 1;
+    for (let index = 1; index <= max; index++) {
+      it('Run ' + index + ' of ' + max, () => {
+        const modularizer = new Modularizer(proj);
+        modularizer.run();
+      });
+    }
+  });
+
+  afterAll(() => {
     writeFileSync('__tests__/libs/import_refontouml/mgic-with-diagrams.json', JSON.stringify(proj, null, 2));
-    // console.timeEnd('timer');
   });
 });

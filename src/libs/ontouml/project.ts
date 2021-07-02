@@ -17,7 +17,6 @@ import {
   Diagram,
   Classifier
 } from '.';
-import { every, some } from 'lodash';
 
 export class Project extends OntoumlElement implements ModelElementContainer {
   model: Package;
@@ -151,20 +150,6 @@ export class Project extends OntoumlElement implements ModelElementContainer {
 
   getAllGeneralizationSets(): GeneralizationSet[] {
     return this.model.getAllGeneralizationSets();
-  }
-
-  /** Returns every generalization set that involves at least of the generalizations in the input array */
-  getGeneralizationSetsInvolvingAny(generalizations: Generalization[]): GeneralizationSet[] {
-    return this.getAllGeneralizationSets().filter(gs =>
-      some(gs.generalizations, gen => generalizations.find(refGen => refGen.id === gen.id))
-    );
-  }
-
-  /** Returns every generalization set that involves at least of the generalizations in the input array */
-  getGeneralizationSetsInvolvingAll(generalizations: Generalization[]): GeneralizationSet[] {
-    return this.getAllGeneralizationSets().filter(gs =>
-      every(gs.generalizations, gen => generalizations.find(refGen => refGen.id === gen.id))
-    );
   }
 
   getAllPackages(): Package[] {
