@@ -56,11 +56,30 @@ export class RelOverFinder implements Service {
       .filter((mediation: Relation) => mediation.getSourceClass() === relator);
     const targets = mediations.map((mediation: Relation) => mediation.getTargetClass());
     const targetsAncestors = targets.map((target: Class) => target.getAncestors());
-    const overlap = _.intersection(...targetsAncestors); // start from here...
 
-    // console.log('target: ', targets);
-    // console.log('ancestor: ', targetsAncestors);
-    // console.log('overlap: ', overlap);
+    // const overlap = _.intersection(...targetsAncestors); // start from here... (when are not exclusive!!!)
+    // you must do a pairwise check for intersections on the targetAncestors array
+
+    var targetsAncestors0 = [];
+    targetsAncestors.forEach(valueX => {
+      const nest = [valueX];
+      targetsAncestors0.push(nest);
+    });
+
+    const pairsOfArray = array =>
+      array.reduce(
+        (acc, val, i1) => [...acc, ...new Array(array.length - 1 - i1).fill(0).map((v, i2) => [array[i1], array[i1 + 1 + i2]])],
+        []
+      );
+    const pairs = pairsOfArray(targetsAncestors0);
+
+    //console.log(pairs);
+
+    const overlap = [];
+    pairs.forEach(([value0, value1]) => {
+      const overlap0 = _.intersection(value0, value1);
+      overlap.push(overlap0);
+    });
 
     return overlap.map((ancestor: Class) => new RelOverOccurrence(relator, mediations, targets, ancestor));
   }

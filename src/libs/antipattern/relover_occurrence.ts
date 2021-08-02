@@ -20,7 +20,7 @@ export class RelOverOccurrence {
     let diagram = new Diagram();
     diagram.setName('RelOver ' + this.relator.getName());
     // diagram.owner = owner;
-    // console.log(diagram);
+    console.log(diagram);
     let pos: number = 40;
     // this?.classes.forEach(_class => {
     //   let view = diagram.addClass(_class);
