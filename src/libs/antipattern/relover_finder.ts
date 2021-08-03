@@ -60,28 +60,54 @@ export class RelOverFinder implements Service {
     // const overlap = _.intersection(...targetsAncestors); // start from here... (when are not exclusive!!!)
     // you must do a pairwise check for intersections on the targetAncestors array
 
-    var targetsAncestors0 = [];
-    targetsAncestors.forEach(valueX => {
-      const nest = [valueX];
-      targetsAncestors0.push(nest);
-    });
+    // console.log('targetsAncestors', targetsAncestors);
+    // console.log(
+    //   'targetsAncestors',
+    //   targetsAncestors.map(ancestors => ancestors.map(ancestor => ancestor.getName()))
+    // );
 
-    const pairsOfArray = array =>
-      array.reduce(
-        (acc, val, i1) => [...acc, ...new Array(array.length - 1 - i1).fill(0).map((v, i2) => [array[i1], array[i1 + 1 + i2]])],
-        []
-      );
-    const pairs = pairsOfArray(targetsAncestors0);
+    const occurrences = [];
 
-    //console.log(pairs);
+    for (let i = 0; i < targetsAncestors.length - 1; i++) {
+      for (let j = i + 1; j < targetsAncestors.length; j++) {
+        console.log(`checking array positions i=${i} and j=${j}`);
+        const inter = _.intersection(targetsAncestors[i], targetsAncestors[j]);
 
-    const overlap = [];
-    pairs.forEach(([value0, value1]) => {
-      const overlap0 = _.intersection(value0, value1);
-      overlap.push(overlap0);
-    });
+        if (!_.isEmpty(inter)) {
+          const involvedMediations = [mediations[i], mediations[j]];
+          const involvedTargets = [targets[i], targets[j]];
+          const involvedAncestor = inter[0]; // TODO: the targets may share multiple ancestors; deal with that
+          const occurrence = new RelOverOccurrence(relator, involvedMediations, involvedTargets, involvedAncestor);
 
-    return overlap.map((ancestor: Class) => new RelOverOccurrence(relator, mediations, targets, ancestor));
+          occurrences.push(occurrence);
+        }
+      }
+    }
+
+    return occurrences;
+
+    // var targetsAncestors0 = [];
+    // targetsAncestors.forEach(valueX => {
+    //   const nest = [valueX];
+    //   targetsAncestors0.push(nest);
+    // });
+
+    // const pairsOfArray = array =>
+    //   array.reduce(
+    //     (acc, val, i1) => [...acc, ...new Array(array.length - 1 - i1).fill(0).map((v, i2) => [array[i1], array[i1 + 1 + i2]])],
+    //     []
+    //   );
+    // const pairs = pairsOfArray(targetsAncestors0);
+
+    // //console.log(pairs);
+
+    // const overlap = [];
+    // pairs.forEach(([value0, value1]) => {
+    //   const overlap0 = _.intersection(value0, value1);
+    //   overlap.push(overlap0);
+    // });
+
+    // return overlap.map((ancestor: Class) => new RelOverOccurrence(relator, mediations, targets, ancestor));
   }
 
   checkVariantTwo(relator: Class): RelOverOccurrence[] {
