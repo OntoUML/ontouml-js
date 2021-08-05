@@ -11,6 +11,7 @@ import _ from 'lodash';
  *
  * @author Tiago Sales
  * @author Mattia Fumagalli
+ * @author Claudenir Morais Fonseca
  */
 
 export class RelOverFinder implements Service {
@@ -32,7 +33,7 @@ export class RelOverFinder implements Service {
       const occurrencesOfOne = this.checkVariantOne(relator);
       const occurrencesOfTwo = this.checkVariantTwo(relator);
       if (!_.isEmpty(occurrencesOfOne)) occurrences.push(...occurrencesOfOne);
-      // if(!_.isEmpty(occurrencesOfTwo))  occurrences.push(...occurrencesOfTwo);
+      if (!_.isEmpty(occurrencesOfTwo)) occurrences.push(...occurrencesOfTwo);
     }
 
     // get the mediations
@@ -76,41 +77,59 @@ export class RelOverFinder implements Service {
         if (!_.isEmpty(inter)) {
           const involvedMediations = [mediations[i], mediations[j]];
           const involvedTargets = [targets[i], targets[j]];
-          const involvedAncestor = inter[0]; // TODO: the targets may share multiple ancestors; deal with that
-          const occurrence = new RelOverOccurrence(relator, involvedMediations, involvedTargets, involvedAncestor);
 
+          const involvedAncestor = []; //iterate over the ancestors
+          for (let index = 0; index < inter.length; index++) {
+            const element = inter[index];
+            involvedAncestor.push(element);
+          }
+          const occurrence = new RelOverOccurrence(relator, involvedMediations, involvedTargets, involvedAncestor[i]);
+          occurrences.push(occurrence);
+
+          // const involvedAncestor = inter[0]; // TODO: the targets may share multiple ancestors; deal with that
+          // const occurrence = new RelOverOccurrence(relator, involvedMediations, involvedTargets, involvedAncestor);
+          // occurrences.push(occurrence);
+        }
+      }
+    }
+
+    return occurrences;
+  }
+
+  checkVariantTwo(relator: Class): RelOverOccurrence[] {
+    const mediations = this.project
+      .getAllRelationsByStereotype(RelationStereotype.MEDIATION)
+      .filter((mediation: Relation) => mediation.getSourceClass() === relator);
+    const targets = mediations.map((mediation: Relation) => mediation.getTargetClass());
+    const targetsDescendants = targets.map((target: Class) => target.getDescendants());
+
+    console.log(
+      'targetsDescendants',
+      targetsDescendants.map(descendants => descendants.map(descendants => descendants.getName()))
+    );
+
+    const occurrences = [];
+
+    for (let i = 0; i < targetsDescendants.length - 1; i++) {
+      for (let j = i + 1; j < targetsDescendants.length; j++) {
+        console.log(`checking array positions i=${i} and j=${j}`);
+        const inter = _.intersection(targetsDescendants[i], targetsDescendants[j]);
+
+        if (!_.isEmpty(inter)) {
+          const involvedMediations = [mediations[i], mediations[j]];
+          const involvedTargets = [targets[i], targets[j]];
+
+          const involvedDescendant = []; //iterate over the ancestors
+          for (let index = 0; index < inter.length; index++) {
+            const element = inter[index];
+            involvedDescendant.push(element);
+          }
+          const occurrence = new RelOverOccurrence(relator, involvedMediations, involvedTargets, involvedDescendant[i]);
           occurrences.push(occurrence);
         }
       }
     }
 
     return occurrences;
-
-    // var targetsAncestors0 = [];
-    // targetsAncestors.forEach(valueX => {
-    //   const nest = [valueX];
-    //   targetsAncestors0.push(nest);
-    // });
-
-    // const pairsOfArray = array =>
-    //   array.reduce(
-    //     (acc, val, i1) => [...acc, ...new Array(array.length - 1 - i1).fill(0).map((v, i2) => [array[i1], array[i1 + 1 + i2]])],
-    //     []
-    //   );
-    // const pairs = pairsOfArray(targetsAncestors0);
-
-    // //console.log(pairs);
-
-    // const overlap = [];
-    // pairs.forEach(([value0, value1]) => {
-    //   const overlap0 = _.intersection(value0, value1);
-    //   overlap.push(overlap0);
-    // });
-
-    // return overlap.map((ancestor: Class) => new RelOverOccurrence(relator, mediations, targets, ancestor));
-  }
-
-  checkVariantTwo(relator: Class): RelOverOccurrence[] {
-    return null;
   }
 }
