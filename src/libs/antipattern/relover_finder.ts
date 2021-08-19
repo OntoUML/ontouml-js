@@ -2,6 +2,7 @@ import { Project, Class, RelationStereotype, Relation } from '@libs/ontouml';
 import { Service } from '@libs/service';
 import { ServiceIssue } from '@libs/service_issue';
 import { RelOverOccurrence } from './relover_occurrence';
+import { OverlappingSet } from './overlapping_set';
 import _ from 'lodash';
 
 /**
@@ -10,8 +11,8 @@ import _ from 'lodash';
  * RelOver is described in the paper XYZ.
  *
  * @author Tiago Sales
- * @author Mattia Fumagalli
  * @author Claudenir Morais Fonseca
+ * @author Mattia Fumagalli
  */
 
 export class RelOverFinder implements Service {
@@ -21,115 +22,54 @@ export class RelOverFinder implements Service {
     this.project = project;
   }
 
-  // here is where we define how to identify
-
   run(): { result: RelOverOccurrence[]; issues?: ServiceIssue[] } {
     const relators = this.project.getClassesWithRelatorStereotype();
-    const occurrences: RelOverOccurrence[] = [];
-    // const allMediations = this.project.getAllRelationsByStereotype(RelationStereotype.MEDIATION);
-    // console.log('relators: ', relators);
+    const occurrences0: RelOverOccurrence[] = [];
 
     for (const relator of relators) {
-      const occurrencesOfOne = this.checkVariantOne(relator);
-      const occurrencesOfTwo = this.checkVariantTwo(relator);
-      if (!_.isEmpty(occurrencesOfOne)) occurrences.push(...occurrencesOfOne);
-      if (!_.isEmpty(occurrencesOfTwo)) occurrences.push(...occurrencesOfTwo);
+      const occurrencesOfOne = this.findOverlappingSet0(relator);
+      if (!_.isEmpty(occurrencesOfOne)) occurrences0.push(occurrencesOfOne);
     }
-
-    // get the mediations
-    // get the mediations' targets
-    // get the ancestors/descendants of the targets
-    // look for some overlap
-
-    // let occurrences = relators
-    //   .filter(relator => true /** replace with condition that*/)
-
-    //   .map(relator => new RelOverOccurrence(relator));
-
-    return { result: occurrences };
+    return { result: occurrences0 };
   }
 
-  checkVariantOne(relator: Class): RelOverOccurrence[] {
-    // console.log('Running occurrence one check');
-
+  findOverlappingSet0(relator: Class): RelOverOccurrence {
     const mediations = this.project
       .getAllRelationsByStereotype(RelationStereotype.MEDIATION)
       .filter((mediation: Relation) => mediation.getSourceClass() === relator);
     const targets = mediations.map((mediation: Relation) => mediation.getTargetClass());
     const targetsAncestors = targets.map((target: Class) => target.getAncestors());
 
-    // const overlap = _.intersection(...targetsAncestors); // start from here... (when are not exclusive!!!)
-    // you must do a pairwise check for intersections on the targetAncestors array
-
-    // console.log('targetsAncestors', targetsAncestors);
-    // console.log(
-    //   'targetsAncestors',
-    //   targetsAncestors.map(ancestors => ancestors.map(ancestor => ancestor.getName()))
-    // );
-
-    const occurrences = [];
+    const rel = relator;
+    const overlappingSets = [];
 
     for (let i = 0; i < targetsAncestors.length - 1; i++) {
       for (let j = i + 1; j < targetsAncestors.length; j++) {
-        console.log(`checking array positions i=${i} and j=${j}`);
+        //console.log(`checking array positions i=${i} and j=${j}`);
         const inter = _.intersection(targetsAncestors[i], targetsAncestors[j]);
+
+        // console.log(`checking intersection`, inter);
 
         if (!_.isEmpty(inter)) {
           const involvedMediations = [mediations[i], mediations[j]];
           const involvedTargets = [targets[i], targets[j]];
-
+          // console.log(`checking mediations`, involvedMediations);
           const involvedAncestor = []; //iterate over the ancestors
           for (let index = 0; index < inter.length; index++) {
             const element = inter[index];
             involvedAncestor.push(element);
           }
-          const occurrence = new RelOverOccurrence(relator, involvedMediations, involvedTargets, involvedAncestor[i]);
-          occurrences.push(occurrence);
-
-          // const involvedAncestor = inter[0]; // TODO: the targets may share multiple ancestors; deal with that
-          // const occurrence = new RelOverOccurrence(relator, involvedMediations, involvedTargets, involvedAncestor);
-          // occurrences.push(occurrence);
+          //if no involved ancestors?
+          const occurrence = new OverlappingSet(involvedMediations, involvedTargets);
+          overlappingSets.push(occurrence);
         }
       }
     }
-
-    return occurrences;
-  }
-
-  checkVariantTwo(relator: Class): RelOverOccurrence[] {
-    const mediations = this.project
-      .getAllRelationsByStereotype(RelationStereotype.MEDIATION)
-      .filter((mediation: Relation) => mediation.getSourceClass() === relator);
-    const targets = mediations.map((mediation: Relation) => mediation.getTargetClass());
-    const targetsDescendants = targets.map((target: Class) => target.getDescendants());
-
-    console.log(
-      'targetsDescendants',
-      targetsDescendants.map(descendants => descendants.map(descendants => descendants.getName()))
-    );
-
-    const occurrences = [];
-
-    for (let i = 0; i < targetsDescendants.length - 1; i++) {
-      for (let j = i + 1; j < targetsDescendants.length; j++) {
-        console.log(`checking array positions i=${i} and j=${j}`);
-        const inter = _.intersection(targetsDescendants[i], targetsDescendants[j]);
-
-        if (!_.isEmpty(inter)) {
-          const involvedMediations = [mediations[i], mediations[j]];
-          const involvedTargets = [targets[i], targets[j]];
-
-          const involvedDescendant = []; //iterate over the ancestors
-          for (let index = 0; index < inter.length; index++) {
-            const element = inter[index];
-            involvedDescendant.push(element);
-          }
-          const occurrence = new RelOverOccurrence(relator, involvedMediations, involvedTargets, involvedDescendant[i]);
-          occurrences.push(occurrence);
-        }
-      }
+    if (!_.isEmpty(overlappingSets)) {
+      const occurrence0 = new RelOverOccurrence(rel, overlappingSets);
+      return occurrence0;
+    } else {
+      return null;
     }
-
-    return occurrences;
   }
 }
