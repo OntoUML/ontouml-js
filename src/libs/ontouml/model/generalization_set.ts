@@ -32,10 +32,10 @@ export class GeneralizationSet extends ModelElement {
     return (
       this.isPartition() &&
       this.involvesClasses() &&
-      ((this.getSpecificClasses().every(specific => specific.hasPhaseStereotype()) &&
-        this.getGeneralClass().hasSortalStereotype()) ||
-        (this.getSpecificClasses().every(specific => specific.hasPhaseMixinStereotype()) &&
-          this.getGeneralClass().hasCategoryStereotype()))
+      ((this.getSpecificClasses().every(specific => specific.isPhase()) &&
+        this.getGeneralClass().isSortal()) ||
+        (this.getSpecificClasses().every(specific => specific.isPhaseMixin()) &&
+          this.getGeneralClass().isCategory()))
       //
     );
   }

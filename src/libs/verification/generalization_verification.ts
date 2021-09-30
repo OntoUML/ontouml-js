@@ -47,7 +47,7 @@ export class GeneralizationVerification {
     const general = generalization.getGeneralClass();
     const specific = generalization.getSpecificClass();
 
-    return general.hasSortalStereotype() && specific.hasNonSortalStereotype()
+    return general.isSortal() && specific.isNonSortal()
       ? VerificationIssue.createGeneralizationIncompatibleClassSortality(generalization)
       : null;
   }
@@ -60,7 +60,7 @@ export class GeneralizationVerification {
     const general = generalization.getGeneralClass();
     const specific = generalization.getSpecificClass();
 
-    return general.hasAntiRigidStereotype() && (specific.hasRigidStereotype() || specific.hasSemiRigidStereotype())
+    return general.isAntiRigid() && (specific.isRigid() || specific.isSemiRigid())
       ? VerificationIssue.createGeneralizationIncompatibleClassRigidity(generalization)
       : null;
   }
@@ -73,7 +73,7 @@ export class GeneralizationVerification {
     const general = generalization.getGeneralClass();
     const specific = generalization.getSpecificClass();
 
-    return (general.hasDatatypeStereotype() || specific.hasDatatypeStereotype()) && general.stereotype !== specific.stereotype
+    return (general.isDatatype() || specific.isDatatype()) && general.stereotype !== specific.stereotype
       ? VerificationIssue.createGeneralizationIncompatibleDatatype(generalization)
       : null;
   }
@@ -86,7 +86,7 @@ export class GeneralizationVerification {
     const general = generalization.getGeneralClass();
     const specific = generalization.getSpecificClass();
 
-    return (general.hasEnumerationStereotype() || specific.hasEnumerationStereotype()) &&
+    return (general.isEnumeration() || specific.isEnumeration()) &&
       general.stereotype !== specific.stereotype
       ? VerificationIssue.createGeneralizationIncompatibleEnumeration(generalization)
       : null;
@@ -100,7 +100,7 @@ export class GeneralizationVerification {
     const general = generalization.getGeneralClass();
     const specific = generalization.getSpecificClass();
 
-    return !general.restrictedToContains(specific.restrictedTo)
+    return !general.allowsAll(specific.restrictedTo)
       ? VerificationIssue.createGeneralizationIncompatibleNatures(generalization)
       : null;
   }

@@ -13,7 +13,7 @@ export function transformAttribute(transformer: Ontouml2Gufo, attribute: Propert
   const attributeUri = transformer.getUri(attribute);
   const containerUri = transformer.getUri(containerClass);
 
-  const containerIsDatatype = containerClass.hasDatatypeStereotype();
+  const containerIsDatatype = containerClass.isDatatype();
   const containerIsConcreteIndividual = !containerClass.isRestrictedToAbstract();
 
   const isTypelessAttribute = !attribute.propertyType;
@@ -38,7 +38,7 @@ export function transformAttribute(transformer: Ontouml2Gufo, attribute: Propert
     transformer.addQuad(attributeUri, 'rdf:type', 'owl:ObjectProperty');
 
     const isComplexAttribute = (attribute.propertyType as Class).isComplexDatatype();
-    const isEnumeratedAttribute = (attribute.propertyType as Class).hasEnumerationStereotype();
+    const isEnumeratedAttribute = (attribute.propertyType as Class).isEnumeration();
 
     if (containerIsConcreteIndividual && (isComplexAttribute || isEnumeratedAttribute)) {
       transformer.addQuad(attributeUri, 'rdfs:subPropertyOf', 'gufo:hasReifiedQualityValue');

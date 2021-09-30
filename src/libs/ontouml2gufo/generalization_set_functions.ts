@@ -27,7 +27,7 @@ export const transformGeneralizationSet = (transformer: Ontouml2Gufo, genSet: Ge
   if (genSet.isDisjoint) {
     const rigidOrAbstractChildren = genSet
       .getSpecificClasses()
-      .filter((child: Class) => child.hasRigidStereotype() || (child.isRestrictedToAbstract() && !child.isPrimitiveDatatype()));
+      .filter((child: Class) => child.isRigid() || (child.isRestrictedToAbstract() && !child.isPrimitiveDatatype()));
 
     if (rigidOrAbstractChildren.length > 1) {
       const childrenNodes = rigidOrAbstractChildren.map(_class => namedNode(transformer.getUri(_class)));

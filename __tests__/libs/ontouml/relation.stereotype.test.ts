@@ -18,7 +18,7 @@ describe('Test hasAnyStereotype()', () => {
   const person = model.createClass();
   const knows = model.createMaterialRelation(person, person);
 
-  it('Test function call', () => expect(knows.hasAnyStereotype([RelationStereotype.MATERIAL])).toBe(true));
+  it('Test function call', () => expect(knows.hasStereotype([RelationStereotype.MATERIAL])).toBe(true));
 });
 
 describe('Test hasExistentialDependenceStereotype()', () => {

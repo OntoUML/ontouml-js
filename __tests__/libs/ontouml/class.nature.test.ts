@@ -9,7 +9,7 @@ describe('Test restrictedTo-related methods', () => {
     model = project.createModel();
   });
 
-  describe(`Test ${Class.prototype.restrictedToOverlaps.name}()`, () => {
+  describe(`Test ${Class.prototype.allowsSome.name}()`, () => {
     let category;
 
     beforeEach(() => {
@@ -52,7 +52,7 @@ describe('Test restrictedTo-related methods', () => {
     });
   });
 
-  describe(`Test ${Class.prototype.restrictedToContainedIn.name}()`, () => {
+  describe(`Test ${Class.prototype.allowsOnly.name}()`, () => {
     let category;
 
     beforeEach(() => {
@@ -95,7 +95,7 @@ describe('Test restrictedTo-related methods', () => {
     });
   });
 
-  describe(`Test ${Class.prototype.restrictedToContains.name}()`, () => {
+  describe(`Test ${Class.prototype.allowsAll.name}()`, () => {
     let category;
 
     beforeEach(() => {
@@ -138,7 +138,7 @@ describe('Test restrictedTo-related methods', () => {
     });
   });
 
-  describe(`Test ${Class.prototype.restrictedToEquals.name}()`, () => {
+  describe(`Test ${Class.prototype.allowsExactly.name}()`, () => {
     let category;
 
     beforeEach(() => {

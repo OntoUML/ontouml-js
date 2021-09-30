@@ -13,7 +13,7 @@ export function transformClass(transformer: Ontouml2Gufo, _class: Class): boolea
   transformClassAsIndividual(transformer, _class);
   transformClassAsClass(transformer, _class);
 
-  if (_class.hasEnumerationStereotype()) {
+  if (_class.isEnumeration()) {
     transformEnumeration(transformer, _class);
   }
 

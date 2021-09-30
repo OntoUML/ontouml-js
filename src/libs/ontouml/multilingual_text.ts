@@ -9,6 +9,7 @@ export class MultilingualText {
   constructor(value?: string, language?: string) {
     this.textMap = new Map<string, string>();
     if (value != null) this.addText(value, language);
+    // TODO: Set textMap writable to false.
   }
 
   getText(language?: string): string {

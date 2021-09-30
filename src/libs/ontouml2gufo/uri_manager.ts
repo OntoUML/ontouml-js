@@ -249,7 +249,7 @@ export const getNormalizedName = (element: ModelElement) => {
 export const getUriFromXsdMapping = (element: ModelElement): string => {
   if (!(element instanceof Class)) {
     return null;
-  } else if (!element.hasDatatypeStereotype() || element.hasAttributes()) {
+  } else if (!element.isDatatype() || element.hasAttributes()) {
     return null;
   }
 

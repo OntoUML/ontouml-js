@@ -78,10 +78,10 @@ export class Modularizer implements Service {
     let ancestors: Class[] = [];
     let descendants: Class[] = [];
     directlyConnectedClasses.forEach(_class => {
-      if (_class.hasBaseSortalStereotype()) {
+      if (_class.isBaseSortal()) {
         ancestors = ancestors.concat(_class.getSortalAncestors());
       }
-      if (_class.hasNonSortalStereotype()) {
+      if (_class.isNonSortal()) {
         descendants = descendants.concat(Modularizer.getNonSortalLine(_class));
       }
     });
@@ -89,7 +89,7 @@ export class Modularizer implements Service {
     let descendantAncestors: Class[] = descendants
       .flatMap(clazz => clazz.getAncestors())
       .filter(clazz => clazz instanceof Class)
-      .filter(clazz => clazz.hasSortalStereotype());
+      .filter(clazz => clazz.isSortal());
 
     cluster.addClasses(ancestors);
     cluster.addClasses(descendants);
@@ -119,7 +119,7 @@ export class Modularizer implements Service {
     module.classes.push(relator);
 
     relator
-      .getOwnOutgoingRelations()
+      .getOutRelations()
       .filter(r => r.isMediation())
       .forEach(mediation => {
         module.relations.push(mediation);
@@ -151,7 +151,7 @@ export class Modularizer implements Service {
 
       if (!path.includes(child)) path.push(child);
 
-      if (child.hasNonSortalStereotype()) path = this.traverseNonSortalLine(child, path);
+      if (child.isNonSortal()) path = this.traverseNonSortalLine(child, path);
     });
 
     return path;

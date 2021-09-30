@@ -62,9 +62,9 @@ export class ClassVerification {
       issues.push(VerificationIssue.createClassInvalidOntoumlStereotype(_class));
     }
 
-    if (_class.hasEnumerationStereotype() && _class.hasAttributes()) {
+    if (_class.isEnumeration() && _class.hasAttributes()) {
       issues.push(VerificationIssue.createClassEnumerationWithProperties(_class));
-    } else if (!_class.hasEnumerationStereotype() && _class.hasLiterals()) {
+    } else if (!_class.isEnumeration() && _class.hasLiterals()) {
       issues.push(VerificationIssue.createClassNonEnumerationWithLiterals(_class));
     }
 
@@ -72,14 +72,14 @@ export class ClassVerification {
   }
 
   static checkKindSpecialization(_class: Class): VerificationIssue {
-    if (_class.hasSortalStereotype()) {
+    if (_class.isSortal()) {
       const ultimateSortalAncestors = _class.getUltimateSortalAncestors();
 
-      if (_class.hasUltimateSortalStereotype() && ultimateSortalAncestors.length > 0) {
+      if (_class.isUltimateSortal() && ultimateSortalAncestors.length > 0) {
         return VerificationIssue.createClassIdentityProviderSpecialization(_class, ultimateSortalAncestors);
-      } else if (!_class.hasUltimateSortalStereotype() && ultimateSortalAncestors.length > 1) {
+      } else if (!_class.isUltimateSortal() && ultimateSortalAncestors.length > 1) {
         return VerificationIssue.createClassMultipleIdentityProviders(_class, ultimateSortalAncestors);
-      } else if (!_class.hasUltimateSortalStereotype() && ultimateSortalAncestors.length === 0 && !_class.isRestrictedToType()) {
+      } else if (!_class.isUltimateSortal() && ultimateSortalAncestors.length === 0 && !_class.isRestrictedToType()) {
         // TODO: review this coding based on language updates
         return VerificationIssue.createClassMissingIdentityProvider(_class);
       }
@@ -115,7 +115,7 @@ export class ClassVerification {
   }
 
   static checkMissingIsExtensional(_class: Class): VerificationIssue {
-    if (!_class.hasEndurantOnlyStereotype()) {
+    if (!_class.isEndurantType()) {
       return null;
     }
 
@@ -123,7 +123,7 @@ export class ClassVerification {
   }
 
   static checkMissingIsPowertype(_class: Class): VerificationIssue {
-    if (!_class.hasTypeStereotype()) {
+    if (!_class.isType()) {
       return null;
     }
 
@@ -132,7 +132,7 @@ export class ClassVerification {
 
   static checkMissingOrder(_class: Class): VerificationIssue {
     // TODO: update this when support to non-sortal types is implemented
-    if (!_class.hasTypeStereotype()) {
+    if (!_class.isType()) {
       return null;
     }
 

@@ -19,7 +19,7 @@ export abstract class Decoratable<S extends Stereotype> extends ModelElement {
    *
    * @throws error when the class has multiple stereotypes
    * */
-  hasAnyStereotype(stereotypes: S | S[]): boolean {
+  hasStereotype(stereotypes: S | S[]): boolean {
     return Array.isArray(stereotypes) ? stereotypes.includes(this.stereotype) : this.stereotype === stereotypes;
   }
 }

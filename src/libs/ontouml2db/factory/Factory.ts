@@ -52,7 +52,7 @@ export class Factory {
   putClass(_class: Class): void {
     const node: Node = new Node(_class.id, _class.getNameOrId(), this.getUfoStereotype(_class));
 
-    for (const attribute of _class.getOwnAttributes()) {
+    for (const attribute of _class.getAttributes()) {
       const cardinality = attribute.cardinality.lowerBound + '..' + attribute.cardinality.upperBound;
 
       const property: NodeProperty = new NodeProperty(

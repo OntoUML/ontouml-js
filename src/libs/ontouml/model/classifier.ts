@@ -6,17 +6,17 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
   isDerived: boolean;
   // owned properties, a.k.a attributes of classes and association ends of relations.
   properties: Property[];
+  // TODO: Set properties, isTypeOf, relationalProperties, generalizationsAsGeneral, generalizationsAsSpecific writable to false.
 
   // association ends of which the classifier is the type, i.e. the side of a relation connected to the classifier
   isTypeOf: Set<Property>;
-
   // association ends reachable by the classifier, i.e. the opposite side of a relation connected to the classifier
   relationalProperties: Set<Property>;
-
   // generalizations in which the classifier plays the role of general
   generalizationsAsGeneral: Set<Generalization>;
   // generalizations in which the classifier plays the role of specific
   generalizationsAsSpecific: Set<Generalization>;
+  // TODO: Add derived set of generalization sets in which the classifier is the categorizer.
 
   constructor(type: string, base?: Partial<Classifier<T, S>>) {
     super(type, base);
@@ -177,7 +177,7 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
     return this.getDescendants().filter(filter);
   }
 
-  getOwnRelations(_filter?: Function): Relation[] {
+  getRelations(_filter?: Function): Relation[] {
     const ownRelations = [...this?.relationalProperties]
       .map(property => property.container)
       .filter(container => container instanceof Relation)
@@ -189,7 +189,7 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
     // return [...new Set(relations)];
   }
 
-  getOwnIncomingRelations(): Relation[] {
+  getInRelations(): Relation[] {
     const ownRelations = [...this?.relationalProperties]
       .filter(property => property.isSource())
       .map(property => property.container)
@@ -204,7 +204,7 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
     //   .filter(r => r.getTarget() === this);
   }
 
-  getOwnOutgoingRelations(): Relation[] {
+  getOutRelations(): Relation[] {
     const ownRelations = [...this?.relationalProperties]
       .filter(property => property.isTarget())
       .map(property => property.container)
@@ -220,19 +220,19 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
   }
 
   getAllRelations(_filter?: Function): Relation[] {
-    let relations = this.getAncestors().flatMap(a => a.getOwnRelations());
+    let relations = this.getAncestors().flatMap(a => a.getRelations());
     return [...new Set(relations)];
   }
 
-  getAllIncomingRelations(): Relation[] {
-    return this.getAncestors().flatMap(a => a.getOwnIncomingRelations());
+  getAllInRelations(): Relation[] {
+    return this.getAncestors().flatMap(a => a.getInRelations());
   }
 
-  getAllOutgoingRelations(): Relation[] {
-    return this.getAncestors().flatMap(a => a.getOwnOutgoingRelations());
+  getAllOutRelations(): Relation[] {
+    return this.getAncestors().flatMap(a => a.getOutRelations());
   }
 
-  getOwnNaryRelations(): { position: number; relation: Relation }[] {
+  getNaryRelations(): { position: number; relation: Relation }[] {
     throw new Error('Method unimplemented!');
   }
 
@@ -240,7 +240,7 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
     throw new Error('Method unimplemented!');
   }
 
-  getOwnDerivations(): Relation[] {
+  getDerivations(): Relation[] {
     throw new Error('Method unimplemented!');
   }
 
@@ -249,10 +249,10 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
   }
 
   getAllOppositeRelationEnds(): Property[] {
-    return this.getAncestors().flatMap(a => a.getOwnOppositeRelationEnds());
+    return this.getAncestors().flatMap(a => a.getOppositeRelationEnds());
   }
 
-  getOwnOppositeRelationEnds(): Property[] {
+  getOppositeRelationEnds(): Property[] {
     return [...this.relationalProperties];
   }
 }

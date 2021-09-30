@@ -119,7 +119,7 @@ export class Package extends ModelElement implements ModelElementContainer {
   }
 
   getAllEnumerations(): Class[] {
-    return this.getAllClasses().filter(c => c.hasEnumerationStereotype()) as Class[];
+    return this.getAllClasses().filter(c => c.isEnumeration()) as Class[];
   }
 
   getAllLiterals(): Literal[] {
@@ -155,7 +155,7 @@ export class Package extends ModelElement implements ModelElementContainer {
 
   getAllClassesWithRestrictedToContainedIn(nature: OntologicalNature | OntologicalNature[]): Class[] {
     const natures = utils.arrayFrom(nature);
-    const naturesFilter = (_class: Class) => _class.restrictedToContainedIn(natures);
+    const naturesFilter = (_class: Class) => _class.allowsOnly(natures);
     return this.getAllClasses().filter(naturesFilter);
   }
 
@@ -480,13 +480,13 @@ export class Package extends ModelElement implements ModelElementContainer {
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    if (target.hasRoleStereotype() || target.hasRoleMixinStereotype()) {
+    if (target.isRole() || target.isRoleMixin()) {
       sourceEnd.cardinality.setOneToMany();
     } else {
       sourceEnd.cardinality.setZeroToMany();
     }
 
-    if (source.hasRoleStereotype() || source.hasRoleMixinStereotype()) {
+    if (source.isRole() || source.isRoleMixin()) {
       targetEnd.cardinality.setOneToMany();
     } else {
       targetEnd.cardinality.setZeroToMany();
@@ -511,7 +511,7 @@ export class Package extends ModelElement implements ModelElementContainer {
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
-    if (target.hasRoleStereotype() || target.hasRoleMixinStereotype()) {
+    if (target.isRole() || target.isRoleMixin()) {
       sourceEnd.cardinality.setOneToMany();
     } else {
       sourceEnd.cardinality.setZeroToMany();
@@ -641,7 +641,7 @@ export class Package extends ModelElement implements ModelElementContainer {
     sourceEnd.cardinality.setZeroToOne();
     sourceEnd.isReadOnly = true;
 
-    if (source.hasHistoricalRoleStereotype() || source.hasHistoricalRoleMixinStereotype()) {
+    if (source.isHistoricalRole() || source.isHistoricalRoleMixin()) {
       targetEnd.cardinality.setOneToMany();
     } else {
       targetEnd.cardinality.setZeroToMany();

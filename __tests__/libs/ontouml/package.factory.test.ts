@@ -57,7 +57,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasTypeStereotype()).toBe(true);
+      expect(clazz.isType()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -73,7 +73,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasHistoricalRoleStereotype()).toBe(true);
+      expect(clazz.isHistoricalRole()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -89,7 +89,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasHistoricalRoleMixinStereotype()).toBe(true);
+      expect(clazz.isHistoricalRoleMixin()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -105,7 +105,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasEventStereotype()).toBe(true);
+      expect(clazz.isEvent()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -121,7 +121,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasSituationStereotype()).toBe(true);
+      expect(clazz.isSituation()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -137,7 +137,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasCategoryStereotype()).toBe(true);
+      expect(clazz.isCategory()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -153,7 +153,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasMixinStereotype()).toBe(true);
+      expect(clazz.isMixin()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -169,7 +169,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasRoleMixinStereotype()).toBe(true);
+      expect(clazz.isRoleMixin()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -185,7 +185,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasPhaseMixinStereotype()).toBe(true);
+      expect(clazz.isPhaseMixin()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -201,7 +201,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasKindStereotype()).toBe(true);
+      expect(clazz.isKind()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -217,7 +217,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasCollectiveStereotype()).toBe(true);
+      expect(clazz.isCollective()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -233,7 +233,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasQuantityStereotype()).toBe(true);
+      expect(clazz.isQuantity()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -249,7 +249,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasRelatorStereotype()).toBe(true);
+      expect(clazz.isRelator()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -265,7 +265,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasQualityStereotype()).toBe(true);
+      expect(clazz.isQuality()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -281,7 +281,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasModeStereotype()).toBe(true);
+      expect(clazz.isMode()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -297,7 +297,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasModeStereotype()).toBe(true);
+      expect(clazz.isMode()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -313,7 +313,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasSubkindStereotype()).toBe(true);
+      expect(clazz.isSubkind()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -329,7 +329,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasRoleStereotype()).toBe(true);
+      expect(clazz.isRole()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -345,7 +345,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasPhaseStereotype()).toBe(true);
+      expect(clazz.isPhase()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -361,7 +361,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasAbstractStereotype()).toBe(true);
+      expect(clazz.isAbstractStereotype()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -377,7 +377,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasDatatypeStereotype()).toBe(true);
+      expect(clazz.isDatatype()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -393,7 +393,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasEnumerationStereotype()).toBe(true);
+      expect(clazz.isEnumeration()).toBe(true);
     });
 
     it('Test nature', () => {
