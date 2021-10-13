@@ -2,18 +2,14 @@ import { RepRelFinder } from '@libs/antipattern/reprel_finder';
 import { RepRelOccurrence } from '@libs/antipattern/reprel_occurrence';
 import { Project } from '@libs/ontouml';
 
-describe('RepRel Test 0', () => {
+describe('RepRel positive test with two mediation relations', () => {
   const project = new Project();
   const model = project.createModel();
 
-  const person = model.createKind('Person');
   const supervisor = model.createRole('Supervisor');
   const student = model.createRole('Student');
   const university = model.createKind('University'); //this generates the issue
   const supervision = model.createRelator('Supervision');
-
-  const gen1 = model.createGeneralization(person, student);
-  const gen2 = model.createGeneralization(person, supervisor);
 
   const med1 = model.createMediationRelation(supervision, supervisor);
   med1.getSourceEnd().cardinality.setOneToMany();
@@ -37,18 +33,12 @@ describe('RepRel Test 0', () => {
   });
 });
 
-describe('RepRel Test 1', () => {
+describe('RepRel negative test with one mediation relation', () => {
   const project = new Project();
   const model = project.createModel();
 
-  const person = model.createKind('Person');
   const supervisor = model.createRole('Supervisor');
-  const student = model.createRole('Student');
-  const university = model.createKind('University'); //this generates the issue
   const supervision = model.createRelator('Supervision');
-
-  const gen1 = model.createGeneralization(person, student);
-  const gen2 = model.createGeneralization(person, supervisor);
 
   const med1 = model.createMediationRelation(supervision, supervisor);
   med1.getSourceEnd().cardinality.setOneToMany();
@@ -59,25 +49,16 @@ describe('RepRel Test 1', () => {
   it('should find the RepRel occurrence', () => {
     expect(output.result).toHaveLength(0);
   });
-
-  it('should set «relator» Undefined in the RepRel occurrence', () => {
-    const reprel: RepRelOccurrence = output.result[0];
-    expect(reprel).toBeUndefined();
-  });
 });
 
-describe('RepRel Test 2', () => {
+describe('RepRel negative test with two mediation relations one of which the upper bound is 1', () => {
   const project = new Project();
   const model = project.createModel();
 
-  const person = model.createKind('Person');
+  // const person = model.createKind('Person');
   const supervisor = model.createRole('Supervisor');
-  const student = model.createRole('Student');
   const university = model.createKind('University'); //this generates the issue
   const supervision = model.createRelator('Supervision');
-
-  const gen1 = model.createGeneralization(person, student);
-  const gen2 = model.createGeneralization(person, supervisor);
 
   const med1 = model.createMediationRelation(supervision, supervisor);
   med1.getSourceEnd().cardinality.setUpperBoundFromNumber(1);
@@ -90,10 +71,5 @@ describe('RepRel Test 2', () => {
 
   it('should find the RepRel occurrence', () => {
     expect(output.result).toHaveLength(0);
-  });
-
-  it('should set «relator» Undefined in the RepRel occurrence', () => {
-    const reprel: RepRelOccurrence = output.result[0];
-    expect(reprel).toBeUndefined();
   });
 });
