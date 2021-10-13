@@ -2,7 +2,6 @@ import { RelOverFinder } from '@libs/antipattern/relover_finder';
 import { RelOverOccurrence } from '@libs/antipattern/relover_occurrence';
 import { Project } from '@libs/ontouml';
 
-
 describe('RelOver Variant1 Test 0', () => {
   const project = new Project();
   const model = project.createModel();
