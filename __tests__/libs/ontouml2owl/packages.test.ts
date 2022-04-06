@@ -1,22 +1,23 @@
-import { Package, Project, Class, Relation } from '@libs/ontouml';
+import { Package, Project, Class } from '@libs/ontouml';
 import { generateOwl } from './helpers';
 
-describe('Classes', () => {
-  let project: Project;
+describe('Packages', () => {
   let model: Package;
-  let class1, class2: Class;
   let result: string;
 
   beforeAll(() => {
-    project = new Project();
+    let project = new Project();
     model = project.createModel({ id: 'pk1' });
     model.setName('Model', 'en');
     model.setDescription('The best model ever', 'en');
 
-    class1 = model.createKind(null, { id: 'c1' });
-    class2 = model.createSubkind(null, null, { id: 'c2' });
+    let class1 = model.createKind(null, { id: 'c1' });
+    let class2 = model.createSubkind(null, null, { id: 'c2' });
     model.createMaterialRelation(class1, class2, null, { id: 'r1' });
     model.createGeneralization(class1, class2, null, { id: 'g1' });
+
+    let pk2 = model.createPackage(null, { id: 'pk2' });
+    pk2.createKind(null, { id: 'c3' });
 
     result = generateOwl(project);
   });
@@ -47,5 +48,13 @@ describe('Classes', () => {
 
   it('should generate generalization content triple', () => {
     expect(result).toContain('<t:pk1> <ontouml:containsModelElement> <t:g1>');
+  });
+
+  it('should generate package content triple', () => {
+    expect(result).toContain('<t:pk1> <ontouml:containsModelElement> <t:pk2>');
+  });
+
+  it('should NOT generate content triple for class of a subpackage', () => {
+    expect(result).not.toContain('<t:pk1> <ontouml:containsModelElement> <t:c3>');
   });
 });

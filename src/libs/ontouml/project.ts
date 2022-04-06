@@ -15,9 +15,17 @@ import {
   OntoumlElement,
   OntoumlType,
   Diagram,
-  Classifier
+  Classifier,
+  ClassView,
+  RelationView,
+  GeneralizationView,
+  GeneralizationSetView
 } from '.';
 import { every, some } from 'lodash';
+import { Rectangle } from './view/rectangle';
+import { Path } from './view/path';
+import { Text } from './view/text';
+import { PackageView } from './view/package_view';
 
 export class Project extends OntoumlElement implements ModelElementContainer {
   model: Package;
@@ -181,6 +189,38 @@ export class Project extends OntoumlElement implements ModelElementContainer {
 
   getAllLiterals(): Literal[] {
     return this.model.getAllLiterals();
+  }
+
+  getAllClassViews(): ClassView[] {
+    return this.diagrams.flatMap(diagram => diagram.getClassViews());
+  }
+
+  getAllRelationViews(): RelationView[] {
+    return this.diagrams.flatMap(diagram => diagram.getRelationViews());
+  }
+
+  getAllGeneralizationViews(): GeneralizationView[] {
+    return this.diagrams.flatMap(diagram => diagram.getGeneralizationViews());
+  }
+
+  getAllGeneralizationSetViews(): GeneralizationSetView[] {
+    return this.diagrams.flatMap(diagram => diagram.getGeneralizationSetViews());
+  }
+
+  getAllPackageViews(): PackageView[] {
+    return this.diagrams.flatMap(diagram => diagram.getPackageViews());
+  }
+
+  getAllRectangles(): Rectangle[] {
+    return this.diagrams.flatMap(diagram => diagram.getRectangles());
+  }
+
+  getAllPaths(): Path[] {
+    return this.diagrams.flatMap(diagram => diagram.getPaths());
+  }
+
+  getAllTexts(): Text[] {
+    return this.diagrams.flatMap(diagram => diagram.getTexts());
   }
 
   getAllModelElements(): ModelElement[] {

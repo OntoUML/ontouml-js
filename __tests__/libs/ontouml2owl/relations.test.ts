@@ -1,7 +1,7 @@
 import { Package, Project, Class, Relation } from '@libs/ontouml';
 import { generateOwl } from './helpers';
 
-describe('Classes', () => {
+describe('Relations', () => {
   let project: Project;
   let model: Package;
   let clazz: Class;

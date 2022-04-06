@@ -1,5 +1,4 @@
-import { Project, Package, Relation } from '@libs/ontouml';
-import { Cardinality } from '@libs/ontouml/model/cardinality';
+import { Project, Package, Relation, Diagram, Literal } from '@libs/ontouml';
 import { Class } from '@libs/ontouml/model/class';
 import { Decoratable } from '@libs/ontouml/model/decoratable';
 import { Generalization } from '@libs/ontouml/model/generalization';
@@ -7,8 +6,13 @@ import { GeneralizationSet } from '@libs/ontouml/model/generalization_set';
 import { OntologicalNature } from '@libs/ontouml/model/natures';
 import { AggregationKind, Property } from '@libs/ontouml/model/property';
 import { OntoumlElement } from '@libs/ontouml/ontouml_element';
+import { ConnectorView } from '@libs/ontouml/view/connector_view';
+import { ElementView } from '@libs/ontouml/view/element_view';
+import { Path } from '@libs/ontouml/view/path';
+import { Point } from '@libs/ontouml/view/point';
+import { RectangularShape } from '@libs/ontouml/view/rectangular_shape';
 
-import { Quad, Writer } from 'n3';
+import { Writer } from 'n3';
 import { Service, ServiceIssue } from '..';
 
 const N3 = require('n3');
@@ -54,22 +58,31 @@ export class Ontouml2Owl implements Service {
 
   transform(): boolean {
     try {
+      this.transformProject();
+
+      this.transformPackages();
       this.transformClasses();
       this.transformGeneralizations();
       this.transformGeneralizationSets();
       this.transformRelations();
-      this.transformPackages();
-      // TODO: Continue here
-      // this.transformDiagrams();
-      // this.transformClassViews();
-      // this.transformRelationViews();
-      // this.transformGeneralizationViews();
-      // this.transformGeneralizationSetViews();
+      this.transformProperties();
+      this.transformLiterals();
+
+      this.transformDiagrams();
+      this.transformPackageViews();
+      this.transformClassViews();
+      this.transformRelationViews();
+      this.transformGeneralizationViews();
+      this.transformGeneralizationSetViews();
+
+      this.transformRectangles();
+      this.transformTexts();
+      this.transformPaths();
 
       this.writer.end((error, result) => {
         if (error) throw error;
         this.owlCode = result;
-        console.log(result);
+        // console.log(result);
       });
     } catch (error) {
       console.log(error);
@@ -80,21 +93,91 @@ export class Ontouml2Owl implements Service {
     return true;
   }
 
-  transformClasses() {
-    const classes = this.project.getAllClasses();
+  transformPackages() {
+    this.project.getAllPackages()?.forEach(p => this.transformPackage(p));
+  }
 
-    for (const c of classes) {
-      this.transformClass(c);
+  transformClasses() {
+    this.project.getAllClasses()?.forEach(c => this.transformClass(c));
+  }
+
+  transformRelations() {
+    this.project.getAllRelations()?.forEach(r => this.transformRelation(r));
+  }
+
+  transformGeneralizations() {
+    this.project.getAllGeneralizations()?.forEach(g => this.transformGeneralization(g));
+  }
+
+  transformGeneralizationSets() {
+    this.project.getAllGeneralizationSets()?.forEach(gs => this.transformGeneralizationSet(gs));
+  }
+
+  transformProperties() {
+    this.project.getAllProperties()?.forEach(p => this.transformProperty(p));
+  }
+
+  transformLiterals() {
+    this.project.getAllLiterals()?.forEach(l => this.transformOntoumlElement(l));
+  }
+
+  transformDiagrams() {
+    this.project.diagrams?.forEach(d => this.transformDiagram(d));
+  }
+
+  transformClassViews() {
+    this.project.getAllClassViews()?.forEach(v => this.transformElementView(v));
+  }
+
+  transformRelationViews() {
+    this.project.getAllRelationViews()?.forEach(v => this.transformConnectorView(v));
+  }
+
+  transformGeneralizationViews() {
+    this.project.getAllGeneralizationViews()?.forEach(v => this.transformConnectorView(v));
+  }
+
+  transformGeneralizationSetViews() {
+    this.project.getAllGeneralizationSetViews()?.forEach(v => this.transformElementView(v));
+  }
+
+  transformPackageViews() {
+    this.project.getAllPackageViews()?.forEach(v => this.transformElementView(v));
+  }
+
+  transformRectangles() {
+    this.project.getAllRectangles()?.forEach(r => this.transformRectangularShape(r));
+  }
+
+  transformTexts() {
+    this.project.getAllTexts()?.forEach(r => this.transformRectangularShape(r));
+  }
+
+  transformPaths() {
+    this.project.getAllPaths()?.forEach(r => this.transformPath(r));
+  }
+
+  transformProject() {
+    this.transformOntoumlElement(this.project);
+
+    const projUri = this.getUri(this.project);
+
+    if (this.project.model) {
+      const modelUri = this.getUri(this.project.model);
+      this.writer.addQuad(namedNode(projUri), namedNode('ontouml:model'), namedNode(modelUri));
     }
 
-    return true;
+    this.project.diagrams?.forEach(diag => {
+      const diagUri = this.getUri(diag);
+      this.writer.addQuad(namedNode(projUri), namedNode('ontouml:diagram'), namedNode(diagUri));
+    });
   }
 
   transformClass(clazz: Class) {
-    const classUri = this.getUri(clazz);
-    this.writer.addQuad(namedNode(classUri), namedNode('rdf:type'), namedNode('ontouml:Class'));
-
+    this.transformOntoumlElement(clazz);
     this.transformStereotype(clazz);
+
+    const classUri = this.getUri(clazz);
 
     for (const nature of clazz.restrictedTo) {
       this.writer.addQuad(namedNode(classUri), namedNode('ontouml:restrictedTo'), namedNode(this.getNatureUri(nature)));
@@ -122,34 +205,22 @@ export class Ontouml2Owl implements Service {
 
     this.writer.addQuad(namedNode(classUri), namedNode('ontouml:order'), literal(clazz.order, namedNode('xsd:positiveInteger')));
 
-    this.transformName(clazz);
-    this.transformDescription(clazz);
-
     for (const attr of clazz.properties) {
       const attrUri = this.getUri(attr);
       this.writer.addQuad(namedNode(classUri), namedNode('ontouml:attribute'), namedNode(attrUri));
-
-      this.transformProperty(attr);
     }
-  }
 
-  transformRelations() {
-    const relations = this.project.getAllRelations();
-
-    for (const r of relations) {
-      this.transformRelation(r);
+    for (const literal of clazz.literals) {
+      const litUri = this.getUri(literal);
+      this.writer.addQuad(namedNode(classUri), namedNode('ontouml:literal'), namedNode(litUri));
     }
   }
 
   transformRelation(rel: Relation) {
-    this.transformName(rel);
-    this.transformDescription(rel);
-
-    const relUri = this.getUri(rel);
-    this.writer.addQuad(namedNode(relUri), namedNode('rdf:type'), namedNode('ontouml:Relation'));
-
+    this.transformOntoumlElement(rel);
     this.transformStereotype(rel);
 
+    const relUri = this.getUri(rel);
     this.writer.addQuad(namedNode(relUri), namedNode('ontouml:isDerived'), literal(rel.isDerived, namedNode('xsd:boolean')));
 
     if (rel.isBinary()) {
@@ -165,25 +236,13 @@ export class Ontouml2Owl implements Service {
     for (const prop of rel.properties) {
       const propUri = this.getUri(prop);
       this.writer.addQuad(namedNode(relUri), namedNode('ontouml:relationEnd'), namedNode(propUri));
-      this.transformProperty(prop);
-    }
-  }
-
-  transformGeneralizations() {
-    const generalizations = this.project.getAllGeneralizations();
-
-    for (const gen of generalizations) {
-      this.transformGeneralization(gen);
     }
   }
 
   transformGeneralization(gen: Generalization) {
-    this.transformName(gen);
-    this.transformDescription(gen);
+    this.transformOntoumlElement(gen);
 
     const genUri = this.getUri(gen);
-    this.writer.addQuad(namedNode(genUri), namedNode('rdf:type'), namedNode('ontouml:Generalization'));
-
     const generalUri = this.getUri(gen.general);
     this.writer.addQuad(namedNode(genUri), namedNode('ontouml:general'), namedNode(generalUri));
 
@@ -191,21 +250,10 @@ export class Ontouml2Owl implements Service {
     this.writer.addQuad(namedNode(genUri), namedNode('ontouml:specific'), namedNode(specificUri));
   }
 
-  transformGeneralizationSets() {
-    const generalizationSets = this.project.getAllGeneralizationSets();
-
-    for (const gs of generalizationSets) {
-      this.transformGeneralizationSet(gs);
-    }
-  }
-
   transformGeneralizationSet(gs: GeneralizationSet) {
-    this.transformName(gs);
-    this.transformDescription(gs);
+    this.transformOntoumlElement(gs);
 
     const gsUri = this.getUri(gs);
-    this.writer.addQuad(namedNode(gsUri), namedNode('rdf:type'), namedNode('ontouml:GeneralizationSet'));
-
     this.writer.addQuad(namedNode(gsUri), namedNode('ontouml:isComplete'), literal(gs.isComplete, namedNode('xsd:boolean')));
     this.writer.addQuad(namedNode(gsUri), namedNode('ontouml:isDisjoint'), literal(gs.isDisjoint, namedNode('xsd:boolean')));
 
@@ -220,21 +268,10 @@ export class Ontouml2Owl implements Service {
     }
   }
 
-  transformPackages() {
-    const packages = this.project.getAllPackages();
-
-    for (const pkg of packages) {
-      this.transformPackage(pkg);
-    }
-  }
-
   transformPackage(pkg: Package) {
-    this.transformName(pkg);
-    this.transformDescription(pkg);
+    this.transformOntoumlElement(pkg);
 
     const pkgUri = this.getUri(pkg);
-    this.writer.addQuad(namedNode(pkgUri), namedNode('rdf:type'), namedNode('ontouml:Package'));
-
     for (const ele of pkg.contents) {
       const eleUri = this.getUri(ele);
       this.writer.addQuad(namedNode(pkgUri), namedNode('ontouml:containsModelElement'), namedNode(eleUri));
@@ -242,15 +279,11 @@ export class Ontouml2Owl implements Service {
   }
 
   transformProperty(prop: Property) {
-    const propUri = this.getUri(prop);
-    this.writer.addQuad(namedNode(propUri), namedNode('rdf:type'), namedNode('ontouml:Property'));
-
+    this.transformOntoumlElement(prop);
     this.transformStereotype(prop);
     this.transformCardinality(prop);
 
-    this.transformName(prop);
-    this.transformDescription(prop);
-
+    const propUri = this.getUri(prop);
     this.writer.addQuad(namedNode(propUri), namedNode('ontouml:isDerived'), literal(prop.isDerived, namedNode('xsd:boolean')));
     this.writer.addQuad(namedNode(propUri), namedNode('ontouml:isReadOnly'), literal(prop.isReadOnly, namedNode('xsd:boolean')));
     this.writer.addQuad(namedNode(propUri), namedNode('ontouml:isOrdered'), literal(prop.isOrdered, namedNode('xsd:boolean')));
@@ -299,6 +332,91 @@ export class Ontouml2Owl implements Service {
     this.writer.addQuad(namedNode(subject), namedNode('ontouml:stereotype'), namedNode(stereotypeUri));
   }
 
+  transformDiagram(diagram: Diagram) {
+    this.transformOntoumlElement(diagram);
+
+    const diagUri = this.getUri(diagram);
+
+    for (const view of diagram.contents) {
+      const viewUri = this.getUri(view);
+      this.writer.addQuad(namedNode(diagUri), namedNode('ontouml:containsView'), namedNode(viewUri));
+    }
+  }
+
+  transformElementView(view: ElementView<any, any>) {
+    this.transformOntoumlElement(view);
+
+    const viewUri = this.getUri(view);
+    const eleUri = this.getUri(view.modelElement);
+    this.writer.addQuad(namedNode(viewUri), namedNode('ontouml:isViewOf'), namedNode(eleUri));
+
+    const shapeUri = this.getUri(view.shape);
+    this.writer.addQuad(namedNode(viewUri), namedNode('ontouml:shape'), namedNode(shapeUri));
+  }
+
+  transformConnectorView(view: ConnectorView<any>) {
+    this.transformElementView(view);
+
+    const viewUri = this.getUri(view);
+
+    const sourceUri = this.getUri(view.source);
+    this.writer.addQuad(namedNode(viewUri), namedNode('ontouml:sourceView'), namedNode(sourceUri));
+
+    const targetUri = this.getUri(view.target);
+    this.writer.addQuad(namedNode(viewUri), namedNode('ontouml:targetView'), namedNode(targetUri));
+  }
+
+  transformRectangularShape(rect: RectangularShape) {
+    const rectUri = this.getUri(rect);
+    this.writer.addQuad(namedNode(rectUri), namedNode('rdf:type'), namedNode('ontouml:' + rect.type));
+
+    this.writer.addQuad(
+      namedNode(rectUri),
+      namedNode('ontouml:height'),
+      literal(rect.getHeight(), namedNode('xsd:positiveInteger'))
+    );
+
+    this.writer.addQuad(
+      namedNode(rectUri),
+      namedNode('ontouml:width'),
+      literal(rect.getWidth(), namedNode('xsd:positiveInteger'))
+    );
+
+    const pointUri = rectUri + '_point';
+    this.writer.addQuad(namedNode(rectUri), namedNode('ontouml:topLeftPosition'), blankNode(pointUri));
+    this.transformPoint(rect.topLeft, pointUri);
+  }
+
+  transformPath(path: Path) {
+    const pathUri = this.getUri(path);
+    this.writer.addQuad(namedNode(pathUri), namedNode('rdf:type'), namedNode('ontouml:' + path.type));
+
+    path.points?.forEach((point, index) => {
+      const pointUri = pathUri + '_point_' + index;
+      this.writer.addQuad(namedNode(pathUri), namedNode('ontouml:point'), blankNode(pointUri));
+      this.transformPoint(point, pointUri);
+    });
+  }
+
+  transformPoint(point: Point, pointUri: string) {
+    this.writer.addQuad(blankNode(pointUri), namedNode('rdf:type'), namedNode('ontouml:Point'));
+    this.writer.addQuad(blankNode(pointUri), namedNode('ontouml:xCoordinate'), literal(point.getX()));
+    this.writer.addQuad(blankNode(pointUri), namedNode('ontouml:yCoordinate'), literal(point.getY()));
+  }
+
+  transformOntoumlElement(elem: OntoumlElement) {
+    const elemUri = this.getUri(elem);
+
+    const typeUri = 'ontouml:' + elem.type;
+    this.writer.addQuad(namedNode(elemUri), namedNode('rdf:type'), namedNode(typeUri));
+
+    const projUri = this.getUri(this.project);
+    this.writer.addQuad(namedNode(projUri), namedNode('ontouml:project'), namedNode(elemUri));
+
+    this.transformName(elem);
+    this.transformDescription(elem);
+  }
+
   transformName(elem: OntoumlElement) {
     const subject = this.getUri(elem);
 
@@ -334,13 +452,7 @@ export class Ontouml2Owl implements Service {
   }
 
   getAggregationKindUri(agg: AggregationKind) {
-    const map = {
-      [AggregationKind.COMPOSITE]: 'composite',
-      [AggregationKind.SHARED]: 'shared',
-      [AggregationKind.NONE]: 'none'
-    };
-
-    return 'ontouml:' + map[agg];
+    return 'ontouml:' + agg.toLowerCase();
   }
 
   getUri(element: OntoumlElement): string {

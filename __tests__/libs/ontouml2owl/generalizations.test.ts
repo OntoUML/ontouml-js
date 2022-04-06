@@ -1,7 +1,7 @@
 import { Package, Project, Class, Generalization } from '@libs/ontouml';
 import { generateOwl } from './helpers';
 
-describe('Classes', () => {
+describe('Generalizations', () => {
   let project: Project;
   let model: Package;
   let parent, child: Class;

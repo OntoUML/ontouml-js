@@ -1,7 +1,7 @@
 import { Property, Package, Project, Class, PropertyStereotype, AggregationKind } from '@libs/ontouml';
 import { generateOwl } from './helpers';
 
-describe('Classes', () => {
+describe('Properties', () => {
   let project: Project;
   let model: Package;
   let clazz: Class;
