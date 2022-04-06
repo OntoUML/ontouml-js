@@ -1,4 +1,4 @@
-import { ClassStereotype, OntologicalNature, Package, Project, Class } from '@libs/ontouml';
+import { OntologicalNature, Package, Project, Class } from '@libs/ontouml';
 import { generateOwl } from './helpers';
 
 describe('Classes', () => {

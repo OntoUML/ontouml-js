@@ -2,7 +2,7 @@ import { Package, Project } from '@libs/ontouml';
 import { Ontouml2Owl } from '@libs/ontouml2owl';
 
 export function generateOwl(project: Project): string {
-  const ontouml2owl = new Ontouml2Owl(project, 'http://test.com', 't');
+  const ontouml2owl = new Ontouml2Owl(project, 'http://test.com', 't', 'N-Triple');
 
   ontouml2owl.transform();
 

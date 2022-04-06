@@ -29,14 +29,16 @@ export class Ontouml2Owl implements Service {
   writer: Writer;
   baseUri: string;
   basePrefix: string;
+  format: string;
 
-  constructor(project: Project, baseUri?: string, basePrefix?: string) {
+  constructor(project: Project, baseUri?: string, basePrefix?: string, format?: string) {
     this.project = project;
     this.baseUri = baseUri || 'http://ontouml.org/';
     this.basePrefix = basePrefix || 'ontouml';
+    this.format = format || 'Turtle';
 
     this.writer = new N3.Writer({
-      format: 'N-Triple',
+      format: this.format,
       prefixes: {
         [this.basePrefix]: this.baseUri,
         ontouml: 'https://purl.org/ontouml-metamodel#',
@@ -82,7 +84,6 @@ export class Ontouml2Owl implements Service {
       this.writer.end((error, result) => {
         if (error) throw error;
         this.owlCode = result;
-        // console.log(result);
       });
     } catch (error) {
       console.log(error);
