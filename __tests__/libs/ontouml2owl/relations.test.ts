@@ -1,6 +1,9 @@
 import { Package, Project, Class, Relation } from '@libs/ontouml';
 import { generateOwl } from './helpers';
 
+const prefix = 't';
+const baseUri = 'http://test.com/';
+
 describe('Relations', () => {
   let project: Project;
   let model: Package;
@@ -15,48 +18,45 @@ describe('Relations', () => {
   });
 
   it('should generate rdf:type triple', () => {
-    const result = generateOwl(project);
-    expect(result).toContain('<t:r1> <rdf:type> <ontouml:Relation>');
+    const result = generateOwl(project, baseUri, prefix);
+    expect(result).toContain('<http://test.com/r1> <rdf:type> <https://purl.org/ontouml-metamodel#Relation>');
   });
 
   it('should generate stereotype triple', () => {
-    const result = generateOwl(project);
-    expect(result).toContain('<t:r1> <ontouml:stereotype> <ontouml:material>');
+    const result = generateOwl(project, baseUri, prefix);
+    expect(result).toContain(
+      '<http://test.com/r1> <https://purl.org/ontouml-metamodel#stereotype> <https://purl.org/ontouml-metamodel#material>'
+    );
   });
 
   it('should generate name triple', () => {
     relation.setName('amico di', 'it');
-
-    const result = generateOwl(project);
-    expect(result).toContain('<t:r1> <ontouml:name> "amico di"@it');
+    const result = generateOwl(project, baseUri, prefix);
+    expect(result).toContain('<http://test.com/r1> <https://purl.org/ontouml-metamodel#name> "amico di"@it');
   });
 
   it('should generate description triple', () => {
     relation.setDescription('gli amici', 'it');
-
-    const result = generateOwl(project);
-    expect(result).toContain('<t:r1> <ontouml:description> "gli amici"@it');
+    const result = generateOwl(project, baseUri, prefix);
+    expect(result).toContain('<http://test.com/r1> <https://purl.org/ontouml-metamodel#description> "gli amici"@it');
   });
 
   it('should generate isDerived triple', () => {
     relation.isDerived = true;
-
-    const result = generateOwl(project);
-    expect(result).toContain('<t:r1> <ontouml:isDerived> "true"^^<xsd:boolean>');
+    const result = generateOwl(project, baseUri, prefix);
+    expect(result).toContain('<http://test.com/r1> <https://purl.org/ontouml-metamodel#isDerived> "true"^^<xsd:boolean>');
   });
 
   it('should generate sourceEnd triple', () => {
     relation.getSourceEnd().id = 'p1';
-
-    const result = generateOwl(project);
-    expect(result).toContain('<t:r1> <ontouml:sourceEnd> <t:p1>');
+    const result = generateOwl(project, baseUri, prefix);
+    expect(result).toContain('<http://test.com/r1> <https://purl.org/ontouml-metamodel#sourceEnd> <http://test.com/p1>');
   });
 
   it('should generate targetEnd triple', () => {
     relation.getTargetEnd().id = 'p2';
-
-    const result = generateOwl(project);
-    expect(result).toContain('<t:r1> <ontouml:targetEnd> <t:p2>');
+    const result = generateOwl(project, baseUri, prefix);
+    expect(result).toContain('<http://test.com/r1> <https://purl.org/ontouml-metamodel#targetEnd> <http://test.com/p2>');
   });
 
   it('should generate relationEnd triples for n-ary relations', () => {
@@ -64,10 +64,9 @@ describe('Relations', () => {
     ternary.properties[0].id = 'p1';
     ternary.properties[1].id = 'p2';
     ternary.properties[2].id = 'p3';
-
-    const result = generateOwl(project);
-    expect(result).toContain('<t:r2> <ontouml:relationEnd> <t:p1>');
-    expect(result).toContain('<t:r2> <ontouml:relationEnd> <t:p2>');
-    expect(result).toContain('<t:r2> <ontouml:relationEnd> <t:p3>');
+    const result = generateOwl(project, baseUri, prefix);
+    expect(result).toContain('<http://test.com/r2> <https://purl.org/ontouml-metamodel#relationEnd> <http://test.com/p1>');
+    expect(result).toContain('<http://test.com/r2> <https://purl.org/ontouml-metamodel#relationEnd> <http://test.com/p2>');
+    expect(result).toContain('<http://test.com/r2> <https://purl.org/ontouml-metamodel#relationEnd> <http://test.com/p3>');
   });
 });

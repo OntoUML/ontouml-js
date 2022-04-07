@@ -1,6 +1,9 @@
 import { Project } from '@libs/ontouml';
 import { generateOwl } from './helpers';
 
+const prefix = 't';
+const baseUri = 'http://test.com/';
+
 describe('Relation views', () => {
   let result: string;
 
@@ -21,10 +24,10 @@ describe('Relation views', () => {
     path1.moveTo(15, 30);
     path1.moveTo(50, 100);
 
-    result = generateOwl(project);
+    result = generateOwl(project, baseUri, prefix);
   });
 
   it('should generate rdf:type triple', () => {
-    expect(result).toContain('<t:sh1> <ontouml:point>');
+    expect(result).toContain('<http://test.com/sh1> <https://purl.org/ontouml-metamodel#point>');
   });
 });

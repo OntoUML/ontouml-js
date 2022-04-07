@@ -1,6 +1,9 @@
 import { Project } from '@libs/ontouml';
 import { generateOwl } from './helpers';
 
+const prefix = 't';
+const baseUri = 'http://test.com/';
+
 describe('Class views', () => {
   let result: string;
 
@@ -15,18 +18,18 @@ describe('Class views', () => {
     classView1.id = 'cv1';
     classView1.shape.id = 'sh1';
 
-    result = generateOwl(project);
+    result = generateOwl(project, baseUri, prefix);
   });
 
   it('should generate rdf:type triple', () => {
-    expect(result).toContain('<t:cv1> <rdf:type> <ontouml:ClassView>');
+    expect(result).toContain('<http://test.com/cv1> <rdf:type> <https://purl.org/ontouml-metamodel#ClassView>');
   });
 
   it('should generate is view of triple', () => {
-    expect(result).toContain('<t:cv1> <ontouml:isViewOf> <t:c1>');
+    expect(result).toContain('<http://test.com/cv1> <https://purl.org/ontouml-metamodel#isViewOf> <http://test.com/c1>');
   });
 
   it('should generate relation view content triple', () => {
-    expect(result).toContain('<t:cv1> <ontouml:shape> <t:sh1>');
+    expect(result).toContain('<http://test.com/cv1> <https://purl.org/ontouml-metamodel#shape> <http://test.com/sh1>');
   });
 });

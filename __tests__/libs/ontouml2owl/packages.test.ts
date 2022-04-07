@@ -1,6 +1,9 @@
 import { Package, Project, Class } from '@libs/ontouml';
 import { generateOwl } from './helpers';
 
+const prefix = 't';
+const baseUri = 'http://test.com/';
+
 describe('Packages', () => {
   let model: Package;
   let result: string;
@@ -19,42 +22,54 @@ describe('Packages', () => {
     let pk2 = model.createPackage(null, { id: 'pk2' });
     pk2.createKind(null, { id: 'c3' });
 
-    result = generateOwl(project);
+    result = generateOwl(project, baseUri, prefix);
   });
 
   it('should generate rdf:type triple', () => {
-    expect(result).toContain('<t:pk1> <rdf:type> <ontouml:Package>');
+    expect(result).toContain('<http://test.com/pk1> <rdf:type> <https://purl.org/ontouml-metamodel#Package>');
   });
 
   it('should generate name triple', () => {
-    expect(result).toContain('<t:pk1> <ontouml:name> "Model"@en');
+    expect(result).toContain('<http://test.com/pk1> <https://purl.org/ontouml-metamodel#name> "Model"@en');
   });
 
   it('should generate description triple', () => {
-    expect(result).toContain('<t:pk1> <ontouml:description> "The best model ever"@en');
+    expect(result).toContain('<http://test.com/pk1> <https://purl.org/ontouml-metamodel#description> "The best model ever"@en');
   });
 
   it('should generate class1 content triple', () => {
-    expect(result).toContain('<t:pk1> <ontouml:containsModelElement> <t:c1>');
+    expect(result).toContain(
+      '<http://test.com/pk1> <https://purl.org/ontouml-metamodel#containsModelElement> <http://test.com/c1>'
+    );
   });
 
   it('should generate class2 content triple', () => {
-    expect(result).toContain('<t:pk1> <ontouml:containsModelElement> <t:c2>');
+    expect(result).toContain(
+      '<http://test.com/pk1> <https://purl.org/ontouml-metamodel#containsModelElement> <http://test.com/c2>'
+    );
   });
 
   it('should generate relation content triple', () => {
-    expect(result).toContain('<t:pk1> <ontouml:containsModelElement> <t:r1>');
+    expect(result).toContain(
+      '<http://test.com/pk1> <https://purl.org/ontouml-metamodel#containsModelElement> <http://test.com/r1>'
+    );
   });
 
   it('should generate generalization content triple', () => {
-    expect(result).toContain('<t:pk1> <ontouml:containsModelElement> <t:g1>');
+    expect(result).toContain(
+      '<http://test.com/pk1> <https://purl.org/ontouml-metamodel#containsModelElement> <http://test.com/g1>'
+    );
   });
 
   it('should generate package content triple', () => {
-    expect(result).toContain('<t:pk1> <ontouml:containsModelElement> <t:pk2>');
+    expect(result).toContain(
+      '<http://test.com/pk1> <https://purl.org/ontouml-metamodel#containsModelElement> <http://test.com/pk2>'
+    );
   });
 
   it('should NOT generate content triple for class of a subpackage', () => {
-    expect(result).not.toContain('<t:pk1> <ontouml:containsModelElement> <t:c3>');
+    expect(result).not.toContain(
+      '<http://test.com/pk1> <https://purl.org/ontouml-metamodel#containsModelElement> <http://test.com/c3>'
+    );
   });
 });

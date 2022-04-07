@@ -1,6 +1,9 @@
 import { Project } from '@libs/ontouml';
 import { generateOwl } from './helpers';
 
+const prefix = 't';
+const baseUri = 'http://test.com/';
+
 describe('Relation views', () => {
   let result: string;
 
@@ -19,26 +22,26 @@ describe('Relation views', () => {
     relView1.source.id = 'cv1';
     relView1.target.id = 'cv2';
 
-    result = generateOwl(project);
+    result = generateOwl(project, baseUri, prefix);
   });
 
   it('should generate rdf:type triple', () => {
-    expect(result).toContain('<t:rv1> <rdf:type> <ontouml:RelationView>');
+    expect(result).toContain('<http://test.com/rv1> <rdf:type> <https://purl.org/ontouml-metamodel#RelationView>');
   });
 
   it('should generate "is view of" triple', () => {
-    expect(result).toContain('<t:rv1> <ontouml:isViewOf> <t:r1>');
+    expect(result).toContain('<http://test.com/rv1> <https://purl.org/ontouml-metamodel#isViewOf> <http://test.com/r1>');
   });
 
   it('should generate shape triple', () => {
-    expect(result).toContain('<t:rv1> <ontouml:shape> <t:sh1>');
+    expect(result).toContain('<http://test.com/rv1> <https://purl.org/ontouml-metamodel#shape> <http://test.com/sh1>');
   });
 
   it('should generate source view triple', () => {
-    expect(result).toContain('<t:rv1> <ontouml:sourceView> <t:cv1>');
+    expect(result).toContain('<http://test.com/rv1> <https://purl.org/ontouml-metamodel#sourceView> <http://test.com/cv1>');
   });
 
   it('should generate target view triple', () => {
-    expect(result).toContain('<t:rv1> <ontouml:targetView> <t:cv2>');
+    expect(result).toContain('<http://test.com/rv1> <https://purl.org/ontouml-metamodel#targetView> <http://test.com/cv2>');
   });
 });

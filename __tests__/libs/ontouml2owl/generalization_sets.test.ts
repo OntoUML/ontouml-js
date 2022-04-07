@@ -1,6 +1,9 @@
 import { Package, Project, Class, Generalization, GeneralizationSet } from '@libs/ontouml';
 import { generateOwl } from './helpers';
 
+const prefix = 't';
+const baseUri = 'http://test.com/';
+
 describe('Generalization sets', () => {
   let project: Project;
   let model: Package;
@@ -22,35 +25,35 @@ describe('Generalization sets', () => {
     gs.setName('status', 'en');
     gs.setDescription('gs 1 description', 'en');
 
-    result = generateOwl(project);
+    result = generateOwl(project, baseUri, prefix);
   });
 
   it('should generate rdf:type triple', () => {
-    expect(result).toContain('<t:gs1> <rdf:type> <ontouml:GeneralizationSet>');
+    expect(result).toContain('<http://test.com/gs1> <rdf:type> <https://purl.org/ontouml-metamodel#GeneralizationSet>');
   });
 
   it('should generate generalization triples', () => {
-    expect(result).toContain('<t:gs1> <ontouml:generalization> <t:g1>');
-    expect(result).toContain('<t:gs1> <ontouml:generalization> <t:g2>');
+    expect(result).toContain('<http://test.com/gs1> <https://purl.org/ontouml-metamodel#generalization> <http://test.com/g1>');
+    expect(result).toContain('<http://test.com/gs1> <https://purl.org/ontouml-metamodel#generalization> <http://test.com/g2>');
   });
 
   it('should generate categorizer triple', () => {
-    expect(result).toContain('<t:gs1> <ontouml:categorizer> <t:c4>');
+    expect(result).toContain('<http://test.com/gs1> <https://purl.org/ontouml-metamodel#categorizer> <http://test.com/c4>');
   });
 
   it('should generate isDisjoint triple', () => {
-    expect(result).toContain('<t:gs1> <ontouml:isDisjoint> "true"^^<xsd:boolean>');
+    expect(result).toContain('<http://test.com/gs1> <https://purl.org/ontouml-metamodel#isDisjoint> "true"^^<xsd:boolean>');
   });
 
   it('should generate isComplete triple', () => {
-    expect(result).toContain('<t:gs1> <ontouml:isComplete> "true"^^<xsd:boolean>');
+    expect(result).toContain('<http://test.com/gs1> <https://purl.org/ontouml-metamodel#isComplete> "true"^^<xsd:boolean>');
   });
 
   it('should generate name triple', () => {
-    expect(result).toContain('<t:gs1> <ontouml:name> "status"@en');
+    expect(result).toContain('<http://test.com/gs1> <https://purl.org/ontouml-metamodel#name> "status"@en');
   });
 
   it('should generate description triple', () => {
-    expect(result).toContain('<t:gs1> <ontouml:description> "gs 1 description"@en');
+    expect(result).toContain('<http://test.com/gs1> <https://purl.org/ontouml-metamodel#description> "gs 1 description"@en');
   });
 });

@@ -1,6 +1,9 @@
 import { Package, Project, Class } from '@libs/ontouml';
 import { generateOwl } from './helpers';
 
+const prefix = 't';
+const baseUri = 'http://test.com/';
+
 describe('Diagrams', () => {
   let model: Package;
   let result: string;
@@ -45,41 +48,41 @@ describe('Diagrams', () => {
     const gsView = diagram.addGeneralizationSet(gs1);
     gsView.id = 'gsv1';
 
-    result = generateOwl(project);
+    result = generateOwl(project, baseUri, prefix);
   });
 
   it('should generate rdf:type triple', () => {
-    expect(result).toContain('<t:d1> <rdf:type> <ontouml:Diagram>');
+    expect(result).toContain('<http://test.com/d1> <rdf:type> <https://purl.org/ontouml-metamodel#Diagram>');
   });
 
   it('should generate name triple', () => {
-    expect(result).toContain('<t:d1> <ontouml:name> "My diagram"@en');
+    expect(result).toContain('<http://test.com/d1> <https://purl.org/ontouml-metamodel#name> "My diagram"@en');
   });
 
   it('should generate description triple', () => {
-    expect(result).toContain('<t:d1> <ontouml:description> "The best diagram ever"@en');
+    expect(result).toContain('<http://test.com/d1> <https://purl.org/ontouml-metamodel#description> "The best diagram ever"@en');
   });
 
   it('should generate class view contents triple', () => {
-    expect(result).toContain('<t:d1> <ontouml:containsView> <t:cv1>');
-    expect(result).toContain('<t:d1> <ontouml:containsView> <t:cv2>');
-    expect(result).toContain('<t:d1> <ontouml:containsView> <t:cv3>');
+    expect(result).toContain('<http://test.com/d1> <https://purl.org/ontouml-metamodel#containsView> <http://test.com/cv1>');
+    expect(result).toContain('<http://test.com/d1> <https://purl.org/ontouml-metamodel#containsView> <http://test.com/cv2>');
+    expect(result).toContain('<http://test.com/d1> <https://purl.org/ontouml-metamodel#containsView> <http://test.com/cv3>');
   });
 
   it('should generate relation view content triple', () => {
-    expect(result).toContain('<t:d1> <ontouml:containsView> <t:rv1>');
+    expect(result).toContain('<http://test.com/d1> <https://purl.org/ontouml-metamodel#containsView> <http://test.com/rv1>');
   });
 
   it('should generate generalization view contents triple', () => {
-    expect(result).toContain('<t:d1> <ontouml:containsView> <t:gv1>');
-    expect(result).toContain('<t:d1> <ontouml:containsView> <t:gv2>');
+    expect(result).toContain('<http://test.com/d1> <https://purl.org/ontouml-metamodel#containsView> <http://test.com/gv1>');
+    expect(result).toContain('<http://test.com/d1> <https://purl.org/ontouml-metamodel#containsView> <http://test.com/gv2>');
   });
 
   it('should generate generalization set view content triple', () => {
-    expect(result).toContain('<t:d1> <ontouml:containsView> <t:gsv1>');
+    expect(result).toContain('<http://test.com/d1> <https://purl.org/ontouml-metamodel#containsView> <http://test.com/gsv1>');
   });
 
   it('should generate package view content triple', () => {
-    expect(result).toContain('<t:d1> <ontouml:containsView> <t:pv1>');
+    expect(result).toContain('<http://test.com/d1> <https://purl.org/ontouml-metamodel#containsView> <http://test.com/pv1>');
   });
 });

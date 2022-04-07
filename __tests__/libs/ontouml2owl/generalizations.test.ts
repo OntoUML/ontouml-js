@@ -1,6 +1,9 @@
 import { Package, Project, Class, Generalization } from '@libs/ontouml';
 import { generateOwl } from './helpers';
 
+const prefix = 't';
+const baseUri = 'http://test.com/';
+
 describe('Generalizations', () => {
   let project: Project;
   let model: Package;
@@ -16,31 +19,31 @@ describe('Generalizations', () => {
   });
 
   it('should generate rdf:type triple', () => {
-    const result = generateOwl(project);
-    expect(result).toContain('<t:g1> <rdf:type> <ontouml:Generalization>');
+    const result = generateOwl(project, baseUri, prefix);
+    expect(result).toContain('<http://test.com/g1> <rdf:type> <https://purl.org/ontouml-metamodel#Generalization>');
   });
 
   it('should generate name triple', () => {
     generalization.setName('gen 1', 'en');
 
-    const result = generateOwl(project);
-    expect(result).toContain('<t:g1> <ontouml:name> "gen 1"@en');
+    const result = generateOwl(project, baseUri, prefix);
+    expect(result).toContain('<http://test.com/g1> <https://purl.org/ontouml-metamodel#name> "gen 1"@en');
   });
 
   it('should generate description triple', () => {
     generalization.setDescription('gen 1 description', 'en');
 
-    const result = generateOwl(project);
-    expect(result).toContain('<t:g1> <ontouml:description> "gen 1 description"@en');
+    const result = generateOwl(project, baseUri, prefix);
+    expect(result).toContain('<http://test.com/g1> <https://purl.org/ontouml-metamodel#description> "gen 1 description"@en');
   });
 
   it('should generate general triple', () => {
-    const result = generateOwl(project);
-    expect(result).toContain('<t:g1> <ontouml:general> <t:c1>');
+    const result = generateOwl(project, baseUri, prefix);
+    expect(result).toContain('<http://test.com/g1> <https://purl.org/ontouml-metamodel#general> <http://test.com/c1>');
   });
 
   it('should generate specific triple', () => {
-    const result = generateOwl(project);
-    expect(result).toContain('<t:g1> <ontouml:specific> <t:c2>');
+    const result = generateOwl(project, baseUri, prefix);
+    expect(result).toContain('<http://test.com/g1> <https://purl.org/ontouml-metamodel#specific> <http://test.com/c2>');
   });
 });

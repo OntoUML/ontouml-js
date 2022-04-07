@@ -1,6 +1,9 @@
 import { Project } from '@libs/ontouml';
 import { generateOwl } from './helpers';
 
+const prefix = 't';
+const baseUri = 'http://test.com/';
+
 describe('Properties', () => {
   let result: String;
 
@@ -14,23 +17,23 @@ describe('Properties', () => {
     lit1.setDescription('el color rojo', 'es');
     clazz.createLiteral(null, { id: 'l2' });
 
-    result = generateOwl(project);
+    result = generateOwl(project, baseUri, prefix);
   });
 
   it('should generate rdf:type triple', () => {
-    expect(result).toContain('<t:l1> <rdf:type> <ontouml:Literal>');
+    expect(result).toContain('<http://test.com/l1> <rdf:type> <https://purl.org/ontouml-metamodel#Literal>');
   });
 
   it('should generate literal triples', () => {
-    expect(result).toContain('<t:c1> <ontouml:literal> <t:l1>');
-    expect(result).toContain('<t:c1> <ontouml:literal> <t:l2>');
+    expect(result).toContain('<http://test.com/c1> <https://purl.org/ontouml-metamodel#literal> <http://test.com/l1>');
+    expect(result).toContain('<http://test.com/c1> <https://purl.org/ontouml-metamodel#literal> <http://test.com/l2>');
   });
 
   it('should generate name triple', () => {
-    expect(result).toContain('<t:l1> <ontouml:name> "rojo"@es');
+    expect(result).toContain('<http://test.com/l1> <https://purl.org/ontouml-metamodel#name> "rojo"@es');
   });
 
   it('should generate description triple', () => {
-    expect(result).toContain('<t:l1> <ontouml:description> "el color rojo"@es');
+    expect(result).toContain('<http://test.com/l1> <https://purl.org/ontouml-metamodel#description> "el color rojo"@es');
   });
 });
