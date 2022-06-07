@@ -18,7 +18,7 @@ import { Service, ServiceIssue } from '..';
 const N3 = require('n3');
 const { namedNode, literal, blankNode } = N3.DataFactory;
 
-const ONTOUML = 'https://purl.org/ontouml-metamodel#';
+const ONTOUML = 'https://purl.org/ontouml-models/vocabulary/';
 /**
  *
  * @author Tiago Prince Sales
@@ -28,27 +28,29 @@ export class Ontouml2Owl implements Service {
   project: Project;
   owlCode: string;
   writer: Writer;
-  baseUri: string;
+  baseIri: string;
   basePrefix: string;
   format: string;
 
-  constructor(project: Project, baseUri?: string, basePrefix?: string, format?: string) {
+  constructor(project: Project, baseIri?: string, basePrefix?: string, format?: string) {
     this.project = project;
-    this.baseUri = baseUri || 'http://ontouml.org/';
-    this.basePrefix = basePrefix || 'ontouml';
+    this.baseIri = baseIri || 'http://ontouml.org/';
+    this.basePrefix = basePrefix;
     this.format = format || 'Turtle';
 
     this.writer = new N3.Writer({
       format: this.format,
       prefixes: {
-        [this.basePrefix]: this.baseUri,
-        ontouml: 'https://purl.org/ontouml-metamodel#',
+        '': baseIri,
+        ontouml: 'https://purl.org/ontouml-models/vocabulary/',
         rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
         owl: 'http://www.w3.org/2002/07/owl#',
         xsd: 'http://www.w3.org/2001/XMLSchema#'
       }
     });
+
+    if (this.basePrefix) this.writer.addPrefix(this.basePrefix, this.baseIri);
   }
 
   run(): { result: any; issues?: ServiceIssue[] } {
@@ -72,15 +74,15 @@ export class Ontouml2Owl implements Service {
       this.transformLiterals();
 
       this.transformDiagrams();
-      this.transformPackageViews();
-      this.transformClassViews();
-      this.transformRelationViews();
-      this.transformGeneralizationViews();
-      this.transformGeneralizationSetViews();
+      // this.transformPackageViews();
+      // this.transformClassViews();
+      // this.transformRelationViews();
+      // this.transformGeneralizationViews();
+      // this.transformGeneralizationSetViews();
 
-      this.transformRectangles();
-      this.transformTexts();
-      this.transformPaths();
+      // this.transformRectangles();
+      // this.transformTexts();
+      // this.transformPaths();
 
       this.writer.end((error, result) => {
         if (error) throw error;
@@ -160,9 +162,13 @@ export class Ontouml2Owl implements Service {
   }
 
   transformProject() {
-    this.transformOntoumlElement(this.project);
+    const projUri = this.baseIri;
 
-    const projUri = this.getUri(this.project);
+    const typeUri = ONTOUML + 'Project';
+    this.writer.addQuad(namedNode(projUri), namedNode('rdf:type'), namedNode(typeUri));
+
+    this.transformName(this.project, projUri);
+    this.transformDescription(this.project, projUri);
 
     if (this.project.model) {
       const modelUri = this.getUri(this.project.model);
@@ -326,15 +332,15 @@ export class Ontouml2Owl implements Service {
     if (!cardinality || !cardinality.value) return;
 
     const propUri = this.getUri(prop);
-    const cardUri = prop.id + '_cardinality';
+    const cardUri = propUri + '_cardinality';
 
-    this.writer.addQuad(namedNode(propUri), namedNode(ONTOUML + 'cardinality'), blankNode(cardUri));
-    this.writer.addQuad(blankNode(cardUri), namedNode('rdf:type'), namedNode(ONTOUML + 'Cardinality'));
-    this.writer.addQuad(blankNode(cardUri), namedNode(ONTOUML + 'cardinalityValue'), literal(cardinality.value));
+    this.writer.addQuad(namedNode(propUri), namedNode(ONTOUML + 'cardinality'), namedNode(cardUri));
+    this.writer.addQuad(namedNode(cardUri), namedNode('rdf:type'), namedNode(ONTOUML + 'Cardinality'));
+    this.writer.addQuad(namedNode(cardUri), namedNode(ONTOUML + 'cardinalityValue'), literal(cardinality.value));
 
     if (cardinality.isValid()) {
-      this.writer.addQuad(blankNode(cardUri), namedNode(ONTOUML + 'lowerBound'), literal(cardinality.lowerBound));
-      this.writer.addQuad(blankNode(cardUri), namedNode(ONTOUML + 'upperBound'), literal(cardinality.upperBound));
+      this.writer.addQuad(namedNode(cardUri), namedNode(ONTOUML + 'lowerBound'), literal(cardinality.lowerBound));
+      this.writer.addQuad(namedNode(cardUri), namedNode(ONTOUML + 'upperBound'), literal(cardinality.upperBound));
     }
   }
 
@@ -342,7 +348,7 @@ export class Ontouml2Owl implements Service {
     if (elem.stereotype == null) return;
 
     const subject = this.getUri(elem);
-    const stereotypeUri = ONTOUML + elem.stereotype;
+    const stereotypeUri = (ONTOUML + elem.stereotype).split(/\s/).join('');
     this.writer.addQuad(namedNode(subject), namedNode(ONTOUML + 'stereotype'), namedNode(stereotypeUri));
   }
 
@@ -425,22 +431,22 @@ export class Ontouml2Owl implements Service {
     this.writer.addQuad(namedNode(elemUri), namedNode('rdf:type'), namedNode(typeUri));
 
     const projUri = this.getUri(this.project);
-    this.writer.addQuad(namedNode(projUri), namedNode(ONTOUML + 'project'), namedNode(elemUri));
+    this.writer.addQuad(namedNode(elemUri), namedNode(ONTOUML + 'project'), namedNode(projUri));
 
     this.transformName(elem);
     this.transformDescription(elem);
   }
 
-  transformName(elem: OntoumlElement) {
-    const subject = this.getUri(elem);
+  transformName(elem: OntoumlElement, elemUri?: string) {
+    const subject = elemUri || this.getUri(elem);
 
     for (const entry of elem.name.entries()) {
       this.writer.addQuad(namedNode(subject), namedNode(ONTOUML + 'name'), literal(entry[1], entry[0]));
     }
   }
 
-  transformDescription(elem: OntoumlElement) {
-    const subject = this.getUri(elem);
+  transformDescription(elem: OntoumlElement, elemUri?: string) {
+    const subject = elemUri || this.getUri(elem);
 
     for (const entry of elem.description.entries()) {
       this.writer.addQuad(namedNode(subject), namedNode(ONTOUML + 'description'), literal(entry[1], entry[0]));
@@ -470,6 +476,6 @@ export class Ontouml2Owl implements Service {
   }
 
   getUri(element: OntoumlElement): string {
-    return this.baseUri + element.id;
+    return this.baseIri + element.id;
   }
 }

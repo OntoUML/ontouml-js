@@ -198,7 +198,13 @@ function revive(_key: any, value: any): any {
 
     // Resolves reference fields replacing objects that are created to
     // temporarily hold a type and an id
-    allElements.forEach((content: ModelElement) => content.resolveReferences(contentsMap));
+    allElements.forEach((content: ModelElement) => {
+      try {
+        content.resolveReferences(contentsMap)
+      } catch(e){
+        console.log(e)
+      }
+    });
   }
 
   return element ? element : value;
