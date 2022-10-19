@@ -13,6 +13,7 @@
     "resources/**/*",
     "@types/**/*"
   ],
+  "types": "dist/index.d.ts",
   "scripts": {
     "start": "npm-run-all -p format:watch start:watch",
     "start:watch": "TS_NODE_FILES=true nodemon index.ts",
