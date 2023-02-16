@@ -10,7 +10,7 @@ node_modules/
 coverage
 
 # Transpiled files
-dist/**/*.js
+dist/
 bundle/
 
 # VS Code
