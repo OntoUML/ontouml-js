@@ -15,6 +15,7 @@
     "resolveJsonModule": true,
     "typeRoots": ["./@types", "./node_modules/@types"],
     "baseUrl": ".",
+    "declaration": true,
     "paths": {
       "@test-models/*": ["__tests__/test_models/*"],
       "@constants/*": ["src/constants/*"],
