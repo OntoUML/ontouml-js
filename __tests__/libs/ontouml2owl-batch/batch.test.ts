@@ -27,7 +27,7 @@ describe('Metadata', () => {
         skos: 'http://www.w3.org/2004/02/skos/core#',
         mod: 'https://w3id.org/mod#',
         lcc: 'http://id.loc.gov/authorities/classification/',
-        foaf: '<http://xmlns.com/foaf/0.1/'
+        foaf: 'http://xmlns.com/foaf/0.1/'
       }
     });
 
