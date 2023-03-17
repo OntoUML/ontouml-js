@@ -197,48 +197,54 @@ export class Metadata2Owl implements Service {
       this.writer.addQuad(namedNode(newstr), namedNode(DCT.title), literal(this.metadata.title));
     }
 
-    if (this.metadata.acronym)  
+    if (this.metadata.acronym){  
       var newstr = (this.ontologyUri).replace("turtle", "model");
       newstr = newstr.replace("#","/");
       this.writer.addQuad(namedNode(newstr), namedNode(MOD.acronym), literal(this.metadata.acronym));
-
-    if (this.metadata.issued)
+    }
+    
+    if (this.metadata.issued){
       var newstr = (this.ontologyUri).replace("turtle", "model");
       newstr = newstr.replace("#","/");
-      this.writer.addQuad(namedNode(newstr), namedNode(DCT.issued), literal(this.metadata.issued, namedNode(XSD.gYear))
-      );
+      this.writer.addQuad(namedNode(newstr), namedNode(DCT.issued), literal(this.metadata.issued, namedNode(XSD.gYear)));
+    }
 
-    if (this.metadata.modified)
+    if (this.metadata.modified){
       var newstr = (this.ontologyUri).replace("turtle", "model");
       newstr = newstr.replace("#","/");
-      this.writer.addQuad(namedNode(newstr), namedNode(DCT.modified), literal(this.metadata.modified, namedNode(XSD.gYear))
-      );
+      this.writer.addQuad(namedNode(newstr), namedNode(DCT.modified), literal(this.metadata.modified, namedNode(XSD.gYear)));
+    }
 
-    if (this.metadata.theme)
+    if (this.metadata.theme){
       var newstr = (this.ontologyUri).replace("turtle", "model");
       newstr = newstr.replace("#","/");
       this.writer.addQuad(namedNode(newstr), namedNode(DCAT.theme), namedNode(LCC[this.metadata.theme]));
+    }
 
-    if (this.metadata.editorialNote)
+    if (this.metadata.editorialNote){
       var newstr = (this.ontologyUri).replace("turtle", "model");
       newstr = newstr.replace("#","/");
       this.writer.addQuad(namedNode(newstr), namedNode(SKOS.editorialNote), literal(this.metadata.editorialNote));
-
-    if (this.metadata.language)
+    }
+    
+    if (this.metadata.language){
       var newstr = (this.ontologyUri).replace("turtle", "model");
       newstr = newstr.replace("#","/");
       this.writer.addQuad(namedNode(newstr), namedNode(DCT.language), literal(this.metadata.language));
+    }
 
-    if (this.metadata.landingPage)
+    if (this.metadata.landingPage){
       var newstr = (this.ontologyUri).replace("turtle", "model");
       newstr = newstr.replace("#","/");
       this.writer.addQuad(namedNode(newstr), namedNode(DCAT.landingPage), namedNode(this.metadata.landingPage));
+    }
 
-    if (this.metadata.license)
+    if (this.metadata.license){
       var newstr = (this.ontologyUri).replace("turtle", "model");
       newstr = newstr.replace("#","/");
       this.writer.addQuad(namedNode(newstr), namedNode(DCT.license), namedNode(this.metadata.license));
-
+    }
+    
     this.transformContributor();
     this.transformKeyword();
     this.transformDesignedForTask();
@@ -275,6 +281,7 @@ export class Metadata2Owl implements Service {
 
   transformDesignedForTask(): void {
     if (!this.metadata.designedForTask) return;
+    
     var new_string = (this.ontologyUri).replace("#","/");
     for (const task of this.metadata.designedForTask)
       this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(MOD.designedForTask), namedNode(ONTOUML[task]));
@@ -282,6 +289,7 @@ export class Metadata2Owl implements Service {
 
   transformSource(): void {
     if (!this.metadata.source) return;
+    
     var new_string = (this.ontologyUri).replace("#","/");
     for (const source of this.metadata.source)
       this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(DCT.source), namedNode(source));
@@ -289,7 +297,9 @@ export class Metadata2Owl implements Service {
 
   transformKeyword(): void {
     if (!this.metadata.keyword) return;
+    
     var new_string = (this.ontologyUri).replace("#","/");
+    
     for (const keyword of this.metadata.keyword)
       this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(DCAT.keyword), literal(keyword));
   }
