@@ -14,7 +14,7 @@ const ONTOUML_BASE = 'https://purl.org/ontouml-metamodel#';
 
 export class Metadata {
   acronym: string;
-  conformsTo: string[];
+  representationStyle: string[];
   context: string[];
   contributor: string[];
   designedForTask: string[];
@@ -25,23 +25,25 @@ export class Metadata {
   license: string;
   modified: string;
   source: string[];
-  subject: string[];
+  keyword: string[];
   theme: string;
   title: string;
-  type: string[];
+  ontologyType: string[];
 }
+
+const OCMV = {
+  ontologyType: 'https://w3id.org/ontouml-models/vocabulary#ontologyType',
+  representationStyle: 'https://w3id.org/ontouml-models/vocabulary#representationStyle'
+};
 
 const DCT = {
   contributor: 'http://purl.org/dc/terms/contributor',
-  conformsTo: 'http://purl.org/dc/terms/conformsTo',
   issued: 'http://purl.org/dc/terms/issued',
   language: 'http://purl.org/dc/terms/language',
   license: 'http://purl.org/dc/terms/license',
   modified: 'http://purl.org/dc/terms/modified',
   source: 'http://purl.org/dc/terms/source',
-  subject: 'http://purl.org/dc/terms/subject',
-  title: 'http://purl.org/dc/terms/title',
-  type: 'http://purl.org/dc/terms/type'
+  title: 'http://purl.org/dc/terms/title'
 };
 
 const DCAT = {
@@ -50,6 +52,7 @@ const DCAT = {
   dataset: 'http://www.w3.org/ns/dcat#dataset',
   distribution: 'http://www.w3.org/ns/dcat#distribution',
   downloadURL: 'http://www.w3.org/ns/dcat#downloadURL',
+  keyword: 'http://www.w3.org/ns/dcat#keyword',
   landingPage: 'http://www.w3.org/ns/dcat#landingPage',
   mediaType: 'http://www.w3.org/ns/dcat#mediaType',
   theme: 'http://www.w3.org/ns/dcat#theme'
@@ -74,26 +77,26 @@ const SKOS = {
 };
 
 const ONTOUML = {
-  catalog: 'https://purl.org/ontouml-models/catalog',
-  context: 'https://purl.org/ontouml-models/vocabulary/context',
-  research: 'https://purl.org/ontouml-models/vocabulary/Research',
-  classroom: 'https://purl.org/ontouml-models/vocabulary/Classroom',
-  industry: 'https://purl.org/ontouml-models/vocabulary/Industry',
-  core: 'https://purl.org/ontouml-models/vocabulary/Core',
-  domain: 'https://purl.org/ontouml-models/vocabulary/Domain',
-  application: 'https://purl.org/ontouml-models/vocabulary/Application',
-  'conceptual clarification': 'https://purl.org/ontouml-models/vocabulary/ConceptualClarification',
-  'data publication': 'https://purl.org/ontouml-models/vocabulary/DataPublication',
-  'decision support system': 'https://purl.org/ontouml-models/vocabulary/DecisionSupportSystem',
-  example: 'https://purl.org/ontouml-models/vocabulary/Example',
-  'information retrieval': 'https://purl.org/ontouml-models/vocabulary/InformationRetrieval',
-  interoperability: 'https://purl.org/ontouml-models/vocabulary/Interoperability',
-  'language engineering': 'https://purl.org/ontouml-models/vocabulary/LanguageEngineering',
-  learning: 'https://purl.org/ontouml-models/vocabulary/Learning',
-  'ontological analysis': 'https://purl.org/ontouml-models/vocabulary/OntologicalAnalysis',
-  'software engineering': 'https://purl.org/ontouml-models/vocabulary/SoftwareEngineering',
-  ontouml: 'https://purl.org/ontouml-models/vocabulary/OntoumlStyle',
-  ufo: 'https://purl.org/ontouml-models/vocabulary/UfoStyle'
+  catalog: 'https://w3id.org/ontouml-models/catalog',
+  context: 'https://w3id.org/ontouml-models/vocabulary#context',
+  research: 'https://w3id.org/ontouml-models/vocabulary#Research',
+  classroom: 'https://w3id.org/ontouml-models/vocabulary#Classroom',
+  industry: 'https://w3id.org/ontouml-models/vocabulary#Industry',
+  core: 'https://w3id.org/ontouml-models/vocabulary#Core',
+  domain: 'https://w3id.org/ontouml-models/vocabulary#Domain',
+  application: 'https://w3id.org/ontouml-models/vocabulary#Application',
+  'conceptual clarification': 'https://w3id.org/ontouml-models/vocabulary#ConceptualClarification',
+  'data publication': 'https://w3id.org/ontouml-models/vocabulary#DataPublication',
+  'decision support system': 'https://w3id.org/ontouml-models/vocabulary#DecisionSupportSystem',
+  example: 'https://w3id.org/ontouml-models/vocabulary#Example',
+  'information retrieval': 'https://w3id.org/ontouml-models/vocabulary#InformationRetrieval',
+  interoperability: 'https://w3id.org/ontouml-models/vocabulary#Interoperability',
+  'language engineering': 'https://w3id.org/ontouml-models/vocabulary#LanguageEngineering',
+  learning: 'https://w3id.org/ontouml-models/vocabulary#Learning',
+  'ontological analysis': 'https://w3id.org/ontouml-models/vocabulary#OntologicalAnalysis',
+  'software engineering': 'https://w3id.org/ontouml-models/vocabulary#SoftwareEngineering',
+  ontouml: 'https://w3id.org/ontouml-models/vocabulary#OntoumlStyle',
+  ufo: 'https://w3id.org/ontouml-models/vocabulary#UfoStyle'
 };
 
 const LCC = {
@@ -144,8 +147,7 @@ export class Metadata2Owl implements Service {
     this.writer = new N3.Writer({
       format: this.format,
       prefixes: {
-        ontouml: 'https://purl.org/ontouml-models/vocabulary/',
-        dataset: 'https://purl.org/ontouml-models/dataset/',
+        ocmv: 'https://w3id.org/ontouml-models/vocabulary#',
         rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
         owl: 'http://www.w3.org/2002/07/owl#',
@@ -184,130 +186,144 @@ export class Metadata2Owl implements Service {
   }
 
   transformMetadata(): void {
-    this.writer.addQuad(namedNode(this.ontologyUri), namedNode(RDF.type), namedNode(DCAT.Dataset));
-    this.writer.addQuad(namedNode(this.ontologyUri), namedNode(RDF.type), namedNode(MOD.SemanticArtefact));
+    var newstr = (this.ontologyUri).replace("turtle", "model");
+    newstr = newstr.replace("#","/");
+    this.writer.addQuad(namedNode(newstr), namedNode(RDF.type), namedNode(DCAT.Dataset));
+    this.writer.addQuad(namedNode(newstr), namedNode(RDF.type), namedNode(MOD.SemanticArtefact));
 
     if (this.metadata.title) {
-      this.writer.addQuad(namedNode(this.ontologyUri), namedNode(DCT.title), literal(this.metadata.title));
+      var newstr = (this.ontologyUri).replace("turtle", "model");
+      newstr = newstr.replace("#","/");
+      this.writer.addQuad(namedNode(newstr), namedNode(DCT.title), literal(this.metadata.title));
     }
 
-    if (this.metadata.acronym)
-      this.writer.addQuad(namedNode(this.ontologyUri), namedNode(MOD.acronym), literal(this.metadata.acronym));
+    if (this.metadata.acronym)  
+      var newstr = (this.ontologyUri).replace("turtle", "model");
+      newstr = newstr.replace("#","/");
+      this.writer.addQuad(namedNode(newstr), namedNode(MOD.acronym), literal(this.metadata.acronym));
 
     if (this.metadata.issued)
-      this.writer.addQuad(
-        namedNode(this.ontologyUri),
-        namedNode(DCT.issued),
-        literal(this.metadata.issued, namedNode(XSD.gYear))
+      var newstr = (this.ontologyUri).replace("turtle", "model");
+      newstr = newstr.replace("#","/");
+      this.writer.addQuad(namedNode(newstr), namedNode(DCT.issued), literal(this.metadata.issued, namedNode(XSD.gYear))
       );
 
     if (this.metadata.modified)
-      this.writer.addQuad(
-        namedNode(this.ontologyUri),
-        namedNode(DCT.modified),
-        literal(this.metadata.modified, namedNode(XSD.gYear))
+      var newstr = (this.ontologyUri).replace("turtle", "model");
+      newstr = newstr.replace("#","/");
+      this.writer.addQuad(namedNode(newstr), namedNode(DCT.modified), literal(this.metadata.modified, namedNode(XSD.gYear))
       );
 
     if (this.metadata.theme)
-      this.writer.addQuad(namedNode(this.ontologyUri), namedNode(DCAT.theme), namedNode(LCC[this.metadata.theme]));
+      var newstr = (this.ontologyUri).replace("turtle", "model");
+      newstr = newstr.replace("#","/");
+      this.writer.addQuad(namedNode(newstr), namedNode(DCAT.theme), namedNode(LCC[this.metadata.theme]));
 
     if (this.metadata.editorialNote)
-      this.writer.addQuad(namedNode(this.ontologyUri), namedNode(SKOS.editorialNote), literal(this.metadata.editorialNote));
+      var newstr = (this.ontologyUri).replace("turtle", "model");
+      newstr = newstr.replace("#","/");
+      this.writer.addQuad(namedNode(newstr), namedNode(SKOS.editorialNote), literal(this.metadata.editorialNote));
 
     if (this.metadata.language)
-      this.writer.addQuad(namedNode(this.ontologyUri), namedNode(DCT.language), literal(this.metadata.language));
+      var newstr = (this.ontologyUri).replace("turtle", "model");
+      newstr = newstr.replace("#","/");
+      this.writer.addQuad(namedNode(newstr), namedNode(DCT.language), literal(this.metadata.language));
 
     if (this.metadata.landingPage)
-      this.writer.addQuad(namedNode(this.ontologyUri), namedNode(DCAT.landingPage), namedNode(this.metadata.landingPage));
+      var newstr = (this.ontologyUri).replace("turtle", "model");
+      newstr = newstr.replace("#","/");
+      this.writer.addQuad(namedNode(newstr), namedNode(DCAT.landingPage), namedNode(this.metadata.landingPage));
 
     if (this.metadata.license)
-      this.writer.addQuad(namedNode(this.ontologyUri), namedNode(DCT.license), namedNode(this.metadata.license));
+      var newstr = (this.ontologyUri).replace("turtle", "model");
+      newstr = newstr.replace("#","/");
+      this.writer.addQuad(namedNode(newstr), namedNode(DCT.license), namedNode(this.metadata.license));
 
     this.transformContributor();
-    this.transformSubject();
+    this.transformKeyword();
     this.transformDesignedForTask();
     this.transformContext();
     this.transformSource();
-    this.transformConformsTo();
-    this.transformType();
+    this.transformRepresentationStyle();
+    this.transformOntologyType();
 
-    this.writer.addQuad(namedNode(ONTOUML.catalog), namedNode(DCAT.dataset), namedNode(this.ontologyUri));
+    var old_string = this.ontologyUri;
+    var new_string = old_string.replace("#","/");
+    this.writer.addQuad(namedNode(ONTOUML.catalog), namedNode(DCAT.dataset), namedNode(new_string.replace("turtle","model")));
   }
 
-  transformConformsTo(): void {
-    if (!this.metadata.conformsTo) return;
-
-    for (const style of this.metadata.conformsTo)
-      this.writer.addQuad(namedNode(this.ontologyUri), namedNode(DCT.conformsTo), namedNode(ONTOUML[style]));
+  transformRepresentationStyle(): void {
+    if (!this.metadata.representationStyle) return;
+    var new_string = (this.ontologyUri).replace("#","/");
+    for (const style of this.metadata.representationStyle)
+      this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(OCMV.representationStyle), namedNode(ONTOUML[style]));
   }
 
   transformContext(): void {
     if (!this.metadata.context) return;
-
+    var new_string = (this.ontologyUri).replace("#","/");
     for (const context of this.metadata.context)
-      this.writer.addQuad(namedNode(this.ontologyUri), namedNode(ONTOUML.context), namedNode(ONTOUML[context]));
+      this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(ONTOUML.context), namedNode(ONTOUML[context]));
   }
 
   transformContributor(): void {
     if (!this.metadata.contributor) return;
-
+    var new_string = (this.ontologyUri).replace("#","/");
     for (const contributor of this.metadata.contributor)
-      this.writer.addQuad(namedNode(this.ontologyUri), namedNode(DCT.contributor), namedNode(contributor));
+      this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(DCT.contributor), namedNode(contributor));
   }
 
   transformDesignedForTask(): void {
     if (!this.metadata.designedForTask) return;
-
+    var new_string = (this.ontologyUri).replace("#","/");
     for (const task of this.metadata.designedForTask)
-      this.writer.addQuad(namedNode(this.ontologyUri), namedNode(MOD.designedForTask), namedNode(ONTOUML[task]));
+      this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(MOD.designedForTask), namedNode(ONTOUML[task]));
   }
 
   transformSource(): void {
     if (!this.metadata.source) return;
-
+    var new_string = (this.ontologyUri).replace("#","/");
     for (const source of this.metadata.source)
-      this.writer.addQuad(namedNode(this.ontologyUri), namedNode(DCT.source), namedNode(source));
+      this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(DCT.source), namedNode(source));
   }
 
-  transformSubject(): void {
-    if (!this.metadata.subject) return;
-
-    for (const subject of this.metadata.subject)
-      this.writer.addQuad(namedNode(this.ontologyUri), namedNode(DCT.subject), literal(subject));
+  transformKeyword(): void {
+    if (!this.metadata.keyword) return;
+    var new_string = (this.ontologyUri).replace("#","/");
+    for (const keyword of this.metadata.keyword)
+      this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(DCAT.keyword), literal(keyword));
   }
 
-  transformType(): void {
-    if (!this.metadata.type) return;
-
-    for (const type of this.metadata.type)
-      if (ONTOUML[type]) this.writer.addQuad(namedNode(this.ontologyUri), namedNode(DCT.type), namedNode(ONTOUML[type]));
+  transformOntologyType(): void {
+    if (!this.metadata.ontologyType) return;
+    var new_string = (this.ontologyUri).replace("#","/");
+    for (const ontologyType of this.metadata.ontologyType)
+      if (ONTOUML[ontologyType]) this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(OCMV.ontologyType), namedNode(ONTOUML[ontologyType]));
   }
 
   transformDistributions(): void {
-    const ttlDistUri = this.ontologyUri + 'distribution/ttl';
-    const jsonDistUri = this.ontologyUri + 'distribution/json';
-    const vppDistUri = this.ontologyUri + 'distribution/vpp';
+    var old_string = this.ontologyUri;
+    var new_string = old_string.replace("#","/");
+    const ttlDistUri = new_string;
+    const jsonDistUri = new_string.replace("turtle","json");
+    const vppDistUri = new_string.replace("turtle","vpp");
 
-    this.transformDistribution(ttlDistUri, 'Turtle', MEDIA_TYPE.turtle, 'ontology.ttl');
-    this.transformDistribution(ttlDistUri, 'JSON', MEDIA_TYPE.json, 'ontology.json');
-    this.transformDistribution(ttlDistUri, 'Turtle', MEDIA_TYPE.vpp, 'ontology.vpp');
+    this.transformDistribution(ttlDistUri, 'Turtle', MEDIA_TYPE.turtle, 'turtle');
+    this.transformDistribution(jsonDistUri, 'JSON', MEDIA_TYPE.json, 'json');
+    this.transformDistribution(vppDistUri, 'Visual Paradigm', MEDIA_TYPE.vpp, 'vpp');
   }
 
-  transformDistribution(distUri: string, format: string, mediaTypeUri: string, fileName: string) {
-    this.writer.addQuad(namedNode(this.ontologyUri), namedNode(DCAT.distribution), namedNode(distUri));
+  transformDistribution(distUri: string, format: string, mediaTypeUri: string, fileExtension: string) {
+    var old_string = this.ontologyUri;
+    var new_string = old_string.replace("#","/");
+    this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(DCAT.distribution), namedNode(distUri));
     this.writer.addQuad(namedNode(distUri), namedNode(RDF.type), namedNode(DCAT.Distribution));
 
-    this.writer.addQuad(
-      namedNode(distUri),
-      namedNode(DCT.title),
-      literal(format + ' distribution of "' + this.metadata.title + '"', 'en')
+    this.writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of "' + this.metadata.title + '"', 'en')
     );
 
     this.writer.addQuad(namedNode(distUri), namedNode(DCAT.mediaType), namedNode(mediaTypeUri));
-    this.writer.addQuad(
-      namedNode(distUri),
-      namedNode(DCAT.downloadURL),
-      namedNode('https://raw.githubusercontent.com/unibz-core/ontouml-models/master/' + this.ontologyDir + '/' + fileName)
+    this.writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode('https://w3id.org/ontouml-models/' + fileExtension + '/' + this.ontologyDir)
     );
   }
 }

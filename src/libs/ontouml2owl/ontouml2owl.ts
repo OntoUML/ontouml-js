@@ -18,7 +18,7 @@ import { Service, ServiceIssue } from '..';
 const N3 = require('n3');
 const { namedNode, literal, blankNode } = N3.DataFactory;
 
-const ONTOUML = 'https://purl.org/ontouml-models/vocabulary/';
+const ONTOUML = 'https://w3id.org/ontouml#';
 /**
  *
  * @author Tiago Prince Sales
@@ -42,7 +42,7 @@ export class Ontouml2Owl implements Service {
       format: this.format,
       prefixes: {
         '': baseIri,
-        ontouml: 'https://purl.org/ontouml-models/vocabulary/',
+        ontouml: 'https://w3id.org/ontouml#',
         rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
         owl: 'http://www.w3.org/2002/07/owl#',
@@ -104,7 +104,7 @@ export class Ontouml2Owl implements Service {
   transformClasses() {
     this.project.getAllClasses()?.forEach(c => this.transformClass(c));
   }
-
+ontouml
   transformRelations() {
     this.project.getAllRelations()?.forEach(r => this.transformRelation(r));
   }
@@ -162,7 +162,7 @@ export class Ontouml2Owl implements Service {
   }
 
   transformProject() {
-    const projUri = this.baseIri;
+    const projUri = (this.baseIri).replace("#","/");
 
     const typeUri = ONTOUML + 'Project';
     this.writer.addQuad(namedNode(projUri), namedNode('rdf:type'), namedNode(typeUri));
