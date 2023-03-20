@@ -1,5 +1,6 @@
 import { Writer } from 'n3';
 import { Service, ServiceIssue } from '..';
+import * as path from 'path';
 
 const N3 = require('n3');
 const { namedNode, literal, blankNode } = N3.DataFactory;
@@ -326,14 +327,25 @@ export class Metadata2Owl implements Service {
     this.transformDistribution(jsonDistUri, 'JSON', MEDIA_TYPE.json, 'json');
     this.transformDistribution(vppDistUri, 'Visual Paradigm', MEDIA_TYPE.vpp, 'vpp');
 
-    // const testFolder = './tests/';
+    const path = require("path");
+    let currentPath =  process.cwd();
+    const parentPath = path.parse(currentPath);
+    const modelFolder = parentPath.dir + "\\ontouml-models\\models\\" + this.ontologyDir;
+    console.log("MY DIRECTORY IS: " + modelFolder);
+    const fs = require('fs')
+    if (fs.existsSync(modelFolder)){
+      console.log("DIRECTORY EXISTS!")
+    }
+    else {
+      console.log("DIRECTORY NOT EXISTS!")
+    }
 
   }
 
   transformDistribution(distUri: string, format: string, mediaTypeUri: string, fileExtension: string) {
     var old_string = this.ontologyUri;
-    var new_string = old_string.replace("#","/");
-    this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(DCAT.distribution), namedNode(distUri));
+    var newString = old_string.replace("#","/");
+    this.writer.addQuad(namedNode(newString.replace("turtle","model")), namedNode(DCAT.distribution), namedNode(distUri));
     this.writer.addQuad(namedNode(distUri), namedNode(RDF.type), namedNode(DCAT.Distribution));
 
     this.writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of "' + this.metadata.title + '"', 'en'));
