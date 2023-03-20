@@ -33,7 +33,8 @@ export class Metadata {
 
 const OCMV = {
   ontologyType: 'https://w3id.org/ontouml-models/vocabulary#ontologyType',
-  representationStyle: 'https://w3id.org/ontouml-models/vocabulary#representationStyle'
+  representationStyle: 'https://w3id.org/ontouml-models/vocabulary#representationStyle',
+  isComplete: 'https://w3id.org/ontouml-models/vocabulary#isComplete'
 };
 
 const DCT = {
@@ -69,7 +70,8 @@ const RDF = {
 };
 
 const XSD = {
-  gYear: 'http://www.w3.org/2001/XMLSchema#gYear'
+  gYear: 'http://www.w3.org/2001/XMLSchema#gYear',
+  boolean: 'http://www.w3.org/2001/XMLSchema#boolean'
 };
 
 const SKOS = {
@@ -127,7 +129,8 @@ const LCC = {
 const MEDIA_TYPE = {
   turtle: 'https://www.iana.org/assignments/media-types/text/turtle',
   json: 'https://www.iana.org/assignments/media-types/application/json',
-  vpp: 'https://www.visual-paradigm.com/vpp'
+  vpp: 'https://www.visual-paradigm.com/vpp',
+  png: 'https://www.iana.org/assignments/media-types/image/png'
 };
 
 export class Metadata2Owl implements Service {
@@ -317,10 +320,14 @@ export class Metadata2Owl implements Service {
     const ttlDistUri = new_string;
     const jsonDistUri = new_string.replace("turtle","json");
     const vppDistUri = new_string.replace("turtle","vpp");
+    const pngDistUri = new_string.replace("turtle","vpp");
 
     this.transformDistribution(ttlDistUri, 'Turtle', MEDIA_TYPE.turtle, 'turtle');
     this.transformDistribution(jsonDistUri, 'JSON', MEDIA_TYPE.json, 'json');
     this.transformDistribution(vppDistUri, 'Visual Paradigm', MEDIA_TYPE.vpp, 'vpp');
+
+    // const testFolder = './tests/';
+
   }
 
   transformDistribution(distUri: string, format: string, mediaTypeUri: string, fileExtension: string) {
@@ -329,11 +336,19 @@ export class Metadata2Owl implements Service {
     this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(DCAT.distribution), namedNode(distUri));
     this.writer.addQuad(namedNode(distUri), namedNode(RDF.type), namedNode(DCAT.Distribution));
 
-    this.writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of "' + this.metadata.title + '"', 'en')
-    );
+    this.writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of "' + this.metadata.title + '"', 'en'));
 
     this.writer.addQuad(namedNode(distUri), namedNode(DCAT.mediaType), namedNode(mediaTypeUri));
-    this.writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode('https://w3id.org/ontouml-models/' + fileExtension + '/' + this.ontologyDir)
-    );
+    this.writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode('https://w3id.org/ontouml-models/' + fileExtension + '/' + this.ontologyDir));
+    
+    if (fileExtension !== "png"){
+      this.writer.addQuad(namedNode(distUri), namedNode(OCMV.isComplete), literal('true', namedNode('xsd:boolean')));
+    } 
+    else {
+      this.writer.addQuad(namedNode(distUri), namedNode(OCMV.isComplete), literal('false', namedNode('xsd:boolean')));
+    }
+
+    
+
   }
 }
