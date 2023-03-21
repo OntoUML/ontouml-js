@@ -104,7 +104,7 @@ describe('Metadata', () => {
 
     writer.end((error, result) => {
       if (error) throw error;
-      fs.writeFileSync('../ontouml-models/catalog-data.ttl', result);      
+      fs.writeFileSync('../ontouml-models/catalog-release.ttl', result);      
     });
   });
 });
