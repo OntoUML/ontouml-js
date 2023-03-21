@@ -372,14 +372,12 @@ export class Metadata2Owl implements Service {
     var newString = oldString.replace("#","/");    
     this.writer.addQuad(namedNode(newString.replace("turtle","model")), namedNode(DCAT.distribution), namedNode(distUri));
     this.writer.addQuad(namedNode(distUri), namedNode(RDF.type), namedNode(DCAT.Distribution));
-    //this.writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of "' + this.metadata.title + '"', 'en'));
     this.writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of ' + this.metadata.title , 'en'));
     this.writer.addQuad(namedNode(distUri), namedNode(DCAT.mediaType), namedNode(mediaTypeUri));
     this.writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode(distUri));
     
     
     if (fileExtension !== "png"){
-      //this.writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode('https://w3id.org/ontouml-models/' + fileExtension + '/' + this.ontologyDir));
       this.writer.addQuad(namedNode(distUri), namedNode(OCMV.isComplete), literal('true', namedNode('xsd:boolean')));
     } 
     else {      
