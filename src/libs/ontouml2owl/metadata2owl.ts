@@ -10,6 +10,7 @@ const ONTOUML_BASE = 'https://purl.org/ontouml-metamodel#';
 /**
  *
  * @author Tiago Prince Sales
+ * contributor: Pedro Paulo Favato Barcelos
  *
  */
 
@@ -332,16 +333,18 @@ export class Metadata2Owl implements Service {
     const parentPath = path.parse(currentPath);
     const modelFolder = parentPath.dir + "\\ontouml-models\\models\\" + this.ontologyDir;
     // console.log("MY DIRECTORY IS: " + modelFolder);
-    const fs = require('fs')    
+    const fsOriginal = require('fs')
+    const fsNew = require('fs')
 
     // SAVING ORIGINAL DIAGRAMS INFORMATION
 
     const originalDiagramsFolder = modelFolder + "\\original diagrams\\"
-    var originalFiles = fs.readdirSync(originalDiagramsFolder);
+    const originalFiles = fsOriginal.readdirSync(originalDiagramsFolder);
     const pngOriginalDistUri = "https://w3id.org/ontouml-models/original-diagram/";    
 
     for(let i = 0; i < originalFiles.length; i++){
       originalFiles[i] = originalFiles[i].replace(/\.[^/.]+$/, "");
+      originalFiles[i] = originalFiles[i].replaceAll(" ","%20")
       // console.log(files[i]);
       const specificImageURI = pngOriginalDistUri + this.ontologyDir + '/' + originalFiles[i];
       this.transformDistribution(specificImageURI, 'Image', MEDIA_TYPE.png, 'png');
@@ -352,10 +355,11 @@ export class Metadata2Owl implements Service {
     const newDiagramsFolder = modelFolder + "\\new diagrams\\"    
     const pngNewDistUri = "https://w3id.org/ontouml-models/new-diagram/";
 
-    if (fs.existsSync(modelFolder)){
-      const newFiles = fs.readdirSync(newDiagramsFolder);
+    if (fsNew.existsSync(newDiagramsFolder)){
+      const newFiles = fsNew.readdirSync(newDiagramsFolder);
       for(let i = 0; i < newFiles.length; i++){
         newFiles[i] = newFiles[i].replace(/\.[^/.]+$/, "");
+        newFiles[i] = newFiles[i].replaceAll(" ","%20")
         const specificImageURI = pngNewDistUri + this.ontologyDir + '/' + newFiles[i];
         this.transformDistribution(specificImageURI, 'Image', MEDIA_TYPE.png, 'png');
       }
