@@ -86,20 +86,17 @@ describe('Metadata', () => {
     @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
     <https://w3id.org/ontouml-models/catalog> a dcat:Catalog ;
-        dct:title "OntoUML Model Catalog"@en ;
-        rdfs:label "OntoUML Model Catalog"@en ;
+        dct:title "OntoUML/UFO Catalog"@en ;
+        rdfs:label "OntoUML/UFO Catalog"@en ;
         foaf:homepage <https://w3id.org/ontouml-models> ;
         dcat:themeTaxonomy <http://id.loc.gov/authorities/classification> ;
         dcat:distribution <https://w3id.org/ontouml-models/catalog/turtle> ;
         dct:publisher <https://www.inf.unibz.it/krdb/core/> ;
         dct:contributor <https://orcid.org/0000-0002-5385-5761>, <https://orcid.org/0000-0003-2736-7817>, <https://orcid.org/0000-0003-2528-3118>, <https://orcid.org/0000-0002-6661-6292>, <https://orcid.org/0000-0002-0952-9571>, <https://orcid.org/0000-0002-2384-3081>, <https://orcid.org/0000-0002-3452-553X>, <https://github.com/AndrasKomaromi>, <https://orcid.org/0000-0001-5010-3081>, <https://orcid.org/0000-0003-1547-8333>, <https://dblp.org/pid/309/4924>, <https://github.com/TvanEe>, <https://orcid.org/0000-0002-8139-5977>, <https://orcid.org/0000-0003-3385-4769> ;
 
-    <https://www.inf.unibz.it/krdb/core/> rdfs:label "Conceptual and Cognitive Modelling Research Group (CORE)"@en ;
-        a foaf:Organization .
-
     <https://w3id.org/ontouml-models/catalog/turtle> a dcat:Distribution ;
-        dcat:downloadURL <https://raw.githubusercontent.com/unibz-core/ontouml-models/master/catalog.ttl> ;
-        dct:title "Turtle distribution of the OntoUML Model Catalog"@en ;
+        dcat:downloadURL <https://w3id.org/ontouml-models> ;
+        dct:title "Turtle distribution of the OntoUML/UFO Catalog"@en ;
         dcat:mediaType <https://www.iana.org/assignments/media-types/text/turtle> ;
     `;
     await parser.parse(catalog, (error, quad, prefixes) => {
