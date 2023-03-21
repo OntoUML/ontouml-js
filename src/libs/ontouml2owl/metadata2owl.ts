@@ -305,7 +305,7 @@ export class Metadata2Owl implements Service {
     var new_string = (this.ontologyUri).replace("#","/");
     
     for (const keyword of this.metadata.keyword)
-      this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(DCAT.keyword), literal(keyword));
+      this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(DCAT.keyword), literal(keyword, 'en'));
   }
 
   transformOntologyType(): void {
@@ -320,47 +320,67 @@ export class Metadata2Owl implements Service {
     var new_string = old_string.replace("#","/");
     const ttlDistUri = new_string;
     const jsonDistUri = new_string.replace("turtle","json");
-    const vppDistUri = new_string.replace("turtle","vpp");
-    const pngDistUri = new_string.replace("turtle","vpp");
+    const vppDistUri = new_string.replace("turtle","vpp");    
 
     this.transformDistribution(ttlDistUri, 'Turtle', MEDIA_TYPE.turtle, 'turtle');
     this.transformDistribution(jsonDistUri, 'JSON', MEDIA_TYPE.json, 'json');
     this.transformDistribution(vppDistUri, 'Visual Paradigm', MEDIA_TYPE.vpp, 'vpp');
 
+    // DIAGRAM IMAGES TREATMENT
     const path = require("path");
     let currentPath =  process.cwd();
     const parentPath = path.parse(currentPath);
     const modelFolder = parentPath.dir + "\\ontouml-models\\models\\" + this.ontologyDir;
-    console.log("MY DIRECTORY IS: " + modelFolder);
-    const fs = require('fs')
+    // console.log("MY DIRECTORY IS: " + modelFolder);
+    const fs = require('fs')    
+
+    // SAVING ORIGINAL DIAGRAMS INFORMATION
+
+    const originalDiagramsFolder = modelFolder + "\\original diagrams\\"
+    var originalFiles = fs.readdirSync(originalDiagramsFolder);
+    const pngOriginalDistUri = "https://w3id.org/ontouml-models/original-diagram/";    
+
+    for(let i = 0; i < originalFiles.length; i++){
+      originalFiles[i] = originalFiles[i].replace(/\.[^/.]+$/, "");
+      // console.log(files[i]);
+      const specificImageURI = pngOriginalDistUri + this.ontologyDir + '/' + originalFiles[i];
+      this.transformDistribution(specificImageURI, 'Image', MEDIA_TYPE.png, 'png');
+    }
+    
+    // IF EXISTS, SAVING NEW DIAGRAMS INFORMATION
+
+    const newDiagramsFolder = modelFolder + "\\new diagrams\\"    
+    const pngNewDistUri = "https://w3id.org/ontouml-models/new-diagram/";
+
     if (fs.existsSync(modelFolder)){
-      console.log("DIRECTORY EXISTS!")
-    }
-    else {
-      console.log("DIRECTORY NOT EXISTS!")
-    }
+      const newFiles = fs.readdirSync(newDiagramsFolder);
+      for(let i = 0; i < newFiles.length; i++){
+        newFiles[i] = newFiles[i].replace(/\.[^/.]+$/, "");
+        const specificImageURI = pngNewDistUri + this.ontologyDir + '/' + newFiles[i];
+        this.transformDistribution(specificImageURI, 'Image', MEDIA_TYPE.png, 'png');
+      }
+    }   
 
   }
 
   transformDistribution(distUri: string, format: string, mediaTypeUri: string, fileExtension: string) {
-    var old_string = this.ontologyUri;
-    var newString = old_string.replace("#","/");
+    var oldString = this.ontologyUri;
+    var newString = oldString.replace("#","/");    
     this.writer.addQuad(namedNode(newString.replace("turtle","model")), namedNode(DCAT.distribution), namedNode(distUri));
     this.writer.addQuad(namedNode(distUri), namedNode(RDF.type), namedNode(DCAT.Distribution));
-
-    this.writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of "' + this.metadata.title + '"', 'en'));
-
+    //this.writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of "' + this.metadata.title + '"', 'en'));
+    this.writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of ' + this.metadata.title , 'en'));
     this.writer.addQuad(namedNode(distUri), namedNode(DCAT.mediaType), namedNode(mediaTypeUri));
-    this.writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode('https://w3id.org/ontouml-models/' + fileExtension + '/' + this.ontologyDir));
+    this.writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode(distUri));
+    
     
     if (fileExtension !== "png"){
+      //this.writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode('https://w3id.org/ontouml-models/' + fileExtension + '/' + this.ontologyDir));
       this.writer.addQuad(namedNode(distUri), namedNode(OCMV.isComplete), literal('true', namedNode('xsd:boolean')));
     } 
-    else {
+    else {      
       this.writer.addQuad(namedNode(distUri), namedNode(OCMV.isComplete), literal('false', namedNode('xsd:boolean')));
     }
-
-    
 
   }
 }
