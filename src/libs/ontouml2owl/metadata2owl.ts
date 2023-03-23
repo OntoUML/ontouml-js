@@ -1,46 +1,46 @@
 import { Writer } from 'n3';
 import { Service, ServiceIssue } from '..';
-import * as path from 'path';
 
 const N3 = require('n3');
 const { namedNode, literal, blankNode } = N3.DataFactory;
 
-const ONTOUML_BASE = 'https://purl.org/ontouml-metamodel#';
-
 /**
  *
- * @author Tiago Prince Sales
- * contributor: Pedro Paulo Favato Barcelos
+ * @author Tiago Prince Sales           // https://orcid.org/0000-0002-5385-5761
+ * @author Pedro Paulo Favato Barcelos  // https://orcid.org/0000-0003-2736-7817
  *
  */
 
 export class Metadata {
   acronym: string;
-  representationStyle: string[];
   context: string[];
   contributor: string[];
   designedForTask: string[];
   editorialNote: string;
   issued: string;
+  keyword: string[];
   landingPage: string;
   language: string;
   license: string;
   modified: string;
+  ontologyType: string[];
+  representationStyle: string[];
   source: string[];
-  keyword: string[];
   theme: string;
   title: string;
-  ontologyType: string[];
 }
 
 const OCMV = {
+  conformsToSchema: 'https://w3id.org/ontouml-models/vocabulary#conformsToSchema',
+  isComplete: 'https://w3id.org/ontouml-models/vocabulary#isComplete',
   ontologyType: 'https://w3id.org/ontouml-models/vocabulary#ontologyType',
   representationStyle: 'https://w3id.org/ontouml-models/vocabulary#representationStyle',
-  isComplete: 'https://w3id.org/ontouml-models/vocabulary#isComplete'
+  storageUrl: 'https://w3id.org/ontouml-models/vocabulary#storageUrl'
 };
 
 const DCT = {
   contributor: 'http://purl.org/dc/terms/contributor',
+  format: 'http://purl.org/dc/terms/format',
   issued: 'http://purl.org/dc/terms/issued',
   language: 'http://purl.org/dc/terms/language',
   license: 'http://purl.org/dc/terms/license',
@@ -50,10 +50,10 @@ const DCT = {
 };
 
 const DCAT = {
-  Dataset: 'http://www.w3.org/ns/dcat#Dataset',
-  Distribution: 'http://www.w3.org/ns/dcat#Distribution',
   dataset: 'http://www.w3.org/ns/dcat#dataset',
+  Dataset: 'http://www.w3.org/ns/dcat#Dataset',
   distribution: 'http://www.w3.org/ns/dcat#distribution',
+  Distribution: 'http://www.w3.org/ns/dcat#Distribution',
   downloadURL: 'http://www.w3.org/ns/dcat#downloadURL',
   keyword: 'http://www.w3.org/ns/dcat#keyword',
   landingPage: 'http://www.w3.org/ns/dcat#landingPage',
@@ -72,8 +72,8 @@ const RDF = {
 };
 
 const XSD = {
-  gYear: 'http://www.w3.org/2001/XMLSchema#gYear',
-  boolean: 'http://www.w3.org/2001/XMLSchema#boolean'
+  boolean: 'http://www.w3.org/2001/XMLSchema#boolean',
+  gYear: 'http://www.w3.org/2001/XMLSchema#gYear'
 };
 
 const SKOS = {
@@ -129,11 +129,16 @@ const LCC = {
 };
 
 const MEDIA_TYPE = {
-  turtle: 'https://www.iana.org/assignments/media-types/text/turtle',
   json: 'https://www.iana.org/assignments/media-types/application/json',
-  vpp: 'https://www.visual-paradigm.com/vpp',
-  png: 'https://www.iana.org/assignments/media-types/image/png'
+  png: 'https://www.iana.org/assignments/media-types/image/png',
+  turtle: 'https://www.iana.org/assignments/media-types/text/turtle',
+  vpp: 'https://www.iana.org/assignments/media-types/application/octet-stream'
 };
+
+const VPP_FORMAT = 'https://www.file-extension.info/format/vpp';
+const JSON_SCHEMA = 'http://purl.org/ontouml-schema';
+const GITHUB_BASE = "https://github.com/OntoUML/ontouml-models/tree/master/models/";
+const GITHUB_RAW = "https://raw.githubusercontent.com/OntoUML/ontouml-models/master/models/";
 
 export class Metadata2Owl implements Service {
   ontologyUri: string;
@@ -192,64 +197,64 @@ export class Metadata2Owl implements Service {
 
   transformMetadata(): void {
     var newstr = (this.ontologyUri).replace("turtle", "model");
-    newstr = newstr.replace("#","/");
+    newstr = newstr.replace("#", "/");
     this.writer.addQuad(namedNode(newstr), namedNode(RDF.type), namedNode(DCAT.Dataset));
     this.writer.addQuad(namedNode(newstr), namedNode(RDF.type), namedNode(MOD.SemanticArtefact));
 
     if (this.metadata.title) {
       var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#","/");
+      newstr = newstr.replace("#", "/");
       this.writer.addQuad(namedNode(newstr), namedNode(DCT.title), literal(this.metadata.title));
     }
 
-    if (this.metadata.acronym){  
+    if (this.metadata.acronym) {
       var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#","/");
+      newstr = newstr.replace("#", "/");
       this.writer.addQuad(namedNode(newstr), namedNode(MOD.acronym), literal(this.metadata.acronym));
     }
-    
-    if (this.metadata.issued){
+
+    if (this.metadata.issued) {
       var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#","/");
+      newstr = newstr.replace("#", "/");
       this.writer.addQuad(namedNode(newstr), namedNode(DCT.issued), literal(this.metadata.issued, namedNode(XSD.gYear)));
     }
 
-    if (this.metadata.modified){
+    if (this.metadata.modified) {
       var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#","/");
+      newstr = newstr.replace("#", "/");
       this.writer.addQuad(namedNode(newstr), namedNode(DCT.modified), literal(this.metadata.modified, namedNode(XSD.gYear)));
     }
 
-    if (this.metadata.theme){
+    if (this.metadata.theme) {
       var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#","/");
+      newstr = newstr.replace("#", "/");
       this.writer.addQuad(namedNode(newstr), namedNode(DCAT.theme), namedNode(LCC[this.metadata.theme]));
     }
 
-    if (this.metadata.editorialNote){
+    if (this.metadata.editorialNote) {
       var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#","/");
+      newstr = newstr.replace("#", "/");
       this.writer.addQuad(namedNode(newstr), namedNode(SKOS.editorialNote), literal(this.metadata.editorialNote));
     }
-    
-    if (this.metadata.language){
+
+    if (this.metadata.language) {
       var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#","/");
+      newstr = newstr.replace("#", "/");
       this.writer.addQuad(namedNode(newstr), namedNode(DCT.language), literal(this.metadata.language));
     }
 
-    if (this.metadata.landingPage){
+    if (this.metadata.landingPage) {
       var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#","/");
+      newstr = newstr.replace("#", "/");
       this.writer.addQuad(namedNode(newstr), namedNode(DCAT.landingPage), namedNode(this.metadata.landingPage));
     }
 
-    if (this.metadata.license){
+    if (this.metadata.license) {
       var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#","/");
+      newstr = newstr.replace("#", "/");
       this.writer.addQuad(namedNode(newstr), namedNode(DCT.license), namedNode(this.metadata.license));
     }
-    
+
     this.transformContributor();
     this.transformKeyword();
     this.transformDesignedForTask();
@@ -257,132 +262,216 @@ export class Metadata2Owl implements Service {
     this.transformSource();
     this.transformRepresentationStyle();
     this.transformOntologyType();
+    this.setStorageUrl();
 
     var old_string = this.ontologyUri;
-    var new_string = old_string.replace("#","/");
-    this.writer.addQuad(namedNode(ONTOUML.catalog), namedNode(DCAT.dataset), namedNode(new_string.replace("turtle","model")));
+    var new_string = old_string.replace("#", "/");
+    this.writer.addQuad(namedNode(ONTOUML.catalog), namedNode(DCAT.dataset), namedNode(new_string.replace("turtle", "model")));
   }
 
   transformRepresentationStyle(): void {
     if (!this.metadata.representationStyle) return;
-    var new_string = (this.ontologyUri).replace("#","/");
+    var new_string = (this.ontologyUri).replace("#", "/");
     for (const style of this.metadata.representationStyle)
-      this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(OCMV.representationStyle), namedNode(ONTOUML[style]));
+      this.writer.addQuad(namedNode(new_string.replace("turtle", "model")), namedNode(OCMV.representationStyle), namedNode(ONTOUML[style]));
   }
 
   transformContext(): void {
     if (!this.metadata.context) return;
-    var new_string = (this.ontologyUri).replace("#","/");
+    var new_string = (this.ontologyUri).replace("#", "/");
     for (const context of this.metadata.context)
-      this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(ONTOUML.context), namedNode(ONTOUML[context]));
+      this.writer.addQuad(namedNode(new_string.replace("turtle", "model")), namedNode(ONTOUML.context), namedNode(ONTOUML[context]));
   }
 
   transformContributor(): void {
     if (!this.metadata.contributor) return;
-    var new_string = (this.ontologyUri).replace("#","/");
+    var new_string = (this.ontologyUri).replace("#", "/");
     for (const contributor of this.metadata.contributor)
-      this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(DCT.contributor), namedNode(contributor));
+      this.writer.addQuad(namedNode(new_string.replace("turtle", "model")), namedNode(DCT.contributor), namedNode(contributor));
   }
 
   transformDesignedForTask(): void {
     if (!this.metadata.designedForTask) return;
-    
-    var new_string = (this.ontologyUri).replace("#","/");
+
+    var new_string = (this.ontologyUri).replace("#", "/");
     for (const task of this.metadata.designedForTask)
-      this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(MOD.designedForTask), namedNode(ONTOUML[task]));
+      this.writer.addQuad(namedNode(new_string.replace("turtle", "model")), namedNode(MOD.designedForTask), namedNode(ONTOUML[task]));
   }
 
   transformSource(): void {
     if (!this.metadata.source) return;
-    
-    var new_string = (this.ontologyUri).replace("#","/");
+
+    var new_string = (this.ontologyUri).replace("#", "/");
     for (const source of this.metadata.source)
-      this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(DCT.source), namedNode(source));
+      this.writer.addQuad(namedNode(new_string.replace("turtle", "model")), namedNode(DCT.source), namedNode(source));
   }
 
   transformKeyword(): void {
     if (!this.metadata.keyword) return;
-    
-    var new_string = (this.ontologyUri).replace("#","/");
-    
+
+    var new_string = (this.ontologyUri).replace("#", "/");
+
     for (const keyword of this.metadata.keyword)
-      this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(DCAT.keyword), literal(keyword, 'en'));
+      this.writer.addQuad(namedNode(new_string.replace("turtle", "model")), namedNode(DCAT.keyword), literal(keyword, 'en'));
   }
 
   transformOntologyType(): void {
     if (!this.metadata.ontologyType) return;
-    var new_string = (this.ontologyUri).replace("#","/");
+    var new_string = (this.ontologyUri).replace("#", "/");
     for (const ontologyType of this.metadata.ontologyType)
-      if (ONTOUML[ontologyType]) this.writer.addQuad(namedNode(new_string.replace("turtle","model")), namedNode(OCMV.ontologyType), namedNode(ONTOUML[ontologyType]));
+      if (ONTOUML[ontologyType]) this.writer.addQuad(namedNode(new_string.replace("turtle", "model")), namedNode(OCMV.ontologyType), namedNode(ONTOUML[ontologyType]));
+  }
+
+  setStorageUrl(): void {
+    var new_string = (this.ontologyUri).replace("#", "/");
+    this.writer.addQuad(namedNode(new_string.replace("turtle", "model")), namedNode(OCMV.storageUrl), namedNode(GITHUB_BASE + this.ontologyDir));
   }
 
   transformDistributions(): void {
-    var old_string = this.ontologyUri;
-    var new_string = old_string.replace("#","/");
-    const ttlDistUri = new_string;
-    const jsonDistUri = new_string.replace("turtle","json");
-    const vppDistUri = new_string.replace("turtle","vpp");    
+    var oldOntologyUri = this.ontologyUri;
+    var newOntologyUri = oldOntologyUri.replace("#", "/");
+    var modelOntologyUri = newOntologyUri.replace("turtle", "model")
 
-    this.transformDistribution(ttlDistUri, 'Turtle', MEDIA_TYPE.turtle, 'turtle');
-    this.transformDistribution(jsonDistUri, 'JSON', MEDIA_TYPE.json, 'json');
-    this.transformDistribution(vppDistUri, 'Visual Paradigm', MEDIA_TYPE.vpp, 'vpp');
+    const ttlDistUri = newOntologyUri;
+    const jsonDistUri = newOntologyUri.replace("turtle", "json");
+    const vppDistUri = newOntologyUri.replace("turtle", "vpp");
 
-    // DIAGRAM IMAGES TREATMENT
+    this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(ttlDistUri));
+    this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(jsonDistUri));
+    this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(vppDistUri));
+
+    var fs = require('fs');
+
+    // DIAGRAM IMAGES TREATMENT    
+
     const path = require("path");
-    let currentPath =  process.cwd();
+    let currentPath = process.cwd();
     const parentPath = path.parse(currentPath);
     const modelFolder = parentPath.dir + "\\ontouml-models\\models\\" + this.ontologyDir;
-    // console.log("MY DIRECTORY IS: " + modelFolder);
     const fsOriginal = require('fs')
     const fsNew = require('fs')
 
     // SAVING ORIGINAL DIAGRAMS INFORMATION
 
-    const originalDiagramsFolder = modelFolder + "\\original diagrams\\"
+    const originalDiagramsFolder = modelFolder + "\\original-diagrams\\"
     const originalFiles = fsOriginal.readdirSync(originalDiagramsFolder);
-    const pngOriginalDistUri = "https://w3id.org/ontouml-models/original-diagram/";    
+    const pngOriginalDistUri = "https://w3id.org/ontouml-models/original-diagram/";
 
-    for(let i = 0; i < originalFiles.length; i++){
+    for (let i = 0; i < originalFiles.length; i++) {
       originalFiles[i] = originalFiles[i].replace(/\.[^/.]+$/, "");
-      originalFiles[i] = originalFiles[i].replaceAll(" ","%20")
-      // console.log(files[i]);
       const specificImageURI = pngOriginalDistUri + this.ontologyDir + '/' + originalFiles[i];
-      this.transformDistribution(specificImageURI, 'Image', MEDIA_TYPE.png, 'png');
+      this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(specificImageURI));
+
+      var functionCode = this.transformSpecificDistribution(specificImageURI, 'Diagram image', MEDIA_TYPE.png, 'png-o');
+      var outputMetadataPath = '../ontouml-models/models/' + this.ontologyDir + '/metadata-' + "png-o-" + originalFiles[i] + '.ttl';
+      fs.writeFileSync(outputMetadataPath, functionCode);
+
     }
-    
+
     // IF EXISTS, SAVING NEW DIAGRAMS INFORMATION
 
-    const newDiagramsFolder = modelFolder + "\\new diagrams\\"    
+    const newDiagramsFolder = modelFolder + "\\new-diagrams\\"
     const pngNewDistUri = "https://w3id.org/ontouml-models/new-diagram/";
 
-    if (fsNew.existsSync(newDiagramsFolder)){
+    if (fsNew.existsSync(newDiagramsFolder)) {
       const newFiles = fsNew.readdirSync(newDiagramsFolder);
-      for(let i = 0; i < newFiles.length; i++){
+      for (let i = 0; i < newFiles.length; i++) {
         newFiles[i] = newFiles[i].replace(/\.[^/.]+$/, "");
-        newFiles[i] = newFiles[i].replaceAll(" ","%20")
         const specificImageURI = pngNewDistUri + this.ontologyDir + '/' + newFiles[i];
-        this.transformDistribution(specificImageURI, 'Image', MEDIA_TYPE.png, 'png');
+        this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(specificImageURI));
+
+        functionCode = this.transformSpecificDistribution(specificImageURI, 'Diagram image', MEDIA_TYPE.png, 'png-n');
+        outputMetadataPath = '../ontouml-models/models/' + this.ontologyDir + '/metadata-' + "png-n-" + newFiles[i] + '.ttl';
+        fs.writeFileSync(outputMetadataPath, functionCode);
+
       }
-    }   
+    }
+
+    // CREATE SPECIFIC DISTRIBUTION FILES    
+
+    // TTL DISTRIBUTION
+    functionCode = this.transformSpecificDistribution(ttlDistUri, 'Turtle', MEDIA_TYPE.turtle, 'ttl');
+
+    outputMetadataPath = '../ontouml-models/models/' + this.ontologyDir + '/metadata-' + "turtle" + '.ttl';
+    fs.writeFileSync(outputMetadataPath, functionCode);
+
+    // JSON DISTRIBUTION
+    functionCode = this.transformSpecificDistribution(jsonDistUri, 'JSON', MEDIA_TYPE.json, 'json');
+
+    outputMetadataPath = '../ontouml-models/models/' + this.ontologyDir + '/metadata-' + "json" + '.ttl';
+    fs.writeFileSync(outputMetadataPath, functionCode);
+
+    // VPP DISTRIBUTION
+    functionCode = this.transformSpecificDistribution(vppDistUri, 'Visual Paradigm', MEDIA_TYPE.vpp, 'vpp');
+
+    outputMetadataPath = '../ontouml-models/models/' + this.ontologyDir + '/metadata-' + "vpp" + '.ttl';
+    fs.writeFileSync(outputMetadataPath, functionCode);
 
   }
 
-  transformDistribution(distUri: string, format: string, mediaTypeUri: string, fileExtension: string) {
-    var oldString = this.ontologyUri;
-    var newString = oldString.replace("#","/");    
-    this.writer.addQuad(namedNode(newString.replace("turtle","model")), namedNode(DCAT.distribution), namedNode(distUri));
-    this.writer.addQuad(namedNode(distUri), namedNode(RDF.type), namedNode(DCAT.Distribution));
-    this.writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of ' + this.metadata.title , 'en'));
-    this.writer.addQuad(namedNode(distUri), namedNode(DCAT.mediaType), namedNode(mediaTypeUri));
-    this.writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode(distUri));
-    
-    
-    if (fileExtension !== "png"){
-      this.writer.addQuad(namedNode(distUri), namedNode(OCMV.isComplete), literal('true', namedNode('xsd:boolean')));
-    } 
-    else {      
-      this.writer.addQuad(namedNode(distUri), namedNode(OCMV.isComplete), literal('false', namedNode('xsd:boolean')));
+  // ALL THIS INFO HERE MUST BE SAVED IN A NEW FILE
+  transformSpecificDistribution(distUri: string, format: string, mediaTypeUri: string, fileExtension: string) {
+
+    var oldOntologyUri = this.ontologyUri;
+    var newOntologyUri = oldOntologyUri.replace("#", "/");
+
+    var writer = new N3.Writer({
+      format: this.format,
+      prefixes: {
+        dcat: 'http://www.w3.org/ns/dcat#',
+        dct: 'http://purl.org/dc/terms/',
+        ocmv: 'https://w3id.org/ontouml-models/vocabulary#',
+        owl: 'http://www.w3.org/2002/07/owl#',
+        rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+        rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+        xsd: 'http://www.w3.org/2001/XMLSchema#'
+      }
+    });
+
+    // GENERAL CASES
+    writer.addQuad(namedNode(distUri), namedNode(RDF.type), namedNode(DCAT.Distribution));    
+    writer.addQuad(namedNode(distUri), namedNode(DCAT.mediaType), namedNode(mediaTypeUri));
+
+    // SPECIFIC CASES
+    if (fileExtension === "vpp") { writer.addQuad(namedNode(distUri), namedNode(DCT.format), namedNode(VPP_FORMAT)); }
+
+    if (fileExtension === "json") { writer.addQuad(namedNode(distUri), namedNode(OCMV.conformsToSchema), namedNode(JSON_SCHEMA)); }
+
+    if (fileExtension.includes("png")) {
+      writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of ' + this.ontologyDir + " (" + this.metadata.title + " diagram)", 'en'));
+      writer.addQuad(namedNode(distUri), namedNode(OCMV.isComplete), literal('false', namedNode('xsd:boolean')));
     }
+    else {
+      writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of ' + this.metadata.title, 'en'));
+      writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode(GITHUB_RAW + this.ontologyDir + "/ontology." + fileExtension));
+      writer.addQuad(namedNode(distUri), namedNode(OCMV.isComplete), literal('true', namedNode('xsd:boolean')));
+    }
+
+    if (fileExtension === "png-o") {
+      var imageDownloadUrl = GITHUB_RAW + this.ontologyDir + "/original-diagrams/" + distUri.substring(distUri.lastIndexOf('/') + 1) + ".png"
+      writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode(imageDownloadUrl));
+    }
+    if (fileExtension === "png-n") {
+      var imageDownloadUrl = GITHUB_RAW + this.ontologyDir + "/new-diagrams/" + distUri.substring(distUri.lastIndexOf('/') + 1) + ".png"
+      writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode(imageDownloadUrl));
+    }
+
+
+    // RETURN STRING TO BE PRINTED
+
+    var functionCode = "";
+    try {
+      writer.end((error, result) => {
+        if (error) throw error;
+        functionCode = result;
+      });
+    } catch (error) {
+      console.log(error);
+      console.log('An error occurred while saving the ' + distUri + ' distribution metadata file.');
+      throw error;
+    }
+
+    return functionCode;
 
   }
 }
