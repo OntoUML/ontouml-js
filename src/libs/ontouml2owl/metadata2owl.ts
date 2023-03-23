@@ -81,7 +81,7 @@ const SKOS = {
 };
 
 const ONTOUML = {
-  catalog: 'https://w3id.org/ontouml-models/catalog',
+  catalog: 'https://w3id.org/ontouml-models/',
   context: 'https://w3id.org/ontouml-models/vocabulary#context',
   research: 'https://w3id.org/ontouml-models/vocabulary#Research',
   classroom: 'https://w3id.org/ontouml-models/vocabulary#Classroom',

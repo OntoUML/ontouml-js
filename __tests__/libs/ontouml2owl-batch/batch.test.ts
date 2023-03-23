@@ -85,18 +85,13 @@ describe('Metadata', () => {
     @prefix dcat: <http://www.w3.org/ns/dcat#> .
     @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
-    <https://w3id.org/ontouml-models/catalog> a dcat:Catalog ;
+    <https://w3id.org/ontouml-models/> a dcat:Catalog ;
         dct:title "OntoUML/UFO Catalog"@en ;
         rdfs:label "OntoUML/UFO Catalog"@en ;
         foaf:homepage <https://w3id.org/ontouml-models> ;
         dcat:themeTaxonomy <http://id.loc.gov/authorities/classification> ;
-        dcat:distribution <https://w3id.org/ontouml-models/catalog/turtle> ;
-        dct:contributor <https://orcid.org/0000-0002-5385-5761>, <https://orcid.org/0000-0003-2736-7817>, <https://orcid.org/0000-0003-2528-3118>, <https://orcid.org/0000-0002-6661-6292>, <https://orcid.org/0000-0002-0952-9571>, <https://orcid.org/0000-0002-2384-3081>, <https://orcid.org/0000-0002-3452-553X>, <https://github.com/AndrasKomaromi>, <https://orcid.org/0000-0001-5010-3081>, <https://orcid.org/0000-0003-1547-8333>, <https://dblp.org/pid/309/4924>, <https://github.com/TvanEe>, <https://orcid.org/0000-0002-8139-5977>, <https://orcid.org/0000-0003-3385-4769> ;
-
-    <https://w3id.org/ontouml-models/catalog/turtle> a dcat:Distribution ;
-        dcat:downloadURL <https://w3id.org/ontouml-models> ;
-        dct:title "Turtle distribution of the OntoUML/UFO Catalog"@en ;
         dcat:mediaType <https://www.iana.org/assignments/media-types/text/turtle> ;
+        dct:contributor <https://orcid.org/0000-0002-5385-5761>, <https://orcid.org/0000-0003-2736-7817>, <https://orcid.org/0000-0003-2528-3118>, <https://orcid.org/0000-0002-6661-6292>, <https://orcid.org/0000-0002-0952-9571>, <https://orcid.org/0000-0002-2384-3081>, <https://orcid.org/0000-0002-3452-553X>, <https://github.com/AndrasKomaromi>, <https://orcid.org/0000-0001-5010-3081>, <https://orcid.org/0000-0003-1547-8333>, <https://dblp.org/pid/309/4924>, <https://github.com/TvanEe>, <https://orcid.org/0000-0002-8139-5977>, <https://orcid.org/0000-0003-3385-4769> ;        
     `;
     await parser.parse(catalog, (error, quad, prefixes) => {
       if (quad) writer.addQuad(quad);
