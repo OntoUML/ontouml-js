@@ -431,6 +431,10 @@ export class Metadata2Owl implements Service {
     // GENERAL CASES
     writer.addQuad(namedNode(distUri), namedNode(RDF.type), namedNode(DCAT.Distribution));    
     writer.addQuad(namedNode(distUri), namedNode(DCAT.mediaType), namedNode(mediaTypeUri));
+    
+    if (this.metadata.license) {
+      writer.addQuad(namedNode(distUri), namedNode(DCT.license), namedNode(this.metadata.license));
+    }
 
     // SPECIFIC CASES
     if (fileExtension === "vpp") { writer.addQuad(namedNode(distUri), namedNode(DCT.format), namedNode(VPP_FORMAT)); }
