@@ -99,7 +99,7 @@ describe('Metadata', () => {
 
     writer.end((error, result) => {
       if (error) throw error;
-      fs.writeFileSync('../ontouml-models/catalog-release.ttl', result);      
+      // fs.writeFileSync('../ontouml-models/catalog-release.ttl', result);   // Previously used to generate the release document with all ttl files.
     });
   });
 });

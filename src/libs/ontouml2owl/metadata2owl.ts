@@ -81,7 +81,7 @@ const SKOS = {
 };
 
 const ONTOUML = {
-  catalog: 'https://w3id.org/ontouml-models/',
+  catalog: 'https://w3id.org/ontouml-models',
   context: 'https://w3id.org/ontouml-models/vocabulary#context',
   research: 'https://w3id.org/ontouml-models/vocabulary#Research',
   classroom: 'https://w3id.org/ontouml-models/vocabulary#Classroom',
@@ -190,7 +190,7 @@ export class Metadata2Owl implements Service {
       });
     } catch (error) {
       console.log(error);
-      console.log('An error occurred while transforming the model to ontouml-schema-owl.');
+      console.log('An error occurred while generating the data or metadata files.');
       throw error;
     }
   }
