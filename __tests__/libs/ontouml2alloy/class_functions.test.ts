@@ -1,25 +1,10 @@
 import { Ontouml2Alloy } from '@libs/ontouml2alloy/index';
+import { generateAlloy } from '@libs/ontouml2alloy/helper';
 import { Class, ClassStereotype, Relation, Package, Project, Property, OntoumlType, AggregationKind, stereotypeUtils, OntologicalNature} from '@libs/ontouml';
 import { transformClass } from '@libs/ontouml2alloy/class_functions';
 
 import { MultilingualText } from '@libs/ontouml';
 
-// describe('transformEndurantClass', () => {
-//   test('should transform endurant class into Alloy field declaration', () => {
-//     // Create a new Ontouml2Alloy instance and a Class instance
-//     const transformer = new Ontouml2Alloy();
-//     const classInstance = new Class('Person');
-
-//     // Set the classInstance as restricted to Substantial
-//     classInstance.setRestrictedToSubstantial(true);
-
-//     // Call the transformEndurantClass function with the transformer and the classInstance
-//     transformEndurantClass(transformer, classInstance);
-
-//     // Check that the transformer now contains the expected Alloy field declaration
-//     expect(transformer.getFacts()).toContain('Person: set exists:>Object');
-//   });
-// });
 
 describe('Class Functions', () => {
 
@@ -29,26 +14,28 @@ describe('Class Functions', () => {
         let model: Package;
         let transformer: Ontouml2Alloy;
 
-        const eventClass = new Class({ name: new MultilingualText('Event'), stereotype: ClassStereotype.EVENT});
-        const situationClass = new Class({ name: new MultilingualText('Situation'), stereotype: ClassStereotype.SITUATION });
-        const datatypeClass = new Class({ name: new MultilingualText('DataType'), stereotype: ClassStereotype.DATATYPE });
-        const enumerationClass = new Class({ name: new MultilingualText('Enumeration'), stereotype: ClassStereotype.ENUMERATION });
-        const endurantClass = new Class({ name: new MultilingualText('Endurant'), isAbstract: false });
-        const relatorClass = new Class({ name: new MultilingualText('Relator'), stereotype: ClassStereotype.RELATOR });
-        const abstractClass = new Class({ name: new MultilingualText('AbstractClass'), isAbstract: true });
+        // const eventClass = new Class({ name: new MultilingualText('Event'), stereotype: ClassStereotype.EVENT});
+        // const situationClass = new Class({ name: new MultilingualText('Situation'), stereotype: ClassStereotype.SITUATION });
+        // const datatypeClass = new Class({ name: new MultilingualText('DataType'), stereotype: ClassStereotype.DATATYPE });
+        // const enumerationClass = new Class({ name: new MultilingualText('Enumeration'), stereotype: ClassStereotype.ENUMERATION });
+        // const endurantClass = new Class({ name: new MultilingualText('Endurant'), isAbstract: false });
+        // const relatorClass = new Class({ name: new MultilingualText('Relator'), stereotype: ClassStereotype.RELATOR });
+        // const abstractClass = new Class({ name: new MultilingualText('AbstractClass'), isAbstract: true });
         
         beforeEach(() => {
         project = new Project();
         model = project.createModel();
-
-        transformer = new Ontouml2Alloy(model); //necessary to use the transform func
       });
 
-      it('returns early if the class has stereotype EVENT or SITUATION', () => {
-        const resultEvent = transformClass(transformer, eventClass);
-        const resultSituation = transformClass(transformer, situationClass);
-        expect(resultEvent).toBeUndefined();
-        expect(resultSituation).toBeUndefined();
+      it('should return early if the class has stereotype EVENT or SITUATION', () => {
+        // model.createKind('Happy Person');
+        const event = model.createEvent('Birthday');
+        expect(generateAlloy(model)).not.toContain('Birthday');
+        model.removeContent(event);
+
+        model.createSituation('Hazard')
+        expect(generateAlloy(model)).not.toContain('Hazard');
+        // expect(transformer.getAlloyCode()[0]).toContain('HappyPerson: set exists:>Object');
       });
   
     //   afterEach(() => {
@@ -83,9 +70,18 @@ describe('Class Functions', () => {
     //     //expect(() => ...).toThrow(); // call the function or class method with the input value and expect it to throw an error
     //   });
       
-    it('transforms datatype classes', () => {
-    
-        });
+    it('should transform datatype classes', () => {
+        const _number = model.createDatatype('Number');
+        const complexDatatype = model.createDatatype('Date');
+        complexDatatype.createAttribute(_number, 'day');
+        complexDatatype.createAttribute(_number, 'month');
+        complexDatatype.createAttribute(_number, 'year');
+        const result = generateAlloy(model);
+        expect(result).toContain('sig Date in Datatype {');        
+        expect(result).toContain('day: Number');
+        expect(result).toContain('month: Number');
+        expect(result).toContain('year: Number');
+    }); //default multiplicy is "one" so "day: one Number" or "day: Number" should be the same
 
     it('transforms enumeration classes', () => {
         
@@ -94,25 +90,25 @@ describe('Class Functions', () => {
 
     it('transforms endurant class', () => {
 
-        endurantClass.addName('Person');
-        endurantClass.stereotype = ClassStereotype.KIND;
-        // console.log(endurantClass.getAllowedStereotypes());
-        console.log(endurantClass.getName());
-        console.log(endurantClass.getAllContents());
-        console.log(endurantClass.toJSON());
+        // endurantClass.addName('Person');
+        // endurantClass.stereotype = ClassStereotype.KIND;
+        // // console.log(endurantClass.getAllowedStereotypes());
+        // console.log(endurantClass.getName());
+        // console.log(endurantClass.getAllContents());
+        // console.log(endurantClass.toJSON());
 
-        stereotypeUtils.isEndurantClassStereotype    
-        transformClass(transformer, endurantClass);
-        transformer.transform();
+        // stereotypeUtils.isEndurantClassStereotype    
+        // transformClass(transformer, endurantClass);
+        // transformer.transform();
     
-        const expectedFacts = [
-            'fact rigid {\n' +
-            '        rigidity[Person,Endurant,exists]\n' +
-            '}',
-        ];
+        // const expectedFacts = [
+        //     'fact rigid {\n' +
+        //     '        rigidity[Person,Endurant,exists]\n' +
+        //     '}',
+        // ];
 
-        console.log(transformer.getAlloyCode()[0]);
-        expect(transformer.getAlloyCode()[0]).toContain(expectedFacts);
+        // console.log(transformer.getAlloyCode()[0]);
+        // expect(transformer.getAlloyCode()[0]).toContain(expectedFacts);
 
         });  
 

@@ -24,6 +24,13 @@ export class Ontouml2Alloy implements Service {
   visible: string[];
   aliases: [OntoumlElement, string][]; // [element, alias]
 
+  /*
+    Lines 13-33 define a class Ontouml2Alloy that implements Service. The class has a constructor
+    with an input parameter that can be either a Project or a Package object. The class has many properties 
+    that are used to store the different parts of the Alloy code generated during the transformation process. 
+    The transform() method is the main method of the class that orchestrates the transformation process.
+  */
+
   constructor(input: Project | Package, options?: null) {
     if (input instanceof Project) {
       this.model = input.model;
@@ -45,6 +52,14 @@ export class Ontouml2Alloy implements Service {
   getAlloyCode(): string[] {
     return this.alloyCode;
   }
+
+  getFacts(): string[] {
+    return this.facts;
+  } //getter to test
+
+  getDatatype() : [string, string[]][]{
+    return this.datatypes;
+  } //getter to test
 
   addDatatype(datatype: [string, string[]]) {
     this.datatypes.push(datatype);
@@ -102,6 +117,11 @@ export class Ontouml2Alloy implements Service {
     this.writeWorldStructureModule();
     this.writeOntologicalPropertiesModule();
   }
+
+  /*
+    Lines 81-105 define a method transform() that calls the different transformation functions, 
+    removes duplicate facts and functions, and writes the generated Alloy code to the alloyCode property.
+  */
 
   writePreamble() {
     this.alloyCode[0] +=
@@ -285,6 +305,11 @@ export class Ontouml2Alloy implements Service {
 
     return true;
   }
+  /*
+  This method retrieves all the classes present in the model and applies a transformation 
+  to each of them using the transformClass() function. After that, it applies transformations to 
+  additional class constraints and datatype constraints. Finally, it returns true.
+  */
 
   transformGeneralizations() {
     const generalizations = this.model.getAllGeneralizations();
@@ -332,4 +357,10 @@ export class Ontouml2Alloy implements Service {
         issues: undefined
     };
   }
+  /*
+    After performing all the necessary transformations, the run method is called, which calls the 
+    transform method and returns the resulting Alloy code in an object with three properties: mainModule, 
+    worldStructureModule, and ontologicalPropertiesModule. The issues property is currently set to undefined, 
+    but it could be used to report any issues or errors that occur during the transformation process.
+  */
 }

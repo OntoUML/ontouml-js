@@ -3,8 +3,8 @@ import { RelationStereotype } from '@libs/ontouml/model/stereotypes';
 import { Ontouml2Alloy } from '.';
 import { getNameNoSpaces, isTopLevel, getValidAlias } from './util';
 
-export function transformClass(transformer: Ontouml2Alloy, _class: Class) {
-  if (_class.hasAnyStereotype([ClassStereotype.EVENT, ClassStereotype.SITUATION])) {
+export function transformClass(transformer: Ontouml2Alloy, _class: Class) { //This line defines a function named transformClass that takes two parameters: transformer (of type Ontouml2Alloy) and _class (of type Class).
+  if (_class.hasAnyStereotype([ClassStereotype.EVENT, ClassStereotype.SITUATION])) { //This line checks if the given class _class has any of the stereotypes EVENT or SITUATION. If it does, the function immediately returns without doing anything.
     return;
   }
 
@@ -21,6 +21,9 @@ export function transformClass(transformer: Ontouml2Alloy, _class: Class) {
   if (_class.isRestrictedToEndurant()) {
     transformEndurantClass(transformer, _class);
   }
+  /*
+    This line checks if the given class _class is a restricted endurant. If it is, the transformEndurantClass function is called with the transformer and _class parameters.
+  */
 
   if (_class.hasRelatorStereotype()) {
     transformRelatorConstraint(transformer, _class);

@@ -15,11 +15,11 @@
   ],
   "scripts": {
     "start": "npm-run-all -p format:watch start:watch",
-    "start:watch": "TS_NODE_FILES=true nodemon index.ts",
+    "start:watch": "cross-env TS_NODE_FILES=true nodemon index.ts",
     "format": "prettier --write '**/*.ts' '**/*.json'",
     "format:watch": "onchange '**/*.ts' '**/*.json' -- prettier --write {{changed}}",
     "clean": "rimraf coverage dist tmp",
-    "build": "rm -rf ./dist && npm run build:js",
+    "build": "rimraf ./dist && npm run build:js",
     "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",
     "build:watch": "TS_NODE_FILES=true tsc -w -p tsconfig.release.json",
     "tsdoc": "typedoc --out tsdoc src/index.ts",
