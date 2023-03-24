@@ -157,16 +157,16 @@ export class Metadata2Owl implements Service {
     this.writer = new N3.Writer({
       format: this.format,
       prefixes: {
+        dcat: 'http://www.w3.org/ns/dcat#',
+        dct: 'http://purl.org/dc/terms/',
+        lcc: 'http://id.loc.gov/authorities/classification/',
+        mod: 'https://w3id.org/mod#',
         ocmv: 'https://w3id.org/ontouml-models/vocabulary#',
+        owl: 'http://www.w3.org/2002/07/owl#',
         rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
-        owl: 'http://www.w3.org/2002/07/owl#',
-        xsd: 'http://www.w3.org/2001/XMLSchema#',
-        mod: 'https://w3id.org/mod#',
-        dct: 'http://purl.org/dc/terms/',
         skos: 'http://www.w3.org/2004/02/skos/core#',
-        dcat: 'http://www.w3.org/ns/dcat#',
-        lcc: 'http://id.loc.gov/authorities/classification/'
+        xsd: 'http://www.w3.org/2001/XMLSchema#'
       }
     });
   }
@@ -360,8 +360,7 @@ export class Metadata2Owl implements Service {
     for (let i = 0; i < originalFiles.length; i++) {
       originalFiles[i] = originalFiles[i].replace(/\.[^/.]+$/, "");
       const specificImageURI = pngOriginalDistUri + this.ontologyDir + '/' + originalFiles[i];
-      this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(specificImageURI));
-      this.writer.addQuad(namedNode(modelOntologyUri), namedNode(SKOS.editorialNote), literal("This image depicts the diagram as originally represented by its author(s).", 'en'))
+      this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(specificImageURI));      
 
       var functionCode = this.transformSpecificDistribution(specificImageURI, 'Image', MEDIA_TYPE.png, 'png-o');
       var outputMetadataPath = '../ontouml-models/models/' + this.ontologyDir + '/metadata-' + "png-o-" + originalFiles[i] + '.ttl';
@@ -379,8 +378,7 @@ export class Metadata2Owl implements Service {
       for (let i = 0; i < newFiles.length; i++) {
         newFiles[i] = newFiles[i].replace(/\.[^/.]+$/, "");
         const specificImageURI = pngNewDistUri + this.ontologyDir + '/' + newFiles[i];
-        this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(specificImageURI));
-        this.writer.addQuad(namedNode(modelOntologyUri), namedNode(SKOS.editorialNote), literal("This image depicts a version of the original diagram re-created in the Visual Paradigm editor.", 'en'))
+        this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(specificImageURI));        
 
         functionCode = this.transformSpecificDistribution(specificImageURI, 'Image', MEDIA_TYPE.png, 'png-n');
         outputMetadataPath = '../ontouml-models/models/' + this.ontologyDir + '/metadata-' + "png-n-" + newFiles[i] + '.ttl';
@@ -426,6 +424,7 @@ export class Metadata2Owl implements Service {
         owl: 'http://www.w3.org/2002/07/owl#',
         rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+        skos: 'http://www.w3.org/2004/02/skos/core#',
         xsd: 'http://www.w3.org/2001/XMLSchema#'
       }
     });
@@ -439,7 +438,7 @@ export class Metadata2Owl implements Service {
     }
 
     // SPECIFIC CASES
-    if (fileExtension === "vpp") { writer.addQuad(namedNode(distUri), namedNode(DCT.format), namedNode(VPP_FORMAT)); }
+    if (fileExtension === "vpp") { writer.addQuad(namedNode(distUri), namedNode(DCT.format), namedNode(VPP_FORMAT)); } 
 
     if (fileExtension === "json") { writer.addQuad(namedNode(distUri), namedNode(OCMV.conformsToSchema), namedNode(JSON_SCHEMA)); }
 
@@ -456,10 +455,12 @@ export class Metadata2Owl implements Service {
     if (fileExtension === "png-o") {
       var imageDownloadUrl = GITHUB_RAW + this.ontologyDir + "/original-diagrams/" + distUri.substring(distUri.lastIndexOf('/') + 1) + ".png"
       writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode(imageDownloadUrl));
+      writer.addQuad(namedNode(distUri), namedNode(SKOS.editorialNote), literal("This image depicts the diagram as originally represented by its author(s).", 'en'))
     }
     if (fileExtension === "png-n") {
       var imageDownloadUrl = GITHUB_RAW + this.ontologyDir + "/new-diagrams/" + distUri.substring(distUri.lastIndexOf('/') + 1) + ".png"
       writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode(imageDownloadUrl));
+      writer.addQuad(namedNode(distUri), namedNode(SKOS.editorialNote), literal("This image depicts a version of the original diagram re-created in the Visual Paradigm editor.", 'en'))
     }
 
 
