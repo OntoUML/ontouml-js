@@ -361,8 +361,9 @@ export class Metadata2Owl implements Service {
       originalFiles[i] = originalFiles[i].replace(/\.[^/.]+$/, "");
       const specificImageURI = pngOriginalDistUri + this.ontologyDir + '/' + originalFiles[i];
       this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(specificImageURI));
+      this.writer.addQuad(namedNode(modelOntologyUri), namedNode(SKOS.editorialNote), literal("This image depicts the diagram as originally represented by its author(s).", 'en'))
 
-      var functionCode = this.transformSpecificDistribution(specificImageURI, 'Diagram image', MEDIA_TYPE.png, 'png-o');
+      var functionCode = this.transformSpecificDistribution(specificImageURI, 'Image', MEDIA_TYPE.png, 'png-o');
       var outputMetadataPath = '../ontouml-models/models/' + this.ontologyDir + '/metadata-' + "png-o-" + originalFiles[i] + '.ttl';
       fs.writeFileSync(outputMetadataPath, functionCode);
 
@@ -379,8 +380,9 @@ export class Metadata2Owl implements Service {
         newFiles[i] = newFiles[i].replace(/\.[^/.]+$/, "");
         const specificImageURI = pngNewDistUri + this.ontologyDir + '/' + newFiles[i];
         this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(specificImageURI));
+        this.writer.addQuad(namedNode(modelOntologyUri), namedNode(SKOS.editorialNote), literal("This image depicts a version of the original diagram re-created in the Visual Paradigm editor.", 'en'))
 
-        functionCode = this.transformSpecificDistribution(specificImageURI, 'Diagram image', MEDIA_TYPE.png, 'png-n');
+        functionCode = this.transformSpecificDistribution(specificImageURI, 'Image', MEDIA_TYPE.png, 'png-n');
         outputMetadataPath = '../ontouml-models/models/' + this.ontologyDir + '/metadata-' + "png-n-" + newFiles[i] + '.ttl';
         fs.writeFileSync(outputMetadataPath, functionCode);
 
