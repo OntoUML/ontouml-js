@@ -27,7 +27,7 @@ describe('Class Functions', () => {
         model = project.createModel();
       });
 
-      it('should return early if the class has stereotype EVENT or SITUATION', () => {
+    it('should return early if the class is an <<event>> or <<situation>>', () => {
         // model.createKind('Happy Person');
         const event = model.createEvent('Birthday');
         expect(generateAlloy(model)).not.toContain('Birthday');
@@ -36,7 +36,7 @@ describe('Class Functions', () => {
         model.createSituation('Hazard')
         expect(generateAlloy(model)).not.toContain('Hazard');
         // expect(transformer.getAlloyCode()[0]).toContain('HappyPerson: set exists:>Object');
-      });
+    });
   
     //   afterEach(() => {
     //     // code to run after each test case
@@ -70,7 +70,7 @@ describe('Class Functions', () => {
     //     //expect(() => ...).toThrow(); // call the function or class method with the input value and expect it to throw an error
     //   });
       
-    it('should transform datatype classes', () => {
+    it('should transform <<datatype>> class with attributes (complex datatype)', () => {
         const _number = model.createDatatype('Number');
         const complexDatatype = model.createDatatype('Date');
         complexDatatype.createAttribute(_number, 'day');
@@ -83,39 +83,164 @@ describe('Class Functions', () => {
         expect(result).toContain('year: Number');
     }); //default multiplicy is "one" so "day: one Number" or "day: Number" should be the same
 
-    it('transforms enumeration classes', () => {
+    it('should NOT transform «datatype» class without attributes (primitive datatype)', () => {
+        const model = new Package();
+        model.createDatatype('Date');
+        const result = generateAlloy(model);
+
+        expect(result).not.toContain('sig Date in Datatype {');
+    }); //should there be such a requirement?
+
+    it('should transform <<enumeration>> class with attributes', () => {
+        const status = model.createEnumeration('Status');
+        status.createLiteral('Active');
+        status.createLiteral('Inactive');
+
+        const result = generateAlloy(model)
+        expect(result).toContain('enum Status {')
+        expect(result).toContain('Active, Inactive}')
+    });
+
+
+    it('should transform <<kind>> class', () => {
+        model.createKind('Person');
+        const expectedFacts = 
+            'fact rigid {\n' +
+            '        rigidity[Person,Object,exists]\n' +
+            '}'
+        ;
+        expect(generateAlloy(model)).toContain(expectedFacts);
+        // console.log(generateAlloy(model));
+        //"exists:>Object in Group" ?
+    });  
+
+    it('should transform <<collective>> class { isExtensional=false }', () => {
+        model.createCollective('Group', false);
+        const result = generateAlloy(model);
+        const expectedFacts = 
+            'fact rigid {\n' +
+            '        rigidity[Group,Object,exists]\n' +
+            '}'
+        ;
+        expect(result).toContain(expectedFacts);
+    });
+
+    it('should transform «collective» class { isExtensional=true }', () => {
+        model.createCollective('FixedGroup', true);
+        const result = generateAlloy(model);
         
-        });
+    });
 
+    it('should transform «quantity» class', () => {
+        model.createQuantity('Wine');
+        const result = generateAlloy(model);
+        const expectedFacts = 
+        'fact rigid {\n' +
+        '        rigidity[Wine,Object,exists]\n' +
+        '}'
+        ; 
+        expect(result).toContain(expectedFacts);
+    });
 
-    it('transforms endurant class', () => {
+    it('should transform «relator» class', () => {
+        model.createRelator('Marriage');
+        const result = generateAlloy(model);
+        const expectedFacts = 
+        'fact rigid {\n' +
+        '        rigidity[Marriage,Aspect,exists]\n' +
+        '}'
+        ;
+        expect(result).toContain(expectedFacts);
+      }); //that's it, I guess?
 
-        // endurantClass.addName('Person');
-        // endurantClass.stereotype = ClassStereotype.KIND;
-        // // console.log(endurantClass.getAllowedStereotypes());
-        // console.log(endurantClass.getName());
-        // console.log(endurantClass.getAllContents());
-        // console.log(endurantClass.toJSON());
+    it('should transform «role» class', () => {
+        model.createRole('Student');
+        const result = generateAlloy(model);
+        const expectedFacts = 
+        'fact antirigid {\n' +
+        '        antirigidity[Student,Object,exists]\n' +
+        '}'
+        ;
+        expect(result).toContain(expectedFacts);
+      });
 
-        // stereotypeUtils.isEndurantClassStereotype    
-        // transformClass(transformer, endurantClass);
-        // transformer.transform();
+      it('should transform «phase» class', () => {
+        model.createPhase('Child');
+        const result = generateAlloy(model);
+        const expectedFacts = 
+        'fact antirigid {\n' +
+        '        antirigidity[Child,Object,exists]\n' +
+        '}'
+        ;
+        expect(result).toContain(expectedFacts);
+      });
+
+      it('should transform «abstract» class', () => {
+        const model = new Package();
+        model.createAbstract('Goal');
+        
+        const result = generateAlloy(model);
+
+        expect(result).toContain(''); // to be figured out what needs to happen
+      });
+
+      it('should transform «mode» class { allowed=[intrinsic-mode] }', () => {
+        model.createIntrinsicMode('Skill');
+        const result = generateAlloy(model);
+        const expectedFacts = 
+        'fact rigid {\n' +
+        '        rigidity[Skill,Aspect,exists]\n' +
+        '}'
+        ;
+
+        expect(result).toContain(expectedFacts);
     
-        // const expectedFacts = [
-        //     'fact rigid {\n' +
-        //     '        rigidity[Person,Endurant,exists]\n' +
-        //     '}',
-        // ];
+      });
+    
+      it('should transform «mode» class { allowed=[extrinsic-mode] }', () => {
+        model.createExtrinsicMode('Love');
+        const result = generateAlloy(model);
+        const expectedFacts = 
+        'fact rigid {\n' +
+        '        rigidity[Love,Aspect,exists]\n' +
+        '}'
+        ;
+        expect(result).toContain(expectedFacts);
+      });
+    
+      it('should transform «mode» class { allowed=[intrinsic-mode, extrinsic-mode] }', () => {
+        // const _class = OntoumlFactory.createMode('Belief');
+        model.createClass('Belief', ClassStereotype.MODE, [OntologicalNature.intrinsic_mode, OntologicalNature.extrinsic_mode]);
+        const result = generateAlloy(model);
+        const expectedFacts = 
+        'fact rigid {\n' +
+        '        rigidity[Belief,Aspect,exists]\n' +
+        '}'
+        ;
+        expect(result).toContain(expectedFacts);
+      });
 
-        // console.log(transformer.getAlloyCode()[0]);
-        // expect(transformer.getAlloyCode()[0]).toContain(expectedFacts);
-
-        });  
-
-
-
-
-
+      it('should transform «roleMixin» class', () => {
+        model.createRoleMixin('Customer');
+        const result = generateAlloy(model);
+    
+        expect(result).toContain('');
+      });
+    
+      it('should transform «phaseMixin» class', () => {
+        model.createPhaseMixin('Infant');
+        const result = generateAlloy(model);
+    
+        expect(result).toContain('');
+      });
+    
+      it('should transform «mixin» class', () => {
+        model.createMixin('Seatable');
+        const result = generateAlloy(model);
+    
+        expect(result).toContain('');
+      });
+      //what is expected with the mixins?
 
 
     });
