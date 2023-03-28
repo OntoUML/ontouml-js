@@ -243,6 +243,39 @@ describe('Class Functions', () => {
       //what is expected with the mixins?
 
 
+      it('should handle if class has a space in name', () => {
+        model.createKind('Happy Person');
+        const unwantedFacts = 
+        'fact rigid {\n' +
+        '        rigidity[Happy Person,Object,exists]\n' +
+        '}'
+        ;
+        const expectedFacts = 
+        'fact rigid {\n' +
+        '        rigidity[HappyPerson,Object,exists]\n' +
+        '}'
+        ;
+        const result = generateAlloy(model);
+        expect(result).not.toContain(unwantedFacts);
+        expect(result).toContain(expectedFacts);
+      });
+
+      it('should handle if class has forbidden characters in name', () => { //!, #, *, /, \
+        model.createKind('Happy!Person');
+        const unwantedFacts = 
+        'fact rigid {\n' +
+        '        rigidity[Happy!Person,Object,exists]\n' +
+        '}'
+        ;
+        const result = generateAlloy(model);
+        expect(result).not.toContain(unwantedFacts);
+        //idea for how to handle this
+        // expect(result).toContain(expectedFacts);
+      });
+
+      
+
+
     });
 });
 
