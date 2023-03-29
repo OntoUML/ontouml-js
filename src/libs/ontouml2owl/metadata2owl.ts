@@ -342,6 +342,8 @@ export class Metadata2Owl implements Service {
 
     var fs = require('fs');
 
+    const ontologyName = this.metadata.title;
+
     // DIAGRAM IMAGES TREATMENT    
 
     const path = require("path");
@@ -362,7 +364,7 @@ export class Metadata2Owl implements Service {
       const specificImageURI = pngOriginalDistUri + this.ontologyDir + '/' + originalFiles[i];
       this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(specificImageURI));      
 
-      var functionCode = this.transformSpecificDistribution(specificImageURI, 'Image', MEDIA_TYPE.png, 'png-o');
+      var functionCode = this.transformSpecificDistribution(specificImageURI, 'PNG', MEDIA_TYPE.png, 'png-o');
       var outputMetadataPath = '../ontouml-models/models/' + this.ontologyDir + '/metadata-' + "png-o-" + originalFiles[i] + '.ttl';
       fs.writeFileSync(outputMetadataPath, functionCode);
 
@@ -380,7 +382,7 @@ export class Metadata2Owl implements Service {
         const specificImageURI = pngNewDistUri + this.ontologyDir + '/' + newFiles[i];
         this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(specificImageURI));        
 
-        functionCode = this.transformSpecificDistribution(specificImageURI, 'Image', MEDIA_TYPE.png, 'png-n');
+        functionCode = this.transformSpecificDistribution(specificImageURI, 'PNG', MEDIA_TYPE.png, 'png-n');
         outputMetadataPath = '../ontouml-models/models/' + this.ontologyDir + '/metadata-' + "png-n-" + newFiles[i] + '.ttl';
         fs.writeFileSync(outputMetadataPath, functionCode);
 
@@ -442,8 +444,7 @@ export class Metadata2Owl implements Service {
 
     if (fileExtension === "json") { writer.addQuad(namedNode(distUri), namedNode(OCMV.conformsToSchema), namedNode(JSON_SCHEMA)); }
 
-    if (fileExtension.includes("png")) {
-      writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of ' + this.ontologyDir + " (" + this.metadata.title + " diagram)", 'en'));
+    if (fileExtension.includes("png")) {      
       writer.addQuad(namedNode(distUri), namedNode(OCMV.isComplete), literal('false', namedNode('xsd:boolean')));
     }
     else {
@@ -453,12 +454,20 @@ export class Metadata2Owl implements Service {
     }
 
     if (fileExtension === "png-o") {
-      var imageDownloadUrl = GITHUB_RAW + this.ontologyDir + "/original-diagrams/" + distUri.substring(distUri.lastIndexOf('/') + 1) + ".png"
+      var diagramName = distUri.substring(distUri.lastIndexOf('/') + 1);
+      var diagramHumanName = diagramName.split('-').join(' ');
+      
+      writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of diagram “' + diagramHumanName + '” from the ' + this.metadata.title + ' (original version)', 'en'));
+      var imageDownloadUrl = GITHUB_RAW + this.ontologyDir + "/original-diagrams/" + diagramName + ".png"
       writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode(imageDownloadUrl));
       writer.addQuad(namedNode(distUri), namedNode(SKOS.editorialNote), literal("This image depicts the diagram as originally represented by its author(s).", 'en'))
     }
     if (fileExtension === "png-n") {
-      var imageDownloadUrl = GITHUB_RAW + this.ontologyDir + "/new-diagrams/" + distUri.substring(distUri.lastIndexOf('/') + 1) + ".png"
+      diagramName = distUri.substring(distUri.lastIndexOf('/') + 1);
+      diagramHumanName = diagramName.split('-').join(' ');
+      
+      writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of diagram “' + diagramHumanName + '” from the ' + this.metadata.title + ' (Visual Paradigm version)', 'en'));
+      var imageDownloadUrl = GITHUB_RAW + this.ontologyDir + "/new-diagrams/" + diagramName + ".png"
       writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode(imageDownloadUrl));
       writer.addQuad(namedNode(distUri), namedNode(SKOS.editorialNote), literal("This image depicts a version of the original diagram re-created in the Visual Paradigm editor.", 'en'))
     }
