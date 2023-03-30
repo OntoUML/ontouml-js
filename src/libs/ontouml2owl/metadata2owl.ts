@@ -457,7 +457,7 @@ export class Metadata2Owl implements Service {
       var diagramName = distUri.substring(distUri.lastIndexOf('/') + 1);
       var diagramHumanName = diagramName.split('-').join(' ');
       
-      writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of diagram “' + diagramHumanName + '” from the ' + this.metadata.title + ' (original version)', 'en'));
+      writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of diagram \'' + diagramHumanName + '\' from the ' + this.metadata.title + ' (original version)', 'en'));
       var imageDownloadUrl = GITHUB_RAW + this.ontologyDir + "/original-diagrams/" + diagramName + ".png"
       writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode(imageDownloadUrl));
       writer.addQuad(namedNode(distUri), namedNode(SKOS.editorialNote), literal("This image depicts the diagram as originally represented by its author(s).", 'en'))
@@ -466,7 +466,7 @@ export class Metadata2Owl implements Service {
       diagramName = distUri.substring(distUri.lastIndexOf('/') + 1);
       diagramHumanName = diagramName.split('-').join(' ');
       
-      writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of diagram “' + diagramHumanName + '” from the ' + this.metadata.title + ' (Visual Paradigm version)', 'en'));
+      writer.addQuad(namedNode(distUri), namedNode(DCT.title), literal(format + ' distribution of diagram \'' + diagramHumanName + '\' from the ' + this.metadata.title + ' (Visual Paradigm version)', 'en'));
       var imageDownloadUrl = GITHUB_RAW + this.ontologyDir + "/new-diagrams/" + diagramName + ".png"
       writer.addQuad(namedNode(distUri), namedNode(DCAT.downloadURL), namedNode(imageDownloadUrl));
       writer.addQuad(namedNode(distUri), namedNode(SKOS.editorialNote), literal("This image depicts a version of the original diagram re-created in the Visual Paradigm editor.", 'en'))
