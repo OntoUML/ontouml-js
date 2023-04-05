@@ -1,41 +1,29 @@
 import { Ontouml2Alloy } from '@libs/ontouml2alloy/index';
-import { generateAlloy } from '@libs/ontouml2alloy/helper';
+import { generateAlloy, generateFact, generateWorldAttribute, generateWorldFact } from '@libs/ontouml2alloy/helper';
 import { Class, ClassStereotype, Relation, Package, Project, Property, OntoumlType, AggregationKind, stereotypeUtils, OntologicalNature} from '@libs/ontouml';
-import { transformClass } from '@libs/ontouml2alloy/class_functions';
-
-import { MultilingualText } from '@libs/ontouml';
+import { resolve } from 'dns';
 
 
 describe('Class Functions', () => {
 
     describe('transformClass function', () => {
-        
         let project: Project;
         let model: Package;
         let transformer: Ontouml2Alloy;
 
-        // const eventClass = new Class({ name: new MultilingualText('Event'), stereotype: ClassStereotype.EVENT});
-        // const situationClass = new Class({ name: new MultilingualText('Situation'), stereotype: ClassStereotype.SITUATION });
-        // const datatypeClass = new Class({ name: new MultilingualText('DataType'), stereotype: ClassStereotype.DATATYPE });
-        // const enumerationClass = new Class({ name: new MultilingualText('Enumeration'), stereotype: ClassStereotype.ENUMERATION });
-        // const endurantClass = new Class({ name: new MultilingualText('Endurant'), isAbstract: false });
-        // const relatorClass = new Class({ name: new MultilingualText('Relator'), stereotype: ClassStereotype.RELATOR });
-        // const abstractClass = new Class({ name: new MultilingualText('AbstractClass'), isAbstract: true });
-        
         beforeEach(() => {
         project = new Project();
         model = project.createModel();
       });
 
-    it('should return early if the class is an <<event>> or <<situation>>', () => {
-        // model.createKind('Happy Person');
+    it('should ignore classes if they are an <<event>>', () => {
         const event = model.createEvent('Birthday');
         expect(generateAlloy(model)).not.toContain('Birthday');
-        model.removeContent(event);
+    });
 
+    it('should ignore classes if they are a <<situation>>', () => {
         model.createSituation('Hazard')
         expect(generateAlloy(model)).not.toContain('Hazard');
-        // expect(transformer.getAlloyCode()[0]).toContain('HappyPerson: set exists:>Object');
     });
   
     //   afterEach(() => {
@@ -69,27 +57,27 @@ describe('Class Functions', () => {
     //     // Assert
     //     //expect(() => ...).toThrow(); // call the function or class method with the input value and expect it to throw an error
     //   });
-      
+    
+    //add  
     it('should transform <<datatype>> class with attributes (complex datatype)', () => {
         const _number = model.createDatatype('Number');
         const complexDatatype = model.createDatatype('Date');
         complexDatatype.createAttribute(_number, 'day');
-        complexDatatype.createAttribute(_number, 'month');
-        complexDatatype.createAttribute(_number, 'year');
+
         const result = generateAlloy(model);
-        expect(result).toContain('sig Date in Datatype {');        
-        expect(result).toContain('day: Number');
-        expect(result).toContain('month: Number');
-        expect(result).toContain('year: Number');
+        const factLines = ['Datatype = Number+Date','disjoint[Number,Date]'];
+
+        expect(result).toContain('sig Date in Datatype {\n        day: Number\n}');        
+        expect(result).toContain(generateFact('additionalDatatypeFacts',factLines));
     }); //default multiplicy is "one" so "day: one Number" or "day: Number" should be the same
 
-    it('should NOT transform «datatype» class without attributes (primitive datatype)', () => {
+    it('should transform <<datatype>> class without attributes (primitive datatype)', () => {
         const model = new Package();
         model.createDatatype('Date');
         const result = generateAlloy(model);
-
-        expect(result).not.toContain('sig Date in Datatype {');
-    }); //should there be such a requirement?
+        expect(result).toContain('sig Date in Datatype {');
+        expect(result).toContain(generateFact('additionalDatatypeFacts',['Datatype = Date']))
+    });
 
     it('should transform <<enumeration>> class with attributes', () => {
         const status = model.createEnumeration('Status');
@@ -97,39 +85,38 @@ describe('Class Functions', () => {
         status.createLiteral('Inactive');
 
         const result = generateAlloy(model)
-        expect(result).toContain('enum Status {')
-        expect(result).toContain('Active, Inactive}')
+        expect(result).toContain('enum Status {\n        Active, Inactive}')
     });
 
 
     it('should transform <<kind>> class', () => {
         model.createKind('Person');
-        const expectedFacts = 
-            'fact rigid {\n' +
-            '        rigidity[Person,Object,exists]\n' +
-            '}'
-        ;
-        expect(generateAlloy(model)).toContain(expectedFacts);
-        // console.log(generateAlloy(model));
-        //"exists:>Object in Group" ?
+        const result = generateAlloy(model);
+        expect(result).toContain(generateFact('rigid',['rigidity[Person,Object,exists]']));
+        expect(result).toContain(generateWorldAttribute('Person','Object'));
+        expect(result).toContain(generateWorldFact('Person','Object')); //to change
+        console.log(result);
     });  
 
-    it('should transform <<collective>> class { isExtensional=false }', () => {
+    it('should generate rigid fact for transforming <<collective>> class', () => {
         model.createCollective('Group', false);
         const result = generateAlloy(model);
-        const expectedFacts = 
-            'fact rigid {\n' +
-            '        rigidity[Group,Object,exists]\n' +
-            '}'
-        ;
-        expect(result).toContain(expectedFacts);
+        expect(result).toContain(generateFact('rigid',['rigidity[Group,Object,exists]']));
     });
+    //change member -> same thing -> isExtensional - false
 
-    it('should transform «collective» class { isExtensional=true }', () => {
-        model.createCollective('FixedGroup', true);
-        const result = generateAlloy(model);
+    // it('should generate fact to handle {isExtensional = True} for transforming <<collective>> class', () => {
+    //     model.createCollective('FixedGroup', true);
+    //     const result = generateAlloy(model);
         
-    });
+    // }); //TODO
+
+    
+    // it('should generate fact to handle {isExtensional = False} for transforming <<collective>> class', () => {
+    //     model.createCollective('FixedGroup', true);
+    //     const result = generateAlloy(model);
+        
+    // });
 
     it('should transform «quantity» class', () => {
         model.createQuantity('Wine');
@@ -175,14 +162,15 @@ describe('Class Functions', () => {
         expect(result).toContain(expectedFacts);
       });
 
-      it('should transform «abstract» class', () => {
-        const model = new Package();
-        model.createAbstract('Goal');
+    //   it('should transform «abstract» class', () => {
+    //     const model = new Package();
+    //     model.createAbstract('Goal');
         
-        const result = generateAlloy(model);
+    //     const result = generateAlloy(model);
 
-        expect(result).toContain(''); // to be figured out what needs to happen
-      });
+    //     expect(result).toContain(''); 
+    //   }); //TODO
+
 
       it('should transform «mode» class { allowed=[intrinsic-mode] }', () => {
         model.createIntrinsicMode('Skill');
@@ -221,10 +209,11 @@ describe('Class Functions', () => {
       });
 
       it('should transform «roleMixin» class', () => {
-        model.createRoleMixin('Customer');
+        model.createRoleMixin('Customer',);
         const result = generateAlloy(model);
     
         expect(result).toContain('');
+        console.log(result);
       });
     
       it('should transform «phaseMixin» class', () => {
