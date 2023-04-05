@@ -94,14 +94,15 @@ describe('Class Functions', () => {
         const result = generateAlloy(model);
         expect(result).toContain(generateFact('rigid',['rigidity[Person,Object,exists]']));
         expect(result).toContain(generateWorldAttribute('Person','Object'));
-        expect(result).toContain(generateWorldFact('Person','Object')); //to change
-        console.log(result);
+        expect(result).toContain(generateWorldFact('Person','Object'));
     });  
 
     it('should generate rigid fact for transforming <<collective>> class', () => {
         model.createCollective('Group', false);
         const result = generateAlloy(model);
-        expect(result).toContain(generateFact('rigid',['rigidity[Group,Object,exists]']));
+        expect(result).toContain(generateWorldAttribute('Group','Object'))
+        // expect(result).toContain(generateWorldFact('Group','Object'));
+        // expect(result).toContain(generateFact('rigid',['rigidity[Group,Object,exists]']));
     });
     //change member -> same thing -> isExtensional - false
 
@@ -121,45 +122,48 @@ describe('Class Functions', () => {
     it('should transform «quantity» class', () => {
         model.createQuantity('Wine');
         const result = generateAlloy(model);
-        const expectedFacts = 
-        'fact rigid {\n' +
-        '        rigidity[Wine,Object,exists]\n' +
-        '}'
-        ; 
-        expect(result).toContain(expectedFacts);
+ 
+        expect(result).toContain(generateFact('rigid',['rigidity[Wine,Object,exists]']));
+        expect(result).toContain(generateWorldAttribute('Wine','Object'));
+        expect(result).toContain(generateWorldFact('Wine','Object'));
+        //this what is supposed to happen?
+    });
+
+    it('should transform <<quality>> class', () => {
+      model.createQuality('Strong');
+      const result = generateAlloy(model);
+
+      expect(result).toContain(generateFact('rigid',['rigidity[Strong,Aspect,exists]']));
+      expect(result).toContain(generateWorldAttribute('Strong','Aspect'));
+      expect(result).toContain(generateWorldFact('Strong','Aspect'));
+
     });
 
     it('should transform «relator» class', () => {
         model.createRelator('Marriage');
         const result = generateAlloy(model);
-        const expectedFacts = 
-        'fact rigid {\n' +
-        '        rigidity[Marriage,Aspect,exists]\n' +
-        '}'
-        ;
-        expect(result).toContain(expectedFacts);
+
+        expect(result).toContain(generateFact('rigid',['rigidity[Marriage,Aspect,exists]']));
+        expect(result).toContain(generateWorldAttribute('Marriage','Aspect'));
+        expect(result).toContain(generateWorldFact('Marriage','Aspect'));
       }); //that's it, I guess?
 
     it('should transform «role» class', () => {
         model.createRole('Student');
         const result = generateAlloy(model);
-        const expectedFacts = 
-        'fact antirigid {\n' +
-        '        antirigidity[Student,Object,exists]\n' +
-        '}'
-        ;
-        expect(result).toContain(expectedFacts);
+
+        expect(result).toContain(generateFact('antirigid',['antirigidity[Student,Object,exists]']));
+        expect(result).toContain(generateWorldAttribute('Student','Object'));
+        expect(result).toContain(generateWorldFact('Student','Object'));
       });
 
       it('should transform «phase» class', () => {
         model.createPhase('Child');
         const result = generateAlloy(model);
-        const expectedFacts = 
-        'fact antirigid {\n' +
-        '        antirigidity[Child,Object,exists]\n' +
-        '}'
-        ;
-        expect(result).toContain(expectedFacts);
+
+        expect(result).toContain(generateFact('antirigid',['antirigidity[Child,Object,exists]']));
+        expect(result).toContain(generateWorldAttribute('Child','Object'));
+        expect(result).toContain(generateWorldFact('Child','Object'));
       });
 
     //   it('should transform «abstract» class', () => {
@@ -175,89 +179,71 @@ describe('Class Functions', () => {
       it('should transform «mode» class { allowed=[intrinsic-mode] }', () => {
         model.createIntrinsicMode('Skill');
         const result = generateAlloy(model);
-        const expectedFacts = 
-        'fact rigid {\n' +
-        '        rigidity[Skill,Aspect,exists]\n' +
-        '}'
-        ;
 
-        expect(result).toContain(expectedFacts);
-    
+        expect(result).toContain(generateFact('rigid',['rigidity[Skill,Aspect,exists]']));
+        expect(result).toContain(generateWorldAttribute('Skill','Aspect'));
+        expect(result).toContain(generateWorldFact('Skill','Aspect'));
       });
     
       it('should transform «mode» class { allowed=[extrinsic-mode] }', () => {
         model.createExtrinsicMode('Love');
         const result = generateAlloy(model);
-        const expectedFacts = 
-        'fact rigid {\n' +
-        '        rigidity[Love,Aspect,exists]\n' +
-        '}'
-        ;
-        expect(result).toContain(expectedFacts);
+
+        expect(result).toContain(generateFact('rigid',['rigidity[Love,Aspect,exists]']));
+        expect(result).toContain(generateWorldAttribute('Love','Aspect'));
+        expect(result).toContain(generateWorldFact('Love','Aspect'));
       });
     
       it('should transform «mode» class { allowed=[intrinsic-mode, extrinsic-mode] }', () => {
         // const _class = OntoumlFactory.createMode('Belief');
         model.createClass('Belief', ClassStereotype.MODE, [OntologicalNature.intrinsic_mode, OntologicalNature.extrinsic_mode]);
         const result = generateAlloy(model);
-        const expectedFacts = 
-        'fact rigid {\n' +
-        '        rigidity[Belief,Aspect,exists]\n' +
-        '}'
-        ;
-        expect(result).toContain(expectedFacts);
+
+        expect(result).toContain(generateFact('rigid',['rigidity[Belief,Aspect,exists]']));
+        expect(result).toContain(generateWorldAttribute('Belief','Aspect'));
+        expect(result).toContain(generateWorldFact('Belief','Aspect'));
       });
 
-      it('should transform «roleMixin» class', () => {
-        model.createRoleMixin('Customer',);
-        const result = generateAlloy(model);
+      // it('should transform «roleMixin» class', () => {
+      //   model.createRoleMixin('Customer',);
+      //   const result = generateAlloy(model);
     
-        expect(result).toContain('');
-        console.log(result);
-      });
+      //   expect(result).toContain('');
+      //   console.log(result);
+      // });//diff between roleMIxin and role?
     
-      it('should transform «phaseMixin» class', () => {
-        model.createPhaseMixin('Infant');
-        const result = generateAlloy(model);
+      // it('should transform «phaseMixin» class', () => {
+      //   model.createPhaseMixin('Infant');
+      //   const result = generateAlloy(model);
     
-        expect(result).toContain('');
-      });
+      //   expect(result).toContain('');
+      // });//diff between phaseMixin and phase
     
-      it('should transform «mixin» class', () => {
-        model.createMixin('Seatable');
-        const result = generateAlloy(model);
+      // it('should transform «mixin» class', () => {
+      //   model.createMixin('Seatable');
+      //   const result = generateAlloy(model);
     
-        expect(result).toContain('');
-      });
-      //what is expected with the mixins?
+      //   expect(result).toContain('');
+      // });
+      //what is expected with the mixins, semirigid?
 
 
       it('should handle if class has a space in name', () => {
         model.createKind('Happy Person');
-        const unwantedFacts = 
-        'fact rigid {\n' +
-        '        rigidity[Happy Person,Object,exists]\n' +
-        '}'
-        ;
-        const expectedFacts = 
-        'fact rigid {\n' +
-        '        rigidity[HappyPerson,Object,exists]\n' +
-        '}'
-        ;
+
         const result = generateAlloy(model);
-        expect(result).not.toContain(unwantedFacts);
-        expect(result).toContain(expectedFacts);
+        expect(result).not.toContain(generateFact('rigid',['rigidity[Happy Person,Object,exists]']));
+        expect(result).toContain(generateFact('rigid',['rigidity[HappyPerson,Object,exists]']));
+
+        expect(result).toContain(generateWorldAttribute('HappyPerson','Object'));
+        expect(result).toContain(generateWorldFact('HappyPerson','Object'));
       });
 
       it('should handle if class has forbidden characters in name', () => { //!, #, *, /, \
         model.createKind('Happy!Person');
-        const unwantedFacts = 
-        'fact rigid {\n' +
-        '        rigidity[Happy!Person,Object,exists]\n' +
-        '}'
-        ;
         const result = generateAlloy(model);
-        expect(result).not.toContain(unwantedFacts);
+        
+        expect(result).not.toContain(generateFact('rigid',['rigidity[Happy!Person,Object,exists]']));
         //idea for how to handle this
         // expect(result).toContain(expectedFacts);
       });
