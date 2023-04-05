@@ -33,4 +33,12 @@ export function generateWorldAttribute(className: string, classNature: string): 
 export function generateWorldFact(className: string, classNature: string): string{
     let result = '{\n        exists:>' + classNature + ' in ' + className + '\n}';
     return result;
-} //change for multiple
+} 
+
+export function generateWorldFacts(factLines: string[]){
+  let result = '{\n';
+  for (const line of factLines){
+    result += `        ${line}\n`;
+  }
+
+}//subject to change
