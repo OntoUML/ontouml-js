@@ -149,7 +149,7 @@ export class Metadata2Owl implements Service {
   ontologyDir: string;
 
   constructor(metadata: Metadata, ontologyUri: string, format: string, ontologyDir?: string) {
-    this.ontologyUri = ontologyUri;
+    this.ontologyUri = ontologyUri.replace("#", "/");
     this.metadata = metadata;
     this.format = format;
     this.ontologyDir = ontologyDir || '';
@@ -196,62 +196,62 @@ export class Metadata2Owl implements Service {
   }
 
   transformMetadata(): void {
-    var newstr = (this.ontologyUri).replace("turtle", "model");
-    newstr = newstr.replace("#", "/");
+    var newstr = this.ontologyUri;
+    newstr = newstr;
     this.writer.addQuad(namedNode(newstr), namedNode(RDF.type), namedNode(DCAT.Dataset));
     this.writer.addQuad(namedNode(newstr), namedNode(RDF.type), namedNode(MOD.SemanticArtefact));
 
     if (this.metadata.title) {
-      var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#", "/");
+      var newstr = this.ontologyUri;
+      newstr = newstr;
       this.writer.addQuad(namedNode(newstr), namedNode(DCT.title), literal(this.metadata.title));
     }
 
     if (this.metadata.acronym) {
-      var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#", "/");
+      var newstr = this.ontologyUri;
+      newstr = newstr;
       this.writer.addQuad(namedNode(newstr), namedNode(MOD.acronym), literal(this.metadata.acronym));
     }
 
     if (this.metadata.issued) {
-      var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#", "/");
+      var newstr = this.ontologyUri;
+      newstr = newstr;
       this.writer.addQuad(namedNode(newstr), namedNode(DCT.issued), literal(this.metadata.issued, namedNode(XSD.gYear)));
     }
 
     if (this.metadata.modified) {
-      var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#", "/");
+      var newstr = this.ontologyUri;
+      newstr = newstr;
       this.writer.addQuad(namedNode(newstr), namedNode(DCT.modified), literal(this.metadata.modified, namedNode(XSD.gYear)));
     }
 
     if (this.metadata.theme) {
-      var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#", "/");
+      var newstr = this.ontologyUri;
+      newstr = newstr;
       this.writer.addQuad(namedNode(newstr), namedNode(DCAT.theme), namedNode(LCC[this.metadata.theme]));
     }
 
     if (this.metadata.editorialNote) {
-      var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#", "/");
+      var newstr = this.ontologyUri;
+      newstr = newstr;
       this.writer.addQuad(namedNode(newstr), namedNode(SKOS.editorialNote), literal(this.metadata.editorialNote));
     }
 
     if (this.metadata.language) {
-      var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#", "/");
+      var newstr = this.ontologyUri;
+      newstr = newstr;
       this.writer.addQuad(namedNode(newstr), namedNode(DCT.language), literal(this.metadata.language));
     }
 
     if (this.metadata.landingPage) {
-      var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#", "/");
+      var newstr = this.ontologyUri;
+      newstr = newstr;
       this.writer.addQuad(namedNode(newstr), namedNode(DCAT.landingPage), namedNode(this.metadata.landingPage));
     }
 
     if (this.metadata.license) {
-      var newstr = (this.ontologyUri).replace("turtle", "model");
-      newstr = newstr.replace("#", "/");
+      var newstr = this.ontologyUri;
+      newstr = newstr;
       this.writer.addQuad(namedNode(newstr), namedNode(DCT.license), namedNode(this.metadata.license));
     }
 
@@ -265,80 +265,78 @@ export class Metadata2Owl implements Service {
     this.setStorageUrl();
 
     var old_string = this.ontologyUri;
-    var new_string = old_string.replace("#", "/");
-    this.writer.addQuad(namedNode(ONTOUML.catalog), namedNode(DCAT.dataset), namedNode(new_string.replace("turtle", "model")));
+    var new_string = old_string;
+    this.writer.addQuad(namedNode(ONTOUML.catalog), namedNode(DCAT.dataset), namedNode(new_string));
   }
 
   transformRepresentationStyle(): void {
     if (!this.metadata.representationStyle) return;
-    var new_string = (this.ontologyUri).replace("#", "/");
+    var new_string = (this.ontologyUri);
     for (const style of this.metadata.representationStyle)
-      this.writer.addQuad(namedNode(new_string.replace("turtle", "model")), namedNode(OCMV.representationStyle), namedNode(ONTOUML[style]));
+      this.writer.addQuad(namedNode(new_string), namedNode(OCMV.representationStyle), namedNode(ONTOUML[style]));
   }
 
   transformContext(): void {
     if (!this.metadata.context) return;
-    var new_string = (this.ontologyUri).replace("#", "/");
+    var new_string = (this.ontologyUri);
     for (const context of this.metadata.context)
-      this.writer.addQuad(namedNode(new_string.replace("turtle", "model")), namedNode(ONTOUML.context), namedNode(ONTOUML[context]));
+      this.writer.addQuad(namedNode(new_string), namedNode(ONTOUML.context), namedNode(ONTOUML[context]));
   }
 
   transformContributor(): void {
     if (!this.metadata.contributor) return;
-    var new_string = (this.ontologyUri).replace("#", "/");
+    var new_string = (this.ontologyUri);
     for (const contributor of this.metadata.contributor)
-      this.writer.addQuad(namedNode(new_string.replace("turtle", "model")), namedNode(DCT.contributor), namedNode(contributor));
+      this.writer.addQuad(namedNode(new_string), namedNode(DCT.contributor), namedNode(contributor));
   }
 
   transformDesignedForTask(): void {
     if (!this.metadata.designedForTask) return;
 
-    var new_string = (this.ontologyUri).replace("#", "/");
+    var new_string = (this.ontologyUri);
     for (const task of this.metadata.designedForTask)
-      this.writer.addQuad(namedNode(new_string.replace("turtle", "model")), namedNode(MOD.designedForTask), namedNode(ONTOUML[task]));
+      this.writer.addQuad(namedNode(new_string), namedNode(MOD.designedForTask), namedNode(ONTOUML[task]));
   }
 
   transformSource(): void {
     if (!this.metadata.source) return;
 
-    var new_string = (this.ontologyUri).replace("#", "/");
+    var new_string = (this.ontologyUri);
     for (const source of this.metadata.source)
-      this.writer.addQuad(namedNode(new_string.replace("turtle", "model")), namedNode(DCT.source), namedNode(source));
+      this.writer.addQuad(namedNode(new_string), namedNode(DCT.source), namedNode(source));
   }
 
   transformKeyword(): void {
     if (!this.metadata.keyword) return;
 
-    var new_string = (this.ontologyUri).replace("#", "/");
+    var new_string = (this.ontologyUri);
 
     for (const keyword of this.metadata.keyword)
-      this.writer.addQuad(namedNode(new_string.replace("turtle", "model")), namedNode(DCAT.keyword), literal(keyword, 'en'));
+      this.writer.addQuad(namedNode(new_string), namedNode(DCAT.keyword), literal(keyword, 'en'));
   }
 
   transformOntologyType(): void {
     if (!this.metadata.ontologyType) return;
-    var new_string = (this.ontologyUri).replace("#", "/");
+    var new_string = (this.ontologyUri);
     for (const ontologyType of this.metadata.ontologyType)
-      if (ONTOUML[ontologyType]) this.writer.addQuad(namedNode(new_string.replace("turtle", "model")), namedNode(OCMV.ontologyType), namedNode(ONTOUML[ontologyType]));
+      if (ONTOUML[ontologyType]) this.writer.addQuad(namedNode(new_string), namedNode(OCMV.ontologyType), namedNode(ONTOUML[ontologyType]));
   }
 
   setStorageUrl(): void {
-    var new_string = (this.ontologyUri).replace("#", "/");
-    this.writer.addQuad(namedNode(new_string.replace("turtle", "model")), namedNode(OCMV.storageUrl), namedNode(GITHUB_BASE + this.ontologyDir));
+    var new_string = (this.ontologyUri);
+    this.writer.addQuad(namedNode(new_string), namedNode(OCMV.storageUrl), namedNode(GITHUB_BASE + this.ontologyDir));
   }
 
   transformDistributions(): void {
-    var oldOntologyUri = this.ontologyUri;
-    var newOntologyUri = oldOntologyUri.replace("#", "/");
-    var modelOntologyUri = newOntologyUri.replace("turtle", "model")
+    var newOntologyUri = (this.ontologyUri);
 
-    const ttlDistUri = newOntologyUri;
-    const jsonDistUri = newOntologyUri.replace("turtle", "json");
-    const vppDistUri = newOntologyUri.replace("turtle", "vpp");
+    const ttlDistUri = newOntologyUri.replace("/model", "/turtle");
+    const jsonDistUri = newOntologyUri.replace("/model", "/json");
+    const vppDistUri = newOntologyUri.replace("/model", "/vpp");
 
-    this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(ttlDistUri));
-    this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(jsonDistUri));
-    this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(vppDistUri));
+    this.writer.addQuad(namedNode(newOntologyUri), namedNode(DCAT.distribution), namedNode(ttlDistUri));
+    this.writer.addQuad(namedNode(newOntologyUri), namedNode(DCAT.distribution), namedNode(jsonDistUri));
+    this.writer.addQuad(namedNode(newOntologyUri), namedNode(DCAT.distribution), namedNode(vppDistUri));
 
     var fs = require('fs');
 
@@ -362,7 +360,7 @@ export class Metadata2Owl implements Service {
     for (let i = 0; i < originalFiles.length; i++) {
       originalFiles[i] = originalFiles[i].replace(/\.[^/.]+$/, "");
       const specificImageURI = pngOriginalDistUri + this.ontologyDir + '/' + originalFiles[i];
-      this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(specificImageURI));      
+      this.writer.addQuad(namedNode(newOntologyUri), namedNode(DCAT.distribution), namedNode(specificImageURI));      
 
       var functionCode = this.transformSpecificDistribution(specificImageURI, 'PNG', MEDIA_TYPE.png, 'png-o');
       var outputMetadataPath = '../ontouml-models/models/' + this.ontologyDir + '/metadata-' + "png-o-" + originalFiles[i] + '.ttl';
@@ -380,7 +378,7 @@ export class Metadata2Owl implements Service {
       for (let i = 0; i < newFiles.length; i++) {
         newFiles[i] = newFiles[i].replace(/\.[^/.]+$/, "");
         const specificImageURI = pngNewDistUri + this.ontologyDir + '/' + newFiles[i];
-        this.writer.addQuad(namedNode(modelOntologyUri), namedNode(DCAT.distribution), namedNode(specificImageURI));        
+        this.writer.addQuad(namedNode(newOntologyUri), namedNode(DCAT.distribution), namedNode(specificImageURI));        
 
         functionCode = this.transformSpecificDistribution(specificImageURI, 'PNG', MEDIA_TYPE.png, 'png-n');
         outputMetadataPath = '../ontouml-models/models/' + this.ontologyDir + '/metadata-' + "png-n-" + newFiles[i] + '.ttl';
@@ -413,9 +411,6 @@ export class Metadata2Owl implements Service {
 
   // ALL THIS INFO HERE MUST BE SAVED IN A NEW FILE
   transformSpecificDistribution(distUri: string, format: string, mediaTypeUri: string, fileExtension: string) {
-
-    var oldOntologyUri = this.ontologyUri;
-    var newOntologyUri = oldOntologyUri.replace("#", "/");
 
     var writer = new N3.Writer({
       format: this.format,

@@ -8,7 +8,7 @@ var fs = require('fs');
 const yaml = require('js-yaml');
 
 function getOntologyUri(folderName: string): string {
-  return 'https://w3id.org/ontouml-models/turtle/' + folderName + '#';
+  return 'https://w3id.org/ontouml-models/model/' + folderName + '#';
 }
 
 describe('Metadata', () => {
