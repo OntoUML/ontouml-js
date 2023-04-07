@@ -403,7 +403,7 @@ ontouml
     );
 
     const pointUri = rectUri + '_point';
-    this.writer.addQuad(namedNode(rectUri), namedNode(ONTOUML + 'topLeftPosition'), blankNode(pointUri));
+    this.writer.addQuad(namedNode(rectUri), namedNode(ONTOUML + 'topLeftPosition'), namedNode(pointUri));
     this.transformPoint(rect.topLeft, pointUri);
   }
 
@@ -413,15 +413,15 @@ ontouml
 
     path.points?.forEach((point, index) => {
       const pointUri = pathUri + '_point_' + index;
-      this.writer.addQuad(namedNode(pathUri), namedNode(ONTOUML + 'point'), blankNode(pointUri));
+      this.writer.addQuad(namedNode(pathUri), namedNode(ONTOUML + 'point'), namedNode(pointUri));
       this.transformPoint(point, pointUri);
     });
   }
 
   transformPoint(point: Point, pointUri: string) {
-    this.writer.addQuad(blankNode(pointUri), namedNode('rdf:type'), namedNode(ONTOUML + 'Point'));
-    this.writer.addQuad(blankNode(pointUri), namedNode(ONTOUML + 'xCoordinate'), literal(point.x));
-    this.writer.addQuad(blankNode(pointUri), namedNode(ONTOUML + 'yCoordinate'), literal(point.y));
+    this.writer.addQuad(namedNode(pointUri), namedNode('rdf:type'), namedNode(ONTOUML + 'Point'));
+    this.writer.addQuad(namedNode(pointUri), namedNode(ONTOUML + 'xCoordinate'), literal(point.x));
+    this.writer.addQuad(namedNode(pointUri), namedNode(ONTOUML + 'yCoordinate'), literal(point.y));
   }
 
   transformOntoumlElement(elem: OntoumlElement) {
