@@ -74,15 +74,15 @@ export class Ontouml2Owl implements Service {
       this.transformLiterals();
 
       this.transformDiagrams();
-      // this.transformPackageViews();
-      // this.transformClassViews();
-      // this.transformRelationViews();
-      // this.transformGeneralizationViews();
-      // this.transformGeneralizationSetViews();
+      this.transformPackageViews();
+      this.transformClassViews();
+      this.transformRelationViews();
+      this.transformGeneralizationViews();
+      this.transformGeneralizationSetViews();
 
-      // this.transformRectangles();
-      // this.transformTexts();
-      // this.transformPaths();
+      this.transformRectangles();
+      this.transformTexts();
+      this.transformPaths();
 
       this.writer.end((error, result) => {
         if (error) throw error;
