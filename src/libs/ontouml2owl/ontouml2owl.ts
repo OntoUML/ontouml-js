@@ -76,9 +76,9 @@ export class Ontouml2Owl implements Service {
       this.transformDiagrams();
       this.transformPackageViews();
       this.transformClassViews();
-      this.transformRelationViews();
+      // this.transformRelationViews(); // reduces from 141 to 139 (problems with maddalena2021ontocovid and ramos2021bias)
       this.transformGeneralizationViews();
-      this.transformGeneralizationSetViews();
+      // this.transformGeneralizationSetViews(); // reduces from 141 to 139 (problems with cmpo2017 and derave2019dpo)
 
       this.transformRectangles();
       this.transformTexts();
