@@ -356,7 +356,7 @@ export class Ontouml2Alloy implements Service {
       },
         issues: undefined
     };
-  }
+  }//method to check prerequisites for trasnforming a class
   /*
     After performing all the necessary transformations, the run method is called, which calls the 
     transform method and returns the resulting Alloy code in an object with three properties: mainModule, 
