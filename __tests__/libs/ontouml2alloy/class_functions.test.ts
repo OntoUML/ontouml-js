@@ -1,5 +1,5 @@
 import { Ontouml2Alloy } from '@libs/ontouml2alloy/index';
-import { generateAlloy, generateFact, generateWorldAttribute, generateWorldFact } from '@libs/ontouml2alloy/helper';
+import { generateAlloy, generateFact, generateWorldAttribute, generateWorldFact } from '__tests__/libs/ontouml2alloy/helpers';
 import { Class, ClassStereotype, Relation, Package, Project, Property, OntoumlType, AggregationKind, stereotypeUtils, OntologicalNature} from '@libs/ontouml';
 import { resolve } from 'dns';
 
@@ -72,7 +72,6 @@ describe('Class Functions', () => {
     }); //default multiplicy is "one" so "day: one Number" or "day: Number" should be the same
 
     it('should transform <<datatype>> class without attributes (primitive datatype)', () => {
-        const model = new Package();
         model.createDatatype('Date');
         const result = generateAlloy(model);
         expect(result).toContain('sig Date in Datatype {');
@@ -104,6 +103,11 @@ describe('Class Functions', () => {
         // expect(result).toContain(generateWorldFact('Group','Object'));
         // expect(result).toContain(generateFact('rigid',['rigidity[Group,Object,exists]']));
     });
+
+    it('should generate rigid fact for X', () => {
+
+
+    })
     //change member -> same thing -> isExtensional - false
 
     // it('should generate fact to handle {isExtensional = True} for transforming <<collective>> class', () => {
@@ -126,7 +130,6 @@ describe('Class Functions', () => {
         expect(result).toContain(generateFact('rigid',['rigidity[Wine,Object,exists]']));
         expect(result).toContain(generateWorldAttribute('Wine','Object'));
         expect(result).toContain(generateWorldFact('Wine','Object'));
-        //this what is supposed to happen?
     });
 
     it('should transform <<quality>> class', () => {
@@ -173,8 +176,9 @@ describe('Class Functions', () => {
     //     const result = generateAlloy(model);
 
     //     expect(result).toContain(''); 
-    //   }); //TODO
+    //   }); //make it a datatype
 
+      model.createClass()
 
       it('should transform «mode» class { allowed=[intrinsic-mode] }', () => {
         model.createIntrinsicMode('Skill');
@@ -242,13 +246,20 @@ describe('Class Functions', () => {
       it('should handle if class has forbidden characters in name', () => { //!, #, *, /, \
         model.createKind('Happy!Person');
         const result = generateAlloy(model);
-        
+
         expect(result).not.toContain(generateFact('rigid',['rigidity[Happy!Person,Object,exists]']));
-        //idea for how to handle this
+        //idea for how to handle this - remove char and add a number
         // expect(result).toContain(expectedFacts);
       });
 
-      
+      //Happy Person & HappyPerson
+      //check two attributes same name
+      //check reserved keywords
+      //add a map to keep track of transformed classes
+      //class with no name
+      //class with name just spaces/special characters
+
+      //test behaviour if subkind but no parentclass
 
 
     });

@@ -2,7 +2,7 @@ import { OntoumlElement, Class, ClassStereotype, Relation, Generalization, Cardi
 
 export function getNameNoSpaces(element: OntoumlElement) {
 	return element.getName().replace(/\s/g, '');
-}
+}//normalizeName
 
 export function isTopLevel(_class: Class, generalizations: Generalization[]) {
 	for (const gen of generalizations) {
