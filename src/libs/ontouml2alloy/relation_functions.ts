@@ -1,7 +1,7 @@
 import { ClassStereotype, Relation, RelationStereotype } from '@libs/ontouml';
 import { Ontouml2Alloy } from './';
 import {
-	getNameNoSpaces,
+	normalizeName,
 	getCardinalityKeyword,
 	getValidAlias,
 	getCustomCardinality,
@@ -44,13 +44,13 @@ function transformOrderedRelation(transformer: Ontouml2Alloy, relation: Relation
 	let relationName = '';
 
 	if (relation.getName()) {
-		relationName = getNameNoSpaces(relation);
+		relationName = normalizeName(relation);
 	} else {
 		relationName = getValidAlias(relation, 'relation', transformer.aliases);
 	}
 
-	const sourceName = getNameNoSpaces(relation.getSource());
-	const targetName = getNameNoSpaces(relation.getTarget());
+	const sourceName = normalizeName(relation.getSource());
+	const targetName = normalizeName(relation.getTarget());
 
 	transformer.addWorldFieldDeclaration(
 		relationName + ': set ' + sourceName + ' set -> set Int set -> set ' + targetName
@@ -68,13 +68,13 @@ function transformGeneralRelation(transformer: Ontouml2Alloy, relation: Relation
 	let relationName = '';
 
 	if (relation.getName()) {
-		relationName = getNameNoSpaces(relation);
+		relationName = normalizeName(relation);
 	} else {
 		relationName = getValidAlias(relation, 'relation', transformer.aliases);
 	}
 
-	const sourceName = getNameNoSpaces(relation.getSource());
-	const targetName = getNameNoSpaces(relation.getTarget());
+	const sourceName = normalizeName(relation.getSource());
+	const targetName = normalizeName(relation.getTarget());
 	const sourceCardinality = getCardinalityKeyword(relation.getSourceEnd().cardinality);
 	const targetCardinality = getCardinalityKeyword(relation.getTargetEnd().cardinality);
 
@@ -87,12 +87,12 @@ function transformMediationRelation(transformer: Ontouml2Alloy, relation: Relati
 	let relationName = '';
 
 	if (relation.getName()) {
-		relationName = getNameNoSpaces(relation);
+		relationName = normalizeName(relation);
 	} else {
 		relationName = getValidAlias(relation, 'relation', transformer.aliases);
 	}
 	
-	const sourceName = getNameNoSpaces(relation.getSource());
+	const sourceName = normalizeName(relation.getSource());
 
 	transformer.addFact(
 		'fact acyclic {\n' +
@@ -111,14 +111,14 @@ function transformMaterialRelation(transformer: Ontouml2Alloy, relation: Relatio
 			let materialName = '';
 
 			if (relation.getName()) {
-				materialName = getNameNoSpaces(relation);
+				materialName = normalizeName(relation);
 			} else {
 				materialName = getValidAlias(relation, 'relation', transformer.aliases);
 			}
 				
-			const sourceName = getNameNoSpaces(relation.getSource());
-			const targetName = getNameNoSpaces(relation.getTarget());
-			const relatorName = getNameNoSpaces(rel.getDerivedClass());
+			const sourceName = normalizeName(relation.getSource());
+			const targetName = normalizeName(relation.getTarget());
+			const relatorName = normalizeName(rel.getDerivedClass());
 
 			transformer.addWorldFieldDeclaration(
 				materialName + ': set ' + sourceName + ' -> ' + relatorName + ' -> ' + targetName
@@ -165,28 +165,28 @@ function transformDerivationRelation(transformer: Ontouml2Alloy, relation: Relat
 
 		let materialName = '';
 		if (material.getName()) {
-			materialName = getNameNoSpaces(material);
+			materialName = normalizeName(material);
 		} else {
 			materialName = getValidAlias(material, 'relation', transformer.aliases);
 		}
 
 		let mediation1Name = '';
 		if (mediation1.getName()) {
-			mediation1Name = getNameNoSpaces(mediation1);
+			mediation1Name = normalizeName(mediation1);
 		} else {
 			mediation1Name = getValidAlias(mediation1, 'relation', transformer.aliases);
 		}
 
 		let mediation2Name = '';
 		if (mediation2.getName()) {
-			mediation2Name = getNameNoSpaces(mediation2);
+			mediation2Name = normalizeName(mediation2);
 		} else {
 			mediation2Name = getValidAlias(mediation2, 'relation', transformer.aliases);
 		}
 	
-		const relatorName = getNameNoSpaces(relator);
-		const materialSourceName = getNameNoSpaces(materialSource);
-		const materialTargetName = getNameNoSpaces(materialTarget);
+		const relatorName = normalizeName(relator);
+		const materialSourceName = normalizeName(materialSource);
+		const materialTargetName = normalizeName(materialTarget);
 	
 		transformer.addFact(
 			'fact derivation {\n' +
@@ -201,20 +201,20 @@ function transformPartWholeRelation(transformer: Ontouml2Alloy, relation: Relati
 	let relationName = '';
 
 	if (relation.getName()) {
-		relationName = getNameNoSpaces(relation);
+		relationName = normalizeName(relation);
 	} else {
 		relationName = getValidAlias(relation, 'relation', transformer.aliases);
 	}
 
-	const wholeName = getNameNoSpaces(relation.getSource());
-	const partName = getNameNoSpaces(relation.getTarget());
+	const wholeName = normalizeName(relation.getSource());
+	const partName = normalizeName(relation.getTarget());
 	
 	const wholeEnd = relation.getSourceEnd();
 	let wholeEndName = '';
 	if (wholeEnd.getName()) {
-		wholeEndName = getNameNoSpaces(wholeEnd);
+		wholeEndName = normalizeName(wholeEnd);
 	}	else {
-		wholeEndName = getNameNoSpaces(relation.getSource());
+		wholeEndName = normalizeName(relation.getSource());
 	}
 
 	const wholeEndAlias = getValidAlias(wholeEnd, wholeEndName, transformer.aliases);
@@ -226,9 +226,9 @@ function transformPartWholeRelation(transformer: Ontouml2Alloy, relation: Relati
 				const otherWholeEnd = relation.getSourceEnd();
 				let otherWholeEndName = '';
 				if (otherWholeEnd.getName()) {
-					otherWholeEndName = getNameNoSpaces(otherWholeEnd);
+					otherWholeEndName = normalizeName(otherWholeEnd);
 				}	else {
-					otherWholeEndName = getNameNoSpaces((otherWholeEnd.container as Relation).getSource());
+					otherWholeEndName = normalizeName((otherWholeEnd.container as Relation).getSource());
 				}
 
 				const otherWholeEndAlias = getValidAlias(otherWholeEnd, otherWholeEndName, transformer.aliases);
@@ -263,14 +263,14 @@ function transformPartWholeRelation(transformer: Ontouml2Alloy, relation: Relati
 }
 
 function transformDatatypeRelation(transformer: Ontouml2Alloy, relation: Relation) {
-	const sourceName = getNameNoSpaces(relation.getSource());
-	const targetName = getNameNoSpaces(relation.getTarget());
+	const sourceName = normalizeName(relation.getSource());
+	const targetName = normalizeName(relation.getTarget());
 	const sourceDatatype = getCorrespondingDatatype(sourceName, transformer.datatypes);
 	
 	let relationName = '';
 
 	if (relation.getName()) {
-		relationName = getNameNoSpaces(relation);
+		relationName = normalizeName(relation);
 	} else {
 		relationName = getValidAlias(relation, 'relation', transformer.aliases);
 	}
@@ -316,14 +316,14 @@ export function transformCharacterizationConstraint(transformer: Ontouml2Alloy) 
 	let characterizations = transformer.model.getAllRelationsByStereotype(RelationStereotype.CHARACTERIZATION)
 		.map(characterization => {
 			if (characterization.getName()) {
-				return 'w.' + getNameNoSpaces(characterization);
+				return 'w.' + normalizeName(characterization);
 			} else {
 				return 'w.' + getValidAlias(characterization, 'relation', transformer.aliases);
 			}
 		});
 	if (characterizations.length) {
 		let intrinsicMoments = [... new Set([...transformer.model.getClassesRestrictedToIntrinsicMode(), ...transformer.model.getClassesRestrictedToQuality()])]
-			.map(moment => 'w.' + getNameNoSpaces(moment));
+			.map(moment => 'w.' + normalizeName(moment));
 		if (intrinsicMoments.length) {
 			transformer.addFact(
 				'fact acyclicCharacterizations {\n' +

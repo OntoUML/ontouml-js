@@ -1,6 +1,6 @@
 import { Generalization, GeneralizationSet, OntoumlType } from '@libs/ontouml';
 import { Ontouml2Alloy } from './';
-import { getNameNoSpaces } from './util';
+import { normalizeName } from './util';
 
 export function transformGeneralizationSet(transformer: Ontouml2Alloy, genSet: GeneralizationSet) {
   if (!genSet.generalizations || genSet.generalizations.length === 0 || (!genSet.isComplete && !genSet.isDisjoint)) {
@@ -26,11 +26,11 @@ export function transformGeneralizationSet(transformer: Ontouml2Alloy, genSet: G
   }
 
   const children = (genSet.generalizations as Generalization[])
-    .map(gen => getNameNoSpaces(gen.specific));
+    .map(gen => normalizeName(gen.specific));
 
   let fact = 'fact generalizationSet {\n';
   if (genSet.isDisjoint) fact += '        disjoint[' + children.join(',') + ']\n';
-  if (genSet.isComplete) fact += '        ' + getNameNoSpaces(parent) + ' = ' + children.join('+') + '\n';
+  if (genSet.isComplete) fact += '        ' + normalizeName(parent) + ' = ' + children.join('+') + '\n';
   fact += '}';
 
   transformer.addFact(fact);

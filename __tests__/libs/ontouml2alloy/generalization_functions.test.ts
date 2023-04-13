@@ -1,7 +1,7 @@
 import { Generalization } from '@libs/ontouml';
 import { Ontouml2Alloy } from '@libs/ontouml2alloy/index';
-import { getNameNoSpaces } from '@libs/ontouml2alloy/util';
-import { generateAlloy, generateFact, generateWorldAttribute } from '__tests__/libs/ontouml2alloy/helpers';
+import { normalizeName } from '@libs/ontouml2alloy/util';
+import { generateAlloy, generateFact, generateWorldAttribute } from './helpers';
 import { Package, Project } from '@libs/ontouml';
 
 describe('Generalization functions', () => {

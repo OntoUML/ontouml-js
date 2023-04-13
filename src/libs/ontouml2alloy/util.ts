@@ -1,8 +1,35 @@
 import { OntoumlElement, Class, ClassStereotype, Relation, Generalization, Cardinality } from '@libs/ontouml';
 
-export function getNameNoSpaces(element: OntoumlElement) {
-	return element.getName().replace(/\s/g, '');
-}//normalizeName
+export function normalizeName(element: OntoumlElement) {
+	const reservedKeywords = [
+        'abstract', 'all', 'and', 'as', 'assert',
+        'but', 'check', 'disj', 'else', 'exactly',
+        'extends', 'fact', 'for', 'fun', 'iden',
+        'iff', 'implies', 'in', 'Int', 'let',
+        'lone', 'module', 'no', 'none', 'not',
+        'one', 'open', 'or', 'pred', 'run',
+        'set', 'sig', 'some', 'sum', 'univ'
+    ];
+
+    const forbiddenCharacters = [
+        ' ', '!', '@', '#', '$', '%', '&',
+        '*', '(', ')', '-', '+', '=', '{',
+        '}', '[', ']', '|', '\\', ';', ':',
+        ',', '.', '<', '>', '/', '?'
+    ];
+
+    let normalizedName = element.getName();
+
+    // Replace forbidden characters with an empty string
+    forbiddenCharacters.forEach(char => {
+        normalizedName = normalizedName.replace(new RegExp(`\\${char}`, 'g'), '');
+    });
+
+	
+	return normalizedName;
+	// return element.getName().replace(/\s/g, '');
+}
+
 
 export function isTopLevel(_class: Class, generalizations: Generalization[]) {
 	for (const gen of generalizations) {

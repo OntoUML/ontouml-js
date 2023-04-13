@@ -1,7 +1,7 @@
 import { Property, Class, Relation } from '@libs/ontouml';
 import { Ontouml2Alloy } from '.';
 import {
-	getNameNoSpaces,
+	normalizeName,
 	getCardinalityKeyword,
 	isCustomCardinality,
 	getCustomCardinality,
@@ -39,9 +39,9 @@ export function transformProperty(transformer: Ontouml2Alloy, property: Property
 }
 
 function transformOrderedAttribute(transformer: Ontouml2Alloy, attribute: Property) {
-	const attributeName = getNameNoSpaces(attribute);
-	const ownerClassName = getNameNoSpaces(attribute.container);
-	const datatypeName = getNameNoSpaces(attribute.propertyType);
+	const attributeName = normalizeName(attribute);
+	const ownerClassName = normalizeName(attribute.container);
+	const datatypeName = normalizeName(attribute.propertyType);
 	const funAlias = getValidAlias(attribute, attributeName, transformer.aliases);
 
 	transformer.addWorldFieldDeclaration(
@@ -69,9 +69,9 @@ function transformOrderedAttribute(transformer: Ontouml2Alloy, attribute: Proper
 }
 
 function transformGeneralAttribute(transformer: Ontouml2Alloy, attribute: Property) {
-	const attributeName = getNameNoSpaces(attribute);
-	const ownerClassName = getNameNoSpaces(attribute.container);
-	const datatypeName = getNameNoSpaces(attribute.propertyType);
+	const attributeName = normalizeName(attribute);
+	const ownerClassName = normalizeName(attribute.container);
+	const datatypeName = normalizeName(attribute.propertyType);
 	const cardinality = getCardinalityKeyword(attribute.cardinality);
 	const funAlias = getValidAlias(attribute, attributeName, transformer.aliases);
 
@@ -124,21 +124,21 @@ function transformRelationSourceEnd(transformer: Ontouml2Alloy, sourceEnd: Prope
 	let relationName = '';
 
 	if (sourceEnd.container.getName()) {
-		relationName = getNameNoSpaces(sourceEnd.container);
+		relationName = normalizeName(sourceEnd.container);
 	} else {
 		relationName = getValidAlias(sourceEnd.container, 'relation', transformer.aliases);
 	}
 
-	const sourceName = getNameNoSpaces((sourceEnd.container as Relation).getSource());
+	const sourceName = normalizeName((sourceEnd.container as Relation).getSource());
 	let sourceEndName = '';
 	
 	if (sourceEnd.getName()) {
-		sourceEndName = getNameNoSpaces(sourceEnd);
+		sourceEndName = normalizeName(sourceEnd);
 	}	else {
 		sourceEndName = sourceName;
 	}
 
-	const oppositeName = getNameNoSpaces((sourceEnd.container as Relation).getTarget());
+	const oppositeName = normalizeName((sourceEnd.container as Relation).getTarget());
 	const sourceEndAlias = getValidAlias(sourceEnd, sourceEndName, transformer.aliases);
 
 	if (isMaterialConnectedToDerivation(sourceEnd.container as Relation, transformer.model.getAllRelations())
@@ -193,21 +193,21 @@ function transformRelationTargetEnd(transformer: Ontouml2Alloy, targetEnd: Prope
 	let relationName = '';
 
 	if (targetEnd.container.getName()) {
-		relationName = getNameNoSpaces(targetEnd.container);
+		relationName = normalizeName(targetEnd.container);
 	} else {
 		relationName = getValidAlias(targetEnd.container, 'relation', transformer.aliases);
 	}
 	
-	const targetName = getNameNoSpaces((targetEnd.container as Relation).getTarget());
+	const targetName = normalizeName((targetEnd.container as Relation).getTarget());
 	let targetEndName = '';
 	
 	if (targetEnd.getName()) {
-		targetEndName = getNameNoSpaces(targetEnd);
+		targetEndName = normalizeName(targetEnd);
 	}	else {
 		targetEndName = targetName;
 	}
 
-	const oppositeName = getNameNoSpaces((targetEnd.container as Relation).getSource());
+	const oppositeName = normalizeName((targetEnd.container as Relation).getSource());
 	const targetEndAlias = getValidAlias(targetEnd, targetEndName, transformer.aliases);
 
 	if (isMaterialConnectedToDerivation(targetEnd.container as Relation, transformer.model.getAllRelations())
@@ -261,11 +261,11 @@ function transformRelationTargetEnd(transformer: Ontouml2Alloy, targetEnd: Prope
 }
 
 function transformDatatypeAttribute(transformer: Ontouml2Alloy, attribute: Property) {
-	const attributeName = getNameNoSpaces(attribute);
-	const ownerDatatypeName = getNameNoSpaces(attribute.container);
+	const attributeName = normalizeName(attribute);
+	const ownerDatatypeName = normalizeName(attribute.container);
 	const ownerDatatype = getCorrespondingDatatype(ownerDatatypeName, transformer.datatypes);
 	const cardinality = getCardinalityKeyword(attribute.cardinality);
-	const datatypeName = getNameNoSpaces(attribute.propertyType);
+	const datatypeName = normalizeName(attribute.propertyType);
 	
 	ownerDatatype[1].push((attributeName + ': ' + cardinality + ' ' + datatypeName).replace(/\s{2,}/g, ' '));
 
