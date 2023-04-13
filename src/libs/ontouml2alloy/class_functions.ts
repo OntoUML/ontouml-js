@@ -1,7 +1,7 @@
 import { Class, ClassStereotype, Relation } from '@libs/ontouml';
 import { RelationStereotype } from '@libs/ontouml/model/stereotypes';
 import { Ontouml2Alloy } from '.';
-import { getNameNoSpaces, isTopLevel, getValidAlias } from './util';
+import { normalizeName, isTopLevel, getValidAlias } from './util';
 
 export function transformClass(transformer: Ontouml2Alloy, _class: Class) { //This line defines a function named transformClass that takes two parameters: transformer (of type Ontouml2Alloy) and _class (of type Class).
   if (_class.hasAnyStereotype([ClassStereotype.EVENT, ClassStereotype.SITUATION])) { //This line checks if the given class _class has any of the stereotypes EVENT or SITUATION. If it does, the function immediately returns without doing anything.
@@ -38,8 +38,8 @@ export function transformClass(transformer: Ontouml2Alloy, _class: Class) { //Th
 }
 
 function transformAbstractClass(transformer: Ontouml2Alloy, _class: Class) {
-  const className = getNameNoSpaces(_class);
-  const subtypes = _class.getChildren().map(subtype => 'w.' + getNameNoSpaces(subtype));
+  const className = normalizeName(_class);
+  const subtypes = _class.getChildren().map(subtype => 'w.' + normalizeName(subtype));
 
   if (subtypes.length) {
     transformer.addFact(
@@ -51,7 +51,7 @@ function transformAbstractClass(transformer: Ontouml2Alloy, _class: Class) {
 }
 
 function transformEndurantClass(transformer: Ontouml2Alloy, _class: Class) {
-  const className = getNameNoSpaces(_class);
+  const className = normalizeName(_class);
   let nature = '';
 
   if (_class.isRestrictedToSubstantial()) {
@@ -84,13 +84,13 @@ function transformEndurantClass(transformer: Ontouml2Alloy, _class: Class) {
 }
 
 function transformDatatypeClass(transformer: Ontouml2Alloy, _class: Class) {
-  const datatypeName = getNameNoSpaces(_class);
+  const datatypeName = normalizeName(_class);
   transformer.addDatatype([datatypeName, []]);
 }
 
 function transformEnumerationClass(transformer: Ontouml2Alloy, _class: Class) {
-  const enumName = getNameNoSpaces(_class);
-  const literals = _class.literals.map(literal => getNameNoSpaces(literal));
+  const enumName = normalizeName(_class);
+  const literals = _class.literals.map(literal => normalizeName(literal));
 
   if (literals.length) {
     transformer.addEnum(
@@ -109,9 +109,9 @@ function transformRelatorConstraint(transformer: Ontouml2Alloy, _class: Class) {
       let mediatedName = '';
 	
       if (mediated.getName()) {
-        mediatedName = getNameNoSpaces(mediated);
+        mediatedName = normalizeName(mediated);
       }	else {
-        mediatedName = getNameNoSpaces(mediation.getTarget());
+        mediatedName = normalizeName(mediation.getTarget());
       }
 
       const mediatedAlias = getValidAlias(mediated, mediatedName, transformer.aliases);
@@ -120,7 +120,7 @@ function transformRelatorConstraint(transformer: Ontouml2Alloy, _class: Class) {
   }
 
   if (mediations.length) {
-    const relatorName = getNameNoSpaces(_class);
+    const relatorName = normalizeName(_class);
     transformer.addFact(
       'fact relatorConstraint {\n' +
       '        all w: World, x: w.' + relatorName + ' | #(' + mediations.join('+') + ')>=2\n' +
@@ -140,9 +140,9 @@ function transformWeakSupplementationConstraint(transformer: Ontouml2Alloy, _cla
         let partName = '';
 	
         if (part.getName()) {
-          partName = getNameNoSpaces(part);
+          partName = normalizeName(part);
         }	else {
-          partName = getNameNoSpaces((part.container as Relation).getTarget());
+          partName = normalizeName((part.container as Relation).getTarget());
         }
 
         const partAlias = getValidAlias(part, partName, transformer.aliases);
@@ -152,7 +152,7 @@ function transformWeakSupplementationConstraint(transformer: Ontouml2Alloy, _cla
 	}
 
   if (parts.length) {
-    const wholeName = getNameNoSpaces(_class);
+    const wholeName = normalizeName(_class);
 
     transformer.addFact(
       'fact weakSupplementationConstraint {\n' +
@@ -172,12 +172,12 @@ function transformDisjointNaturesConstraint(transformer: Ontouml2Alloy, _class: 
     if (isTopLevel(otherClass, transformer.model.getAllGeneralizations())
       && !otherClass.restrictedToContainedIn(_class.restrictedTo)) {
 
-      differentNaturedClasses.push(getNameNoSpaces(otherClass));
+      differentNaturedClasses.push(normalizeName(otherClass));
     }
   }
 
   if (differentNaturedClasses.length) {
-    const className = getNameNoSpaces(_class);
+    const className = normalizeName(_class);
     if (differentNaturedClasses.length == 1) {
       transformer.addWorldFieldFact(
         'disjoint[' + className + ',' + differentNaturedClasses[0] + ']'
@@ -196,7 +196,7 @@ export function transformAdditionalClassConstraints(transformer: Ontouml2Alloy) 
 
   for (const _class of transformer.model.getAllClasses()) {
     if (_class.isRestrictedToEndurant() && isTopLevel(_class, transformer.model.getAllGeneralizations())) {
-      const className = getNameNoSpaces(_class);
+      const className = normalizeName(_class);
 
       if (_class.isRestrictedToSubstantial()) {
         objectClasses.push(className);
@@ -233,10 +233,10 @@ export function transformAdditionalDatatypeConstraints(transformer: Ontouml2Allo
       }
     }
 
-    const datatypesNames = datatypes.map(datatype => getNameNoSpaces(datatype));
+    const datatypesNames = datatypes.map(datatype => normalizeName(datatype));
 
     if (topLevelDatatypes.length >= 2) {
-      const topLevelDatatypesNames = topLevelDatatypes.map(datatype => getNameNoSpaces(datatype));
+      const topLevelDatatypesNames = topLevelDatatypes.map(datatype => normalizeName(datatype));
 
       transformer.addFact(
         'fact additionalDatatypeFacts {\n' +

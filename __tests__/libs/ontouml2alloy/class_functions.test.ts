@@ -1,5 +1,5 @@
 import { Ontouml2Alloy } from '@libs/ontouml2alloy/index';
-import { generateAlloy, generateFact, generateWorldAttribute, generateWorldFact } from '__tests__/libs/ontouml2alloy/helpers';
+import { generateAlloy, generateFact, generateWorldAttribute, generateWorldFact } from './helpers';
 import { Class, ClassStereotype, Relation, Package, Project, Property, OntoumlType, AggregationKind, stereotypeUtils, OntologicalNature} from '@libs/ontouml';
 import { resolve } from 'dns';
 
@@ -17,7 +17,7 @@ describe('Class Functions', () => {
       });
 
     it('should ignore classes if they are an <<event>>', () => {
-        const event = model.createEvent('Birthday');
+        model.createEvent('Birthday');
         expect(generateAlloy(model)).not.toContain('Birthday');
     });
 
@@ -25,6 +25,12 @@ describe('Class Functions', () => {
         model.createSituation('Hazard')
         expect(generateAlloy(model)).not.toContain('Hazard');
     });
+
+    it('should ignore classes if they are a <<type>>', () => {
+        model.createType('PaymentMethod')
+        expect(generateAlloy(model)).not.toContain('PaymentMethod');
+
+    })
   
     //   afterEach(() => {
     //     // code to run after each test case
@@ -104,10 +110,6 @@ describe('Class Functions', () => {
         // expect(result).toContain(generateFact('rigid',['rigidity[Group,Object,exists]']));
     });
 
-    it('should generate rigid fact for X', () => {
-
-
-    })
     //change member -> same thing -> isExtensional - false
 
     // it('should generate fact to handle {isExtensional = True} for transforming <<collective>> class', () => {
@@ -149,7 +151,7 @@ describe('Class Functions', () => {
         expect(result).toContain(generateFact('rigid',['rigidity[Marriage,Aspect,exists]']));
         expect(result).toContain(generateWorldAttribute('Marriage','Aspect'));
         expect(result).toContain(generateWorldFact('Marriage','Aspect'));
-      }); //that's it, I guess?
+      });
 
     it('should transform «role» class', () => {
         model.createRole('Student');
@@ -178,7 +180,7 @@ describe('Class Functions', () => {
     //     expect(result).toContain(''); 
     //   }); //make it a datatype
 
-      model.createClass()
+      // model.createClass()
 
       it('should transform «mode» class { allowed=[intrinsic-mode] }', () => {
         model.createIntrinsicMode('Skill');
@@ -251,6 +253,22 @@ describe('Class Functions', () => {
         //idea for how to handle this - remove char and add a number
         // expect(result).toContain(expectedFacts);
       });
+
+      it ('should handle if 2 classes have the same name', () => {
+
+        model.createKind('Person');
+        model.createKind('Person');
+
+        console.log(generateAlloy(model));
+      }) 
+
+      //what should happen if a model, only containing a <<subkind>> is transformed 
+      it ('should handle if 2 classes have the same name', () => {
+
+        model.createSubkind('Worker');
+
+        console.log(generateAlloy(model));
+      }) 
 
       //Happy Person & HappyPerson
       //check two attributes same name
