@@ -1,6 +1,12 @@
 import { OntoumlElement, Class, ClassStereotype, Relation, Generalization, Cardinality } from '@libs/ontouml';
+import { Ontouml2Alloy } from '.';
 
-export function normalizeName(element: OntoumlElement) {
+export function normalizeName(transformer: Ontouml2Alloy, element: OntoumlElement) {
+
+	if(element.id in transformer.normalizedNames){
+		return transformer.normalizedNames[element.id];
+	}
+
 	const reservedKeywords = [
         'abstract', 'all', 'and', 'as', 'assert',
         'but', 'check', 'disj', 'else', 'exactly',
@@ -25,9 +31,25 @@ export function normalizeName(element: OntoumlElement) {
         normalizedName = normalizedName.replace(new RegExp(`\\${char}`, 'g'), '');
     });
 
-	
+	// Check if the normalized name is a reserved keyword
+	if (reservedKeywords.includes(normalizedName)) {
+		normalizedName += '_set';
+	}
+
+	const id = element.id;
+
+	if(Object.values(transformer.normalizedNames).length != 0){
+		const existingNames = Object.values(transformer.normalizedNames);
+		let index = 1;
+		while (existingNames.includes(normalizedName)) {
+			normalizedName = `${normalizedName}${index}`;
+			index++;
+		}
+	}
+
+    transformer.normalizedNames[id] = normalizedName;
+
 	return normalizedName;
-	// return element.getName().replace(/\s/g, '');
 }
 
 

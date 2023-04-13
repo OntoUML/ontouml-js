@@ -38,8 +38,8 @@ export function transformClass(transformer: Ontouml2Alloy, _class: Class) { //Th
 }
 
 function transformAbstractClass(transformer: Ontouml2Alloy, _class: Class) {
-  const className = normalizeName(_class);
-  const subtypes = _class.getChildren().map(subtype => 'w.' + normalizeName(subtype));
+  const className = normalizeName(transformer, _class);
+  const subtypes = _class.getChildren().map(subtype => 'w.' + normalizeName(transformer, subtype));
 
   if (subtypes.length) {
     transformer.addFact(
@@ -51,7 +51,7 @@ function transformAbstractClass(transformer: Ontouml2Alloy, _class: Class) {
 }
 
 function transformEndurantClass(transformer: Ontouml2Alloy, _class: Class) {
-  const className = normalizeName(_class);
+  const className = normalizeName(transformer, _class);
   let nature = '';
 
   if (_class.isRestrictedToSubstantial()) {
@@ -84,13 +84,13 @@ function transformEndurantClass(transformer: Ontouml2Alloy, _class: Class) {
 }
 
 function transformDatatypeClass(transformer: Ontouml2Alloy, _class: Class) {
-  const datatypeName = normalizeName(_class);
+  const datatypeName = normalizeName(transformer, _class);
   transformer.addDatatype([datatypeName, []]);
 }
 
 function transformEnumerationClass(transformer: Ontouml2Alloy, _class: Class) {
-  const enumName = normalizeName(_class);
-  const literals = _class.literals.map(literal => normalizeName(literal));
+  const enumName = normalizeName(transformer, _class);
+  const literals = _class.literals.map(literal => normalizeName(transformer, literal));
 
   if (literals.length) {
     transformer.addEnum(
@@ -109,9 +109,9 @@ function transformRelatorConstraint(transformer: Ontouml2Alloy, _class: Class) {
       let mediatedName = '';
 	
       if (mediated.getName()) {
-        mediatedName = normalizeName(mediated);
+        mediatedName = normalizeName(transformer, mediated);
       }	else {
-        mediatedName = normalizeName(mediation.getTarget());
+        mediatedName = normalizeName(transformer, mediation.getTarget());
       }
 
       const mediatedAlias = getValidAlias(mediated, mediatedName, transformer.aliases);
@@ -120,7 +120,7 @@ function transformRelatorConstraint(transformer: Ontouml2Alloy, _class: Class) {
   }
 
   if (mediations.length) {
-    const relatorName = normalizeName(_class);
+    const relatorName = normalizeName(transformer, _class);
     transformer.addFact(
       'fact relatorConstraint {\n' +
       '        all w: World, x: w.' + relatorName + ' | #(' + mediations.join('+') + ')>=2\n' +
@@ -140,9 +140,9 @@ function transformWeakSupplementationConstraint(transformer: Ontouml2Alloy, _cla
         let partName = '';
 	
         if (part.getName()) {
-          partName = normalizeName(part);
+          partName = normalizeName(transformer, part);
         }	else {
-          partName = normalizeName((part.container as Relation).getTarget());
+          partName = normalizeName(transformer, (part.container as Relation).getTarget());
         }
 
         const partAlias = getValidAlias(part, partName, transformer.aliases);
@@ -152,7 +152,7 @@ function transformWeakSupplementationConstraint(transformer: Ontouml2Alloy, _cla
 	}
 
   if (parts.length) {
-    const wholeName = normalizeName(_class);
+    const wholeName = normalizeName(transformer, _class);
 
     transformer.addFact(
       'fact weakSupplementationConstraint {\n' +
@@ -172,12 +172,12 @@ function transformDisjointNaturesConstraint(transformer: Ontouml2Alloy, _class: 
     if (isTopLevel(otherClass, transformer.model.getAllGeneralizations())
       && !otherClass.restrictedToContainedIn(_class.restrictedTo)) {
 
-      differentNaturedClasses.push(normalizeName(otherClass));
+      differentNaturedClasses.push(normalizeName(transformer, otherClass));
     }
   }
 
   if (differentNaturedClasses.length) {
-    const className = normalizeName(_class);
+    const className = normalizeName(transformer, _class);
     if (differentNaturedClasses.length == 1) {
       transformer.addWorldFieldFact(
         'disjoint[' + className + ',' + differentNaturedClasses[0] + ']'
@@ -196,7 +196,7 @@ export function transformAdditionalClassConstraints(transformer: Ontouml2Alloy) 
 
   for (const _class of transformer.model.getAllClasses()) {
     if (_class.isRestrictedToEndurant() && isTopLevel(_class, transformer.model.getAllGeneralizations())) {
-      const className = normalizeName(_class);
+      const className = normalizeName(transformer, _class);
 
       if (_class.isRestrictedToSubstantial()) {
         objectClasses.push(className);
@@ -233,10 +233,10 @@ export function transformAdditionalDatatypeConstraints(transformer: Ontouml2Allo
       }
     }
 
-    const datatypesNames = datatypes.map(datatype => normalizeName(datatype));
+    const datatypesNames = datatypes.map(datatype => normalizeName(transformer, datatype));
 
     if (topLevelDatatypes.length >= 2) {
-      const topLevelDatatypesNames = topLevelDatatypes.map(datatype => normalizeName(datatype));
+      const topLevelDatatypesNames = topLevelDatatypes.map(datatype => normalizeName(transformer, datatype));
 
       transformer.addFact(
         'fact additionalDatatypeFacts {\n' +
