@@ -22,7 +22,8 @@ export class Ontouml2Alloy implements Service {
   relationPropertiesFacts: string[];
   funs: string[];
   visible: string[];
-  aliases: [OntoumlElement, string][]; // [element, alias]
+  aliases: [OntoumlElement, string][]; //[element, alias]; used in transformRelatorConstraint
+  normalizedNames: { [key: string]: string }; //added, OntoumlElement ID, normalizedName
 
   /*
     Lines 13-33 define a class Ontouml2Alloy that implements Service. The class has a constructor
@@ -47,6 +48,7 @@ export class Ontouml2Alloy implements Service {
     this.funs = [];
     this.visible = ['exists'];
     this.aliases = [];
+    this.normalizedNames = {} //added
   }
 
   getAlloyCode(): string[] {
@@ -60,6 +62,10 @@ export class Ontouml2Alloy implements Service {
   getDatatype() : [string, string[]][]{
     return this.datatypes;
   } //getter to test
+
+  getAliases(){
+    return this.aliases;
+  }
 
   addDatatype(datatype: [string, string[]]) {
     this.datatypes.push(datatype);

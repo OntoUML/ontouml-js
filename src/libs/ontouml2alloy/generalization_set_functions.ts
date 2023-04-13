@@ -26,11 +26,11 @@ export function transformGeneralizationSet(transformer: Ontouml2Alloy, genSet: G
   }
 
   const children = (genSet.generalizations as Generalization[])
-    .map(gen => normalizeName(gen.specific));
+    .map(gen => normalizeName(transformer, gen.specific));
 
   let fact = 'fact generalizationSet {\n';
   if (genSet.isDisjoint) fact += '        disjoint[' + children.join(',') + ']\n';
-  if (genSet.isComplete) fact += '        ' + normalizeName(parent) + ' = ' + children.join('+') + '\n';
+  if (genSet.isComplete) fact += '        ' + normalizeName(transformer, parent) + ' = ' + children.join('+') + '\n';
   fact += '}';
 
   transformer.addFact(fact);

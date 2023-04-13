@@ -3,8 +3,8 @@ import { Ontouml2Alloy } from './';
 import { normalizeName } from './util';
 
 export function transformGeneralization(transformer: Ontouml2Alloy, gen: Generalization) {
-  const specificName = normalizeName(gen.specific);
-  const generalName = normalizeName(gen.general)
+  const specificName = normalizeName(transformer, gen.specific);
+  const generalName = normalizeName(transformer, gen.general)
 
   transformer.addFact(
     'fact generalization {\n' +
