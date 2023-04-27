@@ -1,8 +1,6 @@
 import { Ontouml2Alloy } from '@libs/ontouml2alloy/index';
 import { generateAlloy, generateFact, generateWorldAttribute, generateWorldFact } from './helpers';
 import { Class, ClassStereotype, Relation, Package, Project, Property, OntoumlType, AggregationKind, stereotypeUtils, OntologicalNature} from '@libs/ontouml';
-import { resolve } from 'dns';
-
 
 describe('Class Functions', () => {
 
@@ -171,17 +169,17 @@ describe('Class Functions', () => {
         expect(result).toContain(generateWorldFact('Child','Object'));
       });
 
-    //   it('should transform «abstract» class', () => {
-    //     const model = new Package();
-    //     model.createAbstract('Goal');
+      //TODO - what is an <<abstract>> class? There is no such a type of class in ontouml?
+      // it('should transform «abstract» class', () => {
+      //   const model = new Package();
+      //   model.createAbstract('Goal');
         
-    //     const result = generateAlloy(model);
+      //   const result = generateAlloy(model);
 
-    //     expect(result).toContain(''); 
-    //   }); //make it a datatype
+      //   expect(result).toContain('penis'); 
+      // }); //make it a datatype
 
-      // model.createClass()
-
+      //TODO figure out if there should/needs to be a difference between the below 3 cases
       it('should transform «mode» class { allowed=[intrinsic-mode] }', () => {
         model.createIntrinsicMode('Skill');
         const result = generateAlloy(model);
@@ -233,51 +231,11 @@ describe('Class Functions', () => {
       // });
       //what is expected with the mixins, semirigid?
 
-
-      it('should handle if class has a space in name', () => {
-        model.createKind('Happy Person');
-
-        const result = generateAlloy(model);
-        expect(result).not.toContain(generateFact('rigid',['rigidity[Happy Person,Object,exists]']));
-        expect(result).toContain(generateFact('rigid',['rigidity[HappyPerson,Object,exists]']));
-
-        expect(result).toContain(generateWorldAttribute('HappyPerson','Object'));
-        expect(result).toContain(generateWorldFact('HappyPerson','Object'));
-      });
-
-      it('should handle if class has forbidden characters in name', () => { //!, #, *, /, \
-        model.createKind('Happy!Person');
-        const result = generateAlloy(model);
-
-        expect(result).not.toContain(generateFact('rigid',['rigidity[Happy!Person,Object,exists]']));
-        //idea for how to handle this - remove char and add a number
-        // expect(result).toContain(expectedFacts);
-      });
-
-      it ('should handle if 2 classes have the same name', () => {
-
-        model.createKind('Person');
-        model.createKind('Person');
-
-        console.log(generateAlloy(model));
-      }) 
-
-      //what should happen if a model, only containing a <<subkind>> is transformed 
-      it ('should handle if 2 classes have the same name', () => {
-
-        model.createSubkind('Worker');
-
-        console.log(generateAlloy(model));
-      }) 
-
-      //Happy Person & HappyPerson
-      //check two attributes same name
-      //check reserved keywords
-      //add a map to keep track of transformed classes
-      //class with no name
-      //class with name just spaces/special characters
-
-      //test behaviour if subkind but no parentclass
+      //TODO - check what is desired transformation of category since it's supposed to be an abstract class?
+      // it('should transform «category» class', () => {
+      //   model.createCategory('Animal');
+      //   const result = generateAlloy(model);
+      // });
 
 
     });

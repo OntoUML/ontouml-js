@@ -66,7 +66,7 @@ function transformEndurantClass(transformer: Ontouml2Alloy, _class: Class) {
     className + ': set exists:>' + nature
   );
 
-  if (isTopLevel(_class, transformer.model.getAllGeneralizations())) {
+  //if (isTopLevel(_class, transformer.model.getAllGeneralizations())) { //TODO see if something else breaks bcz of this
     if (_class.hasRigidStereotype()) {
       transformer.addFact(
         'fact rigid {\n' +
@@ -80,7 +80,7 @@ function transformEndurantClass(transformer: Ontouml2Alloy, _class: Class) {
         '}'
       );
     }
-  }
+//  }
 }
 
 function transformDatatypeClass(transformer: Ontouml2Alloy, _class: Class) {

@@ -36,4 +36,4 @@ export function generateWorldFacts(factLines: string[]): string{
   }
   return result;
 
-}//subject to change
+}
