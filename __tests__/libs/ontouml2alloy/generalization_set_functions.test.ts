@@ -6,17 +6,18 @@ import { Generalization } from '@libs/ontouml';
 
 describe('Generalization Set Functions', () => {
 
-  describe('Should add disjointness and completeness constraints from a GS involving only rigid children classes...', () => {
-    
-    let project: Project;
-    let model: Package;
+  let project: Project;
+  let model: Package;
 
-    beforeEach(() => {
-        project = new Project();
-        model = project.createModel();
-      });
+  beforeEach(() => {
+      project = new Project();
+      model = project.createModel();
+    });
+
+  describe('Should add disjointness constraint from a disjoint GS involving only rigid children classes', () => {
     
-    describe ('«kind» Person <|- «subkind» Man, «subkind» Woman', () => {
+    
+    describe ('«kind» Person <|- «subkind» Man, «subkind» Woman, all options', () => {
 
       let gen1: Generalization;
       let gen2: Generalization;
@@ -101,7 +102,8 @@ describe('Generalization Set Functions', () => {
         expect(result).toContain(generateWorldAttribute('Man','Object'));
         expect(result).toContain(generateWorldAttribute('Woman','Object'));
       });
-      it('«kind» Person <|- «subkind» Man, «subkind Woman, disjoint - false, complete - true', () => {
+
+      it('disjoint - false, complete - true', () => {
       
         model.createGeneralizationSet(
           [gen1, gen2],
@@ -196,37 +198,59 @@ describe('Generalization Set Functions', () => {
 
   });
 
+  //TODO why should there not be a disjoint constraint?
   describe('Should NOT add disjointness constraint from a disjoint GS involving an antirigid or a semirigid class...', () => {
-    // it('«kind» Person <|- «phase» Child, «phase» Adult ', () => {
-    //   const model = new Package();
-    //   const parent = model.createKind('Person');
-    //   const child1 = model.createPhase('Child');
-    //   const child2 = model.createPhase('Adult');
-    //   const gen1 = model.createGeneralization(parent, child1);
-    //   const gen2 = model.createGeneralization(parent, child2);
-    //   model.createPartition([gen1, gen2]);
+    it('«kind» Person <|- «phase» Child, «phase» Adult ', () => {
+      const parent = model.createKind('Person');
+      const child1 = model.createPhase('Child');
+      const child2 = model.createPhase('Adult');
+      const gen1 = model.createGeneralization(parent, child1);
+      const gen2 = model.createGeneralization(parent, child2);
+      model.createPartition([gen1, gen2]); 
 
-    //   const owl = generateGufo(model);
-    //   expect(owl).not.toContain('[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Child> <:Adult>) .');
-    //   expect(owl).not.toContain('[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Adult> <:Child>) .');
-    // });
+      const result = generateAlloy(model);
+      expect(result).not.toContain(generateFact('generalizationSet',['disjoint[Child,Adult]','Person = Child+Adult']));
 
-    // it('«category» Agent <|- «roleMixin» Customer, «roleMixin» Provider', () => {
-    //   const model = new Package();
-    //   const parent = model.createCategory('Agent');
-    //   const child1 = model.createRoleMixin('Customer');
-    //   const child2 = model.createRoleMixin('Provider');
-    //   const gen1 = model.createGeneralization(parent, child1);
-    //   const gen2 = model.createGeneralization(parent, child2);
-    //   model.createPartition([gen1, gen2]);
+      expect(result).toContain(generateFact('rigid',['rigidity[Person,Object,exists]']))
+      expect(result).toContain(generateFact('antirigid',['antirigidity[Child,Object,exists]']))
+      expect(result).toContain(generateFact('antirigid',['antirigidity[Adult,Object,exists]']))
 
-    //   const owl = generateGufo(model);
-    //   expect(owl).not.toContain('[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Customer> <:Provider>) .');
-    //   expect(owl).not.toContain('[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:Provider> <:Customer>) .');
-    // });
+      expect(result).toContain(generateWorldAttribute('Person','Object'));
+      expect(result).toContain(generateWorldAttribute('Child','Object'));
+      expect(result).toContain(generateWorldAttribute('Adult','Object'));
 
+      expect(result).toContain(generateFact('generalization',['Child in Person']));
+      expect(result).toContain(generateFact('generalization',['Adult in Person'])); 
+    });
+
+    it('«category» Agent <|- «roleMixin» Customer, «roleMixin» Provider', () => {
+      const parent = model.createCategory('Agent');
+      const child1 = model.createRoleMixin('Customer');
+      const child2 = model.createRoleMixin('Provider');
+      const gen1 = model.createGeneralization(parent, child1);
+      const gen2 = model.createGeneralization(parent, child2);
+      model.createPartition([gen1, gen2]);
+
+      const result = generateAlloy(model);
+      expect(result).not.toContain(generateFact('generalizationSet',['disjoint[Customer,Provider]','Agent = Customer+Provider']));
+
+      expect(result).toContain(generateFact('rigid',['rigidity[Agent,Object,exists]']));
+      expect(result).toContain(generateFact('antirigid',['antirigidity[Customer,Object,exists]']));
+      expect(result).toContain(generateFact('antirigid',['antirigidity[Provider,Object,exists]']));
+
+      expect(result).toContain(generateFact('abstractClass',['all w: World | w.Agent = w.Customer+w.Provider']));
+
+      expect(result).toContain(generateWorldAttribute('Agent','Object'));
+      expect(result).toContain(generateWorldAttribute('Customer','Object'));
+      expect(result).toContain(generateWorldAttribute('Provider','Object'));
+
+      expect(result).toContain(generateFact('generalization',['Customer in Agent']));
+      expect(result).toContain(generateFact('generalization',['Provider in Agent']));
+
+    });
+
+    //mixin, semirigid not handled
     // it('«mixin» Insurable <|- «mixin» ExpensiveObject, «category» RareObject', () => {
-    //   const model = new Package();
     //   const parent = model.createMixin('Insurable');
     //   const child1 = model.createMixin('ExpensiveObject');
     //   const child2 = model.createCategory('RareObject');
@@ -238,6 +262,32 @@ describe('Generalization Set Functions', () => {
     //   expect(owl).not.toContain('[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:ExpensiveObject> <:RareObject>) .');
     //   expect(owl).not.toContain('[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:RareObject> <:ExpensiveObject>) .');
     // });
+  });
+
+  describe('Should add an equivalence constraint from a complete GS...', () => {
+    it('«kind» Person <|- «phase» Child, «phase» Adult ', () => {
+      const parent = model.createKind('Person');
+      const child1 = model.createPhase('Child');
+      const child2 = model.createPhase('Adult');
+      const gen1 = model.createGeneralization(parent, child1);
+      const gen2 = model.createGeneralization(parent, child2);
+      model.createPartition([gen1, gen2]);
+
+      const result = generateAlloy(model);
+      expect(result).toContain(generateFact('generalizationSet',['disjoint[Child,Adult]','Person = Child+Adult']));
+
+      expect(result).toContain(generateFact('rigid',['rigidity[Person,Object,exists]']))
+      expect(result).toContain(generateFact('antirigid',['antirigidity[Child,Object,exists]']))
+      expect(result).toContain(generateFact('antirigid',['antirigidity[Adult,Object,exists]']))
+
+      expect(result).toContain(generateWorldAttribute('Person','Object'));
+      expect(result).toContain(generateWorldAttribute('Child','Object'));
+      expect(result).toContain(generateWorldAttribute('Adult','Object'));
+
+      expect(result).toContain(generateFact('generalization',['Child in Person']));
+      expect(result).toContain(generateFact('generalization',['Adult in Person']));
+
+    });
   });
 
 });
