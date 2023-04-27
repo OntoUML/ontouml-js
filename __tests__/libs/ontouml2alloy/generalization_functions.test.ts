@@ -6,6 +6,7 @@ import { Package, Project } from '@libs/ontouml';
 
 describe('Generalization functions', () => {
 
+  
     describe ('transformGeneralization function',() => {
 
         let project: Project;
@@ -28,44 +29,44 @@ describe('Generalization functions', () => {
             expect(result).toContain(generateWorldAttribute('Person','Object'));
 
             expect(result).toContain(generateFact('generalization',['Man in Person']));
-            //expect(result).toContain(generateWorldAttribute('Man','Object'));
 
-            //what is expected to happen when transforming a subkind? -> refer to class_functions.test.ts
-            console.log(result)
-          }); //subkind of diff things
-          //create rigid fact & etc for subkind
+            expect(result).toContain(generateFact('rigid',['rigidity[Man,Object,exists]']))
+            expect(result).toContain(generateWorldAttribute('Man','Object')); //expected? -Yes
+
+          });
         
-        //   it('Between classes without stereotypes', () => {
-        //     const model = new Package();
-        //     const parent = model.createClass('Person');
-        //     const child = model.createClass('Man');
-        //     model.createGeneralization(parent, child);
+          it('Between classes without stereotypes', () => {
+            const model = new Package();
+            const parent = model.createClass('Person');
+            const child = model.createClass('Man');
+            model.createGeneralization(parent, child);
         
-        //     const owl = generateAlloy(model);
-        //     expect(owl).toContain('<:Man> <rdfs:subClassOf> <:Person>');
-        //   });
+            const result = generateAlloy(model);
+            console.log(result);
+            //what is expected?; should it be allowed to have such a model? - NO
+          });
         
-        //   it('Between relations', () => {
-        //     const model = new Package();
-        //     const _class = model.createKind('Person');
-        //     const parent = model.createMaterialRelation(_class, _class, 'likes');
-        //     const child = model.createMaterialRelation(_class, _class, 'loves');
-        //     model.createGeneralization(parent, child);
+          it('Between relations', () => {
+            const model = new Package();
+            const _class = model.createKind('Person');
+            const parent = model.createMaterialRelation(_class, _class, 'likes');
+            const child = model.createMaterialRelation(_class, _class, 'loves');
+            model.createGeneralization(parent, child);
         
-        //     const owl = generateAlloy(model);
-        //     expect(owl).toContain('<:loves> <rdfs:subPropertyOf> <:likes>');
-        //   });
+            const result = generateAlloy(model);
+            console.log(result); 
+          });
         
-        //   it('Between relations without stereotypes', () => {
-        //     const model = new Package();
-        //     const _class = model.createKind('Person');
-        //     const parent = model.createBinaryRelation(_class, _class, 'likes');
-        //     const child = model.createBinaryRelation(_class, _class, 'loves');
-        //     model.createGeneralization(parent, child);
+          it('Between relations without stereotypes', () => {
+            const model = new Package();
+            const _class = model.createKind('Person');
+            const parent = model.createBinaryRelation(_class, _class, 'likes');
+            const child = model.createBinaryRelation(_class, _class, 'loves');
+            model.createGeneralization(parent, child);
         
-        //     const owl = generateAlloy(model);
-        //     expect(owl).toContain('<:loves> <rdfs:subPropertyOf> <:likes>');
-        //   });
+            const owl = generateAlloy(model);
+            console.log(owl);
+          });
 
 
 

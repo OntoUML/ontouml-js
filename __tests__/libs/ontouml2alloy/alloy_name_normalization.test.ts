@@ -1,13 +1,13 @@
 import { Ontouml2Alloy } from '@libs/ontouml2alloy/index';
-import { Class, OntoumlElement, Package, Project } from '@libs/ontouml';
+import { Class, OntoumlElement, Package, Project, Relation } from '@libs/ontouml';
 import { normalizeName } from '@libs/ontouml2alloy/util';
 import { generateAlloy, generateFact, generateWorldAttribute, generateWorldFact } from './helpers';
+import { OntoumlType } from '@libs/ontouml';
 
 
 describe('Name normalization' , () => {
 
     let element: OntoumlElement;
-    element = new Class();
     let project: Project;
     let model: Package;
     let transformer: Ontouml2Alloy;
@@ -16,6 +16,7 @@ describe('Name normalization' , () => {
     project = new Project();
     model = project.createModel();
     transformer = new Ontouml2Alloy(model);
+    element = new Class();
     });
     
     describe('Original name is kept when there are no issues' , () => {
@@ -46,7 +47,7 @@ describe('Name normalization' , () => {
     
     })
     
-    describe("Names are normalized properly", () => {
+    describe("Inappropriate names are normalized properly", () => {
     
         const reservedKeywords = [
             'abstract', 'all', 'and', 'as', 'assert',
@@ -57,12 +58,12 @@ describe('Name normalization' , () => {
             'one', 'open', 'or', 'pred', 'run',
             'set', 'sig', 'some', 'sum', 'univ'
         ];
-        //normalization of reserved keywords: abstract -> abstract_set
+        //normalization of reserved keywords: abstract -> abstract_OntoumlElementType
         reservedKeywords.forEach(keyword => {
             it(`should normalize the reserved keyword "${keyword}"`, () => {
                 element.addName(keyword);
                 const normalized = normalizeName(transformer, element);
-                expect(normalized).toBe(`${keyword}_set`);
+                expect(normalized).toBe(`${keyword}_${(element.type).toLowerCase()}`);
             });
         });
     
@@ -80,13 +81,34 @@ describe('Name normalization' , () => {
                 expect(normalized).toBe('HappyPerson');
             });
         });
-    
-        
-        // it('should normalize a class with no name', () => {
-        //     element.addName('');
-        //     const normalized = normalizeName(transformer, element);
-        //     expect(normalized).toBe('unnamed'); 
-        // }); //what to do
+
+        //normalization of empty name: '' -> Unnamed_OntoumlElementType; 
+        //TODO check if this is the desired behavior
+        it('should normalize a class with no name', () => {
+            element.addName('');
+            const normalized = normalizeName(transformer, element);
+            expect(normalized).toBe('Unnamed_class');
+        });
+
+        it('should normalize a relation with no name', () => {
+            element = new Relation();
+            element.addName('');
+            const normalized = normalizeName(transformer, element);
+            expect(normalized).toBe('Unnamed_relation');
+        });
+
+        //TODO check if this is the desired behavior
+        it('should normalize two classes with no name/only forbidden characters', () => {
+            model.createKind('');
+            model.createKind('!!!');
+            const result = generateAlloy(model);
+
+            expect(result).toContain(generateFact('rigid',['rigidity[Unnamed_class,Object,exists]']));
+            expect(result).toContain(generateFact('rigid',['rigidity[Unnamed_class1,Object,exists]']));
+            expect(result).toContain(generateWorldAttribute('Unnamed_class','Object'));
+            expect(result).toContain(generateWorldAttribute('Unnamed_class1','Object'));
+            expect(result).toContain(generateWorldFact('Unnamed_class+Unnamed_class1','Object'));
+        });
     
         it('should normalize two classes with same name', () => {
             model.createKind('Person');
@@ -99,6 +121,13 @@ describe('Name normalization' , () => {
             expect(result).toContain(generateWorldAttribute('Person1','Object'));
             expect(result).toContain(generateWorldFact('Person+Person1','Object'));
         })
+
+        //TODO check if this is the desired behavior
+        it('should normalize a class starting with a number', () => {
+            element.addName('123Person');
+            const normalized = normalizeName(transformer, element);
+            expect(normalized).toBe('class_123Person');
+        });
     
     });
 
