@@ -56,7 +56,7 @@ export function normalizeName(transformer: Ontouml2Alloy, element: OntoumlElemen
 			normalizedName = `${normalizedName}${index}`;
 			index++;
 		}
-	}
+	}//TODO made functional with filter for efficiency
 
     transformer.normalizedNames[id] = normalizedName;
 
