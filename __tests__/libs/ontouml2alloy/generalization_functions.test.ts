@@ -16,7 +16,6 @@ describe('Generalization functions', () => {
             model = project.createModel();
           });
 
-
         it('Between classes', () => {
             const parent = model.createKind('Person');
             const child = model.createSubkind('Man');
@@ -77,18 +76,6 @@ describe('Generalization functions', () => {
 
           });
         
-          //TODO check if this is desired behaviour; should there be no difference with previous casee?
-          it('Between relations without stereotypes', () => {
-            const _class = model.createKind('Person');
-            const parent = model.createBinaryRelation(_class, _class, 'likes');
-            const child = model.createBinaryRelation(_class, _class, 'loves');
-            model.createGeneralization(parent, child);
-        
-            const result = generateAlloy(model);
-            console.log(result);
-          });
-
-
 
     })
     

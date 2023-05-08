@@ -21,6 +21,15 @@ export function generateFact(factName: string, factLines: string[]): string {
     return result;
   }
 
+  //TODO check if functions are always like this
+  export function generateFun(funName: string, entityType: string, expression: string): string {
+    let result = `fun ${funName} [x: World.${entityType}, w: World] : set World.${entityType} {\n`;
+    result += `        ${expression}\n`;
+    result += '}\n\n';
+    return result;
+  }  
+  
+
 export function generateWorldAttribute(className: string, classNature: string): string{
     return className + ': set exists:>' + classNature;
 }
@@ -37,3 +46,4 @@ export function generateWorldFacts(factLines: string[]): string{
   return result;
 
 }
+

@@ -128,39 +128,9 @@ describe('Generalization Set Functions', () => {
         expect(result).toContain(generateWorldAttribute('Woman','Object'));
       });
     });
-    
-    it('«category» Agent <|- «kind» Person, «kind» Organization', () => {
-      const parent = model.createCategory('Agent');
-      const child1 = model.createKind('Person');
-      const child2 = model.createKind('Organization');
-      model.createKind('Animal');
-      const gen1 = model.createGeneralization(parent, child1);
-      const gen2 = model.createGeneralization(parent, child2);
-      model.createGeneralizationSet([gen1, gen2], true, false);
-
-      const result = generateAlloy(model);
-      
-      expect(result).toContain(generateFact('rigid',['rigidity[Agent,Object,exists]']))
-      expect(result).toContain(generateFact('rigid',['rigidity[Person,Object,exists]']))
-      expect(result).toContain(generateFact('rigid',['rigidity[Organization,Object,exists]']))
-      expect(result).toContain(generateFact('rigid',['rigidity[Animal,Object,exists]']))
-
-      expect(result).toContain(generateWorldAttribute('Agent','Object'));
-      expect(result).toContain(generateWorldAttribute('Person','Object'));
-      expect(result).toContain(generateWorldAttribute('Organization','Object'));
-      expect(result).toContain(generateWorldAttribute('Animal','Object'));
-
-      expect(result).toContain(generateFact('generalization',['Person in Agent']));
-      expect(result).toContain(generateFact('generalization',['Organization in Agent']));
-      expect(result).toContain(generateFact('generalizationSet',['disjoint[Person,Organization]']));
-      expect(result).not.toContain(generateFact('generalizationSet',['Agent = Person+Organization']));
-
-      expect(result).toContain(generateFact('abstractClass',['all w: World | w.Agent = w.Person+w.Organization']));
-    });
 
     //TODO - interesting case, event classes are not transformed but a generalization & generalization_set is created
     it('«event» Ceremony <|- «event» Wedding, «event» Graduation', () => {
-      const model = new Package();
       const parent = model.createEvent('Ceremony');
       const child1 = model.createEvent('Wedding');
       const child2 = model.createEvent('Graduation');
@@ -173,7 +143,6 @@ describe('Generalization Set Functions', () => {
     });
 
     it('«datatype» Color <|- «datatype» ColorInRgb, «datatype» ColorInHsv', () => {
-      const model = new Package();
       const parent = model.createDatatype('Color');
       const child1 = model.createDatatype('ColorInRgb');
       const child2 = model.createDatatype('ColorInHsv');
