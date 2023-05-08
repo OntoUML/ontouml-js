@@ -1,4 +1,4 @@
-import { OntoumlElement, Project, Package } from '@libs/ontouml';
+import { OntoumlElement, Project, Package, Decoratable, Stereotype } from '@libs/ontouml';
 import {
   transformProperty,
   transformClass,
@@ -9,7 +9,8 @@ import {
   transformGeneralizationSet,
   transformRelation
 } from './';
-import { Service, ServiceIssue } from '..';
+import { Service, ServiceIssue, ServiceIssueSeverity } from '..';
+import { type } from 'os';
 
 export class Ontouml2Alloy implements Service {
   model: Package;
@@ -23,7 +24,8 @@ export class Ontouml2Alloy implements Service {
   funs: string[];
   visible: string[];
   aliases: [OntoumlElement, string][]; //[element, alias]; used in transformRelatorConstraint
-  normalizedNames: { [key: string]: string }; //added, OntoumlElement ID, normalizedName
+  normalizedNames: { [key: string]: string }; //added; OntoumlElement ID, normalizedName
+  removedElements: ServiceIssue[]; //added, to store removed elements
 
   /*
     Lines 13-33 define a class Ontouml2Alloy that implements Service. The class has a constructor
@@ -49,6 +51,7 @@ export class Ontouml2Alloy implements Service {
     this.visible = ['exists'];
     this.aliases = [];
     this.normalizedNames = {} //added
+    this.removedElements = [] //added
   }
 
   getAlloyCode(): string[] {
@@ -100,6 +103,8 @@ export class Ontouml2Alloy implements Service {
   }
 
   transform() {
+    this.removeUnsupportedElements();
+
     this.transformClasses();
     this.transformGeneralizations();
     this.transformGeneralizationSets();
@@ -124,6 +129,93 @@ export class Ontouml2Alloy implements Service {
     this.writeOntologicalPropertiesModule();
   }
 
+  hasUnsupportedStereotype(decoratable: Decoratable<any>) {
+    return decoratable.hasAnyStereotype(['event', 'situation' ,'type']);
+  }
+  
+  removeUnsupportedElements() {
+    const classes = this.model.getAllClasses();
+    const relations = this.model.getAllRelations();
+    const generalizations = this.model.getAllGeneralizations();
+    const generalizationSets = this.model.getAllGeneralizationSets();
+  
+    // Remove classes with unsupported stereotypes
+    for (const _class of classes) {
+      if (this.hasUnsupportedStereotype(_class)) {
+  
+        // Remove properties of the class
+        for (const property of _class.properties) {
+          property.removeSelf();
+          this.generateRemovalIssue(property, `Attribute '${property.getName()}' of the class '${_class.getName()}' was removed due to the class having an unsupported stereotype.`);
+        }
+
+        _class.removeSelf();
+        this.generateRemovalIssue(_class, `Class '${_class.getName()}' was removed due to having an unsupported stereotype.`);
+      }
+    }
+  
+    // Remove relations connected to unsupported classes
+    for (const relation of relations) {
+      const source = relation.getSource();
+      const target = relation.getTarget();
+  
+      if (source && this.hasUnsupportedStereotype(source)) {
+        source.removeSelf();
+        relation.removeSelf();
+        this.generateRemovalIssue(relation, `Relation '${relation.getName()}' was removed due to being connected to an unsupported class '${source.getName()}'.`);
+      } else if (target && this.hasUnsupportedStereotype(target)) {
+        relation.removeSelf();
+        this.generateRemovalIssue(relation, `Relation '${relation.getName()}' was removed due to being connected to an unsupported class '${target.getName()}'.`);
+      }
+
+    }
+  
+    // Remove generalizations consisting of unsupported elements
+    for (const generalization of generalizations) {
+      const source = generalization.specific;
+      const target = generalization.general;
+  
+      if ((source && this.hasUnsupportedStereotype(source)) || (target && this.hasUnsupportedStereotype(target))) {
+        generalization.removeSelf();
+        const genName = generalization.getName() || `${source.getName()} -> ${target.getName()}`;
+        this.generateRemovalIssue(generalization, `Generalization '${genName}' was removed due to having an unsupported element.`);
+      }
+    }
+  
+    // Remove generalization sets containing unsupported elements
+    for (const generalizationSet of generalizationSets) {
+      let categorizerUnsupported = generalizationSet.categorizer && this.hasUnsupportedStereotype(generalizationSet.categorizer);
+      if (generalizationSet.generalizations.some(gen => this.hasUnsupportedStereotype(gen.specific) || this.hasUnsupportedStereotype(gen.general)) || categorizerUnsupported) {
+        generalizationSet.removeSelf();
+        const genSetNames = generalizationSet.generalizations.map(gen => gen.getName() || `${gen.specific.getName()} -> ${gen.general.getName()}`).join(', ');
+        const genSetName = generalizationSet.getName() || `{${genSetNames}}`;
+        
+        let removalDescription;
+        if (categorizerUnsupported) {
+          removalDescription = `Generalization Set '${genSetName}' was removed due to having an unsupported categorizer '${generalizationSet.categorizer.getName()}'.`;
+        } else {
+          removalDescription = `Generalization Set '${genSetName}' was removed due to containing an unsupported element.`;
+        }
+        
+        this.generateRemovalIssue(generalizationSet, removalDescription);
+      }
+    }
+
+  }
+  
+  generateRemovalIssue(element: OntoumlElement, description: string) {
+    const issue: ServiceIssue = {
+      id: element.id,
+      code: 'UNSUPPORTED_ELEMENT_REMOVED',
+      severity: ServiceIssueSeverity.WARNING,
+      title: 'Unsupported Element Removed',
+      description: description,
+      data: element
+    };
+    this.removedElements.push(issue);
+  }
+  
+  
   /*
     Lines 81-105 define a method transform() that calls the different transformation functions, 
     removes duplicate facts and functions, and writes the generated Alloy code to the alloyCode property.
@@ -318,7 +410,8 @@ export class Ontouml2Alloy implements Service {
   */
 
   transformGeneralizations() {
-    const generalizations = this.model.getAllGeneralizations();
+    let generalizations = this.model.getAllGeneralizations();
+
 
     for (const gen of generalizations) {
       transformGeneralization(this, gen);
@@ -360,7 +453,7 @@ export class Ontouml2Alloy implements Service {
         worldStructureModule: this.getAlloyCode()[1],
         ontologicalPropertiesModule: this.getAlloyCode()[2]
       },
-        issues: undefined
+      issues: this.removedElements.length > 0 ? this.removedElements : undefined
     };
   }//method to check prerequisites for trasnforming a class
   /*

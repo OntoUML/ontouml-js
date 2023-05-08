@@ -49,6 +49,7 @@ describe('Name normalization' , () => {
     
     describe("Inappropriate names are normalized properly", () => {
     
+        //TODO export reservedKeywords, forbiddenCharacters from util.ts
         const reservedKeywords = [
             'abstract', 'all', 'and', 'as', 'assert',
             'but', 'check', 'disj', 'else', 'exactly',
@@ -83,7 +84,6 @@ describe('Name normalization' , () => {
         });
 
         //normalization of empty name: '' -> Unnamed_OntoumlElementType; 
-        //TODO check if this is the desired behavior
         it('should normalize a class with no name', () => {
             element.addName('');
             const normalized = normalizeName(transformer, element);
@@ -97,7 +97,7 @@ describe('Name normalization' , () => {
             expect(normalized).toBe('Unnamed_relation');
         });
 
-        //TODO check if this is the desired behavior
+        //TODO change it
         it('should normalize two classes with no name/only forbidden characters', () => {
             model.createKind('');
             model.createKind('!!!');
@@ -122,7 +122,6 @@ describe('Name normalization' , () => {
             expect(result).toContain(generateWorldFact('Person+Person1','Object'));
         })
 
-        //TODO check if this is the desired behavior
         it('should normalize a class starting with a number', () => {
             element.addName('123Person');
             const normalized = normalizeName(transformer, element);
