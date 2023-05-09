@@ -6,7 +6,7 @@ import { normalizeName, isTopLevel, getValidAlias } from './util';
 export function transformClass(transformer: Ontouml2Alloy, _class: Class) { //This line defines a function named transformClass that takes two parameters: transformer (of type Ontouml2Alloy) and _class (of type Class).
   if (_class.hasAnyStereotype([ClassStereotype.EVENT, ClassStereotype.SITUATION,ClassStereotype.TYPE])) { //This line checks if the given class _class has any of the stereotypes EVENT or SITUATION. If it does, the function immediately returns without doing anything.
     return;
-  }//TODO trim 
+  }
 
   if (_class.hasDatatypeStereotype()) {
     transformDatatypeClass(transformer, _class);

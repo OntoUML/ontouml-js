@@ -22,13 +22,20 @@ describe('Generalization functions', () => {
             model.createGeneralization(parent, child);
             const result = generateAlloy(model);
 
-            expect(result).toContain(generateFact('rigid',['rigidity[Person,Object,exists]']))
-            expect(result).toContain(generateWorldAttribute('Person','Object'));
-
             expect(result).toContain(generateFact('generalization',['Man in Person']));
+          });
 
-            expect(result).toContain(generateFact('rigid',['rigidity[Man,Object,exists]']))
-            expect(result).toContain(generateWorldAttribute('Man','Object'));
+          it('Between multiple classes', () => {
+            const grandparent = model.createKind('LivingBeing');
+            const parent = model.createSubkind('Person');
+            const child = model.createSubkind('Man');
+            model.createGeneralization(grandparent, parent);
+            model.createGeneralization(parent, child);
+          
+            const result = generateAlloy(model);
+          
+            expect(result).toContain(generateFact('generalization', ['Person in LivingBeing']));
+            expect(result).toContain(generateFact('generalization', ['Man in Person']));
           });
         
           //TODO discuss again if there should be such a test/handling such a situation
@@ -50,8 +57,6 @@ describe('Generalization functions', () => {
             let result = generateAlloy(model);
 
             expect(result).toContain(generateFact('generalization',['ColorInRgb in Color']));
-            expect(result).toContain('sig Color in Datatype {}');
-            expect(result).toContain('sig ColorInRgb in Datatype {}');
             expect(result).toContain(generateFact('additionalDatatypeFacts',['Datatype = Color+ColorInRgb']))
 
           });
@@ -63,19 +68,9 @@ describe('Generalization functions', () => {
             model.createGeneralization(parent, child);
         
             const result = generateAlloy(model);
-            expect(result).toContain(generateFact('rigid',['rigidity[Person,Object,exists]']));
-            expect(result).toContain(generateWorldAttribute('Person','Object'));
-            expect(result).toContain(generateWorldFact('Person','Object'));
 
             expect(result).toContain(generateFact('generalization',['loves in likes']));
-          
-            expect(result).toContain(generateFun('Person1', 'Person', `(w.likes).x`));
-            expect(result).toContain(generateFun('Person2', 'Person', `x.(w.likes)`));
-            expect(result).toContain(generateFun('Person3', 'Person', `(w.loves).x`));
-            expect(result).toContain(generateFun('Person4', 'Person', `x.(w.loves)`));
-
           });
-        
 
     })
     

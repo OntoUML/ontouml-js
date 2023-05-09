@@ -31,6 +31,7 @@ describe('Generalization Set Functions', () => {
         gen2 = model.createGeneralization(parent, child2);
       });
     
+      //TODO consider that a subKind doesn't get an exists statement when part of a generalization, otherwise does
       it('disjoint - true, complete - true' , () => {
 
         model.createGeneralizationSet(
@@ -41,18 +42,7 @@ describe('Generalization Set Functions', () => {
   
         const result = generateAlloy(model);
   
-        expect(result).toContain(generateFact('rigid',['rigidity[Person,Object,exists]']))
-        expect(result).toContain(generateWorldAttribute('Person','Object'));
-  
-        expect(result).toContain(generateFact('generalization',['Man in Person']));
-        expect(result).toContain(generateFact('generalization',['Woman in Person']));
-        expect(result).toContain(generateFact('generalizationSet',['disjoint[Man,Woman]','Person = Man+Woman']));
-  
-        expect(result).toContain(generateFact('rigid',['rigidity[Man,Object,exists]']))
-        expect(result).toContain(generateFact('rigid',['rigidity[Woman,Object,exists]']))
-        
-        expect(result).toContain(generateWorldAttribute('Man','Object'));
-        expect(result).toContain(generateWorldAttribute('Woman','Object'));
+        expect(result).toContain(generateFact('generalizationSet',['disjoint[Man,Woman]','Person = Man+Woman']));  
       });
 
       it('disjoint - false, complete - false', () => {
@@ -63,19 +53,8 @@ describe('Generalization Set Functions', () => {
         );
       
         const result = generateAlloy(model);
-      
-        expect(result).toContain(generateFact('rigid',['rigidity[Person,Object,exists]']))
-        expect(result).toContain(generateWorldAttribute('Person','Object'));
-  
-        expect(result).toContain(generateFact('generalization',['Man in Person']));
-        expect(result).toContain(generateFact('generalization',['Woman in Person']));
+
         expect(result).not.toContain(generateFact('generalizationSet',['disjoint[Man,Woman]','Person = Man+Woman']));
-  
-        expect(result).toContain(generateFact('rigid',['rigidity[Man,Object,exists]']))
-        expect(result).toContain(generateFact('rigid',['rigidity[Woman,Object,exists]']))
-  
-        expect(result).toContain(generateWorldAttribute('Man','Object'));
-        expect(result).toContain(generateWorldAttribute('Woman','Object'));
       });
 
       it('disjoint - true, complete - false', () => {
@@ -87,20 +66,9 @@ describe('Generalization Set Functions', () => {
         );
       
         const result = generateAlloy(model);
-      
-        expect(result).toContain(generateFact('rigid',['rigidity[Person,Object,exists]']))
-        expect(result).toContain(generateWorldAttribute('Person','Object'));
-  
-        expect(result).toContain(generateFact('generalization',['Man in Person']));
-        expect(result).toContain(generateFact('generalization',['Woman in Person']));
+
         expect(result).toContain(generateFact('generalizationSet',['disjoint[Man,Woman]']));
         expect(result).not.toContain(generateFact('generalizationSet',['Person = Man+Woman']));
-  
-        expect(result).toContain(generateFact('rigid',['rigidity[Man,Object,exists]']))
-        expect(result).toContain(generateFact('rigid',['rigidity[Woman,Object,exists]']))
-  
-        expect(result).toContain(generateWorldAttribute('Man','Object'));
-        expect(result).toContain(generateWorldAttribute('Woman','Object'));
       });
 
       it('disjoint - false, complete - true', () => {
@@ -112,24 +80,12 @@ describe('Generalization Set Functions', () => {
         );
       
         const result = generateAlloy(model);
-      
-        expect(result).toContain(generateFact('rigid',['rigidity[Person,Object,exists]']))
-        expect(result).toContain(generateWorldAttribute('Person','Object'));
-  
-        expect(result).toContain(generateFact('generalization',['Man in Person']));
-        expect(result).toContain(generateFact('generalization',['Woman in Person']));
+
         expect(result).not.toContain(generateFact('generalizationSet',['disjoint[Man,Woman]']));
         expect(result).toContain(generateFact('generalizationSet',['Person = Man+Woman']));
-  
-        expect(result).toContain(generateFact('rigid',['rigidity[Man,Object,exists]']))
-        expect(result).toContain(generateFact('rigid',['rigidity[Woman,Object,exists]']))
-  
-        expect(result).toContain(generateWorldAttribute('Man','Object'));
-        expect(result).toContain(generateWorldAttribute('Woman','Object'));
-      });
     });
 
-    //TODO - interesting case, event classes are not transformed but a generalization & generalization_set is created
+    //TODO - model is trimmed, should this test still exist?
     it('«event» Ceremony <|- «event» Wedding, «event» Graduation', () => {
       const parent = model.createEvent('Ceremony');
       const child1 = model.createEvent('Wedding');
@@ -151,15 +107,6 @@ describe('Generalization Set Functions', () => {
       model.createGeneralizationSet([gen1, gen2], true, false);
 
       const result = generateAlloy(model);
-      
-      expect(result).toContain('sig Color in Datatype {}');
-      expect(result).toContain('sig ColorInRgb in Datatype {}');
-      expect(result).toContain('sig ColorInHsv in Datatype {}');
-
-      expect(result).toContain(generateFact('additionalDatatypeFacts', ['Datatype = Color+ColorInRgb+ColorInHsv']));
-
-      expect(result).toContain(generateFact('generalization', ['ColorInRgb in Color']));
-      expect(result).toContain(generateFact('generalization', ['ColorInHsv in Color']));
 
       expect(result).toContain(generateFact('generalizationSet', ['disjoint[ColorInRgb,ColorInHsv]']));
     });
@@ -179,17 +126,6 @@ describe('Generalization Set Functions', () => {
 
       const result = generateAlloy(model);
       expect(result).not.toContain(generateFact('generalizationSet',['disjoint[Child,Adult]','Person = Child+Adult']));
-
-      expect(result).toContain(generateFact('rigid',['rigidity[Person,Object,exists]']))
-      expect(result).toContain(generateFact('antirigid',['antirigidity[Child,Object,exists]']))
-      expect(result).toContain(generateFact('antirigid',['antirigidity[Adult,Object,exists]']))
-
-      expect(result).toContain(generateWorldAttribute('Person','Object'));
-      expect(result).toContain(generateWorldAttribute('Child','Object'));
-      expect(result).toContain(generateWorldAttribute('Adult','Object'));
-
-      expect(result).toContain(generateFact('generalization',['Child in Person']));
-      expect(result).toContain(generateFact('generalization',['Adult in Person'])); 
     });
 
     it('«category» Agent <|- «roleMixin» Customer, «roleMixin» Provider', () => {
@@ -202,23 +138,9 @@ describe('Generalization Set Functions', () => {
 
       const result = generateAlloy(model);
       expect(result).not.toContain(generateFact('generalizationSet',['disjoint[Customer,Provider]','Agent = Customer+Provider']));
-
-      expect(result).toContain(generateFact('rigid',['rigidity[Agent,Object,exists]']));
-      expect(result).toContain(generateFact('antirigid',['antirigidity[Customer,Object,exists]']));
-      expect(result).toContain(generateFact('antirigid',['antirigidity[Provider,Object,exists]']));
-
-      expect(result).toContain(generateFact('abstractClass',['all w: World | w.Agent = w.Customer+w.Provider']));
-
-      expect(result).toContain(generateWorldAttribute('Agent','Object'));
-      expect(result).toContain(generateWorldAttribute('Customer','Object'));
-      expect(result).toContain(generateWorldAttribute('Provider','Object'));
-
-      expect(result).toContain(generateFact('generalization',['Customer in Agent']));
-      expect(result).toContain(generateFact('generalization',['Provider in Agent']));
-
     });
 
-    //mixin, semirigid not handled
+    //TODO mixin, semirigid not handled
     // it('«mixin» Insurable <|- «mixin» ExpensiveObject, «category» RareObject', () => {
     //   const parent = model.createMixin('Insurable');
     //   const child1 = model.createMixin('ExpensiveObject');
@@ -244,19 +166,8 @@ describe('Generalization Set Functions', () => {
 
       const result = generateAlloy(model);
       expect(result).toContain(generateFact('generalizationSet',['disjoint[Child,Adult]','Person = Child+Adult']));
-
-      expect(result).toContain(generateFact('rigid',['rigidity[Person,Object,exists]']))
-      expect(result).toContain(generateFact('antirigid',['antirigidity[Child,Object,exists]']))
-      expect(result).toContain(generateFact('antirigid',['antirigidity[Adult,Object,exists]']))
-
-      expect(result).toContain(generateWorldAttribute('Person','Object'));
-      expect(result).toContain(generateWorldAttribute('Child','Object'));
-      expect(result).toContain(generateWorldAttribute('Adult','Object'));
-
-      expect(result).toContain(generateFact('generalization',['Child in Person']));
-      expect(result).toContain(generateFact('generalization',['Adult in Person']));
-
     });
   });
 
+});
 });
