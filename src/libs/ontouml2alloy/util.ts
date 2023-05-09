@@ -1,29 +1,29 @@
 import { OntoumlElement, Class, ClassStereotype, Relation, Generalization, Cardinality } from '@libs/ontouml';
 import { Ontouml2Alloy } from '.';
 
+export const reservedKeywords = [
+	'abstract', 'all', 'and', 'as', 'assert',
+	'but', 'check', 'disj', 'else', 'exactly',
+	'extends', 'fact', 'for', 'fun', 'iden',
+	'iff', 'implies', 'in', 'Int', 'let',
+	'lone', 'module', 'no', 'none', 'not',
+	'one', 'open', 'or', 'pred', 'run',
+	'set', 'sig', 'some', 'sum', 'univ'
+];
+
+export const forbiddenCharacters = [
+	' ', '!', '@', '#', '$', '%', '&',
+	'*', '(', ')', '-', '+', '=', '{',
+	'}', '[', ']', '|', '\\', ';', ':',
+	',', '.', '<', '>', '/', '?'
+];
+
 //TODO multi-language support
 export function normalizeName(transformer: Ontouml2Alloy, element: OntoumlElement) {
 
 	if(element.id in transformer.normalizedNames){
 		return transformer.normalizedNames[element.id];
 	}
-
-	const reservedKeywords = [
-        'abstract', 'all', 'and', 'as', 'assert',
-        'but', 'check', 'disj', 'else', 'exactly',
-        'extends', 'fact', 'for', 'fun', 'iden',
-        'iff', 'implies', 'in', 'Int', 'let',
-        'lone', 'module', 'no', 'none', 'not',
-        'one', 'open', 'or', 'pred', 'run',
-        'set', 'sig', 'some', 'sum', 'univ'
-    ];
-
-    const forbiddenCharacters = [
-        ' ', '!', '@', '#', '$', '%', '&',
-        '*', '(', ')', '-', '+', '=', '{',
-        '}', '[', ']', '|', '\\', ';', ':',
-        ',', '.', '<', '>', '/', '?'
-    ];
 
     let normalizedName = element.getName();
 

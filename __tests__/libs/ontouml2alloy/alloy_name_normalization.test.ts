@@ -3,6 +3,7 @@ import { Class, OntoumlElement, Package, Project, Relation } from '@libs/ontouml
 import { normalizeName } from '@libs/ontouml2alloy/util';
 import { generateAlloy, generateFact, generateWorldAttribute, generateWorldFact } from './helpers';
 import { OntoumlType } from '@libs/ontouml';
+import { reservedKeywords, forbiddenCharacters } from '@libs/ontouml2alloy/util';
 
 
 describe('Name normalization' , () => {
@@ -48,17 +49,7 @@ describe('Name normalization' , () => {
     })
     
     describe("Inappropriate names are normalized properly", () => {
-    
-        //TODO export reservedKeywords, forbiddenCharacters from util.ts
-        const reservedKeywords = [
-            'abstract', 'all', 'and', 'as', 'assert',
-            'but', 'check', 'disj', 'else', 'exactly',
-            'extends', 'fact', 'for', 'fun', 'iden',
-            'iff', 'implies', 'in', 'Int', 'let',
-            'lone', 'module', 'no', 'none', 'not',
-            'one', 'open', 'or', 'pred', 'run',
-            'set', 'sig', 'some', 'sum', 'univ'
-        ];
+            
         //normalization of reserved keywords: abstract -> abstract_OntoumlElementType
         reservedKeywords.forEach(keyword => {
             it(`should normalize the reserved keyword "${keyword}"`, () => {
@@ -67,13 +58,6 @@ describe('Name normalization' , () => {
                 expect(normalized).toBe(`${keyword}_${(element.type).toLowerCase()}`);
             });
         });
-    
-        const forbiddenCharacters = [
-            ' ', '!', '@', '#', '$', '%', '&',
-            '*', '(', ')', '-', '+', '=', '{',
-            '}', '[', ']', '|', '\\', ';', ':',
-            ',', '.', '<', '>', '/', '?'
-        ];
     
         forbiddenCharacters.forEach(char => {
             it(`should remove the forbidden character "${char}" from the name`, () => {
@@ -97,17 +81,14 @@ describe('Name normalization' , () => {
             expect(normalized).toBe('Unnamed_relation');
         });
 
-        //TODO change it
         it('should normalize two classes with no name/only forbidden characters', () => {
-            model.createKind('');
-            model.createKind('!!!');
-            const result = generateAlloy(model);
+            const element1 = model.createKind('');
+            const element2 = model.createKind('!!!');
+            const normalized1 = normalizeName(transformer, element1);
+            const normalized2 = normalizeName(transformer, element2);
 
-            expect(result).toContain(generateFact('rigid',['rigidity[Unnamed_class,Object,exists]']));
-            expect(result).toContain(generateFact('rigid',['rigidity[Unnamed_class1,Object,exists]']));
-            expect(result).toContain(generateWorldAttribute('Unnamed_class','Object'));
-            expect(result).toContain(generateWorldAttribute('Unnamed_class1','Object'));
-            expect(result).toContain(generateWorldFact('Unnamed_class+Unnamed_class1','Object'));
+            expect(normalized1).toBe('Unnamed_class');
+            expect(normalized2).toBe('Unnamed_class1');
         });
     
         it('should normalize two classes with same name', () => {
