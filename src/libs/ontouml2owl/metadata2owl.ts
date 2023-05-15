@@ -2,7 +2,7 @@ import { Writer } from 'n3';
 import { Service, ServiceIssue } from '..';
 
 const N3 = require('n3');
-const { namedNode, literal, blankNode } = N3.DataFactory;
+const { namedNode, literal } = N3.DataFactory;
 
 /**
  *
@@ -73,7 +73,8 @@ const RDF = {
 
 const XSD = {
   boolean: 'http://www.w3.org/2001/XMLSchema#boolean',
-  gYear: 'http://www.w3.org/2001/XMLSchema#gYear'
+  gYear: 'http://www.w3.org/2001/XMLSchema#gYear',
+  anyUri: 'http://www.w3.org/2001/XMLSchema#anyURI'
 };
 
 const SKOS = {
@@ -324,7 +325,7 @@ export class Metadata2Owl implements Service {
 
   setStorageUrl(): void {
     var new_string = (this.ontologyUri);
-    this.writer.addQuad(namedNode(new_string), namedNode(OCMV.storageUrl), namedNode(GITHUB_BASE + this.ontologyDir));
+    this.writer.addQuad(namedNode(new_string), namedNode(OCMV.storageUrl), literal(GITHUB_BASE + this.ontologyDir, namedNode(XSD.anyUri)));
   }
 
   transformDistributions(): void {
