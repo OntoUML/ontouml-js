@@ -18,7 +18,7 @@ import { Service, ServiceIssue } from '..';
 const N3 = require('n3');
 const { namedNode, literal, blankNode } = N3.DataFactory;
 
-const ONTOUML = 'https://purl.org/ontouml-models/vocabulary/';
+const ONTOUML = 'https://w3id.org/ontouml#';
 /**
  *
  * @author Tiago Prince Sales
@@ -42,7 +42,7 @@ export class Ontouml2Owl implements Service {
       format: this.format,
       prefixes: {
         '': baseIri,
-        ontouml: 'https://purl.org/ontouml-models/vocabulary/',
+        ontouml: 'https://w3id.org/ontouml#',
         rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
         owl: 'http://www.w3.org/2002/07/owl#',
@@ -74,15 +74,15 @@ export class Ontouml2Owl implements Service {
       this.transformLiterals();
 
       this.transformDiagrams();
-      // this.transformPackageViews();
-      // this.transformClassViews();
-      // this.transformRelationViews();
-      // this.transformGeneralizationViews();
-      // this.transformGeneralizationSetViews();
+      this.transformPackageViews();
+      this.transformClassViews();
+      // this.transformRelationViews(); // reduces from 141 to 139 (problems with maddalena2021ontocovid and ramos2021bias)
+      this.transformGeneralizationViews();
+      // this.transformGeneralizationSetViews(); // reduces from 141 to 139 (problems with cmpo2017 and derave2019dpo)
 
-      // this.transformRectangles();
-      // this.transformTexts();
-      // this.transformPaths();
+      this.transformRectangles();
+      this.transformTexts();
+      this.transformPaths();
 
       this.writer.end((error, result) => {
         if (error) throw error;
@@ -104,7 +104,7 @@ export class Ontouml2Owl implements Service {
   transformClasses() {
     this.project.getAllClasses()?.forEach(c => this.transformClass(c));
   }
-
+ontouml
   transformRelations() {
     this.project.getAllRelations()?.forEach(r => this.transformRelation(r));
   }
@@ -162,7 +162,7 @@ export class Ontouml2Owl implements Service {
   }
 
   transformProject() {
-    const projUri = this.baseIri;
+    const projUri = (this.baseIri).replace("#","/");
 
     const typeUri = ONTOUML + 'Project';
     this.writer.addQuad(namedNode(projUri), namedNode('rdf:type'), namedNode(typeUri));
@@ -403,7 +403,7 @@ export class Ontouml2Owl implements Service {
     );
 
     const pointUri = rectUri + '_point';
-    this.writer.addQuad(namedNode(rectUri), namedNode(ONTOUML + 'topLeftPosition'), blankNode(pointUri));
+    this.writer.addQuad(namedNode(rectUri), namedNode(ONTOUML + 'topLeftPosition'), namedNode(pointUri));
     this.transformPoint(rect.topLeft, pointUri);
   }
 
@@ -413,15 +413,15 @@ export class Ontouml2Owl implements Service {
 
     path.points?.forEach((point, index) => {
       const pointUri = pathUri + '_point_' + index;
-      this.writer.addQuad(namedNode(pathUri), namedNode(ONTOUML + 'point'), blankNode(pointUri));
+      this.writer.addQuad(namedNode(pathUri), namedNode(ONTOUML + 'point'), namedNode(pointUri));
       this.transformPoint(point, pointUri);
     });
   }
 
   transformPoint(point: Point, pointUri: string) {
-    this.writer.addQuad(blankNode(pointUri), namedNode('rdf:type'), namedNode(ONTOUML + 'Point'));
-    this.writer.addQuad(blankNode(pointUri), namedNode(ONTOUML + 'xCoordinate'), literal(point.x));
-    this.writer.addQuad(blankNode(pointUri), namedNode(ONTOUML + 'yCoordinate'), literal(point.y));
+    this.writer.addQuad(namedNode(pointUri), namedNode('rdf:type'), namedNode(ONTOUML + 'Point'));
+    this.writer.addQuad(namedNode(pointUri), namedNode(ONTOUML + 'xCoordinate'), literal(point.x));
+    this.writer.addQuad(namedNode(pointUri), namedNode(ONTOUML + 'yCoordinate'), literal(point.y));
   }
 
   transformOntoumlElement(elem: OntoumlElement) {

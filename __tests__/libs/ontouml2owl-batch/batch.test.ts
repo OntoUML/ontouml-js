@@ -8,7 +8,7 @@ var fs = require('fs');
 const yaml = require('js-yaml');
 
 function getOntologyUri(folderName: string): string {
-  return 'http://purl.org/ontouml-models/dataset/' + folderName + '/';
+  return 'https://w3id.org/ontouml-models/model/' + folderName + '#';
 }
 
 describe('Metadata', () => {
@@ -17,7 +17,7 @@ describe('Metadata', () => {
     const writer = new N3.Writer({
       format: 'Turtle',
       prefixes: {
-        ontouml: 'https://purl.org/ontouml-models/vocabulary/',
+        ocmv: 'https://w3id.org/ontouml-models/vocabulary#',
         rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
         owl: 'http://www.w3.org/2002/07/owl#',
@@ -27,7 +27,7 @@ describe('Metadata', () => {
         skos: 'http://www.w3.org/2004/02/skos/core#',
         mod: 'https://w3id.org/mod#',
         lcc: 'http://id.loc.gov/authorities/classification/',
-        foaf: '<http://xmlns.com/foaf/0.1/'
+        foaf: 'http://xmlns.com/foaf/0.1/'
       }
     });
 
@@ -47,7 +47,7 @@ describe('Metadata', () => {
         const owlSerializer = new Ontouml2Owl(project, ontologyUri, null, 'Turtle');
         const { result } = owlSerializer.run();
 
-        const outputOntologyPath = '../ontouml-models/' + folderName + '/ontology.ttl';
+        const outputOntologyPath = '../ontouml-models/models/' + folderName + '/ontology.ttl';
         fs.writeFileSync(outputOntologyPath, result);
 
         await parser.parse(result, (error, quad, prefixes) => {
@@ -59,14 +59,14 @@ describe('Metadata', () => {
       }
 
       try {
-        const metadataPath = '../ontouml-models/' + folderName + '/metadata.yaml';
+        const metadataPath = '../ontouml-models/models/' + folderName + '/metadata.yaml';
         const yamlRaw = fs.readFileSync(metadataPath, 'utf-8');
         const metadata = yaml.load(yamlRaw);
 
         const metadataTransformer = new Metadata2Owl(metadata, ontologyUri, 'Turtle', folderName);
         const { result } = metadataTransformer.run();
 
-        const outputMetadataPath = '../ontouml-models/' + folderName + '/metadata.ttl';
+        const outputMetadataPath = '../ontouml-models/models/' + folderName + '/metadata.ttl';
         fs.writeFileSync(outputMetadataPath, result);
 
         await parser.parse(result, (error, quad, prefixes) => {
@@ -79,28 +79,19 @@ describe('Metadata', () => {
     }
 
     const catalog = `
-    @prefix ontouml: <https://purl.org/ontouml-models/vocabulary/> .
+    @prefix ontouml: <https://w3id.org/ontouml#> .
     @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
     @prefix dct: <http://purl.org/dc/terms/> .
     @prefix dcat: <http://www.w3.org/ns/dcat#> .
     @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
-    <https://purl.org/ontouml-models/catalog> a dcat:Catalog ;
-        dct:title "OntoUML Model Catalog"@en ;
-        rdfs:label "OntoUML Model Catalog"@en ;
-        foaf:homepage <https://github.com/unibz-core/ontouml-models> ;
+    <https://w3id.org/ontouml-models/> a dcat:Catalog ;
+        dct:title "OntoUML/UFO Catalog"@en ;
+        rdfs:label "OntoUML/UFO Catalog"@en ;
+        foaf:homepage <https://w3id.org/ontouml-models> ;
         dcat:themeTaxonomy <http://id.loc.gov/authorities/classification> ;
-        dcat:distribution <https://purl.org/ontouml-models/catalog/turtle> ;
-        dct:publisher <https://www.inf.unibz.it/krdb/core/> ;
-        dct:contributor <https://orcid.org/0000-0002-5385-5761>, <https://orcid.org/0000-0003-2736-7817>, <https://orcid.org/0000-0003-2528-3118>, <https://orcid.org/0000-0002-6661-6292>, <https://orcid.org/0000-0002-0952-9571>, <https://orcid.org/0000-0002-2384-3081>, <https://orcid.org/0000-0002-3452-553X>, <https://github.com/AndrasKomaromi>, <https://orcid.org/0000-0001-5010-3081>, <https://orcid.org/0000-0003-1547-8333>, <https://dblp.org/pid/309/4924>, <https://github.com/TvanEe>, <https://orcid.org/0000-0002-8139-5977>, <https://orcid.org/0000-0003-3385-4769> ;
-
-    <https://www.inf.unibz.it/krdb/core/> rdfs:label "Conceptual and Cognitive Modelling Research Group (CORE)"@en ;
-        a foaf:Organization .
-
-    <https://purl.org/ontouml-models/catalog/turtle> a dcat:Distribution ;
-        dcat:downloadURL <https://raw.githubusercontent.com/unibz-core/ontouml-models/master/catalog.ttl> ;
-        dct:title "Turtle distribution of the OntoUML Model Catalog"@en ;
         dcat:mediaType <https://www.iana.org/assignments/media-types/text/turtle> ;
+        dct:contributor <https://orcid.org/0000-0002-5385-5761>, <https://orcid.org/0000-0003-2736-7817>, <https://orcid.org/0000-0003-2528-3118>, <https://orcid.org/0000-0002-6661-6292>, <https://orcid.org/0000-0002-0952-9571>, <https://orcid.org/0000-0002-2384-3081>, <https://orcid.org/0000-0002-3452-553X>, <https://github.com/AndrasKomaromi>, <https://orcid.org/0000-0001-5010-3081>, <https://orcid.org/0000-0003-1547-8333>, <https://dblp.org/pid/309/4924>, <https://github.com/TvanEe>, <https://orcid.org/0000-0002-8139-5977>, <https://orcid.org/0000-0003-3385-4769> ;        
     `;
     await parser.parse(catalog, (error, quad, prefixes) => {
       if (quad) writer.addQuad(quad);
@@ -108,7 +99,7 @@ describe('Metadata', () => {
 
     writer.end((error, result) => {
       if (error) throw error;
-      fs.writeFileSync('../ontouml-models/catalog.ttl', result);
+      // fs.writeFileSync('../ontouml-models/catalog-release.ttl', result);   // Previously used to generate the release document with all ttl files.
     });
   });
 });
