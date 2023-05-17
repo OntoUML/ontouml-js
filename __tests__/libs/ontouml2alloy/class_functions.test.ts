@@ -29,40 +29,7 @@ describe('Class Functions', () => {
         expect(generateAlloy(model)).not.toContain('PaymentMethod');
 
     })
-  
-    //   afterEach(() => {
-    //     // code to run after each test case
-    //   });
-  
-    //   beforeAll(() => {
-    //     // code to run before all test cases
-    //   });
-  
-    //   afterAll(() => {
-    //     // code to run after all test cases
-    //   });
-  
-    //   it('should do X when Y is provided', () => {
-    //     // Arrange
-    //     //const input = ...; // the input value for the function or class method
-    //     //const expectedOutput = ...; // the expected output of the function or class method
-  
-    //     // Act
-    //     //const actualOutput = ...; // call the function or class method with the input value
-  
-    //     // Assert
-    //     //expect(actualOutput).toEqual(expectedOutput);
-    //   });
-  
-    //   it('should throw an error when Z is provided', () => {
-    //     // Arrange
-    //     //const input = ...; // the input value for the function or class method that should throw an error
-  
-    //     // Assert
-    //     //expect(() => ...).toThrow(); // call the function or class method with the input value and expect it to throw an error
-    //   });
-    
-    //add  
+      
     it('should transform <<datatype>> class with attributes (complex datatype)', () => {
         const _number = model.createDatatype('Number');
         const complexDatatype = model.createDatatype('Date');
@@ -90,7 +57,6 @@ describe('Class Functions', () => {
         const result = generateAlloy(model)
         expect(result).toContain('enum Status {\n        Active, Inactive}')
     });
-
 
     it('should transform <<kind>> class', () => {
         model.createKind('Person');
@@ -169,17 +135,20 @@ describe('Class Functions', () => {
         expect(result).toContain(generateWorldFact('Child','Object'));
       });
 
-      //TODO - what is an <<abstract>> class? There is no such a type of class in ontouml?
-      // it('should transform «abstract» class', () => {
-      //   const model = new Package();
-      //   model.createAbstract('Goal');
+      //TODO - should transform abstract class to a datatype
+      it('should transform «abstract» class', () => {
+        let temp = model.createAbstract('Goal');
+        const _number = model.createDatatype('Date');
+        temp.createAttribute(_number, 'until');
         
-      //   const result = generateAlloy(model);
+        const result = generateAlloy(model);
 
-      //   expect(result).toContain('penis'); 
-      // }); //make it a datatype
+        const factLines = ['Datatype = Goal+Date','disjoint[Goal,Date]'];
+        expect(result).toContain('sig Goal in Datatype {\n        until: Date\n}');        
+        expect(result).toContain(generateFact('additionalDatatypeFacts',factLines));
+      }); 
 
-      //TODO figure out if there should/needs to be a difference between the below 3 cases
+      //TODO igure out if there should/needs to be a difference between the below 3 cases
       it('should transform «mode» class { allowed=[intrinsic-mode] }', () => {
         model.createIntrinsicMode('Skill');
         const result = generateAlloy(model);
@@ -231,11 +200,15 @@ describe('Class Functions', () => {
       // });
       //what is expected with the mixins, semirigid?
 
-      //TODO - check what is desired transformation of category since it's supposed to be an abstract class?
-      // it('should transform «category» class', () => {
-      //   model.createCategory('Animal');
-      //   const result = generateAlloy(model);
-      // });
+      //TODO - category is non-sortal so should there be something different for it?
+      it('should transform «category» class', () => {
+        model.createCategory('Animal');
+        const result = generateAlloy(model);
+
+        expect(result).toContain(generateFact('rigid',['rigidity[Animal,Object,exists]']));
+        expect(result).toContain(generateWorldAttribute('Animal','Object'));
+        expect(result).toContain(generateWorldFact('Animal','Object'));
+      });
 
 
     });

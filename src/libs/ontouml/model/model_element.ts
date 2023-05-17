@@ -66,7 +66,7 @@ export abstract class ModelElement extends OntoumlElement {
     }
   }
 
-  removeSelf(): void {
+  removeSelfFromContainer(): void {
     if (this.container && this.container instanceof Package) {
       (this.container as Package).removeContent(this);
     }

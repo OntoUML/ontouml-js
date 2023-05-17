@@ -14,9 +14,6 @@ describe('Generalization Set Functions', () => {
       model = project.createModel();
     });
 
-  describe('Should add disjointness constraint from a disjoint GS involving only rigid children classes', () => {
-    
-    
     describe ('«kind» Person <|- «subkind» Man, «subkind» Woman, all options', () => {
 
       let gen1: Generalization;
@@ -31,7 +28,7 @@ describe('Generalization Set Functions', () => {
         gen2 = model.createGeneralization(parent, child2);
       });
     
-      //TODO consider that a subKind doesn't get an exists statement when part of a generalization, otherwise does
+      //TODO consider that a subKind doesn't get an exists statement when part of a generalization, otherwise does; test in subkind
       it('disjoint - true, complete - true' , () => {
 
         model.createGeneralizationSet(
@@ -42,7 +39,8 @@ describe('Generalization Set Functions', () => {
   
         const result = generateAlloy(model);
   
-        expect(result).toContain(generateFact('generalizationSet',['disjoint[Man,Woman]','Person = Man+Woman']));  
+        expect(result).toContain(generateFact('generalizationSet',['disjoint[Man,Woman]','Person = Man+Woman']));
+        console.log(result);  
       });
 
       it('disjoint - false, complete - false', () => {
@@ -85,37 +83,22 @@ describe('Generalization Set Functions', () => {
         expect(result).toContain(generateFact('generalizationSet',['Person = Man+Woman']));
     });
 
-    //TODO - model is trimmed, should this test still exist?
-    it('«event» Ceremony <|- «event» Wedding, «event» Graduation', () => {
-      const parent = model.createEvent('Ceremony');
-      const child1 = model.createEvent('Wedding');
-      const child2 = model.createEvent('Graduation');
-      const gen1 = model.createGeneralization(parent, child1);
-      const gen2 = model.createGeneralization(parent, child2);
-      model.createGeneralizationSet([gen1, gen2], true, false);
-
-      const result = generateAlloy(model);
-      expect(result).not.toContain(generateFact('generalization',[' Wedding in Ceremony']));
-    });
+  });
 
     it('«datatype» Color <|- «datatype» ColorInRgb, «datatype» ColorInHsv', () => {
       const parent = model.createDatatype('Color');
       const child1 = model.createDatatype('ColorInRgb');
       const child2 = model.createDatatype('ColorInHsv');
-      const gen1 = model.createGeneralization(parent, child1);
-      const gen2 = model.createGeneralization(parent, child2);
+      const gen1 = model.createGeneralization(parent, child1, 'gen1');
+      const gen2 = model.createGeneralization(parent, child2, 'gen2');
       model.createGeneralizationSet([gen1, gen2], true, false);
 
       const result = generateAlloy(model);
 
       expect(result).toContain(generateFact('generalizationSet', ['disjoint[ColorInRgb,ColorInHsv]']));
     });
+    
 
-
-  });
-
-  //TODO why should there not be a disjoint constraint?
-  describe('Should NOT add disjointness constraint from a disjoint GS involving an antirigid or a semirigid class...', () => {
     it('«kind» Person <|- «phase» Child, «phase» Adult ', () => {
       const parent = model.createKind('Person');
       const child1 = model.createPhase('Child');
@@ -125,7 +108,7 @@ describe('Generalization Set Functions', () => {
       model.createPartition([gen1, gen2]); 
 
       const result = generateAlloy(model);
-      expect(result).not.toContain(generateFact('generalizationSet',['disjoint[Child,Adult]','Person = Child+Adult']));
+      expect(result).toContain(generateFact('generalizationSet',['disjoint[Child,Adult]','Person = Child+Adult']));
     });
 
     it('«category» Agent <|- «roleMixin» Customer, «roleMixin» Provider', () => {
@@ -137,7 +120,7 @@ describe('Generalization Set Functions', () => {
       model.createPartition([gen1, gen2]);
 
       const result = generateAlloy(model);
-      expect(result).not.toContain(generateFact('generalizationSet',['disjoint[Customer,Provider]','Agent = Customer+Provider']));
+      expect(result).toContain(generateFact('generalizationSet',['disjoint[Customer,Provider]','Agent = Customer+Provider']));
     });
 
     //TODO mixin, semirigid not handled
@@ -154,20 +137,3 @@ describe('Generalization Set Functions', () => {
     //   expect(owl).not.toContain('[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:RareObject> <:ExpensiveObject>) .');
     // });
   });
-
-  describe('Should add an equivalence constraint from a complete GS...', () => {
-    it('«kind» Person <|- «phase» Child, «phase» Adult ', () => {
-      const parent = model.createKind('Person');
-      const child1 = model.createPhase('Child');
-      const child2 = model.createPhase('Adult');
-      const gen1 = model.createGeneralization(parent, child1);
-      const gen2 = model.createGeneralization(parent, child2);
-      model.createPartition([gen1, gen2]);
-
-      const result = generateAlloy(model);
-      expect(result).toContain(generateFact('generalizationSet',['disjoint[Child,Adult]','Person = Child+Adult']));
-    });
-  });
-
-});
-});
