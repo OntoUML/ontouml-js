@@ -25,7 +25,7 @@ export class Ontouml2Alloy implements Service {
   visible: string[];
   aliases: [OntoumlElement, string][]; //[element, alias]; used in transformRelatorConstraint
   normalizedNames: { [key: string]: string }; //added; OntoumlElement ID, normalizedName
-  removedElements: ServiceIssue[]; //added, to store removed elements
+  issues: ServiceIssue[]; //added, to store removed elements
 
   /*
     Lines 13-33 define a class Ontouml2Alloy that implements Service. The class has a constructor
@@ -51,7 +51,7 @@ export class Ontouml2Alloy implements Service {
     this.visible = ['exists'];
     this.aliases = [];
     this.normalizedNames = {} //added
-    this.removedElements = [] //added
+    this.issues = [] //added
   }
 
   getAlloyCode(): string[] {
@@ -130,7 +130,7 @@ export class Ontouml2Alloy implements Service {
   }
 
   hasUnsupportedStereotype(decoratable: Decoratable<any>) {
-    return decoratable.hasAnyStereotype(['event', 'situation' ,'type']);
+    return decoratable.hasAnyStereotype(['event', 'situation' ,'type'] || decoratable == null );
   }
   
   removeUnsupportedElements() {
@@ -138,19 +138,30 @@ export class Ontouml2Alloy implements Service {
     const relations = this.model.getAllRelations();
     const generalizations = this.model.getAllGeneralizations();
     const generalizationSets = this.model.getAllGeneralizationSets();
-  
+
     // Remove classes with unsupported stereotypes
     for (const _class of classes) {
+
       if (this.hasUnsupportedStereotype(_class)) {
   
         // Remove properties of the class
         for (const property of _class.properties) {
-          property.removeSelf();
-          this.generateRemovalIssue(property, `Attribute '${property.getName()}' of the class '${_class.getName()}' was removed due to the class having an unsupported stereotype.`);
+          property.removeSelfFromContainer();
+          const attributeName = property.getName() || 'with no name';
+          this.generateRemovalIssue(property, `Attribute '${attributeName}' of the class '${_class.getName()}' was removed due to the class having an unsupported stereotype.`);
         }
 
-        _class.removeSelf();
+        _class.removeSelfFromContainer();
         this.generateRemovalIssue(_class, `Class '${_class.getName()}' was removed due to having an unsupported stereotype.`);
+      }
+      
+    }
+
+    // Remove attributes with undefined propertyType
+    for (const property of this.model.getAllAttributes()) {
+      if(!property.propertyType){
+        property.removeSelfFromContainer();
+        this.generateRemovalIssue(property, `Attribute '${property.getName()}' was removed due to undefined propertyType.`);
       }
     }
   
@@ -160,11 +171,11 @@ export class Ontouml2Alloy implements Service {
       const target = relation.getTarget();
   
       if (source && this.hasUnsupportedStereotype(source)) {
-        source.removeSelf();
-        relation.removeSelf();
+        source.removeSelfFromContainer();
+        relation.removeSelfFromContainer();
         this.generateRemovalIssue(relation, `Relation '${relation.getName()}' was removed due to being connected to an unsupported class '${source.getName()}'.`);
       } else if (target && this.hasUnsupportedStereotype(target)) {
-        relation.removeSelf();
+        relation.removeSelfFromContainer();
         this.generateRemovalIssue(relation, `Relation '${relation.getName()}' was removed due to being connected to an unsupported class '${target.getName()}'.`);
       }
 
@@ -176,7 +187,7 @@ export class Ontouml2Alloy implements Service {
       const target = generalization.general;
   
       if ((source && this.hasUnsupportedStereotype(source)) || (target && this.hasUnsupportedStereotype(target))) {
-        generalization.removeSelf();
+        generalization.removeSelfFromContainer();
         const genName = generalization.getName() || `${source.getName()} -> ${target.getName()}`;
         this.generateRemovalIssue(generalization, `Generalization '${genName}' was removed due to having an unsupported element.`);
       }
@@ -186,7 +197,7 @@ export class Ontouml2Alloy implements Service {
     for (const generalizationSet of generalizationSets) {
       let categorizerUnsupported = generalizationSet.categorizer && this.hasUnsupportedStereotype(generalizationSet.categorizer);
       if (generalizationSet.generalizations.some(gen => this.hasUnsupportedStereotype(gen.specific) || this.hasUnsupportedStereotype(gen.general)) || categorizerUnsupported) {
-        generalizationSet.removeSelf();
+        generalizationSet.removeSelfFromContainer();
         const genSetNames = generalizationSet.generalizations.map(gen => gen.getName() || `${gen.specific.getName()} -> ${gen.general.getName()}`).join(', ');
         const genSetName = generalizationSet.getName() || `{${genSetNames}}`;
         
@@ -212,7 +223,7 @@ export class Ontouml2Alloy implements Service {
       description: description,
       data: element
     };
-    this.removedElements.push(issue);
+    this.issues.push(issue);
   }
   
   
@@ -453,7 +464,7 @@ export class Ontouml2Alloy implements Service {
         worldStructureModule: this.getAlloyCode()[1],
         ontologicalPropertiesModule: this.getAlloyCode()[2]
       },
-      issues: this.removedElements.length > 0 ? this.removedElements : undefined
+      issues: this.issues.length > 0 ? this.issues : undefined
     };
   }//method to check prerequisites for trasnforming a class
   /*

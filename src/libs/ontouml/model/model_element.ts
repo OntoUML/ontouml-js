@@ -70,9 +70,9 @@ export abstract class ModelElement extends OntoumlElement {
     // TODO: resolve references within propertyAssignments
   }
 
-  removeSelf(): void {
-    if (this.container && this.container instanceof Package) {
-      (this.container as Package).removeContent(this);
-    }
+  removeSelfFromContainer(): void {
+      if (this.container && this.container instanceof Package) {
+        (this.container as Package).removeContent(this);
+      }
   }
 }
