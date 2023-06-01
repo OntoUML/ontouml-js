@@ -1,7 +1,7 @@
 import { Ontouml2Alloy } from '@libs/ontouml2alloy/index';
 import { Class, OntoumlElement, Package, Project, Relation } from '@libs/ontouml';
 import { normalizeName } from '@libs/ontouml2alloy/util';
-import { generateAlloy, generateFact, generateWorldAttribute, generateWorldFact } from './helpers';
+import { generateAlloy, generateFact, generateWorldFieldForClass, generateWorldFact } from './helpers';
 import { OntoumlType } from '@libs/ontouml';
 import { reservedKeywords, forbiddenCharacters } from '@libs/ontouml2alloy/util';
 
@@ -98,8 +98,8 @@ describe('Name normalization' , () => {
 
             expect(result).toContain(generateFact('rigid',['rigidity[Person,Object,exists]']));
             expect(result).toContain(generateFact('rigid',['rigidity[Person1,Object,exists]']));
-            expect(result).toContain(generateWorldAttribute('Person','Object'));
-            expect(result).toContain(generateWorldAttribute('Person1','Object'));
+            expect(result).toContain(generateWorldFieldForClass('Person','Object'));
+            expect(result).toContain(generateWorldFieldForClass('Person1','Object'));
             expect(result).toContain(generateWorldFact('Person+Person1','Object'));
         })
 

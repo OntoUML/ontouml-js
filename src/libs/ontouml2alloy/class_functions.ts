@@ -8,7 +8,6 @@ export function transformClass(transformer: Ontouml2Alloy, _class: Class) { //Th
     return;
   }
 
-  //TODO change Abstract to Datatype
   if(_class.hasAbstractStereotype()){
     _class.stereotype = ClassStereotype.DATATYPE;
   }
