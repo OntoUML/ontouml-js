@@ -159,9 +159,9 @@ export class Ontouml2Alloy implements Service {
 
     // Remove attributes with undefined propertyType
     for (const property of this.model.getAllAttributes()) {
-      if(!property.propertyType){
+      if(!property.propertyType || this.hasUnsupportedStereotype(property.propertyType)){
         property.removeSelfFromContainer();
-        this.generateRemovalIssue(property, `Attribute '${property.getName()}' was removed due to undefined propertyType.`);
+        this.generateRemovalIssue(property, `Attribute '${property.getName()}' was removed due to undefined/unsupported propertyType.`);
       }
     }
   
@@ -195,6 +195,7 @@ export class Ontouml2Alloy implements Service {
   
     // Remove generalization sets containing unsupported elements
     for (const generalizationSet of generalizationSets) {
+      //TODO remove categorizer
       let categorizerUnsupported = generalizationSet.categorizer && this.hasUnsupportedStereotype(generalizationSet.categorizer);
       if (generalizationSet.generalizations.some(gen => this.hasUnsupportedStereotype(gen.specific) || this.hasUnsupportedStereotype(gen.general)) || categorizerUnsupported) {
         generalizationSet.removeSelfFromContainer();

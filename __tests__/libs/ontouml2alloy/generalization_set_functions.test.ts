@@ -1,6 +1,6 @@
 import { transformGeneralizationSet, Ontouml2Alloy } from '@libs/ontouml2alloy';
 import { Package, Project } from '@libs/ontouml';
-import { generateAlloy, generateFact, generateWorldAttribute } from './helpers';
+import { generateAlloy, generateFact, generateWorldFieldForClass } from './helpers';
 import { Generalization } from '@libs/ontouml';
 
 
@@ -28,7 +28,6 @@ describe('Generalization Set Functions', () => {
         gen2 = model.createGeneralization(parent, child2);
       });
     
-      //TODO consider that a subKind doesn't get an exists statement when part of a generalization, otherwise does; test in subkind
       it('disjoint - true, complete - true' , () => {
 
         model.createGeneralizationSet(
@@ -122,18 +121,4 @@ describe('Generalization Set Functions', () => {
       const result = generateAlloy(model);
       expect(result).toContain(generateFact('generalizationSet',['disjoint[Customer,Provider]','Agent = Customer+Provider']));
     });
-
-    //TODO mixin, semirigid not handled
-    // it('«mixin» Insurable <|- «mixin» ExpensiveObject, «category» RareObject', () => {
-    //   const parent = model.createMixin('Insurable');
-    //   const child1 = model.createMixin('ExpensiveObject');
-    //   const child2 = model.createCategory('RareObject');
-    //   const gen1 = model.createGeneralization(parent, child1);
-    //   const gen2 = model.createGeneralization(parent, child2);
-    //   model.createPartition([gen1, gen2]);
-
-    //   const owl = generateGufo(model);
-    //   expect(owl).not.toContain('[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:ExpensiveObject> <:RareObject>) .');
-    //   expect(owl).not.toContain('[ <rdf:type> <owl:AllDisjointClasses> ] <owl:members> (<:RareObject> <:ExpensiveObject>) .');
-    // });
   });

@@ -28,10 +28,16 @@ export function generateFact(factName: string, factLines: string[]): string {
     result += '}\n\n';
     return result;
   }  
-  
 
-export function generateWorldAttribute(className: string, classNature: string): string{
+export function generateWorldFieldForClass(className: string, classNature: string): string{
     return className + ': set exists:>' + classNature;
+}
+
+export function generateWorldFieldForRelation(relationName: string, sourceName: string, targetname: string, sourceCardinality: string, targetCardinality: string): string{
+  if(targetCardinality == ''){{
+    return relationName + ': ' + sourceCardinality + ' ' + sourceName + ' -> ' + targetname;
+  }}
+  return relationName + ': ' + sourceCardinality + ' ' + sourceName + ' -> ' + targetCardinality + ' ' + targetname;
 }
 
 export function generateWorldFact(className: string, classNature: string): string{
