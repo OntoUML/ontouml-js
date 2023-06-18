@@ -19,7 +19,7 @@ export const forbiddenCharacters = [
 ];
 
 //TODO multi-language support
-export function normalizeName(transformer: Ontouml2Alloy, element: OntoumlElement) {
+export function getNormalizedName(transformer: Ontouml2Alloy, element: OntoumlElement) {
 
 	if(element.id in transformer.normalizedNames){
 		return transformer.normalizedNames[element.id];
@@ -27,13 +27,18 @@ export function normalizeName(transformer: Ontouml2Alloy, element: OntoumlElemen
 
     let normalizedName = element.getName();
 
+	//Check if the name is null, if so, replace it with 'Unnamed'
+	if(normalizedName == null) {
+        normalizedName = 'Unnamed';
+    }
+
     //Replace forbidden characters with an empty string
     forbiddenCharacters.forEach(char => {
         normalizedName = normalizedName.replace(new RegExp(`\\${char}`, 'g'), '');
     });
 
 	//Check if the name is an empty string, if so, replace it with 'Unnamed'
-	if(normalizedName == ''){
+	if(!normalizedName){ 
 		normalizedName = 'Unnamed';
 	}
 
