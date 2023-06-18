@@ -1,10 +1,10 @@
 import { Generalization } from '@libs/ontouml';
 import { Ontouml2Alloy } from './';
-import { normalizeName } from './util';
+import { getNormalizedName } from './util';
 
 export function transformGeneralization(transformer: Ontouml2Alloy, gen: Generalization) {
-  const specificName = normalizeName(transformer, gen.specific);
-  const generalName = normalizeName(transformer, gen.general)
+  const specificName = getNormalizedName(transformer, gen.specific);
+  const generalName = getNormalizedName(transformer, gen.general)
 
   transformer.addFact(
     'fact generalization {\n' +

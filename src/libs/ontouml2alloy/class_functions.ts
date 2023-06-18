@@ -1,7 +1,7 @@
 import { Class, ClassStereotype, Relation } from '@libs/ontouml';
 import { RelationStereotype } from '@libs/ontouml/model/stereotypes';
 import { Ontouml2Alloy } from '.';
-import { normalizeName, isTopLevel, getValidAlias } from './util';
+import { getNormalizedName, isTopLevel, getValidAlias } from './util';
 
 export function transformClass(transformer: Ontouml2Alloy, _class: Class) { //This line defines a function named transformClass that takes two parameters: transformer (of type Ontouml2Alloy) and _class (of type Class).
   if (_class.hasAnyStereotype([ClassStereotype.EVENT, ClassStereotype.SITUATION,ClassStereotype.TYPE])) { //This line checks if the given class _class has any of the stereotypes EVENT, SITUATION or TYPE. If it does, the function immediately returns without doing anything.
@@ -42,8 +42,8 @@ export function transformClass(transformer: Ontouml2Alloy, _class: Class) { //Th
 }
 
 function transformAbstractClass(transformer: Ontouml2Alloy, _class: Class) {
-  const className = normalizeName(transformer, _class);
-  const subtypes = _class.getChildren().map(subtype => 'w.' + normalizeName(transformer, subtype));
+  const className = getNormalizedName(transformer, _class);
+  const subtypes = _class.getChildren().map(subtype => 'w.' + getNormalizedName(transformer, subtype));
 
   if (subtypes.length) {
     transformer.addFact(
@@ -55,7 +55,7 @@ function transformAbstractClass(transformer: Ontouml2Alloy, _class: Class) {
 }
 
 function transformEndurantClass(transformer: Ontouml2Alloy, _class: Class) {
-  const className = normalizeName(transformer, _class);
+  const className = getNormalizedName(transformer, _class);
   let nature = '';
 
   if (_class.isRestrictedToSubstantial()) {
@@ -86,13 +86,13 @@ function transformEndurantClass(transformer: Ontouml2Alloy, _class: Class) {
 }
 
 function transformDatatypeClass(transformer: Ontouml2Alloy, _class: Class) {
-  const datatypeName = normalizeName(transformer, _class);
+  const datatypeName = getNormalizedName(transformer, _class);
   transformer.addDatatype([datatypeName, []]);
 }
 
 function transformEnumerationClass(transformer: Ontouml2Alloy, _class: Class) {
-  const enumName = normalizeName(transformer, _class);
-  const literals = _class.literals.map(literal => normalizeName(transformer, literal));
+  const enumName = getNormalizedName(transformer, _class);
+  const literals = _class.literals.map(literal => getNormalizedName(transformer, literal));
 
   if (literals.length) {
     transformer.addEnum(
@@ -110,19 +110,21 @@ function transformRelatorConstraint(transformer: Ontouml2Alloy, _class: Class) {
       const mediated = mediation.getTargetEnd();
       let mediatedName = '';
 	
-      if (mediated.getName()) {
-        mediatedName = normalizeName(transformer, mediated);
-      }	else {
-        mediatedName = normalizeName(transformer, mediation.getTarget());
-      }
+      // if (mediated.getName()) {
+      //   mediatedName = normalizeName(transformer, mediated);
+      // }	else {
+      //   mediatedName = normalizeName(transformer, mediation.getTarget());
+      // }
 
-      const mediatedAlias = getValidAlias(mediated, mediatedName, transformer.aliases);
+
+       const mediatedAlias = getValidAlias(mediated, getNormalizedName(transformer, mediation.getTarget()), transformer.aliases);
+      // const mediatedAlias = getNormalizedName(transformer, mediation.getTarget());
       mediations.push(mediatedAlias + '[x,w]');
     }
   }
 
   if (mediations.length) {
-    const relatorName = normalizeName(transformer, _class);
+    const relatorName = getNormalizedName(transformer, _class);
     transformer.addFact(
       'fact relatorConstraint {\n' +
       '        all w: World, x: w.' + relatorName + ' | #(' + mediations.join('+') + ')>=2\n' +
@@ -142,9 +144,9 @@ function transformWeakSupplementationConstraint(transformer: Ontouml2Alloy, _cla
         let partName = '';
 	
         if (part.getName()) {
-          partName = normalizeName(transformer, part);
+          partName = getNormalizedName(transformer, part);
         }	else {
-          partName = normalizeName(transformer, (part.container as Relation).getTarget());
+          partName = getNormalizedName(transformer, (part.container as Relation).getTarget());
         }
 
         const partAlias = getValidAlias(part, partName, transformer.aliases);
@@ -154,7 +156,7 @@ function transformWeakSupplementationConstraint(transformer: Ontouml2Alloy, _cla
 	}
 
   if (parts.length) {
-    const wholeName = normalizeName(transformer, _class);
+    const wholeName = getNormalizedName(transformer, _class);
 
     transformer.addFact(
       'fact weakSupplementationConstraint {\n' +
@@ -174,12 +176,12 @@ function transformDisjointNaturesConstraint(transformer: Ontouml2Alloy, _class: 
     if (isTopLevel(otherClass, transformer.model.getAllGeneralizations())
       && !otherClass.restrictedToContainedIn(_class.restrictedTo)) {
 
-      differentNaturedClasses.push(normalizeName(transformer, otherClass));
+      differentNaturedClasses.push(getNormalizedName(transformer, otherClass));
     }
   }
 
   if (differentNaturedClasses.length) {
-    const className = normalizeName(transformer, _class);
+    const className = getNormalizedName(transformer, _class);
     if (differentNaturedClasses.length == 1) {
       transformer.addWorldFieldFact(
         'disjoint[' + className + ',' + differentNaturedClasses[0] + ']'
@@ -198,7 +200,7 @@ export function transformAdditionalClassConstraints(transformer: Ontouml2Alloy) 
 
   for (const _class of transformer.model.getAllClasses()) {
     if (_class.isRestrictedToEndurant() && isTopLevel(_class, transformer.model.getAllGeneralizations())) {
-      const className = normalizeName(transformer, _class);
+      const className = getNormalizedName(transformer, _class);
 
       if (_class.isRestrictedToSubstantial()) {
         objectClasses.push(className);
@@ -235,10 +237,10 @@ export function transformAdditionalDatatypeConstraints(transformer: Ontouml2Allo
       }
     }
 
-    const datatypesNames = datatypes.map(datatype => normalizeName(transformer, datatype));
+    const datatypesNames = datatypes.map(datatype => getNormalizedName(transformer, datatype));
 
     if (topLevelDatatypes.length >= 2) {
-      const topLevelDatatypesNames = topLevelDatatypes.map(datatype => normalizeName(transformer, datatype));
+      const topLevelDatatypesNames = topLevelDatatypes.map(datatype => getNormalizedName(transformer, datatype));
 
       transformer.addFact(
         'fact additionalDatatypeFacts {\n' +

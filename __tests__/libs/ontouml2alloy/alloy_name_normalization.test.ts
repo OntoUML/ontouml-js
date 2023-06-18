@@ -1,6 +1,6 @@
 import { Ontouml2Alloy } from '@libs/ontouml2alloy/index';
 import { Class, OntoumlElement, Package, Project, Relation } from '@libs/ontouml';
-import { normalizeName } from '@libs/ontouml2alloy/util';
+import { getNormalizedName } from '@libs/ontouml2alloy/util';
 import { generateAlloy, generateFact, generateWorldFieldForClass, generateWorldFact } from './helpers';
 import { OntoumlType } from '@libs/ontouml';
 import { reservedKeywords, forbiddenCharacters } from '@libs/ontouml2alloy/util';
@@ -24,25 +24,25 @@ describe('Name normalization' , () => {
     
         it('Person -> Person', () => {
             element.addName('Person');
-            const normalized = normalizeName(transformer, element);
+            const normalized = getNormalizedName(transformer, element);
             expect(normalized).toBe('Person');
           });
         
           it('PERSON -> PERSON', () => {
             element.addName('PERSON');
-            const normalized = normalizeName(transformer, element);
+            const normalized = getNormalizedName(transformer, element);
             expect(normalized).toBe('PERSON');
           });
         
           it('person -> person', () => {
             element.addName('person');
-            const normalized = normalizeName(transformer, element);
+            const normalized = getNormalizedName(transformer, element);
             expect(normalized).toBe('person');
           });
         
           it('PeRsoN -> PeRsoN', () => {
             element.addName('PeRsoN');
-            const normalized = normalizeName(transformer, element);
+            const normalized = getNormalizedName(transformer, element);
             expect(normalized).toBe('PeRsoN');
           });
     
@@ -54,7 +54,7 @@ describe('Name normalization' , () => {
         reservedKeywords.forEach(keyword => {
             it(`should normalize the reserved keyword "${keyword}"`, () => {
                 element.addName(keyword);
-                const normalized = normalizeName(transformer, element);
+                const normalized = getNormalizedName(transformer, element);
                 expect(normalized).toBe(`${keyword}_${(element.type).toLowerCase()}`);
             });
         });
@@ -62,7 +62,7 @@ describe('Name normalization' , () => {
         forbiddenCharacters.forEach(char => {
             it(`should remove the forbidden character "${char}" from the name`, () => {
                 element.addName(`Happy${char}Person`);
-                const normalized = normalizeName(transformer, element);
+                const normalized = getNormalizedName(transformer, element);
                 expect(normalized).toBe('HappyPerson');
             });
         });
@@ -70,22 +70,22 @@ describe('Name normalization' , () => {
         //normalization of empty name: '' -> Unnamed_OntoumlElementType; 
         it('should normalize a class with no name', () => {
             element.addName('');
-            const normalized = normalizeName(transformer, element);
+            const normalized = getNormalizedName(transformer, element);
             expect(normalized).toBe('Unnamed_class');
         });
 
         it('should normalize a relation with no name', () => {
             element = new Relation();
             element.addName('');
-            const normalized = normalizeName(transformer, element);
+            const normalized = getNormalizedName(transformer, element);
             expect(normalized).toBe('Unnamed_relation');
         });
 
         it('should normalize two classes with no name/only forbidden characters', () => {
             const element1 = model.createKind('');
             const element2 = model.createKind('!!!');
-            const normalized1 = normalizeName(transformer, element1);
-            const normalized2 = normalizeName(transformer, element2);
+            const normalized1 = getNormalizedName(transformer, element1);
+            const normalized2 = getNormalizedName(transformer, element2);
 
             expect(normalized1).toBe('Unnamed_class');
             expect(normalized2).toBe('Unnamed_class1');
@@ -105,9 +105,24 @@ describe('Name normalization' , () => {
 
         it('should normalize a class starting with a number', () => {
             element.addName('123Person');
-            const normalized = normalizeName(transformer, element);
+            const normalized = getNormalizedName(transformer, element);
             expect(normalized).toBe('class_123Person');
         });
+
+        it('should transform a mediation relation', () => {
+            const class1 = model.createRelator('Enrollment');
+            const class2 = model.createRole('Student');
+      
+            model.createMediationRelation(class1, class2, 'involves');
+            
+            const result = generateAlloy(model);
+    
+            console.log(result);
+            expect(result).toContain(generateFact('relatorConstraint',['all w: World, x: w.Enrollment | #(Student1[x,w])>=2'])); //ensures that there are at least two 'Student' related to each 'Enrollment'.
+            expect(result).toContain(generateFact('acyclic',['all w: World | acyclic[w.involves,w.Enrollment]'])); //ensures that 'involves' relation is acyclic for 'Enrollment', i.e., it does not loop back on itself.
+            expect(result).toContain(generateFact('relationProperties', ['immutable_target[Enrollment,involves]'])); //part of property test?
+        });
+    
     
     });
 

@@ -21,7 +21,6 @@ export function generateFact(factName: string, factLines: string[]): string {
     return result;
   }
 
-  //TODO check if functions are always like this
   export function generateFun(funName: string, fromEnitity: string, toEntity, expression: string): string {
     let result = `fun ${funName} [x: World.${fromEnitity}, w: World] : set World.${toEntity} {\n`;
     result += `        ${expression}\n`;
