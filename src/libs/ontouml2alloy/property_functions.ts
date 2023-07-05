@@ -43,9 +43,10 @@ function transformOrderedAttribute(transformer: Ontouml2Alloy, attribute: Proper
 	const ownerClassName = getNormalizedName(transformer, attribute.container);
 	const datatypeName = getNormalizedName(transformer, attribute.propertyType);
 	const funAlias = getValidAlias(attribute, attributeName, transformer.aliases);
+	const cardinality = getCardinalityKeyword(attribute.cardinality);
 
 	transformer.addWorldFieldDeclaration(
-		attributeName + ': set ' + ownerClassName + ' set -> set Int set -> set ' + datatypeName
+		(attributeName + ': set ' + ownerClassName + ' set -> set Int set -> ' + cardinality + ' ' + datatypeName).replace(/\s{2,}/g, ' ')
 	);
 
 	transformer.addFact(
@@ -66,6 +67,42 @@ function transformOrderedAttribute(transformer: Ontouml2Alloy, attribute: Proper
 			'immutable_target[' + ownerClassName + ',' + attributeName + ']'
 		);
 	}
+
+	if (isCustomCardinality(attribute.cardinality)) {
+		const [lowerBound, upperBound] = getCustomCardinality(attribute.cardinality);
+
+		if (lowerBound && upperBound) {
+			if (lowerBound === upperBound) {
+				transformer.addFact(
+					'fact multiplicity {\n' +
+					'        all w: World, x: w.' + ownerClassName + ' | #' + funAlias + '[x,w]=' + lowerBound + '\n' +
+					'}'
+				);
+			} else {
+				transformer.addFact(
+					'fact multiplicity {\n' +
+					'        all w: World, x: w.' + ownerClassName + ' | #' + funAlias + '[x,w]>=' + lowerBound + ' and #' + funAlias + '[x,w]<=' + upperBound + '\n' +
+					'}'
+				);
+			}
+		} else if (lowerBound) {
+			transformer.addFact(
+				'fact multiplicity {\n' +
+				'        all w: World, x: w.' + ownerClassName + ' | #' + funAlias + '[x,w]>=' + lowerBound + '\n' +
+				'}'
+			);
+		} else if (upperBound) {
+			transformer.addFact(
+				'fact multiplicity {\n' +
+				'        all w: World, x: w.' + ownerClassName + ' | #' + funAlias + '[x,w]<=' + upperBound + '\n' +
+				'}'
+			);
+		}
+	}
+
+	transformer.addVisible(
+		'select13[' + attributeName + ']'
+	);
 }
 
 function transformGeneralAttribute(transformer: Ontouml2Alloy, attribute: Property) {
@@ -95,11 +132,20 @@ function transformGeneralAttribute(transformer: Ontouml2Alloy, attribute: Proper
 		const [lowerBound, upperBound] = getCustomCardinality(attribute.cardinality);
 
 		if (lowerBound && upperBound) {
-			transformer.addFact(
-				'fact multiplicity {\n' +
-				'        all w: World, x: w.' + ownerClassName + ' | #' + funAlias + '[x,w]>=' + lowerBound + ' and #' + funAlias + '[x,w]<=' + upperBound + '\n' +
-				'}'
-			);
+			if (lowerBound === upperBound) {
+				transformer.addFact(
+					'fact multiplicity {\n' +
+					'        all w: World, x: w.' + ownerClassName + ' | #' + funAlias + '[x,w]=' + lowerBound + '\n' +
+					'}'
+				);
+			} else {
+				transformer.addFact(
+					'fact multiplicity {\n' +
+					'        all w: World, x: w.' + ownerClassName + ' | #' + funAlias + '[x,w]>=' + lowerBound + ' and #' + funAlias + '[x,w]<=' + upperBound + '\n' +
+					'}'
+				);
+			}
+			
 		} else if (lowerBound) {
 			transformer.addFact(
 				'fact multiplicity {\n' +
@@ -116,7 +162,7 @@ function transformGeneralAttribute(transformer: Ontouml2Alloy, attribute: Proper
 	}
 
 	transformer.addVisible(
-		'select13[' + attributeName +']'
+		'select13[' + attributeName + ']'
 	);
 }
 
@@ -131,10 +177,10 @@ function transformRelationSourceEnd(transformer: Ontouml2Alloy, sourceEnd: Prope
 
 	const sourceName = getNormalizedName(transformer, (sourceEnd.container as Relation).getSource());
 	let sourceEndName = '';
-	
+
 	if (sourceEnd.getName()) {
 		sourceEndName = getNormalizedName(transformer, sourceEnd);
-	}	else {
+	} else {
 		sourceEndName = sourceName;
 	}
 
@@ -168,11 +214,19 @@ function transformRelationSourceEnd(transformer: Ontouml2Alloy, sourceEnd: Prope
 		const [lowerBound, upperBound] = getCustomCardinality(sourceEnd.cardinality);
 
 		if (lowerBound && upperBound) {
-			transformer.addFact(
-				'fact multiplicity {\n' +
-				'        all w: World, x: w.' + oppositeName + ' | #' + sourceEndAlias + '[x,w]>=' + lowerBound + ' and #' + sourceEndAlias + '[x,w]<=' + upperBound + '\n' +
-				'}'
-			);
+			if (lowerBound === upperBound) {
+				transformer.addFact(
+					'fact multiplicity {\n' +
+					'        all w: World, x: w.' + oppositeName + ' | #' + sourceEndAlias + '[x,w]=' + lowerBound + '\n' +
+					'}'
+				);
+			} else {
+				transformer.addFact(
+					'fact multiplicity {\n' +
+					'        all w: World, x: w.' + oppositeName + ' | #' + sourceEndAlias + '[x,w]>=' + lowerBound + ' and #' + sourceEndAlias + '[x,w]<=' + upperBound + '\n' +
+					'}'
+				);
+			}
 		} else if (lowerBound) {
 			transformer.addFact(
 				'fact multiplicity {\n' +
@@ -197,13 +251,13 @@ function transformRelationTargetEnd(transformer: Ontouml2Alloy, targetEnd: Prope
 	} else {
 		relationName = getValidAlias(targetEnd.container, 'relation', transformer.aliases);
 	}
-	
+
 	const targetName = getNormalizedName(transformer, (targetEnd.container as Relation).getTarget());
 	let targetEndName = '';
-	
+
 	if (targetEnd.getName()) {
 		targetEndName = getNormalizedName(transformer, targetEnd);
-	}	else {
+	} else {
 		targetEndName = targetName;
 	}
 
@@ -227,7 +281,7 @@ function transformRelationTargetEnd(transformer: Ontouml2Alloy, targetEnd: Prope
 
 	if (targetEnd.isReadOnly || (targetEnd.container as Relation).hasMediationStereotype()
 		|| (targetEnd.container as Relation).hasCharacterizationStereotype()) {
-			
+
 		transformer.addRelationPropertiesFact(
 			'immutable_target[' + oppositeName + ',' + relationName + ']'
 		);
@@ -235,15 +289,23 @@ function transformRelationTargetEnd(transformer: Ontouml2Alloy, targetEnd: Prope
 
 	if (isCustomCardinality(targetEnd.cardinality)
 		|| isMaterialConnectedToDerivation((targetEnd.container as Relation), transformer.model.getAllRelations())) {
-		
+
 		const [lowerBound, upperBound] = getCustomCardinality(targetEnd.cardinality);
-		
+
 		if (lowerBound && upperBound) {
-			transformer.addFact(
-				'fact multiplicity {\n' +
-				'        all w: World, x: w.' + oppositeName + ' | #' + targetEndAlias + '[x,w]>=' + lowerBound + ' and #' + targetEndAlias + '[x,w]<=' + upperBound + '\n' +
-				'}'
-			);
+			if (lowerBound === upperBound) {
+				transformer.addFact(
+					'fact multiplicity {\n' +
+					'        all w: World, x: w.' + oppositeName + ' | #' + targetEndAlias + '[x,w]=' + lowerBound + '\n' +
+					'}'
+				);
+			} else {
+				transformer.addFact(
+					'fact multiplicity {\n' +
+					'        all w: World, x: w.' + oppositeName + ' | #' + targetEndAlias + '[x,w]>=' + lowerBound + ' and #' + targetEndAlias + '[x,w]<=' + upperBound + '\n' +
+					'}'
+				);
+			}
 		} else if (lowerBound) {
 			transformer.addFact(
 				'fact multiplicity {\n' +
@@ -266,18 +328,26 @@ function transformDatatypeAttribute(transformer: Ontouml2Alloy, attribute: Prope
 	const ownerDatatype = getCorrespondingDatatype(ownerDatatypeName, transformer.datatypes);
 	const cardinality = getCardinalityKeyword(attribute.cardinality);
 	const datatypeName = getNormalizedName(transformer, attribute.propertyType);
-	
+
 	ownerDatatype[1].push((attributeName + ': ' + cardinality + ' ' + datatypeName).replace(/\s{2,}/g, ' '));
 
 	if (isCustomCardinality(attribute.cardinality)) {
 		const [lowerBound, upperBound] = getCustomCardinality(attribute.cardinality);
 
 		if (lowerBound && upperBound) {
-			transformer.addFact(
-				'fact multiplicity {\n' +
-				'        all x: ' + ownerDatatype[0] + ' | #x.' + attributeName + '>=' + lowerBound + ' and #x.' + attributeName + '<=' + upperBound + '\n' +
-				'}'
-			);
+			if (lowerBound === upperBound) {
+				transformer.addFact(
+					'fact multiplicity {\n' +
+					'        all x: ' + ownerDatatype[0] + ' | #x.' + attributeName + '=' + lowerBound + '\n' +
+					'}'
+				);
+			} else {
+				transformer.addFact(
+					'fact multiplicity {\n' +
+					'        all x: ' + ownerDatatype[0] + ' | #x.' + attributeName + '>=' + lowerBound + ' and #x.' + attributeName + '<=' + upperBound + '\n' +
+					'}'
+				);
+			}
 		} else if (lowerBound) {
 			transformer.addFact(
 				'fact multiplicity {\n' +
