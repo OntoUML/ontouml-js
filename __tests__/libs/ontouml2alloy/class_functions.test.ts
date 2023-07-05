@@ -146,8 +146,6 @@ describe('Class Functions', () => {
         expect(result).toContain(generateFact('additionalDatatypeFacts',factLines));
       }); 
 
-      //TODO figure out if there should/needs to be a difference between the below 3 cases
-      //TODO send email to Tiago regarding the below 3 cases
       it('should transform «mode» class { allowed=[intrinsic-mode] }', () => {
         model.createIntrinsicMode('Skill');
         const result = generateAlloy(model);

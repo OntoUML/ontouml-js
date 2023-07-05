@@ -39,7 +39,6 @@ describe('Generalization Set Functions', () => {
         const result = generateAlloy(model);
   
         expect(result).toContain(generateFact('generalizationSet',['disjoint[Man,Woman]','Person = Man+Woman']));
-        console.log(result);  
       });
 
       it('disjoint - false, complete - false', () => {
@@ -93,7 +92,6 @@ describe('Generalization Set Functions', () => {
       model.createGeneralizationSet([gen1, gen2], true, false);
 
       const result = generateAlloy(model);
-
       expect(result).toContain(generateFact('generalizationSet', ['disjoint[ColorInRgb,ColorInHsv]']));
     });
     

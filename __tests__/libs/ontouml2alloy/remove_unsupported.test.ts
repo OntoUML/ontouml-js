@@ -13,8 +13,6 @@ describe("removeUnsupportedElements function", () => {
     model = project.createModel();
   });
 
-  //TODO deep copy of model
-
   it('removes <<event>> & connected generalizations, attributes', () => {
 
     // Add unsupported elements to the model
@@ -176,29 +174,6 @@ describe("removeUnsupportedElements function", () => {
     expect(issues).toBeDefined();
     expect(issues.length).toBe(3);
     expect(issues.map(issue => issue.id)).toContain(mixedGenSet.id);
-  });
-
-
-  it('removes generalization sets with categorizers having unsupported stereotypes', () => {
-    const supportedParent = model.createKind('Person');
-    const supportedChild1 = model.createSubkind('Man');
-    const supportedChild2 = model.createSubkind('Woman');
-    const unsupportedCategorizer = model.createType('CategoryType');
-
-    const gen1 = model.createGeneralization(supportedParent, supportedChild1);
-    const gen2 = model.createGeneralization(supportedParent, supportedChild2);
-
-    const genSet1 = model.createGeneralizationSet([gen1, gen2], true, false, unsupportedCategorizer);
-
-    const ontouml2alloy = new Ontouml2Alloy(model);
-    let { result, issues } = ontouml2alloy.run();
-    result = ontouml2alloy.getAlloyCode()[0];
-
-    expect(result).not.toContain(generateFact('generalizationSet', ['disjoint[Man,Woman]']));
-
-    expect(issues).toBeDefined();
-    expect(issues.length).toBe(2);
-    expect(issues.map(issue => issue.id)).toContain(genSet1.id);
   });
 
   it('removes <<type>> classes and retains others', () => {

@@ -46,7 +46,6 @@ describe('Generalization functions', () => {
             const result = generateAlloy(model);
 
             expect(result).toContain(generateFact('generalization',['loves in likes']));
-            console.log(result);
           });
 
     })

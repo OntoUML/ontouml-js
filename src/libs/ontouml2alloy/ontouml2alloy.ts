@@ -192,26 +192,19 @@ export class Ontouml2Alloy implements Service {
         this.generateRemovalIssue(generalization, `Generalization '${genName}' was removed due to having an unsupported element.`);
       }
     }
-  
+
     // Remove generalization sets containing unsupported elements
     for (const generalizationSet of generalizationSets) {
-      //TODO remove categorizer
-      let categorizerUnsupported = generalizationSet.categorizer && this.hasUnsupportedStereotype(generalizationSet.categorizer);
-      if (generalizationSet.generalizations.some(gen => this.hasUnsupportedStereotype(gen.specific) || this.hasUnsupportedStereotype(gen.general)) || categorizerUnsupported) {
-        generalizationSet.removeSelfFromContainer();
-        const genSetNames = generalizationSet.generalizations.map(gen => gen.getName() || `${gen.specific.getName()} -> ${gen.general.getName()}`).join(', ');
-        const genSetName = generalizationSet.getName() || `{${genSetNames}}`;
-        
-        let removalDescription;
-        if (categorizerUnsupported) {
-          removalDescription = `Generalization Set '${genSetName}' was removed due to having an unsupported categorizer '${generalizationSet.categorizer.getName()}'.`;
-        } else {
-          removalDescription = `Generalization Set '${genSetName}' was removed due to containing an unsupported element.`;
-        }
-        
-        this.generateRemovalIssue(generalizationSet, removalDescription);
+      if (generalizationSet.generalizations.some(gen => this.hasUnsupportedStereotype(gen.specific) || this.hasUnsupportedStereotype(gen.general))) {
+          generalizationSet.removeSelfFromContainer();
+          const genSetNames = generalizationSet.generalizations.map(gen => gen.getName() || `${gen.specific.getName()} -> ${gen.general.getName()}`).join(', ');
+          const genSetName = generalizationSet.getName() || `{${genSetNames}}`;
+  
+          const removalDescription = `Generalization Set '${genSetName}' was removed due to containing an unsupported element.`;
+          
+          this.generateRemovalIssue(generalizationSet, removalDescription);
       }
-    }
+  }
 
   }
   
