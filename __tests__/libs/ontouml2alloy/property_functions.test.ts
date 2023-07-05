@@ -113,7 +113,7 @@ describe('property_functions', () => {
     });
 
     describe('class attributes', () => {
-        //TODO derivation relation check
+
         it('should generate an "immutable_target" for a read-only attribute', () => {
             const person = model.createKind('Person');
             const string = model.createDatatype('String');

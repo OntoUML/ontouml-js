@@ -79,7 +79,6 @@ export function isTopLevel(_class: Class, generalizations: Generalization[]) {
 }
 
 export function getCardinalityKeyword(cardinality: Cardinality) {
-	// if (cardinality.isBounded()) {
 		if (cardinality.isZeroToOne()) {
 			return 'lone';
 		} else if (cardinality.isOneToOne()) {
@@ -90,8 +89,6 @@ export function getCardinalityKeyword(cardinality: Cardinality) {
 		else if (cardinality.isZeroToMany()) {
 			return 'set';
 		} 
-		//TODO see how this affects shit
-	// }
 	return '';
 }
 

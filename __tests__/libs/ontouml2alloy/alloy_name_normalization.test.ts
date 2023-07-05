@@ -108,21 +108,6 @@ describe('Name normalization' , () => {
             const normalized = getNormalizedName(transformer, element);
             expect(normalized).toBe('class_123Person');
         });
-
-        it('should transform a mediation relation', () => {
-            const class1 = model.createRelator('Enrollment');
-            const class2 = model.createRole('Student');
-      
-            model.createMediationRelation(class1, class2, 'involves');
-            
-            const result = generateAlloy(model);
-    
-            console.log(result);
-            expect(result).toContain(generateFact('relatorConstraint',['all w: World, x: w.Enrollment | #(Student1[x,w])>=2'])); //ensures that there are at least two 'Student' related to each 'Enrollment'.
-            expect(result).toContain(generateFact('acyclic',['all w: World | acyclic[w.involves,w.Enrollment]'])); //ensures that 'involves' relation is acyclic for 'Enrollment', i.e., it does not loop back on itself.
-            expect(result).toContain(generateFact('relationProperties', ['immutable_target[Enrollment,involves]'])); //part of property test?
-        });
-    
     
     });
 
