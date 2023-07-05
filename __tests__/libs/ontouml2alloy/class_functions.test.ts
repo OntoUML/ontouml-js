@@ -27,7 +27,6 @@ describe('Class Functions', () => {
     it('should ignore classes if they are a <<type>>', () => {
         model.createType('PaymentMethod')
         expect(generateAlloy(model)).not.toContain('PaymentMethod');
-
     })
       
     it('should transform <<datatype>> class with attributes (complex datatype)', () => {
@@ -38,9 +37,9 @@ describe('Class Functions', () => {
         const result = generateAlloy(model);
         const factLines = ['Datatype = Number+Date','disjoint[Number,Date]'];
 
-        expect(result).toContain('sig Date in Datatype {\n        day: Number\n}');        
+        expect(result).toContain('sig Date in Datatype {\n        day: set Number\n}');        
         expect(result).toContain(generateFact('additionalDatatypeFacts',factLines));
-    }); //default multiplicy is "one" so "day: one Number" or "day: Number" should be the same
+    });
 
     it('should transform <<datatype>> class without attributes (primitive datatype)', () => {
         model.createDatatype('Date');
@@ -60,24 +59,18 @@ describe('Class Functions', () => {
 
     it('should transform <<kind>> class', () => {
         const person = model.createKind('Person');
-        model.createKind('Animal');
-        model.createRelator('Strong');
-        const entity = model.createCategory('Entity');
-        model.createGeneralization( entity, person);
-        entity.restrictedTo = [OntologicalNature.functional_complex,OntologicalNature.relator];
         const result = generateAlloy(model);
         expect(result).toContain(generateFact('rigid',['rigidity[Person,Object,exists]']));
         expect(result).toContain(generateWorldFieldForClass('Person','Object'));
         expect(result).toContain(generateWorldFact('Person','Object'));
-        console.log(result);
     });  
 
-    it('should generate rigid fact for transforming <<collective>> class', () => {
+    it('should transform <<collective>> class', () => {
         model.createCollective('Group', false);
         const result = generateAlloy(model);
         expect(result).toContain(generateWorldFieldForClass('Group','Object'))
-        // expect(result).toContain(generateWorldFact('Group','Object'));
-        // expect(result).toContain(generateFact('rigid',['rigidity[Group,Object,exists]']));
+        expect(result).toContain(generateWorldFact('Group','Object'));
+        expect(result).toContain(generateFact('rigid',['rigidity[Group,Object,exists]']));
     });
 
     //change member -> same thing -> isExtensional - false
@@ -149,11 +142,12 @@ describe('Class Functions', () => {
         const result = generateAlloy(model);
 
         const factLines = ['Datatype = Goal+Date','disjoint[Goal,Date]'];
-        expect(result).toContain('sig Goal in Datatype {\n        until: Date\n}');        
+        expect(result).toContain('sig Goal in Datatype {\n        until: set Date\n}');        
         expect(result).toContain(generateFact('additionalDatatypeFacts',factLines));
       }); 
 
-      //TODO igure out if there should/needs to be a difference between the below 3 cases
+      //TODO figure out if there should/needs to be a difference between the below 3 cases
+      //TODO send email to Tiago regarding the below 3 cases
       it('should transform «mode» class { allowed=[intrinsic-mode] }', () => {
         model.createIntrinsicMode('Skill');
         const result = generateAlloy(model);
@@ -182,28 +176,28 @@ describe('Class Functions', () => {
         expect(result).toContain(generateWorldFact('Belief','Aspect'));
       });
 
-      // it('should transform «roleMixin» class', () => {
-      //   model.createRoleMixin('Customer',);
-      //   const result = generateAlloy(model);
+      //role is for dynamic types, we instantiate by individuals of a single type..
+      //role antirigid sortal, rolemixin antirigid sortal
+
+      //there is no difference between the transformation of a role and a roleMixin
+      it('should transform «roleMixin» class', () => {
+        model.createRoleMixin('Customer',);
+        const result = generateAlloy(model);
+        
+        expect(result).toContain(generateFact('antirigid',['antirigidity[Customer,Object,exists]']));
+        expect(result).toContain(generateWorldFieldForClass('Customer','Object'));
+        expect(result).toContain(generateWorldFact('Customer','Object'));
+      });
     
-      //   expect(result).toContain('');
-      //   console.log(result);
-      // });//diff between roleMIxin and role?
-    
-      // it('should transform «phaseMixin» class', () => {
-      //   model.createPhaseMixin('Infant');
-      //   const result = generateAlloy(model);
-    
-      //   expect(result).toContain('');
-      // });//diff between phaseMixin and phase
-    
-      // it('should transform «mixin» class', () => {
-      //   model.createMixin('Seatable');
-      //   const result = generateAlloy(model);
-    
-      //   expect(result).toContain('');
-      // });
-      //what is expected with the mixins, semirigid?
+      //there is no difference between the transformation of a phase and a phaseMixin
+      it('should transform «phaseMixin» class', () => {
+        model.createPhaseMixin('Infant');
+        const result = generateAlloy(model);
+        
+        expect(result).toContain(generateFact('antirigid',['antirigidity[Infant,Object,exists]']));
+        expect(result).toContain(generateWorldFieldForClass('Infant','Object'));
+        expect(result).toContain(generateWorldFact('Infant','Object'));
+      });
 
       it('should transform «category» class', () => {
         model.createCategory('Animal');
@@ -213,6 +207,14 @@ describe('Class Functions', () => {
         expect(result).toContain(generateWorldFieldForClass('Animal','Object'));
         expect(result).toContain(generateWorldFact('Animal','Object'));
       });
+
+      //TODO figure out how to handle mixins    
+      // it('should transform «mixin» class', () => {
+      //   model.createMixin('Seatable');
+      //   const result = generateAlloy(model);
+    
+      //   expect(result).toContain('');
+      // });
 
 
     });
