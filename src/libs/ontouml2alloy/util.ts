@@ -29,7 +29,7 @@ export function getNormalizedName(transformer: Ontouml2Alloy, element: OntoumlEl
 
 	//Check if the name is null, if so, replace it with 'Unnamed'
 	if(normalizedName == null) {
-        normalizedName = 'Unnamed';
+        normalizedName = `${(element.type).toLowerCase()}`;
     }
 
     //Replace forbidden characters with an empty string
@@ -37,9 +37,9 @@ export function getNormalizedName(transformer: Ontouml2Alloy, element: OntoumlEl
         normalizedName = normalizedName.replace(new RegExp(`\\${char}`, 'g'), '');
     });
 
-	//Check if the name is an empty string, if so, replace it with 'Unnamed'
+	//Check if the name is an empty string, if so, replace it with the type of the ontouml element
 	if(!normalizedName){ 
-		normalizedName = 'Unnamed';
+		normalizedName = `${(element.type).toLowerCase()}`;
 	}
 
 	//Check if the normalized name is a reserved keyword or 'Unnamed', if so, add the type of ontouml element to the name
@@ -57,10 +57,12 @@ export function getNormalizedName(transformer: Ontouml2Alloy, element: OntoumlEl
 	if(Object.values(transformer.normalizedNames).length != 0){
 		const existingNames = Object.values(transformer.normalizedNames);
 		let index = 1;
-		while (existingNames.includes(normalizedName)) {
-			normalizedName = `${normalizedName}${index}`;
+		let tempNormalizedName = normalizedName;
+		while (existingNames.includes(tempNormalizedName)) {
+			tempNormalizedName = `${normalizedName}${index}`;
 			index++;
 		}
+		normalizedName = tempNormalizedName;
 	}//TODO made functional with filter for efficiency
 
     transformer.normalizedNames[id] = normalizedName;
@@ -114,7 +116,7 @@ export function getCustomCardinality(cardinality: Cardinality) {
 	return [lowerBound, upperBound];
 }
 
-export function getValidAlias(element: OntoumlElement, name: string, aliases: [OntoumlElement, string][]) {
+export function getAlias(element: OntoumlElement, name: string, aliases: [OntoumlElement, string][]) {
 	const foundAlias = aliases.find((a) => { return a[0] === element; })
 	if (foundAlias) {
 		return foundAlias[1];

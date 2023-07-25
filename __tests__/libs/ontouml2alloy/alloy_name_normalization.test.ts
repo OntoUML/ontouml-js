@@ -71,14 +71,24 @@ describe('Name normalization' , () => {
         it('should normalize a class with no name', () => {
             element.addName('');
             const normalized = getNormalizedName(transformer, element);
-            expect(normalized).toBe('Unnamed_class');
+            expect(normalized).toBe('class');
         });
 
         it('should normalize a relation with no name', () => {
             element = new Relation();
             element.addName('');
             const normalized = getNormalizedName(transformer, element);
-            expect(normalized).toBe('Unnamed_relation');
+            expect(normalized).toBe('relation');
+        });
+
+        it('should transform a relation between datatypes', () => {
+            const sourceClass = model.createDatatype('Date');
+            const targetClass = model.createDatatype('String');
+            const relation = model.createBinaryRelation(sourceClass, targetClass);
+    
+            const result = generateAlloy(model);
+    
+            expect(result).toContain('sig Date in Datatype {\n        relation: String\n}');
         });
 
         it('should normalize two classes with no name/only forbidden characters', () => {
@@ -87,8 +97,8 @@ describe('Name normalization' , () => {
             const normalized1 = getNormalizedName(transformer, element1);
             const normalized2 = getNormalizedName(transformer, element2);
 
-            expect(normalized1).toBe('Unnamed_class');
-            expect(normalized2).toBe('Unnamed_class1');
+            expect(normalized1).toBe('class');
+            expect(normalized2).toBe('class1');
         });
     
         it('should normalize two classes with same name', () => {

@@ -1,14 +1,14 @@
 import { Class, ClassStereotype, Relation } from '@libs/ontouml';
 import { RelationStereotype } from '@libs/ontouml/model/stereotypes';
 import { Ontouml2Alloy } from '.';
-import { getNormalizedName, isTopLevel, getValidAlias } from './util';
+import { getNormalizedName, isTopLevel, getAlias } from './util';
 
 export function transformClass(transformer: Ontouml2Alloy, _class: Class) { //This line defines a function named transformClass that takes two parameters: transformer (of type Ontouml2Alloy) and _class (of type Class).
-  if (_class.hasAnyStereotype([ClassStereotype.EVENT, ClassStereotype.SITUATION,ClassStereotype.TYPE])) { //This line checks if the given class _class has any of the stereotypes EVENT, SITUATION or TYPE. If it does, the function immediately returns without doing anything.
+  if (_class.hasAnyStereotype([ClassStereotype.EVENT, ClassStereotype.SITUATION, ClassStereotype.TYPE])) { //This line checks if the given class _class has any of the stereotypes EVENT, SITUATION or TYPE. If it does, the function immediately returns without doing anything.
     return;
   }
 
-  if(_class.hasAbstractStereotype()){
+  if (_class.hasAbstractStereotype()) {
     _class.stereotype = ClassStereotype.DATATYPE;
   }
 
@@ -21,7 +21,7 @@ export function transformClass(transformer: Ontouml2Alloy, _class: Class) { //Th
     transformEnumerationClass(transformer, _class);
     return;
   }
-  
+
   if (_class.isRestrictedToEndurant()) {
     transformEndurantClass(transformer, _class);
   }
@@ -70,19 +70,19 @@ function transformEndurantClass(transformer: Ontouml2Alloy, _class: Class) {
     className + ': set exists:>' + nature
   );
 
-    if (_class.hasRigidStereotype()) {
-      transformer.addFact(
-        'fact rigid {\n' +
-        '        rigidity[' + className + ',' + nature + ',exists]\n' +
-        '}'
-      );
-    } else if (_class.hasAntiRigidStereotype()) {
-      transformer.addFact(
-        'fact antirigid {\n' +
-        '        antirigidity[' + className + ',' + nature + ',exists]\n' +
-        '}'
-      );
-    }
+  if (_class.hasRigidStereotype()) {
+    transformer.addFact(
+      'fact rigid {\n' +
+      '        rigidity[' + className + ',' + nature + ',exists]\n' +
+      '}'
+    );
+  } else if (_class.hasAntiRigidStereotype()) {
+    transformer.addFact(
+      'fact antirigid {\n' +
+      '        antirigidity[' + className + ',' + nature + ',exists]\n' +
+      '}'
+    );
+  }
 }
 
 function transformDatatypeClass(transformer: Ontouml2Alloy, _class: Class) {
@@ -97,7 +97,7 @@ function transformEnumerationClass(transformer: Ontouml2Alloy, _class: Class) {
   if (literals.length) {
     transformer.addEnum(
       'enum ' + enumName + ' {\n' +
-        '        ' + literals.join(', ') +
+      '        ' + literals.join(', ') +
       '}'
     );
   }
@@ -109,16 +109,14 @@ function transformRelatorConstraint(transformer: Ontouml2Alloy, _class: Class) {
     if (mediation.getSource() == _class) {
       const mediated = mediation.getTargetEnd();
       let mediatedName = '';
-	
-      // if (mediated.getName()) {
-      //   mediatedName = normalizeName(transformer, mediated);
-      // }	else {
-      //   mediatedName = normalizeName(transformer, mediation.getTarget());
-      // }
 
+      if (mediated.getName()) {
+        mediatedName = getNormalizedName(transformer, mediated);
+      } else {
+        mediatedName = getNormalizedName(transformer, mediation.getTarget());
+      }
 
-       const mediatedAlias = getValidAlias(mediated, getNormalizedName(transformer, mediation.getTarget()), transformer.aliases);
-      // const mediatedAlias = getNormalizedName(transformer, mediation.getTarget());
+      const mediatedAlias = getAlias(mediated, mediatedName, transformer.aliases);
       mediations.push(mediatedAlias + '[x,w]');
     }
   }
@@ -136,24 +134,24 @@ function transformRelatorConstraint(transformer: Ontouml2Alloy, _class: Class) {
 function transformWeakSupplementationConstraint(transformer: Ontouml2Alloy, _class: Class) {
   let parts = [];
 
-	for (const rel of transformer.model.getAllRelations()) {
-		if (rel.isPartWholeRelation() || rel.hasComponentOfStereotype() || rel.hasMemberOfStereotype()
-		|| rel.hasSubCollectionOfStereotype() || rel.hasSubQuantityOfStereotype()) {
-			if (rel.getSource() === _class) {
+  for (const rel of transformer.model.getAllRelations()) {
+    if (rel.isPartWholeRelation() || rel.hasComponentOfStereotype() || rel.hasMemberOfStereotype()
+      || rel.hasSubCollectionOfStereotype() || rel.hasSubQuantityOfStereotype()) {
+      if (rel.getSource() === _class) {
         const part = rel.getTargetEnd();
         let partName = '';
-	
+
         if (part.getName()) {
           partName = getNormalizedName(transformer, part);
-        }	else {
+        } else {
           partName = getNormalizedName(transformer, (part.container as Relation).getTarget());
         }
 
-        const partAlias = getValidAlias(part, partName, transformer.aliases);
-				parts.push(partAlias + '[x,w]');
-			}
-		}
-	}
+        const partAlias = getAlias(part, partName, transformer.aliases);
+        parts.push(partAlias + '[x,w]');
+      }
+    }
+  }
 
   if (parts.length) {
     const wholeName = getNormalizedName(transformer, _class);
@@ -223,7 +221,7 @@ export function transformAdditionalClassConstraints(transformer: Ontouml2Alloy) 
     transformer.addWorldFieldFact(
       'exists:>Aspect in ' + aspectClasses.join('+')
     );
-  }  
+  }
 }
 
 export function transformAdditionalDatatypeConstraints(transformer: Ontouml2Alloy) {
