@@ -3,10 +3,10 @@ import { Ontouml2Alloy } from './';
 import {
 	getNormalizedName,
 	getCardinalityKeyword,
-	getValidAlias,
 	getCustomCardinality,
 	holdsBetweenDatatypes,
-	getCorrespondingDatatype
+	getCorrespondingDatatype,
+	getAlias
 } from './util';
 
 export function transformRelation(transformer: Ontouml2Alloy, relation: Relation) {
@@ -41,13 +41,7 @@ export function transformRelation(transformer: Ontouml2Alloy, relation: Relation
 }
 
 function transformOrderedRelation(transformer: Ontouml2Alloy, relation: Relation) {
-	let relationName = '';
-
-	if (relation.getName()) {
-		relationName = getNormalizedName(transformer, relation);
-	} else {
-		relationName = getValidAlias(relation, 'relation', transformer.aliases);
-	}
+	let relationName = getNormalizedName(transformer, relation);
 
 	const sourceName = getNormalizedName(transformer, relation.getSource());
 	const targetName = getNormalizedName(transformer, relation.getTarget());
@@ -65,13 +59,7 @@ function transformOrderedRelation(transformer: Ontouml2Alloy, relation: Relation
 }
 
 function transformGeneralRelation(transformer: Ontouml2Alloy, relation: Relation) {
-	let relationName = '';
-
-	if (relation.getName()) {
-		relationName = getNormalizedName(transformer, relation);
-	} else {
-		relationName = getValidAlias(relation, 'relation', transformer.aliases);
-	}
+	let relationName = getNormalizedName(transformer, relation);
 
 	const sourceName = getNormalizedName(transformer, relation.getSource());
 	const targetName = getNormalizedName(transformer, relation.getTarget());
@@ -84,14 +72,8 @@ function transformGeneralRelation(transformer: Ontouml2Alloy, relation: Relation
 }
 
 function transformMediationRelation(transformer: Ontouml2Alloy, relation: Relation) {
-	let relationName = '';
+	let relationName = getNormalizedName(transformer, relation);
 
-	if (relation.getName()) {
-		relationName = getNormalizedName(transformer, relation);
-	} else {
-		relationName = getValidAlias(relation, 'relation', transformer.aliases);
-	}
-	
 	const sourceName = getNormalizedName(transformer, relation.getSource());
 
 	transformer.addFact(
@@ -108,13 +90,7 @@ function transformMaterialRelation(transformer: Ontouml2Alloy, relation: Relatio
 		if (rel.hasDerivationStereotype() && rel.getDerivingRelation() === relation
 			&& rel.getDerivedClassStereotype() === ClassStereotype.RELATOR) {
 
-			let materialName = '';
-
-			if (relation.getName()) {
-				materialName = getNormalizedName(transformer, relation);
-			} else {
-				materialName = getValidAlias(relation, 'relation', transformer.aliases);
-			}
+			let materialName = getNormalizedName(transformer, relation);
 				
 			const sourceName = getNormalizedName(transformer, relation.getSource());
 			const targetName = getNormalizedName(transformer, relation.getTarget());
@@ -163,26 +139,9 @@ function transformDerivationRelation(transformer: Ontouml2Alloy, relation: Relat
 			}
 		}
 
-		let materialName = '';
-		if (material.getName()) {
-			materialName = getNormalizedName(transformer, material);
-		} else {
-			materialName = getValidAlias(material, 'relation', transformer.aliases);
-		}
-
-		let mediation1Name = '';
-		if (mediation1.getName()) {
-			mediation1Name = getNormalizedName(transformer, mediation1);
-		} else {
-			mediation1Name = getValidAlias(mediation1, 'relation', transformer.aliases);
-		}
-
-		let mediation2Name = '';
-		if (mediation2.getName()) {
-			mediation2Name = getNormalizedName(transformer, mediation2);
-		} else {
-			mediation2Name = getValidAlias(mediation2, 'relation', transformer.aliases);
-		}
+		let materialName = getNormalizedName(transformer, material);
+		let mediation1Name = getNormalizedName(transformer, mediation1);
+		let mediation2Name = getNormalizedName(transformer, mediation2);
 	
 		const relatorName = getNormalizedName(transformer, relator);
 		const materialSourceName = getNormalizedName(transformer, materialSource);
@@ -198,13 +157,7 @@ function transformDerivationRelation(transformer: Ontouml2Alloy, relation: Relat
 }
 
 function transformPartWholeRelation(transformer: Ontouml2Alloy, relation: Relation) {
-	let relationName = '';
-
-	if (relation.getName()) {
-		relationName = getNormalizedName(transformer, relation);
-	} else {
-		relationName = getValidAlias(relation, 'relation', transformer.aliases);
-	}
+	let relationName = getNormalizedName(transformer, relation);
 
 	const wholeName = getNormalizedName(transformer, relation.getSource());
 	const partName = getNormalizedName(transformer, relation.getTarget());
@@ -217,7 +170,7 @@ function transformPartWholeRelation(transformer: Ontouml2Alloy, relation: Relati
 		wholeEndName = getNormalizedName(transformer, relation.getSource());
 	}
 
-	const wholeEndAlias = getValidAlias(wholeEnd, wholeEndName, transformer.aliases);
+	const wholeEndAlias = getAlias(wholeEnd, wholeEndName, transformer.aliases);
 
 	if (wholeEnd.isAggregationEnd() && wholeEnd.isComposite()) {
 		let otherWholeEnds = []
@@ -231,7 +184,7 @@ function transformPartWholeRelation(transformer: Ontouml2Alloy, relation: Relati
 					otherWholeEndName = getNormalizedName(transformer, (otherWholeEnd.container as Relation).getSource());
 				}
 
-				const otherWholeEndAlias = getValidAlias(otherWholeEnd, otherWholeEndName, transformer.aliases);
+				const otherWholeEndAlias = getAlias(otherWholeEnd, otherWholeEndName, transformer.aliases);
 				otherWholeEnds.push(otherWholeEndAlias + '[x,w]');
 			}
 		}
@@ -267,13 +220,7 @@ function transformDatatypeRelation(transformer: Ontouml2Alloy, relation: Relatio
 	const targetName = getNormalizedName(transformer, relation.getTarget());
 	const sourceDatatype = getCorrespondingDatatype(sourceName, transformer.datatypes);
 	
-	let relationName = '';
-
-	if (relation.getName()) {
-		relationName = getNormalizedName(transformer, relation);
-	} else {
-		relationName = getValidAlias(relation, 'relation', transformer.aliases);
-	}
+	let relationName = getNormalizedName(transformer, relation);
 
 	sourceDatatype[1].push(relationName + ': '+ targetName);
 
@@ -315,11 +262,7 @@ function transformDatatypeRelation(transformer: Ontouml2Alloy, relation: Relatio
 export function transformCharacterizationConstraint(transformer: Ontouml2Alloy) {
 	let characterizations = transformer.model.getAllRelationsByStereotype(RelationStereotype.CHARACTERIZATION)
 		.map(characterization => {
-			if (characterization.getName()) {
-				return 'w.' + getNormalizedName(transformer, characterization);
-			} else {
-				return 'w.' + getValidAlias(characterization, 'relation', transformer.aliases);
-			}
+			return 'w.' + getNormalizedName(transformer, characterization);
 		});
 	
 	if (characterizations.length) {

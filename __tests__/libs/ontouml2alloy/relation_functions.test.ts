@@ -21,7 +21,7 @@ describe('relation_functions', () => {
 
         const result = generateAlloy(model);
 
-        expect(result).toContain('sig Date in Datatype {\n        relation1: String\n}');
+        expect(result).toContain('sig Date in Datatype {\n        relation: String\n}');
     });
 
     it('should transform a material relation', () => {
@@ -57,7 +57,7 @@ describe('relation_functions', () => {
         model.createDerivationRelation(materialRelation, employment);
 
         const result = generateAlloy(model);
-        expect(result).toContain(generateFact('derivation',['all w: World, x: w.Organization, y: w.Employee, r: w.Employment | ','    x -> r -> y in w.hires iff x in r.(w.relation1) and y in r.(w.relation2)']));
+        expect(result).toContain(generateFact('derivation',['all w: World, x: w.Organization, y: w.Employee, r: w.Employment | ','    x -> r -> y in w.hires iff x in r.(w.relation) and y in r.(w.relation1)']));
     });
 
     // //not handled but also not sure what's the expected output

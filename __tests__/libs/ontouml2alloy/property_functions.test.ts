@@ -94,7 +94,7 @@ describe('property_functions', () => {
 
             const result = generateAlloy(model);
 
-            expect(result).toContain(generateFact('datatypesMultiplicity', ['all x: Date | #x.relation1>=0', 'all x: String | #relation1.x>=0']));
+            expect(result).toContain(generateFact('datatypesMultiplicity', ['all x: Date | #x.relation>=0', 'all x: String | #relation.x>=0']));
         });
 
         it('should generate "datatypesMultiplicity fact for a relation between datatypes with custom cardinality', () => {
