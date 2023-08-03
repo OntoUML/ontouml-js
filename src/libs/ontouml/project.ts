@@ -375,6 +375,29 @@ export class Project extends OntoumlElement implements ModelElementContainer {
     throw new Error('Method unimplemented!');
   }
 
+  getNonSortals(): Class[] {
+    let classes = this.project.getClassesWithRoleMixinStereotype();
+
+    classes = classes.concat(this.project.getClassesWithMixinStereotype());
+    classes = classes.concat(this.project.getClassesWithCategoryStereotype());
+    classes = classes.concat(this.project.getClassesWithPhaseMixinStereotype());
+
+    return classes;
+  }
+
+  getMediations(_class: Class): Relation[] {
+    const relations = this.getAllRelations();
+    let mediations = [];
+    var i;
+    for (i in relations) {
+      if ((relations[i].involves(_class)) && (relations[i].hasMediationStereotype())) {
+        mediations = mediations.concat(relations[i]);
+      }
+    }
+
+    return mediations;
+  }
+
   toJSON(): any {
     const projectSerialization = {
       model: null,

@@ -535,5 +535,22 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     throw new Error('Method unimplemented!');
   }
 
+  /**
+   * Verify is a class participates in relation
+   * @param _class The classe to be verified
+   */
+   involves(_class: Class): boolean {
+     if (!this.isDerivation()){
+      if (_class == this.getSourceClass() || _class == this.getTargetClass()) {
+        return true;
+      } else return false;
+     }else{
+       if (_class == this.getDerivedClass())
+       return true;
+     }
+
+     return false;
+    
+  }
   // TODO: Bring in the relevant relations from Class
 }
