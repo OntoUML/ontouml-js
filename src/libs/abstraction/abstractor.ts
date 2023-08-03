@@ -91,7 +91,7 @@ export class Abstractor implements Service {
 
             /**3 */
             var index = allClasses.indexOf(relators[i]);
-            console.log("Remover " + relators[i].getName() + " no indice " + index);
+            // console.log("Remover " + relators[i].getName() + " no indice " + index);
             allClasses.splice(index, 1);
 
         }
@@ -266,7 +266,7 @@ export class Abstractor implements Service {
 
             /**Step 4 Remove the non-sortal from model */
             var index = allClasses.indexOf(nonSortals[i]);
-            console.log("Remover " + nonSortals[i].getName() + " no indice " + index);
+            // console.log("Remover " + nonSortals[i].getName() + " no indice " + index);
             allClasses.splice(index, 1);
 
         }
@@ -275,7 +275,7 @@ export class Abstractor implements Service {
         abstraction.addRelations(relations_new);
         abstraction.removeDuplicates();
 
-        console.log("Non Sortal Classes: " + allClasses.length)
+        // console.log("Non Sortal Classes: " + allClasses.length)
 
         return abstraction;
     }
@@ -365,7 +365,7 @@ export class Abstractor implements Service {
 
             /**2.3*/
             for (let z = 0; z < relations.length; z++) {
-                console.log('Classe origem ' + relations[z].getSourceClass());
+                // console.log('Classe origem ' + relations[z].getSourceClass());
                 if ((relations[z].getSourceClass() == generalizations[i].getSpecificClass()) || (relations[z].getTargetClass() == generalizations[i].getSpecificClass())) {
                     relationToRemove.push(relations[z]);
                 }
@@ -374,7 +374,7 @@ export class Abstractor implements Service {
 
             /**2.4*/
             var index = allClasses.indexOf(generalizations[i].getSpecificClass());
-            console.log("Remover " + generalizations[i].getSpecificClass().getName() + " no indice " + index);
+            // console.log("Remover " + generalizations[i].getSpecificClass().getName() + " no indice " + index);
             allClasses.splice(index, 1);
         }
 
@@ -443,7 +443,7 @@ export class Abstractor implements Service {
 
                     /**4 */
                     var index = allClasses.indexOf(generalizationSets[i].getSpecificClasses()[j]);
-                    console.log("Remover " + generalizationSets[i].getSpecificClasses()[j].getName() + " no indice " + index);
+                    // console.log("Remover " + generalizationSets[i].getSpecificClasses()[j].getName() + " no indice " + index);
                     allClasses.splice(index, 1);
 
                 }
