@@ -14,6 +14,10 @@ import {
   PackageView,
   RelationView
 } from '..';
+import { Path } from './path';
+import { Rectangle } from './rectangle';
+import { Shape } from './shape';
+import { Text } from './text';
 
 export class Diagram extends OntoumlElement {
   owner: ModelElement;
@@ -45,8 +49,28 @@ export class Diagram extends OntoumlElement {
     return this.contents?.filter(view => view instanceof GeneralizationSetView) as GeneralizationSetView[];
   }
 
+  getPackageViews(): PackageView[] {
+    return this.contents?.filter(view => view instanceof PackageView) as PackageView[];
+  }
+
   getRealizedModelElements(): ModelElement[] {
     return this.contents.map(view => view.modelElement);
+  }
+
+  getShapes(): Shape[] {
+    return this.contents?.map(view => view.shape) || [];
+  }
+
+  getRectangles(): Rectangle[] {
+    return this.getShapes().filter(s => s instanceof Rectangle) as Rectangle[];
+  }
+
+  getPaths(): Path[] {
+    return this.getShapes().filter(s => s instanceof Path) as Path[];
+  }
+
+  getTexts(): Text[] {
+    return this.getShapes().filter(s => s instanceof Text) as Text[];
   }
 
   addElement(element: ElementView<any, any>): void {

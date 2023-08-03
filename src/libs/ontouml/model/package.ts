@@ -293,14 +293,14 @@ export class Package extends ModelElement implements ModelElementContainer {
   // TODO: documentation
   createClass(
     name?: string,
-    stereotype?: ClassStereotype,
+    stereotype?: string,
     natures?: OntologicalNature | OntologicalNature[],
     base?: Partial<Class>
   ): Class {
     let clazz = new Class(
       Object.assign({}, base, {
         name: new MultilingualText(name),
-        stereotype,
+        stereotype: stereotype as ClassStereotype,
         restrictedTo: utils.arrayFrom(natures),
         container: this,
         project: this.project

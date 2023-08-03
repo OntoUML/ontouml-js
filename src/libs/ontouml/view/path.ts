@@ -14,6 +14,10 @@ export class Path extends Shape {
   }
 
   moveTo(x: number, y: number): void {
+    if (!this.points) {
+      this.points = [];
+    }
+
     this.points.push(new Point(x, y));
   }
 
