@@ -1,28 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "lib": ["es2020"],
-    "module": "es2020",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "allowJs": true,
-    "importHelpers": true,
-    "alwaysStrict": true,
-    "sourceMap": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "resolveJsonModule": true,
-    "typeRoots": ["./@types", "./node_modules/@types"],
-    "baseUrl": ".",
-    "paths": {
-      "@test-models/*": ["__tests__/test_models/*"],
-      "@constants/*": ["src/constants/*"],
-      "@error/*": ["src/error/*"],
-      "@libs/*": ["src/libs/*"],
-      "@utils/*": ["src/utils/*"],
-      "@resources/*": ["resources/*"]
-    }
-  },
-  "include": ["src/**/*", "@types/**/*", "__tests__/**/*"]
+    "target": "es2016",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "module": "commonjs",                                /* Specify what module code is generated. */
+    "rootDirs": ["./src", "./test"],                     /* Allow multiple folders to be treated as one when resolving modules. */
+    "noEmit": true,                                      /* Disable emitting files from a compilation. */
+    "importHelpers": true,                            /* Allow importing helper functions from tslib once per project, instead of including them per-file. */
+    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
+    "strict": true,                                      /* Enable all strict type-checking options. */
+    "skipLibCheck": true,                                /* Skip type checking all .d.ts files. */
+  }
 }
