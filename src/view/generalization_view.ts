@@ -1,11 +1,15 @@
-import { OntoumlType, ConnectorView, Path, Generalization } from '..';
+import { OntoumlType, BinaryConnectorView, Path, Generalization, View } from '..';
 
-export class GeneralizationView extends ConnectorView<Generalization> {
-  constructor(base?: Partial<GeneralizationView>) {
-    super(OntoumlType.GENERALIZATION_VIEW, base);
+export class GeneralizationView extends BinaryConnectorView<Generalization> {
+  constructor(generalization: Generalization, source: View<any>, target: View<any>) {
+    super(generalization, source, target);
   }
 
-  createShape(): Path {
-    return new Path();
+  override toJSON(): any {
+    const object : any = {
+      type: OntoumlType.GENERALIZATION_VIEW
+    };
+    
+    return { ...object, ...super.toJSON() };
   }
 }

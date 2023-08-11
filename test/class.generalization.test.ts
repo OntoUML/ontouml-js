@@ -112,7 +112,7 @@ describe(`${Class.name} Tests`, () => {
     });
   });
 
-  describe(`Test ${Class.prototype.getOwnAttributes.name}()`, () => {
+  describe(`Test ${Class.prototype.getAttributes.name}()`, () => {
     it('Retrieve own attributes', () => {
       const agent = model.createCategory();
       const person = model.createKind();
@@ -121,14 +121,14 @@ describe(`${Class.name} Tests`, () => {
       const surname = person.createAttribute(text);
       model.createGeneralization(agent, person);
 
-      expect(agent.getOwnAttributes()).toEqual([alias]);
-      expect(person.getOwnAttributes()).toEqual([surname]);
-      expect(text.getOwnAttributes()).toEqual([]);
+      expect(agent.getAttributes()).toEqual([alias]);
+      expect(person.getAttributes()).toEqual([surname]);
+      expect(text.getAttributes()).toEqual([]);
     });
 
     it('Test exception', () => {
       const enumeration = model.createEnumeration();
-      expect(() => enumeration.getOwnAttributes()).toThrow();
+      expect(() => enumeration.getAttributes()).toThrow();
     });
   });
 
@@ -145,7 +145,7 @@ describe(`${Class.name} Tests`, () => {
       expect(personAttributes).toContain(alias);
       expect(personAttributes).toContain(surname);
       expect(personAttributes.length).toBe(2);
-      expect(text.getOwnAttributes()).toEqual([]);
+      expect(text.getAttributes()).toEqual([]);
     });
 
     it('Test exception', () => {
@@ -154,7 +154,7 @@ describe(`${Class.name} Tests`, () => {
     });
   });
 
-  describe(`Test ${Class.prototype.getOwnLiterals.name}()`, () => {
+  describe(`Test ${Class.prototype.getLiterals.name}()`, () => {
     it('Retrieve own literals', () => {
       const enumerationA = model.createEnumeration();
       const enumerationB = model.createEnumeration();
@@ -163,14 +163,14 @@ describe(`${Class.name} Tests`, () => {
       const litB = enumerationB.createLiteral();
 
       model.createGeneralization(enumerationA, enumerationB);
-      expect(enumerationA.getOwnLiterals()).toEqual([litA]);
-      expect(enumerationB.getOwnLiterals()).toEqual([litB]);
-      expect(enumerationN.getOwnLiterals()).toEqual([]);
+      expect(enumerationA.getLiterals()).toEqual([litA]);
+      expect(enumerationB.getLiterals()).toEqual([litB]);
+      expect(enumerationN.getLiterals()).toEqual([]);
     });
 
     it('Test exception', () => {
       const _class = model.createClass();
-      expect(() => _class.getOwnLiterals()).toThrow();
+      expect(() => _class.getLiterals()).toThrow();
     });
   });
 

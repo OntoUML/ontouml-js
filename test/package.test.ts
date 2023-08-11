@@ -80,102 +80,102 @@ describe(`Package tests`, () => {
 
   describe(`Test getAllAttributes()`, () => {
     it('Test function call', () => {
-      expect(model.getAllAttributes()).toContain(knowsAttr);
+      expect(model.getAttributes()).toContain(knowsAttr);
     });
 
     it('Test function call', () => {
-      expect(model.getAllAttributes()).toHaveLength(1);
+      expect(model.getAttributes()).toHaveLength(1);
     });
   });
 
   describe(`Test getAllRelationEnds()`, () => {
     it('Test function call', () => {
-      expect(model.getAllRelationEnds()).toContain(knows.getSourceEnd());
+      expect(model.getRelationEnds()).toContain(knows.getSourceEnd());
     });
 
     it('Test function call', () => {
-      expect(model.getAllRelationEnds()).toHaveLength(2);
+      expect(model.getRelationEnds()).toHaveLength(2);
     });
   });
 
   describe(`Test getAllRelations()`, () => {
     it('Test function call', () => {
-      expect(model.getAllRelations()).toContain(knows);
+      expect(model.getRelations()).toContain(knows);
     });
 
     it('Test function call', () => {
-      expect(model.getAllRelations()).toHaveLength(1);
+      expect(model.getRelations()).toHaveLength(1);
     });
   });
 
   describe(`Test getAllGeneralizations()`, () => {
     it('Test function call', () => {
-      expect(model.getAllGeneralizations()).toContain(gen);
+      expect(model.getGeneralizations()).toContain(gen);
     });
 
     it('Test function call', () => {
-      expect(model.getAllGeneralizations()).toHaveLength(1);
+      expect(model.getGeneralizations()).toHaveLength(1);
     });
   });
 
   describe(`Test getAllGeneralizationSets()`, () => {
     it('Test function call', () => {
-      expect(model.getAllGeneralizationSets()).toContain(genSet);
+      expect(model.getGeneralizationSets()).toContain(genSet);
     });
 
     it('Test function call', () => {
-      expect(model.getAllGeneralizationSets()).toHaveLength(1);
+      expect(model.getGeneralizationSets()).toHaveLength(1);
     });
   });
 
   describe(`Test getAllPackages()`, () => {
     it('should return direct packages', () => {
-      expect(model.getAllPackages()).toContain(pkg);
-      expect(model.getAllPackages()).toContain(emptyPkg);
+      expect(model.getPackages()).toContain(pkg);
+      expect(model.getPackages()).toContain(emptyPkg);
     });
 
     it('Should return indirect packages', () => {
-      expect(model.getAllPackages()).toContain(pkg2);
+      expect(model.getPackages()).toContain(pkg2);
     });
 
     it('Test function call', () => {
-      expect(model.getAllPackages()).toHaveLength(3);
+      expect(model.getPackages()).toHaveLength(3);
     });
   });
 
   describe(`Test getAllClasses()`, () => {
     it('Should return classes', () => {
-      expect(model.getAllClasses()).toContain(agent);
-      expect(model.getAllClasses()).toContain(person);
-      expect(model.getAllClasses()).toContain(color);
+      expect(model.getClasses()).toContain(agent);
+      expect(model.getClasses()).toContain(person);
+      expect(model.getClasses()).toContain(color);
     });
 
     it('Should return 3 classes', () => {
-      expect(model.getAllClasses()).toHaveLength(3);
+      expect(model.getClasses()).toHaveLength(3);
     });
   });
 
   describe(`Test getAllEnumerations()`, () => {
     it('Test function call', () => {
-      expect(model.getAllEnumerations()).toContain(color);
+      expect(model.getEnumerations()).toContain(color);
     });
 
     it('Test function call', () => {
-      expect(model.getAllEnumerations()).toHaveLength(1);
+      expect(model.getEnumerations()).toHaveLength(1);
     });
   });
 
   describe(`Test getAllLiterals()`, () => {
     it('Test function call', () => {
-      expect(model.getAllLiterals()).toContain(red);
+      expect(model.getLiterals()).toContain(red);
     });
 
     it('Test function call', () => {
-      expect(model.getAllLiterals()).toContain(green);
+      expect(model.getLiterals()).toContain(green);
     });
 
     it('Test function call', () => {
-      expect(model.getAllLiterals()).toHaveLength(2);
+      expect(model.getLiterals()).toHaveLength(2);
     });
   });
 

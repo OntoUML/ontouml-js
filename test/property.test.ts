@@ -2,7 +2,7 @@ import { describe, expect, it } from '@jest/globals';
 import { AggregationKind, Project, Property, PropertyStereotype, serializationUtils, stereotypeUtils } from '../src';
 
 describe(`${Property.name} Tests`, () => {
-  describe(`Test ${Property.prototype.hasAnyStereotype.name}()`, () => {
+  describe(`Test ${Property.prototype.stereotypeIsOneOf.name}()`, () => {
     const model = new Project().createModel();
     const date = model.createDatatype();
     const summerFestival = model.createEvent();
@@ -10,7 +10,7 @@ describe(`${Property.name} Tests`, () => {
 
     startDate.stereotype = PropertyStereotype.BEGIN;
 
-    it('Test function call', () => expect(startDate.hasAnyStereotype(stereotypeUtils.PropertyStereotypes)).toBe(true));
+    it('Test function call', () => expect(startDate.stereotypeIsOneOf(stereotypeUtils.PropertyStereotypes)).toBe(true));
   });
 
   describe(`Test ${Property.prototype.isStereotypeValid.name}()`, () => {
@@ -90,7 +90,7 @@ describe(`${Property.name} Tests`, () => {
     it('Test precedes', () => expect(precedes.getSourceEnd().isRelationEnd()).toBe(true));
   });
 
-  describe(`Test ${Property.prototype.isPropertyTypeDefined.name}()`, () => {
+  describe(`Test ${Property.prototype.hasPropertyType.name}()`, () => {
     const model = new Project().createModel();
     const date = model.createDatatype();
     const event = model.createEvent();
@@ -98,10 +98,10 @@ describe(`${Property.name} Tests`, () => {
     const precedes = model.createBinaryRelation(event, event);
     const prop = new Property();
 
-    it('Test startDate', () => expect(startDate.isPropertyTypeDefined()).toBe(true));
-    it('Test precedes', () => expect(precedes.getSourceEnd().isPropertyTypeDefined()).toBe(true));
-    it('Test precedes', () => expect(precedes.getTargetEnd().isPropertyTypeDefined()).toBe(true));
-    it('Test prop', () => expect(prop.isPropertyTypeDefined()).toBe(false));
+    it('Test startDate', () => expect(startDate.hasPropertyType()).toBe(true));
+    it('Test precedes', () => expect(precedes.getSourceEnd().hasPropertyType()).toBe(true));
+    it('Test precedes', () => expect(precedes.getTargetEnd().hasPropertyType()).toBe(true));
+    it('Test prop', () => expect(prop.hasPropertyType()).toBe(false));
   });
 
   describe(`Test ${Property.prototype.isShared.name}()`, () => {

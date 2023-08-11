@@ -2,7 +2,7 @@ import { OntoumlElement, ModelElement, OntoumlType } from '..';
 
 export class Literal extends ModelElement {
   constructor(base?: Partial<Literal>) {
-    super(OntoumlType.LITERAL_TYPE, base);
+    super(OntoumlType.LITERAL, base);
   }
 
   getContents(): OntoumlElement[] {
@@ -17,5 +17,15 @@ export class Literal extends ModelElement {
     if (this.container === originalElement) {
       this.container = newElement;
     }
+  }
+
+  toJSON() {
+    const object: any = {
+      type: OntoumlType.LITERAL,
+    };
+
+    Object.assign(object, super.toJSON());
+
+    return object;
   }
 }

@@ -46,40 +46,40 @@ describe('Project tests', () => {
   });
 
   it(`Test getAllAttributes()`, () => {
-    let attributes = project.getAllAttributes();
+    let attributes = project.getAttributes();
     expect(attributes).toContain(name);
     expect(attributes).toContain(surname);
     expect(attributes.length).toBe(2);
   });
 
   it(`Test getAllRelationEnds()`, () => {
-    const relationEnds = project.getAllRelationEnds();
+    const relationEnds = project.getRelationEnds();
     expect(relationEnds).toContain(worksFor.getSourceEnd());
     expect(relationEnds).toContain(worksFor.getTargetEnd());
     expect(relationEnds.length).toBe(2);
   });
 
   it(`Test getAllRelations()`, () => {
-    const relations = project.getAllRelations();
+    const relations = project.getRelations();
     expect(relations).toContain(worksFor);
     expect(relations.length).toBe(1);
   });
 
   it(`Test getAllGeneralizations()`, () => {
-    const generalizations = project.getAllGeneralizations();
+    const generalizations = project.getGeneralizations();
     expect(generalizations).toContain(agentIntoPerson);
     expect(generalizations).toContain(agentIntoOrganization);
     expect(generalizations.length).toBe(2);
   });
 
   it(`Test getAllGeneralizationSets()`, () => {
-    const generalizationsSets = project.getAllGeneralizationSets();
+    const generalizationsSets = project.getGeneralizationSets();
     expect(generalizationsSets).toContain(genSet);
     expect(generalizationsSets.length).toBe(1);
   });
 
   it(`Test getAllPackages()`, () => {
-    const packages = project.getAllPackages();
+    const packages = project.getPackages();
 
     expect(packages).toContain(model);
     expect(packages).toContain(pkg);
@@ -87,7 +87,7 @@ describe('Project tests', () => {
   });
 
   it(`Test getAllClasses()`, () => {
-    const classes = project.getAllClasses();
+    const classes = project.getClasses();
     expect(classes).toContain(agent);
     expect(classes).toContain(person);
     expect(classes).toContain(organization);
@@ -97,7 +97,7 @@ describe('Project tests', () => {
 
   it(`Test getAllEnumerations()`, () => {
     const enumeration = pkg.createEnumeration('Enumeration');
-    const enumerations = project.getAllEnumerations();
+    const enumerations = project.getEnumerations();
     expect(enumerations).toContain(enumeration);
     expect(enumerations.length).toBe(1);
   });
@@ -107,7 +107,7 @@ describe('Project tests', () => {
     const literal1 = enumeration.createLiteral();
     const literal2 = enumeration.createLiteral();
 
-    const literals = project.getAllLiterals();
+    const literals = project.getLiterals();
     expect(literals).toContain(literal1);
     expect(literals).toContain(literal2);
     expect(literals.length).toBe(2);
@@ -137,10 +137,6 @@ describe('Project tests', () => {
   });
 
   describe(`Test unlock()`, () => {
-    // TODO: implement test
-  });
-
-  describe(`Test getClassesByNature()`, () => {
     // TODO: implement test
   });
 

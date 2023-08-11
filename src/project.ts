@@ -8,35 +8,61 @@ import {
   GeneralizationSet,
   Literal,
   ModelElement,
-  ModelElementContainer,
   Package,
   Property,
   Relation,
   OntoumlElement,
   OntoumlType,
   Diagram,
-  Classifier,
   ClassView,
-  RelationView,
+  BinaryRelationView,
   GeneralizationView,
   GeneralizationSetView
 } from '.';
-import { every, some } from 'lodash';
-import { Rectangle } from './view/rectangle';
-import { Path } from './view/path';
-import { Text } from './view/text';
+import { Rectangle } from './shape/rectangle';
+import { Path } from './shape/path';
+import { Text } from './shape/text';
 import { PackageView } from './view/package_view';
+import { NamedElement } from './named_element';
+import { Finder } from './finder';
+import { Note } from './model/note';
 
-export class Project extends OntoumlElement implements ModelElementContainer {
-  model: Package;
-  diagrams: Diagram[];
+export class Project extends NamedElement {
+  finder: Finder;
 
-  constructor(base?: Partial<Project>) {
-    super(OntoumlType.PROJECT_TYPE, base);
+  private root?: Package;
+  private _classes: {[key: string]: Class}
+  private _relations: {[key: string]: Relation}
+  private _generalizations: {[key: string]: Generalization}
+  private _generalizationSets: {[key: string]: GeneralizationSet}
+  private _packages: {[key: string]: Package}
+  private _properties: {[key: string]: Property}
+  private _literals: {[key: string]: Literal}
+  private _notes: {[key: string]: Note}
+  private _diagrams: {[key: string]: Diagram}
+  private _classViews: {[key: string]: ClassView}
+  private _binaryRelationViews: {[key: string]: BinaryRelationView}
+  private _nAryRelationViews: {[key: string]: NaryRelationView}
+  private _generalizationViews: {[key: string]: Class}
+  private _generalizationSetViews: {[key: string]: Class}
+  private _packageViews: {[key: string]: Class}
+  private _noteViews: {[key: string]: Class}
 
-    this.model = base?.model || null;
-    this.diagrams = base?.diagrams || [];
+  constructor() {
+    super(this);
+
     this.project = this;
+    this._classes = {};
+    this._relations = {};
+    this._generalizations = {};
+    this._generalizationSets = {};
+    this._packages = {};
+    this._properties = {};
+    this._literals = {};
+    this._notes = {};
+    this._diagrams = {};
+
+    this.finder = new Finder(this);
   }
 
   createModel(base?: Partial<Package>): Package {
@@ -44,7 +70,10 @@ export class Project extends OntoumlElement implements ModelElementContainer {
       throw new Error('Model already defined');
     }
 
-    this.model = new Package({ ...base, container: null, project: this });
+    // TODO: Should the container of the model be the project?
+    this.model = new Package(base);
+    this.setProject(this);
+
     return this.model;
   }
 
@@ -60,7 +89,7 @@ export class Project extends OntoumlElement implements ModelElementContainer {
       this.diagrams = [];
     }
 
-    const diagram = new Diagram({ ...base, container: null, project: this });
+    const diagram = new Diagram({ ...base });
     this.diagrams.push(diagram);
     return diagram;
   }
@@ -99,316 +128,27 @@ export class Project extends OntoumlElement implements ModelElementContainer {
 
     return contents;
   }
-
-  getElementById(id: String): OntoumlElement {
-    return this.getAllContents().filter(e => e.id === id)?.[0];
-  }
-
-  getClassById(id: String): Class {
-    return this.getAllClasses().filter(e => e.id === id)?.[0];
-  }
-
-  getRelationById(id: String): Relation {
-    return this.getAllRelations().filter(e => e.id === id)?.[0];
-  }
-
-  getPropertyById(id: String): Property {
-    return this.getAllProperties().filter(e => e.id === id)?.[0];
-  }
-
-  getGeneralizationById(id: String): Generalization {
-    return this.getAllGeneralizations().filter(e => e.id === id)?.[0];
-  }
-
-  getGeneralizationSetById(id: String): GeneralizationSet {
-    return this.getAllGeneralizationSets().filter(e => e.id === id)?.[0];
-  }
-
-  getPackageById(id: String): Package {
-    return this.getAllPackages().filter(e => e.id === id)?.[0];
-  }
-
-  getAllAttributes(): Property[] {
-    return this.model.getAllAttributes();
-  }
-
-  getAllProperties(): Property[] {
-    return this.model.getAllProperties();
-  }
-
-  getAllRelationEnds(): Property[] {
-    return this.model.getAllRelationEnds();
-  }
-
-  getAllRelations(): Relation[] {
-    return this.model.getAllRelations();
-  }
-
-  getAllGeneralizations(): Generalization[] {
-    return this.model.getAllGeneralizations();
-  }
-
-  /** Returns every generalization in the project that connects any two classifiers in the input array. */
-  getGeneralizationsBetween(classifiers: Classifier<any, any>[]): Generalization[] {
-    return this.getAllGeneralizations().filter(gen => {
-      const childSelected = classifiers.findIndex(c => c.id === gen.specific.id) >= 0;
-      const parentSelected = classifiers.findIndex(c => c.id === gen.general.id) >= 0;
-      return childSelected && parentSelected;
-    });
-  }
-
-  getAllGeneralizationSets(): GeneralizationSet[] {
-    return this.model.getAllGeneralizationSets();
-  }
-
-  /** Returns every generalization set that involves at least of the generalizations in the input array */
-  getGeneralizationSetsInvolvingAny(generalizations: Generalization[]): GeneralizationSet[] {
-    return this.getAllGeneralizationSets().filter(gs =>
-      some(gs.generalizations, gen => generalizations.find(refGen => refGen.id === gen.id))
-    );
-  }
-
-  /** Returns every generalization set that involves at least of the generalizations in the input array */
-  getGeneralizationSetsInvolvingAll(generalizations: Generalization[]): GeneralizationSet[] {
-    return this.getAllGeneralizationSets().filter(gs =>
-      every(gs.generalizations, gen => generalizations.find(refGen => refGen.id === gen.id))
-    );
-  }
-
-  getAllPackages(): Package[] {
-    return this.getAllContents().filter(e => e instanceof Package) as Package[];
-  }
-
-  getAllClasses(): Class[] {
-    return this.model.getAllClasses();
-  }
-
-  getAllEnumerations(): Class[] {
-    return this.model.getAllEnumerations();
-  }
-
-  getAllLiterals(): Literal[] {
-    return this.model.getAllLiterals();
-  }
-
-  getAllClassViews(): ClassView[] {
-    return this.diagrams.flatMap(diagram => diagram.getClassViews());
-  }
-
-  getAllRelationViews(): RelationView[] {
-    return this.diagrams.flatMap(diagram => diagram.getRelationViews());
-  }
-
-  getAllGeneralizationViews(): GeneralizationView[] {
-    return this.diagrams.flatMap(diagram => diagram.getGeneralizationViews());
-  }
-
-  getAllGeneralizationSetViews(): GeneralizationSetView[] {
-    return this.diagrams.flatMap(diagram => diagram.getGeneralizationSetViews());
-  }
-
-  getAllPackageViews(): PackageView[] {
-    return this.diagrams.flatMap(diagram => diagram.getPackageViews());
-  }
-
-  getAllRectangles(): Rectangle[] {
-    return this.diagrams.flatMap(diagram => diagram.getRectangles());
-  }
-
-  getAllPaths(): Path[] {
-    return this.diagrams.flatMap(diagram => diagram.getPaths());
-  }
-
-  getAllTexts(): Text[] {
-    return this.diagrams.flatMap(diagram => diagram.getTexts());
-  }
-
-  getAllModelElements(): ModelElement[] {
-    return this.getAllContents().filter(e => e instanceof ModelElement) as ModelElement[];
-  }
-
-  getAllContentsByType(type: OntoumlType | OntoumlType[]): OntoumlElement[] {
-    return this.model.getAllContentsByType(type);
-  }
-
-  getAllAttributesByStereotype(stereotype: PropertyStereotype | PropertyStereotype[]): Property[] {
-    return this.model.getAllAttributesByStereotype(stereotype);
-  }
-
-  getAllClassesByStereotype(stereotype: ClassStereotype | ClassStereotype[]): Class[] {
-    return this.model.getAllClassesByStereotype(stereotype);
-  }
-
-  getAllRelationsByStereotype(stereotype: RelationStereotype | RelationStereotype[]): Relation[] {
-    return this.model.getAllRelationsByStereotype(stereotype);
-  }
-
-  getAllClassesWithRestrictedToContainedIn(nature: OntologicalNature | OntologicalNature[]): Class[] {
-    return this.model.getAllClassesWithRestrictedToContainedIn(nature);
-  }
-
-  getClassesWithTypeStereotype(): Class[] {
-    return this.model.getClassesWithTypeStereotype();
-  }
-
-  getClassesWithHistoricalRoleStereotype(): Class[] {
-    return this.model.getClassesWithHistoricalRoleStereotype();
-  }
-
-  getClassesWithHistoricalRoleMixinStereotype(): Class[] {
-    return this.model.getClassesWithHistoricalRoleMixinStereotype();
-  }
-
-  getClassesWithEventStereotype(): Class[] {
-    return this.model.getClassesWithEventStereotype();
-  }
-
-  getClassesWithSituationStereotype(): Class[] {
-    return this.model.getClassesWithSituationStereotype();
-  }
-
-  getClassesWithCategoryStereotype(): Class[] {
-    return this.model.getClassesWithCategoryStereotype();
-  }
-
-  getClassesWithMixinStereotype(): Class[] {
-    return this.model.getClassesWithMixinStereotype();
-  }
-
-  getClassesWithRoleMixinStereotype(): Class[] {
-    return this.model.getClassesWithRoleMixinStereotype();
-  }
-
-  getClassesWithPhaseMixinStereotype(): Class[] {
-    return this.model.getClassesWithPhaseMixinStereotype();
-  }
-
-  getClassesWithKindStereotype(): Class[] {
-    return this.model.getClassesWithKindStereotype();
-  }
-
-  getClassesWithCollectiveStereotype(): Class[] {
-    return this.model.getClassesWithCollectiveStereotype();
-  }
-
-  getClassesWithQuantityStereotype(): Class[] {
-    return this.model.getClassesWithQuantityStereotype();
-  }
-
-  getClassesWithRelatorStereotype(): Class[] {
-    return this.model.getClassesWithRelatorStereotype();
-  }
-
-  getClassesWithQualityStereotype(): Class[] {
-    return this.model.getClassesWithQualityStereotype();
-  }
-
-  getClassesWithModeStereotype(): Class[] {
-    return this.model.getClassesWithModeStereotype();
-  }
-
-  getClassesWithSubkindStereotype(): Class[] {
-    return this.model.getClassesWithSubkindStereotype();
-  }
-
-  getClassesWithRoleStereotype(): Class[] {
-    return this.model.getClassesWithRoleStereotype();
-  }
-
-  getClassesWithPhaseStereotype(): Class[] {
-    return this.model.getClassesWithPhaseStereotype();
-  }
-
-  getClassesWithEnumerationStereotype(): Class[] {
-    return this.model.getClassesWithEnumerationStereotype();
-  }
-
-  getClassesWithDatatypeStereotype(): Class[] {
-    return this.model.getClassesWithDatatypeStereotype();
-  }
-
-  getClassesWithAbstractStereotype(): Class[] {
-    return this.model.getClassesWithAbstractStereotype();
-  }
-
-  getClassesRestrictedToFunctionalComplex(): Class[] {
-    return this.model.getClassesRestrictedToFunctionalComplex();
-  }
-
-  getClassesRestrictedToCollective(): Class[] {
-    return this.model.getClassesRestrictedToCollective();
-  }
-
-  getClassesRestrictedToQuantity(): Class[] {
-    return this.model.getClassesRestrictedToQuantity();
-  }
-
-  getClassesRestrictedToMode(): Class[] {
-    return this.model.getClassesRestrictedToMode();
-  }
-
-  getClassesRestrictedToIntrinsicMode(): Class[] {
-    return this.model.getClassesRestrictedToIntrinsicMode();
-  }
-
-  getClassesRestrictedToExtrinsicMode(): Class[] {
-    return this.model.getClassesRestrictedToExtrinsicMode();
-  }
-
-  getClassesRestrictedToQuality(): Class[] {
-    return this.model.getClassesRestrictedToQuality();
-  }
-
-  getClassesRestrictedToRelator(): Class[] {
-    return this.model.getClassesRestrictedToRelator();
-  }
-
-  lock(): void {
-    throw new Error('Unimplemented method');
-  }
-
-  unlock(): void {
-    throw new Error('Unimplemented method');
-  }
-
-  getClassesByNature(): Class[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  getNonSortals(): Class[] {
-    let classes = this.project.getClassesWithRoleMixinStereotype();
-
-    classes = classes.concat(this.project.getClassesWithMixinStereotype());
-    classes = classes.concat(this.project.getClassesWithCategoryStereotype());
-    classes = classes.concat(this.project.getClassesWithPhaseMixinStereotype());
-
-    return classes;
-  }
-
-  getMediations(_class: Class): Relation[] {
-    const relations = this.getAllRelations();
-    let mediations = [];
-    var i;
-    for (i in relations) {
-      if ((relations[i].involves(_class)) && (relations[i].hasMediationStereotype())) {
-        mediations = mediations.concat(relations[i]);
-      }
-    }
-
-    return mediations;
-  }
-
-  toJSON(): any {
-    const projectSerialization = {
-      model: null,
-      diagrams: null
+ 
+
+  override toJSON(): any {
+    const object = {
+      type: OntoumlType.PROJECT,
+      root: this.root || null,
+      elements: null
     };
 
-    Object.assign(projectSerialization, super.toJSON());
-
-    return projectSerialization;
+    return { ...object, ...super.toJSON() };
   }
 
   // No reference fields to resolve/replace
   resolveReferences(_elementReferenceMap: Map<string, OntoumlElement>): void {}
+
+  clone(): OntoumlElement {
+    throw new Error('Method not implemented.');
+  }
+
+  replace(originalElement: OntoumlElement, newElement: OntoumlElement): void {
+    throw new Error('Method not implemented.');
+  }
+
 }

@@ -440,9 +440,9 @@ describe('Relation Tests', () => {
     const derivation = model.createDerivationRelation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
-    it('Test binary relation', () => expect(heavierThan.isTernary()).toBe(false));
-    it('Test derivation relation', () => expect(derivation.isTernary()).toBe(false));
-    it('Test ternary relation', () => expect(metPersonAt.isTernary()).toBe(true));
+    it('Test binary relation', () => expect(heavierThan.isHighArity()).toBe(false));
+    it('Test derivation relation', () => expect(derivation.isHighArity()).toBe(false));
+    it('Test ternary relation', () => expect(metPersonAt.isHighArity()).toBe(true));
   });
 
   describe('Test isBinaryClassRelation()', () => {
@@ -482,9 +482,9 @@ describe('Relation Tests', () => {
     const derivation = model.createDerivationRelation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
-    it('Test binary relation', () => expect(heavierThan.isTernaryClassRelation()).toBe(false));
-    it('Test derivation relation', () => expect(derivation.isTernaryClassRelation()).toBe(false));
-    it('Test ternary relation', () => expect(metPersonAt.isTernaryClassRelation()).toBe(true));
+    it('Test binary relation', () => expect(heavierThan.isHighArityClassRelation()).toBe(false));
+    it('Test derivation relation', () => expect(derivation.isHighArityClassRelation()).toBe(false));
+    it('Test ternary relation', () => expect(metPersonAt.isHighArityClassRelation()).toBe(true));
   });
 
   describe('Test isPartWholeRelation()', () => {

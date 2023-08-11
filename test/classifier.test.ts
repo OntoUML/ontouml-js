@@ -283,14 +283,14 @@ describe('Classifier Tests', () => {
 
   describe(`Test getFilteredAncestors()`, () => {
     it('Test phdStudent ancestors', () => {
-      const ultimateSortalFilter = (_class: Class) => _class.hasUltimateSortalStereotype();
+      const ultimateSortalFilter = (_class: Class) => _class.isIdentityProvider();
       const phdStudentAncestors = phdStudent.getFilteredAncestors(ultimateSortalFilter);
       expect(phdStudentAncestors).toContain(person);
       expect(phdStudentAncestors.length).toBe(1);
     });
 
     it('Test lemonadeStand ancestors', () => {
-      const subkindFilter = (_class: Class) => _class.hasSubkindStereotype();
+      const subkindFilter = (_class: Class) => _class.isSubkind();
       const lemonadeStandAncestors = lemonadeStand.getFilteredAncestors(subkindFilter);
       expect(lemonadeStandAncestors).toContain(lemonadeStand);
       expect(lemonadeStandAncestors).toContain(forProfitOrganization);
@@ -300,7 +300,7 @@ describe('Classifier Tests', () => {
 
   describe(`Test getFilteredDescendants()`, () => {
     it('Test agent descendants', () => {
-      const ultimateSortalFilter = (_class: Class) => _class.hasUltimateSortalStereotype();
+      const ultimateSortalFilter = (_class: Class) => _class.isIdentityProvider();
       const agentDescendants = agent.getFilteredDescendants(ultimateSortalFilter);
       expect(agentDescendants).toContain(person);
       expect(agentDescendants).toContain(organization);
@@ -308,7 +308,7 @@ describe('Classifier Tests', () => {
     });
 
     it('Test lemonadeStand descendants', () => {
-      const subkindFilter = (_class: Class) => _class.hasSubkindStereotype();
+      const subkindFilter = (_class: Class) => _class.isSubkind();
       const lemonadeStandDescendants = lemonadeStand.getFilteredDescendants(subkindFilter);
       expect(lemonadeStandDescendants).toContain(lemonadeStand);
       expect(lemonadeStandDescendants).toContain(forProfitOrganization);

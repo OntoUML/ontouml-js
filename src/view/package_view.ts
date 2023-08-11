@@ -1,18 +1,23 @@
-import { OntoumlElement, OntoumlType, NodeView, Rectangle, Package } from '..';
+import { OntoumlType, Package, View, Project } from '..';
+import { Rectangle } from '../shape/rectangle';
 
-export class PackageView extends NodeView<Package, Rectangle> {
-  constructor(base?: Partial<PackageView>) {
-    super(OntoumlType.PACKAGE_VIEW, base);
+export class PackageView extends View<Package> {
+  readonly rectangle: Rectangle;
+
+  constructor(pkg: Package) {
+    super(pkg);
+
+    this.rectangle = new Rectangle();
+    this.rectangle.width = 60;
+    this.rectangle.height = 30;
   }
 
-  createShape(): Rectangle {
-    const rectangle = new Rectangle();
-    rectangle.width = 60;
-    rectangle.height = 30;
-    return rectangle;
-  }
-
-  getContents(): OntoumlElement[] {
-    return super.getContents();
+  override toJSON(): any {
+    const object = {
+      type: OntoumlType.PACKAGE_VIEW,
+      rectangle: this.rectangle.id
+    };
+    
+    return { ...object, ...super.toJSON() };
   }
 }

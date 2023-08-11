@@ -5,7 +5,7 @@ export class Generalization extends ModelElement {
   specific?: Classifier<any, any>;
 
   constructor(base?: Partial<Generalization>) {
-    super(OntoumlType.GENERALIZATION_TYPE, base);
+    super(OntoumlType.GENERALIZATION, base);
 
     this.general = base?.general;
     this.specific = base?.specific;
@@ -22,7 +22,7 @@ export class Generalization extends ModelElement {
     if(!root){
       throw new Error('Root package is null. Cannot retrieve generalizations.');
     }
-    return root.getAllGeneralizationSets()
+    return root.getGeneralizationSets()
                .filter(gs => gs.generalizations && gs.generalizations.includes(this));
   }
 
@@ -105,6 +105,7 @@ export class Generalization extends ModelElement {
 
   toJSON(): any {
     const object: any = {
+      type: OntoumlType.GENERALIZATION,
       general: null,
       specific: null
     };

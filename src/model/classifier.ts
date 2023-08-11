@@ -3,14 +3,12 @@ import { Package, Stereotype, Decoratable, Generalization, GeneralizationSet, Pr
 
 export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotype> extends Decoratable<S> {
   isAbstract: boolean;
-  isDerived: boolean;
   properties: Property[];
 
   constructor(type: OntoumlType, base?: Partial<Classifier<T, S>>) {
     super(type, base);
 
     this.isAbstract = base?.isAbstract || false;
-    this.isDerived = base?.isDerived || false;
     this.properties = base?.properties || [];
   }
 
@@ -34,7 +32,7 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
       throw new Error('Root package is null. Cannot retrieve generalizations.');
     }
 
-    return root.getAllGeneralizations()
+    return root.getGeneralizations()
               .filter(g => this === g.specific || this === g.general);
   }
 
@@ -55,7 +53,7 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
       throw new Error('Root package is null. Cannot retrieve generalization sets.');
     }
 
-    return root.getAllGeneralizationSets()
+    return root.getGeneralizationSets()
                .filter(gs => gs.getInvolvedClassifiers().includes(this));
   }
 
@@ -115,44 +113,81 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
     return this.getDescendants().filter(filter);
   }
 
-  getOwnRelations(_filter?: Function): Relation[] {
-    let relations = this.project.getAllRelations().filter(r => r.getMembers().includes(this));
+  // TODO: Update with references
+  /**
+   * 
+   * @returns returns relations connected to the classifier.
+   */
+  getRelations(): Relation[] {
+    this.assertProject();
+
+    let relations = this.project!.getRelations()
+                                 .filter(r => r.getMembers().includes(this));
+    
     return [...new Set(relations)];
   }
 
-  getOwnIncomingRelations(): Relation[] {
-    return this.project
-      .getAllRelations()
-      .filter(r => r.isBinary())
-      .filter(r => r.getTarget() === this);
+  /**
+   * 
+   * @returns returns relations whose target is the classifier.
+   */
+  getIncomingRelations(): Relation[] {
+    this.assertProject();
+    
+    return this.project!.getBinaryRelations()
+                        .filter(r => r.getTarget() === this);
   }
 
-  getOwnOutgoingRelations(): Relation[] {
-    return this.project
-      .getAllRelations()
-      .filter(r => r.isBinary())
-      .filter(r => r.getSource() === this);
+  /**
+   * 
+   * @returns returns relations whose source is the classifier.
+   */
+  getOutgoingRelations(): Relation[] {
+    this.assertProject();
+    
+    return this.project!.getBinaryRelations()
+                        .filter(r => r.getSource() === this);
   }
 
-  getAllRelations(_filter?: Function): Relation[] {
-    let relations = this.getAncestors().flatMap(a => a.getOwnRelations());
+  /**
+   * 
+   * @returns returns relations connected to the classifier or one of its ancestors.
+   */
+  getAllRelations(): Relation[] {
+    let relations = this.getAncestors().flatMap(a => a.getRelations());
     return [...new Set(relations)];
   }
 
+  /**
+   * 
+   * @returns returns relations whose target is the classifier or one of its ancestors.
+   */
   getAllIncomingRelations(): Relation[] {
-    return this.getAncestors().flatMap(a => a.getOwnIncomingRelations());
+    return this.getAncestors().flatMap(a => a.getIncomingRelations());
   }
 
+  /**
+   * 
+   * @returns returns relations whose source is the classifier or one of its ancestors.
+   */
   getAllOutgoingRelations(): Relation[] {
-    return this.getAncestors().flatMap(a => a.getOwnOutgoingRelations());
+    return this.getAncestors().flatMap(a => a.getOutgoingRelations());
   }
 
-  getOwnNaryRelations(): { position: number; relation: Relation }[] {
-    throw new Error('Method unimplemented!');
+  /**
+   * 
+   * @returns returns all high-arity relations connected to the classifier.
+   */
+  getHighArityRelations(): Relation[] {
+    return this.getRelations().filter( r => r.isHighArity())
   }
 
-  getAllNaryRelations(): { position: number; relation: Relation }[] {
-    throw new Error('Method unimplemented!');
+  /**
+   * 
+   * @returns returns all high-arity relations connected to the classifier or one of its ancestors.
+   */
+  getAllHighArityRelations(): Relation[] {
+    return this.getAncestors().flatMap(a => a.getHighArityRelations());
   }
 
   getOwnDerivations(): Relation[] {

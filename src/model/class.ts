@@ -27,7 +27,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
   order: number;
 
   constructor(base?: Partial<Class>) {
-    super(OntoumlType.CLASS_TYPE, base);
+    super(OntoumlType.CLASS, base);
 
     this.literals = base?.literals || [];
     this.restrictedTo = base?.restrictedTo || [];
@@ -72,6 +72,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
   toJSON(): any {
     const object: any = {
+      type: OntoumlType.CLASS,
       stereotype: null,
       restrictedTo: null,
       properties: null,
@@ -92,14 +93,21 @@ export class Class extends Classifier<Class, ClassStereotype> {
     return object;
   }
 
-  createAttribute(propertyType: Class, name?: string, base?: Partial<Property>): Property {
-    // TODO: explain to claude why I removed this
+  createAttribute(propertyType?: Class, name?: string, base?: Partial<Property>): Property {
+    // TODO: Discuss the removal of this code block
     // if (this.hasEnumerationStereotype()) {
     //   throw new Error('Cannot create an attribute on an enumeration class.');
     // }
-    let attribute = new Property(
-      Object.assign({}, base, { propertyType, name: new MultilingualText(name), container: this, project: this.project })
-    );
+    let attribute = new Property(base);
+    
+    if(name){
+      attribute.name.addText(name);
+    }
+
+    if(propertyType){
+      attribute.propertyType = propertyType;
+    }
+    
     this.addAttribute(attribute);
     return attribute;
   }
@@ -114,16 +122,18 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
   addAttribute(attribute: Property): void {
     if (!attribute) {
-      return;
+      throw new Error('Cannot add a null attribute');
     }
+
     attribute.setContainer(this);
     this.properties.push(attribute);
   }
 
   addLiteral(literal: Literal): void {
     if (!literal) {
-      return;
+      throw new Error('Cannot add a null literal');
     }
+
     literal.setContainer(this);
     this.literals.push(literal);
   }
@@ -136,301 +146,376 @@ export class Class extends Classifier<Class, ClassStereotype> {
     return !_.isEmpty(this.literals);
   }
 
-  restrictedToOverlaps(natures: OntologicalNature | OntologicalNature[]): boolean {
-    const naturesArray: OntologicalNature[] = utils.arrayFrom(natures);
+  allowsSome(natures: OntologicalNature | OntologicalNature[]): boolean {
+    const naturesArray = utils.arrayFrom(natures);
     return utils.intersects(this.restrictedTo, naturesArray);
   }
 
-  restrictedToContainedIn(natures: OntologicalNature | OntologicalNature[]): boolean {
-    const naturesArray: OntologicalNature[] = utils.arrayFrom(natures);
+  allowsOnly(natures: OntologicalNature | OntologicalNature[]): boolean {
+    const naturesArray = utils.arrayFrom(natures);
     return !_.isEmpty(this.restrictedTo) && !_.isEmpty(naturesArray) && utils.includesAll(naturesArray, this.restrictedTo);
   }
 
-  restrictedToContains(natures: OntologicalNature | OntologicalNature[]): boolean {
-    const naturesArray: OntologicalNature[] = utils.arrayFrom(natures);
+  allowsAll(natures: OntologicalNature | OntologicalNature[]): boolean {
+    const naturesArray = utils.arrayFrom(natures);
     return !_.isEmpty(this.restrictedTo) && !_.isEmpty(naturesArray) && utils.includesAll(this.restrictedTo, naturesArray);
   }
 
-  restrictedToEquals(natures: OntologicalNature | OntologicalNature[]): boolean {
-    const naturesArray: OntologicalNature[] = utils.arrayFrom(natures);
+  allowsExactly(natures: OntologicalNature | OntologicalNature[]): boolean {
+    const naturesArray = utils.arrayFrom(natures);
     return utils.equalContents(this.restrictedTo, naturesArray);
   }
 
-  isRestrictedToEndurant(): boolean {
-    return this.restrictedToContainedIn(natureUtils.EndurantNatures);
+  isEndurantType(): boolean {
+    return this.allowsOnly(natureUtils.EndurantNatures);
   }
 
-  isRestrictedToSubstantial(): boolean {
-    return this.restrictedToContainedIn(natureUtils.SubstantialNatures);
+  isSubstantialType(): boolean {
+    return this.allowsOnly(natureUtils.SubstantialNatures);
   }
 
-  isRestrictedToMoment(): boolean {
-    return this.restrictedToContainedIn(natureUtils.MomentNatures);
+  isMomentType(): boolean {
+    return this.allowsOnly(natureUtils.MomentNatures);
   }
 
-  isRestrictedToFunctionalComplex(): boolean {
-    return this.restrictedToContainedIn(OntologicalNature.functional_complex);
+  isFunctionalComplexType(): boolean {
+    return this.allowsExactly(OntologicalNature.functional_complex);
   }
 
-  isRestrictedToCollective(): boolean {
-    return this.restrictedToContainedIn(OntologicalNature.collective);
+  isCollectiveType(): boolean {
+    return this.allowsExactly(OntologicalNature.collective);
   }
 
-  isRestrictedToQuantity(): boolean {
-    return this.restrictedToContainedIn(OntologicalNature.quantity);
+  isQuantityType(): boolean {
+    return this.allowsExactly(OntologicalNature.quantity);
   }
 
-  isRestrictedToIntrinsicMoment(): boolean {
-    return this.restrictedToContainedIn(natureUtils.IntrinsicMomentNatures);
+  isIntrinsicMomentType(): boolean {
+    return this.allowsOnly(natureUtils.IntrinsicMomentNatures);
   }
 
-  isRestrictedToExtrinsicMoment(): boolean {
-    return this.restrictedToContainedIn(natureUtils.ExtrinsicMomentNatures);
+  isExtrinsicMomentType(): boolean {
+    return this.allowsOnly(natureUtils.ExtrinsicMomentNatures);
   }
 
-  isRestrictedToRelator(): boolean {
-    return this.restrictedToContainedIn(OntologicalNature.relator);
+  isRelatorType(): boolean {
+    return this.allowsExactly(OntologicalNature.relator);
   }
 
-  isRestrictedToIntrinsicMode(): boolean {
-    return this.restrictedToContainedIn(OntologicalNature.intrinsic_mode);
+  isIntrinsicModeType(): boolean {
+    return this.allowsExactly(OntologicalNature.intrinsic_mode);
   }
 
-  isRestrictedToExtrinsicMode(): boolean {
-    return this.restrictedToContainedIn(OntologicalNature.extrinsic_mode);
+  isExtrinsicModeType(): boolean {
+    return this.allowsExactly(OntologicalNature.extrinsic_mode);
   }
 
-  isRestrictedToQuality(): boolean {
-    return this.restrictedToContainedIn(OntologicalNature.quality);
+  isQualityType(): boolean {
+    return this.allowsExactly(OntologicalNature.quality);
   }
 
-  isRestrictedToEvent(): boolean {
-    return this.restrictedToContainedIn(OntologicalNature.event);
+  isEventType(): boolean {
+    return this.allowsExactly(OntologicalNature.event);
   }
 
-  isRestrictedToSituation(): boolean {
-    return this.restrictedToContainedIn(OntologicalNature.situation);
+  isSituationType(): boolean {
+    return this.allowsExactly(OntologicalNature.situation);
   }
 
-  isRestrictedToType(): boolean {
-    return this.restrictedToContainedIn(OntologicalNature.type);
+  isHighOrderType(): boolean {
+    return this.allowsExactly(OntologicalNature.type);
   }
 
-  isRestrictedToAbstract(): boolean {
-    return this.restrictedToContainedIn(OntologicalNature.abstract);
+  isAbstractType(): boolean {
+    return this.allowsExactly(OntologicalNature.abstract);
   }
 
-  hasTypeStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.TYPE);
+  /**
+  * Returns true if the class is stereotyped as «», «», or «».
+  */
+  isRigid(): boolean {
+    return this.stereotypeIsOneOf(stereotypeUtils.RigidStereotypes);
   }
 
-  hasEventStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.EVENT);
+  /**
+  * Returns true if the class is stereotyped as «», «», or «».
+  */
+  isSemiRigid(): boolean {
+    return this.stereotypeIsOneOf(stereotypeUtils.SemiRigidStereotypes);
   }
 
-  hasSituationStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.SITUATION);
+  /**
+  * Returns true if the class is stereotyped as «», «», or «».
+  */
+  isAntiRigid(): boolean {
+    return this.stereotypeIsOneOf(stereotypeUtils.AntiRigidStereotypes);
   }
 
-  hasAbstractStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.ABSTRACT);
+  /**
+  * Returns true if the class is stereotyped as «», «», or «».
+  */
+  isNonSortal(): boolean {
+    return this.stereotypeIsOneOf(stereotypeUtils.NonSortalStereotypes);
   }
 
-  hasDatatypeStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.DATATYPE);
+  /**
+  * Returns true if the class is stereotyped as «», «», or «».
+  */
+  isSortal(): boolean {
+    return this.stereotypeIsOneOf(stereotypeUtils.SortalStereotypes);
   }
 
-  hasEnumerationStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.ENUMERATION);
+  /**
+  * Returns true if the class is stereotyped as «», «», or «».
+  */
+  isIdentityProvider(): boolean {
+    return this.stereotypeIsOneOf(stereotypeUtils.UltimateSortalStereotypes);
+  }
+
+  /**
+  * Returns true if the class is stereotyped as «», «», or «».
+  */
+  isBaseSortal(): boolean {
+    return this.stereotypeIsOneOf(stereotypeUtils.BaseSortalStereotypes);
+  }
+
+  /**
+  * Returns true if the class is stereotyped as «type».
+  */
+  isType(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.TYPE);
+  }
+
+  /**
+  * Returns true if the class is stereotyped as «event».
+  */
+  isEvent(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.EVENT);
+  }
+
+  /**
+  * Returns true if the class is stereotyped as «situation».
+  */
+  isSituation(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.SITUATION);
+  }
+
+  /** TODO
+  * Returns true if the class is stereotyped as «abstract».
+  */
+  isAbstractAbstract(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.ABSTRACT);
+  }
+
+  /**
+  * Returns true if the class is stereotyped as «datatype».
+  */
+  isDatatype(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.DATATYPE);
   }
 
   isComplexDatatype(): boolean {
-    return this.hasDatatypeStereotype() && this.hasAttributes();
+    return this.isAbstractType() && this.isDatatype() && this.hasAttributes();
   }
 
   isPrimitiveDatatype(): boolean {
-    return this.hasDatatypeStereotype() && !this.hasAttributes();
+    return this.isAbstractType() && this.isDatatype() && !this.hasAttributes();
+  }
+  
+  /**
+  * Returns true if the class is stereotyped as «enumeration».
+  */
+  isEnumeration(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.ENUMERATION);
+  }
+  
+  /**
+  * Returns true if the class is stereotyped as «kind».
+  */
+  isKind(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.KIND);
   }
 
-  hasEndurantOnlyStereotype(): boolean {
-    return this.hasAnyStereotype(stereotypeUtils.EndurantStereotypes);
+  /**
+   * Returns true if the class is stereotyped as «collective».
+   */
+  isCollective(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.COLLECTIVE);
   }
 
-  hasMomentOnlyStereotype(): boolean {
-    return this.hasAnyStereotype(stereotypeUtils.MomentOnlyStereotypes);
+  /**
+   * Returns true if the class is stereotyped as «quantity».
+   */
+  isQuantity(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.QUANTITY);
   }
 
-  // TODO: explain substantial
-  hasSubstantialOnlyStereotype(): boolean {
-    return this.hasAnyStereotype(stereotypeUtils.SubstantialOnlyStereotypes);
+  /**
+   * Returns true if the class is stereotyped as «relator».
+   */
+  isRelator(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.RELATOR);
   }
 
-  hasRigidStereotype(): boolean {
-    return this.hasAnyStereotype(stereotypeUtils.RigidStereotypes);
+  /**
+   * Returns true if the class is stereotyped as «quality».
+   */
+  isQuality(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.QUALITY);
   }
 
-  hasSemiRigidStereotype(): boolean {
-    return this.hasAnyStereotype(stereotypeUtils.SemiRigidStereotypes);
+  /**
+   * Returns true if the class is stereotyped as «mode».
+   */
+  isMode(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.MODE);
   }
 
-  hasAntiRigidStereotype(): boolean {
-    return this.hasAnyStereotype(stereotypeUtils.AntiRigidStereotypes);
+  /**
+   * Returns true if the class is stereotyped as «subkind».
+   */
+  isSubkind(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.SUBKIND);
   }
 
-  hasNonSortalStereotype(): boolean {
-    return this.hasAnyStereotype(stereotypeUtils.NonSortalStereotypes);
+  /**
+   * Returns true if the class is stereotyped as «phase».
+   */
+  isPhase(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.PHASE);
   }
 
-  hasSortalStereotype(): boolean {
-    return this.hasAnyStereotype(stereotypeUtils.SortalStereotypes);
+  /**
+   * Returns true if the class is stereotyped as «role».
+   */
+  isRole(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.ROLE);
   }
 
-  hasUltimateSortalStereotype(): boolean {
-    return this.hasAnyStereotype(stereotypeUtils.UltimateSortalStereotypes);
+  /**
+   * Returns true if the class is stereotyped as «historicalRole».
+   */
+  isHistoricalRole(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.HISTORICAL_ROLE);
   }
 
-  hasBaseSortalStereotype(): boolean {
-    return this.hasAnyStereotype(stereotypeUtils.BaseSortalStereotypes);
+  /**
+   * Returns true if the class is stereotyped as «category».
+   */
+  isCategory(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.CATEGORY);
   }
 
-  hasKindStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.KIND);
+  /**
+   * Returns true if the class is stereotyped as «phaseMixin».
+   */
+  isPhaseMixin(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.PHASE_MIXIN);
   }
 
-  hasCollectiveStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.COLLECTIVE);
+  /**
+   * Returns true if the class is stereotyped as «roleMixin».
+   */
+  isRoleMixin(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.ROLE_MIXIN);
   }
 
-  hasQuantityStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.QUANTITY);
+  /**
+   * Returns true if the class is stereotyped as «historicalRoleMixin».
+   */
+  isHistoricalRoleMixin(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.HISTORICAL_ROLE_MIXIN);
   }
 
-  hasRelatorStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.RELATOR);
-  }
-
-  hasQualityStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.QUALITY);
-  }
-
-  hasModeStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.MODE);
-  }
-
-  hasSubkindStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.SUBKIND);
-  }
-
-  hasPhaseStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.PHASE);
-  }
-
-  hasRoleStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.ROLE);
-  }
-
-  hasHistoricalRoleStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.HISTORICAL_ROLE);
-  }
-
-  hasCategoryStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.CATEGORY);
-  }
-
-  hasPhaseMixinStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.PHASE_MIXIN);
-  }
-
-  hasRoleMixinStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.ROLE_MIXIN);
-  }
-
-  hasHistoricalRoleMixinStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.HISTORICAL_ROLE_MIXIN);
-  }
-
-  hasMixinStereotype(): boolean {
-    return this.hasAnyStereotype(ClassStereotype.MIXIN);
+  /**
+   * Returns true if the class is stereotyped as «mixin».
+   */
+  isMixin(): boolean {
+    return this.stereotypeIsOneOf(ClassStereotype.MIXIN);
   }
 
   getUltimateSortalAncestors(): Class[] {
-    return this.getFilteredAncestors(ancestor => ancestor.hasUltimateSortalStereotype());
+    return this.getFilteredAncestors(ancestor => ancestor.isIdentityProvider());
   }
 
   getUltimateSortalsDescendants(): Class[] {
-    return this.getFilteredDescendants(descendent => descendent.hasUltimateSortalStereotype());
+    return this.getFilteredDescendants(descendent => descendent.isIdentityProvider());
   }
 
   getSortalAncestors(): Class[] {
-    return this.getFilteredAncestors(ancestor => ancestor.hasSortalStereotype());
+    return this.getFilteredAncestors(ancestor => ancestor.isSortal());
   }
 
   getSortalDescendants(): Class[] {
-    return this.getFilteredDescendants(descendent => descendent.hasSortalStereotype());
+    return this.getFilteredDescendants(descendent => descendent.isSortal());
   }
 
   getBaseSortalAncestors(): Class[] {
-    return this.getFilteredAncestors(ancestor => ancestor.hasBaseSortalStereotype());
+    return this.getFilteredAncestors(ancestor => ancestor.isBaseSortal());
   }
 
   getBaseSortalDescendants(): Class[] {
-    return this.getFilteredDescendants(descendent => descendent.hasBaseSortalStereotype());
+    return this.getFilteredDescendants(descendent => descendent.isBaseSortal());
   }
 
   getNonSortalAncestors(): Class[] {
-    const ancestorsFilter = (ancestor: Class) => ancestor.hasNonSortalStereotype();
+    const ancestorsFilter = (ancestor: Class) => ancestor.isNonSortal();
     return this.getFilteredAncestors(ancestorsFilter);
   }
 
   getNonSortalDescendants(): Class[] {
-    const descendantsFilter = (descendent: Class) => descendent.hasNonSortalStereotype();
+    const descendantsFilter = (descendent: Class) => descendent.isNonSortal();
     return this.getFilteredDescendants(descendantsFilter);
   }
 
   getRigidAncestors(): Class[] {
-    const ancestorsFilter = (ancestor: Class) => ancestor.hasRigidStereotype();
+    const ancestorsFilter = (ancestor: Class) => ancestor.isRigid();
     return this.getFilteredAncestors(ancestorsFilter);
   }
 
   getRigidDescendants(): Class[] {
-    const descendantsFilter = (descendent: Class) => descendent.hasRigidStereotype();
+    const descendantsFilter = (descendent: Class) => descendent.isRigid();
     return this.getFilteredDescendants(descendantsFilter);
   }
 
   getSemiRigidAncestors(): Class[] {
-    const ancestorsFilter = (ancestor: Class) => ancestor.hasSemiRigidStereotype();
+    const ancestorsFilter = (ancestor: Class) => ancestor.isSemiRigid();
     return this.getFilteredAncestors(ancestorsFilter);
   }
 
   getSemiRigidDescendants(): Class[] {
-    const descendantsFilter = (descendent: Class) => descendent.hasSemiRigidStereotype();
+    const descendantsFilter = (descendent: Class) => descendent.isSemiRigid();
     return this.getFilteredDescendants(descendantsFilter);
   }
 
   getAntiRigidAncestors(): Class[] {
-    const ancestorsFilter = (ancestor: Class) => ancestor.hasAntiRigidStereotype();
+    const ancestorsFilter = (ancestor: Class) => ancestor.isAntiRigid();
     return this.getFilteredAncestors(ancestorsFilter);
   }
 
   getAntiRigidDescendants(): Class[] {
-    const descendantsFilter = (descendent: Class) => descendent.hasAntiRigidStereotype();
+    const descendantsFilter = (descendent: Class) => descendent.isAntiRigid();
     return this.getFilteredDescendants(descendantsFilter);
   }
 
-  /** Returns both own attributes, excluding inherited ones */
-  getOwnAttributes(): Property[] {
-    if (this.hasEnumerationStereotype()) {
+  /** 
+   * Returns attributes defined in the class, excluding inherited ones 
+   * */
+  getAttributes(): Property[] {
+    if (this.isEnumeration()) {
       throw new Error('Cannot retrieve attributes from an enumeration.');
     }
 
     return this.properties ? [...this.properties] : [];
   }
 
-  /** Returns both own and inherited attributes */
+  /** 
+   * Returns both own and inherited attributes 
+   * */
   getAllAttributes(): Property[] {
     const thisAndAncestors = [this, ...this.getAncestors()];
     const allAttributes = thisAndAncestors.reduce((attributesAcc: Property[], _class: Class) => {
-      attributesAcc.push(..._class.getOwnAttributes());
+      attributesAcc.push(..._class.getAttributes());
       return attributesAcc;
     }, []);
 
@@ -438,8 +523,8 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   /** Returns both own literals, excluding inherited ones */
-  getOwnLiterals(): Literal[] {
-    if (!this.hasEnumerationStereotype()) {
+  getLiterals(): Literal[] {
+    if (!this.isEnumeration()) {
       throw new Error('Cannot retrieve literals from a non-enumeration.');
     }
 
@@ -450,7 +535,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
   getAllLiterals(): Literal[] {
     const thisAndAncestors = [this, ...this.getAncestors()];
     const allLiterals = thisAndAncestors.reduce((literalsAcc: Literal[], _class: Class) => {
-      literalsAcc.push(..._class.getOwnLiterals());
+      literalsAcc.push(..._class.getLiterals());
       return literalsAcc;
     }, []);
 
@@ -495,14 +580,14 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   // TODO: investigate TSLint error TS6133 "'filter' is declared but its value is never read"
-  getOwnRelations(_filter?: Function): Relation[] {
+  getRelations(_filter?: Function): Relation[] {
     throw new Error('Method unimplemented!');
   }
 
   // TODO: add static version of factory methods present in class here
   // TODO: expand support
   static haveRigidStereotypes(classes: Class[]): boolean {
-    return classes.every((_class: Class) => _class.hasRigidStereotype());
+    return classes.every((_class: Class) => _class.isRigid());
   }
 
   static areAbstract(classes: Class[]): boolean {

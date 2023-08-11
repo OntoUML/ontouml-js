@@ -23,19 +23,18 @@ export class Property extends Decoratable<PropertyStereotype> {
   redefinedProperties: Property[];
   cardinality?: Cardinality;
   aggregationKind?: AggregationKind;
-  isDerived: boolean;
+  
   isOrdered: boolean;
   isReadOnly: boolean;
 
   constructor(base?: Partial<Property>) {
-    super(OntoumlType.PROPERTY_TYPE, base);
+    super(OntoumlType.PROPERTY, base);
 
     this.propertyType = base?.propertyType;
     this.cardinality = new Cardinality(base?.cardinality);
     this.subsettedProperties = base?.subsettedProperties || [];
     this.redefinedProperties = base?.redefinedProperties || [];
     this.aggregationKind = base?.aggregationKind || AggregationKind.NONE;
-    this.isDerived = base?.isDerived || false;
     this.isOrdered = base?.isOrdered || false;
     this.isReadOnly = base?.isReadOnly || false;
   }
@@ -60,7 +59,17 @@ export class Property extends Decoratable<PropertyStereotype> {
     return this.container instanceof Relation;
   }
 
-  isPropertyTypeDefined(): boolean {
+  isSource(): boolean {
+    if (!this.isRelationEnd()) return false;
+    return (this.container as Relation).getSourceEnd() === this;
+  }
+
+  isTarget(): boolean {
+    if (!this.isRelationEnd()) return false;
+    return (this.container as Relation).getTargetEnd() === this;
+  }
+
+  hasPropertyType(): boolean {
     return this.propertyType instanceof Classifier;
   }
 
@@ -92,7 +101,7 @@ export class Property extends Decoratable<PropertyStereotype> {
    */
   getOtherEnds(): Property[] {
     const container = this.container;
-    if (container instanceof Relation && container.isTernary()) {
+    if (container instanceof Relation && container.isHighArity()) {
       return container.properties.filter((relationEnd: Property) => relationEnd !== this);
     } else {
       throw new Error('Invalid method on non-ternary relations');
@@ -127,13 +136,13 @@ export class Property extends Decoratable<PropertyStereotype> {
 
   toJSON(): any {
     const object: any = {
+      type: OntoumlType.PROPERTY,
       stereotype: null,
       cardinality: null,
       propertyType: null,
       subsettedProperties: null,
       redefinedProperties: null,
       aggregationKind: null,
-      isDerived: false,
       isOrdered: false,
       isReadOnly: false
     };

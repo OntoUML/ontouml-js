@@ -1,12 +1,14 @@
-import { GeneralizationSet, OntoumlType, View } from '..';
+import { OntoumlType } from '..';
+import { View } from './view';
+import { Note } from '../model/note';
 import { Text } from '../shape/text';
 
-export class GeneralizationSetView extends View<GeneralizationSet> {
-  text: Text;
+export class NoteView extends View<Note> {
+  readonly text: Text;
 
-  constructor(genSet: GeneralizationSet) {
-    super(genSet);
-    
+  constructor(note: Note) {
+    super(note);
+
     this.text = new Text();
     this.text.width = 100;
     this.text.height = 50;
@@ -14,11 +16,10 @@ export class GeneralizationSetView extends View<GeneralizationSet> {
 
   override toJSON(): any {
     const object = {
-      type: OntoumlType.GENERALIZATION_SET_VIEW,
+      type: OntoumlType.NOTE_VIEW,
       text: this.text.id
     };
     
     return { ...object, ...super.toJSON() };
   }
-
 }

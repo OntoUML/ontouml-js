@@ -14,7 +14,7 @@ import {
 
 export class Relation extends Classifier<Relation, RelationStereotype> {
   constructor(base?: Partial<Relation>) {
-    super(OntoumlType.RELATION_TYPE, base);
+    super(OntoumlType.RELATION, base);
   }
 
   getContents(): OntoumlElement[] {
@@ -31,6 +31,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
 
   toJSON(): any {
     const relationSerialization = {
+      type: OntoumlType.RELATION,
       stereotype: null,
       properties: null,
       isAbstract: false,
@@ -152,13 +153,13 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     return [...new Set(members)];
   }
 
-  private assertDefinedProperties() {
+  assertDefinedProperties() {
     if (!this.properties) {
       throw new Error("The `properties` field is null or undefined.");
     }
   }
 
-  private assertTypedSource() {
+  assertTypedSource() {
     const source = this.getSource();
     
     if(!source) {
@@ -166,7 +167,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     }
   }
 
-  private assertTypedTarget() {
+  assertTypedTarget() {
     const target = this.getTarget();
     
     if(!target) {
@@ -282,7 +283,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
   }
 
   // TODO: check whether isTernaryRelation() is a better name
-  isTernary(): boolean {
+  isHighArity(): boolean {
     this.assertDefinedProperties();
     return this.properties?.length > 2;
   }
@@ -303,8 +304,8 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     );
   }
 
-  isTernaryClassRelation(): boolean {
-    return this.isTernary() && this.holdsBetweenClasses();
+  isHighArityClassRelation(): boolean {
+    return this.isHighArity() && this.holdsBetweenClasses();
   }
 
   isPartWholeRelation(): boolean {
@@ -317,7 +318,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
 
   // TODO: check weather ternary relations may denote existential dependencies
   isExistentialDependency(): boolean {
-    return this.properties.some((relationEnd: Property) => relationEnd.isReadOnly);
+    return this.properties.some(p => p.isReadOnly);
   }
 
   isSourceExistentiallyDependent(): boolean {
@@ -429,7 +430,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     }
 
     const isEndTypeAnEvent = (relationEnd: Property) =>
-      relationEnd.propertyType instanceof Class && relationEnd.propertyType.isRestrictedToEvent();
+      relationEnd.propertyType instanceof Class && relationEnd.propertyType.isEventType();
     return this.holdsBetween(isEndTypeAnEvent, isEndTypeAnEvent);
   }
 
@@ -439,7 +440,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     }
 
     const isEndTypeAMoment = (relationEnd: Property) =>
-      relationEnd.propertyType instanceof Class && relationEnd.propertyType.isRestrictedToMoment();
+      relationEnd.propertyType instanceof Class && relationEnd.propertyType.isMomentType();
     return this.holdsBetween(isEndTypeAMoment, isEndTypeAMoment);
   }
 
@@ -449,7 +450,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     }
 
     const isEndTypeASubstantial = (relationEnd: Property) =>
-      relationEnd.propertyType instanceof Class && relationEnd.propertyType.isRestrictedToSubstantial();
+      relationEnd.propertyType instanceof Class && relationEnd.propertyType.isSubstantialType();
     return this.holdsBetween(isEndTypeASubstantial, isEndTypeASubstantial);
   }
 

@@ -58,11 +58,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasTypeStereotype()).toBe(true);
+      expect(clazz.isType()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToType()).toBe(true);
+      expect(clazz.isHighOrderType()).toBe(true);
     });
   });
 
@@ -74,11 +74,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasHistoricalRoleStereotype()).toBe(true);
+      expect(clazz.isHistoricalRole()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToFunctionalComplex()).toBe(true);
+      expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
 
@@ -90,11 +90,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasHistoricalRoleMixinStereotype()).toBe(true);
+      expect(clazz.isHistoricalRoleMixin()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToFunctionalComplex()).toBe(true);
+      expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
 
@@ -106,11 +106,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasEventStereotype()).toBe(true);
+      expect(clazz.isEvent()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToEvent()).toBe(true);
+      expect(clazz.isEventType()).toBe(true);
     });
   });
 
@@ -122,11 +122,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasSituationStereotype()).toBe(true);
+      expect(clazz.isSituation()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToSituation()).toBe(true);
+      expect(clazz.isSituationType()).toBe(true);
     });
   });
 
@@ -138,11 +138,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasCategoryStereotype()).toBe(true);
+      expect(clazz.isCategory()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToFunctionalComplex()).toBe(true);
+      expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
 
@@ -154,11 +154,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasMixinStereotype()).toBe(true);
+      expect(clazz.isMixin()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToFunctionalComplex()).toBe(true);
+      expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
 
@@ -170,11 +170,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasRoleMixinStereotype()).toBe(true);
+      expect(clazz.isRoleMixin()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToFunctionalComplex()).toBe(true);
+      expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
 
@@ -186,11 +186,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasPhaseMixinStereotype()).toBe(true);
+      expect(clazz.isPhaseMixin()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToFunctionalComplex()).toBe(true);
+      expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
 
@@ -202,11 +202,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasKindStereotype()).toBe(true);
+      expect(clazz.isKind()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToFunctionalComplex()).toBe(true);
+      expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
 
@@ -218,11 +218,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasCollectiveStereotype()).toBe(true);
+      expect(clazz.isCollective()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToCollective()).toBe(true);
+      expect(clazz.isCollectiveType()).toBe(true);
     });
   });
 
@@ -234,11 +234,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasQuantityStereotype()).toBe(true);
+      expect(clazz.isQuantity()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToQuantity()).toBe(true);
+      expect(clazz.isQuantityType()).toBe(true);
     });
   });
 
@@ -250,11 +250,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasRelatorStereotype()).toBe(true);
+      expect(clazz.isRelator()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToRelator()).toBe(true);
+      expect(clazz.isRelatorType()).toBe(true);
     });
   });
 
@@ -266,7 +266,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasQualityStereotype()).toBe(true);
+      expect(clazz.isQuality()).toBe(true);
     });
 
     it('Test nature', () => {
@@ -282,11 +282,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasModeStereotype()).toBe(true);
+      expect(clazz.isMode()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToIntrinsicMode()).toBe(true);
+      expect(clazz.allowsOnlyIntrinsicModes()).toBe(true);
     });
   });
 
@@ -298,11 +298,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasModeStereotype()).toBe(true);
+      expect(clazz.isMode()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToExtrinsicMode()).toBe(true);
+      expect(clazz.isExtrinsicModeType()).toBe(true);
     });
   });
 
@@ -314,11 +314,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasSubkindStereotype()).toBe(true);
+      expect(clazz.isSubkind()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToFunctionalComplex()).toBe(true);
+      expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
 
@@ -330,11 +330,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasRoleStereotype()).toBe(true);
+      expect(clazz.isRole()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToFunctionalComplex()).toBe(true);
+      expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
 
@@ -346,11 +346,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasPhaseStereotype()).toBe(true);
+      expect(clazz.isPhase()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToFunctionalComplex()).toBe(true);
+      expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
 
@@ -362,11 +362,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasAbstractStereotype()).toBe(true);
+      expect(clazz.stereotypedAsAbstract()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToAbstract()).toBe(true);
+      expect(clazz.isAbstractType()).toBe(true);
     });
   });
 
@@ -378,11 +378,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasDatatypeStereotype()).toBe(true);
+      expect(clazz.isDatatype()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToAbstract()).toBe(true);
+      expect(clazz.isAbstractType()).toBe(true);
     });
   });
 
@@ -394,11 +394,11 @@ describe(`Package tests`, () => {
     });
 
     it('Test stereotype', () => {
-      expect(clazz.hasEnumerationStereotype()).toBe(true);
+      expect(clazz.stereotypedAsEnumeration()).toBe(true);
     });
 
     it('Test nature', () => {
-      expect(clazz.isRestrictedToAbstract()).toBe(true);
+      expect(clazz.isAbstractType()).toBe(true);
     });
   });
 
@@ -479,7 +479,7 @@ describe(`Package tests`, () => {
     });
 
     it('relation should be ternary', () => {
-      expect(relation.isTernary()).toBe(true);
+      expect(relation.isHighArity()).toBe(true);
     });
 
     it('relation should have the correct first member', () => {

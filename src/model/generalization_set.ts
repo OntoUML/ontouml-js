@@ -7,7 +7,7 @@ export class GeneralizationSet extends ModelElement {
   generalizations: Generalization[];
 
   constructor(base?: Partial<GeneralizationSet>) {
-    super(OntoumlType.GENERALIZATION_SET_TYPE, base);
+    super(OntoumlType.GENERALIZATION_SET, base);
 
     this.isDisjoint = base?.isDisjoint ?? false;
     this.isComplete = base?.isComplete ?? false;
@@ -30,10 +30,10 @@ export class GeneralizationSet extends ModelElement {
     return (
       this.isPartition() &&
       this.involvesClasses() &&
-      ((this.getSpecificsAsClasses().every(specific => specific.hasPhaseStereotype()) &&
-        this.getGeneralAsClass().hasSortalStereotype()) ||
-        (this.getSpecificsAsClasses().every(specific => specific.hasPhaseMixinStereotype()) &&
-          this.getGeneralAsClass().hasCategoryStereotype()))
+      ((this.getSpecificsAsClasses().every(specific => specific.isPhase()) &&
+        this.getGeneralAsClass().isSortal()) ||
+        (this.getSpecificsAsClasses().every(specific => specific.isPhaseMixin()) &&
+          this.getGeneralAsClass().isCategory()))
     );
   }
 
@@ -41,8 +41,8 @@ export class GeneralizationSet extends ModelElement {
     return (
       this.isPartition() &&
       this.involvesClasses() &&
-      ((this.getSpecificsAsClasses().every(specific => specific.hasSubkindStereotype()) &&
-        this.getGeneralAsClass().hasSortalStereotype()))
+      ((this.getSpecificsAsClasses().every(specific => specific.isSubkind()) &&
+        this.getGeneralAsClass().isSortal()))
       //
     );
   }
@@ -180,6 +180,7 @@ export class GeneralizationSet extends ModelElement {
 
   toJSON(): any {
     const object: any = {
+      type: OntoumlType.GENERALIZATION_SET,
       isDisjoint: false,
       isComplete: false,
       categorizer: null,

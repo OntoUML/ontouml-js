@@ -31,9 +31,9 @@ it('Test the example presented in the "Usage" section of the README file', () =>
     enrollment.createAttribute(date, 'enrollment date');
 
     // Containers also include methods to easily support retrieving their contents
-    model.getAllAttributes(); // returns all contained attributes
-    model.getAllClasses(); // returns all contained classes
-    model.getAllGeneralizations(); // returns all contained generalizations
+    model.getAttributes(); // returns all contained attributes
+    model.getClasses(); // returns all contained classes
+    model.getGeneralizations(); // returns all contained generalizations
 
     // Any element can be easily serialized into JSON, and properly serialized elements can be deserialized just as easily
     const projectSerialization = JSON.stringify(project);

@@ -1,6 +1,7 @@
 import { OntoumlElement, OntoumlType, Package } from '../index';
 
 export abstract class ModelElement extends OntoumlElement {
+  //TODO: Rename to customProperties
   propertyAssignments: object;
 
   constructor(type: OntoumlType, base?: Partial<ModelElement>) {
@@ -19,26 +20,6 @@ export abstract class ModelElement extends OntoumlElement {
     return modelElementSerialization;
   }
 
-  /** Clones the model element and all its contents. Replaces all references to
-   * original contents with references to cloned elements. */
-  abstract clone(): ModelElement;
-
-  // TODO: replace references in property assignments
-  /** Replaces references to `originalElement` with references to `newElement`.
-   * Designed to be used within clone(). */
-  abstract replace(originalElement: ModelElement, newElement: ModelElement): void;
-
-  lock(): void {
-    throw new Error('Method unimplemented!');
-  }
-
-  unlock(): void {
-    throw new Error('Method unimplemented!');
-  }
-
-  isLocked(): boolean {
-    throw new Error('Method unimplemented!');
-  }
 
   /**
    * Returns outermost package container of a model element which can either

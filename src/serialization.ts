@@ -12,7 +12,7 @@ import {
   Literal,
   Diagram,
   ClassView,
-  RelationView,
+  BinaryRelationView,
   GeneralizationView,
   GeneralizationSetView,
   PackageView,
@@ -34,40 +34,40 @@ function getElementMap(element: OntoumlElement): Map<string, OntoumlElement> {
  * field. */
 function clone(original: Partial<OntoumlElement>): OntoumlElement {
   switch (original.type) {
-    case OntoumlType.PROJECT_TYPE:
+    case OntoumlType.PROJECT:
       return new Project(original);
-    case OntoumlType.PACKAGE_TYPE:
-      return new Package(original);
-    case OntoumlType.CLASS_TYPE:
-      return new Class(original);
-    case OntoumlType.RELATION_TYPE:
-      return new Relation(original);
-    case OntoumlType.GENERALIZATION_TYPE:
-      return new Generalization(original);
-    case OntoumlType.GENERALIZATION_SET_TYPE:
-      return new GeneralizationSet(original);
-    case OntoumlType.PROPERTY_TYPE:
-      return new Property(original);
-    case OntoumlType.LITERAL_TYPE:
-      return new Literal(original);
+    case OntoumlType.PACKAGE:
+      return new Package(original as Package);
+    case OntoumlType.CLASS:
+      return new Class(original as Class);
+    case OntoumlType.RELATION:
+      return new Relation(original as Relation);
+    case OntoumlType.GENERALIZATION:
+      return new Generalization(original as Generalization);
+    case OntoumlType.GENERALIZATION_SET:
+      return new GeneralizationSet(original as GeneralizationSet);
+    case OntoumlType.PROPERTY:
+      return new Property(original as Property);
+    case OntoumlType.LITERAL:
+      return new Literal(original as Literal);
     case OntoumlType.DIAGRAM:
-      return new Diagram(original);
+      return new Diagram(original as Diagram);
     case OntoumlType.CLASS_VIEW:
-      return new ClassView(original);
-    case OntoumlType.RELATION_VIEW:
-      return new RelationView(original);
+      return new ClassView(original as ClassView);
+    case OntoumlType.BINARY_RELATION_VIEW:
+      return new BinaryRelationView(original as BinaryRelationView);
     case OntoumlType.GENERALIZATION_VIEW:
-      return new GeneralizationView(original);
+      return new GeneralizationView(original as GeneralizationView);
     case OntoumlType.GENERALIZATION_SET_VIEW:
-      return new GeneralizationSetView(original);
+      return new GeneralizationSetView(original as GeneralizationSetView);
     case OntoumlType.PACKAGE_VIEW:
-      return new PackageView(original);
+      return new PackageView(original as PackageView);
     case OntoumlType.RECTANGLE:
-      return new Rectangle(original);
+      return new Rectangle(original as Rectangle);
     case OntoumlType.TEXT:
-      return new Text(original);
+      return new Text(original as Text);
     case OntoumlType.PATH:
-      return new Path(original);
+      return new Path(original as Path);
     default:
       throw new Error("No match for parameter's type");
   }
