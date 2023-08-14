@@ -23,12 +23,10 @@ import {
 import { PackageableElement } from './packageable_element';
 
 export class Package extends ModelElement implements PackageableElement {
-  contents: ModelElement[];
+  contents: ModelElement[] = [];
 
   constructor(project: Project, container?: Package) {
     super(project, container);
-
-    this.contents = [];
   }
 
   public override get container(): Package | undefined {

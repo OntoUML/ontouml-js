@@ -22,11 +22,11 @@ import { Text } from './shape/text';
 
 export class Diagram extends OntoumlElement {
   owner?: ModelElement;
-  contents: View<any>[];
+  contents: View<any>[] = [];
 
-  constructor(project: Project) {
+  constructor(project: Project, owner?: ModelElement) {
     super(project);
-    this.contents = [];
+    this.owner = owner;
   }
 
   getContents(): OntoumlElement[] {
@@ -58,7 +58,7 @@ export class Diagram extends OntoumlElement {
   }
 
   getShapes(): Shape[] {
-    return this.contents?.map(view => view.shape) || [];
+    return this.contents?.flatMap(view => view.getContents()) || [];
   }
 
   getRectangles(): Rectangle[] {
@@ -73,20 +73,29 @@ export class Diagram extends OntoumlElement {
     return this.getShapes().filter(s => s instanceof Text) as Text[];
   }
 
-  addElement(element: View<any>): void {
-    if (!element) return;
-    element.setContainer(this);
+  addView(element: View<any>): void {
+    if (!element){
+      return;
+    }
+
     this.contents.push(element);
   }
 
   addElements(elements: View<any>[]): void {
-    if (!elements) return;
-    elements.forEach(e => this.addElement(e));
+    if (!elements){
+      return;
+    }
+
+    elements.forEach(e => this.addView(e));
   }
 
   setElements(elements: View<any>[]): void {
     this.contents = [];
-    if (!elements) return;
+    
+    if (!elements){
+      return;
+    }
+
     this.addElements(elements);
   }
 
@@ -130,69 +139,61 @@ export class Diagram extends OntoumlElement {
   }
 
   addClass(clazz: Class): ClassView {
-    let view = new ClassView(this.project, { element: clazz });
-    this.addElement(view);
+    let view = new ClassView(clazz);
+    this.addView(view);
     return view;
   }
 
   addGeneralizationSet(gs: GeneralizationSet): GeneralizationSetView {
-    let view = new GeneralizationSetView({ element: gs });
-    this.addElement(view);
+    let view = new GeneralizationSetView(gs);
+    this.addView(view);
     return view;
   }
 
-  addPackage(gs: Package): PackageView {
-    let view = new PackageView({ element: gs });
-    this.addElement(view);
+  addPackage(pkg: Package): PackageView {
+    let view = new PackageView(pkg);
+    this.addView(view);
     return view;
   }
 
-  addBinaryRelation(relation: Relation): BinaryRelationView {
-    relation.assertTypedSource();
-    let sourceView = this.findOrCreateView(relation.getSource()!);
+  addBinaryRelation(rel: Relation): BinaryRelationView {
+    if(!rel.isBinary()){
+      throw new Error('Relation is not binary.');
+    }
 
-    relation.assertTypedTarget();
-    let targetView = this.findOrCreateView(relation.getTarget()!);
+    rel.assertTypedSource();
+    let sourceView = this.findOrCreateView(rel.getSource()!);
 
-    let relationView = new BinaryRelationView({
-      element: relation,
-      source: sourceView,
-      target: targetView
-    });
+    rel.assertTypedTarget();
+    let targetView = this.findOrCreateView(rel.getTarget()!);
 
-    this.addElement(relationView);
+    let relationView = new BinaryRelationView(rel, sourceView, targetView);
+
+    this.addView(relationView);
     return relationView;
   }
 
-  addGeneralization(generalization: Generalization): GeneralizationView {
-    generalization.assertGeneralDefined();
-    let sourceView = this.findOrCreateView(generalization.general!);
+  addGeneralization(gen: Generalization): GeneralizationView {
+    gen.assertGeneralDefined();
+    let sourceView = this.findOrCreateView(gen.general!);
 
-    generalization.assertSpecificDefined();
-    let targetView = this.findOrCreateView(generalization.specific!);
+    gen.assertSpecificDefined();
+    let targetView = this.findOrCreateView(gen.specific!);
 
-    let generalizationView = new GeneralizationView({
-      element: generalization,
-      source: sourceView,
-      target: targetView
-    });
+    let generalizationView = new GeneralizationView(gen, sourceView, targetView);
 
-    this.addElement(generalizationView);
+    this.addView(generalizationView);
     return generalizationView;
   }
 
-  toJSON(): any {
+  override toJSON(): any {
     const object : any = {
       type: OntoumlType.DIAGRAM,
-      owner: null,
-      contents: null
+      owner: this.owner?.id || null,
+      contents: this.contents.map(v => v.id)
     };
 
-    Object.assign(object, super.toJSON());
-
-    object.owner = this.owner?.id ?? null;
-
-    return object;
+    return {...object, ...super.toJSON()};
   }
 
   resolveReferences(elementReferenceMap: Map<string, OntoumlElement>): void {

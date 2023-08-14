@@ -1,4 +1,4 @@
-import { ModelElement, View, Path, Project } from '..';
+import { ModelElement, View, Path, Project, OntoumlElement } from '..';
 
 export abstract class BinaryConnectorView<T extends ModelElement> extends View<T> {
   source: View<any>;
@@ -11,6 +11,10 @@ export abstract class BinaryConnectorView<T extends ModelElement> extends View<T
     this.path = new Path();
     this.source = source;
     this.target = target;
+  }
+
+  override getContents(): OntoumlElement[] {
+    return [this.path];
   }
 
   override toJSON(): any {

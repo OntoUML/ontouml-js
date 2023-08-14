@@ -3,11 +3,11 @@ import { Point } from './point';
 import { Shape } from './shape';
 
 export class Path extends Shape {
-  private _points!: Point[];
+  private _points: Point[];
   
   constructor(points?: Point[]) {
     super();
-    this.points = !points ? [] : points;
+    this._points = points || [];
   }
 
   public get points(): Point[] {

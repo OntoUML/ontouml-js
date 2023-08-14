@@ -19,23 +19,16 @@ export enum AggregationKind {
 
 export class Property extends Decoratable<PropertyStereotype> {
   propertyType?: Classifier<any, any>;
-  subsettedProperties: Property[]; // TODO: update null when deserializing
-  redefinedProperties: Property[];
-  cardinality?: Cardinality;
-  aggregationKind?: AggregationKind;
-  isOrdered: boolean;
-  isReadOnly: boolean;
+  subsettedProperties: Property[] = [];
+  redefinedProperties: Property[] = [];
+  cardinality: Cardinality = new Cardinality("0..*");
+  aggregationKind: AggregationKind = AggregationKind.NONE;;
+  isOrdered: boolean = false;
+  isReadOnly: boolean = false;
 
   constructor(container: Classifier<any,any>, propertyType?: Classifier<any,any>) {
     super(container.project!, container);
-
-    this.propertyType = this.propertyType;
-    this.cardinality = new Cardinality("0..*");
-    this.subsettedProperties = [];
-    this.redefinedProperties = [];
-    this.aggregationKind = AggregationKind.NONE;
-    this.isOrdered = false;
-    this.isReadOnly = false;
+    this.propertyType = propertyType;
   }
 
   getContents(): OntoumlElement[] {

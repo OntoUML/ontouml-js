@@ -3,17 +3,13 @@ import { utils } from '..';
 import { PackageableElement } from './packageable_element';
 
 export class GeneralizationSet extends ModelElement implements PackageableElement {
-  isDisjoint: boolean;
-  isComplete: boolean;
+  isDisjoint: boolean = false;
+  isComplete: boolean = false;
   categorizer?: Class;
-  private _generalizations: Generalization[];
+  private _generalizations: Generalization[] = [];
 
   constructor(project: Project, container?: Package) {
     super(project, container);
-
-    this.isDisjoint = false;
-    this.isComplete = false;
-    this._generalizations = [];
   }
 
   public get generalizations(): Generalization[] {

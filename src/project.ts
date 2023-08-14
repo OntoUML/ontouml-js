@@ -7,7 +7,6 @@ import {
   Generalization,
   GeneralizationSet,
   Literal,
-  ModelElement,
   Package,
   Property,
   Relation,
@@ -28,51 +27,36 @@ import { Finder } from './finder';
 import { Note } from './model/note';
 import { NoteView } from './view/note_view';
 import { NoteLink } from './model/note_link';
+import { NaryRelationView } from './view/nary_relation_view';
+import { NoteLinkView } from './view/note_link_view';
 
 export class Project extends NamedElement {
   finder: Finder;
   root?: Package;
   
-  private _classes: {[key: string]: Class}
-  private _relations: {[key: string]: Relation}
-  private _generalizations: {[key: string]: Generalization}
-  private _generalizationSets: {[key: string]: GeneralizationSet}
-  private _packages: {[key: string]: Package}
-  private _properties: {[key: string]: Property}
-  private _literals: {[key: string]: Literal}
-  private _notes: {[key: string]: Note}
-  private _noteLinks: {[key: string]: NoteLink}
-  private _diagrams: {[key: string]: Diagram}
-  private _classViews: {[key: string]: ClassView}
-  private _binaryRelationViews: {[key: string]: BinaryRelationView}
-  private _nAryRelationViews: {[key: string]: NaryRelationView}
-  private _generalizationViews: {[key: string]: GeneralizationView}
-  private _generalizationSetViews: {[key: string]: GeneralizationSetView}
-  private _packageViews: {[key: string]: PackageView}
-  private _noteViews: {[key: string]: NoteView}
+  private _classes: {[key: string]: Class} = {}
+  private _relations: {[key: string]: Relation} = {}
+  private _generalizations: {[key: string]: Generalization} = {}
+  private _generalizationSets: {[key: string]: GeneralizationSet} = {}
+  private _packages: {[key: string]: Package} = {}
+  private _properties: {[key: string]: Property} = {}
+  private _literals: {[key: string]: Literal} = {}
+  private _notes: {[key: string]: Note} = {}
+  private _noteLinks: {[key: string]: NoteLink} = {}
+  private _diagrams: {[key: string]: Diagram} = {}
+  private _classViews: {[key: string]: ClassView} = {}
+  private _binaryRelationViews: {[key: string]: BinaryRelationView} = {}
+  private _nAryRelationViews: {[key: string]: NaryRelationView} = {}
+  private _generalizationViews: {[key: string]: GeneralizationView} = {}
+  private _generalizationSetViews: {[key: string]: GeneralizationSetView} = {}
+  private _packageViews: {[key: string]: PackageView} = {}
+  private _noteViews: {[key: string]: NoteView} = {}
+  private _noteLinkViews: {[key: string]: NoteLinkView} = {}
 
   constructor() {
     super();
 
     this.project = this;
-    this._classes = {};
-    this._relations = {};
-    this._generalizations = {};
-    this._generalizationSets = {};
-    this._packages = {};
-    this._properties = {};
-    this._literals = {};
-    this._notes = {};
-    this._noteLinks = {};
-    this._diagrams = {};
-    this._classViews = {};
-    this._binaryRelationViews = {};
-    this._nAryRelationViews = {};
-    this._generalizationViews = {};
-    this._generalizationSetViews = {};
-    this._packageViews = {};
-    this._noteViews ={};
-
     this.finder = new Finder(this);
   }
 
@@ -96,17 +80,15 @@ export class Project extends NamedElement {
   // }
 
   createDiagram(): Diagram {
-    const diagram = new Diagram();
-    this._diagrams[diagram.id] = diagram;
-    
+    const diagram = new Diagram(this);
+    this.addDiagram(diagram);
     return diagram;
   }
 
   addDiagram(diagram: Diagram) {
     if (diagram === null) return;
-
-    diagram.setContainer(this);
-    this.diagrams.push(diagram);
+    
+    this._diagrams[diagram.id] = diagram;
   }
 
   addDiagrams(diagrams: Diagram[]) {
@@ -116,7 +98,7 @@ export class Project extends NamedElement {
   }
 
   setDiagrams(diagrams: Diagram[]) {
-    this.diagrams = [];
+    this._diagrams = {};
 
     if (diagrams === null) return;
 
@@ -124,17 +106,27 @@ export class Project extends NamedElement {
   }
 
   getContents(): OntoumlElement[] {
-    let contents: OntoumlElement[] = [];
+    return ([
+      ...Object.values(this._classes),
+      ...Object.values(this._relations),
+      ...Object.values(this._generalizations),
+      ...Object.values(this._generalizationSets),
+      ...Object.values(this._packages),
+      ...Object.values(this._properties),
+      ...Object.values(this._literals),
+      ...Object.values(this._notes),
+      ...Object.values(this._noteLinks),
+      ...Object.values(this._diagrams),
+      ...Object.values(this._classViews),
+      ...Object.values(this._binaryRelationViews),
+      ...Object.values(this._nAryRelationViews),
+      ...Object.values(this._generalizationViews),
+      ...Object.values(this._generalizationSetViews),
+      ...Object.values(this._packageViews),
+      ...Object.values(this._noteViews),
+      ...Object.values(this._noteLinkViews),
+    ]);
 
-    if (this.model) {
-      contents.push(this.model);
-    }
-
-    if (this.diagrams) {
-      contents = [...contents, ...this.diagrams];
-    }
-
-    return contents;
   }
  
 

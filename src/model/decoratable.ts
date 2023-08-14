@@ -2,11 +2,10 @@ import { Classifier, ModelElement, Package, Project, Stereotype } from '..';
 
 export abstract class Decoratable<S extends Stereotype> extends ModelElement {
   stereotype?: S;
-  isDerived: boolean;
+  isDerived: boolean = false;
 
   constructor(project: Project, container?: Package | Classifier<any, any>) {
     super(project, container);
-    this.isDerived = false;
   }
 
   /**

@@ -13,10 +13,6 @@ export abstract class View<T extends ModelElement> extends OntoumlElement {
     this.element = element;
   }
 
-  override getContents(): OntoumlElement[] {
-    return [ ];
-  }
-
   override clone(): OntoumlElement {
     throw new Error('Method not implemented.');
   }

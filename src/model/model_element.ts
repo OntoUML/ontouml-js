@@ -2,13 +2,11 @@ import { OntoumlElement, Package, Project } from '../index';
 import { NamedElement } from '../named_element';
 
 export abstract class ModelElement extends NamedElement {
-  customProperties: object;
+  customProperties: object = {};
   private _container?: ModelElement;
 
   constructor(project: Project, container?: ModelElement) {
     super(project);
-
-    this.customProperties = {};
     this.container = container;
   }
 

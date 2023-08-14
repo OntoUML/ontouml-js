@@ -1,19 +1,39 @@
-import { ModelElement, View, Path, OntoumlType, ClassView } from '..';
+import { View, Path, OntoumlType, ClassView, OntoumlElement, Relation } from '..';
 import { Diamond } from '../shape/diamond';
 
-export abstract class NaryRelationView<T extends ModelElement> extends View<T> {
-  members: ClassView[];
-  paths: Path[];
+export class NaryRelationView extends View<Relation> {
+  private _members: ClassView[];
+  private _paths: Path[];
+  
   diamond: Diamond;
 
-  constructor(element: T, members: ClassView[]) {
+  constructor(element: Relation, members: ClassView[]) {
     super(element);
     
-    this.members = members;
+    this._members = members;
     this.diamond = new Diamond();
     
     // members and paths are matched by position
-    this.paths = this.members.map(view => new Path());
+    this._paths = this.members.map(view => new Path());
+  }
+
+  public get members(): ClassView[] {
+    return [...this._members];
+  }
+
+  public set members(value: ClassView[]) {
+    this._members = value;
+  }
+
+  public get paths(): Path[] {
+    return [...this._paths];
+  }
+  public set paths(value: Path[]) {
+    this._paths = value;
+  }
+
+  override getContents(): OntoumlElement[] {
+    return [...this.paths, this.diamond];
   }
 
   override toJSON(): any {

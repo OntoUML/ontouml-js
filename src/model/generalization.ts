@@ -4,15 +4,13 @@ import { PackageableElement } from './packageable_element';
 export class Generalization extends ModelElement implements PackageableElement {
   general: Classifier<any, any>;
   specific: Classifier<any, any>;
-  _genSets: GeneralizationSet[];
+  _genSets: GeneralizationSet[] = [];
   
   constructor(project: Project, container: Package | undefined, general: Classifier<any, any>, specific: Classifier<any,any>) {
     super(project, container);
 
     this.general = general;
     this.specific = specific;
-    
-    this._genSets = [];
   }
 
   public get genSets(): GeneralizationSet[] {

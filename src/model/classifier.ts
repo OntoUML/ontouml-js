@@ -3,14 +3,11 @@ import { Package, Stereotype, Decoratable, Generalization, GeneralizationSet, Pr
 import { PackageableElement } from './packageable_element';
 
 export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotype> extends Decoratable<S> implements PackageableElement {
-  isAbstract: boolean;
-  protected _properties: Property[];
+  isAbstract: boolean = false;
+  protected _properties: Property[] = [];
   
   constructor(project: Project, container?: Package) {
     super(project, container);
-
-    this.isAbstract = false;
-    this._properties = [];
   }
 
   public override get container(): Package | undefined {

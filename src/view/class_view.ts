@@ -1,4 +1,4 @@
-import { Class, OntoumlType, View } from '..';
+import { Class, OntoumlElement, OntoumlType, View } from '..';
 import { Rectangle } from '../shape/rectangle';
 
 export class ClassView extends View<Class> {
@@ -10,6 +10,10 @@ export class ClassView extends View<Class> {
     this.rectangle = new Rectangle();
     this.rectangle.width = 100;
     this.rectangle.height = 50;
+  }
+
+  override getContents(): OntoumlElement[] {
+    return [this.rectangle];
   }
 
   override toJSON(): any {
