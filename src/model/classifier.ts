@@ -1,39 +1,52 @@
 import _ from 'lodash';
-import { Package, Stereotype, Decoratable, Generalization, GeneralizationSet, Property, Class, Relation, OntoumlType } from '..';
+import { Package, Stereotype, Decoratable, Generalization, GeneralizationSet, Property, Class, Relation, Project } from '..';
+import { PackageableElement } from './packageable_element';
 
-export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotype> extends Decoratable<S> {
+export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotype> extends Decoratable<S> implements PackageableElement {
   isAbstract: boolean;
   properties: Property[];
 
-  constructor(type: OntoumlType, base?: Partial<Classifier<T, S>>) {
-    super(type, base);
 
-    this.isAbstract = base?.isAbstract || false;
-    this.properties = base?.properties || [];
+  constructor(project: Project, container?: Package) {
+    super(project, container);
+
+    this.isAbstract = false;
+    this.properties = [];
   }
 
-  addParent(parent: T): Generalization {
-    if (this.container instanceof Package) return this.container.createGeneralization(parent, this);
-    if (this.project) return this.project.model.createGeneralization(parent, this);
-    return new Generalization({ general: parent, specific: this });
+  asClass(): Class {
+    if (this instanceof Class) {
+      return this as Class;
+    } 
+    
+    throw new Error("The classifier is not an instance of Class.");
   }
 
-  addChild(child: T): Generalization {
-    if (this.container instanceof Package) return this.container.createGeneralization(this, child);
-    if (this.project) return this.project.model.createGeneralization(this, child);
-    return new Generalization({ general: this, specific: child });
+  asRelation(): Relation {
+    if (this instanceof Relation) {
+      return this as Relation;
+    } 
+    
+    throw new Error("The classifier is not an instance of Relation.");
   }
+
+
+  // addParent(parent: T): Generalization {
+  //   if (this.container instanceof Package) return this.container.createGeneralization(parent, this);
+  //   if (this.project) return this.project.model.createGeneralization(parent, this);
+  //   return new Generalization({ general: parent, specific: this });
+  // }
+
+  // addChild(child: T): Generalization {
+  //   if (this.container instanceof Package) return this.container.createGeneralization(this, child);
+  //   if (this.project) return this.project.model.createGeneralization(this, child);
+  //   return new Generalization({ general: this, specific: child });
+  // }
 
   // TODO: Update methods to use references instead.
   getGeneralizations(): Generalization[] {
-    let root : Package | null = this.getRoot();
-    
-    if(!root){
-      throw new Error('Root package is null. Cannot retrieve generalizations.');
-    }
-
-    return root.getGeneralizations()
-              .filter(g => this === g.specific || this === g.general);
+    return this.project!.finder.getGeneralizations()
+                               .filter(g => this === g.specific || this === g.general);
   }
 
   getGeneralizationsWhereGeneral(): Generalization[] {
@@ -47,14 +60,8 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
   }
 
   getGeneralizationSets(): GeneralizationSet[] {
-    let root : Package | null = this.getRoot();
-    
-    if(!root){
-      throw new Error('Root package is null. Cannot retrieve generalization sets.');
-    }
-
-    return root.getGeneralizationSets()
-               .filter(gs => gs.getInvolvedClassifiers().includes(this));
+    return this.project!.finder.getGeneralizationSets()
+                               .filter(gs => gs.getInvolvedClassifiers().includes(this));
   }
 
   getGeneralizationSetsWhereGeneral(): GeneralizationSet[] {
@@ -121,8 +128,8 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
   getRelations(): Relation[] {
     this.assertProject();
 
-    let relations = this.project!.getRelations()
-                                 .filter(r => r.getMembers().includes(this));
+    let relations = this.project!.finder.getRelations()
+                                        .filter(r => r.getMembers().includes(this));
     
     return [...new Set(relations)];
   }
@@ -134,8 +141,8 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
   getIncomingRelations(): Relation[] {
     this.assertProject();
     
-    return this.project!.getBinaryRelations()
-                        .filter(r => r.getTarget() === this);
+    return this.project!.finder.getBinaryRelations()
+                               .filter(r => r.getTarget() === this);
   }
 
   /**
@@ -190,6 +197,7 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
     return this.getAncestors().flatMap(a => a.getHighArityRelations());
   }
 
+
   getOwnDerivations(): Relation[] {
     throw new Error('Method unimplemented!');
   }
@@ -204,5 +212,15 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
 
   getOwnOppositeRelationEnds(): Property[] {
     throw new Error('Method unimplemented!');
+  }
+
+
+  override toJSON(): any {
+    const object = {
+      isAbstract: this.isAbstract,
+      properties: this.properties.map(p => p.id)
+    };
+
+    return { ...object, ...super.toJSON() };
   }
 }

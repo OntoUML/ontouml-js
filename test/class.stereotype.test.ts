@@ -10,36 +10,36 @@ describe('Test Class stereotype-related query methods', () => {
     model = project.createModel();
   });
 
-  describe(`Test ${Class.prototype.isStereotypeValid.name}()`, () => {
+  describe(`Test ${Class.prototype.hasValidStereotype.name}()`, () => {
     stereotypeUtils.ClassStereotypes.forEach((stereotype: ClassStereotype) =>
       it(`Test class with stereotype '${stereotype}'`, () => {
         const clazz = model.createClass('classWithValidStereotype');
         clazz.stereotype = stereotype;
-        expect(clazz.isStereotypeValid()).toBe(true);
+        expect(clazz.hasValidStereotype()).toBe(true);
       })
     );
 
     it(`Test class with invalid stereotype`, () => {
       const clazz = model.createClass();
       clazz.stereotype = 'custom' as any;
-      expect(clazz.isStereotypeValid()).toBe(false);
+      expect(clazz.hasValidStereotype()).toBe(false);
     });
 
     it(`Test without stereotype`, () => {
       const clazz = model.createClass();
-      expect(clazz.isStereotypeValid()).toBe(false);
+      expect(clazz.hasValidStereotype()).toBe(false);
     });
   });
 
-  describe(`Test ${Class.prototype.stereotypeIsOneOf.name}()`, () => {
+  describe(`Test ${Class.prototype.isStereotypeOneOf.name}()`, () => {
     it('Test classWithoutStereotypes', () => {
       const clazz = model.createClass();
-      expect(clazz.stereotypeIsOneOf(stereotypeUtils.ClassStereotypes)).toBe(false);
+      expect(clazz.isStereotypeOneOf(stereotypeUtils.ClassStereotypes)).toBe(false);
     });
 
     it('Test classWithUniqueStereotype', () => {
       const clazz = model.createKind();
-      expect(clazz.stereotypeIsOneOf(ClassStereotype.KIND)).toBe(true);
+      expect(clazz.isStereotypeOneOf(ClassStereotype.KIND)).toBe(true);
     });
   });
 

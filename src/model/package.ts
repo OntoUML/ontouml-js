@@ -17,26 +17,38 @@ import {
   Relation,
   MultilingualText,
   Classifier,
-  stereotypeUtils
+  stereotypeUtils,
+  Project
 } from '..';
+import { PackageableElement } from './packageable_element';
 
-export class Package extends ModelElement {
+export class Package extends ModelElement implements PackageableElement {
   contents: ModelElement[];
 
-  constructor(base?: Partial<Package>) {
-    super(OntoumlType.PACKAGE, base);
+  constructor(project: Project, container?: Package) {
+    super(project, container);
 
-    this.contents = base?.contents || [];
+    this.contents = [];
+  }
+
+  public override get container(): Package | undefined {
+    return this.container as Package
+  }
+
+  public override set container(newContainer: Package | undefined) {
+    super.container = newContainer;
   }
 
   addContent<T extends ModelElement>(child: T): T {
-    if (child == null) 
+    if (child == null) {
       throw new Error("Cannot add null child.");
+    }
 
-    if (child.container instanceof Package) 
+    if (child.container instanceof Package){ 
       child.container.removeContent(child);
+    }
 
-    child.setContainer(this);
+    child.container = this;
     this.contents.push(child);
     return child;
   }
@@ -45,7 +57,8 @@ export class Package extends ModelElement {
     if (!contents) 
       throw new Error("Cannot add null array.");
 
-    return contents.filter(x => x !== null).map(x => this.addContent(x));
+    return contents.filter(x => x !== null)
+                   .map(x => this.addContent(x));
   }
 
   setContents<T extends ModelElement>(contents: T[]): T[] {
@@ -64,21 +77,25 @@ export class Package extends ModelElement {
     return this.contents ? [...this.contents] : [];
   }
 
-  
-
-  toJSON(): any {
+  override toJSON(): any {
     const object = {
       type: OntoumlType.PACKAGE,
-      contents: null
+      contents: this.contents.map(e => e.id)
     };
 
-    Object.assign(object, super.toJSON());
-
-    return object;
+    
+    return { ...object, ...super.toJSON() };
   }
 
-  createPackage(name?: string, base?: Partial<Package>): Package {
-    let pkg = new Package(Object.assign({}, base, { name: new MultilingualText(name), container: this, project: this.project }));
+  createPackage(name?: string): Package {
+    this.assertProject();
+
+    let pkg = new Package(this.project!, this.container);
+    
+    if(name){
+      pkg.addName(name)
+    }
+
     return this.addContent(pkg);
   }
 
@@ -87,17 +104,19 @@ export class Package extends ModelElement {
     name?: string,
     stereotype?: string,
     natures?: OntologicalNature | OntologicalNature[],
-    base?: Partial<Class>
   ): Class {
-    let clazz = new Class(
-      Object.assign({}, base, {
-        name: new MultilingualText(name),
-        stereotype: stereotype as ClassStereotype,
-        restrictedTo: utils.arrayFrom(natures),
-        container: this,
-        project: this.project
-      })
-    );
+    this.assertProject();
+
+    let clazz = new Class(this.project!, this);
+    
+    if(name){
+      clazz.setName(name);
+    }
+
+    //FIXME: stereotype
+
+
+
     return this.addContent(clazz);
   }
 

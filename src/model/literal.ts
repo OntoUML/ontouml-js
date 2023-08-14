@@ -1,7 +1,7 @@
 import { OntoumlElement, ModelElement, OntoumlType } from '..';
 
 export class Literal extends ModelElement {
-  constructor(base?: Partial<Literal>) {
+  constructor(project) {
     super(OntoumlType.LITERAL, base);
   }
 

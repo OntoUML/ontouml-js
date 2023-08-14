@@ -14,42 +14,41 @@ import {
   Relation,
   stereotypeUtils,
   MultilingualText,
-  GeneralizationSet
+  GeneralizationSet,
+  Project
 } from '..';
 
 export const ORDERLESS_LEVEL = Infinity;
 
 export class Class extends Classifier<Class, ClassStereotype> {
-  restrictedTo: OntologicalNature[];
-  literals: Literal[];
-  isExtensional: boolean;
+  private _restrictedTo: OntologicalNature[];
+  private _literals: Literal[];
   isPowertype: boolean;
   order: number;
 
-  constructor(base?: Partial<Class>) {
-    super(OntoumlType.CLASS, base);
+  constructor(project: Project, container?: Package) {
+    super(project, container);
 
-    this.literals = base?.literals || [];
-    this.restrictedTo = base?.restrictedTo || [];
-    this.isExtensional = base?.isExtensional || false;
-    this.isPowertype = base?.isPowertype || false;
-
-    let order = base?.order;
-    if (typeof order === 'number') {
-      this.order = order;
-    } else if (typeof order === 'string') {
-      this.order = Class.parseOrder(order);
-    } else {
-      this.order = 1;
-    }
+    this._restrictedTo = [];
+    this._literals = [];
+    this.isPowertype = false;
+    this.order = 1;
   }
 
-  static parseOrder(orderString: string): number {
-    if (orderString === '*') {
-      return ORDERLESS_LEVEL;
-    } else {
-      return isNaN(Number(orderString)) ? 1 : Number(orderString);
-    }
+  public get restrictedTo(): OntologicalNature[] {
+    return [...this._restrictedTo];
+  }
+
+  public set restrictedTo(value: OntologicalNature[]) {
+    this._restrictedTo = value;
+  }
+
+  public get literals(): Literal[] {
+    return [...this._literals];
+  }
+
+  public set literals(value: Literal[]) {
+    this._literals = value;
   }
 
   getContents(): OntoumlElement[] {
@@ -70,27 +69,24 @@ export class Class extends Classifier<Class, ClassStereotype> {
     return stereotypeUtils.ClassStereotypes;
   }
 
-  toJSON(): any {
+  override toJSON(): any {
     const object: any = {
       type: OntoumlType.CLASS,
-      stereotype: null,
-      restrictedTo: null,
-      properties: null,
-      literals: null,
-      isAbstract: false,
-      isDerived: false,
-      isExtensional: false,
-      isPowertype: false,
-      order: null
+      restrictedTo: this.restrictedTo,
+      literals: this.literals.map(l => l.id),
+      isPowertype: this.isPowertype,
+      order: this.getOrderAsString()
     };
 
-    Object.assign(object, super.toJSON());
+    return {...object, ...super.toJSON()};
+  }
 
-    if (object.order === ORDERLESS_LEVEL) {
-      object.order =  '*';
+  public getOrderAsString(): string {
+    if (this.order === ORDERLESS_LEVEL) {
+      return '*';
     }
 
-    return object;
+    return this.order.toString();
   }
 
   createAttribute(propertyType?: Class, name?: string, base?: Partial<Property>): Property {
@@ -125,7 +121,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
       throw new Error('Cannot add a null attribute');
     }
 
-    attribute.setContainer(this);
+    attribute.container = this;
     this.properties.push(attribute);
   }
 
@@ -134,7 +130,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
       throw new Error('Cannot add a null literal');
     }
 
-    literal.setContainer(this);
+    literal.container = this;
     this.literals.push(literal);
   }
 
@@ -234,84 +230,84 @@ export class Class extends Classifier<Class, ClassStereotype> {
   * Returns true if the class is stereotyped as «», «», or «».
   */
   isRigid(): boolean {
-    return this.stereotypeIsOneOf(stereotypeUtils.RigidStereotypes);
+    return this.isStereotypeOneOf(stereotypeUtils.RigidStereotypes);
   }
 
   /**
   * Returns true if the class is stereotyped as «», «», or «».
   */
   isSemiRigid(): boolean {
-    return this.stereotypeIsOneOf(stereotypeUtils.SemiRigidStereotypes);
+    return this.isStereotypeOneOf(stereotypeUtils.SemiRigidStereotypes);
   }
 
   /**
   * Returns true if the class is stereotyped as «», «», or «».
   */
   isAntiRigid(): boolean {
-    return this.stereotypeIsOneOf(stereotypeUtils.AntiRigidStereotypes);
+    return this.isStereotypeOneOf(stereotypeUtils.AntiRigidStereotypes);
   }
 
   /**
   * Returns true if the class is stereotyped as «», «», or «».
   */
   isNonSortal(): boolean {
-    return this.stereotypeIsOneOf(stereotypeUtils.NonSortalStereotypes);
+    return this.isStereotypeOneOf(stereotypeUtils.NonSortalStereotypes);
   }
 
   /**
   * Returns true if the class is stereotyped as «», «», or «».
   */
   isSortal(): boolean {
-    return this.stereotypeIsOneOf(stereotypeUtils.SortalStereotypes);
+    return this.isStereotypeOneOf(stereotypeUtils.SortalStereotypes);
   }
 
   /**
   * Returns true if the class is stereotyped as «», «», or «».
   */
   isIdentityProvider(): boolean {
-    return this.stereotypeIsOneOf(stereotypeUtils.UltimateSortalStereotypes);
+    return this.isStereotypeOneOf(stereotypeUtils.UltimateSortalStereotypes);
   }
 
   /**
   * Returns true if the class is stereotyped as «», «», or «».
   */
   isBaseSortal(): boolean {
-    return this.stereotypeIsOneOf(stereotypeUtils.BaseSortalStereotypes);
+    return this.isStereotypeOneOf(stereotypeUtils.BaseSortalStereotypes);
   }
 
   /**
   * Returns true if the class is stereotyped as «type».
   */
   isType(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.TYPE);
+    return this.isStereotypeOneOf(ClassStereotype.TYPE);
   }
 
   /**
   * Returns true if the class is stereotyped as «event».
   */
   isEvent(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.EVENT);
+    return this.isStereotypeOneOf(ClassStereotype.EVENT);
   }
 
   /**
   * Returns true if the class is stereotyped as «situation».
   */
   isSituation(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.SITUATION);
+    return this.isStereotypeOneOf(ClassStereotype.SITUATION);
   }
 
   /** TODO
   * Returns true if the class is stereotyped as «abstract».
   */
   isAbstractAbstract(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.ABSTRACT);
+    return this.isStereotypeOneOf(ClassStereotype.ABSTRACT);
   }
 
   /**
   * Returns true if the class is stereotyped as «datatype».
   */
   isDatatype(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.DATATYPE);
+    return this.isStereotypeOneOf(ClassStereotype.DATATYPE);
   }
 
   isComplexDatatype(): boolean {
@@ -326,112 +322,112 @@ export class Class extends Classifier<Class, ClassStereotype> {
   * Returns true if the class is stereotyped as «enumeration».
   */
   isEnumeration(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.ENUMERATION);
+    return this.isStereotypeOneOf(ClassStereotype.ENUMERATION);
   }
   
   /**
   * Returns true if the class is stereotyped as «kind».
   */
   isKind(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.KIND);
+    return this.isStereotypeOneOf(ClassStereotype.KIND);
   }
 
   /**
    * Returns true if the class is stereotyped as «collective».
    */
   isCollective(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.COLLECTIVE);
+    return this.isStereotypeOneOf(ClassStereotype.COLLECTIVE);
   }
 
   /**
    * Returns true if the class is stereotyped as «quantity».
    */
   isQuantity(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.QUANTITY);
+    return this.isStereotypeOneOf(ClassStereotype.QUANTITY);
   }
 
   /**
    * Returns true if the class is stereotyped as «relator».
    */
   isRelator(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.RELATOR);
+    return this.isStereotypeOneOf(ClassStereotype.RELATOR);
   }
 
   /**
    * Returns true if the class is stereotyped as «quality».
    */
   isQuality(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.QUALITY);
+    return this.isStereotypeOneOf(ClassStereotype.QUALITY);
   }
 
   /**
    * Returns true if the class is stereotyped as «mode».
    */
   isMode(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.MODE);
+    return this.isStereotypeOneOf(ClassStereotype.MODE);
   }
 
   /**
    * Returns true if the class is stereotyped as «subkind».
    */
   isSubkind(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.SUBKIND);
+    return this.isStereotypeOneOf(ClassStereotype.SUBKIND);
   }
 
   /**
    * Returns true if the class is stereotyped as «phase».
    */
   isPhase(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.PHASE);
+    return this.isStereotypeOneOf(ClassStereotype.PHASE);
   }
 
   /**
    * Returns true if the class is stereotyped as «role».
    */
   isRole(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.ROLE);
+    return this.isStereotypeOneOf(ClassStereotype.ROLE);
   }
 
   /**
    * Returns true if the class is stereotyped as «historicalRole».
    */
   isHistoricalRole(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.HISTORICAL_ROLE);
+    return this.isStereotypeOneOf(ClassStereotype.HISTORICAL_ROLE);
   }
 
   /**
    * Returns true if the class is stereotyped as «category».
    */
   isCategory(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.CATEGORY);
+    return this.isStereotypeOneOf(ClassStereotype.CATEGORY);
   }
 
   /**
    * Returns true if the class is stereotyped as «phaseMixin».
    */
   isPhaseMixin(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.PHASE_MIXIN);
+    return this.isStereotypeOneOf(ClassStereotype.PHASE_MIXIN);
   }
 
   /**
    * Returns true if the class is stereotyped as «roleMixin».
    */
   isRoleMixin(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.ROLE_MIXIN);
+    return this.isStereotypeOneOf(ClassStereotype.ROLE_MIXIN);
   }
 
   /**
    * Returns true if the class is stereotyped as «historicalRoleMixin».
    */
   isHistoricalRoleMixin(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.HISTORICAL_ROLE_MIXIN);
+    return this.isStereotypeOneOf(ClassStereotype.HISTORICAL_ROLE_MIXIN);
   }
 
   /**
    * Returns true if the class is stereotyped as «mixin».
    */
   isMixin(): boolean {
-    return this.stereotypeIsOneOf(ClassStereotype.MIXIN);
+    return this.isStereotypeOneOf(ClassStereotype.MIXIN);
   }
 
   getUltimateSortalAncestors(): Class[] {
@@ -592,5 +588,13 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
   static areAbstract(classes: Class[]): boolean {
     return !_.isEmpty(classes) && classes.every((_class: Class) => _class.isAbstract);
+  }
+
+  static parseOrder(orderString: string): number {
+    if (orderString === '*') {
+      return ORDERLESS_LEVEL;
+    } else {
+      return isNaN(Number(orderString)) ? 1 : Number(orderString);
+    }
   }
 }

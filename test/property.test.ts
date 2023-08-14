@@ -2,7 +2,7 @@ import { describe, expect, it } from '@jest/globals';
 import { AggregationKind, Project, Property, PropertyStereotype, serializationUtils, stereotypeUtils } from '../src';
 
 describe(`${Property.name} Tests`, () => {
-  describe(`Test ${Property.prototype.stereotypeIsOneOf.name}()`, () => {
+  describe(`Test ${Property.prototype.isStereotypeOneOf.name}()`, () => {
     const model = new Project().createModel();
     const date = model.createDatatype();
     const summerFestival = model.createEvent();
@@ -10,10 +10,10 @@ describe(`${Property.name} Tests`, () => {
 
     startDate.stereotype = PropertyStereotype.BEGIN;
 
-    it('Test function call', () => expect(startDate.stereotypeIsOneOf(stereotypeUtils.PropertyStereotypes)).toBe(true));
+    it('Test function call', () => expect(startDate.isStereotypeOneOf(stereotypeUtils.PropertyStereotypes)).toBe(true));
   });
 
-  describe(`Test ${Property.prototype.isStereotypeValid.name}()`, () => {
+  describe(`Test ${Property.prototype.hasValidStereotype.name}()`, () => {
     const model = new Project().createModel();
     const date = model.createDatatype();
     const summerFestival = model.createEvent();
@@ -23,15 +23,15 @@ describe(`${Property.name} Tests`, () => {
     startDate.stereotype = PropertyStereotype.BEGIN;
 
     it('should return true for an attribute with an OntoUML stereotype', () => {
-      expect(startDate.isStereotypeValid()).toBe(true);
+      expect(startDate.hasValidStereotype()).toBe(true);
     });
 
     it('should return true for an attribute without a stereotype (by default; allowsNone: true)', () => {
-      expect(precedes.isStereotypeValid()).toBe(true);
+      expect(precedes.hasValidStereotype()).toBe(true);
     });
 
     it('should return false for an attribute without a stereotype (allowsNone: false)', () => {
-      expect(precedes.isStereotypeValid(false)).toBe(false);
+      expect(precedes.hasValidStereotype(false)).toBe(false);
     });
   });
 

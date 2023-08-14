@@ -468,9 +468,9 @@ describe('Relation Tests', () => {
     const derivation = model.createDerivationRelation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
-    it('Test binary relation', () => expect(heavierThan.isDerivation()).toBe(false));
-    it('Test derivation relation', () => expect(derivation.isDerivation()).toBe(true));
-    it('Test ternary relation', () => expect(metPersonAt.isDerivation()).toBe(false));
+    it('Test binary relation', () => expect(heavierThan.fromRelationToClass()).toBe(false));
+    it('Test derivation relation', () => expect(derivation.fromRelationToClass()).toBe(true));
+    it('Test ternary relation', () => expect(metPersonAt.fromRelationToClass()).toBe(false));
   });
 
   describe('Test isTernaryClassRelation()', () => {

@@ -26,11 +26,13 @@ import { PackageView } from './view/package_view';
 import { NamedElement } from './named_element';
 import { Finder } from './finder';
 import { Note } from './model/note';
+import { NoteView } from './view/note_view';
+import { NoteLink } from './model/note_link';
 
 export class Project extends NamedElement {
   finder: Finder;
-
-  private root?: Package;
+  root?: Package;
+  
   private _classes: {[key: string]: Class}
   private _relations: {[key: string]: Relation}
   private _generalizations: {[key: string]: Generalization}
@@ -39,17 +41,18 @@ export class Project extends NamedElement {
   private _properties: {[key: string]: Property}
   private _literals: {[key: string]: Literal}
   private _notes: {[key: string]: Note}
+  private _noteLinks: {[key: string]: NoteLink}
   private _diagrams: {[key: string]: Diagram}
   private _classViews: {[key: string]: ClassView}
   private _binaryRelationViews: {[key: string]: BinaryRelationView}
   private _nAryRelationViews: {[key: string]: NaryRelationView}
-  private _generalizationViews: {[key: string]: Class}
-  private _generalizationSetViews: {[key: string]: Class}
-  private _packageViews: {[key: string]: Class}
-  private _noteViews: {[key: string]: Class}
+  private _generalizationViews: {[key: string]: GeneralizationView}
+  private _generalizationSetViews: {[key: string]: GeneralizationSetView}
+  private _packageViews: {[key: string]: PackageView}
+  private _noteViews: {[key: string]: NoteView}
 
   constructor() {
-    super(this);
+    super();
 
     this.project = this;
     this._classes = {};
@@ -60,7 +63,15 @@ export class Project extends NamedElement {
     this._properties = {};
     this._literals = {};
     this._notes = {};
+    this._noteLinks = {};
     this._diagrams = {};
+    this._classViews = {};
+    this._binaryRelationViews = {};
+    this._nAryRelationViews = {};
+    this._generalizationViews = {};
+    this._generalizationSetViews = {};
+    this._packageViews = {};
+    this._noteViews ={};
 
     this.finder = new Finder(this);
   }

@@ -7,11 +7,11 @@ describe('Test isStereotypeValid()', () => {
   const knows = model.createMaterialRelation(person, person);
   const worksFor = model.createBinaryRelation(person, person);
 
-  it('should return true for a relation with an OntoUML stereotype', () => expect(knows.isStereotypeValid()).toBe(true));
+  it('should return true for a relation with an OntoUML stereotype', () => expect(knows.hasValidStereotype()).toBe(true));
   it('should return true for a relation without a stereotype (by default; allowsNone: true)', () =>
-    expect(worksFor.isStereotypeValid()).toBe(true));
+    expect(worksFor.hasValidStereotype()).toBe(true));
   it('should return false for a relation without a stereotype (allowsNone: false)', () =>
-    expect(worksFor.isStereotypeValid(false)).toBe(false));
+    expect(worksFor.hasValidStereotype(false)).toBe(false));
 });
 
 describe('Test hasAnyStereotype()', () => {
@@ -19,7 +19,7 @@ describe('Test hasAnyStereotype()', () => {
   const person = model.createClass();
   const knows = model.createMaterialRelation(person, person);
 
-  it('Test function call', () => expect(knows.stereotypeIsOneOf([RelationStereotype.MATERIAL])).toBe(true));
+  it('Test function call', () => expect(knows.isStereotypeOneOf([RelationStereotype.MATERIAL])).toBe(true));
 });
 
 describe('Test hasExistentialDependenceStereotype()', () => {

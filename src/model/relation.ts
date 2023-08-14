@@ -25,8 +25,8 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     return stereotypeUtils.RelationStereotypes;
   }
 
-  isStereotypeValid(allowsNone: boolean = true): boolean {
-    return super.isStereotypeValid(allowsNone);
+  hasValidStereotype(allowsNone: boolean = true): boolean {
+    return super.hasValidStereotype(allowsNone);
   }
 
   toJSON(): any {
@@ -122,14 +122,14 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
   }
 
   getDerivingRelationEnd(): Property {
-    if (!this.isDerivation()) {
+    if (!this.fromRelationToClass()) {
       throw new Error('Unable to retrieve source end on a non-binary relation');
     }
     return this.properties[0];
   }
 
   getDerivedClassEnd(): Property {
-    if (!this.isDerivation()) {
+    if (!this.fromRelationToClass()) {
       throw new Error('Unable to retrieve target end on a non-binary relation');
     }
     return this.properties[1];
@@ -233,14 +233,14 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
   }
 
   getDerivingRelation(): Relation {
-    if (!this.hasDerivationStereotype()) {
+    if (!this.fromRelationToClass()) {
       throw new Error('Unable to retrieve deriving relation from non-derivation relation');
     }
     return this.getDerivingRelationEnd().propertyType as Relation;
   }
 
   getDerivedClass(): Class {
-    if (!this.hasDerivationStereotype()) {
+    if (!this.fromRelationToClass()) {
       throw new Error('Unable to retrieve derived class from non-derivation relation');
     }
     return this.getDerivedClassEnd().propertyType as Class;
@@ -297,8 +297,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     return this.getMembers().every(c => c instanceof Class)
   }
 
-  // TODO: check whether isDerivationRelation() is a better name
-  isDerivation(): boolean {
+  fromRelationToClass(): boolean {
     return (
       this.isBinary() && this.properties[0].propertyType instanceof Relation && this.properties[1].propertyType instanceof Class
     );
@@ -312,13 +311,13 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     return this.isBinaryClassRelation() && this.getTargetEnd().isAggregationEnd();
   }
 
-  isMediation(): boolean {
-    return this.stereotype === RelationStereotype.MEDIATION;
-  }
-
   // TODO: check weather ternary relations may denote existential dependencies
   isExistentialDependency(): boolean {
-    return this.properties.some(p => p.isReadOnly);
+    if(this.isHighArity()){
+      return false;
+    }
+
+    return this.getSourceEnd().isReadOnly || this.getTargetEnd().isReadOnly;
   }
 
   isSourceExistentiallyDependent(): boolean {
@@ -340,79 +339,79 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     return stereotypeUtils.ExistentialDependencyRelationStereotypes.includes(this.stereotype);
   }
 
-  hasMaterialStereotype(): boolean {
+  isMaterial(): boolean {
     return this.stereotype === RelationStereotype.MATERIAL;
   }
 
-  hasDerivationStereotype(): boolean {
+  isDerivation2(): boolean {
     return this.stereotype === RelationStereotype.DERIVATION;
   }
 
-  hasComparativeStereotype(): boolean {
+  isComparative(): boolean {
     return this.stereotype === RelationStereotype.COMPARATIVE;
   }
 
-  hasMediationStereotype(): boolean {
+  isMediation(): boolean {
     return this.stereotype === RelationStereotype.MEDIATION;
   }
 
-  hasCharacterizationStereotype(): boolean {
+  isCharacterization(): boolean {
     return this.stereotype === RelationStereotype.CHARACTERIZATION;
   }
 
-  hasExternalDependenceStereotype(): boolean {
+  isExternalDependence(): boolean {
     return this.stereotype === RelationStereotype.EXTERNAL_DEPENDENCE;
   }
 
-  hasComponentOfStereotype(): boolean {
+  isComponentOf(): boolean {
     return this.stereotype === RelationStereotype.COMPONENT_OF;
   }
 
-  hasMemberOfStereotype(): boolean {
+  isMemberOf(): boolean {
     return this.stereotype === RelationStereotype.MEMBER_OF;
   }
 
-  hasSubCollectionOfStereotype(): boolean {
+  isSubCollectionOf(): boolean {
     return this.stereotype === RelationStereotype.SUBCOLLECTION_OF;
   }
 
-  hasSubQuantityOfStereotype(): boolean {
+  isSubQuantityOf(): boolean {
     return this.stereotype === RelationStereotype.SUBQUANTITY_OF;
   }
 
-  hasInstantiationStereotype(): boolean {
+  isInstantiation(): boolean {
     return this.stereotype === RelationStereotype.INSTANTIATION;
   }
 
-  hasTerminationStereotype(): boolean {
+  isTermination(): boolean {
     return this.stereotype === RelationStereotype.TERMINATION;
   }
 
-  hasParticipationalStereotype(): boolean {
+  isParticipational(): boolean {
     return this.stereotype === RelationStereotype.PARTICIPATIONAL;
   }
 
-  hasParticipationStereotype(): boolean {
+  isParticipation(): boolean {
     return this.stereotype === RelationStereotype.PARTICIPATION;
   }
 
-  hasHistoricalDependenceStereotype(): boolean {
+  isHistoricalDependence(): boolean {
     return this.stereotype === RelationStereotype.HISTORICAL_DEPENDENCE;
   }
 
-  hasCreationStereotype(): boolean {
+  isCreation(): boolean {
     return this.stereotype === RelationStereotype.CREATION;
   }
 
-  hasManifestationStereotype(): boolean {
+  isManifestation(): boolean {
     return this.stereotype === RelationStereotype.MANIFESTATION;
   }
 
-  hasBringsAboutStereotype(): boolean {
+  isBringsAbout(): boolean {
     return this.stereotype === RelationStereotype.BRINGS_ABOUT;
   }
 
-  hasTriggersStereotype(): boolean {
+  isTriggers(): boolean {
     return this.stereotype === RelationStereotype.TRIGGERS;
   }
 
@@ -425,7 +424,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
 
   holdsBetweenEvents(): boolean {
     // TODO: Check second condition. It may be useless.
-    if (!this.isBinaryClassRelation() || this.isDerivation()) {
+    if (!this.isBinaryClassRelation() || this.fromRelationToClass()) {
       return false;
     }
 
@@ -435,7 +434,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
   }
 
   holdsBetweenMoments(): boolean {
-    if (!this.isBinaryClassRelation() || this.isDerivation()) {
+    if (!this.isBinaryClassRelation() || this.fromRelationToClass()) {
       return false;
     }
 
@@ -445,7 +444,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
   }
 
   holdsBetweenSubstantials(): boolean {
-    if (!this.isBinaryClassRelation() || this.isDerivation()) {
+    if (!this.isBinaryClassRelation() || this.fromRelationToClass()) {
       return false;
     }
 
@@ -594,7 +593,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
    * @param _class The classe to be verified
    */
    involves(_class: Class): boolean {
-     if (!this.isDerivation()){
+     if (!this.fromRelationToClass()){
       if (_class == this.getSourceAsClass() || _class == this.getTargetAsClass()) {
         return true;
       } else return false;

@@ -47,8 +47,8 @@ export class Property extends Decoratable<PropertyStereotype> {
     return stereotypeUtils.PropertyStereotypes;
   }
 
-  isStereotypeValid(allowsNone: boolean = true): boolean {
-    return super.isStereotypeValid(allowsNone);
+  hasValidStereotype(allowsNone: boolean = true): boolean {
+    return super.hasValidStereotype(allowsNone);
   }
 
   isAttribute(): boolean {

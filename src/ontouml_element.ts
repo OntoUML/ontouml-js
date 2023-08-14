@@ -11,13 +11,7 @@ export abstract class OntoumlElement {
     this.project = project;
   }
  
-  // setContainer(container: OntoumlElement): void {
-  //   this.container = container;
-    
-  //   if(container.project){
-  //     this.setProject(container.project);
-  //   }
-  // }
+ 
 
   setProject(project: Project): void {
     this.project = project;

@@ -455,7 +455,7 @@ describe(`Package tests`, () => {
     });
 
     it('Test is binary', () => {
-      expect(derivation.isDerivation()).toBe(true);
+      expect(derivation.fromRelationToClass()).toBe(true);
     });
 
     it('Test source', () => {

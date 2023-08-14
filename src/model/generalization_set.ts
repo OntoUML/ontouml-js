@@ -1,18 +1,39 @@
-import { OntoumlElement, OntoumlType, Class, Classifier, Generalization, ModelElement, Package, Relation } from '..';
+import { OntoumlElement, OntoumlType, Class, Classifier, Generalization, ModelElement, Package, Relation, Project } from '..';
+import { utils } from '..';
+import { PackageableElement } from './packageable_element';
 
-export class GeneralizationSet extends ModelElement {
+export class GeneralizationSet extends ModelElement implements PackageableElement {
   isDisjoint: boolean;
   isComplete: boolean;
   categorizer?: Class;
-  generalizations: Generalization[];
+  private _generalizations: Generalization[];
 
-  constructor(base?: Partial<GeneralizationSet>) {
-    super(OntoumlType.GENERALIZATION_SET, base);
+  constructor(project: Project, container?: Package) {
+    super(project, container);
 
-    this.isDisjoint = base?.isDisjoint ?? false;
-    this.isComplete = base?.isComplete ?? false;
-    this.categorizer = base?.categorizer;
-    this.generalizations = base?.generalizations ?? [];
+    this.isDisjoint = false;
+    this.isComplete = false;
+    this._generalizations = [];
+  }
+
+  public get generalizations(): Generalization[] {
+    return [...this._generalizations];
+  }
+
+  // FIXME: TEST me
+  public set generalizations(generalizations: Generalization[]) {
+    this._generalizations.forEach(g => utils.removeById(g._genSets, this))
+    
+    this.generalizations.forEach(g => g._genSets.push(this))
+    this._generalizations = generalizations;
+  }
+
+  public override get container(): Package | undefined {
+    return this.container as Package
+  }
+
+  public override set container(newContainer: Package | undefined) {
+    super.container = newContainer;
   }
 
   getContents(): OntoumlElement[] {
@@ -20,35 +41,46 @@ export class GeneralizationSet extends ModelElement {
   }
 
   /**
-   * A disjoint complete set of subclasses
+   * @returns true if the generalization set is disjoint and complete.
    */
   isPartition(): boolean {
     return this.isComplete && this.isDisjoint;
   }
 
+  /**
+   * 
+   * @returns true if the generalization set is disjoint, complete, and for all its generalizations g, g.specific points to a class stereotyped as a «phase».
+   */ 
   isPhasePartition(): boolean {
+    //FIXME: Simplify me!
     return (
       this.isPartition() &&
       this.involvesClasses() &&
       ((this.getSpecificsAsClasses().every(specific => specific.isPhase()) &&
-        this.getGeneralAsClass().isSortal()) ||
-        (this.getSpecificsAsClasses().every(specific => specific.isPhaseMixin()) &&
-          this.getGeneralAsClass().isCategory()))
-    );
-  }
-
+      this.getGeneralAsClass().isSortal()) ||
+      (this.getSpecificsAsClasses().every(specific => specific.isPhaseMixin()) &&
+      this.getGeneralAsClass().isCategory()))
+      );
+    }
+    
+  /**
+   * 
+   * @returns true if the generalization set is disjoint, complete, and for all its generalizations g, g.specific points to a class stereotyped as a «phase».
+  */ 
   isSubkindPartition(): boolean {
-    return (
-      this.isPartition() &&
-      this.involvesClasses() &&
-      ((this.getSpecificsAsClasses().every(specific => specific.isSubkind()) &&
-        this.getGeneralAsClass().isSortal()))
-      //
-    );
+  //FIXME: Simplify me!
+  return (
+    this.isPartition() &&
+    this.involvesClasses() &&
+    ((this.getSpecificsAsClasses().every(specific => specific.isSubkind()) &&
+      this.getGeneralAsClass().isSortal()))
+    //
+  );
   }
 
   /**
-   * @throws exception if different generals are present
+   * @returns the classifier that is 
+   * @throws exception if different generals are present or if there are no generalizations in this set.
    */
   getGeneral(): Classifier<any, any> {
     this.assertDefinedGeneralizations();
@@ -153,51 +185,47 @@ export class GeneralizationSet extends ModelElement {
     this.generalizations.every(g => g.assertFieldsDefined());
   }
 
+  //FIX ME
   clone(): GeneralizationSet {
-    return new GeneralizationSet(this);
+    let clone = { ...this };
+    return clone;
   }
 
   replace(originalElement: ModelElement, newElement: ModelElement): void {
-    if (this.container === originalElement) {
-      this.container = newElement as Package;
-    }
+    // if (this.container === originalElement) {
+    //   this.container = newElement as Package;
+    // }
 
-    if (this.categorizer === originalElement) {
-      this.categorizer = newElement as Class;
-    }
+    // if (this.categorizer === originalElement) {
+    //   this.categorizer = newElement as Class;
+    // }
 
-    if (this.generalizations && this.generalizations.includes(originalElement as any)) {
-      this.generalizations = this.generalizations.map((gen: Generalization) =>
-        gen === originalElement ? (newElement as Generalization) : gen
-      );
-    }
+    // if (this.generalizations && this.generalizations.includes(originalElement as any)) {
+    //   this.generalizations = this.generalizations.map((gen: Generalization) =>
+    //     gen === originalElement ? (newElement as Generalization) : gen
+    //   );
+    // }
   }
 
   /** Get instantiation relations where the categorizer (or one of its ancestors) is the source */
-  getInstantiationRelations(): Relation[] {
-    throw new Error('Method unimplemented!');
+  getInstantiationRelations(): Relation[] | undefined{
+    return this.categorizer?.getIncomingRelations()
+                            .filter(r => r.isInstantiation());
   }
 
-  toJSON(): any {
+  override toJSON(): any {
     const object: any = {
       type: OntoumlType.GENERALIZATION_SET,
-      isDisjoint: false,
-      isComplete: false,
-      categorizer: null,
-      generalizations: null
+      isDisjoint: this.isDisjoint,
+      isComplete: this.isComplete,
+      categorizer: this.categorizer?.id || null,
+      generalizations: this._generalizations.map(g => g.id)
     };
-
-    Object.assign(object, super.toJSON());
-
-    object.categorizer = this.categorizer && this.categorizer.getReference();
-    object.generalizations = this.generalizations
-      ? [...this.generalizations].map((generalization: Generalization) => generalization.getReference())
-      : null;
-
-    return object;
+    
+    return { ...object, ...super.toJSON() };
   }
 
-  resolveReferences(elementReferenceMap: Map<string, OntoumlElement>): void {
+  override resolveReferences(elementReferenceMap: Map<string, OntoumlElement>): void {
     super.resolveReferences(elementReferenceMap);
 
     const { categorizer, generalizations } = this;
