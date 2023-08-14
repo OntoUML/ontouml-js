@@ -1,10 +1,10 @@
-import { Class, ModelElement, OntoumlType, Package, Project, Stereotype } from '..';
+import { Classifier, ModelElement, Package, Project, Stereotype } from '..';
 
 export abstract class Decoratable<S extends Stereotype> extends ModelElement {
   stereotype?: S;
   isDerived: boolean;
 
-  constructor(project: Project, container?: Package | Class) {
+  constructor(project: Project, container?: Package | Classifier<any, any>) {
     super(project, container);
     this.isDerived = false;
   }

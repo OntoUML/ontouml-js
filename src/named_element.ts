@@ -48,7 +48,7 @@ export abstract class NamedElement extends OntoumlElement {
       description: this.description.toJSON()
     };
 
-    return { ...object, ...super.toJSON() };
+    return { ...object, ...super.toJSON()};
   }
 
 }

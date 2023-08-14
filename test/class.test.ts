@@ -151,8 +151,7 @@ describe(`${Class.name} Tests`, () => {
     const projectB = new Project();
     const modelB = projectB.createModel();
 
-    const _class = new Class();
-    _class.setProject(projectA);
+    const _class = new Class(project);
 
     it('Test set container within common project', () => {
       _class.setContainer(modelA);

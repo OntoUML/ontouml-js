@@ -4,14 +4,29 @@ import { PackageableElement } from './packageable_element';
 
 export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotype> extends Decoratable<S> implements PackageableElement {
   isAbstract: boolean;
-  properties: Property[];
-
-
+  protected _properties: Property[];
+  
   constructor(project: Project, container?: Package) {
     super(project, container);
 
     this.isAbstract = false;
-    this.properties = [];
+    this._properties = [];
+  }
+
+  public override get container(): Package | undefined {
+    return this.container as Package
+  }
+
+  public override set container(newContainer: Package | undefined) {
+    super.container = newContainer;
+  }
+
+  public get properties(): Property[] {
+    return [...this._properties];
+  }
+
+  public set properties(value: Property[]) {
+    this._properties = value;
   }
 
   asClass(): Class {
@@ -30,18 +45,15 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
     throw new Error("The classifier is not an instance of Relation.");
   }
 
+  addParent(parent: T): Generalization {
+    this.assertProject();
+    return new Generalization(this.project!, this.container, parent, this);
+  }
 
-  // addParent(parent: T): Generalization {
-  //   if (this.container instanceof Package) return this.container.createGeneralization(parent, this);
-  //   if (this.project) return this.project.model.createGeneralization(parent, this);
-  //   return new Generalization({ general: parent, specific: this });
-  // }
-
-  // addChild(child: T): Generalization {
-  //   if (this.container instanceof Package) return this.container.createGeneralization(this, child);
-  //   if (this.project) return this.project.model.createGeneralization(this, child);
-  //   return new Generalization({ general: this, specific: child });
-  // }
+  addChild(child: T): Generalization {
+    this.assertProject();
+    return new Generalization(this.project!, this.container, this, child);
+  }
 
   // TODO: Update methods to use references instead.
   getGeneralizations(): Generalization[] {
@@ -152,8 +164,8 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
   getOutgoingRelations(): Relation[] {
     this.assertProject();
     
-    return this.project!.getBinaryRelations()
-                        .filter(r => r.getSource() === this);
+    return this.project!.finder.getBinaryRelations()
+                               .filter(r => r.getSource() === this);
   }
 
   /**
@@ -186,7 +198,7 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
    * @returns returns all high-arity relations connected to the classifier.
    */
   getHighArityRelations(): Relation[] {
-    return this.getRelations().filter( r => r.isHighArity())
+    return this.getRelations().filter( r => r.isNary())
   }
 
   /**

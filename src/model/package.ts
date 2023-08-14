@@ -113,181 +113,137 @@ export class Package extends ModelElement implements PackageableElement {
       clazz.setName(name);
     }
 
-    //FIXME: stereotype
-
+    //FIXME: add stereotype
+    if(natures){
+      clazz.restrictedTo = utils.arrayFrom(natures);
+    }
 
 
     return this.addContent(clazz);
   }
 
-  createType(name?: string, base?: Partial<Class>): Class {
-    return this.createClass(name, ClassStereotype.TYPE, OntologicalNature.type, base);
+  createType(name?: string): Class {
+    return this.createClass(name, ClassStereotype.TYPE, OntologicalNature.type);
   }
 
-  createHistoricalRole(name?: string, base?: Partial<Class>): Class {
-    return this.createClass(name, ClassStereotype.HISTORICAL_ROLE, OntologicalNature.functional_complex, base);
+  createHistoricalRole(name?: string): Class {
+    return this.createClass(name, ClassStereotype.HISTORICAL_ROLE, OntologicalNature.functional_complex);
   }
 
-  createHistoricalRoleMixin(name?: string, natures?: OntologicalNature | OntologicalNature[], base?: Partial<Class>): Class {
-    const isAbstract = true;
-    return this.createClass(
-      name,
-      ClassStereotype.HISTORICAL_ROLE_MIXIN,
-      natures || OntologicalNature.functional_complex,
-      Object.assign({}, base, { isAbstract })
-    );
+  createHistoricalRoleMixin(name?: string, natures?: OntologicalNature | OntologicalNature[]): Class {
+    const c =  this.createClass(name, ClassStereotype.HISTORICAL_ROLE_MIXIN, natures || OntologicalNature.functional_complex);
+    c.isAbstract = true;
+    return c;
   }
 
-  createEvent(name?: string, base?: Partial<Class>): Class {
-    return this.createClass(name, ClassStereotype.EVENT, OntologicalNature.event, base);
+  createEvent(name?: string): Class {
+    return this.createClass(name, ClassStereotype.EVENT, OntologicalNature.event);
   }
 
-  createSituation(name?: string, base?: Partial<Class>): Class {
-    return this.createClass(name, ClassStereotype.SITUATION, OntologicalNature.situation, base);
+  createSituation(name?: string): Class {
+    return this.createClass(name, ClassStereotype.SITUATION, OntologicalNature.situation);
   }
 
-  createCategory(name?: string, natures?: OntologicalNature | OntologicalNature[], base?: Partial<Class>): Class {
-    const isAbstract = true;
-    return this.createClass(
-      name,
-      ClassStereotype.CATEGORY,
-      natures || OntologicalNature.functional_complex,
-      Object.assign({}, base, { isAbstract })
-    );
+  createCategory(name?: string, natures?: OntologicalNature | OntologicalNature[]): Class {
+    const c =  this.createClass(name, ClassStereotype.CATEGORY, natures || OntologicalNature.functional_complex);
+    c.isAbstract = true;
+    return c;
   }
 
-  createMixin(name?: string, natures?: OntologicalNature | OntologicalNature[], base?: Partial<Class>): Class {
-    const isAbstract = true;
-    return this.createClass(
-      name,
-      ClassStereotype.MIXIN,
-      natures || OntologicalNature.functional_complex,
-      Object.assign({}, base, { isAbstract })
-    );
+  createMixin(name?: string, natures?: OntologicalNature | OntologicalNature[]): Class {
+    const c =  this.createClass(name, ClassStereotype.MIXIN, natures || OntologicalNature.functional_complex);
+    c.isAbstract = true;
+    return c;
   }
 
-  // TODO: move default
-  createRoleMixin(name?: string, natures?: OntologicalNature | OntologicalNature[], base?: Partial<Class>): Class {
-    const isAbstract = true;
-    return this.createClass(
-      name,
-      ClassStereotype.ROLE_MIXIN,
-      natures || OntologicalNature.functional_complex,
-      Object.assign({}, base, { isAbstract })
-    );
+  createRoleMixin(name?: string, natures?: OntologicalNature | OntologicalNature[]): Class {
+    const c =  this.createClass(name, ClassStereotype.ROLE_MIXIN, natures || OntologicalNature.functional_complex);
+    c.isAbstract = true;
+    return c;
   }
 
-  createPhaseMixin(name?: string, natures?: OntologicalNature | OntologicalNature[], base?: Partial<Class>): Class {
-    const isAbstract = true;
-    return this.createClass(
-      name,
-      ClassStereotype.PHASE_MIXIN,
-      natures || OntologicalNature.functional_complex,
-      Object.assign({}, base, { isAbstract })
-    );
+  createPhaseMixin(name?: string, natures?: OntologicalNature | OntologicalNature[]): Class {
+    const c =  this.createClass(name, ClassStereotype.PHASE_MIXIN, natures || OntologicalNature.functional_complex);
+    c.isAbstract = true;
+    return c;
   }
 
-  createKind(name?: string, base?: Partial<Class>): Class {
-    return this.createClass(name, ClassStereotype.KIND, OntologicalNature.functional_complex, base);
+  createKind(name?: string): Class {
+    return this.createClass(name, ClassStereotype.KIND, OntologicalNature.functional_complex);
   }
 
-  createCollective(name?: string, isExtensional?: boolean, base?: Partial<Class>): Class {
-    return this.createClass(
-      name,
-      ClassStereotype.COLLECTIVE,
-      OntologicalNature.collective,
-      Object.assign({}, base, { isExtensional })
-    );
+  createCollective(name?: string): Class {
+    return this.createClass(name, ClassStereotype.COLLECTIVE, OntologicalNature.collective);
   }
 
-  createQuantity(name?: string, base?: Partial<Class>): Class {
-    return this.createClass(name, ClassStereotype.QUANTITY, OntologicalNature.quantity, base);
+  createQuantity(name?: string): Class {
+    return this.createClass(name, ClassStereotype.QUANTITY, OntologicalNature.quantity);
   }
 
-  createRelator(name?: string, base?: Partial<Class>): Class {
-    return this.createClass(name, ClassStereotype.RELATOR, OntologicalNature.relator, base);
+  createRelator(name?: string): Class {
+    return this.createClass(name, ClassStereotype.RELATOR, OntologicalNature.relator);
   }
 
-  createQuality(name?: string, base?: Partial<Class>): Class {
-    return this.createClass(name, ClassStereotype.QUALITY, OntologicalNature.quality, base);
+  createQuality(name?: string): Class {
+    return this.createClass(name, ClassStereotype.QUALITY, OntologicalNature.quality);
   }
 
-  createIntrinsicMode(name?: string, base?: Partial<Class>): Class {
-    return this.createClass(name, ClassStereotype.MODE, OntologicalNature.intrinsic_mode, base);
+  createIntrinsicMode(name?: string): Class {
+    return this.createClass(name, ClassStereotype.MODE, OntologicalNature.intrinsic_mode);
   }
 
-  createExtrinsicMode(name?: string, base?: Partial<Class>): Class {
-    return this.createClass(name, ClassStereotype.MODE, OntologicalNature.extrinsic_mode, base);
+  createExtrinsicMode(name?: string): Class {
+    return this.createClass(name, ClassStereotype.MODE, OntologicalNature.extrinsic_mode);
   }
 
-  createSubkind(name?: string, nature?: OntologicalNature, base?: Partial<Class>): Class {
-    return this.createClass(name, ClassStereotype.SUBKIND, nature || OntologicalNature.functional_complex, base);
+  createSubkind(name?: string, nature?: OntologicalNature): Class {
+    return this.createClass(name, ClassStereotype.SUBKIND, nature || OntologicalNature.functional_complex);
   }
 
-  createRole(name?: string, nature?: OntologicalNature, base?: Partial<Class>): Class {
-    return this.createClass(name, ClassStereotype.ROLE, nature || OntologicalNature.functional_complex, base);
+  createRole(name?: string, nature?: OntologicalNature): Class {
+    return this.createClass(name, ClassStereotype.ROLE, nature || OntologicalNature.functional_complex);
   }
 
-  createPhase(name?: string, nature?: OntologicalNature, base?: Partial<Class>): Class {
-    return this.createClass(name, ClassStereotype.PHASE, nature || OntologicalNature.functional_complex, base);
+  createPhase(name?: string, nature?: OntologicalNature): Class {
+    return this.createClass(name, ClassStereotype.PHASE, nature || OntologicalNature.functional_complex);
   }
 
-  createAbstract(name?: string, base?: Partial<Class>): Class {
-    return this.createClass(name, ClassStereotype.ABSTRACT, OntologicalNature.abstract, base);
+  createAbstract(name?: string): Class {
+    return this.createClass(name, ClassStereotype.ABSTRACT, OntologicalNature.abstract);
   }
 
-  createDatatype(name?: string, base?: Partial<Class>): Class {
-    return this.createClass(name, ClassStereotype.DATATYPE, OntologicalNature.abstract, base);
+  createDatatype(name?: string): Class {
+    return this.createClass(name, ClassStereotype.DATATYPE, OntologicalNature.abstract);
   }
 
-  createEnumeration(name?: string, literals?: Partial<Literal>[], base?: Partial<Class>): Class {
-    const enumeration = this.createClass(name, ClassStereotype.ENUMERATION, OntologicalNature.abstract, base);
+  createEnumeration(name?: string): Class {
+    return this.createClass(name, ClassStereotype.ENUMERATION, OntologicalNature.abstract);
+  }
 
-    if (Array.isArray(literals)) {
-      literals.forEach((literalBase: Partial<Literal>) => enumeration.createLiteral(undefined, literalBase));
+  private createRelation(members: Classifier<any, any>[], name?: string, stereotype?: RelationStereotype): Relation {
+    let rel = new Relation(this.project!, this, members);
+    
+    if(name){
+      rel.setName(name)
     }
 
-    return enumeration;
-  }
-
-  createRelation(base?: Partial<Relation>): Relation {
-    let relation = new Relation(Object.assign({}, base, { container: this, project: this.project }));
-    return this.addContent(relation);
-  }
-
-  // TODO: update names
-  createBinaryRelation(
-    source: Class,
-    target: Class,
-    name?: string,
-    stereotype?: RelationStereotype,
-    base?: Partial<Relation>
-  ): Relation {
-    const binaryRelation = this.createRelation(Object.assign({}, base, { name, stereotype }));
-    binaryRelation.createSourceEnd({ propertyType: source });
-    binaryRelation.createTargetEnd({ propertyType: target });
-    return binaryRelation;
-  }
-
-  createDerivationRelation(derivingRelation: Relation, derivedClass: Class, name?: string, base?: Partial<Relation>): Relation {
-    const derivationRelation = this.createRelation(Object.assign({}, base, { name, stereotype: RelationStereotype.DERIVATION }));
-    derivationRelation.createSourceEnd({ propertyType: derivingRelation });
-    derivationRelation.createTargetEnd({ propertyType: derivedClass });
-    return derivationRelation;
-  }
-
-  createTernaryRelation(relata: Class[], name?: string, base?: Partial<Relation>): Relation {
-    if (relata.length < 3) {
-      throw new Error('Ternary relations must involve at least 3 members');
+    if(stereotype){
+      rel.stereotype = stereotype;
     }
 
-    const ternaryRelation = this.createRelation(Object.assign({}, base, { name }));
-    relata.forEach((relatum: Class, index: number) => ternaryRelation.createMemberEnd(index, { propertyType: relatum }));
-    return ternaryRelation;
+    return this.addContent(rel);
   }
 
-  createMaterialRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.MATERIAL, base);
+  createBinaryRelation(source: Classifier<any,any>, target: Classifier<any,any>, name?: string, stereotype?: RelationStereotype): Relation {
+    return this.createRelation([source, target], name, stereotype);
+  }
+
+  createDerivation(derivingRelation: Relation, derivedClass: Class, name?: string): Relation {
+    return this.createBinaryRelation(derivingRelation, derivedClass, name, RelationStereotype.DERIVATION );
+  }
+
+  createMaterialRelation(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.MATERIAL);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
@@ -306,8 +262,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createComparativeRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.COMPARATIVE, base);
+  createComparativeRelation(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.COMPARATIVE);
     
     const sourceEnd = relation.getSourceEnd();
     sourceEnd.cardinality!.setZeroToOne();
@@ -320,8 +276,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createMediationRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.MEDIATION, base);
+  createMediation(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.MEDIATION);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
@@ -337,8 +293,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createCharacterizationRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.CHARACTERIZATION, base);
+  createCharacterization(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.CHARACTERIZATION);
     
     relation.getSourceEnd().cardinality?.setOneToOne;
 
@@ -349,8 +305,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createExternalDependencyRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.EXTERNAL_DEPENDENCE, base);
+  createExternalDependence(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.EXTERNAL_DEPENDENCE);
     
     relation.getSourceEnd().cardinality?.setZeroToMany();
    
@@ -361,8 +317,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createComponentOfRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.COMPONENT_OF, base);
+  createComponentOf(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.COMPONENT_OF);
     
     relation.getSourceEnd().cardinality?.setOneToMany();
     
@@ -373,8 +329,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createMemberOfRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.MEMBER_OF, base);
+  createMemberOfRelation(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.MEMBER_OF);
     
     const sourceEnd = relation.getSourceEnd();
     sourceEnd.cardinality?.setOneToMany();
@@ -386,8 +342,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createSubCollectionOfRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.SUBCOLLECTION_OF, base);
+  createSubCollectionOf(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.SUBCOLLECTION_OF);
     
     const sourceEnd = relation.getSourceEnd();
     sourceEnd.cardinality!.setCardinality(1, 1);
@@ -399,8 +355,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createSubQuantityOfRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.SUBQUANTITY_OF, base);
+  createSubQuantityOf(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.SUBQUANTITY_OF);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
@@ -411,8 +367,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createInstantiationRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.INSTANTIATION, base);
+  createInstantiation(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.INSTANTIATION);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
@@ -422,8 +378,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createTerminationRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.TERMINATION, base);
+  createTermination(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.TERMINATION);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
@@ -435,8 +391,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createParticipationalRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.PARTICIPATIONAL, base);
+  createParticipational(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.PARTICIPATIONAL);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
@@ -449,8 +405,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createParticipationRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.PARTICIPATION, base);
+  createParticipation(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.PARTICIPATION);
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
 
@@ -466,8 +422,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createHistoricalDependenceRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.HISTORICAL_DEPENDENCE, base);
+  createHistoricalDependence(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.HISTORICAL_DEPENDENCE);
     
     const sourceEnd = relation.getSourceEnd();
     sourceEnd.cardinality!.setZeroToMany();
@@ -479,8 +435,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createCreationRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.CREATION, base);
+  createCreationRelation(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.CREATION);
     
     const sourceEnd = relation.getSourceEnd();
     sourceEnd.cardinality!.setOneToOne();
@@ -493,8 +449,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createManifestationRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.MANIFESTATION, base);
+  createManifestationRelation(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.MANIFESTATION);
     
     const sourceEnd = relation.getSourceEnd();
     sourceEnd.cardinality!.setOneToMany();
@@ -506,8 +462,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createBringsAboutRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.BRINGS_ABOUT, base);
+  createBringsAboutRelation(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.BRINGS_ABOUT);
     
     const sourceEnd = relation.getSourceEnd();
     sourceEnd.cardinality!.setOneToOne();
@@ -520,8 +476,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createTriggersRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.TRIGGERS, base);
+  createTriggersRelation(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, RelationStereotype.TRIGGERS);
     
     const sourceEnd = relation.getSourceEnd();
     sourceEnd.cardinality!.setOneToOne();
@@ -533,8 +489,8 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createPartWholeRelation(source: Class, target: Class, name?: string, base?: Partial<Relation>): Relation {
-    const relation = this.createBinaryRelation(source, target, name, undefined, base);
+  createPartWholeRelation(source: Class, target: Class, name?: string): Relation {
+    const relation = this.createBinaryRelation(source, target, name, undefined);
 
     const sourceEnd = relation.getSourceEnd();
     sourceEnd.cardinality!.setCardinality(2);
@@ -546,56 +502,48 @@ export class Package extends ModelElement implements PackageableElement {
     return relation;
   }
 
-  createGeneralization(
-    general?: Classifier<any, any>,
-    specific?: Classifier<any, any>,
-    name?: string,
-    base?: Partial<Generalization>
-  ): Generalization {
-    let generalization = new Generalization(
-      Object.assign({}, base, { name, general, specific, container: this, project: this.project })
-    );
-    return this.addContent(generalization);
+  createGeneralization(general: Classifier<any, any>, specific: Classifier<any, any>, name?: string): Generalization {
+    this.assertProject();
+    
+    let gen = new Generalization(this.project!, this, general, specific);
+    
+    if(name){
+      gen.setName(name);
+    }
+
+    return this.addContent(gen);
   }
 
   createGeneralizationSet(
     generalizations?: Generalization | Generalization[],
     isDisjoint: boolean = false,
     isComplete: boolean = false,
-    categorizer?: Class,
     name?: string,
-    base?: Partial<GeneralizationSet>
   ): GeneralizationSet {
-    isDisjoint = isDisjoint || false; // avoids issues when receiving undefined or null
-    isComplete = isComplete || false;
+    this.assertProject();
+    
+    let gs = new GeneralizationSet(this.project!, this);
+    gs.isComplete = isComplete;
+    gs.isDisjoint = isDisjoint;
+    
+    if(generalizations){
+      gs.generalizations = utils.arrayFrom(generalizations);
+    }
 
-    let gs = new GeneralizationSet(
-      Object.assign({}, base, {
-        name,
-        isDisjoint,
-        isComplete,
-        categorizer,
-        generalizations: utils.arrayFrom(generalizations),
-        container: this,
-        project: this.project
-      })
-    );
+    if(name){
+      gs.setName(name);
+    }
 
     return this.addContent(gs);
   }
 
-  createPartition(
-    generalizations: Generalization | Generalization[],
-    categorizer?: Class,
-    name?: string,
-    base?: Partial<GeneralizationSet>
-  ): GeneralizationSet {
-    return this.createGeneralizationSet(generalizations, true, true, categorizer, name, Object.assign({}, base));
+  createPartition(generalizations: Generalization | Generalization[], name?: string): GeneralizationSet {
+    return this.createGeneralizationSet(generalizations, true, true, name);
   }
 
   createPartitionFromClasses(general: Class, specifics: Class[], name?: string): GeneralizationSet {
     const generalizations = specifics.map(s => s.addParent(general));
-    return this.createGeneralizationSet(generalizations, true, true, undefined, name);
+    return this.createGeneralizationSet(generalizations, true, true, name);
   }
 
   createGeneralizationSetFromClasses(
@@ -606,7 +554,7 @@ export class Package extends ModelElement implements PackageableElement {
     name?: string
   ): GeneralizationSet {
     const generalizations = specifics.map(s => s.addParent(general));
-    return this.createGeneralizationSet(generalizations, isDisjoint, isComplete, undefined, name);
+    return this.createGeneralizationSet(generalizations, isDisjoint, isComplete, name);
   }
 
   /**
@@ -619,7 +567,7 @@ export class Package extends ModelElement implements PackageableElement {
    * unnecessary call to `replace()`.
    *  */
   clone(replaceReferences: boolean = true): Package {
-    const clone = new Package(this);
+    const clone = { ...this };
     
     if (clone.getContents()) {
       const clonedContents = clone.getContents()

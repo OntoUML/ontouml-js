@@ -1,31 +1,39 @@
-import { OntoumlElement, ModelElement, OntoumlType } from '..';
+import { OntoumlElement, ModelElement, OntoumlType, Class } from '..';
 
 export class Literal extends ModelElement {
-  constructor(project) {
-    super(OntoumlType.LITERAL, base);
+  constructor(container: Class) {
+    super(container.project!, container);
   }
+
+  public override get container(): Class {
+    return this.container as Class
+  }
+
+  public override set container(newContainer: Class) {
+    super.container = newContainer;
+  }
+
 
   getContents(): OntoumlElement[] {
     return [];
   }
 
   clone(): Literal {
-    return new Literal(this);
+    return {...this};
   }
 
+  //TODO: DOUBLE CHECK this method
   replace(originalElement: ModelElement, newElement: ModelElement): void {
     if (this.container === originalElement) {
-      this.container = newElement;
+      this.container = newElement as Class;
     }
   }
 
-  toJSON() {
+  override toJSON() {
     const object: any = {
       type: OntoumlType.LITERAL,
     };
 
-    Object.assign(object, super.toJSON());
-
-    return object;
+    return {...object, ...super.toJSON()};
   }
 }

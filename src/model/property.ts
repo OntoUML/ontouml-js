@@ -23,20 +23,19 @@ export class Property extends Decoratable<PropertyStereotype> {
   redefinedProperties: Property[];
   cardinality?: Cardinality;
   aggregationKind?: AggregationKind;
-  
   isOrdered: boolean;
   isReadOnly: boolean;
 
-  constructor(base?: Partial<Property>) {
-    super(OntoumlType.PROPERTY, base);
+  constructor(container: Classifier<any,any>, propertyType?: Classifier<any,any>) {
+    super(container.project!, container);
 
-    this.propertyType = base?.propertyType;
-    this.cardinality = new Cardinality(base?.cardinality);
-    this.subsettedProperties = base?.subsettedProperties || [];
-    this.redefinedProperties = base?.redefinedProperties || [];
-    this.aggregationKind = base?.aggregationKind || AggregationKind.NONE;
-    this.isOrdered = base?.isOrdered || false;
-    this.isReadOnly = base?.isReadOnly || false;
+    this.propertyType = this.propertyType;
+    this.cardinality = new Cardinality("0..*");
+    this.subsettedProperties = [];
+    this.redefinedProperties = [];
+    this.aggregationKind = AggregationKind.NONE;
+    this.isOrdered = false;
+    this.isReadOnly = false;
   }
 
   getContents(): OntoumlElement[] {
@@ -45,10 +44,6 @@ export class Property extends Decoratable<PropertyStereotype> {
 
   getAllowedStereotypes(): PropertyStereotype[] {
     return stereotypeUtils.PropertyStereotypes;
-  }
-
-  hasValidStereotype(allowsNone: boolean = true): boolean {
-    return super.hasValidStereotype(allowsNone);
   }
 
   isAttribute(): boolean {
@@ -101,7 +96,7 @@ export class Property extends Decoratable<PropertyStereotype> {
    */
   getOtherEnds(): Property[] {
     const container = this.container;
-    if (container instanceof Relation && container.isHighArity()) {
+    if (container instanceof Relation && container.isNary()) {
       return container.properties.filter((relationEnd: Property) => relationEnd !== this);
     } else {
       throw new Error('Invalid method on non-ternary relations');
@@ -109,7 +104,7 @@ export class Property extends Decoratable<PropertyStereotype> {
   }
 
   clone(): Property {
-    return new Property(this);
+    return {...this}
   }
 
   replace(originalElement: ModelElement, newElement: ModelElement): void {
@@ -134,27 +129,22 @@ export class Property extends Decoratable<PropertyStereotype> {
     }
   }
 
-  toJSON(): any {
+  override toJSON(): any {
     const object: any = {
       type: OntoumlType.PROPERTY,
-      stereotype: null,
       cardinality: null,
-      propertyType: null,
-      subsettedProperties: null,
-      redefinedProperties: null,
-      aggregationKind: null,
-      isOrdered: false,
-      isReadOnly: false
+      propertyType: this.propertyType?.id,
+      subsettedProperties: this.subsettedProperties.map(p => p.id),
+      redefinedProperties: this.redefinedProperties.map(p => p.id),
+      aggregationKind: this.aggregationKind,
+      isOrdered: this.isOrdered,
+      isReadOnly: this.isReadOnly
     };
 
-    Object.assign(object, super.toJSON());
-
-    object.propertyType = this.propertyType?.getReference();
-
-    return object;
+    return {...object, ...super.toJSON()};
   }
 
-  resolveReferences(elementReferenceMap: Map<string, OntoumlElement>): void {
+  override resolveReferences(elementReferenceMap: Map<string, OntoumlElement>): void {
     super.resolveReferences(elementReferenceMap);
 
     const { propertyType } = this;

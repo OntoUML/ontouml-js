@@ -4,25 +4,33 @@ import {
   MultilingualText,
   Project,
   OntoumlElement,
+  Package,
 } from '..';
+import { PackageableElement } from './packageable_element';
 
-export class Note extends ModelElement {
+export class Note extends ModelElement implements PackageableElement {
   text: MultilingualText;
   
   constructor(project: Project) {
-    super(OntoumlType.NOTE), project;
+    super(project);
     this.text = new MultilingualText();
   }
+
+  public override get container(): Package | undefined {
+    return this.container as Package
+  }
+
+  public override set container(newContainer: Package | undefined) {
+    super.container = newContainer;
+  }
   
-  toJSON(): any {
+  override toJSON(): any {
     const object: any = {
       type: OntoumlType.NOTE,
-      text: null
+      text: this.text.toJSON()
     };
 
-    Object.assign(object, super.toJSON());
-
-    return object;
+    return { ...object, ...super.toJSON() };
   }
   
   getContents(): OntoumlElement[] {

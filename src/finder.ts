@@ -7,10 +7,10 @@ import { OntologicalNature } from "./model/natures";
 import { Package } from "./model/package";
 import { Property } from "./model/property";
 import { Relation } from "./model/relation";
-import { ClassStereotype, PropertyStereotype, RelationStereotype } from "./model/stereotypes";
+import { ClassStereotype, PropertyStereotype, RelationStereotype, stereotypeUtils } from "./model/stereotypes";
 import { OntoumlElement } from "./ontouml_element";
-import { OntoumlType } from "./ontouml_type";
 import { Project } from "./project";
+import { utils } from "./utils";
 
 export class Finder {
    project: Project;
@@ -66,6 +66,14 @@ export class Finder {
       return this.project.getAllContents().filter(e => e instanceof Relation) as Relation[];
     }
   
+    getBinaryRelations(): Relation[] {
+      return this.getRelations().filter(e => e.isBinary());
+    }
+  
+    getNaryRelations(): Relation[] {
+      return this.getRelations().filter(e => e.isNary());
+    }
+  
     getGeneralizations(): Generalization[] {
       return this.project.getAllContents().filter(e => e instanceof Generalization) as Generalization[];
     }
@@ -98,10 +106,10 @@ export class Finder {
       return this.project.getAllContents().filter(e => e instanceof ModelElement) as ModelElement[];
     }
   
-    getContentsByType(type: OntoumlType | OntoumlType[]): OntoumlElement[] {
-      const types = utils.arrayFrom(type);
-      return this.project.getAllContents().filter(e => types.includes(e.type));
-    }
+    // getContentsByType(type: OntoumlType | OntoumlType[]): OntoumlElement[] {
+    //   const types = utils.arrayFrom(type);
+    //   return this.project.getAllContents().filter(e => types.includes(e.type));
+    // }
   
     getAttributesByStereotype(stereotype: PropertyStereotype | PropertyStereotype[]): Property[] {
       const stereotypes = utils.arrayFrom(stereotype);
@@ -412,7 +420,7 @@ export class Finder {
       return this.getRelationsByStereotype(RelationStereotype.MEDIATION);
     }
   
-    getMemberOfRelations(): Relation[] {
+    getMemberOfs(): Relation[] {
       return this.getRelationsByStereotype(RelationStereotype.MEMBER_OF);
     }
   
@@ -424,11 +432,11 @@ export class Finder {
       return this.getRelationsByStereotype(RelationStereotype.PARTICIPATIONAL);
     }
   
-    getSubCollectionOfRelations(): Relation[] {
+    getSubCollectionOfs(): Relation[] {
       return this.getRelationsByStereotype(RelationStereotype.SUBCOLLECTION_OF);
     }
   
-    getSubQuantityOfRelations(): Relation[] {
+    getSubQuantityOfs(): Relation[] {
       return this.getRelationsByStereotype(RelationStereotype.SUBQUANTITY_OF);
     }
   

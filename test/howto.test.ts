@@ -19,8 +19,8 @@ it('Test the example presented in the "Usage" section of the README file', () =>
     const enrollment = model.createRelator('Enrollment');
     const studiesAt = model.createMaterialRelation(person, school, 'studies at');
 
-    model.createMediationRelation(enrollment, person);
-    model.createMediationRelation(enrollment, school);
+    model.createMediation(enrollment, person);
+    model.createMediation(enrollment, school);
 
     // the API is constantly updated to include helpful methods to facilitate building OntoUML models
     studiesAt.getTargetEnd().addName('school');

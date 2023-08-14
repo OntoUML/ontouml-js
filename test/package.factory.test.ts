@@ -451,7 +451,7 @@ describe(`Package tests`, () => {
       person = model.createClass();
       weight = model.createClass();
       heavierThan = model.createBinaryRelation(person, person);
-      derivation = model.createDerivationRelation(heavierThan, weight);
+      derivation = model.createDerivation(heavierThan, weight);
     });
 
     it('Test is binary', () => {
@@ -475,11 +475,11 @@ describe(`Package tests`, () => {
       memberA = model.createClass();
       memberB = model.createClass();
       memberC = model.createClass();
-      relation = model.createTernaryRelation([memberA, memberB, memberC]);
+      relation = model.createNaryRelation([memberA, memberB, memberC]);
     });
 
     it('relation should be ternary', () => {
-      expect(relation.isHighArity()).toBe(true);
+      expect(relation.isNary()).toBe(true);
     });
 
     it('relation should have the correct first member', () => {
@@ -532,7 +532,7 @@ describe(`Package tests`, () => {
     beforeEach(() => {
       source = model.createClass();
       target = model.createClass();
-      relation = model.createMediationRelation(source, target);
+      relation = model.createMediation(source, target);
     });
 
     it('Test stereotype', () => {
@@ -547,7 +547,7 @@ describe(`Package tests`, () => {
     beforeEach(() => {
       source = model.createClass();
       target = model.createClass();
-      relation = model.createCharacterizationRelation(source, target);
+      relation = model.createCharacterization(source, target);
     });
 
     it('Test stereotype', () => {
@@ -562,7 +562,7 @@ describe(`Package tests`, () => {
     beforeEach(() => {
       source = model.createClass();
       target = model.createClass();
-      relation = model.createExternalDependencyRelation(source, target);
+      relation = model.createExternalDependence(source, target);
     });
 
     it('Test stereotype', () => {
@@ -577,7 +577,7 @@ describe(`Package tests`, () => {
     beforeEach(() => {
       source = model.createClass();
       target = model.createClass();
-      relation = model.createComponentOfRelation(source, target);
+      relation = model.createComponentOf(source, target);
     });
 
     it('Test stereotype', () => {
@@ -613,7 +613,7 @@ describe(`Package tests`, () => {
     beforeEach(() => {
       source = model.createClass();
       target = model.createClass();
-      relation = model.createSubCollectionOfRelation(source, target);
+      relation = model.createSubCollectionOf(source, target);
     });
 
     it('Test stereotype', () => {
@@ -631,7 +631,7 @@ describe(`Package tests`, () => {
     beforeEach(() => {
       source = model.createClass();
       target = model.createClass();
-      relation = model.createSubQuantityOfRelation(source, target);
+      relation = model.createSubQuantityOf(source, target);
     });
 
     it('Test stereotype', () => {
@@ -649,7 +649,7 @@ describe(`Package tests`, () => {
     beforeEach(() => {
       source = model.createClass();
       target = model.createClass();
-      relation = model.createInstantiationRelation(source, target);
+      relation = model.createInstantiation(source, target);
     });
 
     it('Test stereotype', () => {
@@ -664,7 +664,7 @@ describe(`Package tests`, () => {
     beforeEach(() => {
       source = model.createClass();
       target = model.createClass();
-      relation = model.createTerminationRelation(source, target);
+      relation = model.createTermination(source, target);
     });
 
     it('Test stereotype', () => {
@@ -679,7 +679,7 @@ describe(`Package tests`, () => {
     beforeEach(() => {
       source = model.createClass();
       target = model.createClass();
-      relation = model.createParticipationalRelation(source, target);
+      relation = model.createParticipational(source, target);
     });
 
     it('Test stereotype', () => {
@@ -697,7 +697,7 @@ describe(`Package tests`, () => {
     beforeEach(() => {
       source = model.createClass();
       target = model.createClass();
-      relation = model.createParticipationRelation(source, target);
+      relation = model.createParticipation(source, target);
     });
 
     it('Test stereotype', () => {
@@ -712,7 +712,7 @@ describe(`Package tests`, () => {
     beforeEach(() => {
       source = model.createClass();
       target = model.createClass();
-      relation = model.createHistoricalDependenceRelation(source, target);
+      relation = model.createHistoricalDependence(source, target);
     });
 
     it('Test stereotype', () => {

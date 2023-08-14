@@ -9,12 +9,32 @@ import {
   Package,
   Property,
   stereotypeUtils,
-  Stereotype
+  Stereotype,
+  Project
 } from '..';
 
 export class Relation extends Classifier<Relation, RelationStereotype> {
-  constructor(base?: Partial<Relation>) {
-    super(OntoumlType.RELATION, base);
+  constructor(project: Project, container: Package | undefined, members: Classifier<any,any>[]) {
+    super(project, container);
+
+    if(members.length < 2){
+      throw new Error('At least 2 classifiers are needed to create a relation.'); 
+    }
+
+    members.forEach(member => this.createRelationEnd(member))
+    
+  }
+
+  /**
+ * Creates a relation end and appends at the end of the property list.
+ *
+ * @param member - classifier for the property type
+ * */
+  private createRelationEnd(member: Classifier<any,any>): Property {
+    const memberEnd = new Property(this, member);
+    this._properties.push(memberEnd);
+
+    return memberEnd;
   }
 
   getContents(): OntoumlElement[] {
@@ -25,76 +45,12 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     return stereotypeUtils.RelationStereotypes;
   }
 
-  hasValidStereotype(allowsNone: boolean = true): boolean {
-    return super.hasValidStereotype(allowsNone);
-  }
-
-  toJSON(): any {
-    const relationSerialization = {
+  override toJSON(): any {
+    const object = {
       type: OntoumlType.RELATION,
-      stereotype: null,
-      properties: null,
-      isAbstract: false,
-      isDerived: false
     };
 
-    Object.assign(relationSerialization, super.toJSON());
-
-    return relationSerialization;
-  }
-
-  createSourceEnd(base?: Partial<Property>): Property {
-    this.properties = this.properties || [];
-
-    if (this.properties[0]) {
-      throw new Error('Source already defined');
-    }
-
-    const sourceEnd = new Property({ ...base, container: this, project: this.project });
-
-    this.properties[0] = sourceEnd;
-
-    return sourceEnd;
-  }
-
-  createTargetEnd(base?: Partial<Property>): Property {
-    this.properties = this.properties || [];
-
-    if (this.properties[1]) {
-      throw new Error('Target already defined');
-    }
-
-    const targetEnd = new Property({ ...base, container: this, project: this.project });
-
-    this.properties[1] = targetEnd;
-
-    return targetEnd;
-  }
-
-  /**
-   * Create member end at designated position. If no position is informed, append the member end at the last position.
-   *
-   * @param position - position to place the member end; optional
-   * @param base - partial property object to base the new member end; optional
-   * */
-  createMemberEnd(position?: number, base?: Partial<Property>): Property {
-    this.properties = this.properties || [];
-    position = position || position === 0 ? position : this.properties.length;
-
-    if (typeof position !== 'number' || position < 0) {
-      throw new Error(`Invalid position value: ${position}`);
-    }
-
-    if (this.properties[position]) {
-      throw new Error('Member already defined in this position');
-    }
-
-    const memberEnd = new Property({ ...base, container: this, project: this.project });
-    position = position;
-
-    this.properties[position] = memberEnd;
-
-    return memberEnd;
+    return {...object, ...super.toJSON()};
   }
 
   getSourceEnd(): Property {
@@ -154,7 +110,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
   }
 
   assertDefinedProperties() {
-    if (!this.properties) {
+    if (!Array.isArray(this.properties)) {
       throw new Error("The `properties` field is null or undefined.");
     }
   }
@@ -283,7 +239,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
   }
 
   // TODO: check whether isTernaryRelation() is a better name
-  isHighArity(): boolean {
+  isNary(): boolean {
     this.assertDefinedProperties();
     return this.properties?.length > 2;
   }
@@ -303,8 +259,8 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     );
   }
 
-  isHighArityClassRelation(): boolean {
-    return this.isHighArity() && this.holdsBetweenClasses();
+  isNaryClassRelation(): boolean {
+    return this.isNary() && this.holdsBetweenClasses();
   }
 
   isPartWholeRelation(): boolean {
@@ -313,7 +269,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
 
   // TODO: check weather ternary relations may denote existential dependencies
   isExistentialDependency(): boolean {
-    if(this.isHighArity()){
+    if(this.isNary()){
       return false;
     }
 
@@ -454,7 +410,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
   }
 
   clone(): Relation {
-    const clone = new Relation(this);
+    const clone = {...this}
 
     if (clone.properties) {
       clone.properties = clone.properties.map((attribute: Property) => attribute.clone());
@@ -490,7 +446,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     throw new Error('Method unimplemented!');
   }
 
-  getRelatorClass(): Class {
+  getRelator(): Class {
     throw new Error('Method unimplemented!');
   }
 
@@ -499,7 +455,7 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
   }
 
   // Applies only to characterization
-  getBearerClass(): Class {
+  getBearer(): Class {
     throw new Error('Method unimplemented!');
   }
 
@@ -507,16 +463,16 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
     throw new Error('Method unimplemented!');
   }
 
-  getInheringClass(): Class {
+  getCharacterizer(): Class {
     throw new Error('Method unimplemented!');
   }
 
-  getInheringEnd(): Property {
+  getCharacterizerEnd(): Property {
     throw new Error('Method unimplemented!');
   }
 
   // All part-whole relations and parthood without stereotype
-  getPartClass(): Class {
+  getPart(): Class {
     throw new Error('Method unimplemented!');
   }
 
@@ -605,5 +561,5 @@ export class Relation extends Classifier<Relation, RelationStereotype> {
      return false;
     
   }
-  // TODO: Bring in the relevant relations from Class
+
 }

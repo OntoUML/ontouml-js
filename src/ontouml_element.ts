@@ -4,18 +4,20 @@ import { OntoumlType, Project } from '.';
 
 export abstract class OntoumlElement {
   id: string;
-  project?: Project;
-
+  private _project?: Project | undefined;
+  
   constructor(project?: Project) {
     this.id = uniqid();
     this.project = project;
   }
- 
- 
+  
+  get project(): Project | undefined {
+    return this._project;
+  }
 
-  setProject(project: Project): void {
-    this.project = project;
-    this.getContents().forEach(element => element.setProject(project));
+  set project(value: Project | undefined) {
+    this._project = value;
+    this.getContents().forEach(element => element.project = value);
   }
 
   getAllContents(): OntoumlElement[] {

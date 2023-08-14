@@ -12,18 +12,18 @@ export abstract class ModelElement extends NamedElement {
     this.container = container;
   }
 
+  // TODO: This method is no longer necessary.
   /**
    * Returns outermost package container of a model element which can either
    * 'model' package of a project, a package without a container, or null. This
    * is intended to support searches for other model elements within the same
    * context, regardless of the presence of a container project.
    */
-  getRoot(): Package | undefined {
-    if (this?.project?.root) {
-      return this?.project?.root;
-    }
+  // getRoot(): Package | undefined {
+  //   if (this?.project?.root) {
+  //     return this?.project?.root;
+  //   }
 
-    // TODO: Revisit this algorithm
     // let packageReference = this.container;
 
     // while (packageReference && packageReference.container) {
@@ -39,7 +39,7 @@ export abstract class ModelElement extends NamedElement {
     // }
     
     // return null;
-  }
+  // }
   
   public get container(): ModelElement | undefined {
     return this._container;
@@ -49,7 +49,7 @@ export abstract class ModelElement extends NamedElement {
     this._container = newContainer;
 
     if(newContainer?.project){
-      this.setProject(newContainer.project);
+      this.project = newContainer.project;
     }
   }  
 

@@ -27,7 +27,7 @@ describe('Serialization tests', () => {
     agent.createAttribute(text, 'name');
     person.createAttribute(text, 'surname');
 
-    const worksFor = model.createMediationRelation(person, organization, 'works-for');
+    const worksFor = model.createMediation(person, organization, 'works-for');
 
     const agentIntoPerson = model.createGeneralization(agent, person, 'agentIntoPerson');
     const agentIntoOrganization = model.createGeneralization(agent, organization, 'agentIntoOrganization');

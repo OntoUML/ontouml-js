@@ -76,32 +76,29 @@ export class Project extends NamedElement {
     this.finder = new Finder(this);
   }
 
-  createModel(base?: Partial<Package>): Package {
-    if (this.model) {
-      throw new Error('Model already defined');
-    }
+  // createModel(base?: Partial<Package>): Package {
+  //   if (this.model) {
+  //     throw new Error('Model already defined');
+  //   }
 
-    // TODO: Should the container of the model be the project?
-    this.model = new Package(base);
-    this.setProject(this);
+  //   // TODO: Should the container of the model be the project?
+  //   this.model = new Package(base);
+  //   this.setProject(this);
 
-    return this.model;
-  }
+  //   return this.model;
+  // }
 
-  setModel(pkg: Package): void {
-    this.model = pkg;
-    if (pkg != null) {
-      this.model.setContainer(this);
-    }
-  }
+  // setModel(pkg: Package): void {
+  //   this.model = pkg;
+  //   if (pkg != null) {
+  //     this.model.setContainer(this);
+  //   }
+  // }
 
-  createDiagram(base?: Partial<Diagram>): Diagram {
-    if (!this.diagrams) {
-      this.diagrams = [];
-    }
-
-    const diagram = new Diagram({ ...base });
-    this.diagrams.push(diagram);
+  createDiagram(): Diagram {
+    const diagram = new Diagram();
+    this._diagrams[diagram.id] = diagram;
+    
     return diagram;
   }
 

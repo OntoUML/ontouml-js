@@ -171,9 +171,9 @@ describe('Project tests', () => {
     const wife = model.createRole();
     const marriage = model.createMaterialRelation(husband, wife);
     const marriageContract = model.createRelator();
-    const husbandMarriages = model.createMediationRelation(husband, marriageContract);
-    const wifeMarriages = model.createMediationRelation(wife, marriageContract);
-    const derivationMarriage = model.createDerivationRelation(marriage, marriageContract);
+    const husbandMarriages = model.createMediation(husband, marriageContract);
+    const wifeMarriages = model.createMediation(wife, marriageContract);
+    const derivationMarriage = model.createDerivation(marriage, marriageContract);
 
     it('Test mediations must be in list', () => {
       expect(project.getMediations(husband).includes(husbandMarriages)).toBeTruthy();

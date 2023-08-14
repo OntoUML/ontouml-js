@@ -3,29 +3,37 @@ import {
   ModelElement,
   Project,
   OntoumlElement,
+  Package,
 } from '..';
 import { Note } from './note';
+import { PackageableElement } from './packageable_element';
 
-export class NoteLink extends ModelElement {
+export class NoteLink extends ModelElement implements PackageableElement {
   note: Note;
   element: ModelElement;
   
-  constructor(project: Project, note: Note, element: ModelElement) {
-    super(OntoumlType.NOTE_LINK, project);
+  constructor(project: Project, container: Package | undefined, note: Note, element: ModelElement) {
+    super(project, container);
     this.note = note;
     this.element = element;
   }
+
+  public override get container(): Package | undefined {
+    return this.container as Package
+  }
+
+  public override set container(newContainer: Package | undefined) {
+    super.container = newContainer;
+  }
   
-  toJSON(): any {
+  override toJSON(): any {
     const object: any = {
       type: OntoumlType.NOTE_LINK,
-      note: null,
-      element: null
+      note: this.note.id,
+      element: this.element.id
     };
 
-    Object.assign(object, super.toJSON());
-
-    return object;
+    return {...object, ...super.toJSON()};
   }
   
   getContents(): OntoumlElement[] {

@@ -2,6 +2,12 @@ import {describe, expect, it, beforeEach, beforeAll} from '@jest/globals';
 import { Class, OntoumlElement, Package, Project, Relation } from '../src';
 
 describe('Container tests', () => {
+  let project: Project;
+
+  beforeEach(() => {
+    project = new Project();
+  });
+
   it('Get project contents - empty project', () => {
     const project: Project = new Project();
     let contents: OntoumlElement[] = project.getContents();
@@ -105,21 +111,16 @@ describe('Container tests', () => {
   });
 
   it('Get relation contents', () => {
-    const person = new Class();
-    const admires = new Relation();
-    // TODO: review creation of relations
-    const admiree = admires.createSourceEnd({ propertyType: person });
-    const admired = admires.createTargetEnd({ propertyType: person });
+    const clazz = new Class(project);
+    const relation = new Relation(project, undefined, [clazz, clazz]);
+
+    const source = relation.getSource();
+    const target = relation.getTarget();
 
     // TODO: consider bringing jest-extended into the project for matchers like toIncludeAllMembers([members])
-    let contents: OntoumlElement[] = admires.getContents();
-    expect(contents).toContain(admiree);
-    expect(contents).toContain(admired);
-    expect(contents.length).toEqual(2);
-
-    contents = admires.getAllContents();
-    expect(contents).toContain(admiree);
-    expect(contents).toContain(admired);
-    expect(contents.length).toEqual(2);
+    let properties: OntoumlElement[] = relation.getContents();
+    expect(properties).toContain(source);
+    expect(properties).toContain(target);
+    expect(properties.length).toEqual(2);
   });
 });

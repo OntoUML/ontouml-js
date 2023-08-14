@@ -136,7 +136,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve source end', () => expect(heavierThan.getSourceEnd()).toBe(heavierThan.properties[0]));
@@ -150,7 +150,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve target end', () => expect(heavierThan.getTargetEnd()).toBe(heavierThan.properties[1]));
@@ -164,7 +164,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve member end', () => expect(metPersonAt.getMemberEnd(0)).toBe(metPersonAt.properties[0]));
@@ -178,7 +178,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve source end', () => expect(heavierThan.getSourceClassEnd()).toBe(heavierThan.properties[0]));
@@ -192,7 +192,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve target end', () => expect(heavierThan.getTargetClassEnd()).toBe(heavierThan.properties[1]));
@@ -206,7 +206,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve deriving end', () => expect(derivation.getDerivingRelationEnd()).toBe(derivation.properties[0]));
@@ -220,7 +220,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve derived end', () => expect(derivation.getDerivedClassEnd()).toBe(derivation.properties[1]));
@@ -234,7 +234,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve member end', () => expect(metPersonAt.getMemberClassEnd(0)).toBe(metPersonAt.properties[0]));
@@ -248,7 +248,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve source', () => expect(heavierThan.getSource()).toBe(heavierThan.properties[0].propertyType));
@@ -262,7 +262,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve target', () => expect(heavierThan.getTarget()).toBe(heavierThan.properties[1].propertyType));
@@ -276,7 +276,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve member', () => expect(metPersonAt.getMember(0)).toBe(metPersonAt.properties[0].propertyType));
@@ -290,7 +290,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve source', () => expect(heavierThan.getSourceAsClass()).toBe(heavierThan.properties[0].propertyType));
@@ -304,7 +304,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve target', () => expect(heavierThan.getTargetAsClass()).toBe(heavierThan.properties[1].propertyType));
@@ -318,7 +318,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve member', () => expect(metPersonAt.getMemberAsClass(0)).toBe(metPersonAt.properties[0].propertyType));
@@ -332,7 +332,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve source', () => expect(derivation.getDerivingRelation()).toBe(derivation.properties[0].propertyType));
@@ -346,7 +346,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve target', () => expect(derivation.getDerivedClass()).toBe(derivation.properties[1].propertyType));
@@ -400,7 +400,7 @@ describe('Relation Tests', () => {
     const person = model.createKind();
     const weight = model.createQuality();
     const heavierThan = model.createComparativeRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
 
     it("Test retrieve deriving relation's stereotype", () =>
       expect(derivation.getDerivingRelationStereotype()).toBe(RelationStereotype.COMPARATIVE));
@@ -411,7 +411,7 @@ describe('Relation Tests', () => {
     const person = model.createKind();
     const weight = model.createQuality();
     const heavierThan = model.createComparativeRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
 
     it("Test retrieve derived class' stereotype", () =>
       expect(derivation.getDerivedClassStereotype()).toBe(ClassStereotype.QUALITY));
@@ -423,7 +423,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test binary relation', () => expect(heavierThan.isBinary()).toBe(true));
@@ -437,12 +437,12 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
-    it('Test binary relation', () => expect(heavierThan.isHighArity()).toBe(false));
-    it('Test derivation relation', () => expect(derivation.isHighArity()).toBe(false));
-    it('Test ternary relation', () => expect(metPersonAt.isHighArity()).toBe(true));
+    it('Test binary relation', () => expect(heavierThan.isNary()).toBe(false));
+    it('Test derivation relation', () => expect(derivation.isNary()).toBe(false));
+    it('Test ternary relation', () => expect(metPersonAt.isNary()).toBe(true));
   });
 
   describe('Test isBinaryClassRelation()', () => {
@@ -451,7 +451,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test binary relation', () => expect(heavierThan.isBinaryClassRelation()).toBe(true));
@@ -465,7 +465,7 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test binary relation', () => expect(heavierThan.fromRelationToClass()).toBe(false));
@@ -479,12 +479,12 @@ describe('Relation Tests', () => {
     const place = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createBinaryRelation(person, person);
-    const derivation = model.createDerivationRelation(heavierThan, weight);
+    const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
-    it('Test binary relation', () => expect(heavierThan.isHighArityClassRelation()).toBe(false));
-    it('Test derivation relation', () => expect(derivation.isHighArityClassRelation()).toBe(false));
-    it('Test ternary relation', () => expect(metPersonAt.isHighArityClassRelation()).toBe(true));
+    it('Test binary relation', () => expect(heavierThan.isNaryClassRelation()).toBe(false));
+    it('Test derivation relation', () => expect(derivation.isNaryClassRelation()).toBe(false));
+    it('Test ternary relation', () => expect(metPersonAt.isNaryClassRelation()).toBe(true));
   });
 
   describe('Test isPartWholeRelation()', () => {
@@ -506,7 +506,7 @@ describe('Relation Tests', () => {
     const person = model.createClass();
     const weight = model.createClass();
     const worksFor = model.createMaterialRelation(person, person);
-    const characterization = model.createCharacterizationRelation(weight, person);
+    const characterization = model.createCharacterization(weight, person);
 
     it('Test function call', () => expect(worksFor.isExistentialDependency()).toBe(false));
     it('Test function call', () => expect(characterization.isExistentialDependency()).toBe(true));
@@ -517,7 +517,7 @@ describe('Relation Tests', () => {
     const person = model.createClass();
     const weight = model.createClass();
     const worksFor = model.createMaterialRelation(person, person);
-    const characterization = model.createCharacterizationRelation(weight, person);
+    const characterization = model.createCharacterization(weight, person);
 
     it('Test function call', () => expect(worksFor.isSourceExistentiallyDependent()).toBe(false));
     it('Test function call', () => expect(characterization.isSourceExistentiallyDependent()).toBe(true));
@@ -528,7 +528,7 @@ describe('Relation Tests', () => {
     const person = model.createClass();
     const weight = model.createClass();
     const heavierThan = model.createComparativeRelation(person, person);
-    const characterization = model.createCharacterizationRelation(weight, person);
+    const characterization = model.createCharacterization(weight, person);
 
     it('Test function call', () => expect(heavierThan.isTargetExistentiallyDependent()).toBe(true));
     it('Test function call', () => expect(characterization.isTargetExistentiallyDependent()).toBe(false));
@@ -539,7 +539,7 @@ describe('Relation Tests', () => {
     const person = model.createClass();
     const weight = model.createClass();
     const worksFor = model.createMaterialRelation(person, person);
-    const characterization = model.createCharacterizationRelation(weight, person);
+    const characterization = model.createCharacterization(weight, person);
 
     it('Test function call', () => expect(worksFor.isExistentialDependency()).toBe(false));
     it('Test function call', () => expect(characterization.isExistentialDependency()).toBe(true));
@@ -550,7 +550,7 @@ describe('Relation Tests', () => {
     const person = model.createClass();
     const weight = model.createClass();
     const knows = model.createMaterialRelation(person, person);
-    const characterization = model.createCharacterizationRelation(weight, person);
+    const characterization = model.createCharacterization(weight, person);
 
     const condition = (relationEnd: Property) => relationEnd.propertyType === person;
 
@@ -564,8 +564,8 @@ describe('Relation Tests', () => {
     const goalEvent = model.createEvent();
     const person = model.createKind();
     const weight = model.createQuality();
-    const participational = model.createParticipationalRelation(goalEvent, soccerMatch);
-    const characterization = model.createCharacterizationRelation(weight, person);
+    const participational = model.createParticipational(goalEvent, soccerMatch);
+    const characterization = model.createCharacterization(weight, person);
 
     it('Test function call', () => expect(participational.holdsBetweenEvents()).toBe(true));
     it('Test function call', () => expect(characterization.holdsBetweenEvents()).toBe(false));
@@ -576,8 +576,8 @@ describe('Relation Tests', () => {
     const person = model.createKind();
     const enrollment = model.createRelator();
     const gpa = model.createQuality();
-    const mediation = model.createMediationRelation(enrollment, person);
-    const characterization = model.createCharacterizationRelation(gpa, enrollment);
+    const mediation = model.createMediation(enrollment, person);
+    const characterization = model.createCharacterization(gpa, enrollment);
 
     it('Test function call', () => expect(mediation.holdsBetweenMoments()).toBe(false));
     it('Test function call', () => expect(characterization.holdsBetweenMoments()).toBe(true));
@@ -589,7 +589,7 @@ describe('Relation Tests', () => {
     const organization = model.createKind();
     const weight = model.createQuality();
     const memberOf = model.createMemberOfRelation(person, organization);
-    const characterization = model.createCharacterizationRelation(weight, person);
+    const characterization = model.createCharacterization(weight, person);
 
     it('Test function call', () => expect(memberOf.holdsBetweenSubstantials()).toBe(true));
     it('Test function call', () => expect(characterization.holdsBetweenSubstantials()).toBe(false));

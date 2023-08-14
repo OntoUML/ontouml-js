@@ -20,11 +20,20 @@ import {
 
 export const ORDERLESS_LEVEL = Infinity;
 
+export function parseOrder(orderString: string): number {
+  if (orderString === '*') {
+    return ORDERLESS_LEVEL;
+  } else {
+    return isNaN(Number(orderString)) ? 1 : Number(orderString);
+  }
+}
+
 export class Class extends Classifier<Class, ClassStereotype> {
   private _restrictedTo: OntologicalNature[];
   private _literals: Literal[];
+  private _order: number;
   isPowertype: boolean;
-  order: number;
+  
 
   constructor(project: Project, container?: Package) {
     super(project, container);
@@ -32,7 +41,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
     this._restrictedTo = [];
     this._literals = [];
     this.isPowertype = false;
-    this.order = 1;
+    this._order = 1;
   }
 
   public get restrictedTo(): OntologicalNature[] {
@@ -40,7 +49,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   public set restrictedTo(value: OntologicalNature[]) {
-    this._restrictedTo = value;
+    this._restrictedTo = [...new Set(value)];
   }
 
   public get literals(): Literal[] {
@@ -48,7 +57,19 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   public set literals(value: Literal[]) {
-    this._literals = value;
+    this._literals = [...new Set(value)];
+  }
+
+  public get order(): number {
+    return this._order;
+  }
+
+  public set order(value: number) {
+    if(value < 1){
+      throw new Error('The order of a class must be greater or equal to one')
+    }
+
+    this._order = value;
   }
 
   getContents(): OntoumlElement[] {
@@ -89,30 +110,28 @@ export class Class extends Classifier<Class, ClassStereotype> {
     return this.order.toString();
   }
 
-  createAttribute(propertyType?: Class, name?: string, base?: Partial<Property>): Property {
+  createAttribute(propertyType?: Class, name?: string): Property {
     // TODO: Discuss the removal of this code block
     // if (this.hasEnumerationStereotype()) {
     //   throw new Error('Cannot create an attribute on an enumeration class.');
     // }
-    let attribute = new Property(base);
+    let attr = new Property(this, propertyType);
     
     if(name){
-      attribute.name.addText(name);
-    }
-
-    if(propertyType){
-      attribute.propertyType = propertyType;
+      attr.addName(name);
     }
     
-    this.addAttribute(attribute);
-    return attribute;
+    this.addAttribute(attr);
+    return attr;
   }
 
-  createLiteral(name?: string, base?: Partial<Literal>): Literal {
-    let literal = new Literal(
-      Object.assign({}, base, { name: new MultilingualText(name), container: this, project: this.project })
-    );
+  createLiteral(name?: string): Literal {
+    let literal = new Literal(this);
     this.addLiteral(literal);
+    
+    if(name){
+      this.setName(name);
+    }
     return literal;
   }
 
@@ -539,7 +558,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   clone(): Class {
-    const clone = new Class(this);
+    const clone = { ...this };
 
     if (clone.properties) {
       clone.properties = clone.properties.map((attribute: Property) => attribute.clone());
@@ -568,33 +587,5 @@ export class Class extends Classifier<Class, ClassStereotype> {
                .filter(gs => gs.categorizer === this);
   }
 
-  /**
-   * Returns not only ancestors and descendants, but also those reachable through non-disjoint diverging branch in generalization hierarchies
-   */
-  getUltimateSortalsInReach(): Class[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  // TODO: investigate TSLint error TS6133 "'filter' is declared but its value is never read"
-  getRelations(_filter?: Function): Relation[] {
-    throw new Error('Method unimplemented!');
-  }
-
-  // TODO: add static version of factory methods present in class here
-  // TODO: expand support
-  static haveRigidStereotypes(classes: Class[]): boolean {
-    return classes.every((_class: Class) => _class.isRigid());
-  }
-
-  static areAbstract(classes: Class[]): boolean {
-    return !_.isEmpty(classes) && classes.every((_class: Class) => _class.isAbstract);
-  }
-
-  static parseOrder(orderString: string): number {
-    if (orderString === '*') {
-      return ORDERLESS_LEVEL;
-    } else {
-      return isNaN(Number(orderString)) ? 1 : Number(orderString);
-    }
-  }
+  
 }
