@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import { Package, Stereotype, Decoratable, Generalization, GeneralizationSet, Property, Class, Relation, Project } from '..';
 import { PackageableElement } from './packageable_element';
+import { BinaryRelation } from './binary_relation';
+import { NaryRelation } from './nary_relation';
 
 export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotype> extends Decoratable<S> implements PackageableElement {
   isAbstract: boolean = false;
@@ -147,7 +149,7 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
    * 
    * @returns returns relations whose target is the classifier.
    */
-  getIncomingRelations(): Relation[] {
+  getIncomingRelations(): BinaryRelation[] {
     this.assertProject();
     
     return this.project!.finder.getBinaryRelations()
@@ -158,7 +160,7 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
    * 
    * @returns returns relations whose source is the classifier.
    */
-  getOutgoingRelations(): Relation[] {
+  getOutgoingRelations(): BinaryRelation[] {
     this.assertProject();
     
     return this.project!.finder.getBinaryRelations()
@@ -178,7 +180,7 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
    * 
    * @returns returns relations whose target is the classifier or one of its ancestors.
    */
-  getAllIncomingRelations(): Relation[] {
+  getAllIncomingRelations(): BinaryRelation[] {
     return this.getAncestors().flatMap(a => a.getIncomingRelations());
   }
 
@@ -186,7 +188,7 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
    * 
    * @returns returns relations whose source is the classifier or one of its ancestors.
    */
-  getAllOutgoingRelations(): Relation[] {
+  getAllOutgoingRelations(): BinaryRelation[] {
     return this.getAncestors().flatMap(a => a.getOutgoingRelations());
   }
 
@@ -194,7 +196,7 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
    * 
    * @returns returns all high-arity relations connected to the classifier.
    */
-  getHighArityRelations(): Relation[] {
+  getNaryRelations(): NaryRelation[] {
     return this.getRelations().filter( r => r.isNary())
   }
 
@@ -202,16 +204,16 @@ export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotyp
    * 
    * @returns returns all high-arity relations connected to the classifier or one of its ancestors.
    */
-  getAllHighArityRelations(): Relation[] {
-    return this.getAncestors().flatMap(a => a.getHighArityRelations());
+  getAllNaryRelations(): NaryRelation[] {
+    return this.getAncestors().flatMap(a => a.getNaryRelations());
   }
 
 
-  getOwnDerivations(): Relation[] {
+  getOwnDerivations(): BinaryRelation[] {
     throw new Error('Method unimplemented!');
   }
 
-  getAllDerivations(): Relation[] {
+  getAllDerivations(): BinaryRelation[] {
     throw new Error('Method unimplemented!');
   }
 

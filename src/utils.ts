@@ -27,7 +27,7 @@ function equalContents<T>(a: T[] | Set<T>, b: T[] | Set<T>): boolean {
   return a.size === b.size && [...a].every(content => (b as Set<T>).has(content));
 }
 
-function arrayFrom<T>(input: T | T[] | Set<T>): T[] {
+function arrayFrom<T>(input: T | readonly T[] | Set<T>): T[] {
   let resolvedInputArray: T[] = [];
 
   if (Array.isArray(input) && !_.isEmpty(input)) {

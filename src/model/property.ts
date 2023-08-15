@@ -8,8 +8,9 @@ import {
   Decoratable,
   ModelElement,
   Relation,
-  stereotypeUtils
 } from '..';
+import { BinaryRelation } from './binary_relation';
+import { NaryRelation } from './nary_relation';
 
 export enum AggregationKind {
   NONE = 'NONE',
@@ -31,12 +32,30 @@ export class Property extends Decoratable<PropertyStereotype> {
     this.propertyType = propertyType;
   }
 
+  assertRelationEnd(): void {
+    if (!this.isRelationEnd()) {
+      throw new Error('Property is not owned by a relation.');
+    }
+  }
+
+  assertBinaryRelationEnd(): void {
+    if (!this.isBinaryRelationEnd()) {
+      throw new Error('Property is not owned by a binary relation.');
+    }
+  }
+
+  assertNaryRelationEnd(): void {
+    if (!this.isNaryRelationEnd()) {
+      throw new Error('Property is not owned by a n-ary relation.');
+    }
+  }
+
   getContents(): OntoumlElement[] {
     return [];
   }
 
   getAllowedStereotypes(): PropertyStereotype[] {
-    return stereotypeUtils.PropertyStereotypes;
+    return Object.values(PropertyStereotype);
   }
 
   isAttribute(): boolean {
@@ -47,14 +66,28 @@ export class Property extends Decoratable<PropertyStereotype> {
     return this.container instanceof Relation;
   }
 
+  isBinaryRelationEnd(): boolean {
+    return this.container instanceof BinaryRelation;
+  }
+
+  isNaryRelationEnd(): boolean {
+    return this.container instanceof NaryRelation;
+  }
+
   isSource(): boolean {
-    if (!this.isRelationEnd()) return false;
-    return (this.container as Relation).getSourceEnd() === this;
+    if (!this.isBinaryRelationEnd()){
+      return false;
+    }
+
+    return (this.container as BinaryRelation).getSourceEnd() === this;
   }
 
   isTarget(): boolean {
-    if (!this.isRelationEnd()) return false;
-    return (this.container as Relation).getTargetEnd() === this;
+    if (!this.isBinaryRelationEnd()){
+      return false;
+    }
+
+    return (this.container as BinaryRelation).getTargetEnd() === this;
   }
 
   hasPropertyType(): boolean {
@@ -73,27 +106,37 @@ export class Property extends Decoratable<PropertyStereotype> {
     return this.isShared() || this.isComposite();
   }
 
-  /**
-   * Only in binary relations
-   */
-  getOppositeEnd(): Property {
-    if (this.container instanceof Relation && this.container.isBinary()) {
-      return this !== this.container.getSourceEnd() ? this.container.getSourceEnd() : this.container.getTargetEnd();
-    }
+  getRelation(): Relation {
+    this.assertRelationEnd();
+    return this.container as Relation;
+  }
 
-    throw new Error('Invalid method on non-binary relations');
+  getBinaryRelation(): BinaryRelation {
+    this.assertBinaryRelationEnd();
+    return this.container as BinaryRelation;
+  }
+
+  getNaryRelation(): NaryRelation {
+    this.assertNaryRelationEnd();
+    return this.container as NaryRelation;
   }
 
   /**
-   * Only in Nary relations
+   * @returns the property on the opposite end of the relation containing the property.
+   * @throws an error if invoked on a property that is not contained by a binary relation.
+   */
+  getOppositeEnd(): Property {
+    const container = this.getBinaryRelation();
+    return (this !== container.getSourceEnd()) ? container.getSourceEnd() : container.getTargetEnd();
+  }
+
+  /**
+   * @returns an array with the other properties contained by the relation containing the property. 
+   * @throws an error if invoked on a property that is not contained by a relation.
    */
   getOtherEnds(): Property[] {
-    const container = this.container;
-    if (container instanceof Relation && container.isNary()) {
-      return container.properties.filter((relationEnd: Property) => relationEnd !== this);
-    } else {
-      throw new Error('Invalid method on non-ternary relations');
-    }
+    const container = this.getRelation();
+    return container.properties.filter(p => p!==this);
   }
 
   clone(): Property {

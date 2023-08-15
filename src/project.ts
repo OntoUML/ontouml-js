@@ -1,8 +1,4 @@
 import {
-  ClassStereotype,
-  OntologicalNature,
-  PropertyStereotype,
-  RelationStereotype,
   Class,
   Generalization,
   GeneralizationSet,
@@ -18,9 +14,6 @@ import {
   GeneralizationView,
   GeneralizationSetView
 } from '.';
-import { Rectangle } from './shape/rectangle';
-import { Path } from './shape/path';
-import { Text } from './shape/text';
 import { PackageView } from './view/package_view';
 import { NamedElement } from './named_element';
 import { Finder } from './finder';

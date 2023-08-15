@@ -5,12 +5,9 @@ import {
   Relation,
   Classifier,
   RelationStereotype,
-  stereotypeUtils,
   Property,
   Class,
-  Stereotype,
-  ClassStereotype,
-  OntologicalNature
+  EXISTENTIAL_DEPENDENCE_STEREOTYPES
 } from '..';
 
 export class BinaryRelation extends Relation {
@@ -53,7 +50,7 @@ export class BinaryRelation extends Relation {
   }
 
   getAllowedStereotypes(): RelationStereotype[] {
-    return stereotypeUtils.RelationStereotypes;
+    return Object.values(RelationStereotype);
   }
 
   getSourceEnd(): Property {
@@ -176,7 +173,7 @@ export class BinaryRelation extends Relation {
     if(!this.stereotype)
       return false;
 
-    return stereotypeUtils.ExistentialDependencyRelationStereotypes.includes(this.stereotype);
+    return EXISTENTIAL_DEPENDENCE_STEREOTYPES.includes(this.stereotype);
   }
 
   isExistentialDependence(): boolean {

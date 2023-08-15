@@ -5,14 +5,13 @@ import { GeneralizationSet } from "./model/generalization_set";
 import { Literal } from "./model/literal";
 import { ModelElement } from "./model/model_element";
 import { NaryRelation } from "./model/nary_relation";
-import { OntologicalNature } from "./model/natures";
+import { Nature } from "./model/natures";
 import { Package } from "./model/package";
 import { Property } from "./model/property";
 import { Relation } from "./model/relation";
-import { ClassStereotype, PropertyStereotype, RelationStereotype, stereotypeUtils } from "./model/stereotypes";
+import { ClassStereotype, PropertyStereotype, RelationStereotype } from "./model/stereotypes";
 import { OntoumlElement } from "./ontouml_element";
 import { Project } from "./project";
-import { utils } from "./utils";
 
 export class Finder {
    project: Project;
@@ -50,107 +49,137 @@ export class Finder {
     }
   
     /** 
-     * Returns all association ends and attributes contained in the package.
+     * @returns all the properties contained in the project. That is, the ends of all relations and the attributes of all classes.
     */
     getProperties(): Property[] {
       return this.project.getAllContents().filter(e => e instanceof Property) as Property[];
     }
-  
+   
+    /**
+     * 
+     * @returns the attributes of all classes contained in the project.
+     */
     getAttributes(): Property[] {
       return this.getProperties().filter(p => p.isAttribute());
     }
-  
+   
+    /**
+     * 
+     * @returns the ends of all relations contained in the project.
+     */
     getRelationEnds(): Property[] {
       return this.getProperties().filter(p => p.isRelationEnd());
     }
-  
+   
+    /**
+     * 
+     * @returns all relations contained in the project.
+     */
     getRelations(): Relation[] {
       return this.project.getAllContents().filter(e => e instanceof Relation) as Relation[];
     }
-  
+   
+    /**
+     * 
+     * @returns all binary relations contained in the project.
+     */
     getBinaryRelations(): BinaryRelation[] {
       return this.getRelations().filter(e => e.isBinary()) as BinaryRelation[];
     }
-  
+   
+    /**
+     * 
+     * @returns all n-ary relations contained in the project.
+     */
     getNaryRelations(): NaryRelation[] {
       return this.getRelations().filter(e => e.isNary()) as NaryRelation[];
     }
-  
+   
+    /**
+     * 
+     * @returns all generalizations contained in the project.
+     */
     getGeneralizations(): Generalization[] {
       return this.project.getAllContents().filter(e => e instanceof Generalization) as Generalization[];
     }
-  
+   
+    /**
+     * 
+     * @returns all generalization sets contained in the project.
+     */
     getGeneralizationSets(): GeneralizationSet[] {
       return this.project.getAllContents().filter(e => e instanceof GeneralizationSet) as GeneralizationSet[];
     }
   
     /**
      * 
-     * @returns all packages contained by the package. Does not return itself.
+     * @returns all packages contained in the project.
      */
     getPackages(): Package[] {
       return this.project.getAllContents().filter(e => e instanceof Package) as Package[];
     }
   
+    /**
+     * 
+     * @returns all classes contained in the project.
+     */
     getClasses(): Class[] {
       return this.project.getAllContents().filter(e => e instanceof Class) as Class[];
     }
   
     /**
      * 
-     * @returns the literals of all enumerations contained in the package.
+     * @returns the literals of all enumerations contained in the project.
      */
     getLiterals(): Literal[] {
       return this.project.getAllContents().filter(e => e instanceof Literal) as Literal[];
     }
   
+    /**
+     * 
+     * @returns all model elements contained in the project.
+     */
     getModelElements(): ModelElement[] {
       return this.project.getAllContents().filter(e => e instanceof ModelElement) as ModelElement[];
     }
-  
-    // getContentsByType(type: OntoumlType | OntoumlType[]): OntoumlElement[] {
-    //   const types = utils.arrayFrom(type);
-    //   return this.project.getAllContents().filter(e => types.includes(e.type));
-    // }
-  
-    getAttributesByStereotype(stereotype: PropertyStereotype | PropertyStereotype[]): Property[] {
-      const stereotypes = utils.arrayFrom(stereotype);
-      
+
+    /**
+     * 
+     * @returns all attributes contained in the project whose stereotype is included in {@link stereotypes}.
+     */
+    getAttributesByStereotype(stereotypes: readonly PropertyStereotype[]): Property[] {
       return this.getAttributes()
                  .filter(a => a.hasStereotype())
                  .filter(a => stereotypes.includes(a.stereotype!));
     }
   
-    getClassesByStereotype(stereotype: ClassStereotype | ClassStereotype[]): Class[] {
-      const stereotypes = utils.arrayFrom(stereotype);
-  
+    /**
+     * 
+     * @returns all classes contained in the project whose stereotype is included in {@link stereotypes}.
+     */
+    getClassesByStereotype(stereotypes: readonly ClassStereotype[] ): Class[] {
+      this.getAttributesByStereotype
       return this.getClasses()
                  .filter(c => c.hasStereotype())
                  .filter(c => stereotypes.includes(c.stereotype!));
     }
   
-    getRelationsByStereotype(stereotype: RelationStereotype | RelationStereotype[]): Relation[] {
-      const stereotypes = utils.arrayFrom(stereotype);
-  
+    /**
+     * 
+     * @returns all relations contained in the project whose stereotype is included in {@link stereotypes}.
+     */
+    getRelationsByStereotype(stereotypes: readonly RelationStereotype[]): Relation[] {  
       return this.getRelations()
                  .filter(r => r.hasStereotype())
                  .filter(r => stereotypes.includes(r.stereotype!));
     }
-  
-    getClassesThatAllowOnly(nature: OntologicalNature | OntologicalNature[]): Class[] {
-      const natures = utils.arrayFrom(nature);
-  
-      return this.getClasses()
-                 .filter(c => c.hasStereotype())
-                 .filter(c => c.allowsOnly(natures));
-    }
-  
+    
     /**
      * 
      * @returns all classes contained in the package that are stereotyped as «type».
      */
     getTypes(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.TYPE);
+      return this.getClasses().filter(c => c.isType());
     }
   
     /**
@@ -158,7 +187,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «historicalRoles».
      */
     getHistoricalRoles(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.HISTORICAL_ROLE);
+      return this.getClasses().filter(c => c.isHistoricalRole());
     }
   
     /**
@@ -166,7 +195,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «historicalRoleMixin».
      */
     getHistoricalRoleMixins(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.HISTORICAL_ROLE_MIXIN);
+      return this.getClasses().filter(c => c.isHistoricalRoleMixin());
     }
   
     /**
@@ -174,7 +203,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «event».
      */
     getEvents(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.EVENT);
+      return this.getClasses().filter(c => c.isEvent());
     }
   
     /**
@@ -182,7 +211,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «situation».
      */
     getSituations(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.SITUATION);
+      return this.getClasses().filter(c => c.isSituation());
     }
   
     /**
@@ -190,7 +219,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «category».
      */
     getCategories(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.CATEGORY);
+      return this.getClasses().filter(c => c.isCategory());
     }
   
     /**
@@ -198,7 +227,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «mixin».
      */
     getMixins(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.MIXIN);
+      return this.getClasses().filter(c => c.isMixin());
     }
   
     /**
@@ -206,7 +235,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «roleMixin».
      */
     getRoleMixins(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.ROLE_MIXIN);
+      return this.getClasses().filter(c => c.isRoleMixin());
     }
   
     /**
@@ -214,7 +243,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «phaseMixin».
      */
     getPhaseMixins(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.PHASE_MIXIN);
+      return this.getClasses().filter(c => c.isPhaseMixin());
     }
   
     /**
@@ -222,7 +251,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «kind».
      */
     getKinds(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.KIND);
+      return this.getClasses().filter(c => c.isKind());
     }
   
     /**
@@ -230,7 +259,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «collective».
      */
     getCollectives(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.COLLECTIVE);
+      return this.getClasses().filter(c => c.isCollective());
     }
   
     /**
@@ -238,7 +267,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «quantity».
      */
     getQuantities(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.QUANTITY);
+      return this.getClasses().filter(c => c.isQuantity());
     }
   
     /**
@@ -246,7 +275,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «relator».
      */
     getRelators(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.RELATOR);
+      return this.getClasses().filter(c => c.isQuantity());
     }
   
     /**
@@ -254,7 +283,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «quality».
      */
     getQualities(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.QUALITY);
+      return this.getClasses().filter(c => c.isQuality());
     }
   
     /**
@@ -262,7 +291,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «mode».
      */
     getModes(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.MODE);
+      return this.getClasses().filter(c => c.isMode());
     }
   
     /**
@@ -270,7 +299,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «subkind».
      */
     getSubkinds(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.SUBKIND);
+      return this.getClasses().filter(c => c.isSubkind());
     }
   
     /**
@@ -278,7 +307,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «role».
      */
     getRoles(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.ROLE);
+      return this.getClasses().filter(c => c.isRole());
     }
   
     /**
@@ -286,7 +315,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «phase».
      */
     getPhases(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.PHASE);
+      return this.getClasses().filter(c => c.isPhase());
     }
   
     /**
@@ -294,7 +323,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «enumeration».
      */
     getEnumerations(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.ENUMERATION);
+      return this.getClasses().filter(c => c.isEnumeration());
     }
   
     /**
@@ -302,7 +331,7 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «datatype».
      */
     getDatatypes(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.DATATYPE);
+      return this.getClasses().filter(c => c.isDatatype());
     }
   
     /**
@@ -310,145 +339,208 @@ export class Finder {
      * @returns all classes contained in the package that are stereotyped as «abstract».
      */
     getAbstracts(): Class[] {
-      return this.getClassesByStereotype(ClassStereotype.ABSTRACT);
+      return this.getClasses().filter(c => c.isAbstractStereotype());
     }
   
-   
+   /**
+     * 
+     * @returns all classes in the project decorated with a sortal stereotype.
+     * @see Class.isSortal
+     */
     getSortals(): Class[] {
-      return this.getClassesByStereotype(stereotypeUtils.SortalStereotypes);
+      return this.getClasses().filter(c => c.isSortal());
     }
   
     /**
      * 
-     * @returns all classes contained in the package that are stereotyped as «mixin», «phaseMixin», «roleMixin», «historicalRoleMixin», or «category».
+     * @returns all classes in the project decorated with a non-sortal stereotype.
+     * @see Class.isNonSortal
      */
     getNonSortals(): Class[] {
-      return this.getClassesByStereotype(stereotypeUtils.NonSortalStereotypes);
+      return this.getClasses().filter(c => c.isNonSortal());
     }
-  
+    
+    /**
+     * 
+     * @returns all classes in the project decorated with an anti-rigid stereotype.
+     * @see Class.isAntiRigid
+     */
     getAntiRigidTypes(): Class[] {
-      return this.getClassesByStereotype(stereotypeUtils.AntiRigidStereotypes);
+      return this.getClasses().filter(c => c.isAntiRigid());
     }
-  
+      
+    /**
+     * 
+     * @returns all classes in the project decorated with a semi-rigid stereotype.
+     * @see Class.isSemiRigid
+     */
     getSemiRigidTypes(): Class[] {
-      return this.getClassesByStereotype(stereotypeUtils.SemiRigidStereotypes);
+      return this.getClasses().filter(c => c.isSemiRigid());
     }
-  
+      
+    /**
+     * 
+     * @returns all classes in the project decorated with a rigid stereotype.
+     * @see Class.isRigid
+     */
     getRigidTypes(): Class[] {
-      return this.getClassesByStereotype(stereotypeUtils.RigidStereotypes);
+      return this.getClasses().filter(c => c.isRigid());
     }
   
     /**
      * 
-     * @returns all classes that can only be instantiated by functional complexes. That is, classes whose fields `restrictedTo` equal to {@link OntologicalNature.functional_complex}.
+     * @returns all classes whose field `restrictedTo` includes only {@link Nature.FUNCTIONAL_COMPLEX}.
      */
     getFunctionalComplexTypes(): Class[] {
-      return this.getClassesThatAllowOnly(OntologicalNature.functional_complex);
-    }
-  
-    getCollectiveTypes(): Class[] {
-      return this.getClassesThatAllowOnly(OntologicalNature.collective);
-    }
-  
-    getQuantityTypes(): Class[] {
-      return this.getClassesThatAllowOnly(OntologicalNature.quantity);
-    }
-  
-    getModeTypes(): Class[] {
-      return this.getClassesThatAllowOnly([OntologicalNature.intrinsic_mode, OntologicalNature.extrinsic_mode]);
-    }
-  
-    getInstricModeTypes(): Class[] {
-      return this.getClassesThatAllowOnly(OntologicalNature.intrinsic_mode);
-    }
-  
-    getExtrinsicModeTypes(): Class[] {
-      return this.getClassesThatAllowOnly(OntologicalNature.extrinsic_mode);
-    }
-  
-    getQualityTypes(): Class[] {
-      return this.getClassesThatAllowOnly(OntologicalNature.quality);
-    }
-  
-    getRelatorTypes(): Class[] {
-      return this.getClassesThatAllowOnly(OntologicalNature.relator);
+      return this.getClasses().filter(c => c.isFunctionalComplexType());
     }
     
-    getBringsAboutRelation(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.BRINGS_ABOUT);
+    /**
+     * 
+     * @returns all classes whose field `restrictedTo` includes only {@link Nature.COLLECTIVE}.
+     */
+    getCollectiveTypes(): Class[] {
+      return this.getClasses().filter(c => c.isCollectiveType());
     }
   
-    getCharacterizations(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.CHARACTERIZATION);
+    /**
+     * 
+     * @returns all classes whose field `restrictedTo` includes only {@link Nature.QUANTITY}.
+     */
+    getQuantityTypes(): Class[] {
+      return this.getClasses().filter(c => c.isQuantityType());
     }
   
-    getComparatives(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.COMPARATIVE);
+    /**
+     * 
+     * @returns all classes whose field `restrictedTo` includes {@link Nature.INTRINSIC_MODE} and/or {@link Nature.EXTRINSIC_MODE} .
+     */
+    getModeTypes(): Class[] {
+      return this.getClasses().filter(c => c.isMode());
     }
   
-    getComponentOfRelations(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.COMPONENT_OF);
+    /**
+     * 
+     * @returns all classes whose field `restrictedTo` includes only {@link Nature.INTRINSIC_MODE}.
+     */
+    getInstricModeTypes(): Class[] {
+      return this.getClasses().filter(c => c.isIntrinsicModeType());
     }
   
-    getCreations(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.CREATION);
+    /**
+     * 
+     * @returns all classes whose field `restrictedTo` includes only {@link Nature.EXTRINSIC_MODE}.
+     */
+    getExtrinsicModeTypes(): Class[] {
+      return this.getClasses().filter(c => c.isExtrinsicModeType());
     }
   
-    getDerivations(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.DERIVATION);
+    /**
+     * 
+     * @returns all classes whose field `restrictedTo` includes only {@link Nature.QUALITY}.
+     */
+    getQualityTypes(): Class[] {
+      return this.getClasses().filter(c => c.isQualityType());
     }
   
-    getExternalDependencies(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.EXTERNAL_DEPENDENCE);
+    /**
+     * 
+     * @returns all classes whose field `restrictedTo` includes only {@link Nature.RELATOR}.
+     */
+    getRelatorTypes(): Class[] {
+      return this.getClasses().filter(c => c.isRelator());
+    }
+
+    /**
+     * 
+     * @returns all classes whose field `restrictedTo` includes only {@link Nature.TYPE}.
+     */
+    getHighOrderTypes(): Class[] {
+      return this.getClasses().filter(c => c.isHighOrderType());
+    }
+
+    /**
+     * 
+     * @returns all classes whose field `restrictedTo` includes only {@link Nature.EVENT}.
+     */
+    getEventTypes(): Class[] {
+      return this.getClasses().filter(c => c.isEventType());
+    }
+    
+    getBringsAboutRelation(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isBringsAbout());
     }
   
-    getHistoricalDependencies(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.HISTORICAL_DEPENDENCE);
+    getCharacterizations(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isCharacterization());
     }
   
-    getInstantiations(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.INSTANTIATION);
+    getComparatives(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isComparative());
     }
   
-    getManifestations(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.MANIFESTATION);
+    getComponentOfRelations(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isComponentOf());
+    }
+  
+    getCreations(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isCreation());
+    }
+  
+    getDerivations(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isDerivation());
+    }
+  
+    getExternalDependencies(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isExternalDependence());
+    }
+  
+    getHistoricalDependencies(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isHistoricalDependence());
+    }
+  
+    getInstantiations(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isInstantiation());
+    }
+  
+    getManifestations(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isManifestation());
     }
   
     getMaterialRelations(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.MATERIAL);
+      return this.getRelations().filter(r => r.isMaterial());
     }
   
-    getMediations(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.MEDIATION);
+    getMediations(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isMediation());
     }
   
-    getMemberOfs(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.MEMBER_OF);
+    getMemberOfs(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isMemberOf());
     }
   
-    getParticipations(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.PARTICIPATION);
+    getParticipations(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isParticipation());
     }
   
-    getParticipationals(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.PARTICIPATIONAL);
+    getParticipationals(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isParticipational());
     }
   
-    getSubCollectionOfs(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.SUBCOLLECTION_OF);
+    getSubCollectionOfs(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isSubCollectionOf());
     }
   
-    getSubQuantityOfs(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.SUBQUANTITY_OF);
+    getSubQuantityOfs(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isSubQuantityOf());
     }
   
-    getTerminations(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.TERMINATION);
+    getTerminations(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isTermination());
     }
   
-    getTriggersRelations(): Relation[] {
-      return this.getRelationsByStereotype(RelationStereotype.TRIGGERS);
+    getTriggersRelations(): BinaryRelation[] {
+      return this.getBinaryRelations().filter(r => r.isTriggers());
     }
-
 
 }

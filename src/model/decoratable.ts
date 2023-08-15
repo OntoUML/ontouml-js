@@ -43,7 +43,7 @@ export abstract class Decoratable<S extends Stereotype> extends ModelElement {
    * @returns true if ${@field stereotype} is contained in ${@param stereotypes}.
    * @throws an error if the class has no stereotype
    * */
-  isStereotypeOneOf(stereotypes: S | S[]): boolean {
+  isStereotypeOneOf(stereotypes: S | readonly S[]): boolean {
     if(!this.stereotype){
       throw Error("The decoratable does not have a stereotype. ");
     }

@@ -15,10 +15,13 @@ import {
   BinaryRelationView,
   Project
 } from '.';
+import { BinaryRelation } from './model/binary_relation';
+import { NaryRelation } from './model/nary_relation';
 import { Path } from './shape/path';
 import { Rectangle } from './shape/rectangle';
 import { Shape } from './shape/shape';
 import { Text } from './shape/text';
+import { NaryRelationView } from './view/nary_relation_view';
 
 export class Diagram extends OntoumlElement {
   owner?: ModelElement;
@@ -125,7 +128,8 @@ export class Diagram extends OntoumlElement {
       throw new Error('Invalid parameter. The supplied element cannot be null.');
     
     if (modelElement instanceof Class) return this.addClass(modelElement);
-    if (modelElement instanceof Relation && modelElement.isBinary()) return this.addBinaryRelation(modelElement);
+    if (modelElement instanceof BinaryRelation && modelElement.isBinary()) return this.addBinaryRelation(modelElement);
+    if (modelElement instanceof NaryRelation && modelElement.isBinary()) return this.addNaryRelation(modelElement);
     if (modelElement instanceof Generalization) return this.addGeneralization(modelElement);
     if (modelElement instanceof GeneralizationSet) return this.addGeneralizationSet(modelElement);
     if (modelElement instanceof Package) return this.addPackage(modelElement);
@@ -156,11 +160,7 @@ export class Diagram extends OntoumlElement {
     return view;
   }
 
-  addBinaryRelation(rel: Relation): BinaryRelationView {
-    if(!rel.isBinary()){
-      throw new Error('Relation is not binary.');
-    }
-
+  addBinaryRelation(rel: BinaryRelation): BinaryRelationView {
     rel.assertTypedSource();
     let sourceView = this.findOrCreateView(rel.getSource()!);
 
@@ -173,6 +173,17 @@ export class Diagram extends OntoumlElement {
     return relationView;
   }
 
+  addNaryRelation(rel: NaryRelation): NaryRelationView {
+    rel.assertTypedProperties();
+    rel.assertHoldsBetweenClasses();
+
+    const views = rel.properties.map(p => this.findOrCreateView(p.propertyType!)) as ClassView[];
+    let relationView = new NaryRelationView(rel, views);
+    this.addView(relationView);
+    
+    return relationView;
+  }
+
   addGeneralization(gen: Generalization): GeneralizationView {
     gen.assertGeneralDefined();
     let sourceView = this.findOrCreateView(gen.general!);
@@ -181,8 +192,8 @@ export class Diagram extends OntoumlElement {
     let targetView = this.findOrCreateView(gen.specific!);
 
     let generalizationView = new GeneralizationView(gen, sourceView, targetView);
-
     this.addView(generalizationView);
+
     return generalizationView;
   }
 

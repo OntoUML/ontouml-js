@@ -1,69 +1,50 @@
-export enum OntologicalNature {
-  functional_complex = 'functional-complex',
-  collective = 'collective',
-  quantity = 'quantity',
-  relator = 'relator',
-  intrinsic_mode = 'intrinsic-mode',
-  extrinsic_mode = 'extrinsic-mode',
-  quality = 'quality',
-  event = 'event',
-  situation = 'situation',
-  type = 'type',
-  abstract = 'abstract'
+export enum Nature {
+  FUNCTIONAL_COMPLEX = 'functional-complex',
+  COLLECTIVE = 'collective',
+  QUANTITY = 'quantity',
+  RELATOR = 'relator',
+  INTRINSIC_MODE = 'intrinsic-mode',
+  EXTRINSIC_MODE = 'extrinsic-mode',
+  QUALITY = 'quality',
+  EVENT = 'event',
+  SITUATION = 'situation',
+  TYPE = 'type',
+  ABSTRACT = 'abstract'
 }
 
-const Natures = [
-  OntologicalNature.functional_complex,
-  OntologicalNature.collective,
-  OntologicalNature.quantity,
-  OntologicalNature.intrinsic_mode,
-  OntologicalNature.extrinsic_mode,
-  OntologicalNature.quality,
-  OntologicalNature.relator,
-  OntologicalNature.event,
-  OntologicalNature.situation,
-  OntologicalNature.type,
-  OntologicalNature.abstract
+export const Natures: readonly Nature[]  = [
+  Nature.FUNCTIONAL_COMPLEX,
+  Nature.COLLECTIVE,
+  Nature.QUANTITY,
+  Nature.INTRINSIC_MODE,
+  Nature.EXTRINSIC_MODE,
+  Nature.QUALITY,
+  Nature.RELATOR,
+  Nature.EVENT,
+  Nature.SITUATION,
+  Nature.TYPE,
+  Nature.ABSTRACT
 ];
 
-const EndurantNatures = [
-  OntologicalNature.functional_complex,
-  OntologicalNature.collective,
-  OntologicalNature.quantity,
-  OntologicalNature.intrinsic_mode,
-  OntologicalNature.extrinsic_mode,
-  OntologicalNature.quality,
-  OntologicalNature.relator
+export const EndurantNatures: readonly Nature[]  = [
+  Nature.FUNCTIONAL_COMPLEX,
+  Nature.COLLECTIVE,
+  Nature.QUANTITY,
+  Nature.INTRINSIC_MODE,
+  Nature.EXTRINSIC_MODE,
+  Nature.QUALITY,
+  Nature.RELATOR
 ];
 
-const SubstantialNatures = [OntologicalNature.functional_complex, OntologicalNature.collective, OntologicalNature.quantity];
+export const SubstantialNatures: readonly Nature[]  = [Nature.FUNCTIONAL_COMPLEX, Nature.COLLECTIVE, Nature.QUANTITY];
 
-const MomentNatures = [
-  OntologicalNature.intrinsic_mode,
-  OntologicalNature.extrinsic_mode,
-  OntologicalNature.quality,
-  OntologicalNature.relator
+export const MomentNatures: readonly Nature[]  = [
+  Nature.INTRINSIC_MODE,
+  Nature.EXTRINSIC_MODE,
+  Nature.QUALITY,
+  Nature.RELATOR
 ];
 
-const IntrinsicMomentNatures = [OntologicalNature.intrinsic_mode, OntologicalNature.quality];
+export const IntrinsicMomentNatures: readonly Nature[] = [Nature.INTRINSIC_MODE, Nature.QUALITY];
 
-const ExtrinsicMomentNatures = [OntologicalNature.extrinsic_mode, OntologicalNature.relator];
-
-const naturesArrays = [
-  Natures,
-  EndurantNatures,
-  SubstantialNatures,
-  MomentNatures,
-  IntrinsicMomentNatures,
-  ExtrinsicMomentNatures
-];
-naturesArrays.forEach((array: OntologicalNature[]) => Object.freeze(array));
-
-export const natureUtils = {
-  Natures,
-  EndurantNatures,
-  SubstantialNatures,
-  MomentNatures,
-  IntrinsicMomentNatures,
-  ExtrinsicMomentNatures
-};
+export const ExtrinsicMomentNatures: readonly Nature[]  = [Nature.EXTRINSIC_MODE, Nature.RELATOR];

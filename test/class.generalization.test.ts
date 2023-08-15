@@ -3,11 +3,9 @@ import { Class, Project, Package, Generalization, GeneralizationSet } from '../s
 
 describe(`${Class.name} Tests`, () => {
   let project: Project;
-  let model: Package;
 
   beforeEach(() => {
     project = new Project();
-    model = project.createModel();
   });
 
   describe(`Test ${Class.prototype.getGeneralizations.name}()`, () => {

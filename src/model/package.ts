@@ -6,21 +6,13 @@ import {
   Class,
   AggregationKind,
   ClassStereotype,
-  OntologicalNature,
-  PropertyStereotype,
-  RelationStereotype,
+  Nature, RelationStereotype,
   Generalization,
-  GeneralizationSet,
-  Literal,
-  ModelElement,
-  Property,
-  Relation,
-  MultilingualText,
-  Classifier,
-  stereotypeUtils,
-  Project
+  GeneralizationSet, ModelElement, Relation, Classifier, Project
 } from '..';
 import { PackageableElement } from './packageable_element';
+import { BinaryRelation } from './binary_relation';
+import { NaryRelation } from './nary_relation';
 
 export class Package extends ModelElement implements PackageableElement {
   contents: ModelElement[] = [];
@@ -101,7 +93,7 @@ export class Package extends ModelElement implements PackageableElement {
   createClass(
     name?: string,
     stereotype?: string,
-    natures?: OntologicalNature | OntologicalNature[],
+    natures?: Nature | Nature[],
   ): Class {
     this.assertProject();
 
@@ -121,105 +113,121 @@ export class Package extends ModelElement implements PackageableElement {
   }
 
   createType(name?: string): Class {
-    return this.createClass(name, ClassStereotype.TYPE, OntologicalNature.type);
+    return this.createClass(name, ClassStereotype.TYPE, Nature.TYPE);
   }
 
   createHistoricalRole(name?: string): Class {
-    return this.createClass(name, ClassStereotype.HISTORICAL_ROLE, OntologicalNature.functional_complex);
+    return this.createClass(name, ClassStereotype.HISTORICAL_ROLE, Nature.FUNCTIONAL_COMPLEX);
   }
 
-  createHistoricalRoleMixin(name?: string, natures?: OntologicalNature | OntologicalNature[]): Class {
-    const c =  this.createClass(name, ClassStereotype.HISTORICAL_ROLE_MIXIN, natures || OntologicalNature.functional_complex);
+  createHistoricalRoleMixin(name?: string, natures?: Nature | Nature[]): Class {
+    const c =  this.createClass(name, ClassStereotype.HISTORICAL_ROLE_MIXIN, natures || Nature.FUNCTIONAL_COMPLEX);
     c.isAbstract = true;
     return c;
   }
 
   createEvent(name?: string): Class {
-    return this.createClass(name, ClassStereotype.EVENT, OntologicalNature.event);
+    return this.createClass(name, ClassStereotype.EVENT, Nature.EVENT);
   }
 
   createSituation(name?: string): Class {
-    return this.createClass(name, ClassStereotype.SITUATION, OntologicalNature.situation);
+    return this.createClass(name, ClassStereotype.SITUATION, Nature.SITUATION);
   }
 
-  createCategory(name?: string, natures?: OntologicalNature | OntologicalNature[]): Class {
-    const c =  this.createClass(name, ClassStereotype.CATEGORY, natures || OntologicalNature.functional_complex);
+  createCategory(name?: string, natures?: Nature | Nature[]): Class {
+    const c =  this.createClass(name, ClassStereotype.CATEGORY, natures || Nature.FUNCTIONAL_COMPLEX);
     c.isAbstract = true;
     return c;
   }
 
-  createMixin(name?: string, natures?: OntologicalNature | OntologicalNature[]): Class {
-    const c =  this.createClass(name, ClassStereotype.MIXIN, natures || OntologicalNature.functional_complex);
+  createMixin(name?: string, natures?: Nature | Nature[]): Class {
+    const c =  this.createClass(name, ClassStereotype.MIXIN, natures || Nature.FUNCTIONAL_COMPLEX);
     c.isAbstract = true;
     return c;
   }
 
-  createRoleMixin(name?: string, natures?: OntologicalNature | OntologicalNature[]): Class {
-    const c =  this.createClass(name, ClassStereotype.ROLE_MIXIN, natures || OntologicalNature.functional_complex);
+  createRoleMixin(name?: string, natures?: Nature | Nature[]): Class {
+    const c =  this.createClass(name, ClassStereotype.ROLE_MIXIN, natures || Nature.FUNCTIONAL_COMPLEX);
     c.isAbstract = true;
     return c;
   }
 
-  createPhaseMixin(name?: string, natures?: OntologicalNature | OntologicalNature[]): Class {
-    const c =  this.createClass(name, ClassStereotype.PHASE_MIXIN, natures || OntologicalNature.functional_complex);
+  createPhaseMixin(name?: string, natures?: Nature | Nature[]): Class {
+    const c =  this.createClass(name, ClassStereotype.PHASE_MIXIN, natures || Nature.FUNCTIONAL_COMPLEX);
     c.isAbstract = true;
     return c;
   }
 
   createKind(name?: string): Class {
-    return this.createClass(name, ClassStereotype.KIND, OntologicalNature.functional_complex);
+    return this.createClass(name, ClassStereotype.KIND, Nature.FUNCTIONAL_COMPLEX);
   }
 
   createCollective(name?: string): Class {
-    return this.createClass(name, ClassStereotype.COLLECTIVE, OntologicalNature.collective);
+    return this.createClass(name, ClassStereotype.COLLECTIVE, Nature.COLLECTIVE);
   }
 
   createQuantity(name?: string): Class {
-    return this.createClass(name, ClassStereotype.QUANTITY, OntologicalNature.quantity);
+    return this.createClass(name, ClassStereotype.QUANTITY, Nature.QUANTITY);
   }
 
   createRelator(name?: string): Class {
-    return this.createClass(name, ClassStereotype.RELATOR, OntologicalNature.relator);
+    return this.createClass(name, ClassStereotype.RELATOR, Nature.RELATOR);
   }
 
   createQuality(name?: string): Class {
-    return this.createClass(name, ClassStereotype.QUALITY, OntologicalNature.quality);
+    return this.createClass(name, ClassStereotype.QUALITY, Nature.QUALITY);
   }
 
   createIntrinsicMode(name?: string): Class {
-    return this.createClass(name, ClassStereotype.MODE, OntologicalNature.intrinsic_mode);
+    return this.createClass(name, ClassStereotype.MODE, Nature.INTRINSIC_MODE);
   }
 
   createExtrinsicMode(name?: string): Class {
-    return this.createClass(name, ClassStereotype.MODE, OntologicalNature.extrinsic_mode);
+    return this.createClass(name, ClassStereotype.MODE, Nature.EXTRINSIC_MODE);
   }
 
-  createSubkind(name?: string, nature?: OntologicalNature): Class {
-    return this.createClass(name, ClassStereotype.SUBKIND, nature || OntologicalNature.functional_complex);
+  createSubkind(name?: string, nature?: Nature): Class {
+    return this.createClass(name, ClassStereotype.SUBKIND, nature || Nature.FUNCTIONAL_COMPLEX);
   }
 
-  createRole(name?: string, nature?: OntologicalNature): Class {
-    return this.createClass(name, ClassStereotype.ROLE, nature || OntologicalNature.functional_complex);
+  createRole(name?: string, nature?: Nature): Class {
+    return this.createClass(name, ClassStereotype.ROLE, nature || Nature.FUNCTIONAL_COMPLEX);
   }
 
-  createPhase(name?: string, nature?: OntologicalNature): Class {
-    return this.createClass(name, ClassStereotype.PHASE, nature || OntologicalNature.functional_complex);
+  createPhase(name?: string, nature?: Nature): Class {
+    return this.createClass(name, ClassStereotype.PHASE, nature || Nature.FUNCTIONAL_COMPLEX);
   }
 
   createAbstract(name?: string): Class {
-    return this.createClass(name, ClassStereotype.ABSTRACT, OntologicalNature.abstract);
+    return this.createClass(name, ClassStereotype.ABSTRACT, Nature.ABSTRACT);
   }
 
   createDatatype(name?: string): Class {
-    return this.createClass(name, ClassStereotype.DATATYPE, OntologicalNature.abstract);
+    return this.createClass(name, ClassStereotype.DATATYPE, Nature.ABSTRACT);
   }
 
   createEnumeration(name?: string): Class {
-    return this.createClass(name, ClassStereotype.ENUMERATION, OntologicalNature.abstract);
+    return this.createClass(name, ClassStereotype.ENUMERATION, Nature.ABSTRACT);
   }
 
-  private createRelation(members: Classifier<any, any>[], name?: string, stereotype?: RelationStereotype): Relation {
-    let rel = new Relation(this.project!, this, members);
+  createNaryRelation(members: Classifier<any, any>[], name?: string, stereotype?: RelationStereotype): NaryRelation {
+    let rel = new NaryRelation(this.project!, this, members);
+    
+    if(name){
+      rel.setName(name)
+    }
+
+    if(stereotype && stereotype!=RelationStereotype.MATERIAL){
+      throw new Error("N-ary relations can only be decorated as «material». Provided: "+stereotype)
+    }
+    
+    rel.stereotype = stereotype;
+
+    return this.addContent(rel);
+  }
+
+  createBinaryRelation(source: Classifier<any,any>, target: Classifier<any,any>, name?: string, stereotype?: RelationStereotype): BinaryRelation {
+    let rel = new BinaryRelation(this.project!, this, source, target);
     
     if(name){
       rel.setName(name)
@@ -232,12 +240,8 @@ export class Package extends ModelElement implements PackageableElement {
     return this.addContent(rel);
   }
 
-  createBinaryRelation(source: Classifier<any,any>, target: Classifier<any,any>, name?: string, stereotype?: RelationStereotype): Relation {
-    return this.createRelation([source, target], name, stereotype);
-  }
-
-  createDerivation(derivingRelation: Relation, derivedClass: Class, name?: string): Relation {
-    return this.createBinaryRelation(derivingRelation, derivedClass, name, RelationStereotype.DERIVATION );
+  createDerivation(relation: Relation, truthmaker: Class, name?: string): Relation {
+    return this.createBinaryRelation(relation, truthmaker, name, RelationStereotype.DERIVATION);
   }
 
   createMaterialRelation(source: Class, target: Class, name?: string): Relation {

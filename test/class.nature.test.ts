@@ -1,5 +1,5 @@
 import {describe, expect, it, beforeEach} from '@jest/globals';
-import { Class, natureUtils, OntologicalNature, Package, Project } from '../src';
+import { Class, natureUtils, Nature, Package, Project } from '../src';
 
 describe('Test restrictedTo-related methods', () => {
   let project: Project;
@@ -14,30 +14,30 @@ describe('Test restrictedTo-related methods', () => {
     let category: Class;
 
     beforeEach(() => {
-      category = model.createCategory(undefined, [OntologicalNature.functional_complex, OntologicalNature.collective]);
+      category = model.createCategory(undefined, [Nature.FUNCTIONAL_COMPLEX, Nature.COLLECTIVE]);
     });
 
     it('Test empty restrictions', () => {
       expect(category.allowsSome([])).toBe(false);
     });
     it('Test disjoint restrictions', () => {
-      expect(category.allowsSome([OntologicalNature.quantity])).toBe(false);
+      expect(category.allowsSome([Nature.QUANTITY])).toBe(false);
     });
     it('Test subset restrictions', () => {
-      expect(category.allowsSome([OntologicalNature.functional_complex])).toBe(true);
+      expect(category.allowsSome([Nature.FUNCTIONAL_COMPLEX])).toBe(true);
     });
     it('Test overlapping restrictions', () => {
-      expect(category.allowsSome([OntologicalNature.functional_complex, OntologicalNature.quantity])).toBe(true);
+      expect(category.allowsSome([Nature.FUNCTIONAL_COMPLEX, Nature.QUANTITY])).toBe(true);
     });
     it('Test matching restrictions', () => {
-      expect(category.allowsSome([OntologicalNature.functional_complex, OntologicalNature.collective])).toBe(true);
+      expect(category.allowsSome([Nature.FUNCTIONAL_COMPLEX, Nature.COLLECTIVE])).toBe(true);
     });
     it('Test super set restrictions', () => {
       expect(
         category.allowsSome([
-          OntologicalNature.functional_complex,
-          OntologicalNature.collective,
-          OntologicalNature.quantity
+          Nature.FUNCTIONAL_COMPLEX,
+          Nature.COLLECTIVE,
+          Nature.QUANTITY
         ])
       ).toBe(true);
     });
@@ -45,9 +45,9 @@ describe('Test restrictedTo-related methods', () => {
       category.restrictedTo = [];
       expect(
         category.allowsSome([
-          OntologicalNature.functional_complex,
-          OntologicalNature.collective,
-          OntologicalNature.quantity
+          Nature.FUNCTIONAL_COMPLEX,
+          Nature.COLLECTIVE,
+          Nature.QUANTITY
         ])
       ).toBe(false);
     });
@@ -57,30 +57,30 @@ describe('Test restrictedTo-related methods', () => {
     let category: Class;
 
     beforeEach(() => {
-      category = model.createCategory(undefined, [OntologicalNature.functional_complex, OntologicalNature.collective]);
+      category = model.createCategory(undefined, [Nature.FUNCTIONAL_COMPLEX, Nature.COLLECTIVE]);
     });
 
     it('Test empty restrictions', () => {
       expect(category.allowsOnly([])).toBe(false);
     });
     it('Test disjoint restrictions', () => {
-      expect(category.allowsOnly([OntologicalNature.quantity])).toBe(false);
+      expect(category.allowsOnly([Nature.QUANTITY])).toBe(false);
     });
     it('Test subset restrictions', () => {
-      expect(category.allowsOnly([OntologicalNature.functional_complex])).toBe(false);
+      expect(category.allowsOnly([Nature.FUNCTIONAL_COMPLEX])).toBe(false);
     });
     it('Test overlapping restrictions', () => {
-      expect(category.allowsOnly([OntologicalNature.functional_complex, OntologicalNature.quantity])).toBe(false);
+      expect(category.allowsOnly([Nature.FUNCTIONAL_COMPLEX, Nature.QUANTITY])).toBe(false);
     });
     it('Test matching restrictions', () => {
-      expect(category.allowsOnly([OntologicalNature.functional_complex, OntologicalNature.collective])).toBe(true);
+      expect(category.allowsOnly([Nature.FUNCTIONAL_COMPLEX, Nature.COLLECTIVE])).toBe(true);
     });
     it('Test super set restrictions', () => {
       expect(
         category.allowsOnly([
-          OntologicalNature.functional_complex,
-          OntologicalNature.collective,
-          OntologicalNature.quantity
+          Nature.FUNCTIONAL_COMPLEX,
+          Nature.COLLECTIVE,
+          Nature.QUANTITY
         ])
       ).toBe(true);
     });
@@ -88,9 +88,9 @@ describe('Test restrictedTo-related methods', () => {
       category.restrictedTo = [];
       expect(
         category.allowsOnly([
-          OntologicalNature.functional_complex,
-          OntologicalNature.collective,
-          OntologicalNature.quantity
+          Nature.FUNCTIONAL_COMPLEX,
+          Nature.COLLECTIVE,
+          Nature.QUANTITY
         ])
       ).toBe(false);
     });
@@ -100,30 +100,30 @@ describe('Test restrictedTo-related methods', () => {
     let category: Class;
 
     beforeEach(() => {
-      category = model.createCategory(undefined, [OntologicalNature.functional_complex, OntologicalNature.collective]);
+      category = model.createCategory(undefined, [Nature.FUNCTIONAL_COMPLEX, Nature.COLLECTIVE]);
     });
 
     it('Test empty restrictions', () => {
       expect(category.allowsAll([])).toBe(false);
     });
     it('Test disjoint restrictions', () => {
-      expect(category.allowsAll([OntologicalNature.quantity])).toBe(false);
+      expect(category.allowsAll([Nature.QUANTITY])).toBe(false);
     });
     it('Test subset restrictions', () => {
-      expect(category.allowsAll([OntologicalNature.functional_complex])).toBe(true);
+      expect(category.allowsAll([Nature.FUNCTIONAL_COMPLEX])).toBe(true);
     });
     it('Test overlapping restrictions', () => {
-      expect(category.allowsAll([OntologicalNature.functional_complex, OntologicalNature.quantity])).toBe(false);
+      expect(category.allowsAll([Nature.FUNCTIONAL_COMPLEX, Nature.QUANTITY])).toBe(false);
     });
     it('Test matching restrictions', () => {
-      expect(category.allowsAll([OntologicalNature.functional_complex, OntologicalNature.collective])).toBe(true);
+      expect(category.allowsAll([Nature.FUNCTIONAL_COMPLEX, Nature.COLLECTIVE])).toBe(true);
     });
     it('Test super set restrictions', () => {
       expect(
         category.allowsAll([
-          OntologicalNature.functional_complex,
-          OntologicalNature.collective,
-          OntologicalNature.quantity
+          Nature.FUNCTIONAL_COMPLEX,
+          Nature.COLLECTIVE,
+          Nature.QUANTITY
         ])
       ).toBe(false);
     });
@@ -131,9 +131,9 @@ describe('Test restrictedTo-related methods', () => {
       category.restrictedTo = [];
       expect(
         category.allowsAll([
-          OntologicalNature.functional_complex,
-          OntologicalNature.collective,
-          OntologicalNature.quantity
+          Nature.FUNCTIONAL_COMPLEX,
+          Nature.COLLECTIVE,
+          Nature.QUANTITY
         ])
       ).toBe(false);
     });
@@ -143,30 +143,30 @@ describe('Test restrictedTo-related methods', () => {
     let category: Class;
 
     beforeEach(() => {
-      category = model.createCategory(undefined, [OntologicalNature.functional_complex, OntologicalNature.collective]);
+      category = model.createCategory(undefined, [Nature.FUNCTIONAL_COMPLEX, Nature.COLLECTIVE]);
     });
 
     it('Test empty restrictions', () => {
       expect(category.allowsExactly([])).toBe(false);
     });
     it('Test disjoint restrictions', () => {
-      expect(category.allowsExactly([OntologicalNature.quantity])).toBe(false);
+      expect(category.allowsExactly([Nature.QUANTITY])).toBe(false);
     });
     it('Test subset restrictions', () => {
-      expect(category.allowsExactly([OntologicalNature.functional_complex])).toBe(false);
+      expect(category.allowsExactly([Nature.FUNCTIONAL_COMPLEX])).toBe(false);
     });
     it('Test overlapping restrictions', () => {
-      expect(category.allowsExactly([OntologicalNature.functional_complex, OntologicalNature.quantity])).toBe(false);
+      expect(category.allowsExactly([Nature.FUNCTIONAL_COMPLEX, Nature.QUANTITY])).toBe(false);
     });
     it('Test matching restrictions', () => {
-      expect(category.allowsExactly([OntologicalNature.functional_complex, OntologicalNature.collective])).toBe(true);
+      expect(category.allowsExactly([Nature.FUNCTIONAL_COMPLEX, Nature.COLLECTIVE])).toBe(true);
     });
     it('Test super set restrictions', () => {
       expect(
         category.allowsExactly([
-          OntologicalNature.functional_complex,
-          OntologicalNature.collective,
-          OntologicalNature.quantity
+          Nature.FUNCTIONAL_COMPLEX,
+          Nature.COLLECTIVE,
+          Nature.QUANTITY
         ])
       ).toBe(false);
     });
@@ -174,9 +174,9 @@ describe('Test restrictedTo-related methods', () => {
       category.restrictedTo = [];
       expect(
         category.allowsExactly([
-          OntologicalNature.functional_complex,
-          OntologicalNature.collective,
-          OntologicalNature.quantity
+          Nature.FUNCTIONAL_COMPLEX,
+          Nature.COLLECTIVE,
+          Nature.QUANTITY
         ])
       ).toBe(false);
     });

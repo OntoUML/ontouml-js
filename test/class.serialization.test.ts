@@ -1,5 +1,5 @@
 import {describe, expect, it, beforeEach} from '@jest/globals';
-import { ClassStereotype, OntologicalNature, ORDERLESS_LEVEL, Package, Project } from '../src';
+import { ClassStereotype, Nature, ORDERLESS_LEVEL, Package, Project } from '../src';
 
 describe('Test Class serialization', () => {
   let project: Project;
@@ -26,7 +26,7 @@ describe('Test Class serialization', () => {
   });
 
   it('Test fully featured category serialization', () => {
-    const fullyFeaturedCategory = model.createCategory('category', OntologicalNature.functional_complex, {
+    const fullyFeaturedCategory = model.createCategory('category', Nature.FUNCTIONAL_COMPLEX, {
       isAbstract: true,
       isDerived: true,
       isExtensional: true,
@@ -38,7 +38,7 @@ describe('Test Class serialization', () => {
     const serialization = fullyFeaturedCategory.toJSON();
 
     expect(serialization.stereotype).toContain(ClassStereotype.CATEGORY);
-    expect(serialization.restrictedTo).toContain(OntologicalNature.functional_complex);
+    expect(serialization.restrictedTo).toContain(Nature.FUNCTIONAL_COMPLEX);
     expect(serialization.properties).toContain(attribute);
     expect(serialization.literals).toEqual(null);
     expect(serialization.isAbstract).toEqual(true);
@@ -54,7 +54,7 @@ describe('Test Class serialization', () => {
     const serialization = enumeration.toJSON();
 
     expect(serialization.stereotype).toContain(ClassStereotype.ENUMERATION);
-    expect(serialization.restrictedTo).toContain(OntologicalNature.abstract);
+    expect(serialization.restrictedTo).toContain(Nature.ABSTRACT);
     expect(serialization.properties).toEqual(null);
     expect(serialization.literals).toContain(literal);
   });

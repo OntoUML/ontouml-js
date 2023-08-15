@@ -3,7 +3,7 @@ import {
   Class,
   OntoumlType,
   ClassStereotype,
-  OntologicalNature,
+  Nature,
   Property,
   Literal,
   Project,
@@ -42,7 +42,6 @@ describe(`${Class.name} Tests`, () => {
       expect(emptyClass.literals).toHaveLength(0);
       expect(emptyClass.isAbstract).toEqual(false);
       expect(emptyClass.isDerived).toEqual(false);
-      expect(emptyClass.isExtensional).toEqual(false);
       expect(emptyClass.isPowertype).toEqual(false);
       expect(emptyClass.order).toEqual(1);
     });
@@ -50,7 +49,7 @@ describe(`${Class.name} Tests`, () => {
     it('Test overriding defaults', () => {
       const fullyFeaturedClass = new Class({
         stereotype: ClassStereotype.CATEGORY,
-        restrictedTo: [OntologicalNature.functional_complex],
+        restrictedTo: [Nature.FUNCTIONAL_COMPLEX],
         isAbstract: true,
         isDerived: true,
         isExtensional: true,
