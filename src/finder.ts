@@ -1,8 +1,10 @@
+import { BinaryRelation } from "./model/binary_relation";
 import { Class } from "./model/class";
 import { Generalization } from "./model/generalization";
 import { GeneralizationSet } from "./model/generalization_set";
 import { Literal } from "./model/literal";
 import { ModelElement } from "./model/model_element";
+import { NaryRelation } from "./model/nary_relation";
 import { OntologicalNature } from "./model/natures";
 import { Package } from "./model/package";
 import { Property } from "./model/property";
@@ -66,12 +68,12 @@ export class Finder {
       return this.project.getAllContents().filter(e => e instanceof Relation) as Relation[];
     }
   
-    getBinaryRelations(): Relation[] {
-      return this.getRelations().filter(e => e.isBinary());
+    getBinaryRelations(): BinaryRelation[] {
+      return this.getRelations().filter(e => e.isBinary()) as BinaryRelation[];
     }
   
-    getNaryRelations(): Relation[] {
-      return this.getRelations().filter(e => e.isNary());
+    getNaryRelations(): NaryRelation[] {
+      return this.getRelations().filter(e => e.isNary()) as NaryRelation[];
     }
   
     getGeneralizations(): Generalization[] {

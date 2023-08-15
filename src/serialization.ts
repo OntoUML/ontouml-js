@@ -32,46 +32,48 @@ function getElementMap(element: OntoumlElement): Map<string, OntoumlElement> {
 /** Function that receives an object represent an `OntoumlElement` and returns
  * an instance of the corresponding class based on the value of its `type`
  * field. */
-function clone(original: Partial<OntoumlElement>): OntoumlElement {
-  switch (original.type) {
-    case OntoumlType.PROJECT:
-      return new Project(original);
-    case OntoumlType.PACKAGE:
-      return new Package(original as Package);
-    case OntoumlType.CLASS:
-      return new Class(original as Class);
-    case OntoumlType.RELATION:
-      return new Relation(original as Relation);
-    case OntoumlType.GENERALIZATION:
-      return new Generalization(original as Generalization);
-    case OntoumlType.GENERALIZATION_SET:
-      return new GeneralizationSet(original as GeneralizationSet);
-    case OntoumlType.PROPERTY:
-      return new Property(original as Property);
-    case OntoumlType.LITERAL:
-      return new Literal(original as Literal);
-    case OntoumlType.DIAGRAM:
-      return new Diagram(original as Diagram);
-    case OntoumlType.CLASS_VIEW:
-      return new ClassView(original as ClassView);
-    case OntoumlType.BINARY_RELATION_VIEW:
-      return new BinaryRelationView(original as BinaryRelationView);
-    case OntoumlType.GENERALIZATION_VIEW:
-      return new GeneralizationView(original as GeneralizationView);
-    case OntoumlType.GENERALIZATION_SET_VIEW:
-      return new GeneralizationSetView(original as GeneralizationSetView);
-    case OntoumlType.PACKAGE_VIEW:
-      return new PackageView(original as PackageView);
-    case OntoumlType.RECTANGLE:
-      return new Rectangle(original as Rectangle);
-    case OntoumlType.TEXT:
-      return new Text(original as Text);
-    case OntoumlType.PATH:
-      return new Path(original as Path);
-    default:
-      throw new Error("No match for parameter's type");
-  }
+function clone(original: any): OntoumlElement {
+  return new Project();
+  // switch (original.type) {
+  //   case OntoumlType.PROJECT:
+  //     return new Project(original);
+  //   case OntoumlType.PACKAGE:
+  //     return new Package(original as Package);
+  //   case OntoumlType.CLASS:
+  //     return new Class(original as Class);
+  //   case OntoumlType.RELATION:
+  //     return new Relation(original as Relation);
+  //   case OntoumlType.GENERALIZATION:
+  //     return new Generalization(original as Generalization);
+  //   case OntoumlType.GENERALIZATION_SET:
+  //     return new GeneralizationSet(original as GeneralizationSet);
+  //   case OntoumlType.PROPERTY:
+  //     return new Property(original as Property);
+  //   case OntoumlType.LITERAL:
+  //     return new Literal(original as Literal);
+  //   case OntoumlType.DIAGRAM:
+  //     return new Diagram(original as Diagram);
+  //   case OntoumlType.CLASS_VIEW:
+  //     return new ClassView(original as ClassView);
+  //   case OntoumlType.BINARY_RELATION_VIEW:
+  //     return new BinaryRelationView(original as BinaryRelationView);
+  //   case OntoumlType.GENERALIZATION_VIEW:
+  //     return new GeneralizationView(original as GeneralizationView);
+  //   case OntoumlType.GENERALIZATION_SET_VIEW:
+  //     return new GeneralizationSetView(original as GeneralizationSetView);
+  //   case OntoumlType.PACKAGE_VIEW:
+  //     return new PackageView(original as PackageView);
+  //   case OntoumlType.RECTANGLE:
+  //     return new Rectangle(original as Rectangle);
+  //   case OntoumlType.TEXT:
+  //     return new Text(original as Text);
+  //   case OntoumlType.PATH:
+  //     return new Path(original as Path);
+  //   default:
+  //     throw new Error("No match for parameter's type");
+  // }
 }
+
 
 /** Parsing function to be passed as argument to `JSON.stringify` to support the
  * de-serialization of `OntoumlElement` objects. */
@@ -105,8 +107,8 @@ function revive(_key: any, value: any): any {
       if(element instanceof Project)
         content.project = element as Project;
       
-      content.getContents()
-             .forEach( ownContent => (ownContent.container = content) );
+      // content.getContents()
+      //        .forEach( ownContent => (ownContent.container = content) );
     });
 
     const contentsMap = getElementMap(element as ModelElement);

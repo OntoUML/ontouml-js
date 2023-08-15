@@ -213,6 +213,10 @@ export class Class extends Classifier<Class, ClassStereotype> {
     return this.allowsOnly(natureUtils.ExtrinsicMomentNatures);
   }
 
+  isCharacterizer(): boolean {
+    return this.allowsOnly([OntologicalNature.extrinsic_mode, OntologicalNature.intrinsic_mode, OntologicalNature.quality])
+  }
+
   isRelatorType(): boolean {
     return this.allowsExactly(OntologicalNature.relator);
   }
@@ -246,84 +250,90 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   /**
-  * Returns true if the class is stereotyped as «», «», or «».
+  * @returns true if the class is decorated with a rigid stereotype.
+  * @see stereotypeUtils.RigidStereotypes
   */
   isRigid(): boolean {
     return this.isStereotypeOneOf(stereotypeUtils.RigidStereotypes);
   }
 
   /**
-  * Returns true if the class is stereotyped as «», «», or «».
+  * @returns true if the class is decorated with a semi-rigid stereotype.
+  * @see stereotypeUtils.SemiRigidStereotypes
   */
   isSemiRigid(): boolean {
     return this.isStereotypeOneOf(stereotypeUtils.SemiRigidStereotypes);
   }
-
   /**
-  * Returns true if the class is stereotyped as «», «», or «».
+  * @returns true if the class is decorated with an anti-rigid stereotype.
+  * @see stereotypeUtils.AntiRigidStereotypes
   */
   isAntiRigid(): boolean {
     return this.isStereotypeOneOf(stereotypeUtils.AntiRigidStereotypes);
   }
 
   /**
-  * Returns true if the class is stereotyped as «», «», or «».
+  * @returns true if the class is decorated with a non-sortal stereotype.
+  * @see stereotypeUtils.NonSortalStereotypes
   */
   isNonSortal(): boolean {
     return this.isStereotypeOneOf(stereotypeUtils.NonSortalStereotypes);
   }
 
   /**
-  * Returns true if the class is stereotyped as «», «», or «».
+  * @returns true if the class is decorated with a sortal stereotype.
+  * @see stereotypeUtils.SortalStereotypes
   */
   isSortal(): boolean {
     return this.isStereotypeOneOf(stereotypeUtils.SortalStereotypes);
   }
 
   /**
-  * Returns true if the class is stereotyped as «», «», or «».
+  * @returns true if the class is decorated with an ultimate sortal stereotype, i.e. a stereotype that indicates that the class provides an identity principle to its instances.
+  * @see stereotypeUtils.UltimateSortalStereotypes
   */
   isIdentityProvider(): boolean {
     return this.isStereotypeOneOf(stereotypeUtils.UltimateSortalStereotypes);
   }
 
   /**
-  * Returns true if the class is stereotyped as «», «», or «».
+  * @returns true if the class is decorated with a base sortal stereotype.
+  * @see stereotypeUtils.UltimateSortalStereotypes
   */
   isBaseSortal(): boolean {
     return this.isStereotypeOneOf(stereotypeUtils.BaseSortalStereotypes);
   }
 
   /**
-  * Returns true if the class is stereotyped as «type».
+  * @returns true if the class is stereotyped as «type».
   */
   isType(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.TYPE);
   }
 
   /**
-  * Returns true if the class is stereotyped as «event».
+  * @returns true if the class is stereotyped as «event».
   */
   isEvent(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.EVENT);
   }
 
   /**
-  * Returns true if the class is stereotyped as «situation».
+  * @returns true if the class is stereotyped as «situation».
   */
   isSituation(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.SITUATION);
   }
 
   /** TODO
-  * Returns true if the class is stereotyped as «abstract».
+  * @returns true if the class is stereotyped as «abstract».
   */
   isAbstractAbstract(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.ABSTRACT);
   }
 
   /**
-  * Returns true if the class is stereotyped as «datatype».
+  * @returns true if the class is stereotyped as «datatype».
   */
   isDatatype(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.DATATYPE);
@@ -338,112 +348,112 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
   
   /**
-  * Returns true if the class is stereotyped as «enumeration».
+  * @returns true if the class is stereotyped as «enumeration».
   */
   isEnumeration(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.ENUMERATION);
   }
   
   /**
-  * Returns true if the class is stereotyped as «kind».
+  * @returns true if the class is stereotyped as «kind».
   */
   isKind(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.KIND);
   }
 
   /**
-   * Returns true if the class is stereotyped as «collective».
+   * @returns true if the class is stereotyped as «collective».
    */
   isCollective(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.COLLECTIVE);
   }
 
   /**
-   * Returns true if the class is stereotyped as «quantity».
+   * @returns true if the class is stereotyped as «quantity».
    */
   isQuantity(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.QUANTITY);
   }
 
   /**
-   * Returns true if the class is stereotyped as «relator».
+   * @returns true if the class is stereotyped as «relator».
    */
   isRelator(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.RELATOR);
   }
 
   /**
-   * Returns true if the class is stereotyped as «quality».
+   * @returns true if the class is stereotyped as «quality».
    */
   isQuality(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.QUALITY);
   }
 
   /**
-   * Returns true if the class is stereotyped as «mode».
+   * @returns true if the class is stereotyped as «mode».
    */
   isMode(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.MODE);
   }
 
   /**
-   * Returns true if the class is stereotyped as «subkind».
+   * @returns true if the class is stereotyped as «subkind».
    */
   isSubkind(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.SUBKIND);
   }
 
   /**
-   * Returns true if the class is stereotyped as «phase».
+   * @returns true if the class is stereotyped as «phase».
    */
   isPhase(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.PHASE);
   }
 
   /**
-   * Returns true if the class is stereotyped as «role».
+   * @returns true if the class is stereotyped as «role».
    */
   isRole(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.ROLE);
   }
 
   /**
-   * Returns true if the class is stereotyped as «historicalRole».
+   * @returns true if the class is stereotyped as «historicalRole».
    */
   isHistoricalRole(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.HISTORICAL_ROLE);
   }
 
   /**
-   * Returns true if the class is stereotyped as «category».
+   * @returns true if the class is stereotyped as «category».
    */
   isCategory(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.CATEGORY);
   }
 
   /**
-   * Returns true if the class is stereotyped as «phaseMixin».
+   * @returns true if the class is stereotyped as «phaseMixin».
    */
   isPhaseMixin(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.PHASE_MIXIN);
   }
 
   /**
-   * Returns true if the class is stereotyped as «roleMixin».
+   * @returns true if the class is stereotyped as «roleMixin».
    */
   isRoleMixin(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.ROLE_MIXIN);
   }
 
   /**
-   * Returns true if the class is stereotyped as «historicalRoleMixin».
+   * @returns true if the class is stereotyped as «historicalRoleMixin».
    */
   isHistoricalRoleMixin(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.HISTORICAL_ROLE_MIXIN);
   }
 
   /**
-   * Returns true if the class is stereotyped as «mixin».
+   * @returns true if the class is stereotyped as «mixin».
    */
   isMixin(): boolean {
     return this.isStereotypeOneOf(ClassStereotype.MIXIN);
@@ -514,7 +524,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   /** 
-   * Returns attributes defined in the class, excluding inherited ones 
+   * @returns attributes defined in the class, excluding inherited ones 
    * */
   getAttributes(): Property[] {
     if (this.isEnumeration()) {
@@ -525,7 +535,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   /** 
-   * Returns both own and inherited attributes 
+   * @returns both own and inherited attributes 
    * */
   getAllAttributes(): Property[] {
     const thisAndAncestors = [this, ...this.getAncestors()];
@@ -537,7 +547,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
     return allAttributes;
   }
 
-  /** Returns both own literals, excluding inherited ones */
+  /** @returns both own literals, excluding inherited ones */
   getLiterals(): Literal[] {
     if (!this.isEnumeration()) {
       throw new Error('Cannot retrieve literals from a non-enumeration.');
@@ -546,7 +556,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
     return this.literals ? [...this.literals] : [];
   }
 
-  /** Returns both own and inherited literals */
+  /** @returns both own and inherited literals */
   getAllLiterals(): Literal[] {
     const thisAndAncestors = [this, ...this.getAncestors()];
     const allLiterals = thisAndAncestors.reduce((literalsAcc: Literal[], _class: Class) => {

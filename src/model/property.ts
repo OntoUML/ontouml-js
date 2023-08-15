@@ -22,7 +22,7 @@ export class Property extends Decoratable<PropertyStereotype> {
   subsettedProperties: Property[] = [];
   redefinedProperties: Property[] = [];
   cardinality: Cardinality = new Cardinality("0..*");
-  aggregationKind: AggregationKind = AggregationKind.NONE;;
+  aggregationKind: AggregationKind = AggregationKind.NONE;
   isOrdered: boolean = false;
   isReadOnly: boolean = false;
 
