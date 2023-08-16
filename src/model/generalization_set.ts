@@ -1,6 +1,7 @@
-import { OntoumlElement, OntoumlType, Class, Classifier, Generalization, ModelElement, Package, Relation, Project } from '..';
+import { OntoumlElement, OntoumlType, Class, Classifier, Generalization, Package, Relation, Project } from '..';
 import { utils } from '..';
 import { PackageableElement } from './packageable_element';
+import { ModelElement } from './model_element';
 
 export class GeneralizationSet extends ModelElement implements PackageableElement {
   isDisjoint: boolean = false;

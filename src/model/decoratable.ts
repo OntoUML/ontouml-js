@@ -1,4 +1,5 @@
-import { Classifier, ModelElement, Package, Project, Stereotype } from '..';
+import { Classifier, Package, Project, Stereotype } from '..';
+import { ModelElement } from './model_element';
 
 export abstract class Decoratable<S extends Stereotype> extends ModelElement {
   stereotype?: S;
@@ -45,7 +46,7 @@ export abstract class Decoratable<S extends Stereotype> extends ModelElement {
    * */
   isStereotypeOneOf(stereotypes: S | readonly S[]): boolean {
     if(!this.stereotype){
-      throw Error("The decoratable does not have a stereotype. ");
+      throw Error("The decoratable does not have a stereotype.");
     }
 
     return Array.isArray(stereotypes) ? stereotypes.includes(this.stereotype) : this.stereotype === stereotypes;

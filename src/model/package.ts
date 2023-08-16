@@ -8,11 +8,13 @@ import {
   ClassStereotype,
   Nature, RelationStereotype,
   Generalization,
-  GeneralizationSet, ModelElement, Relation, Classifier, Project
+  GeneralizationSet, 
+  Relation, Classifier, Project
 } from '..';
 import { PackageableElement } from './packageable_element';
 import { BinaryRelation } from './binary_relation';
 import { NaryRelation } from './nary_relation';
+import { ModelElement } from './model_element';
 
 export class Package extends ModelElement implements PackageableElement {
   contents: ModelElement[] = [];

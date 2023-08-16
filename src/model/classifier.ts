@@ -1,8 +1,9 @@
 import _ from 'lodash';
-import { Package, Stereotype, Decoratable, Generalization, GeneralizationSet, Property, Class, Relation, Project } from '..';
+import { Package, Stereotype, Generalization, GeneralizationSet, Property, Class, Relation, Project } from '..';
 import { PackageableElement } from './packageable_element';
 import { BinaryRelation } from './binary_relation';
 import { NaryRelation } from './nary_relation';
+import { Decoratable } from './decoratable';
 
 export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotype> extends Decoratable<S> implements PackageableElement {
   isAbstract: boolean = false;

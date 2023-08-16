@@ -5,12 +5,12 @@ import {
   Class,
   Classifier,
   PropertyStereotype,
-  Decoratable,
   ModelElement,
   Relation,
 } from '..';
 import { BinaryRelation } from './binary_relation';
 import { NaryRelation } from './nary_relation';
+import { Decoratable } from './decoratable';
 
 export enum AggregationKind {
   NONE = 'NONE',

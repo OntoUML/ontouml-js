@@ -1,13 +1,14 @@
 import {
   OntoumlElement,
   Class,
-  Classifier,
   RelationStereotype,
   ModelElement,
   Package,
   Property,
   Project
 } from '..';
+import { Classifier } from './classifier';
+
 
 export abstract class Relation extends Classifier<Relation, RelationStereotype> {
   protected constructor(project: Project, container: Package | undefined, members: Classifier<any,any>[]) {

@@ -8,7 +8,7 @@ export abstract class OntoumlElement {
   
   constructor(project?: Project) {
     this.id = uniqid();
-    this.project = project;
+    this._project = project;
   }
   
   get project(): Project | undefined {

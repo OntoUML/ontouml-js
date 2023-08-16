@@ -3,15 +3,6 @@ import _ from 'lodash';
 export type Stereotype = ClassStereotype | RelationStereotype | PropertyStereotype;
 
 export enum ClassStereotype {
-  TYPE = 'type',
-  HISTORICAL_ROLE = 'historicalRole',
-  HISTORICAL_ROLE_MIXIN = 'historicalRoleMixin',
-  EVENT = 'event',
-  SITUATION = 'situation',
-  CATEGORY = 'category',
-  MIXIN = 'mixin',
-  ROLE_MIXIN = 'roleMixin',
-  PHASE_MIXIN = 'phaseMixin',
   KIND = 'kind',
   COLLECTIVE = 'collective',
   QUANTITY = 'quantity',
@@ -21,9 +12,18 @@ export enum ClassStereotype {
   SUBKIND = 'subkind',
   ROLE = 'role',
   PHASE = 'phase',
+  CATEGORY = 'category',
+  MIXIN = 'mixin',
+  ROLE_MIXIN = 'roleMixin',
+  PHASE_MIXIN = 'phaseMixin',
+  EVENT = 'event',
+  SITUATION = 'situation',
+  HISTORICAL_ROLE = 'historicalRole',
+  HISTORICAL_ROLE_MIXIN = 'historicalRoleMixin',
   ENUMERATION = 'enumeration',
   DATATYPE = 'datatype',
-  ABSTRACT = 'abstract'
+  ABSTRACT = 'abstract',
+  TYPE = 'type',
 }
 
 export const TYPE = ClassStereotype.TYPE;

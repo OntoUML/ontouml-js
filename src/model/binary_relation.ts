@@ -2,13 +2,14 @@ import {
   OntoumlType,
   Project,
   Package,
-  Relation,
-  Classifier,
   RelationStereotype,
   Property,
   Class,
   EXISTENTIAL_DEPENDENCE_STEREOTYPES
 } from '..';
+
+import { Relation } from './relation';
+import { Classifier } from './classifier';
 
 export class BinaryRelation extends Relation {
   constructor(project: Project, container: Package | undefined, source: Classifier<any,any>, target: Classifier<any,any>) {

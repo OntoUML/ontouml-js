@@ -1,4 +1,5 @@
-import { OntoumlElement, ModelElement, OntoumlType, Class } from '..';
+import { OntoumlElement, OntoumlType, Class } from '..';
+import { ModelElement } from './model_element';
 
 export class Literal extends ModelElement {
   constructor(container: Class) {

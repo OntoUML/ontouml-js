@@ -1,4 +1,5 @@
-import { OntoumlElement, OntoumlType, Class, Classifier, GeneralizationSet, ModelElement, Package, Relation, Project } from '..';
+import { OntoumlElement, OntoumlType, Class, Classifier, GeneralizationSet, Package, Relation, Project } from '..';
+import { ModelElement } from './model_element';
 import { PackageableElement } from './packageable_element';
 
 export class Generalization extends ModelElement implements PackageableElement {

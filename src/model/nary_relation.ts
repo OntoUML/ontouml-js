@@ -1,9 +1,12 @@
 import {
-  OntoumlType, Project, Package,
-  Relation,
+  OntoumlType, 
+  Project, 
+  Package,
   Classifier,
   RelationStereotype
 } from '..';
+
+import { Relation } from './relation';
 
 export class NaryRelation extends Relation {
   constructor(project: Project, container: Package | undefined, members: Classifier<any,any>[]) {

@@ -1,5 +1,4 @@
 import {
-  Class,
   Generalization,
   GeneralizationSet,
   Literal,
@@ -14,14 +13,16 @@ import {
   GeneralizationView,
   GeneralizationSetView
 } from '.';
-import { PackageView } from './view/package_view';
 import { NamedElement } from './named_element';
 import { Finder } from './finder';
+import { Class } from './model/class';
 import { Note } from './model/note';
-import { NoteView } from './view/note_view';
 import { NoteLink } from './model/note_link';
+import { PackageView } from './view/package_view';
+import { NoteView } from './view/note_view';
 import { NaryRelationView } from './view/nary_relation_view';
 import { NoteLinkView } from './view/note_link_view';
+import { ClassBuilder } from './builder/class_builder';
 
 export class Project extends NamedElement {
   finder: Finder;
@@ -49,7 +50,6 @@ export class Project extends NamedElement {
   constructor() {
     super();
 
-    this.project = this;
     this.finder = new Finder(this);
   }
 
@@ -71,6 +71,14 @@ export class Project extends NamedElement {
   //     this.model.setContainer(this);
   //   }
   // }
+
+  classBuilder(): ClassBuilder {
+    return new ClassBuilder(this);
+  }
+
+  addClass(c: Class): void {
+    this._classes[c.id] = c;
+  }
 
   createDiagram(): Diagram {
     const diagram = new Diagram(this);
@@ -99,25 +107,26 @@ export class Project extends NamedElement {
   }
 
   getContents(): OntoumlElement[] {
+    console.log(this._classes);
     return ([
       ...Object.values(this._classes),
-      ...Object.values(this._relations),
-      ...Object.values(this._generalizations),
-      ...Object.values(this._generalizationSets),
-      ...Object.values(this._packages),
-      ...Object.values(this._properties),
-      ...Object.values(this._literals),
-      ...Object.values(this._notes),
-      ...Object.values(this._noteLinks),
-      ...Object.values(this._diagrams),
-      ...Object.values(this._classViews),
-      ...Object.values(this._binaryRelationViews),
-      ...Object.values(this._nAryRelationViews),
-      ...Object.values(this._generalizationViews),
-      ...Object.values(this._generalizationSetViews),
-      ...Object.values(this._packageViews),
-      ...Object.values(this._noteViews),
-      ...Object.values(this._noteLinkViews),
+      // ...Object.values(this._relations),
+      // ...Object.values(this._generalizations),
+      // ...Object.values(this._generalizationSets),
+      // ...Object.values(this._packages),
+      // ...Object.values(this._properties),
+      // ...Object.values(this._literals),
+      // ...Object.values(this._notes),
+      // ...Object.values(this._noteLinks),
+      // ...Object.values(this._diagrams),
+      // ...Object.values(this._classViews),
+      // ...Object.values(this._binaryRelationViews),
+      // ...Object.values(this._nAryRelationViews),
+      // ...Object.values(this._generalizationViews),
+      // ...Object.values(this._generalizationSetViews),
+      // ...Object.values(this._packageViews),
+      // ...Object.values(this._noteViews),
+      // ...Object.values(this._noteLinkViews),
     ]);
 
   }
