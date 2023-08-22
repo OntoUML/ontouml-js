@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { OntoumlElement, Package, Project } from '../index';
 import { NamedElement } from '../named_element';
 
@@ -57,7 +58,7 @@ export abstract class ModelElement extends NamedElement {
 
   override toJSON(): any {
     const object = {
-      customProperties: this.customProperties
+      customProperties: !_.isEmpty(this.customProperties) ? this.customProperties : null
     };
 
     return { ...object, ...super.toJSON() };

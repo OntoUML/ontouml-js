@@ -22,7 +22,7 @@ import { PackageView } from './view/package_view';
 import { NoteView } from './view/note_view';
 import { NaryRelationView } from './view/nary_relation_view';
 import { NoteLinkView } from './view/note_link_view';
-import { ClassBuilder } from './builder/class_builder';
+import { ClassBuilder } from './builder/model/class_builder';
 
 export class Project extends NamedElement {
   finder: Finder;

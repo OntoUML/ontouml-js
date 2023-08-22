@@ -47,22 +47,17 @@ import {
 } from '..';
 
 import { Classifier } from "./classifier"
-import { PropertyBuilder } from '../builder/property_builder';
+// import { PropertyBuilder } from '../builder/property_builder';
 
 export class Class extends Classifier<Class, ClassStereotype> {
-  private _restrictedTo: Nature[];
-  private _literals: Literal[];
-  private _order: number;
-  isPowertype: boolean;
+  private _restrictedTo: Nature[] = [];
+  private _literals: Literal[] = [];
+  private _order: number = 1;
+  isPowertype: boolean = false;
   
   constructor(project: Project, container?: Package) {
     super(project, container);
     project.addClass(this);
-    
-    this._restrictedTo = [];
-    this._literals = [];
-    this.isPowertype = false;
-    this._order = 1;
   }
 
   public get restrictedTo(): Nature[] {
@@ -131,10 +126,10 @@ export class Class extends Classifier<Class, ClassStereotype> {
     return this.order.toString();
   }
 
-  attributeBuilder(): PropertyBuilder {
-    return new PropertyBuilder();
+  // attributeBuilder(): PropertyBuilder {
+  //   return new PropertyBuilder();
 
-  }
+  // }
 
   createAttribute(propertyType?: Class, name?: string): Property {
     // TODO: Discuss the removal of this code block

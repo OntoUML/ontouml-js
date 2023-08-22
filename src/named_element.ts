@@ -21,8 +21,14 @@ export abstract class NamedElement extends OntoumlElement {
     this.name.addText(value, language);
   }
 
-  setName(value: string, language?: string): void {
-    this.name = new MultilingualText(value, language);
+  setName(name:MultilingualText): void;
+  setName(value: string, language?: string): void;
+  setName(value: string|MultilingualText, language?: string): void {
+    if(value instanceof MultilingualText) {
+      this.name = value;
+    } else {
+      this.name = new MultilingualText(value, language);
+    }
   }
 
   getDescription(language?: string): string {
@@ -34,8 +40,15 @@ export abstract class NamedElement extends OntoumlElement {
     this.description.addText(value, language);
   }
 
-  setDescription(value: string, language?: string): void {
-    this.description = new MultilingualText(value, language);
+  setDescription(description:MultilingualText): void;
+  setDescription(value: string, language?: string): void;
+  setDescription(value: string|MultilingualText, language?: string): void {
+    if(value instanceof MultilingualText) {
+      this.description = value;
+    }
+    else {
+      this.description = new MultilingualText(value, language);
+    }
   }
 
   getNameOrId(language?: string): string {
@@ -45,7 +58,11 @@ export abstract class NamedElement extends OntoumlElement {
   override toJSON(): any {
     const object = {
       name: this.name.toJSON(),
-      description: this.description.toJSON()
+      description: this.description.toJSON(),
+      alternativeNames: [],
+      editorialNotes: [],
+      creators: [],
+      contributors: [],
     };
 
     return { ...object, ...super.toJSON()};

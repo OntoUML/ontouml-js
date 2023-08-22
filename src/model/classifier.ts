@@ -5,6 +5,7 @@ import { BinaryRelation } from './binary_relation';
 import { NaryRelation } from './nary_relation';
 import { Decoratable } from './decoratable';
 
+// TODO: check whether the first generics term "T" is really necessary; it seems redundant
 export abstract class Classifier<T extends Classifier<T, S>, S extends Stereotype> extends Decoratable<S> implements PackageableElement {
   isAbstract: boolean = false;
   protected _properties: Property[] = [];

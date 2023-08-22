@@ -4,6 +4,8 @@ import { OntoumlType, Project } from '.';
 
 export abstract class OntoumlElement {
   id: string;
+  created: Date = new Date();
+  modified?: Date;
   private _project?: Project | undefined;
   
   constructor(project?: Project) {
@@ -63,7 +65,9 @@ export abstract class OntoumlElement {
   
   toJSON(): any {
     const object : any = {
-      id: this.id
+      id: this.id,
+      created: this.created?.toISOString() ?? null,
+      modified: this.modified?.toISOString() ?? null,
     };
 
     return object;
