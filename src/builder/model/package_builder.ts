@@ -1,7 +1,4 @@
-import { Project } from "../project";
-
-export class Builder {
+export class PackageBuilder {
   
-   project?: Project;
    
 }

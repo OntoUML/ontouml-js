@@ -1,11 +1,8 @@
-import uniqid from 'uniqid';
 import { ABSTRACT, CATEGORY, COLLECTIVE, ClassStereotype, DATATYPE, ENUMERATION, EVENT, HISTORICAL_ROLE, HISTORICAL_ROLE_MIXIN, KIND, MIXIN, MODE, PHASE, PHASE_MIXIN, QUALITY, QUANTITY, RELATOR, ROLE, ROLE_MIXIN, SITUATION, SUBKIND, TYPE } from '../../model/stereotypes';
 import { Nature } from '../../model/natures';
 import { Class, ORDERLESS_LEVEL } from '../../model/class';
-import { Project } from '../../project';
 import { Package } from '../../model/package';
 import { ClassifierBuilder } from './classifier_builder';
-import { Literal } from '../../model/literal';
 
 export class ClassBuilder extends ClassifierBuilder<ClassBuilder,ClassStereotype> {
    protected override _container?: Package;

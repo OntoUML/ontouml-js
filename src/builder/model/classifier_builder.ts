@@ -1,4 +1,3 @@
-import { Classifier } from "../../model/classifier";
 import { Stereotype } from "../../model/stereotypes";
 import { DecoratableBuilder } from "./decoratable_builder";
 

@@ -1,4 +1,4 @@
-export class Builder {
+export class LiteralBuilder {
   
    
 }
