@@ -3,34 +3,43 @@ import { Nature } from '../../model/natures';
 import { Class, ORDERLESS_LEVEL } from '../../model/class';
 import { Package } from '../../model/package';
 import { ClassifierBuilder } from './classifier_builder';
+import { Project } from '../../project';
+import { utils } from '../../utils';
 
 export class ClassBuilder extends ClassifierBuilder<ClassBuilder,ClassStereotype> {
    protected override _container?: Package;
+   protected override element: Class;
+   
    private _restrictedTo: Nature[] = [];
    private _order: number = 1;
    private _isPowertype: boolean = false;
 
-   build(): Class {
-      // OntoumlElementBuilder
-      const c = new Class(this.project);
-      c.id = this._id;
-      // NamedElementBuilder
-      c.setName(this._name);
-      c.setDescription(this._description);
-      // ModelElementBuilder
-      c.container = this._container;
-      c.customProperties = this._customProperties
-      // DecoratableBuilder
-      c.stereotype = this._stereotype;
-      c.isDerived = this._isDerived;
-      // ClassifierBuilder
-      c.isAbstract = this._isAbstract;
-      // ClassBuilder
-      c.order = this._order;
-      c.isPowertype = this._isPowertype;
-      c.restrictedTo = this._restrictedTo;
+   constructor (project: Project){
+      super(project);
+      this.element = new Class(this.project);
+   }
 
-      return c;
+   override build(): Class {
+      super.build();
+
+      // OntoumlElementBuilder
+      this.element.id = this._id;
+      // NamedElementBuilder
+      this.element.setName(this._name);
+      this.element.setDescription(this._description);
+      // ModelElementBuilder
+      this.element.container = this._container;
+      this.element.customProperties = this._customProperties
+      // DecoratableBuilder
+      this.element.stereotype = this._stereotype;
+      this.element.isDerived = this._isDerived;
+     
+      // ClassBuilder
+      this.element.order = this._order;
+      this.element.isPowertype = this._isPowertype;
+      this.element.restrictedTo = this._restrictedTo;
+      
+      return this.element;
    }
 
    container(pkg: Package): ClassBuilder {
@@ -125,80 +134,107 @@ export class ClassBuilder extends ClassifierBuilder<ClassBuilder,ClassStereotype
             return this.type();
       }
 
-      return super.stereotype(stereotype) as ClassBuilder;
+      return super.stereotype(stereotype);
    }
 
+   /**
+    * Sets the following fields:
+    *  - stereotype as «kind»
+    *  - restrictedTo as [ functional complex ]
+    *  - isAbstract as false
+    *  - order as 1
+    */
    kind(): ClassBuilder {
       this._stereotype = KIND;
       this._restrictedTo = [ Nature.FUNCTIONAL_COMPLEX ];
-      this._isAbstract = false;
+      this.concrete();
+      this.order(1);
       return this;
    }
    
+   /**
+    * Sets the following fields:
+    *  - stereotype as «collective»
+    *  - restrictedTo as [ collective ]
+    *  - isAbstract as false
+    *  - order as 1
+    */
    collective(): ClassBuilder {
       this._stereotype = COLLECTIVE;
       this._restrictedTo = [ Nature.COLLECTIVE ];
-      this._isAbstract = false;
+      this.concrete();
+      this.order(1);
       return this;
    }
    
    quantity(): ClassBuilder {
       this._stereotype = QUANTITY;
       this._restrictedTo = [ Nature.QUANTITY ];
-      this._isAbstract = false;
+      this.concrete();
+      this.order(1);
       return this;
    }
    
    relator(): ClassBuilder {
       this._stereotype = RELATOR;
       this._restrictedTo = [ Nature.RELATOR ];
-      this._isAbstract = false;
+      this.concrete();
+      this.order(1);
       return this;
    }
    
    quality(): ClassBuilder {
       this._stereotype = QUALITY;
       this._restrictedTo = [ Nature.QUALITY ];
-      this._isAbstract = false;
+      this.concrete();
+      this.order(1);
       return this;
    }
    
    mode(): ClassBuilder {
       this._stereotype = MODE;
       this._restrictedTo = [ Nature.INTRINSIC_MODE, Nature.EXTRINSIC_MODE ];
-      this._isAbstract = false;
+      this.concrete();
+      this.order(1);
       return this;
    }
    
    subkind(): ClassBuilder {
       this._stereotype = SUBKIND;
-      this._isAbstract = false;
+      this.concrete();
+      this.order(1);
       return this;
    }
    
    role(): ClassBuilder {
       this._stereotype = ROLE;
-      this._isAbstract = false;
+      this.concrete();
+      this.order(1);
       return this;
    }
    
    phase(): ClassBuilder {
       this._stereotype = PHASE;
-      this._isAbstract = false;
+      this.concrete();
+      this.order(1);
       return this;
    }
    
    category(): ClassBuilder {
       this._stereotype = CATEGORY;
-      this._restrictedTo = [ Nature.FUNCTIONAL_COMPLEX ];
+      
+      this.restrictedTo();
+      this.substantialType();
+
       this._isAbstract = true;
       return this;
    }
    
    mixin(): ClassBuilder {
       this._stereotype = MIXIN;
-      this._restrictedTo = [ Nature.FUNCTIONAL_COMPLEX ];
-      this._isAbstract = true;
+      this.restrictedTo();
+      this.substantialType();
+      this.abstract();
       return this;
    }
    
@@ -258,7 +294,7 @@ export class ClassBuilder extends ClassifierBuilder<ClassBuilder,ClassStereotype
    
    abstractClass(): ClassBuilder {
       this._stereotype = ABSTRACT;
-      this._restrictedTo = [ Nature.ABSTRACT ];
+      this.restrictedTo(Nature.ABSTRACT);
       this._isAbstract = false;
       return this;
    }
@@ -267,6 +303,11 @@ export class ClassBuilder extends ClassifierBuilder<ClassBuilder,ClassStereotype
       this._stereotype = TYPE;
       this._restrictedTo = [ Nature.TYPE ];
       this._isAbstract = false;
+      return this;
+   }
+
+   restrictedTo(natures: Nature | Nature[] = []): ClassBuilder {
+      this._restrictedTo = utils.arrayFrom(natures);
       return this;
    }
 
@@ -310,18 +351,86 @@ export class ClassBuilder extends ClassifierBuilder<ClassBuilder,ClassStereotype
       return this;
    }
 
-   situationType():ClassBuilder {
+   situationType(): ClassBuilder {
       this._restrictedTo.push(Nature.SITUATION)
       return this;
    }
 
    highOrderType():ClassBuilder {
       this._restrictedTo.push(Nature.TYPE)
+      
+      if(this.order===undefined){
+         if(this._restrictedTo)
+         this.order(2);
+      }
+
       return this;
    }
 
    abstractType():ClassBuilder {
       this._restrictedTo.push(Nature.ABSTRACT)
+      return this;
+   }
+
+
+   substantialType(): ClassBuilder {
+      this.functionalComplexType();
+      this.collectiveType();
+      this.quantityType();
+      
+      return this;
+   }
+
+   intrinsicMomentType(): ClassBuilder {
+      this.qualityType();
+      this.intrinsicModeType();
+      return this;
+   }
+
+   extrinsicMomentType(): ClassBuilder {
+      this.relatorType();
+      this.extrinsicModeType();
+      return this;
+   }
+
+   momentType(): ClassBuilder {
+      this.intrinsicMomentType();
+      this.extrinsicMomentType();
+      return this;
+   }
+
+   endurantIndividualType(): ClassBuilder {
+      this.substantialType();
+      this.momentType();
+      return this;
+   }
+
+   endurantType(): ClassBuilder {
+      this.endurantIndividualType();
+      this.highOrderType();
+      this.orderless();
+      return this;
+   }
+
+   concreteIndividualType(): ClassBuilder {
+      this.endurantIndividualType();
+      this.eventType();
+      this.situationType();
+      return this;
+   }
+
+   individualType(): ClassBuilder {
+      this.concreteIndividualType();
+      this.abstract();
+      this.order(1);
+      return this;
+   }
+
+   anyType(): ClassBuilder {
+      this.concreteIndividualType();
+      this.highOrderType();
+      this.abstract();
+      this.orderless();
       return this;
    }
    

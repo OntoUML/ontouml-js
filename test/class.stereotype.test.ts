@@ -119,8 +119,8 @@ describe('Test Class stereotype-related query methods', () => {
     });
     
     it('Test complex datatype', () => {
-      dt1 = proj.classBuilder().Datatype();
-      dt2 = proj.classBuilder().Datatype();
+      dt1 = proj.classBuilder().datatype().build();
+      dt2 = proj.classBuilder().datatype().build();
       
       dt1.createAttribute(dt2);
       dt1.createAttribute(dt2);
