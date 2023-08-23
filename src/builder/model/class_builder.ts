@@ -43,7 +43,6 @@ export class ClassBuilder extends ClassifierBuilder<
   constructor(project: Project) {
     super(project);
     this.element = new Class(this.project);
-    const c = '';
   }
 
   override build(): Class {
