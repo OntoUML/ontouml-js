@@ -1,5 +1,4 @@
 import { ModelElement } from "../../model/model_element";
-import { Project } from "../../project";
 import { NamedElementBuilder } from "../named_element_builder";
 
 export abstract class ModelElementBuilder<B extends ModelElementBuilder<B>> extends NamedElementBuilder<B> {

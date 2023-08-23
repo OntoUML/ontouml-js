@@ -21,9 +21,7 @@ export abstract class NamedElement extends OntoumlElement {
     this.name.addText(value, language);
   }
 
-  setName(name:MultilingualText): void;
-  setName(value: string, language?: string): void;
-  setName(value: string|MultilingualText, language?: string): void {
+  setName(value: string | MultilingualText, language?: string): void {
     if(value instanceof MultilingualText) {
       this.name = value;
     } else {

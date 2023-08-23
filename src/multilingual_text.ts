@@ -14,6 +14,7 @@ export class MultilingualText {
 
   constructor(value?: string, language?: string) {
     this.textMap = new Map<string, string>();
+    this.textMap.set("", "asd");
     if (value != null) this.addText(value, language);
   }
   
