@@ -1,5 +1,1 @@
-export class GeneralizationSetBuilder {
-  
-   
-}
-
+export class GeneralizationSetBuilder {}

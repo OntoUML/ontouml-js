@@ -1,7 +1,7 @@
-import { OntoumlElement, OntoumlType } from '..';
-import { View } from './view';
-import { Note } from '../model/note';
-import { Text } from '../shape/text';
+import { OntoumlElement, OntoumlType } from "..";
+import { View } from "./view";
+import { Note } from "../model/note";
+import { Text } from "../shape/text";
 
 export class NoteView extends View<Note> {
   readonly text: Text;
@@ -14,7 +14,6 @@ export class NoteView extends View<Note> {
     this.text.height = 50;
   }
 
-    
   override getContents(): OntoumlElement[] {
     return [this.text];
   }
@@ -22,9 +21,9 @@ export class NoteView extends View<Note> {
   override toJSON(): any {
     const object = {
       type: OntoumlType.NOTE_VIEW,
-      text: this.text.id
+      text: this.text.id,
     };
-    
+
     return { ...object, ...super.toJSON() };
   }
 }

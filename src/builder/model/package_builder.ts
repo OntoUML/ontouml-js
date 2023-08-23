@@ -1,4 +1,1 @@
-export class PackageBuilder {
-  
-   
-}
+export class PackageBuilder {}

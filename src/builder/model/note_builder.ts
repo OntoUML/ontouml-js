@@ -1,5 +1,1 @@
-export class NoteBuilder {
-  
-   
-}
-
+export class NoteBuilder {}

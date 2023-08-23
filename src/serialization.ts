@@ -18,13 +18,13 @@ import {
   PackageView,
   Rectangle,
   Text,
-  Path
-} from '.';
+  Path,
+} from ".";
 
 function getElementMap(element: OntoumlElement): Map<string, OntoumlElement> {
   const map: Map<string, OntoumlElement> = new Map();
   map.set(element.id, element);
-  element.getAllContents().forEach(element => map.set(element.id, element));
+  element.getAllContents().forEach((element) => map.set(element.id, element));
 
   return map;
 }
@@ -74,7 +74,6 @@ function clone(original: any): OntoumlElement {
   // }
 }
 
-
 /** Parsing function to be passed as argument to `JSON.stringify` to support the
  * de-serialization of `OntoumlElement` objects. */
 function revive(_key: any, value: any): any {
@@ -85,28 +84,31 @@ function revive(_key: any, value: any): any {
    * resolve the references where only objects returned in getContents() are not
    * references. */
   if (value?.type && value?.id) {
-    if (value?.type === OntoumlType.TEXT || value?.type === OntoumlType.RECTANGLE) {
+    if (
+      value?.type === OntoumlType.TEXT ||
+      value?.type === OntoumlType.RECTANGLE
+    ) {
       value.topLeft = {
         x: value.x,
-        y: value.y
+        y: value.y,
       };
     }
 
     element = clone(value);
-  }
-  else {
+  } else {
     return value;
   }
 
-  if (element instanceof Project || (!_key && element instanceof OntoumlElement)) {
-    
+  if (
+    element instanceof Project ||
+    (!_key && element instanceof OntoumlElement)
+  ) {
     const allContents: OntoumlElement[] = element.getAllContents();
 
     // Set references to container and project
-    allContents.forEach( content => {
-      if(element instanceof Project)
-        content.project = element as Project;
-      
+    allContents.forEach((content) => {
+      if (element instanceof Project) content.project = element as Project;
+
       // content.getContents()
       //        .forEach( ownContent => (ownContent.container = content) );
     });
@@ -116,7 +118,7 @@ function revive(_key: any, value: any): any {
 
     // Resolves reference fields replacing objects that are created to
     // temporarily hold a type and an id
-    allElements.forEach(content => content.resolveReferences(contentsMap));
+    allElements.forEach((content) => content.resolveReferences(contentsMap));
   }
 
   return element;
@@ -132,7 +134,6 @@ function revive(_key: any, value: any): any {
  * `serializedElement` should be validate against the corresponding JSON Schema.
  * Default `false`.  */
 function parse(serializedElement: string): OntoumlElement {
-  
   // TODO: check reference type on parse
   return JSON.parse(serializedElement, revive);
 }
@@ -141,5 +142,5 @@ function parse(serializedElement: string): OntoumlElement {
  * `OntoumlElement` objects. */
 export const serializationUtils = {
   revive,
-  parse
+  parse,
 };

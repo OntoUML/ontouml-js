@@ -23,7 +23,7 @@ export class ClassBuilder extends ClassifierBuilder<ClassBuilder,ClassStereotype
       super.build();
 
       // OntoumlElementBuilder
-      this.element.id = this._id;
+      this.element.id = this._id; 
       // NamedElementBuilder
       this.element.setName(this._name);
       this.element.setDescription(this._description);
@@ -52,21 +52,6 @@ export class ClassBuilder extends ClassifierBuilder<ClassBuilder,ClassStereotype
       return this;
    }
 
-   firstOrder(): ClassBuilder {
-      this._order = 1
-      return this;
-   }
-
-   secondOrder(): ClassBuilder {
-      this._order = 2
-      return this;
-   }
-
-   thirdOrder(): ClassBuilder {
-      this._order = 3
-      return this;
-   }
-
    orderless(): ClassBuilder {
       this._order = ORDERLESS_LEVEL
       return this;
@@ -76,7 +61,7 @@ export class ClassBuilder extends ClassifierBuilder<ClassBuilder,ClassStereotype
       this._isPowertype = true
       
       if(this._order < 2) {
-         this.secondOrder();
+         this.order(2);
       }
       
       return this;
@@ -146,8 +131,7 @@ export class ClassBuilder extends ClassifierBuilder<ClassBuilder,ClassStereotype
     */
    kind(): ClassBuilder {
       this._stereotype = KIND;
-      this._restrictedTo = [ Nature.FUNCTIONAL_COMPLEX ];
-      this.concrete();
+      this.restrictedTo(Nature.FUNCTIONAL_COMPLEX);
       this.order(1);
       return this;
    }
@@ -161,108 +145,93 @@ export class ClassBuilder extends ClassifierBuilder<ClassBuilder,ClassStereotype
     */
    collective(): ClassBuilder {
       this._stereotype = COLLECTIVE;
-      this._restrictedTo = [ Nature.COLLECTIVE ];
-      this.concrete();
+      this.restrictedTo(Nature.COLLECTIVE);
       this.order(1);
       return this;
    }
    
    quantity(): ClassBuilder {
       this._stereotype = QUANTITY;
-      this._restrictedTo = [ Nature.QUANTITY ];
-      this.concrete();
+      this.restrictedTo(Nature.QUANTITY);
       this.order(1);
       return this;
    }
    
    relator(): ClassBuilder {
       this._stereotype = RELATOR;
-      this._restrictedTo = [ Nature.RELATOR ];
-      this.concrete();
+      this.restrictedTo(Nature.RELATOR);
       this.order(1);
       return this;
    }
    
    quality(): ClassBuilder {
       this._stereotype = QUALITY;
-      this._restrictedTo = [ Nature.QUALITY ];
-      this.concrete();
+      this.restrictedTo(Nature.QUALITY);
       this.order(1);
       return this;
    }
    
    mode(): ClassBuilder {
       this._stereotype = MODE;
-      this._restrictedTo = [ Nature.INTRINSIC_MODE, Nature.EXTRINSIC_MODE ];
-      this.concrete();
+      this.restrictedTo(Nature.INTRINSIC_MODE);
       this.order(1);
       return this;
    }
    
    subkind(): ClassBuilder {
       this._stereotype = SUBKIND;
-      this.concrete();
-      this.order(1);
       return this;
    }
    
    role(): ClassBuilder {
       this._stereotype = ROLE;
-      this.concrete();
-      this.order(1);
       return this;
    }
    
    phase(): ClassBuilder {
       this._stereotype = PHASE;
-      this.concrete();
-      this.order(1);
       return this;
    }
    
    category(): ClassBuilder {
       this._stereotype = CATEGORY;
-      
-      this.restrictedTo();
-      this.substantialType();
-
-      this._isAbstract = true;
+      this.restrictedTo(Nature.FUNCTIONAL_COMPLEX);
+      this.abstract();
       return this;
    }
    
    mixin(): ClassBuilder {
       this._stereotype = MIXIN;
-      this.restrictedTo();
-      this.substantialType();
+      this.restrictedTo(Nature.FUNCTIONAL_COMPLEX);
       this.abstract();
       return this;
    }
    
    roleMixin(): ClassBuilder {
       this._stereotype = ROLE_MIXIN;
-      this._restrictedTo = [ Nature.FUNCTIONAL_COMPLEX ];
-      this._isAbstract = true;
+      this.restrictedTo(Nature.FUNCTIONAL_COMPLEX);
+      this.abstract();
       return this;
    }
    
    phaseMixin(): ClassBuilder {
       this._stereotype = PHASE_MIXIN;
-      this._restrictedTo = [ Nature.FUNCTIONAL_COMPLEX ];
-      this._isAbstract = true;
+      this.restrictedTo(Nature.FUNCTIONAL_COMPLEX);
+      this.abstract();
       return this;
    }
  
    event(): ClassBuilder {
       this._stereotype = EVENT;
-      this._restrictedTo = [ Nature.EVENT ];
-      this._isAbstract = false;
+      this.restrictedTo(Nature.EVENT);
+      this.order(1);
       return this;
    }
    
    situation(): ClassBuilder {
       this._stereotype = SITUATION;
-      this._restrictedTo = [ Nature.SITUATION ];
-      this._isAbstract = false;
+      this.restrictedTo(Nature.SITUATION);
+      this.order(1);
       return this;
    }
 

@@ -1,0 +1,6 @@
+# Ignore artifacts:
+dist
+coverage
+.vscode
+.github
+node_modules

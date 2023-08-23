@@ -1,7 +1,7 @@
-import { describe, expect, it } from '@jest/globals';
-import { Project, Relation } from '../src';
+import { describe, expect, it } from "@jest/globals";
+import { Project, Relation } from "../src";
 
-describe('Relation: test ancestor-related query methods', () => {
+describe("Relation: test ancestor-related query methods", () => {
   const model = new Project().createModel();
   const person = model.createClass();
   const knows = model.createBinaryRelation(person, person);
@@ -10,21 +10,28 @@ describe('Relation: test ancestor-related query methods', () => {
   model.createGeneralization(knows, isFriendsWith);
   model.createGeneralization(isFriendsWith, isBestFriendsWith);
 
-  describe('Test getParents()', () => {
-    it('Test function call', () => expect(isBestFriendsWith.getParents()).toContain(isFriendsWith));
-    it('Test function call', () => expect(isBestFriendsWith.getParents().length).toBe(1));
+  describe("Test getParents()", () => {
+    it("Test function call", () =>
+      expect(isBestFriendsWith.getParents()).toContain(isFriendsWith));
+    it("Test function call", () =>
+      expect(isBestFriendsWith.getParents().length).toBe(1));
   });
 
-  describe('Test getAncestors()', () => {
-    it('Test function call', () => expect(isBestFriendsWith.getAncestors()).toContain(isFriendsWith));
-    it('Test function call', () => expect(isBestFriendsWith.getAncestors()).toContain(knows));
-    it('Test function call', () => expect(isBestFriendsWith.getAncestors().length).toBe(2));
+  describe("Test getAncestors()", () => {
+    it("Test function call", () =>
+      expect(isBestFriendsWith.getAncestors()).toContain(isFriendsWith));
+    it("Test function call", () =>
+      expect(isBestFriendsWith.getAncestors()).toContain(knows));
+    it("Test function call", () =>
+      expect(isBestFriendsWith.getAncestors().length).toBe(2));
   });
 
-  describe('Test getFilteredAncestors()', () => {
+  describe("Test getFilteredAncestors()", () => {
     const filter = (ancestor: Relation) => ancestor === knows;
 
-    it('Test function call', () => expect(isBestFriendsWith.getFilteredAncestors(filter)).toContain(knows));
-    it('Test function call', () => expect(isBestFriendsWith.getFilteredAncestors(filter).length).toBe(1));
+    it("Test function call", () =>
+      expect(isBestFriendsWith.getFilteredAncestors(filter)).toContain(knows));
+    it("Test function call", () =>
+      expect(isBestFriendsWith.getFilteredAncestors(filter).length).toBe(1));
   });
 });

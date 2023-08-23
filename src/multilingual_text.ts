@@ -1,4 +1,4 @@
-import tags from 'language-tags';
+import tags from "language-tags";
 
 function assertValidTag(language: string) {
   if (language && !tags.check(language)) {
@@ -7,8 +7,8 @@ function assertValidTag(language: string) {
 }
 
 export class MultilingualText {
-  static defaultLanguage: string = 'en';
-  static languagePreference: string[] = ['en'];
+  static defaultLanguage: string = "en";
+  static languagePreference: string[] = ["en"];
 
   textMap: Map<string, string>;
 
@@ -17,12 +17,11 @@ export class MultilingualText {
     this.textMap.set("", "asd");
     if (value != null) this.addText(value, language);
   }
-  
 
   getText(language?: string): string {
-    if(language){
+    if (language) {
       assertValidTag(language);
-  
+
       if (!this.textMap.has(language)) {
         throw new Error("Value for language tag not available: " + language);
       }
@@ -36,13 +35,15 @@ export class MultilingualText {
       }
     }
 
-    if (this.textMap.size > 0) 
-      return [...this.textMap.entries()][0][1]
+    if (this.textMap.size > 0) return [...this.textMap.entries()][0][1];
 
     throw new Error("No textual value defined.");
   }
 
-  addText(value: string, language: string = MultilingualText.defaultLanguage): void {
+  addText(
+    value: string,
+    language: string = MultilingualText.defaultLanguage,
+  ): void {
     assertValidTag(language);
     this.textMap.set(language, value);
   }
@@ -63,7 +64,7 @@ export class MultilingualText {
 
   toJSON(): any {
     if (this.textMap.size == 0) return null;
-    if (this.textMap.size == 1) return this.getText('en');
+    if (this.textMap.size == 1) return this.getText("en");
     return this.textMap;
   }
 }

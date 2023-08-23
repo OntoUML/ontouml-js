@@ -1,5 +1,1 @@
-export class NoteLinkBuilder {
-  
-   
-}
-
+export class NoteLinkBuilder {}

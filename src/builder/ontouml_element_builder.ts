@@ -1,8 +1,10 @@
-import uniqid from 'uniqid';
+import uniqid from "uniqid";
 import { OntoumlElement } from "../ontouml_element";
 import { Project } from "../project";
 
-export abstract class OntoumlElementBuilder<B extends OntoumlElementBuilder<B>> {
+export abstract class OntoumlElementBuilder<
+  B extends OntoumlElementBuilder<B>,
+> {
   protected element?: OntoumlElement;
   protected project: Project;
   protected _id: string;
@@ -21,10 +23,8 @@ export abstract class OntoumlElementBuilder<B extends OntoumlElementBuilder<B>> 
   }
 
   assertElement(): void {
-    if(!this.element){
-      throw new Error('The element is undefined or null.');
+    if (!this.element) {
+      throw new Error("The element is undefined or null.");
     }
-
   }
 }
-

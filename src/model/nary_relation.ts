@@ -1,24 +1,30 @@
 import {
-  OntoumlType, 
-  Project, 
+  OntoumlType,
+  Project,
   Package,
   Classifier,
-  RelationStereotype
-} from '..';
+  RelationStereotype,
+} from "..";
 
-import { Relation } from './relation';
+import { Relation } from "./relation";
 
 export class NaryRelation extends Relation {
-  constructor(project: Project, container: Package | undefined, members: Classifier<any,any>[]) {
+  constructor(
+    project: Project,
+    container: Package | undefined,
+    members: Classifier<any, any>[],
+  ) {
     super(project, container, members);
 
-    if(members.length < 3){
-      throw new Error('At least 3 classifiers are needed to create an n-ary relation.'); 
+    if (members.length < 3) {
+      throw new Error(
+        "At least 3 classifiers are needed to create an n-ary relation.",
+      );
     }
   }
 
   getAllowedStereotypes(): RelationStereotype[] {
-    return [ RelationStereotype.MATERIAL ];
+    return [RelationStereotype.MATERIAL];
   }
 
   override toJSON(): any {
@@ -26,7 +32,6 @@ export class NaryRelation extends Relation {
       type: OntoumlType.NARY_RELATION,
     };
 
-    return {...object, ...super.toJSON()};
+    return { ...object, ...super.toJSON() };
   }
-
 }

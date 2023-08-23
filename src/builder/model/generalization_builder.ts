@@ -1,5 +1,1 @@
-export class GeneralizationBuilder {
-  
-   
-}
-
+export class GeneralizationBuilder {}

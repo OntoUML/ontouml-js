@@ -7,15 +7,15 @@ import {
   PropertyStereotype,
   ModelElement,
   Relation,
-} from '..';
-import { BinaryRelation } from './binary_relation';
-import { NaryRelation } from './nary_relation';
-import { Decoratable } from './decoratable';
+} from "..";
+import { BinaryRelation } from "./binary_relation";
+import { NaryRelation } from "./nary_relation";
+import { Decoratable } from "./decoratable";
 
 export enum AggregationKind {
-  NONE = 'NONE',
-  SHARED = 'SHARED',
-  COMPOSITE = 'COMPOSITE'
+  NONE = "NONE",
+  SHARED = "SHARED",
+  COMPOSITE = "COMPOSITE",
 }
 
 export class Property extends Decoratable<PropertyStereotype> {
@@ -27,26 +27,29 @@ export class Property extends Decoratable<PropertyStereotype> {
   isOrdered: boolean = false;
   isReadOnly: boolean = false;
 
-  constructor(container: Classifier<any,any>, propertyType?: Classifier<any,any>) {
+  constructor(
+    container: Classifier<any, any>,
+    propertyType?: Classifier<any, any>,
+  ) {
     super(container.project!, container);
     this.propertyType = propertyType;
   }
 
   assertRelationEnd(): void {
     if (!this.isRelationEnd()) {
-      throw new Error('Property is not owned by a relation.');
+      throw new Error("Property is not owned by a relation.");
     }
   }
 
   assertBinaryRelationEnd(): void {
     if (!this.isBinaryRelationEnd()) {
-      throw new Error('Property is not owned by a binary relation.');
+      throw new Error("Property is not owned by a binary relation.");
     }
   }
 
   assertNaryRelationEnd(): void {
     if (!this.isNaryRelationEnd()) {
-      throw new Error('Property is not owned by a n-ary relation.');
+      throw new Error("Property is not owned by a n-ary relation.");
     }
   }
 
@@ -75,7 +78,7 @@ export class Property extends Decoratable<PropertyStereotype> {
   }
 
   isSource(): boolean {
-    if (!this.isBinaryRelationEnd()){
+    if (!this.isBinaryRelationEnd()) {
       return false;
     }
 
@@ -83,7 +86,7 @@ export class Property extends Decoratable<PropertyStereotype> {
   }
 
   isTarget(): boolean {
-    if (!this.isBinaryRelationEnd()){
+    if (!this.isBinaryRelationEnd()) {
       return false;
     }
 
@@ -95,11 +98,15 @@ export class Property extends Decoratable<PropertyStereotype> {
   }
 
   isShared(): boolean {
-    return this.isRelationEnd() && this.aggregationKind === AggregationKind.SHARED;
+    return (
+      this.isRelationEnd() && this.aggregationKind === AggregationKind.SHARED
+    );
   }
 
   isComposite(): boolean {
-    return this.isRelationEnd() && this.aggregationKind === AggregationKind.COMPOSITE;
+    return (
+      this.isRelationEnd() && this.aggregationKind === AggregationKind.COMPOSITE
+    );
   }
 
   isAggregationEnd(): boolean {
@@ -127,20 +134,22 @@ export class Property extends Decoratable<PropertyStereotype> {
    */
   getOppositeEnd(): Property {
     const container = this.getBinaryRelation();
-    return (this !== container.getSourceEnd()) ? container.getSourceEnd() : container.getTargetEnd();
+    return this !== container.getSourceEnd()
+      ? container.getSourceEnd()
+      : container.getTargetEnd();
   }
 
   /**
-   * @returns an array with the other properties contained by the relation containing the property. 
+   * @returns an array with the other properties contained by the relation containing the property.
    * @throws an error if invoked on a property that is not contained by a relation.
    */
   getOtherEnds(): Property[] {
     const container = this.getRelation();
-    return container.properties.filter(p => p!==this);
+    return container.properties.filter((p) => p !== this);
   }
 
   clone(): Property {
-    return {...this}
+    return { ...this };
   }
 
   replace(originalElement: ModelElement, newElement: ModelElement): void {
@@ -152,15 +161,27 @@ export class Property extends Decoratable<PropertyStereotype> {
       this.propertyType = newElement as Classifier<any, any>;
     }
 
-    if (this.subsettedProperties && this.subsettedProperties.includes(originalElement as any)) {
-      this.subsettedProperties = this.subsettedProperties.map((subsettedProperty: Property) =>
-        subsettedProperty === originalElement ? (newElement as Property) : subsettedProperty
+    if (
+      this.subsettedProperties &&
+      this.subsettedProperties.includes(originalElement as any)
+    ) {
+      this.subsettedProperties = this.subsettedProperties.map(
+        (subsettedProperty: Property) =>
+          subsettedProperty === originalElement
+            ? (newElement as Property)
+            : subsettedProperty,
       );
     }
 
-    if (this.redefinedProperties && this.redefinedProperties.includes(originalElement as any)) {
-      this.redefinedProperties = this.redefinedProperties.map((redefinedProperty: Property) =>
-        redefinedProperty === originalElement ? (newElement as Property) : redefinedProperty
+    if (
+      this.redefinedProperties &&
+      this.redefinedProperties.includes(originalElement as any)
+    ) {
+      this.redefinedProperties = this.redefinedProperties.map(
+        (redefinedProperty: Property) =>
+          redefinedProperty === originalElement
+            ? (newElement as Property)
+            : redefinedProperty,
       );
     }
   }
@@ -170,23 +191,30 @@ export class Property extends Decoratable<PropertyStereotype> {
       type: OntoumlType.PROPERTY,
       cardinality: null,
       propertyType: this.propertyType?.id,
-      subsettedProperties: this.subsettedProperties.map(p => p.id),
-      redefinedProperties: this.redefinedProperties.map(p => p.id),
+      subsettedProperties: this.subsettedProperties.map((p) => p.id),
+      redefinedProperties: this.redefinedProperties.map((p) => p.id),
       aggregationKind: this.aggregationKind,
       isOrdered: this.isOrdered,
-      isReadOnly: this.isReadOnly
+      isReadOnly: this.isReadOnly,
     };
 
-    return {...object, ...super.toJSON()};
+    return { ...object, ...super.toJSON() };
   }
 
-  override resolveReferences(elementReferenceMap: Map<string, OntoumlElement>): void {
+  override resolveReferences(
+    elementReferenceMap: Map<string, OntoumlElement>,
+  ): void {
     super.resolveReferences(elementReferenceMap);
 
     const { propertyType } = this;
 
     if (propertyType) {
-      this.propertyType = OntoumlElement.resolveReference(propertyType, elementReferenceMap, this, 'propertyType');
+      this.propertyType = OntoumlElement.resolveReference(
+        propertyType,
+        elementReferenceMap,
+        this,
+        "propertyType",
+      );
     }
   }
 }

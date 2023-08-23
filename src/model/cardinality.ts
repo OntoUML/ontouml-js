@@ -1,14 +1,14 @@
-const SEPARATOR = '..';
-export const CARDINALITY_MAX = '*';
+const SEPARATOR = "..";
+export const CARDINALITY_MAX = "*";
 export const CARDINALITY_MAX_AS_NUMBER = Infinity;
 
 export enum CardinalityValues {
-  ZERO_TO_ONE = '0..1',
-  ZERO_TO_MANY = '0..*',
-  ONE = '1',
-  ONE_TO_ONE = '1..1',
-  ONE_TO_MANY = '1..*',
-  MANY = '*'
+  ZERO_TO_ONE = "0..1",
+  ZERO_TO_MANY = "0..*",
+  ONE = "1",
+  ONE_TO_ONE = "1..1",
+  ONE_TO_MANY = "1..*",
+  MANY = "*",
 }
 
 export class Cardinality {
@@ -18,7 +18,10 @@ export class Cardinality {
   constructor(cardinality?: string);
   constructor(lowerBound: string, upperBound: string);
   constructor(lowerBound: number, upperBound: number);
-  constructor(arg1?: Partial<Cardinality> | string | number, arg2?: string | number) {
+  constructor(
+    arg1?: Partial<Cardinality> | string | number,
+    arg2?: string | number,
+  ) {
     if (arg1 === undefined && arg2 === undefined) {
       this.value = CardinalityValues.ZERO_TO_MANY;
     } else if (arg1 !== undefined && arg2 === undefined) {
@@ -26,33 +29,34 @@ export class Cardinality {
         this.value = null;
       } else if (arg1 instanceof Cardinality) {
         this.value = arg1.value;
-      } else if (typeof arg1 === 'string') {
+      } else if (typeof arg1 === "string") {
         this.value = arg1;
       } else {
-        const msg = 'Bad cardinality input';
+        const msg = "Bad cardinality input";
         throw new Error(msg);
       }
     } else if (arg1 !== undefined && arg2 !== undefined) {
       if (arg1 === null && arg2 === null) {
         this.value = null;
-      } else if (typeof arg1 === 'string' && typeof arg1 === 'string') {
+      } else if (typeof arg1 === "string" && typeof arg1 === "string") {
         this.value = `${arg1}..${arg2}`;
-      } else if (typeof arg1 === 'number' && typeof arg1 === 'number') {
+      } else if (typeof arg1 === "number" && typeof arg1 === "number") {
         this.value = `${arg1}..${arg2}`;
       } else {
-        const msg = 'Bad cardinality input';
+        const msg = "Bad cardinality input";
         throw new Error(msg);
       }
     } else {
-      throw new Error('Unexpected cardinality input');
+      throw new Error("Unexpected cardinality input");
     }
   }
 
   getCardinalityBounds(): { lowerBound: string; upperBound: string } {
-    if (!this.value)
-      throw new Error("Cardinality bounds are not set.");
-   
-    const bounds = this.value.includes(SEPARATOR) ? this.value.split(SEPARATOR, 2) : [this.value, this.value];
+    if (!this.value) throw new Error("Cardinality bounds are not set.");
+
+    const bounds = this.value.includes(SEPARATOR)
+      ? this.value.split(SEPARATOR, 2)
+      : [this.value, this.value];
 
     return { lowerBound: bounds[0], upperBound: bounds[1] };
   }
@@ -61,7 +65,10 @@ export class Cardinality {
     const cardinality = this.getCardinalityBounds();
 
     const lowerBound = parseInt(cardinality.lowerBound);
-    const upperBound = cardinality.upperBound === CARDINALITY_MAX ? CARDINALITY_MAX_AS_NUMBER : parseInt(cardinality.upperBound);
+    const upperBound =
+      cardinality.upperBound === CARDINALITY_MAX
+        ? CARDINALITY_MAX_AS_NUMBER
+        : parseInt(cardinality.upperBound);
 
     return { lowerBound, upperBound };
   }
@@ -72,7 +79,9 @@ export class Cardinality {
   }
 
   set lowerBound(lowerBound: string) {
-    const bounds = this.getCardinalityBounds() || { upperBound: CARDINALITY_MAX };
+    const bounds = this.getCardinalityBounds() || {
+      upperBound: CARDINALITY_MAX,
+    };
     this.value = `${lowerBound}..${bounds.upperBound}`;
   }
 
@@ -83,11 +92,11 @@ export class Cardinality {
 
   setLowerBoundFromNumber(lowerBound: number): void {
     if (lowerBound < 0) {
-      throw new Error('Lower bound must be a positive number');
+      throw new Error("Lower bound must be a positive number");
     } else if (lowerBound === CARDINALITY_MAX_AS_NUMBER) {
-      throw new Error('Lower bound cannot be unbounded');
+      throw new Error("Lower bound cannot be unbounded");
     } else if (Number.isNaN(lowerBound)) {
-      throw new Error('NaN lower bound value');
+      throw new Error("NaN lower bound value");
     }
 
     this.lowerBound = `${lowerBound}`;
@@ -99,7 +108,7 @@ export class Cardinality {
   }
 
   set upperBound(upperBound: string) {
-    const bounds = this.getCardinalityBounds() || { lowerBound: '0' };
+    const bounds = this.getCardinalityBounds() || { lowerBound: "0" };
     this.value = `${bounds.lowerBound}..${upperBound}`;
   }
 
@@ -110,22 +119,29 @@ export class Cardinality {
 
   setUpperBoundFromNumber(upperBound: number): void {
     if (upperBound < 1) {
-      throw new Error('Upper bound must be a positive number greater than zero');
+      throw new Error(
+        "Upper bound must be a positive number greater than zero",
+      );
     }
 
-    this.upperBound = `${upperBound === CARDINALITY_MAX_AS_NUMBER ? CARDINALITY_MAX : upperBound}`;
+    this.upperBound = `${
+      upperBound === CARDINALITY_MAX_AS_NUMBER ? CARDINALITY_MAX : upperBound
+    }`;
   }
 
   isValid(): boolean {
     const { lowerBound, upperBound } = this.getCardinalityBoundsAsNumbers();
     return (
-      this.isCardinalityStringValid() && lowerBound <= upperBound && lowerBound < CARDINALITY_MAX_AS_NUMBER && upperBound > 0
+      this.isCardinalityStringValid() &&
+      lowerBound <= upperBound &&
+      lowerBound < CARDINALITY_MAX_AS_NUMBER &&
+      upperBound > 0
     );
   }
 
   isCardinalityStringValid(): boolean {
-    if(!this.value) return false;
-    
+    if (!this.value) return false;
+
     const regex = /(\d+\.\.)?(\d+|\*)/;
     return regex.test(this.value);
   }
@@ -148,26 +164,35 @@ export class Cardinality {
   }
 
   setCardinality(lowerBound: number, upperBound?: number): void {
-    if(lowerBound < 0){
-      throw new Error('Lower bound must be greater than or equal to 0. Supplied value: ' + lowerBound);
+    if (lowerBound < 0) {
+      throw new Error(
+        "Lower bound must be greater than or equal to 0. Supplied value: " +
+          lowerBound,
+      );
     }
 
-    if(upperBound && upperBound <= 0){
-      throw new Error('Upper bound must be a greater than 0. Supplied value: ' + upperBound);
+    if (upperBound && upperBound <= 0) {
+      throw new Error(
+        "Upper bound must be a greater than 0. Supplied value: " + upperBound,
+      );
     }
-    
+
     if (upperBound && lowerBound > upperBound) {
-      throw new Error('Lower bound cannot be greater than upper bound. Supplied values: ' + lowerBound + ' and ' + upperBound);
+      throw new Error(
+        "Lower bound cannot be greater than upper bound. Supplied values: " +
+          lowerBound +
+          " and " +
+          upperBound,
+      );
     }
 
     this.lowerBound = `${lowerBound}`;
 
-    if(!upperBound || upperBound === CARDINALITY_MAX_AS_NUMBER){
+    if (!upperBound || upperBound === CARDINALITY_MAX_AS_NUMBER) {
       this.upperBound = `${CARDINALITY_MAX}`;
-    } else { 
-      this.upperBound = `${upperBound}`
+    } else {
+      this.upperBound = `${upperBound}`;
     }
-    
   }
 
   isOptional(): boolean {
@@ -180,22 +205,38 @@ export class Cardinality {
 
   isZeroToOne(): boolean {
     const cardinality = this.getCardinalityBoundsAsNumbers();
-    return cardinality && cardinality.lowerBound === 0 && cardinality.upperBound === 1;
+    return (
+      cardinality &&
+      cardinality.lowerBound === 0 &&
+      cardinality.upperBound === 1
+    );
   }
 
   isZeroToMany(): boolean {
     const cardinality = this.getCardinalityBoundsAsNumbers();
-    return cardinality && cardinality.lowerBound === 0 && cardinality.upperBound === CARDINALITY_MAX_AS_NUMBER;
+    return (
+      cardinality &&
+      cardinality.lowerBound === 0 &&
+      cardinality.upperBound === CARDINALITY_MAX_AS_NUMBER
+    );
   }
 
   isOneToOne(): boolean {
     const cardinality = this.getCardinalityBoundsAsNumbers();
-    return cardinality && cardinality.lowerBound === 1 && cardinality.upperBound === 1;
+    return (
+      cardinality &&
+      cardinality.lowerBound === 1 &&
+      cardinality.upperBound === 1
+    );
   }
 
   isOneToMany(): boolean {
     const cardinality = this.getCardinalityBoundsAsNumbers();
-    return cardinality && cardinality.lowerBound === 1 && cardinality.upperBound === CARDINALITY_MAX_AS_NUMBER;
+    return (
+      cardinality &&
+      cardinality.lowerBound === 1 &&
+      cardinality.upperBound === CARDINALITY_MAX_AS_NUMBER
+    );
   }
 
   setZeroToOne(): void {

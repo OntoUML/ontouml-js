@@ -5,7 +5,6 @@ export abstract class RectangularShape extends Shape {
   private topLeft: Point;
   private _width!: number;
   private _height!: number;
-  
 
   constructor(topLeft?: Point, width?: number, height?: number) {
     super();
@@ -36,8 +35,8 @@ export abstract class RectangularShape extends Shape {
   }
 
   public set width(value: number) {
-    if(value<=0){
-      throw new Error("Cannot set a negative or zero width.")
+    if (value <= 0) {
+      throw new Error("Cannot set a negative or zero width.");
     }
 
     this._width = value;
@@ -47,8 +46,8 @@ export abstract class RectangularShape extends Shape {
     return this._height;
   }
   public set height(value: number) {
-    if(value<=0){
-      throw new Error("Cannot set a negative or zero height.")
+    if (value <= 0) {
+      throw new Error("Cannot set a negative or zero height.");
     }
 
     this._height = value;
@@ -59,7 +58,7 @@ export abstract class RectangularShape extends Shape {
       width: this.width,
       height: this.height,
       x: this.topLeft.x,
-      y: this.topLeft.y
+      y: this.topLeft.y,
     };
 
     return { ...object, ...super.toJSON() };

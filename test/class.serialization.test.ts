@@ -1,11 +1,18 @@
-import {describe, expect, it, beforeEach} from '@jest/globals';
-import Ajv from 'ajv';
-import addFormats from 'ajv-formats';
-import { Class, ClassStereotype, Nature, ORDERLESS_LEVEL, Package, Project } from '../src';
+import { describe, expect, it, beforeEach } from "@jest/globals";
+import Ajv from "ajv";
+import addFormats from "ajv-formats";
+import {
+  Class,
+  ClassStereotype,
+  Nature,
+  ORDERLESS_LEVEL,
+  Package,
+  Project,
+} from "../src";
 
-const schema = require('ontouml-schema/src/ontouml-schema.json');
+const schema = require("ontouml-schema/src/ontouml-schema.json");
 
-describe('Test Class serialization', () => {
+describe("Test Class serialization", () => {
   const ajv = new Ajv();
   const validator = addFormats(ajv).compile(schema);
   let project: Project;
@@ -16,9 +23,9 @@ describe('Test Class serialization', () => {
     clazz = project.classBuilder().build();
   });
 
-  it('a minimum class must generate a valid serialization', () => {
+  it("a minimum class must generate a valid serialization", () => {
     expect(validator(clazz.toJSON())).toBeTruthy();
-  })
+  });
 
   // it('Test empty class serialization', () => {
   //   const emptyClass = model.createClass();
@@ -72,5 +79,4 @@ describe('Test Class serialization', () => {
   // it('Test classes serialization within project', () => {
   //   expect(() => JSON.stringify(project)).not.toThrow();
   // });
-
 });

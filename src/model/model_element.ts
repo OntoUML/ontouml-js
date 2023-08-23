@@ -1,6 +1,6 @@
-import _ from 'lodash';
-import { OntoumlElement, Package, Project } from '../index';
-import { NamedElement } from '../named_element';
+import _ from "lodash";
+import { OntoumlElement, Package, Project } from "../index";
+import { NamedElement } from "../named_element";
 
 export abstract class ModelElement extends NamedElement {
   customProperties: object = {};
@@ -23,34 +23,34 @@ export abstract class ModelElement extends NamedElement {
   //     return this?.project?.root;
   //   }
 
-    // let packageReference = this.container;
+  // let packageReference = this.container;
 
-    // while (packageReference && packageReference.container) {
-    //   packageReference = packageReference.container;
-    // }
-
-    // if (packageReference instanceof Package) {
-    //   return packageReference;
-    // }
-    
-    // if (this instanceof Package) {
-    //   return this;
-    // }
-    
-    // return null;
+  // while (packageReference && packageReference.container) {
+  //   packageReference = packageReference.container;
   // }
-  
+
+  // if (packageReference instanceof Package) {
+  //   return packageReference;
+  // }
+
+  // if (this instanceof Package) {
+  //   return this;
+  // }
+
+  // return null;
+  // }
+
   public get container(): ModelElement | undefined {
     return this._container;
   }
-  
+
   public set container(newContainer: ModelElement | undefined) {
     this._container = newContainer;
 
-    if(newContainer?.project){
+    if (newContainer?.project) {
       this.project = newContainer.project;
     }
-  }  
+  }
 
   resolveReferences(_elementReferenceMap: Map<string, OntoumlElement>): void {
     // TODO: resolve references within propertyAssignments
@@ -58,7 +58,9 @@ export abstract class ModelElement extends NamedElement {
 
   override toJSON(): any {
     const object = {
-      customProperties: !_.isEmpty(this.customProperties) ? this.customProperties : null
+      customProperties: !_.isEmpty(this.customProperties)
+        ? this.customProperties
+        : null,
     };
 
     return { ...object, ...super.toJSON() };

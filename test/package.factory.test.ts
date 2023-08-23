@@ -1,5 +1,13 @@
-import { describe, expect, it, beforeEach } from '@jest/globals';
-import { AggregationKind, Class, Generalization, GeneralizationSet, Package, Project, Relation } from '../src';
+import { describe, expect, it, beforeEach } from "@jest/globals";
+import {
+  AggregationKind,
+  Class,
+  Generalization,
+  GeneralizationSet,
+  Package,
+  Project,
+  Relation,
+} from "../src";
 
 describe(`Package tests`, () => {
   let project: Project;
@@ -17,15 +25,15 @@ describe(`Package tests`, () => {
       pkg = model.createPackage();
     });
 
-    it('Test instantiation', () => {
+    it("Test instantiation", () => {
       expect(pkg).toBeInstanceOf(Package);
     });
 
-    it('Test container', () => {
+    it("Test container", () => {
       expect(pkg.container).toBe(model);
     });
 
-    it('Test project', () => {
+    it("Test project", () => {
       expect(pkg.project).toBe(model.project);
     });
   });
@@ -37,15 +45,15 @@ describe(`Package tests`, () => {
       clazz = model.createClass();
     });
 
-    it('Test instantiation', () => {
+    it("Test instantiation", () => {
       expect(clazz).toBeInstanceOf(Class);
     });
 
-    it('Test container', () => {
+    it("Test container", () => {
       expect(clazz.container).toBe(model);
     });
 
-    it('Test project', () => {
+    it("Test project", () => {
       expect(clazz.project).toBe(model.project);
     });
   });
@@ -57,11 +65,11 @@ describe(`Package tests`, () => {
       clazz = model.createType();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isType()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isHighOrderType()).toBe(true);
     });
   });
@@ -73,11 +81,11 @@ describe(`Package tests`, () => {
       clazz = model.createHistoricalRole();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isHistoricalRole()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
@@ -89,11 +97,11 @@ describe(`Package tests`, () => {
       clazz = model.createHistoricalRoleMixin();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isHistoricalRoleMixin()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
@@ -105,11 +113,11 @@ describe(`Package tests`, () => {
       clazz = model.createEvent();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isEvent()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isEventType()).toBe(true);
     });
   });
@@ -121,11 +129,11 @@ describe(`Package tests`, () => {
       clazz = model.createSituation();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isSituation()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isSituationType()).toBe(true);
     });
   });
@@ -137,11 +145,11 @@ describe(`Package tests`, () => {
       clazz = model.createCategory();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isCategory()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
@@ -153,11 +161,11 @@ describe(`Package tests`, () => {
       clazz = model.createMixin();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isMixin()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
@@ -169,11 +177,11 @@ describe(`Package tests`, () => {
       clazz = model.createRoleMixin();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isRoleMixin()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
@@ -185,11 +193,11 @@ describe(`Package tests`, () => {
       clazz = model.createPhaseMixin();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isPhaseMixin()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
@@ -201,11 +209,11 @@ describe(`Package tests`, () => {
       clazz = model.createKind();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isKind()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
@@ -217,11 +225,11 @@ describe(`Package tests`, () => {
       clazz = model.createCollective();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isCollective()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isCollectiveType()).toBe(true);
     });
   });
@@ -233,11 +241,11 @@ describe(`Package tests`, () => {
       clazz = model.createQuantity();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isQuantity()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isQuantityType()).toBe(true);
     });
   });
@@ -249,11 +257,11 @@ describe(`Package tests`, () => {
       clazz = model.createRelator();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isRelator()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isRelatorType()).toBe(true);
     });
   });
@@ -265,11 +273,11 @@ describe(`Package tests`, () => {
       clazz = model.createQuality();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isQuality()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isRestrictedToQuality()).toBe(true);
     });
   });
@@ -281,11 +289,11 @@ describe(`Package tests`, () => {
       clazz = model.createIntrinsicMode();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isMode()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.allowsOnlyIntrinsicModes()).toBe(true);
     });
   });
@@ -297,11 +305,11 @@ describe(`Package tests`, () => {
       clazz = model.createExtrinsicMode();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isMode()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isExtrinsicModeType()).toBe(true);
     });
   });
@@ -313,11 +321,11 @@ describe(`Package tests`, () => {
       clazz = model.createSubkind();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isSubkind()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
@@ -329,11 +337,11 @@ describe(`Package tests`, () => {
       clazz = model.createRole();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isRole()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
@@ -345,11 +353,11 @@ describe(`Package tests`, () => {
       clazz = model.createPhase();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isPhase()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isFunctionalComplexType()).toBe(true);
     });
   });
@@ -361,11 +369,11 @@ describe(`Package tests`, () => {
       clazz = model.createAbstract();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.stereotypedAsAbstract()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isAbstractType()).toBe(true);
     });
   });
@@ -377,11 +385,11 @@ describe(`Package tests`, () => {
       clazz = model.createDatatype();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.isDatatype()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isAbstractType()).toBe(true);
     });
   });
@@ -393,11 +401,11 @@ describe(`Package tests`, () => {
       clazz = model.createEnumeration();
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(clazz.stereotypedAsEnumeration()).toBe(true);
     });
 
-    it('Test nature', () => {
+    it("Test nature", () => {
       expect(clazz.isAbstractType()).toBe(true);
     });
   });
@@ -409,15 +417,15 @@ describe(`Package tests`, () => {
       rel = model.createRelation();
     });
 
-    it('Test instantiation', () => {
+    it("Test instantiation", () => {
       expect(rel).toBeInstanceOf(Relation);
     });
 
-    it('Test container', () => {
+    it("Test container", () => {
       expect(rel.container).toBe(model);
     });
 
-    it('Test project', () => {
+    it("Test project", () => {
       expect(rel.project).toBe(model.project);
     });
   });
@@ -432,13 +440,13 @@ describe(`Package tests`, () => {
       relation = model.createBinaryRelation(source, target);
     });
 
-    it('Test is binary', () => {
+    it("Test is binary", () => {
       expect(relation.isBinary()).toBe(true);
     });
-    it('Test source', () => {
+    it("Test source", () => {
       expect(relation.getSource()).toBe(source);
     });
-    it('Test target', () => {
+    it("Test target", () => {
       expect(relation.getTarget()).toBe(target);
     });
   });
@@ -454,15 +462,15 @@ describe(`Package tests`, () => {
       derivation = model.createDerivation(heavierThan, weight);
     });
 
-    it('Test is binary', () => {
+    it("Test is binary", () => {
       expect(derivation.fromRelationToClass()).toBe(true);
     });
 
-    it('Test source', () => {
+    it("Test source", () => {
       expect(derivation.getSource()).toBe(heavierThan);
     });
 
-    it('Test target', () => {
+    it("Test target", () => {
       expect(derivation.getTarget()).toBe(weight);
     });
   });
@@ -478,19 +486,19 @@ describe(`Package tests`, () => {
       relation = model.createNaryRelation([memberA, memberB, memberC]);
     });
 
-    it('relation should be ternary', () => {
+    it("relation should be ternary", () => {
       expect(relation.isNary()).toBe(true);
     });
 
-    it('relation should have the correct first member', () => {
+    it("relation should have the correct first member", () => {
       expect(relation.getMember(0)).toBe(memberA);
     });
 
-    it('relation should have the correct second member', () => {
+    it("relation should have the correct second member", () => {
       expect(relation.getMember(1)).toBe(memberB);
     });
 
-    it('relation should have the correct third member', () => {
+    it("relation should have the correct third member", () => {
       expect(relation.getMember(2)).toBe(memberC);
     });
   });
@@ -505,7 +513,7 @@ describe(`Package tests`, () => {
       relation = model.createMaterialRelation(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasMaterialStereotype()).toBe(true);
     });
   });
@@ -520,7 +528,7 @@ describe(`Package tests`, () => {
       relation = model.createComparativeRelation(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasComparativeStereotype()).toBe(true);
     });
   });
@@ -535,7 +543,7 @@ describe(`Package tests`, () => {
       relation = model.createMediation(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasMediationStereotype()).toBe(true);
     });
   });
@@ -550,7 +558,7 @@ describe(`Package tests`, () => {
       relation = model.createCharacterization(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasCharacterizationStereotype()).toBe(true);
     });
   });
@@ -565,7 +573,7 @@ describe(`Package tests`, () => {
       relation = model.createExternalDependence(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasExternalDependenceStereotype()).toBe(true);
     });
   });
@@ -580,11 +588,13 @@ describe(`Package tests`, () => {
       relation = model.createComponentOf(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasComponentOfStereotype()).toBe(true);
     });
-    it('Test aggregation kind', () => {
-      expect(relation.getTargetEnd().aggregationKind).toBe(AggregationKind.COMPOSITE);
+    it("Test aggregation kind", () => {
+      expect(relation.getTargetEnd().aggregationKind).toBe(
+        AggregationKind.COMPOSITE,
+      );
     });
   });
 
@@ -598,11 +608,13 @@ describe(`Package tests`, () => {
       relation = model.createMemberOfRelation(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasMemberOfStereotype()).toBe(true);
     });
-    it('Test aggregation kind', () => {
-      expect(relation.getTargetEnd().aggregationKind).toBe(AggregationKind.SHARED);
+    it("Test aggregation kind", () => {
+      expect(relation.getTargetEnd().aggregationKind).toBe(
+        AggregationKind.SHARED,
+      );
     });
   });
 
@@ -616,11 +628,13 @@ describe(`Package tests`, () => {
       relation = model.createSubCollectionOf(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasSubCollectionOfStereotype()).toBe(true);
     });
-    it('Test aggregation kind', () => {
-      expect(relation.getTargetEnd().aggregationKind).toBe(AggregationKind.COMPOSITE);
+    it("Test aggregation kind", () => {
+      expect(relation.getTargetEnd().aggregationKind).toBe(
+        AggregationKind.COMPOSITE,
+      );
     });
   });
 
@@ -634,11 +648,13 @@ describe(`Package tests`, () => {
       relation = model.createSubQuantityOf(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasSubQuantityOfStereotype()).toBe(true);
     });
-    it('Test aggregation kind', () => {
-      expect(relation.getTargetEnd().aggregationKind).toBe(AggregationKind.COMPOSITE);
+    it("Test aggregation kind", () => {
+      expect(relation.getTargetEnd().aggregationKind).toBe(
+        AggregationKind.COMPOSITE,
+      );
     });
   });
 
@@ -652,7 +668,7 @@ describe(`Package tests`, () => {
       relation = model.createInstantiation(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasInstantiationStereotype()).toBe(true);
     });
   });
@@ -667,7 +683,7 @@ describe(`Package tests`, () => {
       relation = model.createTermination(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasTerminationStereotype()).toBe(true);
     });
   });
@@ -682,11 +698,13 @@ describe(`Package tests`, () => {
       relation = model.createParticipational(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasParticipationalStereotype()).toBe(true);
     });
-    it('Test aggregation kind', () => {
-      expect(relation.getTargetEnd().aggregationKind).toBe(AggregationKind.COMPOSITE);
+    it("Test aggregation kind", () => {
+      expect(relation.getTargetEnd().aggregationKind).toBe(
+        AggregationKind.COMPOSITE,
+      );
     });
   });
 
@@ -700,7 +718,7 @@ describe(`Package tests`, () => {
       relation = model.createParticipation(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasParticipationStereotype()).toBe(true);
     });
   });
@@ -715,7 +733,7 @@ describe(`Package tests`, () => {
       relation = model.createHistoricalDependence(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasHistoricalDependenceStereotype()).toBe(true);
     });
   });
@@ -730,7 +748,7 @@ describe(`Package tests`, () => {
       relation = model.createCreationRelation(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasCreationStereotype()).toBe(true);
     });
   });
@@ -745,7 +763,7 @@ describe(`Package tests`, () => {
       relation = model.createManifestationRelation(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasManifestationStereotype()).toBe(true);
     });
   });
@@ -760,7 +778,7 @@ describe(`Package tests`, () => {
       relation = model.createBringsAboutRelation(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasBringsAboutStereotype()).toBe(true);
     });
   });
@@ -775,7 +793,7 @@ describe(`Package tests`, () => {
       relation = model.createTriggersRelation(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.hasTriggersStereotype()).toBe(true);
     });
   });
@@ -790,11 +808,13 @@ describe(`Package tests`, () => {
       relation = model.createPartWholeRelation(source, target);
     });
 
-    it('Test stereotype', () => {
+    it("Test stereotype", () => {
       expect(relation.stereotype).toBeNull();
     });
-    it('Test aggregation kind', () => {
-      expect(relation.getTargetEnd().aggregationKind).toBe(AggregationKind.COMPOSITE);
+    it("Test aggregation kind", () => {
+      expect(relation.getTargetEnd().aggregationKind).toBe(
+        AggregationKind.COMPOSITE,
+      );
     });
   });
 
@@ -808,15 +828,15 @@ describe(`Package tests`, () => {
       gen = model.createGeneralization(general, specific);
     });
 
-    it('Test instantiation', () => {
+    it("Test instantiation", () => {
       expect(gen).toBeInstanceOf(Generalization);
     });
 
-    it('Test container', () => {
+    it("Test container", () => {
       expect(gen.container).toBe(model);
     });
 
-    it('Test project', () => {
+    it("Test project", () => {
       expect(gen.project).toBe(model.project);
     });
   });
@@ -833,15 +853,15 @@ describe(`Package tests`, () => {
       genSet = model.createGeneralizationSet(gen);
     });
 
-    it('Test instantiation', () => {
+    it("Test instantiation", () => {
       expect(genSet).toBeInstanceOf(GeneralizationSet);
     });
 
-    it('Test container', () => {
+    it("Test container", () => {
       expect(genSet.container).toBe(model);
     });
 
-    it('Test project', () => {
+    it("Test project", () => {
       expect(genSet.project).toBe(model.project);
     });
   });
@@ -858,7 +878,7 @@ describe(`Package tests`, () => {
       genSet = model.createPartition(gen);
     });
 
-    it('Test container', () => {
+    it("Test container", () => {
       expect(genSet.isDisjoint && genSet.isComplete).toBe(true);
     });
   });

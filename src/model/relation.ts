@@ -5,28 +5,36 @@ import {
   ModelElement,
   Package,
   Property,
-  Project
-} from '..';
-import { Classifier } from './classifier';
+  Project,
+} from "..";
+import { Classifier } from "./classifier";
 
-
-export abstract class Relation extends Classifier<Relation, RelationStereotype> {
-  protected constructor(project: Project, container: Package | undefined, members: Classifier<any,any>[]) {
+export abstract class Relation extends Classifier<
+  Relation,
+  RelationStereotype
+> {
+  protected constructor(
+    project: Project,
+    container: Package | undefined,
+    members: Classifier<any, any>[],
+  ) {
     super(project, container);
 
-    if(members.length < 2){
-      throw new Error('At least 2 classifiers are needed to create a relation.'); 
+    if (members.length < 2) {
+      throw new Error(
+        "At least 2 classifiers are needed to create a relation.",
+      );
     }
 
-    members.forEach(member => this.createRelationEnd(member))
+    members.forEach((member) => this.createRelationEnd(member));
   }
 
   /**
- * Creates a relation end and appends at the end of the property list.
- *
- * @param member - classifier for the property type
- * */
-  private createRelationEnd(member: Classifier<any,any>): Property {
+   * Creates a relation end and appends at the end of the property list.
+   *
+   * @param member - classifier for the property type
+   * */
+  private createRelationEnd(member: Classifier<any, any>): Property {
     const memberEnd = new Property(this, member);
     this._properties.push(memberEnd);
 
@@ -41,24 +49,29 @@ export abstract class Relation extends Classifier<Relation, RelationStereotype> 
 
   assertTypedMember(position: number) {
     const member = this.getMember(position);
-    
-    if(!member) {
-      throw new Error(`The type of member end ${position} of the relation is undefined.`)
+
+    if (!member) {
+      throw new Error(
+        `The type of member end ${position} of the relation is undefined.`,
+      );
     }
   }
 
   assertTypedProperties() {
     this.assertProperties();
 
-    const typeLessProperty = this.properties.find(p => !p.propertyType);
-    
-    if(typeLessProperty){
-      throw new Error("A property of the relation does not have a propertyType: " + typeLessProperty);
+    const typeLessProperty = this.properties.find((p) => !p.propertyType);
+
+    if (typeLessProperty) {
+      throw new Error(
+        "A property of the relation does not have a propertyType: " +
+          typeLessProperty,
+      );
     }
   }
 
   assertHoldsBetweenClasses() {
-    if(!this.holdsBetweenClasses()){
+    if (!this.holdsBetweenClasses()) {
       throw new Error("The relation does not hold between classes.");
     }
   }
@@ -68,12 +81,15 @@ export abstract class Relation extends Classifier<Relation, RelationStereotype> 
   }
 
   getMemberEnd(position: number): Property {
-    this.assertProperties()
-    
-    if(position < 0 || position >= this.properties.length){
-      throw new Error('Position out of bonds. Position should be greater than 0 and less than '+this.properties.length);
+    this.assertProperties();
+
+    if (position < 0 || position >= this.properties.length) {
+      throw new Error(
+        "Position out of bonds. Position should be greater than 0 and less than " +
+          this.properties.length,
+      );
     }
-    
+
     return this.properties[position];
   }
 
@@ -82,8 +98,8 @@ export abstract class Relation extends Classifier<Relation, RelationStereotype> 
   }
 
   getMemberAsClass(position: number): Class {
-    if(!this.memberIsClass(position)){
-      throw new Error(`The member ${position} of the relation is not a class.`)
+    if (!this.memberIsClass(position)) {
+      throw new Error(`The member ${position} of the relation is not a class.`);
     }
 
     return this.getMember(position) as Class;
@@ -91,7 +107,7 @@ export abstract class Relation extends Classifier<Relation, RelationStereotype> 
 
   getMembers(): Classifier<any, any>[] {
     this.assertTypedProperties();
-    let members = this.properties.map(prop => prop.propertyType!) || [];
+    let members = this.properties.map((prop) => prop.propertyType!) || [];
     return [...new Set(members)];
   }
 
@@ -99,7 +115,7 @@ export abstract class Relation extends Classifier<Relation, RelationStereotype> 
    * @returns true if ${@param classifier} is the type of at least one of the properties of the relation.
    */
   involves(classifier: Classifier<any, any>): boolean {
-    return this.getMembers().some(m => m==classifier)
+    return this.getMembers().some((m) => m == classifier);
   }
 
   memberIsClass(position: number): boolean {
@@ -123,35 +139,38 @@ export abstract class Relation extends Classifier<Relation, RelationStereotype> 
 
   holdsBetweenClasses(): boolean {
     this.assertTypedProperties();
-    return this.getMembers().every(m => m instanceof Class)
+    return this.getMembers().every((m) => m instanceof Class);
   }
 
   holdsBetweenEvents(): boolean {
     this.assertTypedProperties();
-    
-    return this.getMembers()
-               .every(m => m instanceof Class && m.isEvent());
+
+    return this.getMembers().every((m) => m instanceof Class && m.isEvent());
   }
 
   holdsBetweenMoments(): boolean {
     this.assertTypedProperties();
-    
-    return this.getMembers()
-               .every(m => m instanceof Class && m.isMomentType());
+
+    return this.getMembers().every(
+      (m) => m instanceof Class && m.isMomentType(),
+    );
   }
 
   holdsBetweenSubstantials(): boolean {
     this.assertTypedProperties();
-    
-    return this.getMembers()
-               .every(m => m instanceof Class && m.isSubstantialType());
+
+    return this.getMembers().every(
+      (m) => m instanceof Class && m.isSubstantialType(),
+    );
   }
 
   clone(): Relation {
-    const clone = {...this}
+    const clone = { ...this };
 
     if (clone.properties) {
-      clone.properties = clone.properties.map((attribute: Property) => attribute.clone());
+      clone.properties = clone.properties.map((attribute: Property) =>
+        attribute.clone(),
+      );
     }
 
     return clone;
@@ -163,10 +182,7 @@ export abstract class Relation extends Classifier<Relation, RelationStereotype> 
     }
 
     this.getContents()
-        .map(content => content as ModelElement)
-        .forEach(content => content.replace(originalElement, newElement));
+      .map((content) => content as ModelElement)
+      .forEach((content) => content.replace(originalElement, newElement));
   }
-  
-  
-
 }

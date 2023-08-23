@@ -1,5 +1,5 @@
-import { OntoumlElement, OntoumlType, Class } from '..';
-import { ModelElement } from './model_element';
+import { OntoumlElement, OntoumlType, Class } from "..";
+import { ModelElement } from "./model_element";
 
 export class Literal extends ModelElement {
   constructor(container: Class) {
@@ -7,20 +7,19 @@ export class Literal extends ModelElement {
   }
 
   public override get container(): Class {
-    return this.container as Class
+    return this.container as Class;
   }
 
   public override set container(newContainer: Class) {
     super.container = newContainer;
   }
 
-
   getContents(): OntoumlElement[] {
     return [];
   }
 
   clone(): Literal {
-    return {...this};
+    return { ...this };
   }
 
   //TODO: DOUBLE CHECK this method
@@ -35,6 +34,6 @@ export class Literal extends ModelElement {
       type: OntoumlType.LITERAL,
     };
 
-    return {...object, ...super.toJSON()};
+    return { ...object, ...super.toJSON() };
   }
 }

@@ -1,5 +1,1 @@
-export class BinaryRelationBuilder {
-  
-   
-}
-
+export class BinaryRelationBuilder {}

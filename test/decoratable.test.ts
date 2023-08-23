@@ -1,17 +1,24 @@
-import {describe, expect, it, beforeEach, beforeAll} from '@jest/globals';
-import { Class, Relation, Property, ClassStereotype, PropertyStereotype, RelationStereotype } from '../src';
+import { describe, expect, it, beforeEach, beforeAll } from "@jest/globals";
+import {
+  Class,
+  Relation,
+  Property,
+  ClassStereotype,
+  PropertyStereotype,
+  RelationStereotype,
+} from "../src";
 
-describe('Decoratable Interface Tests', () => {
-  it('Class with no stereotypes', () => {
+describe("Decoratable Interface Tests", () => {
+  it("Class with no stereotypes", () => {
     const _class = new Class();
     expect(_class.stereotype).toBeNull();
     expect(_class.hasValidStereotype()).not.toBeTruthy();
   });
 
-  it('Class with single stereotype', () => {
+  it("Class with single stereotype", () => {
     // Invalid stereotype
-    const _class = new Class({ stereotype: 'asd' as ClassStereotype });
-    expect(_class.stereotype).toEqual('asd');
+    const _class = new Class({ stereotype: "asd" as ClassStereotype });
+    expect(_class.stereotype).toEqual("asd");
     expect(_class.hasValidStereotype()).not.toBeTruthy();
 
     // Valid stereotype
@@ -20,16 +27,18 @@ describe('Decoratable Interface Tests', () => {
     expect(_class.hasValidStereotype()).toBeTruthy();
   });
 
-  it('Relation with no stereotypes', () => {
+  it("Relation with no stereotypes", () => {
     const relation = new Relation();
     expect(relation.stereotype).toBeNull();
     expect(relation.hasValidStereotype()).toBeTruthy();
   });
 
-  it('Relation with single stereotype', () => {
+  it("Relation with single stereotype", () => {
     // Invalid stereotype
-    const relation = new Relation({ stereotype: 'asd' as RelationStereotype });
-    expect(relation.stereotype).toEqual('asd');
+    const relation = new Relation({
+      stereotype: "asd" as RelationStereotype,
+    });
+    expect(relation.stereotype).toEqual("asd");
     expect(relation.hasValidStereotype()).not.toBeTruthy();
 
     // Valid stereotype
@@ -38,16 +47,18 @@ describe('Decoratable Interface Tests', () => {
     expect(relation.hasValidStereotype()).toBeTruthy();
   });
 
-  it('Property with no stereotypes', () => {
+  it("Property with no stereotypes", () => {
     const property = new Property();
     expect(property.stereotype).toBeNull();
     expect(property.hasValidStereotype()).toBeTruthy();
   });
 
-  it('Property with single stereotype', () => {
+  it("Property with single stereotype", () => {
     // Invalid stereotype
-    const property = new Property({ stereotype: 'asd' as PropertyStereotype });
-    expect(property.stereotype).toEqual('asd');
+    const property = new Property({
+      stereotype: "asd" as PropertyStereotype,
+    });
+    expect(property.stereotype).toEqual("asd");
     expect(property.hasValidStereotype()).not.toBeTruthy();
 
     // Valid stereotype

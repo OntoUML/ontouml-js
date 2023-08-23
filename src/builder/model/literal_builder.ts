@@ -1,5 +1,1 @@
-export class LiteralBuilder {
-  
-   
-}
-
+export class LiteralBuilder {}

@@ -1,13 +1,27 @@
-import { OntoumlElement, OntoumlType, Class, Classifier, GeneralizationSet, Package, Relation, Project } from '..';
-import { ModelElement } from './model_element';
-import { PackageableElement } from './packageable_element';
+import {
+  OntoumlElement,
+  OntoumlType,
+  Class,
+  Classifier,
+  GeneralizationSet,
+  Package,
+  Relation,
+  Project,
+} from "..";
+import { ModelElement } from "./model_element";
+import { PackageableElement } from "./packageable_element";
 
 export class Generalization extends ModelElement implements PackageableElement {
   general: Classifier<any, any>;
   specific: Classifier<any, any>;
   _genSets: GeneralizationSet[] = [];
-  
-  constructor(project: Project, container: Package | undefined, general: Classifier<any, any>, specific: Classifier<any,any>) {
+
+  constructor(
+    project: Project,
+    container: Package | undefined,
+    general: Classifier<any, any>,
+    specific: Classifier<any, any>,
+  ) {
     super(project, container);
 
     this.general = general;
@@ -19,13 +33,13 @@ export class Generalization extends ModelElement implements PackageableElement {
   }
 
   public override get container(): Package | undefined {
-    return this.container as Package
+    return this.container as Package;
   }
 
   public override set container(newContainer: Package | undefined) {
     super.container = newContainer;
   }
-  
+
   // Move this to OntoumlElement as a default implementation.
   getContents(): OntoumlElement[] {
     return [];
@@ -34,7 +48,7 @@ export class Generalization extends ModelElement implements PackageableElement {
   // TODO: Fix this to update references
   // getGeneralizationSets(): GeneralizationSet[] {
   //   let root : Package | null = this.getRoot();
-    
+
   //   if(!root){
   //     throw new Error('Root package is null. Cannot retrieve generalizations.');
   //   }
@@ -46,17 +60,21 @@ export class Generalization extends ModelElement implements PackageableElement {
     this.assertSpecificDefined();
     this.assertGeneralDefined();
   }
-  
+
   assertSpecificDefined() {
-    if(!this.specific) { 
-      throw new Error("The `specific` field of this generalization set is not defined.");
-    }  
+    if (!this.specific) {
+      throw new Error(
+        "The `specific` field of this generalization set is not defined.",
+      );
+    }
   }
-  
+
   assertGeneralDefined() {
-    if(!this.specific) { 
-      throw new Error("The `general` field of this generalization set is not defined.");
-    }  
+    if (!this.specific) {
+      throw new Error(
+        "The `general` field of this generalization set is not defined.",
+      );
+    }
   }
 
   involvesClasses(): boolean {
@@ -66,11 +84,18 @@ export class Generalization extends ModelElement implements PackageableElement {
 
   involvesRelations(): boolean {
     this.assertFieldsDefined();
-    return this.general instanceof Relation && this.specific instanceof Relation;
+    return (
+      this.general instanceof Relation && this.specific instanceof Relation
+    );
   }
 
   clone(): Generalization {
-    const clone = new Generalization(this.project!, this.container, this.specific, this.general);
+    const clone = new Generalization(
+      this.project!,
+      this.container,
+      this.specific,
+      this.general,
+    );
     return clone;
   }
 
@@ -79,11 +104,9 @@ export class Generalization extends ModelElement implements PackageableElement {
     // if (this.container === originalElement) {
     //   this.container = newElement as Package;
     // }
-
     // if (this.general === originalElement) {
     //   this.general = newElement as Classifier<any, any>;
     // }
-
     // if (this.specific === originalElement) {
     //   this.specific = newElement as Classifier<any, any>;
     // }
@@ -93,22 +116,21 @@ export class Generalization extends ModelElement implements PackageableElement {
     const object = {
       type: OntoumlType.GENERALIZATION,
       general: this.general.id,
-      specific: this.specific.id
+      specific: this.specific.id,
     };
 
     return { ...object, ...super.toJSON() };
   }
 
   // FIXME
-  override resolveReferences(elementReferenceMap: Map<string, OntoumlElement>): void {
+  override resolveReferences(
+    elementReferenceMap: Map<string, OntoumlElement>,
+  ): void {
     // super.resolveReferences(elementReferenceMap);
-
     // const { general, specific } = this;
-
     // if (general) {
     //   this.general = OntoumlElement.resolveReference(general, elementReferenceMap, this, 'general');
     // }
-
     // if (specific) {
     //   this.specific = OntoumlElement.resolveReference(specific, elementReferenceMap, this, 'specific');
     // }

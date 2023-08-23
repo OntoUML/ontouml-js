@@ -1,5 +1,5 @@
-import _ from 'lodash';
-import { MultilingualText, Project, OntoumlElement } from '.';
+import _ from "lodash";
+import { MultilingualText, Project, OntoumlElement } from ".";
 
 export abstract class NamedElement extends OntoumlElement {
   private name: MultilingualText;
@@ -22,7 +22,7 @@ export abstract class NamedElement extends OntoumlElement {
   }
 
   setName(value: string | MultilingualText, language?: string): void {
-    if(value instanceof MultilingualText) {
+    if (value instanceof MultilingualText) {
       this.name = value;
     } else {
       this.name = new MultilingualText(value, language);
@@ -38,13 +38,12 @@ export abstract class NamedElement extends OntoumlElement {
     this.description.addText(value, language);
   }
 
-  setDescription(description:MultilingualText): void;
+  setDescription(description: MultilingualText): void;
   setDescription(value: string, language?: string): void;
-  setDescription(value: string|MultilingualText, language?: string): void {
-    if(value instanceof MultilingualText) {
+  setDescription(value: string | MultilingualText, language?: string): void {
+    if (value instanceof MultilingualText) {
       this.description = value;
-    }
-    else {
+    } else {
       this.description = new MultilingualText(value, language);
     }
   }
@@ -63,7 +62,6 @@ export abstract class NamedElement extends OntoumlElement {
       contributors: [],
     };
 
-    return { ...object, ...super.toJSON()};
+    return { ...object, ...super.toJSON() };
   }
-
 }

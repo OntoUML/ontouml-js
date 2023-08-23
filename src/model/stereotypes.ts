@@ -1,29 +1,32 @@
-import _ from 'lodash';
+import _ from "lodash";
 
-export type Stereotype = ClassStereotype | RelationStereotype | PropertyStereotype;
+export type Stereotype =
+  | ClassStereotype
+  | RelationStereotype
+  | PropertyStereotype;
 
 export enum ClassStereotype {
-  KIND = 'kind',
-  COLLECTIVE = 'collective',
-  QUANTITY = 'quantity',
-  RELATOR = 'relator',
-  QUALITY = 'quality',
-  MODE = 'mode',
-  SUBKIND = 'subkind',
-  ROLE = 'role',
-  PHASE = 'phase',
-  CATEGORY = 'category',
-  MIXIN = 'mixin',
-  ROLE_MIXIN = 'roleMixin',
-  PHASE_MIXIN = 'phaseMixin',
-  EVENT = 'event',
-  SITUATION = 'situation',
-  HISTORICAL_ROLE = 'historicalRole',
-  HISTORICAL_ROLE_MIXIN = 'historicalRoleMixin',
-  ENUMERATION = 'enumeration',
-  DATATYPE = 'datatype',
-  ABSTRACT = 'abstract',
-  TYPE = 'type',
+  KIND = "kind",
+  COLLECTIVE = "collective",
+  QUANTITY = "quantity",
+  RELATOR = "relator",
+  QUALITY = "quality",
+  MODE = "mode",
+  SUBKIND = "subkind",
+  ROLE = "role",
+  PHASE = "phase",
+  CATEGORY = "category",
+  MIXIN = "mixin",
+  ROLE_MIXIN = "roleMixin",
+  PHASE_MIXIN = "phaseMixin",
+  EVENT = "event",
+  SITUATION = "situation",
+  HISTORICAL_ROLE = "historicalRole",
+  HISTORICAL_ROLE_MIXIN = "historicalRoleMixin",
+  ENUMERATION = "enumeration",
+  DATATYPE = "datatype",
+  ABSTRACT = "abstract",
+  TYPE = "type",
 }
 
 export const TYPE = ClassStereotype.TYPE;
@@ -53,7 +56,7 @@ export const NON_SORTAL_STEREOTYPES: readonly ClassStereotype[] = [
   MIXIN,
   PHASE_MIXIN,
   ROLE_MIXIN,
-  HISTORICAL_ROLE_MIXIN
+  HISTORICAL_ROLE_MIXIN,
 ];
 
 export const ULTIMATE_SORTAL_STEREOTYPES: readonly ClassStereotype[] = [
@@ -62,7 +65,7 @@ export const ULTIMATE_SORTAL_STEREOTYPES: readonly ClassStereotype[] = [
   QUANTITY,
   RELATOR,
   QUALITY,
-  MODE
+  MODE,
 ];
 
 // TODO: consider renaming "base" to "lower"
@@ -70,10 +73,13 @@ export const BASE_SORTAL_STEREOTYPES: readonly ClassStereotype[] = [
   SUBKIND,
   PHASE,
   ROLE,
-  HISTORICAL_ROLE
+  HISTORICAL_ROLE,
 ];
 
-export const SORTAL_STEREOTYPES: readonly ClassStereotype[] = [...ULTIMATE_SORTAL_STEREOTYPES, ...BASE_SORTAL_STEREOTYPES];
+export const SORTAL_STEREOTYPES: readonly ClassStereotype[] = [
+  ...ULTIMATE_SORTAL_STEREOTYPES,
+  ...BASE_SORTAL_STEREOTYPES,
+];
 
 // TODO: review if we should consider as rigid/anti-rigid/semi-rigid only those stereotypes whose respective types specialize Rigid/Anti-Rigid/Semi-Rigid in UFO. This introduces breaks to the gUFO transformation
 export const RIGID_STEREOTYPES: readonly ClassStereotype[] = [
@@ -90,7 +96,7 @@ export const RIGID_STEREOTYPES: readonly ClassStereotype[] = [
   TYPE,
   ABSTRACT,
   DATATYPE,
-  ENUMERATION
+  ENUMERATION,
 ];
 
 export const ANTI_RIGID_STEREOTYPES: readonly ClassStereotype[] = [
@@ -99,39 +105,54 @@ export const ANTI_RIGID_STEREOTYPES: readonly ClassStereotype[] = [
   HISTORICAL_ROLE,
   HISTORICAL_ROLE_MIXIN,
   PHASE,
-  PHASE_MIXIN
+  PHASE_MIXIN,
 ];
 
 export const SEMI_RIGID_STEREOTYPES: readonly ClassStereotype[] = [MIXIN];
 
-export const MOMENT_STEREOTYPES: readonly ClassStereotype[] = [MODE, QUALITY, RELATOR];
+export const MOMENT_STEREOTYPES: readonly ClassStereotype[] = [
+  MODE,
+  QUALITY,
+  RELATOR,
+];
 
-export const SUBSTANTIAL_STEREOTYPES: readonly ClassStereotype[] = [KIND, QUANTITY, COLLECTIVE];
+export const SUBSTANTIAL_STEREOTYPES: readonly ClassStereotype[] = [
+  KIND,
+  QUANTITY,
+  COLLECTIVE,
+];
 
-export const ENDURANT_STEREOTYPES: readonly ClassStereotype[] = [...SORTAL_STEREOTYPES, ...NON_SORTAL_STEREOTYPES];
+export const ENDURANT_STEREOTYPES: readonly ClassStereotype[] = [
+  ...SORTAL_STEREOTYPES,
+  ...NON_SORTAL_STEREOTYPES,
+];
 
-export const ABSTRACT_STEREOTYPES: readonly ClassStereotype[] = [ABSTRACT, DATATYPE, ENUMERATION];
+export const ABSTRACT_STEREOTYPES: readonly ClassStereotype[] = [
+  ABSTRACT,
+  DATATYPE,
+  ENUMERATION,
+];
 
 export enum RelationStereotype {
-  MATERIAL = 'material',
-  DERIVATION = 'derivation',
-  COMPARATIVE = 'comparative',
-  MEDIATION = 'mediation',
-  CHARACTERIZATION = 'characterization',
-  EXTERNAL_DEPENDENCE = 'externalDependence',
-  COMPONENT_OF = 'componentOf',
-  MEMBER_OF = 'memberOf',
-  SUBCOLLECTION_OF = 'subCollectionOf',
-  SUBQUANTITY_OF = 'subQuantityOf',
-  INSTANTIATION = 'instantiation',
-  TERMINATION = 'termination',
-  PARTICIPATIONAL = 'participational',
-  PARTICIPATION = 'participation',
-  HISTORICAL_DEPENDENCE = 'historicalDependence',
-  CREATION = 'creation',
-  MANIFESTATION = 'manifestation',
-  BRINGS_ABOUT = 'bringsAbout',
-  TRIGGERS = 'triggers'
+  MATERIAL = "material",
+  DERIVATION = "derivation",
+  COMPARATIVE = "comparative",
+  MEDIATION = "mediation",
+  CHARACTERIZATION = "characterization",
+  EXTERNAL_DEPENDENCE = "externalDependence",
+  COMPONENT_OF = "componentOf",
+  MEMBER_OF = "memberOf",
+  SUBCOLLECTION_OF = "subCollectionOf",
+  SUBQUANTITY_OF = "subQuantityOf",
+  INSTANTIATION = "instantiation",
+  TERMINATION = "termination",
+  PARTICIPATIONAL = "participational",
+  PARTICIPATION = "participation",
+  HISTORICAL_DEPENDENCE = "historicalDependence",
+  CREATION = "creation",
+  MANIFESTATION = "manifestation",
+  BRINGS_ABOUT = "bringsAbout",
+  TRIGGERS = "triggers",
 }
 
 export const MATERIAL = RelationStereotype.MATERIAL;
@@ -161,7 +182,7 @@ export const EXISTENTIAL_DEPENDENCE_ON_SOURCE_STEREOTYPES = [
   PARTICIPATION,
   PARTICIPATIONAL,
   TERMINATION,
-  TRIGGERS
+  TRIGGERS,
 ];
 
 export const EXISTENTIAL_DEPENDENCE_ON_TARGET_STEREOTYPES = [
@@ -171,11 +192,14 @@ export const EXISTENTIAL_DEPENDENCE_ON_TARGET_STEREOTYPES = [
   EXTERNAL_DEPENDENCE,
   HISTORICAL_DEPENDENCE,
   MEDIATION,
-  PARTICIPATIONAL
+  PARTICIPATIONAL,
 ];
 
 export const EXISTENTIAL_DEPENDENCE_STEREOTYPES = [
-  ...new Set([...EXISTENTIAL_DEPENDENCE_ON_SOURCE_STEREOTYPES, ...EXISTENTIAL_DEPENDENCE_ON_TARGET_STEREOTYPES])
+  ...new Set([
+    ...EXISTENTIAL_DEPENDENCE_ON_SOURCE_STEREOTYPES,
+    ...EXISTENTIAL_DEPENDENCE_ON_TARGET_STEREOTYPES,
+  ]),
 ];
 
 export const PartWholeRelationStereotypes = [
@@ -183,13 +207,16 @@ export const PartWholeRelationStereotypes = [
   MEMBER_OF,
   SUBCOLLECTION_OF,
   SUBQUANTITY_OF,
-  PARTICIPATIONAL
+  PARTICIPATIONAL,
 ];
 
-
 export enum PropertyStereotype {
-  BEGIN = 'begin',
-  END = 'end'
+  BEGIN = "begin",
+  END = "end",
 }
 
-export const ONTOUML_STEREOTYPES = [...Object.values(ClassStereotype), ...Object.values(RelationStereotype), ...Object.values(PropertyStereotype)];
+export const ONTOUML_STEREOTYPES = [
+  ...Object.values(ClassStereotype),
+  ...Object.values(RelationStereotype),
+  ...Object.values(PropertyStereotype),
+];

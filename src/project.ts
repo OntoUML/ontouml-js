@@ -11,41 +11,42 @@ import {
   ClassView,
   BinaryRelationView,
   GeneralizationView,
-  GeneralizationSetView
-} from '.';
-import { NamedElement } from './named_element';
-import { Finder } from './finder';
-import { Class } from './model/class';
-import { Note } from './model/note';
-import { NoteLink } from './model/note_link';
-import { PackageView } from './view/package_view';
-import { NoteView } from './view/note_view';
-import { NaryRelationView } from './view/nary_relation_view';
-import { NoteLinkView } from './view/note_link_view';
-import { ClassBuilder } from './builder/model/class_builder';
+  GeneralizationSetView,
+} from ".";
+import { NamedElement } from "./named_element";
+import { Finder } from "./finder";
+import { Class } from "./model/class";
+import { Note } from "./model/note";
+import { NoteLink } from "./model/note_link";
+import { PackageView } from "./view/package_view";
+import { NoteView } from "./view/note_view";
+import { NaryRelationView } from "./view/nary_relation_view";
+import { NoteLinkView } from "./view/note_link_view";
+import { ClassBuilder } from "./builder/model/class_builder";
 
 export class Project extends NamedElement {
   finder: Finder;
   root?: Package;
-  
-  private _classes: {[key: string]: Class} = {}
-  private _relations: {[key: string]: Relation} = {}
-  private _generalizations: {[key: string]: Generalization} = {}
-  private _generalizationSets: {[key: string]: GeneralizationSet} = {}
-  private _packages: {[key: string]: Package} = {}
-  private _properties: {[key: string]: Property} = {}
-  private _literals: {[key: string]: Literal} = {}
-  private _notes: {[key: string]: Note} = {}
-  private _noteLinks: {[key: string]: NoteLink} = {}
-  private _diagrams: {[key: string]: Diagram} = {}
-  private _classViews: {[key: string]: ClassView} = {}
-  private _binaryRelationViews: {[key: string]: BinaryRelationView} = {}
-  private _nAryRelationViews: {[key: string]: NaryRelationView} = {}
-  private _generalizationViews: {[key: string]: GeneralizationView} = {}
-  private _generalizationSetViews: {[key: string]: GeneralizationSetView} = {}
-  private _packageViews: {[key: string]: PackageView} = {}
-  private _noteViews: {[key: string]: NoteView} = {}
-  private _noteLinkViews: {[key: string]: NoteLinkView} = {}
+
+  private _classes: { [key: string]: Class } = {};
+  private _relations: { [key: string]: Relation } = {};
+  private _generalizations: { [key: string]: Generalization } = {};
+  private _generalizationSets: { [key: string]: GeneralizationSet } = {};
+  private _packages: { [key: string]: Package } = {};
+  private _properties: { [key: string]: Property } = {};
+  private _literals: { [key: string]: Literal } = {};
+  private _notes: { [key: string]: Note } = {};
+  private _noteLinks: { [key: string]: NoteLink } = {};
+  private _diagrams: { [key: string]: Diagram } = {};
+  private _classViews: { [key: string]: ClassView } = {};
+  private _binaryRelationViews: { [key: string]: BinaryRelationView } = {};
+  private _nAryRelationViews: { [key: string]: NaryRelationView } = {};
+  private _generalizationViews: { [key: string]: GeneralizationView } = {};
+  private _generalizationSetViews: { [key: string]: GeneralizationSetView } =
+    {};
+  private _packageViews: { [key: string]: PackageView } = {};
+  private _noteViews: { [key: string]: NoteView } = {};
+  private _noteLinkViews: { [key: string]: NoteLinkView } = {};
 
   constructor() {
     super();
@@ -88,14 +89,14 @@ export class Project extends NamedElement {
 
   addDiagram(diagram: Diagram) {
     if (diagram === null) return;
-    
+
     this._diagrams[diagram.id] = diagram;
   }
 
   addDiagrams(diagrams: Diagram[]) {
     if (diagrams === null) return;
 
-    diagrams.forEach(d => this.addDiagram(d));
+    diagrams.forEach((d) => this.addDiagram(d));
   }
 
   setDiagrams(diagrams: Diagram[]) {
@@ -108,7 +109,7 @@ export class Project extends NamedElement {
 
   getContents(): OntoumlElement[] {
     console.log(this._classes);
-    return ([
+    return [
       ...Object.values(this._classes),
       // ...Object.values(this._relations),
       // ...Object.values(this._generalizations),
@@ -127,16 +128,14 @@ export class Project extends NamedElement {
       // ...Object.values(this._packageViews),
       // ...Object.values(this._noteViews),
       // ...Object.values(this._noteLinkViews),
-    ]);
-
+    ];
   }
- 
 
   override toJSON(): any {
     const object = {
       type: OntoumlType.PROJECT,
       root: this.root || null,
-      elements: null
+      elements: null,
     };
 
     return { ...object, ...super.toJSON() };
@@ -146,11 +145,10 @@ export class Project extends NamedElement {
   resolveReferences(_elementReferenceMap: Map<string, OntoumlElement>): void {}
 
   clone(): OntoumlElement {
-    throw new Error('Method not implemented.');
+    throw new Error("Method not implemented.");
   }
 
   replace(originalElement: OntoumlElement, newElement: OntoumlElement): void {
-    throw new Error('Method not implemented.');
+    throw new Error("Method not implemented.");
   }
-
 }

@@ -1,4 +1,4 @@
-import { OntoumlType, BinaryConnectorView, Relation, View } from '..';
+import { OntoumlType, BinaryConnectorView, Relation, View } from "..";
 
 export class BinaryRelationView extends BinaryConnectorView<Relation> {
   constructor(relation: Relation, source: View<any>, target: View<any>) {
@@ -6,10 +6,10 @@ export class BinaryRelationView extends BinaryConnectorView<Relation> {
   }
 
   override toJSON(): any {
-    const object : any = {
-      type: OntoumlType.BINARY_RELATION_VIEW
+    const object: any = {
+      type: OntoumlType.BINARY_RELATION_VIEW,
     };
-    
+
     return { ...object, ...super.toJSON() };
   }
 }

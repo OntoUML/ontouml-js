@@ -1,7 +1,15 @@
-import {describe, expect, it, beforeEach, beforeAll} from '@jest/globals';
-import { COLLECTIVE, Class, ClassStereotype, Decoratable, KIND, Project, RELATOR } from '../src';
+import { describe, expect, it, beforeEach, beforeAll } from "@jest/globals";
+import {
+  COLLECTIVE,
+  Class,
+  ClassStereotype,
+  Decoratable,
+  KIND,
+  Project,
+  RELATOR,
+} from "../src";
 
-describe('Test Class stereotype-related query methods', () => {
+describe("Test Class stereotype-related query methods", () => {
   let proj: Project;
   let c: Class;
 
@@ -10,21 +18,16 @@ describe('Test Class stereotype-related query methods', () => {
   });
 
   describe(`Test ${Decoratable.prototype.hasValidStereotype.name}()`, () => {
-    
-    Object.values(ClassStereotype).forEach(stereotype =>
+    Object.values(ClassStereotype).forEach((stereotype) =>
       it(`Should return true if valid class stereotype ('${stereotype}')`, () => {
-        c = proj.classBuilder()
-                .stereotype(stereotype)
-                .build();
+        c = proj.classBuilder().stereotype(stereotype).build();
 
         expect(c.hasValidStereotype()).toBeTruthy();
-      })
+      }),
     );
 
     it(`Should return false if invalid class stereotype`, () => {
-      c = proj.classBuilder()
-              .stereotype('custom')
-              .build();
+      c = proj.classBuilder().stereotype("custom").build();
 
       expect(c.hasValidStereotype()).toBeFalsy();
     });
@@ -46,57 +49,46 @@ describe('Test Class stereotype-related query methods', () => {
   });
 
   describe(`Test ${Decoratable.prototype.isStereotypeOneOf.name}()`, () => {
-    it('Should throw an Error if the class has no stereotype', () => {
+    it("Should throw an Error if the class has no stereotype", () => {
       c = proj.classBuilder().build();
 
       const func = () => c.isStereotypeOneOf(KIND);
       expect(func).toThrowError();
     });
 
-    it('Should return true if the class is decorated with one of the stereotypes listed in the input (one)', () => {
-      c = proj.classBuilder()
-              .kind()
-              .build();
-      
+    it("Should return true if the class is decorated with one of the stereotypes listed in the input (one)", () => {
+      c = proj.classBuilder().kind().build();
+
       expect(c.isStereotypeOneOf(KIND)).toBeTruthy();
     });
 
-    it('Should return true if the class is decorated with one of the stereotypes listed in the input (list)', () => {
-      c = proj.classBuilder()
-              .kind()
-              .build();
-      
+    it("Should return true if the class is decorated with one of the stereotypes listed in the input (list)", () => {
+      c = proj.classBuilder().kind().build();
+
       expect(c.isStereotypeOneOf([KIND, COLLECTIVE])).toBeTruthy();
     });
 
-    it('Should return false if the class is not decorated with one of the stereotypes listed in the input (list)', () => {
-      c = proj.classBuilder()
-              .kind()
-              .build();
-      
+    it("Should return false if the class is not decorated with one of the stereotypes listed in the input (list)", () => {
+      c = proj.classBuilder().kind().build();
+
       expect(c.isStereotypeOneOf([RELATOR, COLLECTIVE])).toBeFalsy();
     });
   });
 
   describe(`Test ${Class.prototype.isKind.name}()`, () => {
-    it('Should return true if the class is a «kind»', () => {
-      c = proj.classBuilder()
-              .kind()
-              .build();
-              
+    it("Should return true if the class is a «kind»", () => {
+      c = proj.classBuilder().kind().build();
+
       expect(c.isKind()).toBeTruthy();
     });
 
-    it('Should return false if the class is a not a «kind» (e.g. «event»)', () => {
-      c = proj.classBuilder()
-              .event()
-              .build();
+    it("Should return false if the class is a not a «kind» (e.g. «event»)", () => {
+      c = proj.classBuilder().event().build();
       expect(c.isKind()).toBeFalsy();
     });
 
-    it('Should return false if the class is not decorated with a stereotype', () => {
-      c = proj.classBuilder()
-              .build();
+    it("Should return false if the class is not decorated with a stereotype", () => {
+      c = proj.classBuilder().build();
       expect(c.isKind()).toBeFalsy();
     });
   });
@@ -104,40 +96,36 @@ describe('Test Class stereotype-related query methods', () => {
   describe(`Test ${Class.prototype.isComplexDatatype.name}()`, () => {
     let dt1: Class, dt2: Class;
 
-    it('Test complex datatype', () => {
-      dt1 = proj.classBuilder()
-                .datatype()
-                .build();
+    it("Test complex datatype", () => {
+      dt1 = proj.classBuilder().datatype().build();
 
-      dt2 = proj.classBuilder()
-                .datatype()
-                .build();
-      
+      dt2 = proj.classBuilder().datatype().build();
+
       dt1.createAttribute(dt2);
-      
+
       expect(dt1.isComplexDatatype()).toBeTruthy();
     });
-    
-    it('Test complex datatype', () => {
+
+    it("Test complex datatype", () => {
       dt1 = proj.classBuilder().datatype().build();
       dt2 = proj.classBuilder().datatype().build();
-      
+
       dt1.createAttribute(dt2);
       dt1.createAttribute(dt2);
       expect(dt1.isComplexDatatype()).toBeTruthy();
     });
 
-    it('Test atomic/simple datatype', () => {
+    it("Test atomic/simple datatype", () => {
       dt1 = proj.classBuilder().Datatype();
       expect(d.isComplexDatatype()).toBeFalsy();
     });
 
-    it('Test anotherClass', () => {
+    it("Test anotherClass", () => {
       dt1 = proj.classBuilder().Enumeration();
       expect(c.isComplexDatatype()).toBeFalsy();
     });
 
-    it('Test classWithoutStereotypes', () => {
+    it("Test classWithoutStereotypes", () => {
       classWithoutStereotypes = proj.classBuilder().Class();
       expect(classWithoutStereotypes.isComplexDatatype()).toBeFalsy();
     });

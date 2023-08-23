@@ -1,14 +1,14 @@
-import {describe, expect, it, beforeEach, beforeAll} from '@jest/globals';
-import { Class, OntoumlElement, Package, Project, Relation } from '../src';
+import { describe, expect, it, beforeEach, beforeAll } from "@jest/globals";
+import { Class, OntoumlElement, Package, Project, Relation } from "../src";
 
-describe('Container tests', () => {
+describe("Container tests", () => {
   let project: Project;
 
   beforeEach(() => {
     project = new Project();
   });
 
-  it('Get project contents - empty project', () => {
+  it("Get project contents - empty project", () => {
     const project: Project = new Project();
     let contents: OntoumlElement[] = project.getContents();
     expect(contents).toBeInstanceOf(Array);
@@ -19,7 +19,7 @@ describe('Container tests', () => {
     expect(contents.length).toEqual(0);
   });
 
-  it('Get project contents - non-empty project', () => {
+  it("Get project contents - non-empty project", () => {
     const project = new Project();
     const model = project.createModel();
     const levelOnePackage = model.createPackage();
@@ -53,7 +53,7 @@ describe('Container tests', () => {
     expect(contents.length).toEqual(10);
   });
 
-  it('Bad content hierarchy error', () => {
+  it("Bad content hierarchy error", () => {
     const packageOne = new Package();
     const packageTwo = new Package();
     const packageThree = new Package();
@@ -75,7 +75,7 @@ describe('Container tests', () => {
     expect(() => packageOne.getAllContents()).toThrowError();
   });
 
-  it('Get class contents', () => {
+  it("Get class contents", () => {
     const model = new Package();
     const text = model.createDatatype();
     const livingStatus = model.createEnumeration();
@@ -110,7 +110,7 @@ describe('Container tests', () => {
     expect(contents.length).toEqual(2);
   });
 
-  it('Get relation contents', () => {
+  it("Get relation contents", () => {
     const clazz = new Class(project);
     const relation = new Relation(project, undefined, [clazz, clazz]);
 

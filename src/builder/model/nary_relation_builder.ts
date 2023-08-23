@@ -1,5 +1,1 @@
-export class NaryRelationBuilder {
-  
-   
-}
-
+export class NaryRelationBuilder {}
