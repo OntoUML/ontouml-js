@@ -30,7 +30,7 @@ export class Note extends ModelElement implements PackageableElement {
       text: this.text.toJSON()
     };
 
-    return { ...object, ...super.toJSON() };
+    return { ...super.toJSON(), ...object };
   }
 
   getContents(): OntoumlElement[] {

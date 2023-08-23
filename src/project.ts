@@ -11,7 +11,8 @@ import {
   ClassView,
   BinaryRelationView,
   GeneralizationView,
-  GeneralizationSetView
+  GeneralizationSetView,
+  Classifier
 } from '.';
 import { NamedElement } from './named_element';
 import { Finder } from './finder';
@@ -23,6 +24,7 @@ import { NoteView } from './view/note_view';
 import { NaryRelationView } from './view/nary_relation_view';
 import { NoteLinkView } from './view/note_link_view';
 import { ClassBuilder } from './builder/model/class_builder';
+import { GeneralizationBuilder } from './builder/model/generalization_builder';
 
 export class Project extends NamedElement {
   finder: Finder;
@@ -75,6 +77,10 @@ export class Project extends NamedElement {
 
   classBuilder(): ClassBuilder {
     return new ClassBuilder(this);
+  }
+
+  generalizationBuilder(): GeneralizationBuilder {
+    return new GeneralizationBuilder(this);
   }
 
   addClass(c: Class): void {

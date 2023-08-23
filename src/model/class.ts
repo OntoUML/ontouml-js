@@ -48,6 +48,7 @@ import {
 
 import { Classifier } from './classifier';
 import { AttributeBuilder } from '../builder/model/attribute_builder';
+import { LiteralBuilder } from '../builder/model/literal_builder';
 // import { PropertyBuilder } from '../builder/property_builder';
 
 export class Class extends Classifier<Class, ClassStereotype> {
@@ -63,6 +64,24 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
   attributeBuilder(): AttributeBuilder {
     return new AttributeBuilder(this);
+  }
+
+  literalBuilder(): LiteralBuilder {
+    return new LiteralBuilder(this);
+  }
+
+  assertNonEnumeration(): void {
+    if (this.stereotype === ENUMERATION)
+      throw new Error(
+        `Prohibited method call on class decorated with «${ENUMERATION}».`
+      );
+  }
+
+  assertEnumeration(): void {
+    if (this.stereotype !== ENUMERATION)
+      throw new Error(
+        `Prohibited method call on class that is not decorated with «${ENUMERATION}».`
+      );
   }
 
   public get restrictedTo(): Nature[] {
@@ -120,7 +139,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
       order: this.getOrderAsString()
     };
 
-    return { ...object, ...super.toJSON() };
+    return { ...super.toJSON(), ...object };
   }
 
   public getOrderAsString(): string {
@@ -131,52 +150,16 @@ export class Class extends Classifier<Class, ClassStereotype> {
     return this.order.toString();
   }
 
-  // attributeBuilder(): PropertyBuilder {
-  //   return new PropertyBuilder();
-
-  // }
-
-  createAttribute(propertyType?: Class, name?: string): Property {
-    // TODO: Discuss the removal of this code block
-    // if (this.hasEnumerationStereotype()) {
-    //   throw new Error('Cannot create an attribute on an enumeration class.');
-    // }
-    let attr = new Property(this, propertyType);
-
-    if (name) {
-      attr.name.addText(name);
-    }
-
-    this.addAttribute(attr);
-    return attr;
-  }
-
-  createLiteral(name?: string): Literal {
-    let literal = new Literal(this);
-    this.addLiteral(literal);
-
-    if (name) {
-      this.name.addText(name);
-    }
-    return literal;
-  }
-
   addAttribute(attribute: Property): void {
-    if (!attribute) {
-      throw new Error('Cannot add a null attribute');
-    }
-
-    attribute.container = this;
+    this.assertNonEnumeration();
     this.properties.push(attribute);
+    attribute.container = this;
   }
 
   addLiteral(literal: Literal): void {
-    if (!literal) {
-      throw new Error('Cannot add a null literal');
-    }
-
-    literal.container = this;
+    this.assertEnumeration();
     this.literals.push(literal);
+    literal.container = this;
   }
 
   hasAttributes(): boolean {

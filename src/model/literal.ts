@@ -34,6 +34,6 @@ export class Literal extends ModelElement {
       type: OntoumlType.LITERAL
     };
 
-    return { ...object, ...super.toJSON() };
+    return { ...super.toJSON(), ...object };
   }
 }

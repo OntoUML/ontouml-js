@@ -32,6 +32,6 @@ export class NaryRelation extends Relation {
       type: OntoumlType.NARY_RELATION
     };
 
-    return { ...object, ...super.toJSON() };
+    return { ...super.toJSON(), ...object };
   }
 }

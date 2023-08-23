@@ -374,6 +374,6 @@ export class BinaryRelation extends Relation {
       type: OntoumlType.BINARY_RELATION
     };
 
-    return { ...object, ...super.toJSON() };
+    return { ...super.toJSON(), ...object };
   }
 }

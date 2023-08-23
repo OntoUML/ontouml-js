@@ -30,12 +30,28 @@ describe('Test Class serialization', () => {
 
   it('The minimum attribute builder should generate a valid properties', () => {
     const att = clazz.attributeBuilder().build();
-
     console.log(att.toJSON());
     console.log(clazz.toJSON());
-
     expect(validator(att.toJSON())).toBeTruthy();
     expect(validator(clazz.toJSON())).toBeTruthy();
+  });
+
+  it('The minimum literal builder should generate a valid literals', () => {
+    const lit = clazz.literalBuilder().build();
+    console.log(lit.toJSON());
+    console.log(clazz.toJSON());
+    expect(validator(lit.toJSON())).toBeTruthy();
+    expect(validator(clazz.toJSON())).toBeTruthy();
+  });
+
+  it('The minimum generalization builder should generate a valid generalizations', () => {
+    const clazz2 = project.classBuilder().build();
+    const gen = project
+      .generalizationBuilder()
+      .general(clazz)
+      .specific(clazz2)
+      .build();
+    expect(validator(gen.toJSON())).toBeTruthy();
   });
 
   // it('Test empty class serialization', () => {

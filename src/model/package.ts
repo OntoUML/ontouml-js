@@ -76,7 +76,7 @@ export class Package extends ModelElement implements PackageableElement {
       contents: this.contents.map(e => e.id)
     };
 
-    return { ...object, ...super.toJSON() };
+    return { ...super.toJSON(), ...object };
   }
 
   createPackage(name?: string): Package {

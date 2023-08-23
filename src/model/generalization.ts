@@ -14,6 +14,7 @@ import { PackageableElement } from './packageable_element';
 export class Generalization extends ModelElement implements PackageableElement {
   general: Classifier<any, any>;
   specific: Classifier<any, any>;
+  // TODO: add function to enable _genSets to be private
   _genSets: GeneralizationSet[] = [];
 
   constructor(
@@ -56,6 +57,7 @@ export class Generalization extends ModelElement implements PackageableElement {
   //              .filter(gs => gs.generalizations && gs.generalizations.includes(this));
   // }
 
+  // TODO: check the need for these assertions considering that general and specific are mandatory
   assertFieldsDefined() {
     this.assertSpecificDefined();
     this.assertGeneralDefined();
@@ -119,7 +121,7 @@ export class Generalization extends ModelElement implements PackageableElement {
       specific: this.specific.id
     };
 
-    return { ...object, ...super.toJSON() };
+    return { ...super.toJSON(), ...object };
   }
 
   // FIXME

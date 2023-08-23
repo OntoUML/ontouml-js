@@ -38,7 +38,7 @@ export class NoteLink extends ModelElement implements PackageableElement {
       element: this.element.id
     };
 
-    return { ...object, ...super.toJSON() };
+    return { ...super.toJSON(), ...object };
   }
 
   getContents(): OntoumlElement[] {

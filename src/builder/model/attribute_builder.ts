@@ -27,7 +27,7 @@ export class AttributeBuilder extends DecoratableBuilder<
   }
 
   /**
-   * Builds an instance of {@link Class} with the parameters passed to the builder. **WARNING:** the ordering in which methods are evoked may affect the resulting object. When no methods are evoked, the created class has the following defaults:
+   * Builds an instance of {@link Property} with the parameters passed to the builder. **WARNING:** the ordering in which methods are evoked may affect the resulting object. When no methods are evoked, the created class has the following defaults:
    * - `id: "randomly-generated-id",`
    * - `created: new Date(),`
    * - `isDerived: false,`
@@ -54,7 +54,7 @@ export class AttributeBuilder extends DecoratableBuilder<
     return this.element;
   }
 
-  override container(container: ModelElement): AttributeBuilder {
+  override container(_: ModelElement): AttributeBuilder {
     throw new Error('Container already set on constructor.');
   }
 

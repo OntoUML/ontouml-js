@@ -254,6 +254,6 @@ export abstract class Classifier<
       properties: this.properties.map(p => p.id)
     };
 
-    return { ...object, ...super.toJSON() };
+    return { ...super.toJSON(), ...object };
   }
 }

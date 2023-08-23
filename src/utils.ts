@@ -47,10 +47,19 @@ function removeById(list: OntoumlElement[], element: OntoumlElement) {
   _.remove(list, member => member.id === element.id);
 }
 
+function assertSameProject(...elements: OntoumlElement[]): void {
+  const projectIds = new Set(elements.map(e => e?.project?.id));
+
+  if (projectIds.size != 1) {
+    throw new Error('Listed elements are not contained by the same project.');
+  }
+}
+
 export const utils = {
   includesAll,
   intersects,
   arrayFrom,
   equalContents,
-  removeById
+  removeById,
+  assertSameProject
 };

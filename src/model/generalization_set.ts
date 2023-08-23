@@ -241,7 +241,7 @@ export class GeneralizationSet
       generalizations: this._generalizations.map(g => g.id)
     };
 
-    return { ...object, ...super.toJSON() };
+    return { ...super.toJSON(), ...object };
   }
 
   override resolveReferences(
