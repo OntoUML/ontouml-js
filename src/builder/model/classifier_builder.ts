@@ -6,14 +6,14 @@ export abstract class ClassifierBuilder<
   B extends ClassifierBuilder<B, S>,
   S extends Stereotype
 > extends DecoratableBuilder<B, S> {
-  protected _isAbstract?: boolean;
   protected override element?: Classifier<any, any>;
+  protected _isAbstract: boolean = false;
 
-  build(): Classifier<any, any> {
+  override build(): Classifier<any, any> {
     super.build();
 
     this.assertElement();
-    this.element!.isAbstract = this._isAbstract || false;
+    this.element!.isAbstract = this._isAbstract;
 
     return this.element!;
   }

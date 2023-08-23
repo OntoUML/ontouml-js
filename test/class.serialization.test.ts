@@ -23,7 +23,7 @@ describe('Test Class serialization', () => {
     clazz = project.classBuilder().build();
   });
 
-  it('a minimum class must generate a valid serialization', () => {
+  it('The minimum class builder should generate a valid class', () => {
     expect(validator(clazz.toJSON())).toBeTruthy();
   });
 

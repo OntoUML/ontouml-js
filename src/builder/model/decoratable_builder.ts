@@ -10,11 +10,12 @@ export abstract class DecoratableBuilder<
   protected _stereotype?: S;
   protected _isDerived: boolean = false;
 
-  build(): Decoratable<any> {
+  override build(): Decoratable<any> {
     super.build();
 
     this.assertElement();
     this.element!.stereotype = this._stereotype;
+    this.element!.isDerived = this._isDerived;
 
     return this.element!;
   }

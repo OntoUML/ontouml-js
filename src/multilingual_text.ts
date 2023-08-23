@@ -10,11 +10,9 @@ export class MultilingualText {
   static defaultLanguage: string = 'en';
   static languagePreference: string[] = ['en'];
 
-  textMap: Map<string, string>;
+  private textMap: Map<string, string> = new Map<string, string>();
 
   constructor(value?: string, language?: string) {
-    this.textMap = new Map<string, string>();
-    this.textMap.set('', 'asd');
     if (value != null) this.addText(value, language);
   }
 
@@ -48,9 +46,9 @@ export class MultilingualText {
     this.textMap.set(language, value);
   }
 
-  addAll(obj: object) {
-    Object.entries(obj).forEach(entry => {
-      this.addText(entry[1], entry[0]);
+  addAll(obj: { [key: string]: string }) {
+    Object.entries(obj).forEach(([value, language]) => {
+      this.addText(value, language);
     });
   }
 
@@ -64,7 +62,6 @@ export class MultilingualText {
 
   toJSON(): any {
     if (this.textMap.size == 0) return null;
-    if (this.textMap.size == 1) return this.getText('en');
-    return this.textMap;
+    return Object.fromEntries(this.textMap);
   }
 }

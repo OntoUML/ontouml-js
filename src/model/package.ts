@@ -85,7 +85,7 @@ export class Package extends ModelElement implements PackageableElement {
     let pkg = new Package(this.project!, this.container);
 
     if (name) {
-      pkg.addName(name);
+      pkg.name.addText(name);
     }
 
     return this.addContent(pkg);
@@ -102,7 +102,7 @@ export class Package extends ModelElement implements PackageableElement {
     let clazz = new Class(this.project!, this);
 
     if (name) {
-      clazz.setName(name);
+      clazz.name.addText(name);
     }
 
     //FIXME: add stereotype
@@ -263,7 +263,7 @@ export class Package extends ModelElement implements PackageableElement {
     let rel = new NaryRelation(this.project!, this, members);
 
     if (name) {
-      rel.setName(name);
+      rel.name.addText(name);
     }
 
     if (stereotype && stereotype != RelationStereotype.MATERIAL) {
@@ -287,7 +287,7 @@ export class Package extends ModelElement implements PackageableElement {
     let rel = new BinaryRelation(this.project!, this, source, target);
 
     if (name) {
-      rel.setName(name);
+      rel.name.addText(name);
     }
 
     if (stereotype) {
@@ -714,7 +714,7 @@ export class Package extends ModelElement implements PackageableElement {
     let gen = new Generalization(this.project!, this, general, specific);
 
     if (name) {
-      gen.setName(name);
+      gen.name.addText(name);
     }
 
     return this.addContent(gen);
@@ -737,7 +737,7 @@ export class Package extends ModelElement implements PackageableElement {
     }
 
     if (name) {
-      gs.setName(name);
+      gs.name.addText(name);
     }
 
     return this.addContent(gs);

@@ -7,14 +7,19 @@ export abstract class OntoumlElementBuilder<
 > {
   protected element?: OntoumlElement;
   protected project: Project;
-  protected _id: string;
+  private _id: string = uniqid();
 
   constructor(project: Project) {
-    this._id = uniqid();
     this.project = project;
   }
 
-  abstract build(): OntoumlElement;
+  build(): OntoumlElement {
+    this.assertElement();
+
+    this.element!.id = this._id;
+
+    return this.element!;
+  }
 
   // TODO: confirm whether this is adequate
   id(id: string): B {

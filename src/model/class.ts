@@ -139,7 +139,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
     let attr = new Property(this, propertyType);
 
     if (name) {
-      attr.addName(name);
+      attr.name.addText(name);
     }
 
     this.addAttribute(attr);
@@ -151,7 +151,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
     this.addLiteral(literal);
 
     if (name) {
-      this.setName(name);
+      this.name.addText(name);
     }
     return literal;
   }

@@ -34,33 +34,39 @@ export class ClassBuilder extends ClassifierBuilder<
   ClassStereotype
 > {
   protected override _container?: Package;
-  protected override element: Class;
+  protected override element?: Class;
 
   private _restrictedTo: Nature[] = [];
   private _order: number = 1;
   private _isPowertype: boolean = false;
 
-  constructor(project: Project) {
-    super(project);
-    this.element = new Class(this.project);
-  }
-
+  /**
+   * Builds an instance of `Class` with the assignments passed to the builder. **WARNING:** the ordering of assignments may affect the resulting object.
+   * When no assignments are called, the created class has the following defaults:
+   * - `type: "Class",`
+   * - `id: "randomly-generated-id",`
+   * - `created: new Date(),`
+   * - `modified: null`
+   * - `name: null,`
+   * - `description: null,`
+   * - `alternativeNames: [],`
+   * - `editorialNotes: [],`
+   * - `creators: [],`
+   * - `contributors: [],`
+   * - `customProperties: null,`
+   * - `isAbstract: false,`
+   * - `isDerived: false,`
+   * - `stereotype: null,`
+   * - `restrictedTo: [],`
+   * - `properties: [],`
+   * - `literals: [],`
+   * - `order: "1",`
+   * - `isPowertype: false,`
+   */
   override build(): Class {
+    this.element = new Class(this.project);
     super.build();
 
-    // OntoumlElementBuilder
-    this.element.id = this._id;
-    // NamedElementBuilder
-    this.element.setName(this._name);
-    this.element.setDescription(this._description);
-    // ModelElementBuilder
-    this.element.container = this._container;
-    this.element.customProperties = this._customProperties;
-    // DecoratableBuilder
-    this.element.stereotype = this._stereotype;
-    this.element.isDerived = this._isDerived;
-
-    // ClassBuilder
     this.element.order = this._order;
     this.element.isPowertype = this._isPowertype;
     this.element.restrictedTo = this._restrictedTo;
@@ -86,9 +92,7 @@ export class ClassBuilder extends ClassifierBuilder<
   powertype(): ClassBuilder {
     this._isPowertype = true;
 
-    if (this._order < 2) {
-      this.order(2);
-    }
+    if (this._order < 2) this.order(2);
 
     return this;
   }
@@ -98,7 +102,9 @@ export class ClassBuilder extends ClassifierBuilder<
     return this;
   }
 
-  // TODO: consider moving the setting of defaults to build, otherwise the order of calls will affect the resulting object
+  /**
+   * Sets the stereotype field and set default values in case of a known ClassStereotype.
+   */
   override stereotype(stereotype: string): ClassBuilder {
     switch (stereotype) {
       case KIND:
@@ -149,11 +155,9 @@ export class ClassBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the following fields:
-   *  - stereotype as «kind»
-   *  - restrictedTo as [ functional complex ]
-   *  - isAbstract as false
-   *  - order as 1
+   * Sets the stereotype field to `«kind»` as well as the following default values:
+   * - `restrictedTo = [ "functional-complex" ]`
+   * - `order = 1`
    */
   kind(): ClassBuilder {
     this._stereotype = KIND;
@@ -163,11 +167,9 @@ export class ClassBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the following fields:
-   *  - stereotype as «collective»
-   *  - restrictedTo as [ collective ]
-   *  - isAbstract as false
-   *  - order as 1
+   * Sets the stereotype field to `«collective»` as well as the following default values:
+   * - `restrictedTo = [ "collective" ]`
+   * - `order = 1`
    */
   collective(): ClassBuilder {
     this._stereotype = COLLECTIVE;
@@ -176,6 +178,11 @@ export class ClassBuilder extends ClassifierBuilder<
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«quantity»` as well as the following default values:
+   * - `restrictedTo = [ "quantity" ]`
+   * - `order = 1`
+   */
   quantity(): ClassBuilder {
     this._stereotype = QUANTITY;
     this.restrictedTo(Nature.QUANTITY);
@@ -183,6 +190,11 @@ export class ClassBuilder extends ClassifierBuilder<
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«relator»` as well as the following default values:
+   * - `restrictedTo = [ "relator" ]`
+   * - `order = 1`
+   */
   relator(): ClassBuilder {
     this._stereotype = RELATOR;
     this.restrictedTo(Nature.RELATOR);
@@ -190,6 +202,11 @@ export class ClassBuilder extends ClassifierBuilder<
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«quality»` as well as the following default values:
+   * - `restrictedTo = [ "quality" ]`
+   * - `order = 1`
+   */
   quality(): ClassBuilder {
     this._stereotype = QUALITY;
     this.restrictedTo(Nature.QUALITY);
@@ -197,6 +214,11 @@ export class ClassBuilder extends ClassifierBuilder<
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«mode»` as well as the following default values:
+   * - `restrictedTo = [ "intrinsic-mode" ]`
+   * - `order = 1`
+   */
   mode(): ClassBuilder {
     this._stereotype = MODE;
     this.restrictedTo(Nature.INTRINSIC_MODE);
@@ -204,21 +226,35 @@ export class ClassBuilder extends ClassifierBuilder<
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«subkind»`.
+   */
   subkind(): ClassBuilder {
     this._stereotype = SUBKIND;
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«role»`.
+   */
   role(): ClassBuilder {
     this._stereotype = ROLE;
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«phase»`.
+   */
   phase(): ClassBuilder {
     this._stereotype = PHASE;
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«category»` as well as the following default values:
+   * - `restrictedTo = [ "functional-complex" ]`
+   * - `isAbstract = true`
+   */
   category(): ClassBuilder {
     this._stereotype = CATEGORY;
     this.restrictedTo(Nature.FUNCTIONAL_COMPLEX);
@@ -226,6 +262,11 @@ export class ClassBuilder extends ClassifierBuilder<
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«mixin»` as well as the following default values:
+   * - `restrictedTo = [ "functional-complex" ]`
+   * - `isAbstract = true`
+   */
   mixin(): ClassBuilder {
     this._stereotype = MIXIN;
     this.restrictedTo(Nature.FUNCTIONAL_COMPLEX);
@@ -233,6 +274,11 @@ export class ClassBuilder extends ClassifierBuilder<
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«roleMixin»` as well as the following default values:
+   * - `restrictedTo = [ "functional-complex" ]`
+   * - `isAbstract = true`
+   */
   roleMixin(): ClassBuilder {
     this._stereotype = ROLE_MIXIN;
     this.restrictedTo(Nature.FUNCTIONAL_COMPLEX);
@@ -240,6 +286,11 @@ export class ClassBuilder extends ClassifierBuilder<
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«phaseMixin»` as well as the following default values:
+   * - `restrictedTo = [ "functional-complex" ]`
+   * - `isAbstract = true`
+   */
   phaseMixin(): ClassBuilder {
     this._stereotype = PHASE_MIXIN;
     this.restrictedTo(Nature.FUNCTIONAL_COMPLEX);
@@ -247,6 +298,11 @@ export class ClassBuilder extends ClassifierBuilder<
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«event»` as well as the following default values:
+   * - `restrictedTo = [ "event" ]`
+   * - `order = 1`
+   */
   event(): ClassBuilder {
     this._stereotype = EVENT;
     this.restrictedTo(Nature.EVENT);
@@ -254,6 +310,11 @@ export class ClassBuilder extends ClassifierBuilder<
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«situation»` as well as the following default values:
+   * - `restrictedTo = [ "situation" ]`
+   * - `order = 1`
+   */
   situation(): ClassBuilder {
     this._stereotype = SITUATION;
     this.restrictedTo(Nature.SITUATION);
@@ -261,43 +322,71 @@ export class ClassBuilder extends ClassifierBuilder<
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«historicalRole»`.
+   */
   historicalRole(): ClassBuilder {
     this._stereotype = HISTORICAL_ROLE;
-    this._isAbstract = false;
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«historicalRoleMixin»` as well as the following default values:
+   * - `restrictedTo = [ "functional-complex" ]`
+   * - `isAbstract = true`
+   */
   historicalRoleMixin(): ClassBuilder {
     this._stereotype = HISTORICAL_ROLE_MIXIN;
-    this._isAbstract = true;
+    this.restrictedTo(Nature.SITUATION);
+    this.abstract();
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«enumeration»` as well as the following default values:
+   * - `restrictedTo = [ "abstract" ]`
+   * - `order = 1`
+   */
   enumeration(): ClassBuilder {
     this._stereotype = ENUMERATION;
-    this._restrictedTo = [Nature.ABSTRACT];
-    this._isAbstract = false;
+    this.restrictedTo(Nature.ABSTRACT);
+    this.order(1);
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«datatype»` as well as the following default values:
+   * - `restrictedTo = [ "abstract" ]`
+   * - `order = 1`
+   */
   datatype(): ClassBuilder {
     this._stereotype = DATATYPE;
-    this._restrictedTo = [Nature.ABSTRACT];
-    this._isAbstract = false;
+    this.restrictedTo(Nature.ABSTRACT);
+    this.order(1);
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«abstract»` as well as the following default values:
+   * - `restrictedTo = [ "abstract" ]`
+   * - `order = 1`
+   */
   abstractClass(): ClassBuilder {
     this._stereotype = ABSTRACT;
     this.restrictedTo(Nature.ABSTRACT);
-    this._isAbstract = false;
+    this.order(1);
     return this;
   }
 
+  /**
+   * Sets the stereotype field to `«type»` as well as the following default values:
+   * - `restrictedTo = [ "type" ]`
+   * - `order = 2`
+   */
   type(): ClassBuilder {
     this._stereotype = TYPE;
-    this._restrictedTo = [Nature.TYPE];
-    this._isAbstract = false;
+    this.restrictedTo(Nature.TYPE);
+    this.order(2);
     return this;
   }
 

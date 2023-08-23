@@ -1,9 +1,14 @@
 import _ from 'lodash';
-import { MultilingualText, Project, OntoumlElement } from '.';
+import { MultilingualText, Project, OntoumlElement, utils } from '.';
+import { Resource } from './resource';
 
 export abstract class NamedElement extends OntoumlElement {
-  private name: MultilingualText;
-  private description: MultilingualText;
+  name: MultilingualText;
+  description: MultilingualText;
+  private alternativeNames: Set<MultilingualText> = new Set();
+  private editorialNotes: Set<MultilingualText> = new Set();
+  private creators: Set<Resource> = new Set();
+  private contributors: Set<Resource> = new Set();
 
   constructor(project?: Project) {
     super(project);
@@ -12,56 +17,68 @@ export abstract class NamedElement extends OntoumlElement {
     this.description = new MultilingualText();
   }
 
-  getName(language?: string): string {
-    return this.name.getText(language);
+  getAlternativeNames(): MultilingualText[] {
+    return [...this.alternativeNames];
   }
 
-  addName(value: string, language?: string): void {
-    if (!this.name) this.name = new MultilingualText();
-    this.name.addText(value, language);
+  addAlternativeName(value: MultilingualText): void {
+    this.alternativeNames.add(value);
   }
 
-  setName(value: string | MultilingualText, language?: string): void {
-    if (value instanceof MultilingualText) {
-      this.name = value;
-    } else {
-      this.name = new MultilingualText(value, language);
-    }
+  removeAlternativeName(value: MultilingualText): boolean {
+    return this.alternativeNames.delete(value);
   }
 
-  getDescription(language?: string): string {
-    return this.description.getText(language);
+  getEditorialNotes(): MultilingualText[] {
+    return [...this.editorialNotes];
   }
 
-  addDescription(value: string, language?: string): void {
-    if (!this.description) this.description = new MultilingualText();
-    this.description.addText(value, language);
+  addEditorialNote(value: MultilingualText): void {
+    this.editorialNotes.add(value);
   }
 
-  setDescription(description: MultilingualText): void;
-  setDescription(value: string, language?: string): void;
-  setDescription(value: string | MultilingualText, language?: string): void {
-    if (value instanceof MultilingualText) {
-      this.description = value;
-    } else {
-      this.description = new MultilingualText(value, language);
-    }
+  removeEditorialNote(value: MultilingualText): boolean {
+    return this.editorialNotes.delete(value);
+  }
+
+  getCreators(): Resource[] {
+    return [...this.creators];
+  }
+
+  addCreator(value: Resource): void {
+    this.creators.add(value);
+  }
+
+  removeCreator(value: Resource): boolean {
+    return this.creators.delete(value);
+  }
+
+  getContributors(): Resource[] {
+    return [...this.contributors];
+  }
+
+  addContributor(value: Resource): void {
+    this.contributors.add(value);
+  }
+
+  removeContributor(value: Resource): boolean {
+    return this.contributors.delete(value);
   }
 
   getNameOrId(language?: string): string {
-    return this.getName(language) || this.id;
+    return this.name.getText(language) || this.id;
   }
 
   override toJSON(): any {
     const object = {
       name: this.name.toJSON(),
       description: this.description.toJSON(),
-      alternativeNames: [],
-      editorialNotes: [],
-      creators: [],
-      contributors: []
+      alternativeNames: [...this.alternativeNames],
+      editorialNotes: [...this.editorialNotes],
+      creators: [...this.creators],
+      contributors: [...this.contributors]
     };
 
-    return { ...object, ...super.toJSON() };
+    return { ...super.toJSON(), ...object };
   }
 }
