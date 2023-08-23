@@ -1,6 +1,6 @@
-import _ from "lodash";
-import { OntoumlElement, Package, Project } from "../index";
-import { NamedElement } from "../named_element";
+import _ from 'lodash';
+import { OntoumlElement, Package, Project } from '../index';
+import { NamedElement } from '../named_element';
 
 export abstract class ModelElement extends NamedElement {
   customProperties: object = {};
@@ -60,7 +60,7 @@ export abstract class ModelElement extends NamedElement {
     const object = {
       customProperties: !_.isEmpty(this.customProperties)
         ? this.customProperties
-        : null,
+        : null
     };
 
     return { ...object, ...super.toJSON() };

@@ -6,10 +6,10 @@ import {
   GeneralizationSet,
   Package,
   Relation,
-  Project,
-} from "..";
-import { ModelElement } from "./model_element";
-import { PackageableElement } from "./packageable_element";
+  Project
+} from '..';
+import { ModelElement } from './model_element';
+import { PackageableElement } from './packageable_element';
 
 export class Generalization extends ModelElement implements PackageableElement {
   general: Classifier<any, any>;
@@ -20,7 +20,7 @@ export class Generalization extends ModelElement implements PackageableElement {
     project: Project,
     container: Package | undefined,
     general: Classifier<any, any>,
-    specific: Classifier<any, any>,
+    specific: Classifier<any, any>
   ) {
     super(project, container);
 
@@ -64,7 +64,7 @@ export class Generalization extends ModelElement implements PackageableElement {
   assertSpecificDefined() {
     if (!this.specific) {
       throw new Error(
-        "The `specific` field of this generalization set is not defined.",
+        'The `specific` field of this generalization set is not defined.'
       );
     }
   }
@@ -72,7 +72,7 @@ export class Generalization extends ModelElement implements PackageableElement {
   assertGeneralDefined() {
     if (!this.specific) {
       throw new Error(
-        "The `general` field of this generalization set is not defined.",
+        'The `general` field of this generalization set is not defined.'
       );
     }
   }
@@ -94,7 +94,7 @@ export class Generalization extends ModelElement implements PackageableElement {
       this.project!,
       this.container,
       this.specific,
-      this.general,
+      this.general
     );
     return clone;
   }
@@ -116,7 +116,7 @@ export class Generalization extends ModelElement implements PackageableElement {
     const object = {
       type: OntoumlType.GENERALIZATION,
       general: this.general.id,
-      specific: this.specific.id,
+      specific: this.specific.id
     };
 
     return { ...object, ...super.toJSON() };
@@ -124,7 +124,7 @@ export class Generalization extends ModelElement implements PackageableElement {
 
   // FIXME
   override resolveReferences(
-    elementReferenceMap: Map<string, OntoumlElement>,
+    elementReferenceMap: Map<string, OntoumlElement>
   ): void {
     // super.resolveReferences(elementReferenceMap);
     // const { general, specific } = this;

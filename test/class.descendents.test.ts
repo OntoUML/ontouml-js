@@ -1,7 +1,7 @@
-import { describe, expect, it, beforeEach } from "@jest/globals";
-import { Class, Package, Project } from "../src";
+import { describe, expect, it, beforeEach } from '@jest/globals';
+import { Class, Package, Project } from '../src';
 
-describe("Test class ancestors-related query methods", () => {
+describe('Test class ancestors-related query methods', () => {
   let project: Project;
   let model: Package;
 
@@ -11,7 +11,7 @@ describe("Test class ancestors-related query methods", () => {
   });
 
   describe(`Test ${Class.prototype.getChildren.name}()`, () => {
-    it("Test function call", () => {
+    it('Test function call', () => {
       const agent = model.createClass();
       const person = model.createClass();
       model.createGeneralization(agent, person);
@@ -21,7 +21,7 @@ describe("Test class ancestors-related query methods", () => {
   });
 
   describe(`Test ${Class.prototype.getDescendants.name}()`, () => {
-    it("Test function call", () => {
+    it('Test function call', () => {
       const agent = model.createClass();
       const person = model.createClass();
       model.createGeneralization(agent, person);
@@ -31,7 +31,7 @@ describe("Test class ancestors-related query methods", () => {
   });
 
   describe(`Test ${Class.prototype.getFilteredDescendants.name}()`, () => {
-    it("Test function call", () => {
+    it('Test function call', () => {
       const agent = model.createClass();
       const person = model.createClass();
       const passFilter = () => true;
@@ -42,7 +42,7 @@ describe("Test class ancestors-related query methods", () => {
   });
 
   describe(`Test ${Class.prototype.getUltimateSortalsDescendants.name}()`, () => {
-    it("Test function call", () => {
+    it('Test function call', () => {
       const agent = model.createCategory();
       const person = model.createKind();
       const student = model.createRole();
@@ -58,7 +58,7 @@ describe("Test class ancestors-related query methods", () => {
   });
 
   describe(`Test ${Class.prototype.getSortalDescendants.name}()`, () => {
-    it("Test function call", () => {
+    it('Test function call', () => {
       const agent = model.createCategory();
       const person = model.createKind();
       const student = model.createRole();
@@ -75,7 +75,7 @@ describe("Test class ancestors-related query methods", () => {
   });
 
   describe(`Test ${Class.prototype.getBaseSortalDescendants.name}()`, () => {
-    it("Test function call", () => {
+    it('Test function call', () => {
       const agent = model.createCategory();
       const person = model.createKind();
       const student = model.createRole();
@@ -91,7 +91,7 @@ describe("Test class ancestors-related query methods", () => {
   });
 
   describe(`Test ${Class.prototype.getNonSortalDescendants.name}()`, () => {
-    it("Test function call", () => {
+    it('Test function call', () => {
       const entity = model.createCategory();
       const agent = model.createCategory();
       const person = model.createKind();
@@ -110,7 +110,7 @@ describe("Test class ancestors-related query methods", () => {
   });
 
   describe(`Test ${Class.prototype.getRigidDescendants.name}()`, () => {
-    it("Test function call", () => {
+    it('Test function call', () => {
       const agent = model.createCategory();
       const person = model.createKind();
       const student = model.createRole();
@@ -126,7 +126,7 @@ describe("Test class ancestors-related query methods", () => {
   });
 
   describe(`Test ${Class.prototype.getSemiRigidDescendants.name}()`, () => {
-    it("Test function call", () => {
+    it('Test function call', () => {
       const agent = model.createCategory();
       const diplomaticAgent = model.createMixin();
       const person = model.createKind();
@@ -144,7 +144,7 @@ describe("Test class ancestors-related query methods", () => {
   });
 
   describe(`Test ${Class.prototype.getAntiRigidDescendants.name}()`, () => {
-    it("Test function call", () => {
+    it('Test function call', () => {
       const agent = model.createCategory();
       const person = model.createKind();
       const student = model.createRole();

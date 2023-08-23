@@ -5,18 +5,18 @@ import {
   RelationStereotype,
   Property,
   Class,
-  EXISTENTIAL_DEPENDENCE_STEREOTYPES,
-} from "..";
+  EXISTENTIAL_DEPENDENCE_STEREOTYPES
+} from '..';
 
-import { Relation } from "./relation";
-import { Classifier } from "./classifier";
+import { Relation } from './relation';
+import { Classifier } from './classifier';
 
 export class BinaryRelation extends Relation {
   constructor(
     project: Project,
     container: Package | undefined,
     source: Classifier<any, any>,
-    target: Classifier<any, any>,
+    target: Classifier<any, any>
   ) {
     super(project, container, [source, target]);
   }
@@ -26,14 +26,14 @@ export class BinaryRelation extends Relation {
 
     if (!source) {
       throw new Error(
-        "The type of the source end of the relation is undefined.",
+        'The type of the source end of the relation is undefined.'
       );
     }
   }
 
   assertTargetAsClass() {
     if (!this.isTargetClass()) {
-      throw new Error("The target of the relation is not a class.");
+      throw new Error('The target of the relation is not a class.');
     }
   }
 
@@ -42,20 +42,20 @@ export class BinaryRelation extends Relation {
 
     if (!target) {
       throw new Error(
-        "The type of the target end of the relation is undefined.",
+        'The type of the target end of the relation is undefined.'
       );
     }
   }
 
   assertSourceAsClass() {
     if (!this.isSourceClass()) {
-      throw new Error("The target of the relation is not a class.");
+      throw new Error('The target of the relation is not a class.');
     }
   }
 
   assertFromRelationToClass() {
     if (!this.fromRelationToClass()) {
-      throw new Error("The relation does not connect a relation to a class.");
+      throw new Error('The relation does not connect a relation to a class.');
     }
   }
 
@@ -203,7 +203,7 @@ export class BinaryRelation extends Relation {
     this.assertFromRelationToClass();
 
     if (!this.isDerivation()) {
-      throw new Error("The relation is not a «derivation».");
+      throw new Error('The relation is not a «derivation».');
     }
 
     return this.properties[0];
@@ -217,7 +217,7 @@ export class BinaryRelation extends Relation {
     this.assertFromRelationToClass();
 
     if (!this.isDerivation()) {
-      throw new Error("The relation is not a «derivation».");
+      throw new Error('The relation is not a «derivation».');
     }
 
     return this.properties[1];
@@ -229,7 +229,7 @@ export class BinaryRelation extends Relation {
 
   getMediatedEnd(): Property {
     if (!this.isMediation()) {
-      throw new Error("The relation is not a «mediation».");
+      throw new Error('The relation is not a «mediation».');
     }
 
     this.assertTargetAsClass();
@@ -243,11 +243,11 @@ export class BinaryRelation extends Relation {
 
   getRelatorEnd(): Property {
     if (!this.isMediation()) {
-      throw new Error("The relation is not a «mediation».");
+      throw new Error('The relation is not a «mediation».');
     }
 
     if (!this.getSourceAsClass().isRelatorType()) {
-      throw new Error("The source of the relation is not a relator type.");
+      throw new Error('The source of the relation is not a relator type.');
     }
 
     return this.getSourceEnd();
@@ -259,7 +259,7 @@ export class BinaryRelation extends Relation {
 
   getBearerEnd(): Property {
     if (!this.isCharacterization()) {
-      throw new Error("The relation is not a «characterization».");
+      throw new Error('The relation is not a «characterization».');
     }
 
     this.assertTargetAsClass();
@@ -273,12 +273,12 @@ export class BinaryRelation extends Relation {
 
   getCharacterizerEnd(): Property {
     if (!this.isCharacterization()) {
-      throw new Error("The relation is not a «characterization».");
+      throw new Error('The relation is not a «characterization».');
     }
 
     if (!this.getSourceAsClass().isCharacterizer()) {
       throw new Error(
-        "The source of the relation is not a mode or quality type.",
+        'The source of the relation is not a mode or quality type.'
       );
     }
 
@@ -293,12 +293,12 @@ export class BinaryRelation extends Relation {
 
   getPartEnd(): Property {
     if (!this.isPartWholeRelation()) {
-      throw new Error("The relation is not a «characterization».");
+      throw new Error('The relation is not a «characterization».');
     }
 
     if (!this.getSourceAsClass().isCharacterizer()) {
       throw new Error(
-        "The source of the relation is not a mode or quality type.",
+        'The source of the relation is not a mode or quality type.'
       );
     }
 
@@ -310,7 +310,7 @@ export class BinaryRelation extends Relation {
   }
 
   getWholeEnd(): Property {
-    throw new Error("Method unimplemented!");
+    throw new Error('Method unimplemented!');
   }
 
   getDependedClass(): Class {
@@ -318,7 +318,7 @@ export class BinaryRelation extends Relation {
   }
 
   getDependedEnd(): Property {
-    throw new Error("Method unimplemented!");
+    throw new Error('Method unimplemented!');
   }
 
   getDependentClass(): Class {
@@ -326,7 +326,7 @@ export class BinaryRelation extends Relation {
   }
 
   getDependentEnd(): Property {
-    throw new Error("Method unimplemented!");
+    throw new Error('Method unimplemented!');
   }
 
   getTypeClass(): Class {
@@ -334,7 +334,7 @@ export class BinaryRelation extends Relation {
   }
 
   getTypeEnd(): Property {
-    throw new Error("Method unimplemented!");
+    throw new Error('Method unimplemented!');
   }
 
   getInstanceClass(): Class {
@@ -342,7 +342,7 @@ export class BinaryRelation extends Relation {
   }
 
   getInstanceEnd(): Property {
-    throw new Error("Method unimplemented!");
+    throw new Error('Method unimplemented!');
   }
 
   getEventClass(): Class {
@@ -350,7 +350,7 @@ export class BinaryRelation extends Relation {
   }
 
   getEventEnd(): Property {
-    throw new Error("Method unimplemented!");
+    throw new Error('Method unimplemented!');
   }
 
   getEndurantClass(): Class {
@@ -358,7 +358,7 @@ export class BinaryRelation extends Relation {
   }
 
   getEndurantEnd(): Property {
-    throw new Error("Method unimplemented!");
+    throw new Error('Method unimplemented!');
   }
 
   getSituationClass(): Class {
@@ -366,12 +366,12 @@ export class BinaryRelation extends Relation {
   }
 
   getSituationEnd(): Property {
-    throw new Error("Method unimplemented!");
+    throw new Error('Method unimplemented!');
   }
 
   override toJSON(): any {
     const object = {
-      type: OntoumlType.BINARY_RELATION,
+      type: OntoumlType.BINARY_RELATION
     };
 
     return { ...object, ...super.toJSON() };

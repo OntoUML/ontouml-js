@@ -1,6 +1,6 @@
-import { OntoumlType } from "..";
-import { Point } from "./point";
-import { Shape } from "./shape";
+import { OntoumlType } from '..';
+import { Point } from './point';
+import { Shape } from './shape';
 
 export class Path extends Shape {
   private _points: Point[];
@@ -17,7 +17,7 @@ export class Path extends Shape {
   public set points(points: Point[]) {
     if (!Array.isArray(points)) {
       throw new Error(
-        "Illegal parameter. Cannot add a null or undefined array of points.",
+        'Illegal parameter. Cannot add a null or undefined array of points.'
       );
     }
 
@@ -33,7 +33,7 @@ export class Path extends Shape {
   }
 
   addPoints(points: Point[]): void {
-    if (points != null) points.forEach((p) => this.addPoint(p));
+    if (points != null) points.forEach(p => this.addPoint(p));
   }
 
   addPoint(point: Point): void {
@@ -42,7 +42,7 @@ export class Path extends Shape {
 
   override toJSON(): any {
     const object = {
-      type: OntoumlType.PATH,
+      type: OntoumlType.PATH
     };
 
     return { ...object, ...super.toJSON() };

@@ -1,4 +1,4 @@
-import { OntoumlElement } from "../ontouml_element";
+import { OntoumlElement } from '../ontouml_element';
 
 export abstract class Shape extends OntoumlElement {
   constructor() {
@@ -10,14 +10,14 @@ export abstract class Shape extends OntoumlElement {
   }
 
   override clone(): OntoumlElement {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 
   override replace(
     originalElement: OntoumlElement,
-    newElement: OntoumlElement,
+    newElement: OntoumlElement
   ): void {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 
   // No reference fields to resolve/replace

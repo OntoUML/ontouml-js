@@ -1,7 +1,7 @@
-import { ModelElement, View, Path, Project, OntoumlElement } from "..";
+import { ModelElement, View, Path, Project, OntoumlElement } from '..';
 
 export abstract class BinaryConnectorView<
-  T extends ModelElement,
+  T extends ModelElement
 > extends View<T> {
   source: View<any>;
   target: View<any>;
@@ -23,7 +23,7 @@ export abstract class BinaryConnectorView<
     const object: any = {
       source: this.source.id,
       target: this.target.id,
-      path: this.path.id,
+      path: this.path.id
     };
 
     return { ...object, ...super.toJSON() };

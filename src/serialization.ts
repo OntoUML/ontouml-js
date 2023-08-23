@@ -18,13 +18,13 @@ import {
   PackageView,
   Rectangle,
   Text,
-  Path,
-} from ".";
+  Path
+} from '.';
 
 function getElementMap(element: OntoumlElement): Map<string, OntoumlElement> {
   const map: Map<string, OntoumlElement> = new Map();
   map.set(element.id, element);
-  element.getAllContents().forEach((element) => map.set(element.id, element));
+  element.getAllContents().forEach(element => map.set(element.id, element));
 
   return map;
 }
@@ -90,7 +90,7 @@ function revive(_key: any, value: any): any {
     ) {
       value.topLeft = {
         x: value.x,
-        y: value.y,
+        y: value.y
       };
     }
 
@@ -106,7 +106,7 @@ function revive(_key: any, value: any): any {
     const allContents: OntoumlElement[] = element.getAllContents();
 
     // Set references to container and project
-    allContents.forEach((content) => {
+    allContents.forEach(content => {
       if (element instanceof Project) content.project = element as Project;
 
       // content.getContents()
@@ -118,7 +118,7 @@ function revive(_key: any, value: any): any {
 
     // Resolves reference fields replacing objects that are created to
     // temporarily hold a type and an id
-    allElements.forEach((content) => content.resolveReferences(contentsMap));
+    allElements.forEach(content => content.resolveReferences(contentsMap));
   }
 
   return element;
@@ -142,5 +142,5 @@ function parse(serializedElement: string): OntoumlElement {
  * `OntoumlElement` objects. */
 export const serializationUtils = {
   revive,
-  parse,
+  parse
 };

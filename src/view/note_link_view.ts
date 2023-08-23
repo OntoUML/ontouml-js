@@ -1,6 +1,6 @@
-import { View, Path, OntoumlElement } from "..";
-import { NoteLink } from "../model/note_link";
-import { NoteView } from "./note_view";
+import { View, Path, OntoumlElement } from '..';
+import { NoteLink } from '../model/note_link';
+import { NoteView } from './note_view';
 
 export abstract class NoteLinkView extends View<NoteLink> {
   noteView: NoteView;
@@ -23,7 +23,7 @@ export abstract class NoteLinkView extends View<NoteLink> {
     const object: any = {
       source: this.noteView.id,
       target: this.elementView.id,
-      path: this.path.id,
+      path: this.path.id
     };
 
     return { ...object, ...super.toJSON() };

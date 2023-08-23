@@ -1,5 +1,5 @@
-import _ from "lodash";
-import { OntoumlElement } from "./ontouml_element";
+import _ from 'lodash';
+import { OntoumlElement } from './ontouml_element';
 
 function includesAll<T>(superSet: T[], subSet: T[]): boolean {
   return !!superSet && !!subSet && _.isEmpty(_.difference(subSet, superSet));
@@ -25,7 +25,7 @@ function equalContents<T>(a: T[] | Set<T>, b: T[] | Set<T>): boolean {
   }
 
   return (
-    a.size === b.size && [...a].every((content) => (b as Set<T>).has(content))
+    a.size === b.size && [...a].every(content => (b as Set<T>).has(content))
   );
 }
 
@@ -44,7 +44,7 @@ function arrayFrom<T>(input: T | readonly T[] | Set<T>): T[] {
 }
 
 function removeById(list: OntoumlElement[], element: OntoumlElement) {
-  _.remove(list, (member) => member.id === element.id);
+  _.remove(list, member => member.id === element.id);
 }
 
 export const utils = {
@@ -52,5 +52,5 @@ export const utils = {
   intersects,
   arrayFrom,
   equalContents,
-  removeById,
+  removeById
 };

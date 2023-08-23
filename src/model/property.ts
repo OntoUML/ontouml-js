@@ -6,30 +6,30 @@ import {
   Classifier,
   PropertyStereotype,
   ModelElement,
-  Relation,
-} from "..";
-import { BinaryRelation } from "./binary_relation";
-import { NaryRelation } from "./nary_relation";
-import { Decoratable } from "./decoratable";
+  Relation
+} from '..';
+import { BinaryRelation } from './binary_relation';
+import { NaryRelation } from './nary_relation';
+import { Decoratable } from './decoratable';
 
 export enum AggregationKind {
-  NONE = "NONE",
-  SHARED = "SHARED",
-  COMPOSITE = "COMPOSITE",
+  NONE = 'NONE',
+  SHARED = 'SHARED',
+  COMPOSITE = 'COMPOSITE'
 }
 
 export class Property extends Decoratable<PropertyStereotype> {
   propertyType?: Classifier<any, any>;
   subsettedProperties: Property[] = [];
   redefinedProperties: Property[] = [];
-  cardinality: Cardinality = new Cardinality("0..*");
+  cardinality: Cardinality = new Cardinality('0..*');
   aggregationKind: AggregationKind = AggregationKind.NONE;
   isOrdered: boolean = false;
   isReadOnly: boolean = false;
 
   constructor(
     container: Classifier<any, any>,
-    propertyType?: Classifier<any, any>,
+    propertyType?: Classifier<any, any>
   ) {
     super(container.project!, container);
     this.propertyType = propertyType;
@@ -37,19 +37,19 @@ export class Property extends Decoratable<PropertyStereotype> {
 
   assertRelationEnd(): void {
     if (!this.isRelationEnd()) {
-      throw new Error("Property is not owned by a relation.");
+      throw new Error('Property is not owned by a relation.');
     }
   }
 
   assertBinaryRelationEnd(): void {
     if (!this.isBinaryRelationEnd()) {
-      throw new Error("Property is not owned by a binary relation.");
+      throw new Error('Property is not owned by a binary relation.');
     }
   }
 
   assertNaryRelationEnd(): void {
     if (!this.isNaryRelationEnd()) {
-      throw new Error("Property is not owned by a n-ary relation.");
+      throw new Error('Property is not owned by a n-ary relation.');
     }
   }
 
@@ -145,7 +145,7 @@ export class Property extends Decoratable<PropertyStereotype> {
    */
   getOtherEnds(): Property[] {
     const container = this.getRelation();
-    return container.properties.filter((p) => p !== this);
+    return container.properties.filter(p => p !== this);
   }
 
   clone(): Property {
@@ -169,7 +169,7 @@ export class Property extends Decoratable<PropertyStereotype> {
         (subsettedProperty: Property) =>
           subsettedProperty === originalElement
             ? (newElement as Property)
-            : subsettedProperty,
+            : subsettedProperty
       );
     }
 
@@ -181,7 +181,7 @@ export class Property extends Decoratable<PropertyStereotype> {
         (redefinedProperty: Property) =>
           redefinedProperty === originalElement
             ? (newElement as Property)
-            : redefinedProperty,
+            : redefinedProperty
       );
     }
   }
@@ -191,18 +191,18 @@ export class Property extends Decoratable<PropertyStereotype> {
       type: OntoumlType.PROPERTY,
       cardinality: null,
       propertyType: this.propertyType?.id,
-      subsettedProperties: this.subsettedProperties.map((p) => p.id),
-      redefinedProperties: this.redefinedProperties.map((p) => p.id),
+      subsettedProperties: this.subsettedProperties.map(p => p.id),
+      redefinedProperties: this.redefinedProperties.map(p => p.id),
       aggregationKind: this.aggregationKind,
       isOrdered: this.isOrdered,
-      isReadOnly: this.isReadOnly,
+      isReadOnly: this.isReadOnly
     };
 
     return { ...object, ...super.toJSON() };
   }
 
   override resolveReferences(
-    elementReferenceMap: Map<string, OntoumlElement>,
+    elementReferenceMap: Map<string, OntoumlElement>
   ): void {
     super.resolveReferences(elementReferenceMap);
 
@@ -213,7 +213,7 @@ export class Property extends Decoratable<PropertyStereotype> {
         propertyType,
         elementReferenceMap,
         this,
-        "propertyType",
+        'propertyType'
       );
     }
   }

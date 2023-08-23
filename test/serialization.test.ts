@@ -1,4 +1,4 @@
-import { describe, expect, it } from "@jest/globals";
+import { describe, expect, it } from '@jest/globals';
 import {
   Class,
   Generalization,
@@ -8,42 +8,42 @@ import {
   Property,
   serializationUtils,
   Literal,
-  Relation,
-} from "../src";
+  Relation
+} from '../src';
 
-describe("Serialization tests", () => {
-  it("Project serialization", () => {
+describe('Serialization tests', () => {
+  it('Project serialization', () => {
     const project = new Project();
-    project.addName("Name");
+    project.addName('Name');
 
     const model = project.createModel();
-    model.addName("Model");
+    model.addName('Model');
 
-    const agent = model.createCategory("Agent");
-    const person = model.createKind("Person");
-    const organization = model.createKind("Organization");
-    const text = model.createDatatype("Text");
+    const agent = model.createCategory('Agent');
+    const person = model.createKind('Person');
+    const organization = model.createKind('Organization');
+    const text = model.createDatatype('Text');
 
-    agent.createAttribute(text, "name");
-    person.createAttribute(text, "surname");
+    agent.createAttribute(text, 'name');
+    person.createAttribute(text, 'surname');
 
-    const worksFor = model.createMediation(person, organization, "works-for");
+    const worksFor = model.createMediation(person, organization, 'works-for');
 
     const agentIntoPerson = model.createGeneralization(
       agent,
       person,
-      "agentIntoPerson",
+      'agentIntoPerson'
     );
     const agentIntoOrganization = model.createGeneralization(
       agent,
       organization,
-      "agentIntoOrganization",
+      'agentIntoOrganization'
     );
 
     const agentSet = model.createPartition(
       [agentIntoPerson, agentIntoOrganization],
       null,
-      "agentsSet",
+      'agentsSet'
     );
 
     const diagram = project.createDiagram();
@@ -156,13 +156,13 @@ describe("Serialization tests", () => {
     });
 
     it(`Test ${Generalization.name} de-serialization`, () => {
-      const pkg = new Package({ id: "pkg_id" });
-      const agent = new Class({ id: "agent_id" });
-      const person = new Class({ id: "person_id" });
+      const pkg = new Package({ id: 'pkg_id' });
+      const agent = new Class({ id: 'agent_id' });
+      const person = new Class({ id: 'person_id' });
       const gen = new Generalization({
-        id: "gen_id",
+        id: 'gen_id',
         general: agent,
-        specific: person,
+        specific: person
       });
 
       pkg.contents = [agent, person, gen];
@@ -223,36 +223,36 @@ describe("Serialization tests", () => {
 
     it(`Test full project de-serialization`, () => {
       const project = new Project();
-      project.addName("MyProject");
+      project.addName('MyProject');
 
       const model = project.createModel();
-      model.addName("Model");
+      model.addName('Model');
 
-      const agent = model.createCategory("Agent");
-      const person = model.createKind("Person");
-      const organization = model.createKind("Organization");
-      const text = model.createDatatype("Text");
+      const agent = model.createCategory('Agent');
+      const person = model.createKind('Person');
+      const organization = model.createKind('Organization');
+      const text = model.createDatatype('Text');
 
-      agent.createAttribute(text, "name");
-      person.createAttribute(text, "surname");
+      agent.createAttribute(text, 'name');
+      person.createAttribute(text, 'surname');
 
-      model.createMaterialRelation(person, organization, "works-for");
+      model.createMaterialRelation(person, organization, 'works-for');
 
       const agentIntoPerson = model.createGeneralization(
         agent,
         person,
-        "agentIntoPerson",
+        'agentIntoPerson'
       );
       const agentIntoOrganization = model.createGeneralization(
         agent,
         organization,
-        "agentIntoOrganization",
+        'agentIntoOrganization'
       );
 
       model.createPartition(
         [agentIntoPerson, agentIntoOrganization],
         null,
-        "agentsSet",
+        'agentsSet'
       );
 
       const serialization = JSON.stringify(project);

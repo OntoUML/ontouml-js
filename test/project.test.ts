@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeAll } from "@jest/globals";
+import { describe, expect, it, beforeAll } from '@jest/globals';
 import {
   Class,
   Generalization,
@@ -7,10 +7,10 @@ import {
   Project,
   Property,
   Relation,
-  serializationUtils,
-} from "../src";
+  serializationUtils
+} from '../src';
 
-describe("Project tests", () => {
+describe('Project tests', () => {
   let project: Project;
   let model: Package, pkg: Package;
   let agent: Class, person: Class, organization: Class, text: Class;
@@ -22,28 +22,28 @@ describe("Project tests", () => {
   beforeAll(() => {
     project = new Project();
     model = project.createModel();
-    pkg = model.createPackage("Package");
-    agent = pkg.createCategory("Agent");
-    person = pkg.createKind("Person");
-    organization = pkg.createKind("Organization");
-    text = pkg.createDatatype("Text");
-    name = agent.createAttribute(text, "name");
-    surname = person.createAttribute(text, "surname");
-    worksFor = pkg.createBinaryRelation(person, organization, "works-for");
+    pkg = model.createPackage('Package');
+    agent = pkg.createCategory('Agent');
+    person = pkg.createKind('Person');
+    organization = pkg.createKind('Organization');
+    text = pkg.createDatatype('Text');
+    name = agent.createAttribute(text, 'name');
+    surname = person.createAttribute(text, 'surname');
+    worksFor = pkg.createBinaryRelation(person, organization, 'works-for');
     agentIntoPerson = pkg.createGeneralization(
       agent,
       person,
-      "agentIntoPerson",
+      'agentIntoPerson'
     );
     agentIntoOrganization = pkg.createGeneralization(
       agent,
       organization,
-      "agentIntoOrganization",
+      'agentIntoOrganization'
     );
     genSet = pkg.createPartition(
       [agentIntoPerson, agentIntoOrganization],
       null,
-      "agentsSet",
+      'agentsSet'
     );
   });
 
@@ -108,14 +108,14 @@ describe("Project tests", () => {
   });
 
   it(`Test getAllEnumerations()`, () => {
-    const enumeration = pkg.createEnumeration("Enumeration");
+    const enumeration = pkg.createEnumeration('Enumeration');
     const enumerations = project.getEnumerations();
     expect(enumerations).toContain(enumeration);
     expect(enumerations.length).toBe(1);
   });
 
   it(`Test getAllLiterals()`, () => {
-    const enumeration = pkg.createEnumeration("Enumeration");
+    const enumeration = pkg.createEnumeration('Enumeration');
     const literal1 = enumeration.createLiteral();
     const literal2 = enumeration.createLiteral();
 
@@ -126,11 +126,11 @@ describe("Project tests", () => {
   });
 
   describe(`Test toJSON()`, () => {
-    it("Should serialize without throwing an exception", () => {
+    it('Should serialize without throwing an exception', () => {
       expect(() => JSON.stringify(project)).not.toThrow();
     });
 
-    it("Should serialize into an object compliant with the OntoUML JSON schema", () => {
+    it('Should serialize into an object compliant with the OntoUML JSON schema', () => {
       expect(serializationUtils.validate(project)).toBe(true);
     });
   });
@@ -152,7 +152,7 @@ describe("Project tests", () => {
     // TODO: implement test
   });
 
-  describe("Test getNonSortals()", () => {
+  describe('Test getNonSortals()', () => {
     let project = new Project();
 
     let model = project.createModel();
@@ -161,17 +161,17 @@ describe("Project tests", () => {
     const crimeWeapon = model.createMixin();
     const person = model.createKind();
 
-    it("Test nonSortals must be in list", () => {
+    it('Test nonSortals must be in list', () => {
       expect(project.getNonSortals().includes(client)).toBeTruthy();
       expect(project.getNonSortals().includes(crimeWeapon)).toBeTruthy();
     });
 
-    it("Test sortal must not be in list", () => {
+    it('Test sortal must not be in list', () => {
       expect(project.getNonSortals().includes(person)).toBeFalsy();
     });
   });
 
-  describe("Test getMediations()", () => {
+  describe('Test getMediations()', () => {
     let project = new Project();
 
     const model = project.createModel();
@@ -185,17 +185,17 @@ describe("Project tests", () => {
     const wifeMarriages = model.createMediation(wife, marriageContract);
     const derivationMarriage = model.createDerivation(
       marriage,
-      marriageContract,
+      marriageContract
     );
 
-    it("Test mediations must be in list", () => {
+    it('Test mediations must be in list', () => {
       expect(
-        project.getMediations(husband).includes(husbandMarriages),
+        project.getMediations(husband).includes(husbandMarriages)
       ).toBeTruthy();
       expect(project.getMediations(wife).includes(wifeMarriages)).toBeTruthy();
     });
 
-    it("Test relations must not be in list", () => {
+    it('Test relations must not be in list', () => {
       expect(project.getMediations(husband).includes(marriage)).toBeFalsy();
       expect(project.getMediations(wife).includes(marriage)).toBeFalsy();
     });

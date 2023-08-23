@@ -4,9 +4,9 @@ import {
   MultilingualText,
   Project,
   OntoumlElement,
-  Package,
-} from "..";
-import { PackageableElement } from "./packageable_element";
+  Package
+} from '..';
+import { PackageableElement } from './packageable_element';
 
 export class Note extends ModelElement implements PackageableElement {
   text: MultilingualText;
@@ -27,7 +27,7 @@ export class Note extends ModelElement implements PackageableElement {
   override toJSON(): any {
     const object: any = {
       type: OntoumlType.NOTE,
-      text: this.text.toJSON(),
+      text: this.text.toJSON()
     };
 
     return { ...object, ...super.toJSON() };
@@ -38,10 +38,10 @@ export class Note extends ModelElement implements PackageableElement {
   }
 
   clone(): OntoumlElement {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 
   replace(originalElement: OntoumlElement, newElement: OntoumlElement): void {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 }

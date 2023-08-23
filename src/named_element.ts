@@ -1,5 +1,5 @@
-import _ from "lodash";
-import { MultilingualText, Project, OntoumlElement } from ".";
+import _ from 'lodash';
+import { MultilingualText, Project, OntoumlElement } from '.';
 
 export abstract class NamedElement extends OntoumlElement {
   private name: MultilingualText;
@@ -59,7 +59,7 @@ export abstract class NamedElement extends OntoumlElement {
       alternativeNames: [],
       editorialNotes: [],
       creators: [],
-      contributors: [],
+      contributors: []
     };
 
     return { ...object, ...super.toJSON() };

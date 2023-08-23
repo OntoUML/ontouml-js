@@ -1,6 +1,6 @@
-import uniqid from "uniqid";
-import _ from "lodash";
-import { OntoumlType, Project } from ".";
+import uniqid from 'uniqid';
+import _ from 'lodash';
+import { OntoumlType, Project } from '.';
 
 export abstract class OntoumlElement {
   id: string;
@@ -19,7 +19,7 @@ export abstract class OntoumlElement {
 
   set project(value: Project | undefined) {
     this._project = value;
-    this.getContents().forEach((element) => (element.project = value));
+    this.getContents().forEach(element => (element.project = value));
   }
 
   getAllContents(): OntoumlElement[] {
@@ -29,14 +29,14 @@ export abstract class OntoumlElement {
       return children;
     }
 
-    let descendants = children.flatMap((child) => child.getAllContents());
+    let descendants = children.flatMap(child => child.getAllContents());
 
     return children.concat(descendants);
   }
 
   assertProject() {
     if (!this.project) {
-      throw new Error("The element has no project project.");
+      throw new Error('The element has no project project.');
     }
   }
 
@@ -51,26 +51,26 @@ export abstract class OntoumlElement {
    * Designed to be used within clone(). */
   abstract replace(
     originalElement: OntoumlElement,
-    newElement: OntoumlElement,
+    newElement: OntoumlElement
   ): void;
 
   lock(): void {
-    throw new Error("Method unimplemented!");
+    throw new Error('Method unimplemented!');
   }
 
   unlock(): void {
-    throw new Error("Method unimplemented!");
+    throw new Error('Method unimplemented!');
   }
 
   isLocked(): boolean {
-    throw new Error("Method unimplemented!");
+    throw new Error('Method unimplemented!');
   }
 
   toJSON(): any {
     const object: any = {
       id: this.id,
       created: this.created?.toISOString() ?? null,
-      modified: this.modified?.toISOString() ?? null,
+      modified: this.modified?.toISOString() ?? null
     };
 
     return object;
@@ -86,7 +86,7 @@ export abstract class OntoumlElement {
    * @param elementReferenceMap id-based map of all instances of
    * `OntoumlElement` in the same context or project. */
   abstract resolveReferences(
-    elementReferenceMap: Map<string, OntoumlElement>,
+    elementReferenceMap: Map<string, OntoumlElement>
   ): void;
 
   /** Support method the returns an instance of `OntoumlElement` from a element
@@ -99,7 +99,7 @@ export abstract class OntoumlElement {
     reference: T,
     elementReferenceMap: Map<string, OntoumlElement>,
     container?: OntoumlElement,
-    field?: string,
+    field?: string
   ): T {
     if (!reference) {
       return reference;
@@ -121,10 +121,10 @@ export abstract class OntoumlElement {
 }
 
 function setFieldAsConstant(element: OntoumlElement, type: OntoumlType) {
-  Object.defineProperty(element, "type", {
+  Object.defineProperty(element, 'type', {
     value: type,
     enumerable: true,
     writable: false,
-    configurable: false,
+    configurable: false
   });
 }

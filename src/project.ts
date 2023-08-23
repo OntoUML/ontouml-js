@@ -11,18 +11,18 @@ import {
   ClassView,
   BinaryRelationView,
   GeneralizationView,
-  GeneralizationSetView,
-} from ".";
-import { NamedElement } from "./named_element";
-import { Finder } from "./finder";
-import { Class } from "./model/class";
-import { Note } from "./model/note";
-import { NoteLink } from "./model/note_link";
-import { PackageView } from "./view/package_view";
-import { NoteView } from "./view/note_view";
-import { NaryRelationView } from "./view/nary_relation_view";
-import { NoteLinkView } from "./view/note_link_view";
-import { ClassBuilder } from "./builder/model/class_builder";
+  GeneralizationSetView
+} from '.';
+import { NamedElement } from './named_element';
+import { Finder } from './finder';
+import { Class } from './model/class';
+import { Note } from './model/note';
+import { NoteLink } from './model/note_link';
+import { PackageView } from './view/package_view';
+import { NoteView } from './view/note_view';
+import { NaryRelationView } from './view/nary_relation_view';
+import { NoteLinkView } from './view/note_link_view';
+import { ClassBuilder } from './builder/model/class_builder';
 
 export class Project extends NamedElement {
   finder: Finder;
@@ -96,7 +96,7 @@ export class Project extends NamedElement {
   addDiagrams(diagrams: Diagram[]) {
     if (diagrams === null) return;
 
-    diagrams.forEach((d) => this.addDiagram(d));
+    diagrams.forEach(d => this.addDiagram(d));
   }
 
   setDiagrams(diagrams: Diagram[]) {
@@ -110,7 +110,7 @@ export class Project extends NamedElement {
   getContents(): OntoumlElement[] {
     console.log(this._classes);
     return [
-      ...Object.values(this._classes),
+      ...Object.values(this._classes)
       // ...Object.values(this._relations),
       // ...Object.values(this._generalizations),
       // ...Object.values(this._generalizationSets),
@@ -135,7 +135,7 @@ export class Project extends NamedElement {
     const object = {
       type: OntoumlType.PROJECT,
       root: this.root || null,
-      elements: null,
+      elements: null
     };
 
     return { ...object, ...super.toJSON() };
@@ -145,10 +145,10 @@ export class Project extends NamedElement {
   resolveReferences(_elementReferenceMap: Map<string, OntoumlElement>): void {}
 
   clone(): OntoumlElement {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 
   replace(originalElement: OntoumlElement, newElement: OntoumlElement): void {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 }

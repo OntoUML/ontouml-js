@@ -1,8 +1,8 @@
-import { ModelElement } from "../../model/model_element";
-import { NamedElementBuilder } from "../named_element_builder";
+import { ModelElement } from '../../model/model_element';
+import { NamedElementBuilder } from '../named_element_builder';
 
 export abstract class ModelElementBuilder<
-  B extends ModelElementBuilder<B>,
+  B extends ModelElementBuilder<B>
 > extends NamedElementBuilder<B> {
   protected _customProperties: { [key: string]: any } = {};
   protected _container?: ModelElement;

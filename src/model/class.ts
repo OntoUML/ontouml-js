@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 import {
   ClassStereotype,
   Nature,
@@ -43,10 +43,10 @@ import {
   NON_SORTAL_STEREOTYPES,
   SORTAL_STEREOTYPES,
   ULTIMATE_SORTAL_STEREOTYPES,
-  BASE_SORTAL_STEREOTYPES,
-} from "..";
+  BASE_SORTAL_STEREOTYPES
+} from '..';
 
-import { Classifier } from "./classifier";
+import { Classifier } from './classifier';
 // import { PropertyBuilder } from '../builder/property_builder';
 
 export class Class extends Classifier<Class, ClassStereotype> {
@@ -82,7 +82,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
   public set order(value: number) {
     if (value < 1) {
-      throw new Error("The order of a class must be greater or equal to one");
+      throw new Error('The order of a class must be greater or equal to one');
     }
 
     this._order = value;
@@ -110,9 +110,9 @@ export class Class extends Classifier<Class, ClassStereotype> {
     const object: any = {
       type: OntoumlType.CLASS,
       restrictedTo: this.restrictedTo,
-      literals: this.literals.map((l) => l.id),
+      literals: this.literals.map(l => l.id),
       isPowertype: this.isPowertype,
-      order: this.getOrderAsString(),
+      order: this.getOrderAsString()
     };
 
     return { ...object, ...super.toJSON() };
@@ -120,7 +120,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
   public getOrderAsString(): string {
     if (this.order === ORDERLESS_LEVEL) {
-      return "*";
+      return '*';
     }
 
     return this.order.toString();
@@ -158,7 +158,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
   addAttribute(attribute: Property): void {
     if (!attribute) {
-      throw new Error("Cannot add a null attribute");
+      throw new Error('Cannot add a null attribute');
     }
 
     attribute.container = this;
@@ -167,7 +167,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
   addLiteral(literal: Literal): void {
     if (!literal) {
-      throw new Error("Cannot add a null literal");
+      throw new Error('Cannot add a null literal');
     }
 
     literal.container = this;
@@ -246,7 +246,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
     return this.allowsOnly([
       Nature.EXTRINSIC_MODE,
       Nature.INTRINSIC_MODE,
-      Nature.QUALITY,
+      Nature.QUALITY
     ]);
   }
 
@@ -493,33 +493,29 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   getUltimateSortalAncestors(): Class[] {
-    return this.getFilteredAncestors((ancestor) =>
-      ancestor.isIdentityProvider(),
-    );
+    return this.getFilteredAncestors(ancestor => ancestor.isIdentityProvider());
   }
 
   getUltimateSortalsDescendants(): Class[] {
-    return this.getFilteredDescendants((descendent) =>
-      descendent.isIdentityProvider(),
+    return this.getFilteredDescendants(descendent =>
+      descendent.isIdentityProvider()
     );
   }
 
   getSortalAncestors(): Class[] {
-    return this.getFilteredAncestors((ancestor) => ancestor.isSortal());
+    return this.getFilteredAncestors(ancestor => ancestor.isSortal());
   }
 
   getSortalDescendants(): Class[] {
-    return this.getFilteredDescendants((descendent) => descendent.isSortal());
+    return this.getFilteredDescendants(descendent => descendent.isSortal());
   }
 
   getBaseSortalAncestors(): Class[] {
-    return this.getFilteredAncestors((ancestor) => ancestor.isBaseSortal());
+    return this.getFilteredAncestors(ancestor => ancestor.isBaseSortal());
   }
 
   getBaseSortalDescendants(): Class[] {
-    return this.getFilteredDescendants((descendent) =>
-      descendent.isBaseSortal(),
-    );
+    return this.getFilteredDescendants(descendent => descendent.isBaseSortal());
   }
 
   getNonSortalAncestors(): Class[] {
@@ -567,7 +563,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
    * */
   getAttributes(): Property[] {
     if (this.isEnumeration()) {
-      throw new Error("Cannot retrieve attributes from an enumeration.");
+      throw new Error('Cannot retrieve attributes from an enumeration.');
     }
 
     return this.properties ? [...this.properties] : [];
@@ -583,7 +579,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
         attributesAcc.push(..._class.getAttributes());
         return attributesAcc;
       },
-      [],
+      []
     );
 
     return allAttributes;
@@ -592,7 +588,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
   /** @returns both own literals, excluding inherited ones */
   getLiterals(): Literal[] {
     if (!this.isEnumeration()) {
-      throw new Error("Cannot retrieve literals from a non-enumeration.");
+      throw new Error('Cannot retrieve literals from a non-enumeration.');
     }
 
     return this.literals ? [...this.literals] : [];
@@ -606,7 +602,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
         literalsAcc.push(..._class.getLiterals());
         return literalsAcc;
       },
-      [],
+      []
     );
 
     return allLiterals;
@@ -617,13 +613,13 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
     if (clone.properties) {
       clone.properties = clone.properties.map((attribute: Property) =>
-        attribute.clone(),
+        attribute.clone()
       );
     }
 
     if (clone.literals) {
       clone.literals = clone.literals.map((literal: Literal) =>
-        literal.clone(),
+        literal.clone()
       );
     }
 
@@ -636,20 +632,20 @@ export class Class extends Classifier<Class, ClassStereotype> {
     }
 
     this.getContents()
-      .filter((content) => content instanceof ModelElement)
-      .map((content) => content as ModelElement)
-      .forEach((content) => content.replace(originalElement, newElement));
+      .filter(content => content instanceof ModelElement)
+      .map(content => content as ModelElement)
+      .forEach(content => content.replace(originalElement, newElement));
   }
 
   getGeneralizationSetsWhereCategorizer(): GeneralizationSet[] {
-    return this.getGeneralizationSets().filter((gs) => gs.categorizer === this);
+    return this.getGeneralizationSets().filter(gs => gs.categorizer === this);
   }
 }
 
 export const ORDERLESS_LEVEL = Infinity;
 
 export function parseOrder(orderString: string): number {
-  if (orderString === "*") {
+  if (orderString === '*') {
     return ORDERLESS_LEVEL;
   } else {
     return isNaN(Number(orderString)) ? 1 : Number(orderString);

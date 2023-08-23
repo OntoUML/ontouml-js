@@ -3,22 +3,22 @@ import {
   Project,
   Package,
   Classifier,
-  RelationStereotype,
-} from "..";
+  RelationStereotype
+} from '..';
 
-import { Relation } from "./relation";
+import { Relation } from './relation';
 
 export class NaryRelation extends Relation {
   constructor(
     project: Project,
     container: Package | undefined,
-    members: Classifier<any, any>[],
+    members: Classifier<any, any>[]
   ) {
     super(project, container, members);
 
     if (members.length < 3) {
       throw new Error(
-        "At least 3 classifiers are needed to create an n-ary relation.",
+        'At least 3 classifiers are needed to create an n-ary relation.'
       );
     }
   }
@@ -29,7 +29,7 @@ export class NaryRelation extends Relation {
 
   override toJSON(): any {
     const object = {
-      type: OntoumlType.NARY_RELATION,
+      type: OntoumlType.NARY_RELATION
     };
 
     return { ...object, ...super.toJSON() };

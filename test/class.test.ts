@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach, beforeAll } from "@jest/globals";
+import { describe, expect, it, beforeEach, beforeAll } from '@jest/globals';
 import {
   Class,
   OntoumlType,
@@ -9,8 +9,8 @@ import {
   Project,
   Package,
   Generalization,
-  GeneralizationSet,
-} from "../src";
+  GeneralizationSet
+} from '../src';
 
 describe(`${Class.name} Tests`, () => {
   let project: Project;
@@ -21,10 +21,10 @@ describe(`${Class.name} Tests`, () => {
     model = project.createModel();
   });
 
-  describe("Test constructor", () => {
-    it("Test type property descriptor", () => {
+  describe('Test constructor', () => {
+    it('Test type property descriptor', () => {
       const emptyClass = new Class();
-      const desc = Object.getOwnPropertyDescriptor(emptyClass, "type");
+      const desc = Object.getOwnPropertyDescriptor(emptyClass, 'type');
 
       expect(desc).toBeDefined();
       if (!desc) return;
@@ -35,7 +35,7 @@ describe(`${Class.name} Tests`, () => {
       expect(desc.configurable).toBeFalsy();
     });
 
-    it("Test defaults", () => {
+    it('Test defaults', () => {
       const emptyClass = new Class();
       expect(emptyClass.stereotype).toBeNull();
       expect(emptyClass.restrictedTo).toHaveLength(0);
@@ -46,7 +46,7 @@ describe(`${Class.name} Tests`, () => {
       expect(emptyClass.order).toEqual(1);
     });
 
-    it("Test overriding defaults", () => {
+    it('Test overriding defaults', () => {
       const fullyFeaturedClass = new Class({
         stereotype: ClassStereotype.CATEGORY,
         restrictedTo: [Nature.FUNCTIONAL_COMPLEX],
@@ -54,7 +54,7 @@ describe(`${Class.name} Tests`, () => {
         isDerived: true,
         isExtensional: true,
         isPowertype: true,
-        order: 2,
+        order: 2
       });
 
       expect(fullyFeaturedClass.stereotype).toBeDefined();
@@ -68,7 +68,7 @@ describe(`${Class.name} Tests`, () => {
   });
 
   describe(`Test ${Class.prototype.getContents.name}()`, () => {
-    it("Test class with no contents", () => {
+    it('Test class with no contents', () => {
       const emptyClass = new Class();
       const contents = emptyClass.getContents();
 
@@ -76,7 +76,7 @@ describe(`${Class.name} Tests`, () => {
       expect(contents.length).toBe(0);
     });
 
-    it("Test class with contents", () => {
+    it('Test class with contents', () => {
       const classWithContents = new Class();
       const attribute = new Property();
       const literal = new Literal();
@@ -92,7 +92,7 @@ describe(`${Class.name} Tests`, () => {
   });
 
   describe(`Test ${Class.prototype.getAllContents.name}()`, () => {
-    it("Test class with no contents", () => {
+    it('Test class with no contents', () => {
       const emptyClass = new Class();
       const contents = emptyClass.getAllContents();
 
@@ -100,7 +100,7 @@ describe(`${Class.name} Tests`, () => {
       expect(contents.length).toBe(0);
     });
 
-    it("Test class with contents", () => {
+    it('Test class with contents', () => {
       const classWithContents = new Class();
       const attribute = new Property();
       const literal = new Literal();
@@ -116,7 +116,7 @@ describe(`${Class.name} Tests`, () => {
   });
 
   describe(`Test ${Class.prototype.createAttribute.name}()`, () => {
-    it("Test regular case", () => {
+    it('Test regular case', () => {
       const enumeration = model.createEnumeration();
       const category = model.createCategory();
       const att = category.createAttribute(enumeration);
@@ -130,7 +130,7 @@ describe(`${Class.name} Tests`, () => {
   });
 
   describe(`Test ${Class.prototype.createLiteral.name}()`, () => {
-    it("Test regular case", () => {
+    it('Test regular case', () => {
       const enumeration = model.createEnumeration();
       const literal = enumeration.createLiteral();
 
@@ -152,14 +152,14 @@ describe(`${Class.name} Tests`, () => {
 
     const _class = new Class(project);
 
-    it("Test set container within common project", () => {
+    it('Test set container within common project', () => {
       _class.setContainer(modelA);
       expect(_class.container).toBe(modelA);
       // TODO discuss change with Claudenir
       // expect(modelA.contents).toContain(_class);
     });
 
-    it("Test change container within common project", () => {
+    it('Test change container within common project', () => {
       _class.setContainer(pkgA);
       expect(_class.container).toBe(pkgA);
       // expect(pkgA.contents).toContain(_class);
@@ -180,61 +180,61 @@ describe(`${Class.name} Tests`, () => {
       mixin = model.createMixin();
     });
 
-    it("Empty array should return false", () => {
+    it('Empty array should return false', () => {
       expect(Class.areAbstract([])).toBe(false);
     });
 
-    it("Array with only non-abstract classes should return false", () => {
+    it('Array with only non-abstract classes should return false', () => {
       expect(Class.areAbstract([kind])).toBe(false);
     });
 
-    it("Array with a non-abstract class should return false", () => {
+    it('Array with a non-abstract class should return false', () => {
       expect(Class.areAbstract([category, kind, mixin])).toBe(false);
     });
 
-    it("Array with only abstract classes should return true", () => {
+    it('Array with only abstract classes should return true', () => {
       expect(Class.areAbstract([category, mixin])).toBe(true);
     });
   });
 
   describe(`Test ${Class.prototype.hasAttributes.name}()`, () => {
-    it("Test class without attributes", () => {
+    it('Test class without attributes', () => {
       const kind = model.createKind();
       expect(kind.hasAttributes()).toBe(false);
     });
 
-    it("Test class with attributes", () => {
+    it('Test class with attributes', () => {
       const kind = model.createKind();
       kind.createAttribute(kind);
       expect(kind.hasAttributes()).toBe(true);
     });
 
-    it("Test enumeration without attributes", () => {
+    it('Test enumeration without attributes', () => {
       const enumeration = model.createEnumeration(undefined, [{}, {}]); // creates two literals
       expect(enumeration.hasAttributes()).toBe(false);
     });
   });
 
   describe(`Test ${Class.prototype.hasLiterals.name}()`, () => {
-    it("Test enumeration without literals", () => {
+    it('Test enumeration without literals', () => {
       const enumeration = model.createEnumeration();
       expect(enumeration.hasLiterals()).toBe(false);
     });
 
-    it("Test enumeration with literals", () => {
+    it('Test enumeration with literals', () => {
       const enumeration = model.createEnumeration();
       enumeration.createLiteral();
       expect(enumeration.hasLiterals()).toBe(true);
     });
 
-    it("Test class without literals", () => {
+    it('Test class without literals', () => {
       const kind = model.createKind();
       expect(kind.hasLiterals()).toBe(false);
     });
   });
 
   describe(`Test ${Class.prototype.getGeneralizations.name}()`, () => {
-    it("Test function call", () => {
+    it('Test function call', () => {
       const agent = model.createClass();
       const person = model.createClass();
       model.createGeneralization(agent, person);
@@ -244,7 +244,7 @@ describe(`${Class.name} Tests`, () => {
   });
 
   describe(`Test ${Class.prototype.getGeneralizationSets.name}()`, () => {
-    it("Test function call", () => {
+    it('Test function call', () => {
       const agent = model.createClass();
       const person = model.createClass();
       const agentIntoPerson = model.createGeneralization(agent, person);
@@ -255,7 +255,7 @@ describe(`${Class.name} Tests`, () => {
   });
 
   describe(`Test ${Class.prototype.getGeneralizationsWhereGeneral.name}()`, () => {
-    it("Test function call", () => {
+    it('Test function call', () => {
       const agent = model.createClass();
       const person = model.createClass();
       model.createGeneralization(agent, person);
@@ -265,7 +265,7 @@ describe(`${Class.name} Tests`, () => {
   });
 
   describe(`Test ${Class.prototype.getGeneralizationsWhereSpecific.name}()`, () => {
-    it("Test function call", () => {
+    it('Test function call', () => {
       const agent = model.createClass();
       const person = model.createClass();
       model.createGeneralization(agent, person);
@@ -275,7 +275,7 @@ describe(`${Class.name} Tests`, () => {
   });
 
   describe(`Test ${Class.prototype.getGeneralizationSetsWhereGeneral.name}()`, () => {
-    it("Test function call", () => {
+    it('Test function call', () => {
       const agent = model.createClass();
       const person = model.createClass();
       const agentIntoPerson = model.createGeneralization(agent, person);
@@ -286,7 +286,7 @@ describe(`${Class.name} Tests`, () => {
   });
 
   describe(`Test ${Class.prototype.getGeneralizationSetsWhereSpecific.name}()`, () => {
-    it("Test function call", () => {
+    it('Test function call', () => {
       const agent = model.createClass();
       const person = model.createClass();
       const agentIntoPerson = model.createGeneralization(agent, person);
@@ -314,29 +314,29 @@ describe(`${Class.name} Tests`, () => {
         [agentIntoPerson, agentIntoOrganization],
         false,
         false,
-        agentType,
+        agentType
       );
     });
 
-    it("Test agent generalization sets", () => {
+    it('Test agent generalization sets', () => {
       const agentGeneralizationSets =
         agent.getGeneralizationSetsWhereCategorizer();
       expect(agentGeneralizationSets.length).toBe(0);
     });
 
-    it("Test person generalization sets", () => {
+    it('Test person generalization sets', () => {
       const personGeneralizationSets =
         person.getGeneralizationSetsWhereCategorizer();
       expect(personGeneralizationSets.length).toBe(0);
     });
 
-    it("Test organization generalization sets", () => {
+    it('Test organization generalization sets', () => {
       const organizationGeneralizationSets =
         organization.getGeneralizationSetsWhereCategorizer();
       expect(organizationGeneralizationSets.length).toBe(0);
     });
 
-    it("Test agentType generalization sets", () => {
+    it('Test agentType generalization sets', () => {
       const agentTypeGeneralizationSets =
         agentType.getGeneralizationSetsWhereCategorizer();
       expect(agentTypeGeneralizationSets).toContain(genSet);
@@ -345,7 +345,7 @@ describe(`${Class.name} Tests`, () => {
   });
 
   describe(`Test ${Class.prototype.getAttributes.name}()`, () => {
-    it("Retrieve own attributes", () => {
+    it('Retrieve own attributes', () => {
       const agent = model.createCategory();
       const person = model.createKind();
       const text = model.createDatatype();
@@ -358,14 +358,14 @@ describe(`${Class.name} Tests`, () => {
       expect(text.getAttributes()).toEqual([]);
     });
 
-    it("Test exception", () => {
+    it('Test exception', () => {
       const enumeration = model.createEnumeration();
       expect(() => enumeration.getAttributes()).toThrow();
     });
   });
 
   describe(`Test ${Class.prototype.getAllAttributes.name}()`, () => {
-    it("Retrieve all attributes", () => {
+    it('Retrieve all attributes', () => {
       const agent = model.createCategory();
       const person = model.createKind();
       const text = model.createDatatype();
@@ -380,14 +380,14 @@ describe(`${Class.name} Tests`, () => {
       expect(text.getAttributes()).toEqual([]);
     });
 
-    it("Test exception", () => {
+    it('Test exception', () => {
       const enumeration = model.createEnumeration();
       expect(() => enumeration.getAllAttributes()).toThrow();
     });
   });
 
   describe(`Test ${Class.prototype.getLiterals.name}()`, () => {
-    it("Retrieve own literals", () => {
+    it('Retrieve own literals', () => {
       const enumerationA = model.createEnumeration();
       const enumerationB = model.createEnumeration();
       const enumerationN = model.createEnumeration();
@@ -400,14 +400,14 @@ describe(`${Class.name} Tests`, () => {
       expect(enumerationN.getLiterals()).toEqual([]);
     });
 
-    it("Test exception", () => {
+    it('Test exception', () => {
       const _class = model.createClass();
       expect(() => _class.getLiterals()).toThrow();
     });
   });
 
   describe(`Test ${Class.prototype.getAllLiterals.name}()`, () => {
-    it("Retrieve all literals", () => {
+    it('Retrieve all literals', () => {
       const enumerationA = model.createEnumeration();
       const enumerationB = model.createEnumeration();
       const enumerationN = model.createEnumeration();
@@ -423,20 +423,20 @@ describe(`${Class.name} Tests`, () => {
       expect(enumerationN.getAllLiterals()).toEqual([]);
     });
 
-    it("Test exception", () => {
+    it('Test exception', () => {
       const _class = model.createClass();
       expect(() => _class.getAllLiterals()).toThrow();
     });
   });
 
   describe(`Test ${Class.prototype.clone.name}()`, () => {
-    it("Test method", () => {
+    it('Test method', () => {
       const classA = model.createClass();
       const classB = classA.clone();
       expect(classA).toEqual(classB);
     });
 
-    it("Test method", () => {
+    it('Test method', () => {
       const classC = new Class();
       const classD = classC.clone();
       expect(classC).toEqual(classD);

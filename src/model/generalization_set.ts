@@ -6,11 +6,11 @@ import {
   Generalization,
   Package,
   Relation,
-  Project,
-} from "..";
-import { utils } from "..";
-import { PackageableElement } from "./packageable_element";
-import { ModelElement } from "./model_element";
+  Project
+} from '..';
+import { utils } from '..';
+import { PackageableElement } from './packageable_element';
+import { ModelElement } from './model_element';
 
 export class GeneralizationSet
   extends ModelElement
@@ -31,9 +31,9 @@ export class GeneralizationSet
 
   // FIXME: TEST me
   public set generalizations(generalizations: Generalization[]) {
-    this._generalizations.forEach((g) => utils.removeById(g._genSets, this));
+    this._generalizations.forEach(g => utils.removeById(g._genSets, this));
 
-    this.generalizations.forEach((g) => g._genSets.push(this));
+    this.generalizations.forEach(g => g._genSets.push(this));
     this._generalizations = generalizations;
   }
 
@@ -65,10 +65,10 @@ export class GeneralizationSet
     return (
       this.isPartition() &&
       this.involvesClasses() &&
-      ((this.getSpecificsAsClasses().every((specific) => specific.isPhase()) &&
+      ((this.getSpecificsAsClasses().every(specific => specific.isPhase()) &&
         this.getGeneralAsClass().isSortal()) ||
-        (this.getSpecificsAsClasses().every((specific) =>
-          specific.isPhaseMixin(),
+        (this.getSpecificsAsClasses().every(specific =>
+          specific.isPhaseMixin()
         ) &&
           this.getGeneralAsClass().isCategory()))
     );
@@ -83,7 +83,7 @@ export class GeneralizationSet
     return (
       this.isPartition() &&
       this.involvesClasses() &&
-      this.getSpecificsAsClasses().every((specific) => specific.isSubkind()) &&
+      this.getSpecificsAsClasses().every(specific => specific.isSubkind()) &&
       this.getGeneralAsClass().isSortal()
       //
     );
@@ -103,14 +103,14 @@ export class GeneralizationSet
   getSpecifics(): Classifier<any, any>[] {
     if (!Array.isArray(this.generalizations)) {
       throw new Error(
-        "The field `generalizations` should be an array: " +
-          this.generalizations,
+        'The field `generalizations` should be an array: ' +
+          this.generalizations
       );
     }
 
-    this.generalizations.forEach((g) => g.assertSpecificDefined());
+    this.generalizations.forEach(g => g.assertSpecificDefined());
     let specifics = this.generalizations.map(
-      (g) => g.specific as Classifier<any, any>,
+      g => g.specific as Classifier<any, any>
     );
 
     return Array.from(new Set(specifics));
@@ -118,7 +118,7 @@ export class GeneralizationSet
 
   getGeneralAsClass(): Class {
     if (!this.involvesClasses()) {
-      throw new Error("Generalization set does not involve classes");
+      throw new Error('Generalization set does not involve classes');
     }
 
     return this.getGeneral() as Class;
@@ -126,7 +126,7 @@ export class GeneralizationSet
 
   getSpecificsAsClasses(): Class[] {
     if (!this.involvesClasses()) {
-      throw new Error("Generalization set does not involve classes");
+      throw new Error('Generalization set does not involve classes');
     }
 
     return this.getSpecifics() as Class[];
@@ -134,7 +134,7 @@ export class GeneralizationSet
 
   getGeneralAsRelation(): Relation {
     if (!this.involvesRelations()) {
-      throw new Error("Generalization set does not involve relations");
+      throw new Error('Generalization set does not involve relations');
     }
 
     return this.getGeneral() as Relation;
@@ -142,7 +142,7 @@ export class GeneralizationSet
 
   getSpecificsAsRelations(): Relation[] {
     if (!this.involvesRelations()) {
-      throw new Error("Generalization set does not involve relations");
+      throw new Error('Generalization set does not involve relations');
     }
 
     return this.getSpecifics() as Relation[];
@@ -170,23 +170,23 @@ export class GeneralizationSet
 
   involvesClasses(): boolean {
     this.assertDefinedGeneralizations();
-    return this.generalizations.every((g) => g.involvesClasses());
+    return this.generalizations.every(g => g.involvesClasses());
   }
 
   involvesRelations(): boolean {
     this.assertDefinedGeneralizations();
-    return this.generalizations.every((g) => g.involvesRelations());
+    return this.generalizations.every(g => g.involvesRelations());
   }
 
   assertUniqueGeneral() {
     const general = this.generalizations[0].general;
     const hasMultipleGenerals = this.generalizations.some(
-      (g) => g.general !== general,
+      g => g.general !== general
     );
 
     if (hasMultipleGenerals) {
       throw new Error(
-        "Generalization set involving distinct general classifiers",
+        'Generalization set involving distinct general classifiers'
       );
     }
 
@@ -195,14 +195,14 @@ export class GeneralizationSet
 
   assertDefinedGeneralizations() {
     if (!this.generalizations) {
-      throw new Error("Generalization array is null.");
+      throw new Error('Generalization array is null.');
     }
 
     if (this.generalizations.length == 0) {
-      throw new Error("Generalization array is empty.");
+      throw new Error('Generalization array is empty.');
     }
 
-    this.generalizations.every((g) => g.assertFieldsDefined());
+    this.generalizations.every(g => g.assertFieldsDefined());
   }
 
   //FIX ME
@@ -229,7 +229,7 @@ export class GeneralizationSet
   getInstantiationRelations(): Relation[] | undefined {
     return this.categorizer
       ?.getIncomingRelations()
-      .filter((r) => r.isInstantiation());
+      .filter(r => r.isInstantiation());
   }
 
   override toJSON(): any {
@@ -238,14 +238,14 @@ export class GeneralizationSet
       isDisjoint: this.isDisjoint,
       isComplete: this.isComplete,
       categorizer: this.categorizer?.id || null,
-      generalizations: this._generalizations.map((g) => g.id),
+      generalizations: this._generalizations.map(g => g.id)
     };
 
     return { ...object, ...super.toJSON() };
   }
 
   override resolveReferences(
-    elementReferenceMap: Map<string, OntoumlElement>,
+    elementReferenceMap: Map<string, OntoumlElement>
   ): void {
     super.resolveReferences(elementReferenceMap);
 
@@ -256,7 +256,7 @@ export class GeneralizationSet
         categorizer,
         elementReferenceMap,
         this,
-        "categorizer",
+        'categorizer'
       );
     }
 
@@ -267,8 +267,8 @@ export class GeneralizationSet
             generalization,
             elementReferenceMap,
             this,
-            "generalizations",
-          ),
+            'generalizations'
+          )
       );
     }
   }

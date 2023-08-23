@@ -13,15 +13,15 @@ import {
   GeneralizationView,
   PackageView,
   BinaryRelationView,
-  Project,
-} from ".";
-import { BinaryRelation } from "./model/binary_relation";
-import { NaryRelation } from "./model/nary_relation";
-import { Path } from "./shape/path";
-import { Rectangle } from "./shape/rectangle";
-import { Shape } from "./shape/shape";
-import { Text } from "./shape/text";
-import { NaryRelationView } from "./view/nary_relation_view";
+  Project
+} from '.';
+import { BinaryRelation } from './model/binary_relation';
+import { NaryRelation } from './model/nary_relation';
+import { Path } from './shape/path';
+import { Rectangle } from './shape/rectangle';
+import { Shape } from './shape/shape';
+import { Text } from './shape/text';
+import { NaryRelationView } from './view/nary_relation_view';
 
 export class Diagram extends OntoumlElement {
   owner?: ModelElement;
@@ -38,54 +38,52 @@ export class Diagram extends OntoumlElement {
 
   getClassViews(): ClassView[] {
     return this.contents?.filter(
-      (view) => view instanceof ClassView,
+      view => view instanceof ClassView
     ) as ClassView[];
   }
 
   getRelationViews(): BinaryRelationView[] {
     return this.contents.filter(
-      (view) => view instanceof BinaryRelationView,
+      view => view instanceof BinaryRelationView
     ) as BinaryRelationView[];
   }
 
   getGeneralizationViews(): GeneralizationView[] {
     return this.contents.filter(
-      (view) => view instanceof GeneralizationView,
+      view => view instanceof GeneralizationView
     ) as GeneralizationView[];
   }
 
   getGeneralizationSetViews(): GeneralizationSetView[] {
     return this.contents.filter(
-      (view) => view instanceof GeneralizationSetView,
+      view => view instanceof GeneralizationSetView
     ) as GeneralizationSetView[];
   }
 
   getPackageViews(): PackageView[] {
     return this.contents.filter(
-      (view) => view instanceof PackageView,
+      view => view instanceof PackageView
     ) as PackageView[];
   }
 
   getRealizedModelElements(): ModelElement[] {
-    return this.contents.map((view) => view.element);
+    return this.contents.map(view => view.element);
   }
 
   getShapes(): Shape[] {
-    return this.contents?.flatMap((view) => view.getContents()) || [];
+    return this.contents?.flatMap(view => view.getContents()) || [];
   }
 
   getRectangles(): Rectangle[] {
-    return this.getShapes().filter(
-      (s) => s instanceof Rectangle,
-    ) as Rectangle[];
+    return this.getShapes().filter(s => s instanceof Rectangle) as Rectangle[];
   }
 
   getPaths(): Path[] {
-    return this.getShapes().filter((s) => s instanceof Path) as Path[];
+    return this.getShapes().filter(s => s instanceof Path) as Path[];
   }
 
   getTexts(): Text[] {
-    return this.getShapes().filter((s) => s instanceof Text) as Text[];
+    return this.getShapes().filter(s => s instanceof Text) as Text[];
   }
 
   addView(element: View<any>): void {
@@ -101,7 +99,7 @@ export class Diagram extends OntoumlElement {
       return;
     }
 
-    elements.forEach((e) => this.addView(e));
+    elements.forEach(e => this.addView(e));
   }
 
   setElements(elements: View<any>[]): void {
@@ -115,11 +113,11 @@ export class Diagram extends OntoumlElement {
   }
 
   findElementById(id: string): View<any> | undefined {
-    return this.contents.find((view) => view.element.id === id);
+    return this.contents.find(view => view.element.id === id);
   }
 
   findView(modelElement: ModelElement): View<any> | undefined {
-    return this.contents.find((view) => view.element === modelElement);
+    return this.contents.find(view => view.element === modelElement);
   }
 
   containsView(modelElement: ModelElement): boolean {
@@ -128,18 +126,18 @@ export class Diagram extends OntoumlElement {
 
   addModelElements(modelElements: ModelElement[]): View<any>[] | undefined {
     if (!modelElements) {
-      throw new Error("Invalid parameter. `modelElements` cannot be null");
+      throw new Error('Invalid parameter. `modelElements` cannot be null');
     }
 
     return modelElements
-      .filter((e) => e !== null)
-      .map((e) => this.addModelElement(e));
+      .filter(e => e !== null)
+      .map(e => this.addModelElement(e));
   }
 
   addModelElement(modelElement: ModelElement): View<any> {
     if (!modelElement)
       throw new Error(
-        "Invalid parameter. The supplied element cannot be null.",
+        'Invalid parameter. The supplied element cannot be null.'
       );
 
     if (modelElement instanceof Class) return this.addClass(modelElement);
@@ -154,15 +152,15 @@ export class Diagram extends OntoumlElement {
     if (modelElement instanceof Package) return this.addPackage(modelElement);
 
     throw new Error(
-      "Invalid parameter. The supplied element cannot be visualized in a diagram. `modelElement`: " +
-        modelElement,
+      'Invalid parameter. The supplied element cannot be visualized in a diagram. `modelElement`: ' +
+        modelElement
     );
   }
 
   findOrCreateView(modelElement: ModelElement): View<any> {
     if (!modelElement)
       throw new Error(
-        "Failed to get or add view. Input element is null or undefined.",
+        'Failed to get or add view. Input element is null or undefined.'
       );
     return this.findView(modelElement) || this.addModelElement(modelElement);
   }
@@ -202,8 +200,8 @@ export class Diagram extends OntoumlElement {
     rel.assertTypedProperties();
     rel.assertHoldsBetweenClasses();
 
-    const views = rel.properties.map((p) =>
-      this.findOrCreateView(p.propertyType!),
+    const views = rel.properties.map(p =>
+      this.findOrCreateView(p.propertyType!)
     ) as ClassView[];
     let relationView = new NaryRelationView(rel, views);
     this.addView(relationView);
@@ -221,7 +219,7 @@ export class Diagram extends OntoumlElement {
     let generalizationView = new GeneralizationView(
       gen,
       sourceView,
-      targetView,
+      targetView
     );
     this.addView(generalizationView);
 
@@ -232,7 +230,7 @@ export class Diagram extends OntoumlElement {
     const object: any = {
       type: OntoumlType.DIAGRAM,
       owner: this.owner?.id || null,
-      contents: this.contents.map((v) => v.id),
+      contents: this.contents.map(v => v.id)
     };
 
     return { ...object, ...super.toJSON() };
@@ -246,15 +244,15 @@ export class Diagram extends OntoumlElement {
         owner,
         elementReferenceMap,
         this,
-        "owner",
+        'owner'
       );
     }
   }
 
   clone(): OntoumlElement {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
   replace(originalElement: OntoumlElement, newElement: OntoumlElement): void {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 }

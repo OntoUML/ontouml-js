@@ -1,4 +1,4 @@
-import { remove } from "lodash";
+import { remove } from 'lodash';
 import {
   OntoumlElement,
   OntoumlType,
@@ -12,12 +12,12 @@ import {
   GeneralizationSet,
   Relation,
   Classifier,
-  Project,
-} from "..";
-import { PackageableElement } from "./packageable_element";
-import { BinaryRelation } from "./binary_relation";
-import { NaryRelation } from "./nary_relation";
-import { ModelElement } from "./model_element";
+  Project
+} from '..';
+import { PackageableElement } from './packageable_element';
+import { BinaryRelation } from './binary_relation';
+import { NaryRelation } from './nary_relation';
+import { ModelElement } from './model_element';
 
 export class Package extends ModelElement implements PackageableElement {
   contents: ModelElement[] = [];
@@ -36,7 +36,7 @@ export class Package extends ModelElement implements PackageableElement {
 
   addContent<T extends ModelElement>(child: T): T {
     if (child == null) {
-      throw new Error("Cannot add null child.");
+      throw new Error('Cannot add null child.');
     }
 
     if (child.container instanceof Package) {
@@ -49,9 +49,9 @@ export class Package extends ModelElement implements PackageableElement {
   }
 
   addContents<T extends ModelElement>(contents: T[]): T[] {
-    if (!contents) throw new Error("Cannot add null array.");
+    if (!contents) throw new Error('Cannot add null array.');
 
-    return contents.filter((x) => x !== null).map((x) => this.addContent(x));
+    return contents.filter(x => x !== null).map(x => this.addContent(x));
   }
 
   setContents<T extends ModelElement>(contents: T[]): T[] {
@@ -61,7 +61,7 @@ export class Package extends ModelElement implements PackageableElement {
 
   removeContent<T extends ModelElement>(child: T): boolean {
     const originalLength = this.contents.length;
-    let removed = remove(this.contents, (x) => child === x);
+    let removed = remove(this.contents, x => child === x);
 
     return originalLength > removed.length;
   }
@@ -73,7 +73,7 @@ export class Package extends ModelElement implements PackageableElement {
   override toJSON(): any {
     const object = {
       type: OntoumlType.PACKAGE,
-      contents: this.contents.map((e) => e.id),
+      contents: this.contents.map(e => e.id)
     };
 
     return { ...object, ...super.toJSON() };
@@ -95,7 +95,7 @@ export class Package extends ModelElement implements PackageableElement {
   createClass(
     name?: string,
     stereotype?: string,
-    natures?: Nature | Nature[],
+    natures?: Nature | Nature[]
   ): Class {
     this.assertProject();
 
@@ -121,7 +121,7 @@ export class Package extends ModelElement implements PackageableElement {
     return this.createClass(
       name,
       ClassStereotype.HISTORICAL_ROLE,
-      Nature.FUNCTIONAL_COMPLEX,
+      Nature.FUNCTIONAL_COMPLEX
     );
   }
 
@@ -129,7 +129,7 @@ export class Package extends ModelElement implements PackageableElement {
     const c = this.createClass(
       name,
       ClassStereotype.HISTORICAL_ROLE_MIXIN,
-      natures || Nature.FUNCTIONAL_COMPLEX,
+      natures || Nature.FUNCTIONAL_COMPLEX
     );
     c.isAbstract = true;
     return c;
@@ -147,7 +147,7 @@ export class Package extends ModelElement implements PackageableElement {
     const c = this.createClass(
       name,
       ClassStereotype.CATEGORY,
-      natures || Nature.FUNCTIONAL_COMPLEX,
+      natures || Nature.FUNCTIONAL_COMPLEX
     );
     c.isAbstract = true;
     return c;
@@ -157,7 +157,7 @@ export class Package extends ModelElement implements PackageableElement {
     const c = this.createClass(
       name,
       ClassStereotype.MIXIN,
-      natures || Nature.FUNCTIONAL_COMPLEX,
+      natures || Nature.FUNCTIONAL_COMPLEX
     );
     c.isAbstract = true;
     return c;
@@ -167,7 +167,7 @@ export class Package extends ModelElement implements PackageableElement {
     const c = this.createClass(
       name,
       ClassStereotype.ROLE_MIXIN,
-      natures || Nature.FUNCTIONAL_COMPLEX,
+      natures || Nature.FUNCTIONAL_COMPLEX
     );
     c.isAbstract = true;
     return c;
@@ -177,7 +177,7 @@ export class Package extends ModelElement implements PackageableElement {
     const c = this.createClass(
       name,
       ClassStereotype.PHASE_MIXIN,
-      natures || Nature.FUNCTIONAL_COMPLEX,
+      natures || Nature.FUNCTIONAL_COMPLEX
     );
     c.isAbstract = true;
     return c;
@@ -187,7 +187,7 @@ export class Package extends ModelElement implements PackageableElement {
     return this.createClass(
       name,
       ClassStereotype.KIND,
-      Nature.FUNCTIONAL_COMPLEX,
+      Nature.FUNCTIONAL_COMPLEX
     );
   }
 
@@ -195,7 +195,7 @@ export class Package extends ModelElement implements PackageableElement {
     return this.createClass(
       name,
       ClassStereotype.COLLECTIVE,
-      Nature.COLLECTIVE,
+      Nature.COLLECTIVE
     );
   }
 
@@ -223,7 +223,7 @@ export class Package extends ModelElement implements PackageableElement {
     return this.createClass(
       name,
       ClassStereotype.SUBKIND,
-      nature || Nature.FUNCTIONAL_COMPLEX,
+      nature || Nature.FUNCTIONAL_COMPLEX
     );
   }
 
@@ -231,7 +231,7 @@ export class Package extends ModelElement implements PackageableElement {
     return this.createClass(
       name,
       ClassStereotype.ROLE,
-      nature || Nature.FUNCTIONAL_COMPLEX,
+      nature || Nature.FUNCTIONAL_COMPLEX
     );
   }
 
@@ -239,7 +239,7 @@ export class Package extends ModelElement implements PackageableElement {
     return this.createClass(
       name,
       ClassStereotype.PHASE,
-      nature || Nature.FUNCTIONAL_COMPLEX,
+      nature || Nature.FUNCTIONAL_COMPLEX
     );
   }
 
@@ -258,7 +258,7 @@ export class Package extends ModelElement implements PackageableElement {
   createNaryRelation(
     members: Classifier<any, any>[],
     name?: string,
-    stereotype?: RelationStereotype,
+    stereotype?: RelationStereotype
   ): NaryRelation {
     let rel = new NaryRelation(this.project!, this, members);
 
@@ -268,8 +268,8 @@ export class Package extends ModelElement implements PackageableElement {
 
     if (stereotype && stereotype != RelationStereotype.MATERIAL) {
       throw new Error(
-        "N-ary relations can only be decorated as «material». Provided: " +
-          stereotype,
+        'N-ary relations can only be decorated as «material». Provided: ' +
+          stereotype
       );
     }
 
@@ -282,7 +282,7 @@ export class Package extends ModelElement implements PackageableElement {
     source: Classifier<any, any>,
     target: Classifier<any, any>,
     name?: string,
-    stereotype?: RelationStereotype,
+    stereotype?: RelationStereotype
   ): BinaryRelation {
     let rel = new BinaryRelation(this.project!, this, source, target);
 
@@ -300,26 +300,26 @@ export class Package extends ModelElement implements PackageableElement {
   createDerivation(
     relation: Relation,
     truthmaker: Class,
-    name?: string,
+    name?: string
   ): Relation {
     return this.createBinaryRelation(
       relation,
       truthmaker,
       name,
-      RelationStereotype.DERIVATION,
+      RelationStereotype.DERIVATION
     );
   }
 
   createMaterialRelation(
     source: Class,
     target: Class,
-    name?: string,
+    name?: string
   ): Relation {
     const relation = this.createBinaryRelation(
       source,
       target,
       name,
-      RelationStereotype.MATERIAL,
+      RelationStereotype.MATERIAL
     );
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -342,13 +342,13 @@ export class Package extends ModelElement implements PackageableElement {
   createComparativeRelation(
     source: Class,
     target: Class,
-    name?: string,
+    name?: string
   ): Relation {
     const relation = this.createBinaryRelation(
       source,
       target,
       name,
-      RelationStereotype.COMPARATIVE,
+      RelationStereotype.COMPARATIVE
     );
 
     const sourceEnd = relation.getSourceEnd();
@@ -367,7 +367,7 @@ export class Package extends ModelElement implements PackageableElement {
       source,
       target,
       name,
-      RelationStereotype.MEDIATION,
+      RelationStereotype.MEDIATION
     );
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -387,13 +387,13 @@ export class Package extends ModelElement implements PackageableElement {
   createCharacterization(
     source: Class,
     target: Class,
-    name?: string,
+    name?: string
   ): Relation {
     const relation = this.createBinaryRelation(
       source,
       target,
       name,
-      RelationStereotype.CHARACTERIZATION,
+      RelationStereotype.CHARACTERIZATION
     );
 
     relation.getSourceEnd().cardinality?.setOneToOne;
@@ -408,13 +408,13 @@ export class Package extends ModelElement implements PackageableElement {
   createExternalDependence(
     source: Class,
     target: Class,
-    name?: string,
+    name?: string
   ): Relation {
     const relation = this.createBinaryRelation(
       source,
       target,
       name,
-      RelationStereotype.EXTERNAL_DEPENDENCE,
+      RelationStereotype.EXTERNAL_DEPENDENCE
     );
 
     relation.getSourceEnd().cardinality?.setZeroToMany();
@@ -431,7 +431,7 @@ export class Package extends ModelElement implements PackageableElement {
       source,
       target,
       name,
-      RelationStereotype.COMPONENT_OF,
+      RelationStereotype.COMPONENT_OF
     );
 
     relation.getSourceEnd().cardinality?.setOneToMany();
@@ -446,13 +446,13 @@ export class Package extends ModelElement implements PackageableElement {
   createMemberOfRelation(
     source: Class,
     target: Class,
-    name?: string,
+    name?: string
   ): Relation {
     const relation = this.createBinaryRelation(
       source,
       target,
       name,
-      RelationStereotype.MEMBER_OF,
+      RelationStereotype.MEMBER_OF
     );
 
     const sourceEnd = relation.getSourceEnd();
@@ -470,7 +470,7 @@ export class Package extends ModelElement implements PackageableElement {
       source,
       target,
       name,
-      RelationStereotype.SUBCOLLECTION_OF,
+      RelationStereotype.SUBCOLLECTION_OF
     );
 
     const sourceEnd = relation.getSourceEnd();
@@ -488,7 +488,7 @@ export class Package extends ModelElement implements PackageableElement {
       source,
       target,
       name,
-      RelationStereotype.SUBQUANTITY_OF,
+      RelationStereotype.SUBQUANTITY_OF
     );
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -505,7 +505,7 @@ export class Package extends ModelElement implements PackageableElement {
       source,
       target,
       name,
-      RelationStereotype.INSTANTIATION,
+      RelationStereotype.INSTANTIATION
     );
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -521,7 +521,7 @@ export class Package extends ModelElement implements PackageableElement {
       source,
       target,
       name,
-      RelationStereotype.TERMINATION,
+      RelationStereotype.TERMINATION
     );
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -539,7 +539,7 @@ export class Package extends ModelElement implements PackageableElement {
       source,
       target,
       name,
-      RelationStereotype.PARTICIPATIONAL,
+      RelationStereotype.PARTICIPATIONAL
     );
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -558,7 +558,7 @@ export class Package extends ModelElement implements PackageableElement {
       source,
       target,
       name,
-      RelationStereotype.PARTICIPATION,
+      RelationStereotype.PARTICIPATION
     );
     const sourceEnd = relation.getSourceEnd();
     const targetEnd = relation.getTargetEnd();
@@ -578,13 +578,13 @@ export class Package extends ModelElement implements PackageableElement {
   createHistoricalDependence(
     source: Class,
     target: Class,
-    name?: string,
+    name?: string
   ): Relation {
     const relation = this.createBinaryRelation(
       source,
       target,
       name,
-      RelationStereotype.HISTORICAL_DEPENDENCE,
+      RelationStereotype.HISTORICAL_DEPENDENCE
     );
 
     const sourceEnd = relation.getSourceEnd();
@@ -600,13 +600,13 @@ export class Package extends ModelElement implements PackageableElement {
   createCreationRelation(
     source: Class,
     target: Class,
-    name?: string,
+    name?: string
   ): Relation {
     const relation = this.createBinaryRelation(
       source,
       target,
       name,
-      RelationStereotype.CREATION,
+      RelationStereotype.CREATION
     );
 
     const sourceEnd = relation.getSourceEnd();
@@ -623,13 +623,13 @@ export class Package extends ModelElement implements PackageableElement {
   createManifestationRelation(
     source: Class,
     target: Class,
-    name?: string,
+    name?: string
   ): Relation {
     const relation = this.createBinaryRelation(
       source,
       target,
       name,
-      RelationStereotype.MANIFESTATION,
+      RelationStereotype.MANIFESTATION
     );
 
     const sourceEnd = relation.getSourceEnd();
@@ -645,13 +645,13 @@ export class Package extends ModelElement implements PackageableElement {
   createBringsAboutRelation(
     source: Class,
     target: Class,
-    name?: string,
+    name?: string
   ): Relation {
     const relation = this.createBinaryRelation(
       source,
       target,
       name,
-      RelationStereotype.BRINGS_ABOUT,
+      RelationStereotype.BRINGS_ABOUT
     );
 
     const sourceEnd = relation.getSourceEnd();
@@ -668,13 +668,13 @@ export class Package extends ModelElement implements PackageableElement {
   createTriggersRelation(
     source: Class,
     target: Class,
-    name?: string,
+    name?: string
   ): Relation {
     const relation = this.createBinaryRelation(
       source,
       target,
       name,
-      RelationStereotype.TRIGGERS,
+      RelationStereotype.TRIGGERS
     );
 
     const sourceEnd = relation.getSourceEnd();
@@ -690,7 +690,7 @@ export class Package extends ModelElement implements PackageableElement {
   createPartWholeRelation(
     source: Class,
     target: Class,
-    name?: string,
+    name?: string
   ): Relation {
     const relation = this.createBinaryRelation(source, target, name, undefined);
 
@@ -707,7 +707,7 @@ export class Package extends ModelElement implements PackageableElement {
   createGeneralization(
     general: Classifier<any, any>,
     specific: Classifier<any, any>,
-    name?: string,
+    name?: string
   ): Generalization {
     this.assertProject();
 
@@ -724,7 +724,7 @@ export class Package extends ModelElement implements PackageableElement {
     generalizations?: Generalization | Generalization[],
     isDisjoint: boolean = false,
     isComplete: boolean = false,
-    name?: string,
+    name?: string
   ): GeneralizationSet {
     this.assertProject();
 
@@ -745,7 +745,7 @@ export class Package extends ModelElement implements PackageableElement {
 
   createPartition(
     generalizations: Generalization | Generalization[],
-    name?: string,
+    name?: string
   ): GeneralizationSet {
     return this.createGeneralizationSet(generalizations, true, true, name);
   }
@@ -753,9 +753,9 @@ export class Package extends ModelElement implements PackageableElement {
   createPartitionFromClasses(
     general: Class,
     specifics: Class[],
-    name?: string,
+    name?: string
   ): GeneralizationSet {
-    const generalizations = specifics.map((s) => s.addParent(general));
+    const generalizations = specifics.map(s => s.addParent(general));
     return this.createGeneralizationSet(generalizations, true, true, name);
   }
 
@@ -764,14 +764,14 @@ export class Package extends ModelElement implements PackageableElement {
     specifics: Class[],
     isDisjoint: boolean = false,
     isComplete: boolean = false,
-    name?: string,
+    name?: string
   ): GeneralizationSet {
-    const generalizations = specifics.map((s) => s.addParent(general));
+    const generalizations = specifics.map(s => s.addParent(general));
     return this.createGeneralizationSet(
       generalizations,
       isDisjoint,
       isComplete,
-      name,
+      name
     );
   }
 
@@ -790,7 +790,7 @@ export class Package extends ModelElement implements PackageableElement {
     if (clone.getContents()) {
       const clonedContents = clone
         .getContents()
-        .map((c) => (c instanceof Package ? c.clone(false) : c.clone()));
+        .map(c => (c instanceof Package ? c.clone(false) : c.clone()));
 
       this.setContents(clonedContents as ModelElement[]);
     }
@@ -807,8 +807,8 @@ export class Package extends ModelElement implements PackageableElement {
       this.container = newElement as Package;
     }
 
-    this.getContents().forEach((content) =>
-      content.replace(originalElement, newElement),
+    this.getContents().forEach(content =>
+      content.replace(originalElement, newElement)
     );
   }
 
@@ -817,23 +817,23 @@ export class Package extends ModelElement implements PackageableElement {
    * their clones. */
   static triggersReplaceOnClonedPackage(
     originalPackage: Package,
-    clonedPackage: Package,
+    clonedPackage: Package
   ): void {
     const replacementsMap = new Map<any, any>();
 
     replacementsMap.set(originalPackage.id, {
       originalContent: originalPackage,
-      newContent: clonedPackage,
+      newContent: clonedPackage
     });
 
-    originalPackage.getAllContents().forEach((content) =>
+    originalPackage.getAllContents().forEach(content =>
       replacementsMap.set(content.id, {
         originalContent: content,
-        newContent: null,
-      }),
+        newContent: null
+      })
     );
 
-    clonedPackage.getAllContents().forEach((content) => {
+    clonedPackage.getAllContents().forEach(content => {
       const id = content.id;
       const entry = { ...replacementsMap.get(id), newContent: content };
       replacementsMap.set(id, entry);
@@ -841,10 +841,10 @@ export class Package extends ModelElement implements PackageableElement {
 
     clonedPackage
       .getContents()
-      .forEach((content) =>
+      .forEach(content =>
         replacementsMap.forEach(({ originalContent, newContent }) =>
-          content.replace(originalContent, newContent!),
-        ),
+          content.replace(originalContent, newContent!)
+        )
       );
   }
 }

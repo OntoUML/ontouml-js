@@ -1,10 +1,10 @@
-import { Decoratable } from "../../model/decoratable";
-import { Stereotype } from "../../model/stereotypes";
-import { ModelElementBuilder } from "./model_element_builder";
+import { Decoratable } from '../../model/decoratable';
+import { Stereotype } from '../../model/stereotypes';
+import { ModelElementBuilder } from './model_element_builder';
 
 export abstract class DecoratableBuilder<
   B extends DecoratableBuilder<B, S>,
-  S extends Stereotype,
+  S extends Stereotype
 > extends ModelElementBuilder<B> {
   protected override element?: Decoratable<any>;
   protected _stereotype?: S;

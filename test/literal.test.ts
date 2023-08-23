@@ -1,5 +1,5 @@
-import { describe, expect, it } from "@jest/globals";
-import { Literal, Project } from "../src";
+import { describe, expect, it } from '@jest/globals';
+import { Literal, Project } from '../src';
 
 describe(`${Literal.name} Tests`, () => {
   describe(`Test ${Literal.prototype.toJSON.name}()`, () => {
@@ -9,7 +9,7 @@ describe(`${Literal.name} Tests`, () => {
     gameStatus.createLiteral();
     gameStatus.createLiteral();
 
-    it("Test serialization", () =>
+    it('Test serialization', () =>
       expect(() => JSON.stringify(started)).not.toThrow());
   });
 
@@ -18,7 +18,7 @@ describe(`${Literal.name} Tests`, () => {
     const _enum = model.createClass();
     const lit = new Literal({ project: model.project });
 
-    it("Test function call", () => {
+    it('Test function call', () => {
       expect(lit.container).not.toBe(_enum);
       expect(_enum.literals).toHaveLength(0);
 
@@ -39,7 +39,7 @@ describe(`${Literal.name} Tests`, () => {
     const litC = new Literal();
     const litD = litC.clone();
 
-    it("Test method", () => expect(litA).toEqual(litB));
-    it("Test method", () => expect(litC).toEqual(litD));
+    it('Test method', () => expect(litA).toEqual(litB));
+    it('Test method', () => expect(litC).toEqual(litD));
   });
 });

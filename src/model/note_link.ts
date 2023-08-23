@@ -3,10 +3,10 @@ import {
   ModelElement,
   Project,
   OntoumlElement,
-  Package,
-} from "..";
-import { Note } from "./note";
-import { PackageableElement } from "./packageable_element";
+  Package
+} from '..';
+import { Note } from './note';
+import { PackageableElement } from './packageable_element';
 
 export class NoteLink extends ModelElement implements PackageableElement {
   note: Note;
@@ -16,7 +16,7 @@ export class NoteLink extends ModelElement implements PackageableElement {
     project: Project,
     container: Package | undefined,
     note: Note,
-    element: ModelElement,
+    element: ModelElement
   ) {
     super(project, container);
     this.note = note;
@@ -35,7 +35,7 @@ export class NoteLink extends ModelElement implements PackageableElement {
     const object: any = {
       type: OntoumlType.NOTE_LINK,
       note: this.note.id,
-      element: this.element.id,
+      element: this.element.id
     };
 
     return { ...object, ...super.toJSON() };
@@ -46,10 +46,10 @@ export class NoteLink extends ModelElement implements PackageableElement {
   }
 
   clone(): OntoumlElement {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 
   replace(originalElement: OntoumlElement, newElement: OntoumlElement): void {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 }

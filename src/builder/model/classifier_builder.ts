@@ -1,10 +1,10 @@
-import { Classifier } from "../../model/classifier";
-import { Stereotype } from "../../model/stereotypes";
-import { DecoratableBuilder } from "./decoratable_builder";
+import { Classifier } from '../../model/classifier';
+import { Stereotype } from '../../model/stereotypes';
+import { DecoratableBuilder } from './decoratable_builder';
 
 export abstract class ClassifierBuilder<
   B extends ClassifierBuilder<B, S>,
-  S extends Stereotype,
+  S extends Stereotype
 > extends DecoratableBuilder<B, S> {
   protected _isAbstract?: boolean;
   protected override element?: Classifier<any, any>;

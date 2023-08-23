@@ -1,11 +1,11 @@
-import { describe, expect, it } from "@jest/globals";
-import { Project } from "../src";
+import { describe, expect, it } from '@jest/globals';
+import { Project } from '../src';
 
-describe("Test toJSON()", () => {
+describe('Test toJSON()', () => {
   const model = new Project().createModel();
   const person = model.createClass();
   const knows = model.createMaterialRelation(person, person);
 
-  it("Test serialization", () =>
+  it('Test serialization', () =>
     expect(() => JSON.stringify(knows)).not.toThrow());
 });

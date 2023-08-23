@@ -1,5 +1,5 @@
-import { Classifier, Package, Project, Stereotype } from "..";
-import { ModelElement } from "./model_element";
+import { Classifier, Package, Project, Stereotype } from '..';
+import { ModelElement } from './model_element';
 
 export abstract class Decoratable<S extends Stereotype> extends ModelElement {
   stereotype?: S;
@@ -48,7 +48,7 @@ export abstract class Decoratable<S extends Stereotype> extends ModelElement {
    * */
   isStereotypeOneOf(stereotypes: S | readonly S[]): boolean {
     if (!this.stereotype) {
-      throw Error("The decoratable does not have a stereotype.");
+      throw Error('The decoratable does not have a stereotype.');
     }
 
     return Array.isArray(stereotypes)
@@ -59,7 +59,7 @@ export abstract class Decoratable<S extends Stereotype> extends ModelElement {
   override toJSON(): any {
     const object = {
       stereotype: this.stereotype || null,
-      isDerived: this.isDerived,
+      isDerived: this.isDerived
     };
 
     return { ...object, ...super.toJSON() };

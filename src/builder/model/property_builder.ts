@@ -1,5 +1,5 @@
-import { Classifier } from "../../model/classifier";
-import { DecoratableBuilder } from "./decoratable_builder";
+import { Classifier } from '../../model/classifier';
+import { DecoratableBuilder } from './decoratable_builder';
 
 export class PropertyBuilder extends DecoratableBuilder {
   classifier: Classifier<any, any>;

@@ -1,5 +1,5 @@
-import { Point } from "./point";
-import { Shape } from "./shape";
+import { Point } from './point';
+import { Shape } from './shape';
 
 export abstract class RectangularShape extends Shape {
   private topLeft: Point;
@@ -36,7 +36,7 @@ export abstract class RectangularShape extends Shape {
 
   public set width(value: number) {
     if (value <= 0) {
-      throw new Error("Cannot set a negative or zero width.");
+      throw new Error('Cannot set a negative or zero width.');
     }
 
     this._width = value;
@@ -47,7 +47,7 @@ export abstract class RectangularShape extends Shape {
   }
   public set height(value: number) {
     if (value <= 0) {
-      throw new Error("Cannot set a negative or zero height.");
+      throw new Error('Cannot set a negative or zero height.');
     }
 
     this._height = value;
@@ -58,7 +58,7 @@ export abstract class RectangularShape extends Shape {
       width: this.width,
       height: this.height,
       x: this.topLeft.x,
-      y: this.topLeft.y,
+      y: this.topLeft.y
     };
 
     return { ...object, ...super.toJSON() };

@@ -1,5 +1,5 @@
-import { GeneralizationSet, OntoumlElement, OntoumlType, View } from "..";
-import { Text } from "../shape/text";
+import { GeneralizationSet, OntoumlElement, OntoumlType, View } from '..';
+import { Text } from '../shape/text';
 
 export class GeneralizationSetView extends View<GeneralizationSet> {
   text: Text;
@@ -19,7 +19,7 @@ export class GeneralizationSetView extends View<GeneralizationSet> {
   override toJSON(): any {
     const object = {
       type: OntoumlType.GENERALIZATION_SET_VIEW,
-      text: this.text.id,
+      text: this.text.id
     };
 
     return { ...object, ...super.toJSON() };

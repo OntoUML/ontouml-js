@@ -5,9 +5,9 @@ import {
   ModelElement,
   Package,
   Property,
-  Project,
-} from "..";
-import { Classifier } from "./classifier";
+  Project
+} from '..';
+import { Classifier } from './classifier';
 
 export abstract class Relation extends Classifier<
   Relation,
@@ -16,17 +16,17 @@ export abstract class Relation extends Classifier<
   protected constructor(
     project: Project,
     container: Package | undefined,
-    members: Classifier<any, any>[],
+    members: Classifier<any, any>[]
   ) {
     super(project, container);
 
     if (members.length < 2) {
       throw new Error(
-        "At least 2 classifiers are needed to create a relation.",
+        'At least 2 classifiers are needed to create a relation.'
       );
     }
 
-    members.forEach((member) => this.createRelationEnd(member));
+    members.forEach(member => this.createRelationEnd(member));
   }
 
   /**
@@ -43,7 +43,7 @@ export abstract class Relation extends Classifier<
 
   assertProperties() {
     if (!Array.isArray(this.properties)) {
-      throw new Error("The `properties` field is null or undefined.");
+      throw new Error('The `properties` field is null or undefined.');
     }
   }
 
@@ -52,7 +52,7 @@ export abstract class Relation extends Classifier<
 
     if (!member) {
       throw new Error(
-        `The type of member end ${position} of the relation is undefined.`,
+        `The type of member end ${position} of the relation is undefined.`
       );
     }
   }
@@ -60,19 +60,19 @@ export abstract class Relation extends Classifier<
   assertTypedProperties() {
     this.assertProperties();
 
-    const typeLessProperty = this.properties.find((p) => !p.propertyType);
+    const typeLessProperty = this.properties.find(p => !p.propertyType);
 
     if (typeLessProperty) {
       throw new Error(
-        "A property of the relation does not have a propertyType: " +
-          typeLessProperty,
+        'A property of the relation does not have a propertyType: ' +
+          typeLessProperty
       );
     }
   }
 
   assertHoldsBetweenClasses() {
     if (!this.holdsBetweenClasses()) {
-      throw new Error("The relation does not hold between classes.");
+      throw new Error('The relation does not hold between classes.');
     }
   }
 
@@ -85,8 +85,8 @@ export abstract class Relation extends Classifier<
 
     if (position < 0 || position >= this.properties.length) {
       throw new Error(
-        "Position out of bonds. Position should be greater than 0 and less than " +
-          this.properties.length,
+        'Position out of bonds. Position should be greater than 0 and less than ' +
+          this.properties.length
       );
     }
 
@@ -107,7 +107,7 @@ export abstract class Relation extends Classifier<
 
   getMembers(): Classifier<any, any>[] {
     this.assertTypedProperties();
-    let members = this.properties.map((prop) => prop.propertyType!) || [];
+    let members = this.properties.map(prop => prop.propertyType!) || [];
     return [...new Set(members)];
   }
 
@@ -115,7 +115,7 @@ export abstract class Relation extends Classifier<
    * @returns true if ${@param classifier} is the type of at least one of the properties of the relation.
    */
   involves(classifier: Classifier<any, any>): boolean {
-    return this.getMembers().some((m) => m == classifier);
+    return this.getMembers().some(m => m == classifier);
   }
 
   memberIsClass(position: number): boolean {
@@ -139,28 +139,26 @@ export abstract class Relation extends Classifier<
 
   holdsBetweenClasses(): boolean {
     this.assertTypedProperties();
-    return this.getMembers().every((m) => m instanceof Class);
+    return this.getMembers().every(m => m instanceof Class);
   }
 
   holdsBetweenEvents(): boolean {
     this.assertTypedProperties();
 
-    return this.getMembers().every((m) => m instanceof Class && m.isEvent());
+    return this.getMembers().every(m => m instanceof Class && m.isEvent());
   }
 
   holdsBetweenMoments(): boolean {
     this.assertTypedProperties();
 
-    return this.getMembers().every(
-      (m) => m instanceof Class && m.isMomentType(),
-    );
+    return this.getMembers().every(m => m instanceof Class && m.isMomentType());
   }
 
   holdsBetweenSubstantials(): boolean {
     this.assertTypedProperties();
 
     return this.getMembers().every(
-      (m) => m instanceof Class && m.isSubstantialType(),
+      m => m instanceof Class && m.isSubstantialType()
     );
   }
 
@@ -169,7 +167,7 @@ export abstract class Relation extends Classifier<
 
     if (clone.properties) {
       clone.properties = clone.properties.map((attribute: Property) =>
-        attribute.clone(),
+        attribute.clone()
       );
     }
 
@@ -182,7 +180,7 @@ export abstract class Relation extends Classifier<
     }
 
     this.getContents()
-      .map((content) => content as ModelElement)
-      .forEach((content) => content.replace(originalElement, newElement));
+      .map(content => content as ModelElement)
+      .forEach(content => content.replace(originalElement, newElement));
   }
 }
