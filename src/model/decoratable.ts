@@ -62,6 +62,6 @@ export abstract class Decoratable<S extends Stereotype> extends ModelElement {
       isDerived: this.isDerived
     };
 
-    return { ...object, ...super.toJSON() };
+    return { ...super.toJSON(), ...object };
   }
 }

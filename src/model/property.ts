@@ -20,8 +20,8 @@ export enum AggregationKind {
 
 export class Property extends Decoratable<PropertyStereotype> {
   propertyType?: Classifier<any, any>;
-  subsettedProperties: Property[] = [];
-  redefinedProperties: Property[] = [];
+  private subsettedProperties: Set<Property> = new Set();
+  private redefinedProperties: Set<Property> = new Set();
   cardinality: Cardinality = new Cardinality('0..*');
   aggregationKind: AggregationKind = AggregationKind.NONE;
   isOrdered: boolean = false;
@@ -152,53 +152,55 @@ export class Property extends Decoratable<PropertyStereotype> {
     return { ...this };
   }
 
+  // TODO: reconsider the usefulness of this method
   replace(originalElement: ModelElement, newElement: ModelElement): void {
-    if (this.container === originalElement) {
-      this.container = newElement;
-    }
+    throw new Error('Method unimplemented!');
+    // if (this.container === originalElement) {
+    //   this.container = newElement;
+    // }
 
-    if (this.propertyType === originalElement) {
-      this.propertyType = newElement as Classifier<any, any>;
-    }
+    // if (this.propertyType === originalElement) {
+    //   this.propertyType = newElement as Classifier<any, any>;
+    // }
 
-    if (
-      this.subsettedProperties &&
-      this.subsettedProperties.includes(originalElement as any)
-    ) {
-      this.subsettedProperties = this.subsettedProperties.map(
-        (subsettedProperty: Property) =>
-          subsettedProperty === originalElement
-            ? (newElement as Property)
-            : subsettedProperty
-      );
-    }
+    // if (
+    //   this.subsettedProperties &&
+    //   this.subsettedProperties.includes(originalElement as any)
+    // ) {
+    //   this.subsettedProperties = this.subsettedProperties.map(
+    //     (subsettedProperty: Property) =>
+    //       subsettedProperty === originalElement
+    //         ? (newElement as Property)
+    //         : subsettedProperty
+    //   );
+    // }
 
-    if (
-      this.redefinedProperties &&
-      this.redefinedProperties.includes(originalElement as any)
-    ) {
-      this.redefinedProperties = this.redefinedProperties.map(
-        (redefinedProperty: Property) =>
-          redefinedProperty === originalElement
-            ? (newElement as Property)
-            : redefinedProperty
-      );
-    }
+    // if (
+    //   this.redefinedProperties &&
+    //   this.redefinedProperties.includes(originalElement as any)
+    // ) {
+    //   this.redefinedProperties = this.redefinedProperties.map(
+    //     (redefinedProperty: Property) =>
+    //       redefinedProperty === originalElement
+    //         ? (newElement as Property)
+    //         : redefinedProperty
+    //   );
+    // }
   }
 
   override toJSON(): any {
     const object: any = {
       type: OntoumlType.PROPERTY,
-      cardinality: null,
-      propertyType: this.propertyType?.id,
-      subsettedProperties: this.subsettedProperties.map(p => p.id),
-      redefinedProperties: this.redefinedProperties.map(p => p.id),
-      aggregationKind: this.aggregationKind,
-      isOrdered: this.isOrdered,
-      isReadOnly: this.isReadOnly
+      cardinality: this.cardinality.toJSON(),
+      propertyType: this.propertyType?.id ?? null,
+      subsettedProperties: [...this.subsettedProperties].map(p => p.id),
+      redefinedProperties: [...this.redefinedProperties].map(p => p.id),
+      aggregationKind: this.aggregationKind ?? null,
+      isOrdered: this.isOrdered ?? null,
+      isReadOnly: this.isReadOnly ?? null
     };
 
-    return { ...object, ...super.toJSON() };
+    return { ...super.toJSON(), ...object };
   }
 
   override resolveReferences(
@@ -216,5 +218,29 @@ export class Property extends Decoratable<PropertyStereotype> {
         'propertyType'
       );
     }
+  }
+
+  getSubsettedProperties(): Property[] {
+    return [...this.subsettedProperties];
+  }
+
+  addSubsettedProperty(p: Property): void {
+    this.subsettedProperties.add(p);
+  }
+
+  removeSubsettedProperty(p: Property): boolean {
+    return this.subsettedProperties.delete(p);
+  }
+
+  getRedefinedProperties(): Property[] {
+    return [...this.redefinedProperties];
+  }
+
+  addRedefinedProperty(p: Property): void {
+    this.redefinedProperties.add(p);
+  }
+
+  removeRedefinedProperty(p: Property): boolean {
+    return this.redefinedProperties.delete(p);
   }
 }

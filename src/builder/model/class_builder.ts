@@ -41,26 +41,12 @@ export class ClassBuilder extends ClassifierBuilder<
   private _isPowertype: boolean = false;
 
   /**
-   * Builds an instance of `Class` with the assignments passed to the builder. **WARNING:** the ordering of assignments may affect the resulting object.
-   * When no assignments are called, the created class has the following defaults:
-   * - `type: "Class",`
+   * Builds an instance of {@link Class} with the parameters passed to the builder. **WARNING:** the ordering in which methods are evoked may affect the resulting object. When no methods are evoked, the created class has the following defaults:
    * - `id: "randomly-generated-id",`
    * - `created: new Date(),`
-   * - `modified: null`
-   * - `name: null,`
-   * - `description: null,`
-   * - `alternativeNames: [],`
-   * - `editorialNotes: [],`
-   * - `creators: [],`
-   * - `contributors: [],`
-   * - `customProperties: null,`
    * - `isAbstract: false,`
    * - `isDerived: false,`
-   * - `stereotype: null,`
-   * - `restrictedTo: [],`
-   * - `properties: [],`
-   * - `literals: [],`
-   * - `order: "1",`
+   * - `order: 1,`
    * - `isPowertype: false,`
    */
   override build(): Class {

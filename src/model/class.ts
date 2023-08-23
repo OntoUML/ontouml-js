@@ -47,6 +47,7 @@ import {
 } from '..';
 
 import { Classifier } from './classifier';
+import { AttributeBuilder } from '../builder/model/attribute_builder';
 // import { PropertyBuilder } from '../builder/property_builder';
 
 export class Class extends Classifier<Class, ClassStereotype> {
@@ -58,6 +59,10 @@ export class Class extends Classifier<Class, ClassStereotype> {
   constructor(project: Project, container?: Package) {
     super(project, container);
     project.addClass(this);
+  }
+
+  attributeBuilder(): AttributeBuilder {
+    return new AttributeBuilder(this);
   }
 
   public get restrictedTo(): Nature[] {

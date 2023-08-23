@@ -5,8 +5,8 @@ export abstract class ModelElementBuilder<
   B extends ModelElementBuilder<B>
 > extends NamedElementBuilder<B> {
   protected override element?: ModelElement;
-  protected _customProperties: { [key: string]: any } = {};
   protected _container?: ModelElement;
+  protected _customProperties: { [key: string]: any } = {};
 
   abstract container(container: ModelElement): B;
 

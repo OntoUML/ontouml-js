@@ -63,6 +63,6 @@ export abstract class ModelElement extends NamedElement {
         : null
     };
 
-    return { ...object, ...super.toJSON() };
+    return { ...super.toJSON(), ...object };
   }
 }

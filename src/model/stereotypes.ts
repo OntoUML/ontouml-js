@@ -215,6 +215,9 @@ export enum PropertyStereotype {
   END = 'end'
 }
 
+export const BEGIN = PropertyStereotype.BEGIN;
+export const END = PropertyStereotype.END;
+
 export const ONTOUML_STEREOTYPES = [
   ...Object.values(ClassStereotype),
   ...Object.values(RelationStereotype),

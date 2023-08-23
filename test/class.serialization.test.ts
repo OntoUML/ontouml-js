@@ -7,7 +7,8 @@ import {
   Nature,
   ORDERLESS_LEVEL,
   Package,
-  Project
+  Project,
+  Property
 } from '../src';
 
 const schema = require('ontouml-schema/src/ontouml-schema.json');
@@ -24,6 +25,16 @@ describe('Test Class serialization', () => {
   });
 
   it('The minimum class builder should generate a valid class', () => {
+    expect(validator(clazz.toJSON())).toBeTruthy();
+  });
+
+  it('The minimum attribute builder should generate a valid properties', () => {
+    const att = clazz.attributeBuilder().build();
+
+    console.log(att.toJSON());
+    console.log(clazz.toJSON());
+
+    expect(validator(att.toJSON())).toBeTruthy();
     expect(validator(clazz.toJSON())).toBeTruthy();
   });
 
