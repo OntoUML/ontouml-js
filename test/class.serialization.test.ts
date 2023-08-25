@@ -11,7 +11,7 @@ import {
   Property
 } from '../src';
 
-const schema = require('ontouml-schema/src/ontouml-schema.json');
+const schema = require('ontouml-schema');
 
 describe('Test Class serialization', () => {
   const ajv = new Ajv();
