@@ -132,14 +132,15 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
   override toJSON(): any {
     const object: any = {
-      type: OntoumlType.CLASS,
+      // type: OntoumlType.CLASS,
       restrictedTo: this.restrictedTo,
       literals: this.literals.map(l => l.id),
       isPowertype: this.isPowertype,
       order: this.getOrderAsString()
     };
 
-    return { ...super.toJSON(), ...object };
+    // TODO: consider reorder this return to improve readability on debugging; we can either place the type first, or use a library to sort the object's keys
+    return { type: OntoumlType.CLASS, ...super.toJSON(), ...object };
   }
 
   public getOrderAsString(): string {
