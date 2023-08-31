@@ -5,9 +5,9 @@ import {
   ModelElement,
   Package,
   Property,
-  Project
+  Project,
+  Classifier
 } from '..';
-import { Classifier } from './classifier';
 
 export abstract class Relation extends Classifier<
   Relation,

@@ -1,10 +1,15 @@
-import { Cardinality, CardinalityValues } from '../../model/cardinality';
-import { Class } from '../../model/class';
-import { Classifier } from '../../model/classifier';
-import { ModelElement } from '../../model/model_element';
-import { Property } from '../../model/property';
-import { BEGIN, END, PropertyStereotype } from '../../model/stereotypes';
-import { DecoratableBuilder } from './decoratable_builder';
+import {
+  Cardinality,
+  CardinalityValues,
+  Class,
+  Classifier,
+  ModelElement,
+  Property,
+  BEGIN,
+  END,
+  DecoratableBuilder,
+  PropertyStereotype
+} from '../..';
 
 export class AttributeBuilder extends DecoratableBuilder<
   AttributeBuilder,
@@ -51,6 +56,7 @@ export class AttributeBuilder extends DecoratableBuilder<
     this.element.isOrdered = this._isOrdered;
     this.element.isReadOnly = this._isReadOnly;
 
+    this._container.addAttribute(this.element);
     return this.element;
   }
 

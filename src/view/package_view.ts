@@ -1,5 +1,4 @@
-import { OntoumlType, Package, View, OntoumlElement } from '..';
-import { Rectangle } from '../shape/rectangle';
+import { OntoumlType, Package, View, OntoumlElement, Rectangle } from '..';
 
 export class PackageView extends View<Package> {
   readonly rectangle: Rectangle;

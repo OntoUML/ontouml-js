@@ -6,11 +6,11 @@ import {
   Generalization,
   Package,
   Relation,
-  Project
+  Project,
+  PackageableElement,
+  ModelElement,
+  utils
 } from '..';
-import { utils } from '..';
-import { PackageableElement } from './packageable_element';
-import { ModelElement } from './model_element';
 
 export class GeneralizationSet
   extends ModelElement

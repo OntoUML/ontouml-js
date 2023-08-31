@@ -1,5 +1,4 @@
-import { describe, expect, it, beforeEach } from '@jest/globals';
-import { Class, natureUtils, Nature, Package, Project } from '../src';
+import { Class, Nature, Package, Project } from '../../src';
 
 describe('Test restrictedTo-related methods', () => {
   let project: Project;

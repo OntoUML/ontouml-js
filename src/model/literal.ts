@@ -1,5 +1,4 @@
-import { OntoumlElement, OntoumlType, Class } from '..';
-import { ModelElement } from './model_element';
+import { OntoumlElement, OntoumlType, Class, ModelElement } from '..';
 
 export class Literal extends ModelElement {
   constructor(container: Class) {
@@ -7,11 +6,11 @@ export class Literal extends ModelElement {
   }
 
   public override get container(): Class {
-    return this.container as Class;
+    return this._container as Class;
   }
 
   public override set container(newContainer: Class) {
-    super.container = newContainer;
+    super._container = newContainer;
   }
 
   getContents(): OntoumlElement[] {
@@ -30,10 +29,6 @@ export class Literal extends ModelElement {
   }
 
   override toJSON() {
-    const object: any = {
-      type: OntoumlType.LITERAL
-    };
-
-    return { ...super.toJSON(), ...object };
+    return { type: OntoumlType.LITERAL, ...super.toJSON() };
   }
 }

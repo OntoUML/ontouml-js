@@ -1,10 +1,4 @@
-import {
-  OntoumlType,
-  BinaryConnectorView,
-  Path,
-  Generalization,
-  View
-} from '..';
+import { OntoumlType, BinaryConnectorView, Generalization, View } from '..';
 
 export class GeneralizationView extends BinaryConnectorView<Generalization> {
   constructor(

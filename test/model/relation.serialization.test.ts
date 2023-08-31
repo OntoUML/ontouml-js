@@ -1,5 +1,4 @@
-import { describe, expect, it } from '@jest/globals';
-import { Project } from '../src';
+import { Project } from '../../src';
 
 describe('Test toJSON()', () => {
   const model = new Project().createModel();

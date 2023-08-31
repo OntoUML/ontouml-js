@@ -1,5 +1,4 @@
-import { describe, expect, it } from '@jest/globals';
-import { Property, Cardinality, CARDINALITY_MAX_AS_NUMBER } from '../src';
+import { Property, Cardinality, CARDINALITY_MAX_AS_NUMBER } from '../../src';
 
 describe(`Cardinality Tests`, () => {
   describe(`Test setCardinality()`, () => {

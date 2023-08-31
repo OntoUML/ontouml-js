@@ -1,4 +1,3 @@
-import { describe, expect, it, beforeEach, beforeAll } from '@jest/globals';
 import {
   Class,
   Relation,
@@ -6,7 +5,7 @@ import {
   ClassStereotype,
   PropertyStereotype,
   RelationStereotype
-} from '../src';
+} from '../../src';
 
 describe('Decoratable Interface Tests', () => {
   it('Class with no stereotypes', () => {

@@ -4,9 +4,9 @@ import {
   MultilingualText,
   Project,
   OntoumlElement,
-  Package
+  Package,
+  PackageableElement
 } from '..';
-import { PackageableElement } from './packageable_element';
 
 export class Note extends ModelElement implements PackageableElement {
   text: MultilingualText;

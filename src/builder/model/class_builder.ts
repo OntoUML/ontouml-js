@@ -20,21 +20,22 @@ import {
   ROLE_MIXIN,
   SITUATION,
   SUBKIND,
-  TYPE
-} from '../../model/stereotypes';
-import { Nature } from '../../model/natures';
-import { Class, ORDERLESS_LEVEL } from '../../model/class';
-import { Package } from '../../model/package';
-import { ClassifierBuilder } from './classifier_builder';
-import { Project } from '../../project';
-import { utils } from '../../utils';
+  TYPE,
+  Nature,
+  Class,
+  ORDERLESS_LEVEL,
+  Package,
+  ClassifierBuilder,
+  Project,
+  utils
+} from '../..';
 
 export class ClassBuilder extends ClassifierBuilder<
   ClassBuilder,
   ClassStereotype
 > {
-  protected override _container?: Package;
-  protected override element?: Class;
+  override _container?: Package;
+  override element?: Class;
 
   private _restrictedTo: Nature[] = [];
   private _order: number = 1;
@@ -51,18 +52,13 @@ export class ClassBuilder extends ClassifierBuilder<
    */
   override build(): Class {
     this.element = new Class(this.project);
-    super.build();
-
     this.element.order = this._order;
     this.element.isPowertype = this._isPowertype;
     this.element.restrictedTo = this._restrictedTo;
 
-    return this.element;
-  }
+    super.build();
 
-  container(pkg: Package): ClassBuilder {
-    this._container = pkg;
-    return this;
+    return this.element;
   }
 
   order(order: number): ClassBuilder {

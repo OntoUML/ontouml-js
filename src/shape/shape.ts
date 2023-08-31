@@ -1,4 +1,4 @@
-import { OntoumlElement } from '../ontouml_element';
+import { OntoumlElement } from '..';
 
 export abstract class Shape extends OntoumlElement {
   constructor() {

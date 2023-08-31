@@ -1,11 +1,10 @@
-import { describe, expect, it } from '@jest/globals';
 import {
   Project,
   Relation,
   RelationStereotype,
   ClassStereotype,
   Property
-} from '../src';
+} from '../../src';
 
 describe('Relation Tests', () => {
   describe('Test getGeneralizations()', () => {

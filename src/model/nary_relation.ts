@@ -3,10 +3,9 @@ import {
   Project,
   Package,
   Classifier,
-  RelationStereotype
+  RelationStereotype,
+  Relation
 } from '..';
-
-import { Relation } from './relation';
 
 export class NaryRelation extends Relation {
   constructor(

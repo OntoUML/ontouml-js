@@ -43,12 +43,12 @@ import {
   NON_SORTAL_STEREOTYPES,
   SORTAL_STEREOTYPES,
   ULTIMATE_SORTAL_STEREOTYPES,
-  BASE_SORTAL_STEREOTYPES
+  BASE_SORTAL_STEREOTYPES,
+  Classifier,
+  AttributeBuilder,
+  LiteralBuilder
 } from '..';
 
-import { Classifier } from './classifier';
-import { AttributeBuilder } from '../builder/model/attribute_builder';
-import { LiteralBuilder } from '../builder/model/literal_builder';
 // import { PropertyBuilder } from '../builder/property_builder';
 
 export class Class extends Classifier<Class, ClassStereotype> {
@@ -59,7 +59,6 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
   constructor(project: Project, container?: Package) {
     super(project, container);
-    project.addClass(this);
   }
 
   attributeBuilder(): AttributeBuilder {
@@ -92,6 +91,16 @@ export class Class extends Classifier<Class, ClassStereotype> {
     this._restrictedTo = [...new Set(value)];
   }
 
+  /**
+   * @returns attributes defined in the class, excluding inherited ones.
+   * */
+  public get attributes(): Property[] {
+    return this.properties;
+  }
+
+  /**
+   * @returns literals defined in the class, excluding inherited ones.
+   * */
   public get literals(): Literal[] {
     return [...this._literals];
   }
@@ -113,17 +122,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   getContents(): OntoumlElement[] {
-    let contents: OntoumlElement[] = [];
-
-    if (this.properties) {
-      contents = [...this.properties];
-    }
-
-    if (this.literals) {
-      contents = [...contents, ...this.literals];
-    }
-
-    return contents;
+    return [...this._properties, ...this._literals];
   }
 
   getAllowedStereotypes(): ClassStereotype[] {
@@ -132,7 +131,6 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
   override toJSON(): any {
     const object: any = {
-      // type: OntoumlType.CLASS,
       restrictedTo: this.restrictedTo,
       literals: this.literals.map(l => l.id),
       isPowertype: this.isPowertype,
@@ -152,23 +150,22 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   addAttribute(attribute: Property): void {
-    this.assertNonEnumeration();
-    this.properties.push(attribute);
+    this._properties.push(attribute);
     attribute.container = this;
   }
 
   addLiteral(literal: Literal): void {
     this.assertEnumeration();
-    this.literals.push(literal);
+    this._literals.push(literal);
     literal.container = this;
   }
 
   hasAttributes(): boolean {
-    return !_.isEmpty(this.properties);
+    return !_.isEmpty(this._properties);
   }
 
   hasLiterals(): boolean {
-    return !_.isEmpty(this.literals);
+    return !_.isEmpty(this._literals);
   }
 
   allowsSome(natures: Nature | readonly Nature[]): boolean {
@@ -481,120 +478,130 @@ export class Class extends Classifier<Class, ClassStereotype> {
     return this.stereotype === MIXIN;
   }
 
-  getUltimateSortalAncestors(): Class[] {
-    return this.getFilteredAncestors(ancestor => ancestor.isIdentityProvider());
+  /**
+   *
+   * @returns an array of {@link Class} that are direct or indirect supertypes of the class and are stereotyped with one of {@link ULTIMATE_SORTAL_STEREOTYPES}.
+   */
+  getIdentityProviderAncestors(): Class[] {
+    return this.getAncestors().filter(a => a.isIdentityProvider());
   }
 
-  getUltimateSortalsDescendants(): Class[] {
-    return this.getFilteredDescendants(descendent =>
-      descendent.isIdentityProvider()
-    );
+  /**
+   *
+   * @returns an array of {@link Class} that are direct or indirect subtypes of the class and are stereotyped with one of {@link ULTIMATE_SORTAL_STEREOTYPES}.
+   */
+  getIdentityProviderDescendants(): Class[] {
+    return this.getDescendants().filter(d => d.isIdentityProvider());
   }
 
+  /**
+   *
+   * @returns an array of {@link Class} that are direct or indirect supertypes of the class and are stereotyped with one of {@link SORTAL_STEREOTYPES}.
+   */
   getSortalAncestors(): Class[] {
-    return this.getFilteredAncestors(ancestor => ancestor.isSortal());
+    return this.getAncestors().filter(a => a.isSortal());
   }
 
+  /**
+   *
+   * @returns an array of {@link Class} that are direct or indirect subtypes of the class and are stereotyped with one of {@link SORTAL_STEREOTYPES}.
+   */
   getSortalDescendants(): Class[] {
-    return this.getFilteredDescendants(descendent => descendent.isSortal());
+    return this.getDescendants().filter(d => d.isSortal());
   }
 
+  /**
+   *
+   * @returns an array of {@link Class} that are direct or indirect supertypes of the class and are stereotyped with one of {@link BASE_SORTAL_STEREOTYPES}.
+   */
   getBaseSortalAncestors(): Class[] {
-    return this.getFilteredAncestors(ancestor => ancestor.isBaseSortal());
+    return this.getAncestors().filter(a => a.isBaseSortal());
   }
 
+  /**
+   *
+   * @returns an array of {@link Class} that are direct or indirect subtypes of the class and are stereotyped with one of {@link BASE_SORTAL_STEREOTYPES}.
+   */
   getBaseSortalDescendants(): Class[] {
-    return this.getFilteredDescendants(descendent => descendent.isBaseSortal());
+    return this.getDescendants().filter(d => d.isBaseSortal());
   }
 
+  /**
+   *
+   * @returns an array of {@link Class} that are direct or indirect supertypes of the class and are non-sortal.
+   */
   getNonSortalAncestors(): Class[] {
-    const ancestorsFilter = (ancestor: Class) => ancestor.isNonSortal();
-    return this.getFilteredAncestors(ancestorsFilter);
+    return this.getAncestors().filter(a => a.isNonSortal());
   }
 
+  /**
+   *
+   * @returns an array of {@link Class} that are direct or indirect subtypes of the class and are non-sortal.
+   */
   getNonSortalDescendants(): Class[] {
-    const descendantsFilter = (descendent: Class) => descendent.isNonSortal();
-    return this.getFilteredDescendants(descendantsFilter);
+    return this.getDescendants().filter(d => d.isNonSortal());
   }
 
+  /**
+   *
+   * @returns an array of {@link Class} that are direct or indirect supertypes of the class and are rigid.
+   */
   getRigidAncestors(): Class[] {
-    const ancestorsFilter = (ancestor: Class) => ancestor.isRigid();
-    return this.getFilteredAncestors(ancestorsFilter);
+    return this.getAncestors().filter(a => a.isRigid());
   }
 
+  /**
+   *
+   * @returns an array of {@link Class} that are direct or indirect subtypes of the class and are rigid.
+   */
   getRigidDescendants(): Class[] {
-    const descendantsFilter = (descendent: Class) => descendent.isRigid();
-    return this.getFilteredDescendants(descendantsFilter);
+    return this.getDescendants().filter(d => d.isRigid());
   }
 
+  /**
+   *
+   * @returns an array of {@link Class} that are direct or indirect supertypes of the class and are semi-rigid.
+   */
   getSemiRigidAncestors(): Class[] {
-    const ancestorsFilter = (ancestor: Class) => ancestor.isSemiRigid();
-    return this.getFilteredAncestors(ancestorsFilter);
+    return this.getAncestors().filter(a => a.isSemiRigid());
   }
 
+  /**
+   *
+   * @returns an array of {@link Class} that are direct or indirect subtypes of the class and are semi-rigid.
+   */
   getSemiRigidDescendants(): Class[] {
-    const descendantsFilter = (descendent: Class) => descendent.isSemiRigid();
-    return this.getFilteredDescendants(descendantsFilter);
+    return this.getDescendants().filter(d => d.isSemiRigid());
   }
 
+  /**
+   *
+   * @returns an array of {@link Class} that are direct or indirect supertypes of the class and are anti-rigid.
+   */
   getAntiRigidAncestors(): Class[] {
-    const ancestorsFilter = (ancestor: Class) => ancestor.isAntiRigid();
-    return this.getFilteredAncestors(ancestorsFilter);
+    return this.getAncestors().filter(a => a.isAntiRigid());
   }
 
+  /**
+   *
+   * @returns an array of {@link Class} that are direct or indirect subtypes of the class and are anti-rigid.
+   */
   getAntiRigidDescendants(): Class[] {
-    const descendantsFilter = (descendent: Class) => descendent.isAntiRigid();
-    return this.getFilteredDescendants(descendantsFilter);
+    return this.getDescendants().filter(d => d.isAntiRigid());
   }
 
   /**
-   * @returns attributes defined in the class, excluding inherited ones
-   * */
-  getAttributes(): Property[] {
-    if (this.isEnumeration()) {
-      throw new Error('Cannot retrieve attributes from an enumeration.');
-    }
-
-    return this.properties ? [...this.properties] : [];
-  }
-
-  /**
-   * @returns both own and inherited attributes
+   * @returns an array of attributes ({@link Property}) that are either owned of inherited by the class.
    * */
   getAllAttributes(): Property[] {
     const thisAndAncestors = [this, ...this.getAncestors()];
-    const allAttributes = thisAndAncestors.reduce(
-      (attributesAcc: Property[], _class: Class) => {
-        attributesAcc.push(..._class.getAttributes());
-        return attributesAcc;
-      },
-      []
-    );
-
-    return allAttributes;
-  }
-
-  /** @returns both own literals, excluding inherited ones */
-  getLiterals(): Literal[] {
-    if (!this.isEnumeration()) {
-      throw new Error('Cannot retrieve literals from a non-enumeration.');
-    }
-
-    return this.literals ? [...this.literals] : [];
+    return thisAndAncestors.flatMap(c => c._properties);
   }
 
   /** @returns both own and inherited literals */
   getAllLiterals(): Literal[] {
     const thisAndAncestors = [this, ...this.getAncestors()];
-    const allLiterals = thisAndAncestors.reduce(
-      (literalsAcc: Literal[], _class: Class) => {
-        literalsAcc.push(..._class.getLiterals());
-        return literalsAcc;
-      },
-      []
-    );
-
-    return allLiterals;
+    return thisAndAncestors.flatMap(c => c._literals);
   }
 
   clone(): Class {

@@ -23,10 +23,10 @@
   "scripts": {
     "test": "jest",
     "testWatch": "jest --watch",
-    "format": "npx prettier . --write",
-    "dev": "tsc --watch",
-    "build": "tsup --clean src/index.ts --format cjs,esm --dts",
     "lint": "tsc",
+    "lintWatch": "tsc --watch",
+    "format": "npx prettier . --write",
+    "build": "tsup --clean src/index.ts --format cjs,esm --dts",
     "prepublishOnly": "npm run lint & npm run test & npm run build",
     "prepare": "husky install"
   },
@@ -38,7 +38,7 @@
     "uniqid": "^5.3.0"
   },
   "devDependencies": {
-    "@jest/globals": "^29.6.2",
+    "@types/jest": "^29.5.4",
     "@types/language-tags": "^1.0.1",
     "@types/lodash": "^4.14.196",
     "@types/node": "^20.4.6",
@@ -46,6 +46,7 @@
     "ajv": "^8.12.0",
     "husky": "^8.0.3",
     "jest": "^29.6.2",
+    "jest-extended": "^4.0.1",
     "lint-staged": "^14.0.1",
     "ontouml-schema": "github:OntoUML/ontouml-schema#master",
     "prettier": "3.0.2",

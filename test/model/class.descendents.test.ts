@@ -1,5 +1,4 @@
-import { describe, expect, it, beforeEach } from '@jest/globals';
-import { Class, Package, Project } from '../src';
+import { Class, Package, Project } from '../../src';
 
 describe('Test class ancestors-related query methods', () => {
   let project: Project;
@@ -41,19 +40,19 @@ describe('Test class ancestors-related query methods', () => {
     });
   });
 
-  describe(`Test ${Class.prototype.getUltimateSortalsDescendants.name}()`, () => {
+  describe(`Test ${Class.prototype.getIdentityProviderDescendants.name}()`, () => {
     it('Test function call', () => {
       const agent = model.createCategory();
       const person = model.createKind();
       const student = model.createRole();
       model.createGeneralization(agent, person);
       model.createGeneralization(person, student);
-      const agentDescendants = agent.getUltimateSortalsDescendants();
+      const agentDescendants = agent.getIdentityProviderDescendants();
 
       expect(agentDescendants).toContain(person);
       expect(agentDescendants.length).toBe(1);
-      expect(person.getUltimateSortalsDescendants().length).toBe(0);
-      expect(student.getUltimateSortalsDescendants().length).toBe(0);
+      expect(person.getIdentityProviderDescendants().length).toBe(0);
+      expect(student.getIdentityProviderDescendants().length).toBe(0);
     });
   });
 

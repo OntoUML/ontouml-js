@@ -1,5 +1,4 @@
-import { describe, expect, it } from '@jest/globals';
-import { Literal, Project } from '../src';
+import { Literal, Project } from '../../src';
 
 describe(`${Literal.name} Tests`, () => {
   describe(`Test ${Literal.prototype.toJSON.name}()`, () => {

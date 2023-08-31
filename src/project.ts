@@ -4,7 +4,6 @@ import {
   Literal,
   Package,
   Property,
-  Relation,
   OntoumlElement,
   OntoumlType,
   Diagram,
@@ -12,33 +11,35 @@ import {
   BinaryRelationView,
   GeneralizationView,
   GeneralizationSetView,
-  Classifier
+  NamedElement,
+  Finder,
+  Class,
+  Note,
+  Link,
+  PackageView,
+  NoteView,
+  NaryRelationView,
+  LinkView,
+  ClassBuilder,
+  GeneralizationBuilder,
+  BinaryRelation,
+  NaryRelation
 } from '.';
-import { NamedElement } from './named_element';
-import { Finder } from './finder';
-import { Class } from './model/class';
-import { Note } from './model/note';
-import { NoteLink } from './model/note_link';
-import { PackageView } from './view/package_view';
-import { NoteView } from './view/note_view';
-import { NaryRelationView } from './view/nary_relation_view';
-import { NoteLinkView } from './view/note_link_view';
-import { ClassBuilder } from './builder/model/class_builder';
-import { GeneralizationBuilder } from './builder/model/generalization_builder';
 
 export class Project extends NamedElement {
   finder: Finder;
   root?: Package;
 
   private _classes: { [key: string]: Class } = {};
-  private _relations: { [key: string]: Relation } = {};
+  private _binaryRelations: { [key: string]: BinaryRelation } = {};
+  private _naryRelations: { [key: string]: NaryRelation } = {};
   private _generalizations: { [key: string]: Generalization } = {};
   private _generalizationSets: { [key: string]: GeneralizationSet } = {};
   private _packages: { [key: string]: Package } = {};
   private _properties: { [key: string]: Property } = {};
   private _literals: { [key: string]: Literal } = {};
   private _notes: { [key: string]: Note } = {};
-  private _noteLinks: { [key: string]: NoteLink } = {};
+  private _links: { [key: string]: Link } = {};
   private _diagrams: { [key: string]: Diagram } = {};
   private _classViews: { [key: string]: ClassView } = {};
   private _binaryRelationViews: { [key: string]: BinaryRelationView } = {};
@@ -48,7 +49,7 @@ export class Project extends NamedElement {
     {};
   private _packageViews: { [key: string]: PackageView } = {};
   private _noteViews: { [key: string]: NoteView } = {};
-  private _noteLinkViews: { [key: string]: NoteLinkView } = {};
+  private _noteLinkViews: { [key: string]: LinkView } = {};
 
   constructor() {
     super();
@@ -83,8 +84,32 @@ export class Project extends NamedElement {
     return new GeneralizationBuilder(this);
   }
 
-  addClass(c: Class): void {
-    this._classes[c.id] = c;
+  add(e: OntoumlElement): void {
+    if (e === null) {
+      throw new Error('Cannot add a null element.');
+    }
+
+    if (e instanceof Class) {
+      this._classes[e.id] = e;
+    } else if (e instanceof BinaryRelation) {
+      this._binaryRelations[e.id] = e;
+    } else if (e instanceof NaryRelation) {
+      this._naryRelations[e.id] = e;
+    } else if (e instanceof Generalization) {
+      this._generalizations[e.id] = e;
+    } else if (e instanceof GeneralizationSet) {
+      this._generalizationSets[e.id] = e;
+    } else if (e instanceof Package) {
+      this._packages[e.id] = e;
+    } else if (e instanceof Property) {
+      this._properties[e.id] = e;
+    } else if (e instanceof Literal) {
+      this._literals[e.id] = e;
+    } else if (e instanceof Note) {
+      this._notes[e.id] = e;
+    } else if (e instanceof Link) {
+      this._links[e.id] = e;
+    }
   }
 
   createDiagram(): Diagram {
@@ -94,13 +119,17 @@ export class Project extends NamedElement {
   }
 
   addDiagram(diagram: Diagram) {
-    if (diagram === null) return;
+    if (diagram === null) {
+      throw new Error('Cannot add a null diagram.');
+    }
 
     this._diagrams[diagram.id] = diagram;
   }
 
   addDiagrams(diagrams: Diagram[]) {
-    if (diagrams === null) return;
+    if (diagrams === null || diagrams.length == 0) {
+      throw new Error('Cannot add a null or empty list of diagrams.');
+    }
 
     diagrams.forEach(d => this.addDiagram(d));
   }
@@ -114,26 +143,26 @@ export class Project extends NamedElement {
   }
 
   getContents(): OntoumlElement[] {
-    console.log(this._classes);
     return [
-      ...Object.values(this._classes)
-      // ...Object.values(this._relations),
-      // ...Object.values(this._generalizations),
-      // ...Object.values(this._generalizationSets),
-      // ...Object.values(this._packages),
-      // ...Object.values(this._properties),
-      // ...Object.values(this._literals),
-      // ...Object.values(this._notes),
-      // ...Object.values(this._noteLinks),
-      // ...Object.values(this._diagrams),
-      // ...Object.values(this._classViews),
-      // ...Object.values(this._binaryRelationViews),
-      // ...Object.values(this._nAryRelationViews),
-      // ...Object.values(this._generalizationViews),
-      // ...Object.values(this._generalizationSetViews),
-      // ...Object.values(this._packageViews),
-      // ...Object.values(this._noteViews),
-      // ...Object.values(this._noteLinkViews),
+      ...Object.values(this._classes),
+      ...Object.values(this._binaryRelations),
+      ...Object.values(this._naryRelations),
+      ...Object.values(this._generalizations),
+      ...Object.values(this._generalizationSets),
+      ...Object.values(this._packages),
+      ...Object.values(this._properties),
+      ...Object.values(this._literals),
+      ...Object.values(this._notes),
+      ...Object.values(this._links),
+      ...Object.values(this._diagrams),
+      ...Object.values(this._classViews),
+      ...Object.values(this._binaryRelationViews),
+      ...Object.values(this._nAryRelationViews),
+      ...Object.values(this._generalizationViews),
+      ...Object.values(this._generalizationSetViews),
+      ...Object.values(this._packageViews),
+      ...Object.values(this._noteViews),
+      ...Object.values(this._noteLinkViews)
     ];
   }
 

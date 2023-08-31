@@ -1,9 +1,8 @@
-import { describe, expect, it } from '@jest/globals';
 import { utils } from '../src';
 
 describe('Utils Test', () => {
   describe(`Test utils.${utils.arrayFrom.name}()`, () => {
-    it('Array from null', () => {
+    it('should return empty array when given null', () => {
       const arr = utils.arrayFrom(null);
       expect(arr.length).toBe(0);
     });

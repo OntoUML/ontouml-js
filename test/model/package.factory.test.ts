@@ -1,4 +1,3 @@
-import { describe, expect, it, beforeEach } from '@jest/globals';
 import {
   AggregationKind,
   Class,
@@ -7,7 +6,7 @@ import {
   Package,
   Project,
   Relation
-} from '../src';
+} from '../../src';
 
 describe(`Package tests`, () => {
   let project: Project;

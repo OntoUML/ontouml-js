@@ -1,6 +1,5 @@
 import uniqid from 'uniqid';
-import { OntoumlElement } from '../ontouml_element';
-import { Project } from '../project';
+import { OntoumlElement, Project } from '..';
 
 export abstract class OntoumlElementBuilder<
   B extends OntoumlElementBuilder<B>
@@ -17,7 +16,7 @@ export abstract class OntoumlElementBuilder<
     this.assertElement();
 
     this.element!.id = this._id;
-
+    this.project.add(this.element!);
     return this.element!;
   }
 

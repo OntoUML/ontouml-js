@@ -4,9 +4,9 @@ import {
   OntoumlType,
   ClassView,
   OntoumlElement,
-  Relation
+  Relation,
+  Diamond
 } from '..';
-import { Diamond } from '../shape/diamond';
 
 export class NaryRelationView extends View<Relation> {
   private _members: ClassView[];

@@ -1,4 +1,4 @@
-import { ModelElement, View, Path, Project, OntoumlElement } from '..';
+import { ModelElement, View, Path, OntoumlElement } from '..';
 
 export abstract class BinaryConnectorView<
   T extends ModelElement

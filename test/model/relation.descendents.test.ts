@@ -1,5 +1,4 @@
-import { describe, expect, it } from '@jest/globals';
-import { Project, Relation } from '../src';
+import { Project, Relation } from '../../src';
 
 describe('Relation: test ancestor-related query methods', () => {
   const model = new Project().createModel();

@@ -1,5 +1,4 @@
-import { ModelElement } from '../../model/model_element';
-import { NamedElementBuilder } from '../named_element_builder';
+import { ModelElement, NamedElementBuilder } from '../..';
 
 export abstract class ModelElementBuilder<
   B extends ModelElementBuilder<B>
@@ -8,7 +7,7 @@ export abstract class ModelElementBuilder<
   protected _container?: ModelElement;
   protected _customProperties: { [key: string]: any } = {};
 
-  abstract container(container: ModelElement): B;
+  abstract container(container?: ModelElement): B;
 
   override build(): ModelElement {
     super.build();

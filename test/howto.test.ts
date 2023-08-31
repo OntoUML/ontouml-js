@@ -1,4 +1,3 @@
-import { expect, it } from '@jest/globals';
 import { Project, serializationUtils } from '../src';
 
 it('Test the example presented in the "Usage" section of the README file', () =>

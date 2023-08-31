@@ -1,4 +1,3 @@
-import { describe, expect, it } from '@jest/globals';
 import {
   AggregationKind,
   Project,
@@ -6,7 +5,7 @@ import {
   PropertyStereotype,
   serializationUtils,
   stereotypeUtils
-} from '../src';
+} from '../../src';
 
 describe(`${Property.name} Tests`, () => {
   describe(`Test ${Property.prototype.isStereotypeOneOf.name}()`, () => {

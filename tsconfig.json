@@ -13,5 +13,8 @@
     "strict": true /* Enable all strict type-checking options. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "noImplicitOverride": true
-  }
+  },
+  "files": ["test/jest-extended.d.ts", "jest.setup.ts"],
+  "include": ["src/**/*", "test/**/*"],
+  "exclude": ["node_modules"]
 }

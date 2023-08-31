@@ -3,12 +3,12 @@ import {
   ModelElement,
   Project,
   OntoumlElement,
-  Package
+  Package,
+  Note,
+  PackageableElement
 } from '..';
-import { Note } from './note';
-import { PackageableElement } from './packageable_element';
 
-export class NoteLink extends ModelElement implements PackageableElement {
+export class Link extends ModelElement implements PackageableElement {
   note: Note;
   element: ModelElement;
 

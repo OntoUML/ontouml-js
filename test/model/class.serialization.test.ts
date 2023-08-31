@@ -1,4 +1,3 @@
-import { describe, expect, it, beforeEach } from '@jest/globals';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import {
@@ -9,7 +8,7 @@ import {
   Package,
   Project,
   Property
-} from '../src';
+} from '../../src';
 
 const schema = require('ontouml-schema');
 

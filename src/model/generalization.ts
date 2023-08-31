@@ -6,27 +6,19 @@ import {
   GeneralizationSet,
   Package,
   Relation,
-  Project
+  Project,
+  ModelElement,
+  PackageableElement
 } from '..';
-import { ModelElement } from './model_element';
-import { PackageableElement } from './packageable_element';
 
 export class Generalization extends ModelElement implements PackageableElement {
-  general: Classifier<any, any>;
-  specific: Classifier<any, any>;
+  general?: Classifier<any, any>;
+  specific?: Classifier<any, any>;
   // TODO: add function to enable _genSets to be private
   _genSets: GeneralizationSet[] = [];
 
-  constructor(
-    project: Project,
-    container: Package | undefined,
-    general: Classifier<any, any>,
-    specific: Classifier<any, any>
-  ) {
+  constructor(project: Project, container: Package | undefined) {
     super(project, container);
-
-    this.general = general;
-    this.specific = specific;
   }
 
   public get genSets(): GeneralizationSet[] {
@@ -92,13 +84,7 @@ export class Generalization extends ModelElement implements PackageableElement {
   }
 
   clone(): Generalization {
-    const clone = new Generalization(
-      this.project!,
-      this.container,
-      this.specific,
-      this.general
-    );
-    return clone;
+    return { ...this };
   }
 
   // TODO: Fixme
@@ -117,8 +103,8 @@ export class Generalization extends ModelElement implements PackageableElement {
   override toJSON(): any {
     const object = {
       type: OntoumlType.GENERALIZATION,
-      general: this.general.id,
-      specific: this.specific.id
+      general: this.general?.id,
+      specific: this.specific?.id
     };
 
     return { ...super.toJSON(), ...object };

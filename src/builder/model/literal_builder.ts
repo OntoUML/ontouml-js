@@ -1,7 +1,4 @@
-import { Class } from '../../model/class';
-import { Literal } from '../../model/literal';
-import { ModelElement } from '../../model/model_element';
-import { ModelElementBuilder } from './model_element_builder';
+import { Class, Literal, ModelElement, ModelElementBuilder } from '../..';
 
 export class LiteralBuilder extends ModelElementBuilder<LiteralBuilder> {
   protected override element?: Literal;
@@ -18,7 +15,9 @@ export class LiteralBuilder extends ModelElementBuilder<LiteralBuilder> {
    */
   override build(): Literal {
     this.element = new Literal(this._container);
-    return super.build() as Literal;
+    super.build();
+    this._container.addLiteral(this.element);
+    return this.element;
   }
 
   override container(_: ModelElement): LiteralBuilder {

@@ -1,5 +1,4 @@
-import { Class, OntoumlElement, OntoumlType, View } from '..';
-import { Rectangle } from '../shape/rectangle';
+import { Class, Rectangle, OntoumlElement, OntoumlType, View } from '..';
 
 export class ClassView extends View<Class> {
   readonly rectangle: Rectangle;

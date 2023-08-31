@@ -1,5 +1,4 @@
-import { describe, expect, it } from '@jest/globals';
-import { Project, RelationStereotype } from '../src';
+import { Project, RelationStereotype } from '../../src';
 
 describe('Test isStereotypeValid()', () => {
   const model = new Project().createModel();

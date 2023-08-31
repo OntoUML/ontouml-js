@@ -1,5 +1,4 @@
-import { GeneralizationSet, OntoumlElement, OntoumlType, View } from '..';
-import { Text } from '../shape/text';
+import { GeneralizationSet, OntoumlElement, OntoumlType, View, Text } from '..';
 
 export class GeneralizationSetView extends View<GeneralizationSet> {
   text: Text;

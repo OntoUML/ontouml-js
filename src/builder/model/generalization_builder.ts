@@ -1,10 +1,12 @@
-import { Classifier } from '../../model/classifier';
-import { Generalization } from '../../model/generalization';
-import { ModelElement } from '../../model/model_element';
-import { Package } from '../../model/package';
-import { Project } from '../../project';
-import { utils } from '../../utils';
-import { ModelElementBuilder } from './model_element_builder';
+import {
+  Classifier,
+  Generalization,
+  ModelElement,
+  Package,
+  Project,
+  utils,
+  ModelElementBuilder
+} from '../..';
 
 export class GeneralizationBuilder extends ModelElementBuilder<GeneralizationBuilder> {
   protected override element?: Generalization;
@@ -24,19 +26,17 @@ export class GeneralizationBuilder extends ModelElementBuilder<GeneralizationBui
     this.assertSpecificSet();
     utils.assertSameProject(this._general!, this._specific!);
 
-    this.element = new Generalization(
-      this.project,
-      this._container,
-      this._general!,
-      this._specific!
-    );
+    this.element = new Generalization(this.project, this._container);
+    this.element.general = this._general;
+    this.element.specific = this._specific;
+
+    this.project.add(this.element);
 
     super.build();
-
     return this.element;
   }
 
-  container(pkg: Package): GeneralizationBuilder {
+  container(pkg?: Package): GeneralizationBuilder {
     this._container = pkg;
     return this;
   }

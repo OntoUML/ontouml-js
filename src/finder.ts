@@ -1,21 +1,21 @@
-import { BinaryRelation } from './model/binary_relation';
-import { Class } from './model/class';
-import { Generalization } from './model/generalization';
-import { GeneralizationSet } from './model/generalization_set';
-import { Literal } from './model/literal';
-import { ModelElement } from './model/model_element';
-import { NaryRelation } from './model/nary_relation';
-import { Nature } from './model/natures';
-import { Package } from './model/package';
-import { Property } from './model/property';
-import { Relation } from './model/relation';
 import {
+  BinaryRelation,
+  Class,
+  Generalization,
+  GeneralizationSet,
+  Literal,
+  ModelElement,
+  NaryRelation,
+  Nature,
+  Package,
+  Property,
+  Relation,
   ClassStereotype,
   PropertyStereotype,
-  RelationStereotype
-} from './model/stereotypes';
-import { OntoumlElement } from './ontouml_element';
-import { Project } from './project';
+  RelationStereotype,
+  OntoumlElement,
+  Project
+} from '.';
 
 export class Finder {
   project: Project;

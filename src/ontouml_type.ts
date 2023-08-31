@@ -9,7 +9,7 @@ export enum OntoumlType {
   PROPERTY = 'Property',
   LITERAL = 'Literal',
   NOTE = 'Note',
-  NOTE_LINK = 'NoteLink',
+  NOTE_LINK = 'Link',
   DIAGRAM = 'Diagram',
   CLASS_VIEW = 'ClassView',
   BINARY_RELATION_VIEW = 'BinaryRelationView',

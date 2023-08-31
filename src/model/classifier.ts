@@ -7,12 +7,12 @@ import {
   Property,
   Class,
   Relation,
-  Project
+  Project,
+  PackageableElement,
+  BinaryRelation,
+  NaryRelation,
+  Decoratable
 } from '..';
-import { PackageableElement } from './packageable_element';
-import { BinaryRelation } from './binary_relation';
-import { NaryRelation } from './nary_relation';
-import { Decoratable } from './decoratable';
 
 // TODO: check whether the first generics term "T" is really necessary; it seems redundant
 export abstract class Classifier<
@@ -30,11 +30,11 @@ export abstract class Classifier<
   }
 
   public override get container(): Package | undefined {
-    return this.container as Package;
+    return this._container as Package;
   }
 
   public override set container(newContainer: Package | undefined) {
-    super.container = newContainer;
+    this._container = newContainer;
   }
 
   public get properties(): Property[] {
@@ -63,12 +63,22 @@ export abstract class Classifier<
 
   addParent(parent: T): Generalization {
     this.assertProject();
-    return new Generalization(this.project!, this.container, parent, this);
+
+    return this.project!.generalizationBuilder()
+      .general(parent)
+      .specific(this)
+      .container(this.container)
+      .build();
   }
 
   addChild(child: T): Generalization {
     this.assertProject();
-    return new Generalization(this.project!, this.container, this, child);
+
+    return this.project!.generalizationBuilder()
+      .general(this)
+      .specific(child)
+      .container(this.container)
+      .build();
   }
 
   // TODO: Update methods to use references instead.
@@ -121,7 +131,8 @@ export abstract class Classifier<
   getAncestors(knownAncestors: T[] = []): T[] {
     const ancestors = [...knownAncestors];
 
-    this.getParents().forEach((parent: T) => {
+    // TODO: Replace with flatMap
+    this.getParents().forEach(parent => {
       if (!ancestors.includes(parent)) {
         ancestors.push(parent);
         ancestors.push(...parent.getAncestors(ancestors));
@@ -134,6 +145,7 @@ export abstract class Classifier<
   getDescendants(knownDescendants: T[] = []): T[] {
     const descendants = [...knownDescendants];
 
+    // TODO: Replace with flatMap
     this.getChildren().forEach((child: T) => {
       if (!descendants.includes(child)) {
         descendants.push(child);
@@ -142,14 +154,6 @@ export abstract class Classifier<
     });
 
     return [...new Set(descendants)];
-  }
-
-  getFilteredAncestors(filter: (ancestor: T) => boolean): T[] {
-    return this.getAncestors().filter(filter);
-  }
-
-  getFilteredDescendants(filter: (descendent: T) => boolean): T[] {
-    return this.getDescendants().filter(filter);
   }
 
   // TODO: Update with references

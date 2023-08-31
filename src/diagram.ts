@@ -7,21 +7,20 @@ import {
   Generalization,
   GeneralizationSet,
   Package,
-  Relation,
   ClassView,
   GeneralizationSetView,
   GeneralizationView,
   PackageView,
   BinaryRelationView,
-  Project
+  Project,
+  BinaryRelation,
+  NaryRelation,
+  Path,
+  Rectangle,
+  Shape,
+  Text,
+  NaryRelationView
 } from '.';
-import { BinaryRelation } from './model/binary_relation';
-import { NaryRelation } from './model/nary_relation';
-import { Path } from './shape/path';
-import { Rectangle } from './shape/rectangle';
-import { Shape } from './shape/shape';
-import { Text } from './shape/text';
-import { NaryRelationView } from './view/nary_relation_view';
 
 export class Diagram extends OntoumlElement {
   owner?: ModelElement;

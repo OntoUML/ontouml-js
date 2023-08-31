@@ -12,12 +12,12 @@ import {
   GeneralizationSet,
   Relation,
   Classifier,
-  Project
+  Project,
+  PackageableElement,
+  BinaryRelation,
+  NaryRelation,
+  ModelElement
 } from '..';
-import { PackageableElement } from './packageable_element';
-import { BinaryRelation } from './binary_relation';
-import { NaryRelation } from './nary_relation';
-import { ModelElement } from './model_element';
 
 export class Package extends ModelElement implements PackageableElement {
   contents: ModelElement[] = [];
@@ -711,7 +711,11 @@ export class Package extends ModelElement implements PackageableElement {
   ): Generalization {
     this.assertProject();
 
-    let gen = new Generalization(this.project!, this, general, specific);
+    let gen = this.project!.generalizationBuilder()
+      .general(general)
+      .specific(specific)
+      .container(this)
+      .build();
 
     if (name) {
       gen.name.addText(name);

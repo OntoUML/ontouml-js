@@ -1,5 +1,4 @@
-import { describe, expect, it } from '@jest/globals';
-import { Generalization, Project, serializationUtils } from '../src';
+import { Generalization, Project, serializationUtils } from '../../src';
 
 describe(`${Generalization.name} Tests`, () => {
   describe(`Test ${Generalization.prototype.toJSON.name}()`, () => {

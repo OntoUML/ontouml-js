@@ -1,5 +1,4 @@
-import { Classifier, Package, Project, Stereotype } from '..';
-import { ModelElement } from './model_element';
+import { Classifier, Package, Project, Stereotype, ModelElement } from '..';
 
 export abstract class Decoratable<S extends Stereotype> extends ModelElement {
   stereotype?: S;

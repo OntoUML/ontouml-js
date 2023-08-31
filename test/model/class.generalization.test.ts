@@ -1,11 +1,10 @@
-import { describe, expect, it, beforeEach, beforeAll } from '@jest/globals';
 import {
   Class,
   Project,
   Package,
   Generalization,
   GeneralizationSet
-} from '../src';
+} from '../../src';
 
 describe(`${Class.name} Tests`, () => {
   let project: Project;

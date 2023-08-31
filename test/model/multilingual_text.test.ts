@@ -1,5 +1,4 @@
-import { describe, expect, it, beforeEach } from '@jest/globals';
-import { MultilingualText } from '../src';
+import { MultilingualText } from '../../src';
 
 describe('MultilingualText Tests', () => {
   let text: MultilingualText;

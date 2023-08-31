@@ -1,6 +1,4 @@
-import { Decoratable } from '../../model/decoratable';
-import { Stereotype } from '../../model/stereotypes';
-import { ModelElementBuilder } from './model_element_builder';
+import { Decoratable, Stereotype, ModelElementBuilder } from '../..';
 
 export abstract class DecoratableBuilder<
   B extends DecoratableBuilder<B, S>,

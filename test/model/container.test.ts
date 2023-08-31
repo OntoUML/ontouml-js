@@ -1,5 +1,4 @@
-import { describe, expect, it, beforeEach, beforeAll } from '@jest/globals';
-import { Class, OntoumlElement, Package, Project, Relation } from '../src';
+import { Class, OntoumlElement, Package, Project, Relation } from '../../src';
 
 describe('Container tests', () => {
   let project: Project;

@@ -1,4 +1,3 @@
-import { describe, expect, it, beforeAll } from '@jest/globals';
 import {
   Class,
   Generalization,
@@ -8,7 +7,7 @@ import {
   Property,
   Relation,
   serializationUtils
-} from '../src';
+} from '../../src';
 
 describe('Project tests', () => {
   let project: Project;

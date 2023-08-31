@@ -1,4 +1,3 @@
-import { describe, expect, it, beforeEach, beforeAll } from '@jest/globals';
 import {
   COLLECTIVE,
   Class,
@@ -7,7 +6,7 @@ import {
   KIND,
   Project,
   RELATOR
-} from '../src';
+} from '../../src';
 
 describe('Test Class stereotype-related query methods', () => {
   let proj: Project;

@@ -5,11 +5,10 @@ import {
   RelationStereotype,
   Property,
   Class,
+  Relation,
+  Classifier,
   EXISTENTIAL_DEPENDENCE_STEREOTYPES
 } from '..';
-
-import { Relation } from './relation';
-import { Classifier } from './classifier';
 
 export class BinaryRelation extends Relation {
   constructor(

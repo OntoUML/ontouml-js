@@ -6,11 +6,11 @@ import {
   Classifier,
   PropertyStereotype,
   ModelElement,
-  Relation
+  Relation,
+  BinaryRelation,
+  NaryRelation,
+  Decoratable
 } from '..';
-import { BinaryRelation } from './binary_relation';
-import { NaryRelation } from './nary_relation';
-import { Decoratable } from './decoratable';
 
 export enum AggregationKind {
   NONE = 'NONE',

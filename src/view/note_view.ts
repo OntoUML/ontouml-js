@@ -1,7 +1,4 @@
-import { OntoumlElement, OntoumlType } from '..';
-import { View } from './view';
-import { Note } from '../model/note';
-import { Text } from '../shape/text';
+import { OntoumlElement, OntoumlType, View, Note, Text } from '..';
 
 export class NoteView extends View<Note> {
   readonly text: Text;

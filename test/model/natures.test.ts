@@ -1,5 +1,4 @@
-import { describe, expect, it } from '@jest/globals';
-import { natureUtils, Nature } from '../src';
+import { natureUtils, Nature } from '../../src';
 
 describe(`Test ontological nature handling utility`, () => {
   describe('Test natures array', () => {
