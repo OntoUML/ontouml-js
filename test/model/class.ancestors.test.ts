@@ -2,102 +2,352 @@ import { Class, Project } from '../../src';
 
 describe('Class: test ancestor-related query methods', () => {
   let proj: Project;
-  let agent: Class, person: Class, student: Class, phdStudent: Class;
+  let thing: Class,
+    agent: Class,
+    person: Class,
+    student: Class,
+    researcher: Class,
+    phdStudent: Class;
 
   beforeEach(() => {
     proj = new Project();
+    thing = proj.classBuilder().mixin().build();
     agent = proj.classBuilder().category().build();
     person = proj.classBuilder().kind().build();
     student = proj.classBuilder().role().build();
+    researcher = proj.classBuilder().role().build();
     phdStudent = proj.classBuilder().role().build();
+    agent.addParent(thing);
     person.addParent(agent);
     student.addParent(person);
+    researcher.addParent(person);
     phdStudent.addParent(student);
+    phdStudent.addParent(researcher);
   });
 
   describe(`Test ${Class.prototype.getParents.name}()`, () => {
+    it('should return an empty array for «mixin» thing', () => {
+      const parents = thing.getParents();
+      expect(parents).toBeEmpty();
+    });
+
+    it('should return «mixin» thing as the only parent of «category» agent', () => {
+      const parents = agent.getParents();
+      expect(parents).toBeArrayOfSize(1);
+      expect(parents).toIncludeSameMembers([thing]);
+    });
+
     it('should return «category» agent as the only parent of «kind» person', () => {
-      expect(person.getParents()).toIncludeSameMembers([agent]);
+      const parents = person.getParents();
+      expect(parents).toBeArrayOfSize(1);
+      expect(parents).toIncludeSameMembers([agent]);
+    });
+
+    it('should return «kind» person as the only parent of «role» student', () => {
+      const parents = student.getParents();
+      expect(parents).toBeArrayOfSize(1);
+      expect(parents).toIncludeSameMembers([person]);
+    });
+
+    it('should return «kind» person as the only parent of «role» researcher', () => {
+      const parents = researcher.getParents();
+      expect(parents).toBeArrayOfSize(1);
+      expect(parents).toIncludeSameMembers([person]);
+    });
+
+    it('should return «role» researcher and «role» student as the parents of «role» phdStudent', () => {
+      const parents = phdStudent.getParents();
+      expect(parents).toBeArrayOfSize(2);
+      expect(parents).toIncludeSameMembers([student, researcher]);
     });
   });
 
   describe(`Test ${Class.prototype.getAncestors.name}()`, () => {
-    it('Test function call', () => {
-      expect(person.getAncestors()).toBe(1);
+    it('should return an empty array for «mixin» thing', () => {
+      const ancestors = thing.getAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return «mixin» thing as the only anscestor of «category» agent', () => {
+      const ancestors = agent.getAncestors();
+      expect(ancestors).toBeArrayOfSize(1);
+      expect(ancestors).toIncludeSameMembers([thing]);
+    });
+
+    it('should return «category» agent as the only anscestor of «kind» person', () => {
+      const ancestors = person.getAncestors();
+      expect(ancestors).toBeArrayOfSize(2);
+      expect(ancestors).toIncludeSameMembers([agent, thing]);
+    });
+
+    it('should return «category» agent and «kind» person as the anscestors of «role» student', () => {
+      const ancestors = student.getAncestors();
+      expect(ancestors).toBeArrayOfSize(3);
+      expect(ancestors).toIncludeSameMembers([person, agent, thing]);
+    });
+
+    it('should return «category» agent and «kind» person as the anscestors of «role» researcher', () => {
+      const ancestors = researcher.getAncestors();
+      expect(ancestors).toBeArrayOfSize(3);
+      expect(ancestors).toIncludeSameMembers([person, agent, thing]);
+    });
+
+    it('should return «category» agent, «kind» person, «role» researcher, and «role» student as the ancestors of «role» phdStudent', () => {
+      const ancestors = phdStudent.getAncestors();
+      expect(ancestors).toBeArrayOfSize(5);
+      expect(ancestors).toIncludeSameMembers([
+        agent,
+        student,
+        researcher,
+        person,
+        thing
+      ]);
     });
   });
 
   describe(`Test ${Class.prototype.getIdentityProviderAncestors.name}()`, () => {
-    it('Test function call', () => {
-      const studentAncestors = student.getIdentityProviderAncestors();
-      expect(studentAncestors).toContain(person);
-      expect(studentAncestors).toHaveLength(1);
-      expect(agent.getIdentityProviderAncestors()).toBeEmpty();
-      expect(person.getIdentityProviderAncestors()).toBeEmpty();
+    it('should return an empty array for «mixin» thing', () => {
+      const ancestors = thing.getIdentityProviderAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return an empty array for «category» agent', () => {
+      const ancestors = agent.getIdentityProviderAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return an empty array for «kind» person', () => {
+      const ancestors = person.getIdentityProviderAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return «kind» person as the only identity provider anscestor of «role» student', () => {
+      const ancestors = student.getIdentityProviderAncestors();
+      expect(ancestors).toBeArrayOfSize(1);
+      expect(ancestors).toIncludeSameMembers([person]);
+    });
+
+    it('should return «kind» person as the only identity provider anscestor of «role» researcher', () => {
+      const ancestors = researcher.getIdentityProviderAncestors();
+      expect(ancestors).toBeArrayOfSize(1);
+      expect(ancestors).toIncludeSameMembers([person]);
+    });
+
+    it('should return «kind» person as the only identity provider anscestor of «role» phdStudent', () => {
+      const ancestors = phdStudent.getIdentityProviderAncestors();
+      expect(ancestors).toBeArrayOfSize(1);
+      expect(ancestors).toIncludeSameMembers([person]);
     });
   });
 
   describe(`Test ${Class.prototype.getSortalAncestors.name}()`, () => {
-    it('Test function call', () => {
-      const studentAncestors = student.getSortalAncestors();
-      expect(studentAncestors).toContain(person);
-      expect(studentAncestors.length).toBe(1);
-      expect(agent.getSortalAncestors().length).toBe(0);
-      expect(person.getSortalAncestors().length).toBe(0);
+    it('should return an empty array for «mixin» thing', () => {
+      const ancestors = thing.getSortalAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return an empty array for «category» agent', () => {
+      const ancestors = agent.getSortalAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return an empty array for «kind» person', () => {
+      const ancestors = person.getSortalAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return «kind» person as the only sortal anscestor of «role» student', () => {
+      const ancestors = student.getSortalAncestors();
+      expect(ancestors).toBeArrayOfSize(1);
+      expect(ancestors).toIncludeSameMembers([person]);
+    });
+
+    it('should return «kind» person as the only sortal anscestor of «role» researcher', () => {
+      const ancestors = researcher.getSortalAncestors();
+      expect(ancestors).toBeArrayOfSize(1);
+      expect(ancestors).toIncludeSameMembers([person]);
+    });
+
+    it('should return «kind» person, «role» researcher, and «role» student as the sortal anscestors of «role» phdStudent', () => {
+      const ancestors = phdStudent.getSortalAncestors();
+      expect(ancestors).toBeArrayOfSize(3);
+      expect(ancestors).toIncludeSameMembers([person, student, researcher]);
     });
   });
 
   describe(`Test ${Class.prototype.getBaseSortalAncestors.name}()`, () => {
-    it('Test function call', () => {
-      const phdStudentAncestors = phdStudent.getBaseSortalAncestors();
-      expect(phdStudentAncestors).toContain(student);
-      expect(phdStudentAncestors.length).toBe(1);
-      expect(agent.getBaseSortalAncestors()).toBeEmpty();
-      expect(person.getBaseSortalAncestors()).toBeEmpty();
-      expect(student.getBaseSortalAncestors()).toBeEmpty();
+    it('should return an empty array for «mixin» thing', () => {
+      const ancestors = thing.getBaseSortalAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return an empty array for «category» agent', () => {
+      const ancestors = agent.getBaseSortalAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return an empty array for «kind» person', () => {
+      const ancestors = person.getBaseSortalAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return an empty array for «role» student', () => {
+      const ancestors = student.getBaseSortalAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return an empty array for «role» researcher', () => {
+      const ancestors = researcher.getBaseSortalAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return «role» researcher and «role» student as the base sortal anscestors of «role» phdStudent', () => {
+      const ancestors = phdStudent.getBaseSortalAncestors();
+      expect(ancestors).toBeArrayOfSize(2);
+      expect(ancestors).toIncludeSameMembers([student, researcher]);
     });
   });
 
   describe(`Test ${Class.prototype.getNonSortalAncestors.name}()`, () => {
-    it('Test function call', () => {
-      const studentAncestors = student.getNonSortalAncestors();
-      expect(studentAncestors).toContain(agent);
-      expect(studentAncestors.length).toBe(1);
-      expect(agent.getNonSortalAncestors()).toBeEmpty();
-      expect(person.getNonSortalAncestors().length).toBe(1);
+    it('should return an empty array for «mixin» thing', () => {
+      const ancestors = thing.getNonSortalAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return «mixin» thing as the only non-sortal ancestor of  «category» agent', () => {
+      const ancestors = agent.getNonSortalAncestors();
+      expect(ancestors).toBeArrayOfSize(1);
+      expect(ancestors).toIncludeSameMembers([thing]);
+    });
+
+    it('should return «category» agent as the only non-sortal ancestor of «kind» person', () => {
+      const ancestors = person.getNonSortalAncestors();
+      expect(ancestors).toBeArrayOfSize(2);
+      expect(ancestors).toIncludeSameMembers([agent, thing]);
+    });
+
+    it('should return «category» agent as the only non-sortal ancestor of «role» student', () => {
+      const ancestors = student.getNonSortalAncestors();
+      expect(ancestors).toBeArrayOfSize(2);
+      expect(ancestors).toIncludeSameMembers([agent, thing]);
+    });
+
+    it('should return «category» agent as the only non-sortal ancestor of «role» researcher', () => {
+      const ancestors = researcher.getNonSortalAncestors();
+      expect(ancestors).toBeArrayOfSize(2);
+      expect(ancestors).toIncludeSameMembers([agent, thing]);
+    });
+
+    it('should return «category» agent as the only non-sortal ancestor of «role» phdStudent', () => {
+      const ancestors = phdStudent.getNonSortalAncestors();
+      expect(ancestors).toBeArrayOfSize(2);
+      expect(ancestors).toIncludeSameMembers([agent, thing]);
     });
   });
 
   describe(`Test ${Class.prototype.getRigidAncestors.name}()`, () => {
-    it('Test function call', () => {
-      const phdStudentAncestors = phdStudent.getRigidAncestors();
-      expect(phdStudentAncestors).toContain(agent);
-      expect(phdStudentAncestors.length).toBe(2);
-      expect(agent.getRigidAncestors().length).toBe(0);
-      expect(person.getRigidAncestors().length).toBe(1);
-      expect(student.getRigidAncestors().length).toBe(2);
+    it('should return an empty array for «mixin» thing', () => {
+      const ancestors = thing.getRigidAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return an empty array for «category» agent', () => {
+      const ancestors = agent.getRigidAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return «category» agent as the only rigid ancestor of «kind» person', () => {
+      const ancestors = person.getRigidAncestors();
+      expect(ancestors).toBeArrayOfSize(1);
+      expect(ancestors).toIncludeSameMembers([agent]);
+    });
+
+    it('should return «category» agent and «kind» person as the rigid ancestors of «role» student', () => {
+      const ancestors = student.getRigidAncestors();
+      expect(ancestors).toBeArrayOfSize(2);
+      expect(ancestors).toIncludeSameMembers([agent, person]);
+    });
+
+    it('should return «category» agent and «kind» person as the rigid ancestors of «role» researcher', () => {
+      const ancestors = researcher.getRigidAncestors();
+      expect(ancestors).toBeArrayOfSize(2);
+      expect(ancestors).toIncludeSameMembers([agent, person]);
+    });
+
+    it('should return «category» agent and «kind» person as the rigid ancestors of «role» phdStudent', () => {
+      const ancestors = phdStudent.getRigidAncestors();
+      expect(ancestors).toBeArrayOfSize(2);
+      expect(ancestors).toIncludeSameMembers([agent, person]);
     });
   });
 
   describe(`Test ${Class.prototype.getSemiRigidAncestors.name}()`, () => {
-    it('Test function call', () => {
-      const phdStudentAncestors = phdStudent.getSemiRigidAncestors();
-      expect(phdStudentAncestors).toContain(agent);
-      expect(phdStudentAncestors.length).toBe(1);
-      expect(agent.getSemiRigidAncestors().length).toBe(0);
-      expect(person.getSemiRigidAncestors().length).toBe(1);
-      expect(student.getSemiRigidAncestors().length).toBe(1);
+    it('should return an empty array for «mixin» thing', () => {
+      const ancestors = thing.getSemiRigidAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return «mixin» thing as the semi-rigid ancestor of «category» agent', () => {
+      const ancestors = agent.getSemiRigidAncestors();
+      expect(ancestors).toBeArrayOfSize(1);
+      expect(ancestors).toIncludeSameMembers([thing]);
+    });
+
+    it('should return «mixin» thing as the semi-rigid ancestor of «kind» person', () => {
+      const ancestors = person.getSemiRigidAncestors();
+      expect(ancestors).toBeArrayOfSize(1);
+      expect(ancestors).toIncludeSameMembers([thing]);
+    });
+
+    it('should return «mixin» thing as the semi-rigid ancestor of «role» student', () => {
+      const ancestors = student.getSemiRigidAncestors();
+      expect(ancestors).toBeArrayOfSize(1);
+      expect(ancestors).toIncludeSameMembers([thing]);
+    });
+
+    it('should return «mixin» thing as the semi-rigid ancestor of «role» researcher', () => {
+      const ancestors = researcher.getSemiRigidAncestors();
+      expect(ancestors).toBeArrayOfSize(1);
+      expect(ancestors).toIncludeSameMembers([thing]);
+    });
+
+    it('should return «mixin» thing as the semi-rigid ancestor of «role» phdStudent', () => {
+      const ancestors = phdStudent.getSemiRigidAncestors();
+      expect(ancestors).toBeArrayOfSize(1);
+      expect(ancestors).toIncludeSameMembers([thing]);
     });
   });
 
   describe(`Test ${Class.prototype.getAntiRigidAncestors.name}()`, () => {
-    it('Test function call', () => {
-      const phdStudentAncestors = phdStudent.getAntiRigidAncestors();
-      expect(phdStudentAncestors).toContain(student);
-      expect(phdStudentAncestors.length).toBe(1);
-      expect(agent.getAntiRigidAncestors().length).toBe(0);
-      expect(person.getAntiRigidAncestors().length).toBe(0);
-      expect(student.getAntiRigidAncestors().length).toBe(0);
+    it('should return an empty array for «mixin» thing', () => {
+      const ancestors = thing.getAntiRigidAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return an empty array for «category» agent', () => {
+      const ancestors = agent.getAntiRigidAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return an empty array for «kind» person', () => {
+      const ancestors = person.getAntiRigidAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return an empty array for «role» student', () => {
+      const ancestors = student.getAntiRigidAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return an empty array for «role» researcher', () => {
+      const ancestors = researcher.getAntiRigidAncestors();
+      expect(ancestors).toBeEmpty();
+    });
+
+    it('should return «role» researcher and «role» student as the anti-rigid ancestors of «role» phdStudent', () => {
+      const ancestors = phdStudent.getAntiRigidAncestors();
+      expect(ancestors).toBeArrayOfSize(2);
+      expect(ancestors).toIncludeSameMembers([researcher, student]);
     });
   });
 });

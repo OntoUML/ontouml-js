@@ -57,6 +57,54 @@ export class Project extends NamedElement {
     this.finder = new Finder(this);
   }
 
+  public get classes(): Class[] {
+    return Object.values(this._classes);
+  }
+
+  public get binaryRelations(): BinaryRelation[] {
+    return Object.values(this._binaryRelations);
+  }
+
+  public get naryRelations(): NaryRelation[] {
+    return Object.values(this._naryRelations);
+  }
+
+  public get generalizations(): Generalization[] {
+    return Object.values(this._generalizations);
+  }
+
+  public get generalizationSets(): GeneralizationSet[] {
+    return Object.values(this._generalizationSets);
+  }
+
+  public get packages(): Package[] {
+    return Object.values(this._packages);
+  }
+
+  public get properties(): Property[] {
+    return Object.values(this._properties);
+  }
+
+  public get attributes(): Property[] {
+    return Object.values(this._properties).filter(p => p.isAttribute());
+  }
+
+  public get relationEnds(): Property[] {
+    return Object.values(this._properties).filter(p => p.isRelationEnd());
+  }
+
+  public get literals(): Literal[] {
+    return Object.values(this._literals);
+  }
+
+  public get notes(): Note[] {
+    return Object.values(this._notes);
+  }
+
+  public get links(): Link[] {
+    return Object.values(this._links);
+  }
+
   // createModel(base?: Partial<Package>): Package {
   //   if (this.model) {
   //     throw new Error('Model already defined');
@@ -85,8 +133,8 @@ export class Project extends NamedElement {
   }
 
   add(e: OntoumlElement): void {
-    if (e === null) {
-      throw new Error('Cannot add a null element.');
+    if (!e) {
+      throw new Error('Cannot add a null or undefined element.');
     }
 
     if (e instanceof Class) {

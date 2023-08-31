@@ -30,8 +30,6 @@ export class GeneralizationBuilder extends ModelElementBuilder<GeneralizationBui
     this.element.general = this._general;
     this.element.specific = this._specific;
 
-    this.project.add(this.element);
-
     super.build();
     return this.element;
   }

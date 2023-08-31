@@ -3,13 +3,12 @@ import _ from 'lodash';
 import { OntoumlType, Project } from '.';
 
 export abstract class OntoumlElement {
-  id: string;
+  id: string = uniqid();
   created: Date = new Date();
   modified?: Date;
-  private _project?: Project | undefined;
+  private _project?: Project;
 
   constructor(project?: Project) {
-    this.id = uniqid();
     this._project = project;
   }
 

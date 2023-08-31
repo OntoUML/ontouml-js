@@ -83,7 +83,7 @@ export abstract class Classifier<
 
   // TODO: Update methods to use references instead.
   getGeneralizations(): Generalization[] {
-    return this.project!.finder.getGeneralizations().filter(
+    return this.project!.generalizations.filter(
       g => this === g.specific || this === g.general
     );
   }
