@@ -1,5 +1,4 @@
-import { Class, Project } from '../../src';
-import { ClassBuilder } from '../../src/builder/model/class_builder';
+import { Class, Project, ClassBuilder } from '../../src';
 
 describe(`${ClassBuilder.name} Tests`, () => {
   let proj: Project;
