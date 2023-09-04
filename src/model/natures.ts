@@ -33,7 +33,8 @@ export const EndurantNatures: readonly Nature[] = [
   Nature.INTRINSIC_MODE,
   Nature.EXTRINSIC_MODE,
   Nature.QUALITY,
-  Nature.RELATOR
+  Nature.RELATOR,
+  Nature.TYPE
 ];
 
 export const SubstantialNatures: readonly Nature[] = [

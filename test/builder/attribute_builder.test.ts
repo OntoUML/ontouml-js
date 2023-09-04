@@ -26,15 +26,15 @@ describe(`${AttributeBuilder.name} Tests`, () => {
     });
 
     it('Attribute should be created with isDerived = false', () => {
-      expect(attr.isDerived).toBe(false);
+      expect(attr.isDerived).toBeFalse();
     });
 
     it('Attribute should be created with isReadOnly = false', () => {
-      expect(attr.isReadOnly).toBe(false);
+      expect(attr.isReadOnly).toBeFalse();
     });
 
     it('Attribute should be created with isOrdered = false', () => {
-      expect(attr.isOrdered).toBe(false);
+      expect(attr.isOrdered).toBeFalse();
     });
 
     it('Attribute should be created with cardinality = 0..*', () => {

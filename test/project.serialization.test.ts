@@ -64,39 +64,39 @@ describe('Serialization tests', () => {
   // describe(`Test serialization.${serializationUtils.validate.name}()`, () => {
   //   const project = new Project().createModel().project;
 
-  //   it('Test project serialization', () => expect(serializationUtils.validate(project)).toBe(true));
-  //   it('Test string serialization', () => expect(serializationUtils.validate(JSON.stringify(project))).toBe(true));
-  //   it('Test object serialization', () => expect(serializationUtils.validate(JSON.parse(JSON.stringify(project)))).toBe(true));
+  //   it('Test project serialization', () => expect(serializationUtils.validate(project)).toBeTrue());
+  //   it('Test string serialization', () => expect(serializationUtils.validate(JSON.stringify(project))).toBeTrue());
+  //   it('Test object serialization', () => expect(serializationUtils.validate(JSON.parse(JSON.stringify(project)))).toBeTrue());
   //   it('Test invalid input', () => expect(() => serializationUtils.validate(true as any)).toThrow());
 
-  //   it(`Validate basic ${Project.name}`, () => expect(serializationUtils.validate(new Project())).toBe(true));
-  //   it(`Validate basic ${Package.name}`, () => expect(serializationUtils.validate(new Package())).toBe(true));
-  //   it(`Validate basic ${Class.name}`, () => expect(serializationUtils.validate(new Class())).toBe(true));
-  //   it(`Validate basic ${Relation.name}`, () => expect(serializationUtils.validate(new Relation())).toBe(true));
+  //   it(`Validate basic ${Project.name}`, () => expect(serializationUtils.validate(new Project())).toBeTrue());
+  //   it(`Validate basic ${Package.name}`, () => expect(serializationUtils.validate(new Package())).toBeTrue());
+  //   it(`Validate basic ${Class.name}`, () => expect(serializationUtils.validate(new Class())).toBeTrue());
+  //   it(`Validate basic ${Relation.name}`, () => expect(serializationUtils.validate(new Relation())).toBeTrue());
   //   it(`Validate basic ${Generalization.name}`, () => {
   //     const generalization = new Generalization();
   //     generalization.general = new Class();
   //     generalization.specific = new Class();
 
-  //     expect(serializationUtils.validate(generalization)).toBe(true);
+  //     expect(serializationUtils.validate(generalization)).toBeTrue();
   //   });
   //   it(`Validate basic ${GeneralizationSet.name}`, () => {
-  //     expect(serializationUtils.validate(new GeneralizationSet())).toBe(true);
+  //     expect(serializationUtils.validate(new GeneralizationSet())).toBeTrue();
   //   });
   //   it(`Validate basic ${Property.name}`, () => {
   //     const property = new Property();
   //     property.propertyType = new Class();
 
-  //     expect(serializationUtils.validate(property)).toBe(true);
+  //     expect(serializationUtils.validate(property)).toBeTrue();
   //   });
-  //   it(`Validate basic ${Literal.name}`, () => expect(serializationUtils.validate(new Literal())).toBe(true));
-  //   it(`Validate basic ${Diagram.name}`, () => expect(serializationUtils.validate(new Diagram())).toBe(true));
+  //   it(`Validate basic ${Literal.name}`, () => expect(serializationUtils.validate(new Literal())).toBeTrue());
+  //   it(`Validate basic ${Diagram.name}`, () => expect(serializationUtils.validate(new Diagram())).toBeTrue());
 
   //   it(`Validate basic ${ClassView.name}`, () => {
   //     const classView = new ClassView();
   //     classView.modelElement = new Class();
 
-  //     expect(serializationUtils.validate(classView)).toBe(true);
+  //     expect(serializationUtils.validate(classView)).toBeTrue();
   //   });
   //   it(`Validate basic ${RelationView.name}`, () => {
   //     const relationView = new RelationView();
@@ -104,7 +104,7 @@ describe('Serialization tests', () => {
   //     relationView.source = new ClassView();
   //     relationView.target = new ClassView();
 
-  //     expect(serializationUtils.validate(relationView)).toBe(true);
+  //     expect(serializationUtils.validate(relationView)).toBeTrue();
   //   });
   //   it(`Validate basic ${GeneralizationView.name}`, () => {
   //     const generalizationView = new GeneralizationView();
@@ -112,21 +112,21 @@ describe('Serialization tests', () => {
   //     generalizationView.source = new ClassView();
   //     generalizationView.target = new ClassView();
 
-  //     expect(serializationUtils.validate(generalizationView)).toBe(true);
+  //     expect(serializationUtils.validate(generalizationView)).toBeTrue();
   //   });
   //   it(`Validate basic ${GeneralizationSetView.name}`, () => {
   //     const generalizationSetView = new GeneralizationSetView();
   //     generalizationSetView.modelElement = new GeneralizationSet();
-  //     expect(serializationUtils.validate(generalizationSetView)).toBe(true);
+  //     expect(serializationUtils.validate(generalizationSetView)).toBeTrue();
   //   });
   //   it(`Validate basic ${PackageView.name}`, () => {
   //     const packageView = new PackageView();
   //     packageView.modelElement = new Package();
-  //     expect(serializationUtils.validate(packageView)).toBe(true);
+  //     expect(serializationUtils.validate(packageView)).toBeTrue();
   //   });
-  //   it(`Validate basic ${Rectangle.name}`, () => expect(serializationUtils.validate(new Rectangle())).toBe(true));
-  //   it(`Validate basic ${Text.name}`, () => expect(serializationUtils.validate(new Text())).toBe(true));
-  //   it(`Validate basic ${Path.name}`, () => expect(serializationUtils.validate(new Path())).toBe(true));
+  //   it(`Validate basic ${Rectangle.name}`, () => expect(serializationUtils.validate(new Rectangle())).toBeTrue());
+  //   it(`Validate basic ${Text.name}`, () => expect(serializationUtils.validate(new Text())).toBeTrue());
+  //   it(`Validate basic ${Path.name}`, () => expect(serializationUtils.validate(new Path())).toBeTrue());
   // });
 
   describe(`Test serialization.${serializationUtils.parse.name}()`, () => {

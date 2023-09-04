@@ -1,519 +1,282 @@
-import { Class, Nature, Package, Project } from '../../src';
+import { Class, Project } from '../../src';
+import { Nature as N } from '../../src';
 
 describe('Test restrictedTo-related methods', () => {
-  let project: Project;
-  let model: Package;
+  let proj: Project;
+  let c: Class;
 
   beforeEach(() => {
-    project = new Project();
-    model = project.createModel();
+    proj = new Project();
   });
 
-  describe(`Test ${Class.prototype.allowsSome.name}()`, () => {
-    let category: Class;
-
+  describe('Test allows* methods on a class with restrictedTo = [ ]', () => {
     beforeEach(() => {
-      category = model.createCategory(undefined, [
-        Nature.FUNCTIONAL_COMPLEX,
-        Nature.COLLECTIVE
-      ]);
+      c = proj.classBuilder().build();
     });
 
-    it('Test empty restrictions', () => {
-      expect(category.allowsSome([])).toBe(false);
+    it('allowsSome() should return false', () => {
+      expect(c.allowsSome([N.RELATOR, N.COLLECTIVE])).toBeFalse();
     });
-    it('Test disjoint restrictions', () => {
-      expect(category.allowsSome([Nature.QUANTITY])).toBe(false);
+
+    it('allowsOnly() should return false', () => {
+      expect(c.allowsOnly([N.RELATOR, N.COLLECTIVE])).toBeFalse();
     });
-    it('Test subset restrictions', () => {
-      expect(category.allowsSome([Nature.FUNCTIONAL_COMPLEX])).toBe(true);
+
+    it('allowsAll() should return false', () => {
+      expect(c.allowsAll([N.RELATOR, N.COLLECTIVE])).toBeFalse();
     });
-    it('Test overlapping restrictions', () => {
-      expect(
-        category.allowsSome([Nature.FUNCTIONAL_COMPLEX, Nature.QUANTITY])
-      ).toBe(true);
-    });
-    it('Test matching restrictions', () => {
-      expect(
-        category.allowsSome([Nature.FUNCTIONAL_COMPLEX, Nature.COLLECTIVE])
-      ).toBe(true);
-    });
-    it('Test super set restrictions', () => {
-      expect(
-        category.allowsSome([
-          Nature.FUNCTIONAL_COMPLEX,
-          Nature.COLLECTIVE,
-          Nature.QUANTITY
-        ])
-      ).toBe(true);
-    });
-    it('Test empty own restrictions', () => {
-      category.restrictedTo = [];
-      expect(
-        category.allowsSome([
-          Nature.FUNCTIONAL_COMPLEX,
-          Nature.COLLECTIVE,
-          Nature.QUANTITY
-        ])
-      ).toBe(false);
+
+    it('allowsExactly() should return false', () => {
+      expect(c.allowsExactly([N.RELATOR, N.COLLECTIVE])).toBeFalse();
     });
   });
 
-  describe(`Test ${Class.prototype.allowsOnly.name}()`, () => {
-    let category: Class;
-
+  describe('Test allows* methods on a class with restrictedTo = [ function-complex, collective ]', () => {
     beforeEach(() => {
-      category = model.createCategory(undefined, [
-        Nature.FUNCTIONAL_COMPLEX,
-        Nature.COLLECTIVE
-      ]);
+      c = proj.classBuilder().relator().collectiveType().build();
     });
 
-    it('Test empty restrictions', () => {
-      expect(category.allowsOnly([])).toBe(false);
-    });
-    it('Test disjoint restrictions', () => {
-      expect(category.allowsOnly([Nature.QUANTITY])).toBe(false);
-    });
-    it('Test subset restrictions', () => {
-      expect(category.allowsOnly([Nature.FUNCTIONAL_COMPLEX])).toBe(false);
-    });
-    it('Test overlapping restrictions', () => {
-      expect(
-        category.allowsOnly([Nature.FUNCTIONAL_COMPLEX, Nature.QUANTITY])
-      ).toBe(false);
-    });
-    it('Test matching restrictions', () => {
-      expect(
-        category.allowsOnly([Nature.FUNCTIONAL_COMPLEX, Nature.COLLECTIVE])
-      ).toBe(true);
-    });
-    it('Test super set restrictions', () => {
-      expect(
-        category.allowsOnly([
-          Nature.FUNCTIONAL_COMPLEX,
-          Nature.COLLECTIVE,
-          Nature.QUANTITY
-        ])
-      ).toBe(true);
-    });
-    it('Test empty own restrictions', () => {
-      category.restrictedTo = [];
-      expect(
-        category.allowsOnly([
-          Nature.FUNCTIONAL_COMPLEX,
-          Nature.COLLECTIVE,
-          Nature.QUANTITY
-        ])
-      ).toBe(false);
-    });
-  });
+    describe(`Test ${Class.prototype.allowsSome.name}()`, () => {
+      it('should be true for empty array', () => {
+        expect(c.allowsSome([])).toBeFalse();
+      });
 
-  describe(`Test ${Class.prototype.allowsAll.name}()`, () => {
-    let category: Class;
+      it('should be false for disjoint array - [ quantity ]', () => {
+        expect(c.allowsSome([N.QUANTITY])).toBeFalse();
+      });
 
-    beforeEach(() => {
-      category = model.createCategory(undefined, [
-        Nature.FUNCTIONAL_COMPLEX,
-        Nature.COLLECTIVE
-      ]);
+      it('should be true for subset array - [ functional-complex ]', () => {
+        expect(c.allowsSome([N.RELATOR])).toBeTrue();
+      });
+
+      it('should be true for overlapping array - [ functional-complex, quantity ]', () => {
+        expect(c.allowsSome([N.RELATOR, N.QUANTITY])).toBeTrue();
+      });
+
+      it('should be true for matching array - [ functional-complex, collective ]', () => {
+        expect(c.allowsSome([N.RELATOR, N.COLLECTIVE])).toBeTrue();
+      });
+
+      it('should be true for superset array', () => {
+        expect(c.allowsSome([N.RELATOR, N.COLLECTIVE, N.QUANTITY])).toBeTrue();
+      });
     });
 
-    it('Test empty restrictions', () => {
-      expect(category.allowsAll([])).toBe(false);
-    });
-    it('Test disjoint restrictions', () => {
-      expect(category.allowsAll([Nature.QUANTITY])).toBe(false);
-    });
-    it('Test subset restrictions', () => {
-      expect(category.allowsAll([Nature.FUNCTIONAL_COMPLEX])).toBe(true);
-    });
-    it('Test overlapping restrictions', () => {
-      expect(
-        category.allowsAll([Nature.FUNCTIONAL_COMPLEX, Nature.QUANTITY])
-      ).toBe(false);
-    });
-    it('Test matching restrictions', () => {
-      expect(
-        category.allowsAll([Nature.FUNCTIONAL_COMPLEX, Nature.COLLECTIVE])
-      ).toBe(true);
-    });
-    it('Test super set restrictions', () => {
-      expect(
-        category.allowsAll([
-          Nature.FUNCTIONAL_COMPLEX,
-          Nature.COLLECTIVE,
-          Nature.QUANTITY
-        ])
-      ).toBe(false);
-    });
-    it('Test empty own restrictions', () => {
-      category.restrictedTo = [];
-      expect(
-        category.allowsAll([
-          Nature.FUNCTIONAL_COMPLEX,
-          Nature.COLLECTIVE,
-          Nature.QUANTITY
-        ])
-      ).toBe(false);
-    });
-  });
+    describe(`Test ${Class.prototype.allowsOnly.name}()`, () => {
+      it('should return false for empty array', () => {
+        expect(c.allowsOnly([])).toBeFalse();
+      });
 
-  describe(`Test ${Class.prototype.allowsExactly.name}()`, () => {
-    let category: Class;
+      it('Test disjoint restrictions', () => {
+        expect(c.allowsOnly([N.QUANTITY])).toBeFalse();
+      });
 
-    beforeEach(() => {
-      category = model.createCategory(undefined, [
-        Nature.FUNCTIONAL_COMPLEX,
-        Nature.COLLECTIVE
-      ]);
+      it('Test subset restrictions', () => {
+        expect(c.allowsOnly([N.RELATOR])).toBeFalse();
+      });
+
+      it('Test overlapping restrictions', () => {
+        expect(c.allowsOnly([N.RELATOR, N.QUANTITY])).toBe(false);
+      });
+
+      it('Test matching restrictions', () => {
+        expect(c.allowsOnly([N.RELATOR, N.COLLECTIVE])).toBeTrue();
+      });
+
+      it('Test super set restrictions', () => {
+        expect(c.allowsOnly([N.RELATOR, N.COLLECTIVE, N.QUANTITY])).toBeTrue();
+      });
     });
 
-    it('Test empty restrictions', () => {
-      expect(category.allowsExactly([])).toBe(false);
+    describe(`Test ${Class.prototype.allowsAll.name}()`, () => {
+      it('should return false for empty array', () => {
+        expect(c.allowsAll([])).toBeFalse();
+      });
+
+      it('Test disjoint restrictions', () => {
+        expect(c.allowsAll([N.QUANTITY])).toBeFalse();
+      });
+
+      it('Test subset restrictions', () => {
+        expect(c.allowsAll([N.RELATOR])).toBeTrue();
+      });
+
+      it('Test overlapping restrictions', () => {
+        expect(c.allowsAll([N.RELATOR, N.QUANTITY])).toBe(false);
+      });
+
+      it('Test matching restrictions', () => {
+        expect(c.allowsAll([N.RELATOR, N.COLLECTIVE])).toBeTrue();
+      });
+
+      it('Test super set restrictions', () => {
+        expect(c.allowsAll([N.RELATOR, N.COLLECTIVE, N.QUANTITY])).toBeFalse();
+      });
     });
-    it('Test disjoint restrictions', () => {
-      expect(category.allowsExactly([Nature.QUANTITY])).toBe(false);
-    });
-    it('Test subset restrictions', () => {
-      expect(category.allowsExactly([Nature.FUNCTIONAL_COMPLEX])).toBe(false);
-    });
-    it('Test overlapping restrictions', () => {
-      expect(
-        category.allowsExactly([Nature.FUNCTIONAL_COMPLEX, Nature.QUANTITY])
-      ).toBe(false);
-    });
-    it('Test matching restrictions', () => {
-      expect(
-        category.allowsExactly([Nature.FUNCTIONAL_COMPLEX, Nature.COLLECTIVE])
-      ).toBe(true);
-    });
-    it('Test super set restrictions', () => {
-      expect(
-        category.allowsExactly([
-          Nature.FUNCTIONAL_COMPLEX,
-          Nature.COLLECTIVE,
-          Nature.QUANTITY
-        ])
-      ).toBe(false);
-    });
-    it('Test empty own restrictions', () => {
-      category.restrictedTo = [];
-      expect(
-        category.allowsExactly([
-          Nature.FUNCTIONAL_COMPLEX,
-          Nature.COLLECTIVE,
-          Nature.QUANTITY
-        ])
-      ).toBe(false);
-    });
-    it('Test matching empty restrictions', () => {
-      category.restrictedTo = [];
-      expect(category.allowsExactly([])).toBe(false);
+
+    describe(`Test ${Class.prototype.allowsExactly.name}()`, () => {
+      it('should return false for empty array', () => {
+        expect(c.allowsExactly([])).toBeFalse();
+      });
+
+      it('Test disjoint restrictions', () => {
+        expect(c.allowsExactly([N.QUANTITY])).toBeFalse();
+      });
+
+      it('Test subset restrictions', () => {
+        expect(c.allowsExactly([N.RELATOR])).toBeFalse();
+      });
+
+      it('Test overlapping restrictions', () => {
+        expect(c.allowsExactly([N.RELATOR, N.QUANTITY])).toBeFalse();
+      });
+
+      it('Test matching restrictions', () => {
+        expect(c.allowsExactly([N.RELATOR, N.COLLECTIVE])).toBeTrue();
+      });
+
+      it('Test super set restrictions', () => {
+        expect(
+          c.allowsExactly([N.RELATOR, N.COLLECTIVE, N.QUANTITY])
+        ).toBeFalse();
+      });
     });
   });
 
   describe(`Test ${Class.prototype.isEndurantType.name}()`, () => {
-    it('Test regular kind', () => {
-      const kind = model.createKind();
-      expect(kind.isEndurantType()).toBe(true);
+    it('should be true if restrictedTo = [ functional-complex ]', () => {
+      c = proj.classBuilder().functionalComplexType().build();
+      expect(c.isEndurantType()).toBeTrue();
     });
-    it('Test broad category', () => {
-      const category = model.createCategory('category', [
-        ...natureUtils.EndurantNatures
-      ]);
-      expect(category.isEndurantType()).toBe(true);
-    });
-    it('Test type', () => {
-      const type = model.createType();
-      expect(type.isEndurantType()).toBe(false);
-    });
-    it('Test event', () => {
-      const event = model.createEvent();
-      expect(event.isEndurantType()).toBe(false);
-    });
-    it('Test situation', () => {
-      const situation = model.createSituation('situation');
-      expect(situation.isEndurantType()).toBe(false);
-    });
-    it('Test abstract', () => {
-      const abstract = model.createAbstract();
-      expect(abstract.isEndurantType()).toBe(false);
-    });
-    it('Test datatype', () => {
-      const datatype = model.createDatatype('datatype');
-      expect(datatype.isEndurantType()).toBe(false);
-    });
-    it('Test enumeration', () => {
-      const enumeration = model.createEnumeration('enumeration');
-      expect(enumeration.isEndurantType()).toBe(false);
-    });
-    it('Test class with empty restrictedTo', () => {
-      const emptyRestrictions = model.createClass('emptyRestrictions');
-      expect(emptyRestrictions.isEndurantType()).toBe(false);
-    });
-  });
 
-  describe(`Test ${Class.prototype.isSubstantialType.name}()`, () => {
-    it('Test regular kind', () => {
-      const kind = model.createKind();
-      expect(kind.isSubstantialType()).toBe(true);
+    it('should be true if restrictedTo = [ collective ]', () => {
+      c = proj.classBuilder().collectiveType().build();
+      expect(c.isEndurantType()).toBeTrue();
     });
-    it('Test broad categoryOfSubstantials', () => {
-      const categoryOfSubstantials = model.createCategory(
-        'categoryOfSubstantials',
-        [...natureUtils.SubstantialNatures]
-      );
-      expect(categoryOfSubstantials.isSubstantialType()).toBe(true);
+
+    it('should be true if restrictedTo = [ quality, relator ]', () => {
+      c = proj.classBuilder().quality().relator().build();
+      expect(c.isEndurantType()).toBeTrue();
     });
-    it('Test broad mode', () => {
-      const mode = model.createIntrinsicMode('mode');
-      expect(mode.isSubstantialType()).toBe(false);
+
+    it('should be true if restrictedTo = [ intrinsic-mode, extrinsic-mode ]', () => {
+      c = proj.classBuilder().intrinsicModeType().extrinsicModeType().build();
+      expect(c.isEndurantType()).toBeTrue();
     });
-    it('Test broad categoryOfEndurants', () => {
-      const categoryOfEndurants = model.createCategory('categoryOfEndurants', [
-        ...natureUtils.EndurantNatures
-      ]);
-      expect(categoryOfEndurants.isSubstantialType()).toBe(false);
+
+    it('should be false if restrictedTo = [ functional-complex, event ]', () => {
+      c = proj
+        .classBuilder()
+        .category()
+        .functionalComplexType()
+        .event()
+        .build();
+      expect(c.isEndurantType()).toBeFalse();
+    });
+
+    it('should be true if restrictedTo = [ functional-complex, type ]', () => {
+      c = proj
+        .classBuilder()
+        .category()
+        .functionalComplexType()
+        .highOrderType()
+        .build();
+      expect(c.isEndurantType()).toBeTrue();
+    });
+
+    it('should be false if restrictedTo = [ abstract ]', () => {
+      c = proj.classBuilder().abstractType().build();
+      expect(c.isEndurantType()).toBeFalse();
+    });
+
+    it('should be false if restrictedTo = [ event ]', () => {
+      c = proj.classBuilder().eventType().build();
+      expect(c.isEndurantType()).toBeFalse();
+    });
+
+    it('should be false if restrictedTo = [ ]', () => {
+      c = proj.classBuilder().build();
+      expect(c.isEndurantType()).toBeFalse();
     });
   });
 
   describe(`Test ${Class.prototype.isMomentType.name}()`, () => {
-    it('Test broad mode', () => {
-      const mode = model.createIntrinsicMode('mode');
-      expect(mode.isMomentType()).toBe(true);
+    it('should be true if restrictedTo = [ intrinsic-mode ]', () => {
+      c = proj.classBuilder().intrinsicModeType().build();
+      expect(c.isMomentType()).toBeTrue();
     });
 
-    it('Test broad categoryOfSubstantials', () => {
-      const categoryOfMoments = model.createCategory('categoryOfMoments', [
-        ...natureUtils.MomentNatures
-      ]);
-      expect(categoryOfMoments.isMomentType()).toBe(true);
+    it('should be true if restrictedTo = [ extrinsic-mode ]', () => {
+      c = proj.classBuilder().extrinsicModeType().build();
+      expect(c.isMomentType()).toBeTrue();
     });
 
-    it('Test regular kind', () => {
-      const kind = model.createKind();
-      expect(kind.isMomentType()).toBe(false);
+    it('should be true if restrictedTo = [ relator ]', () => {
+      c = proj.classBuilder().relatorType().build();
+      expect(c.isMomentType()).toBeTrue();
     });
 
-    it('Test broad categoryOfEndurants', () => {
-      const categoryOfEndurants = model.createCategory('categoryOfEndurants', [
-        ...natureUtils.EndurantNatures
-      ]);
-      expect(categoryOfEndurants.isMomentType()).toBe(false);
-    });
-  });
-
-  describe(`Test ${Class.prototype.isFunctionalComplexType.name}()`, () => {
-    it('Test broad kind', () => {
-      const kind = model.createKind();
-      expect(kind.isFunctionalComplexType()).toBe(true);
+    it('should be true if restrictedTo = [ quality ]', () => {
+      c = proj.classBuilder().qualityType().build();
+      expect(c.isMomentType()).toBeTrue();
     });
 
-    it('Test broad collective', () => {
-      const collective = model.createCollective();
-      expect(collective.isFunctionalComplexType()).toBe(false);
+    it('should be true if restrictedTo = [ intrinsic-mode, quality, relator, extrinsic-mode ]', () => {
+      c = proj
+        .classBuilder()
+        .intrinsicModeType()
+        .qualityType()
+        .relator()
+        .extrinsicModeType()
+        .build();
+      expect(c.isMomentType()).toBeTrue();
     });
 
-    it('Test broad quantity', () => {
-      const quantity = model.createQuantity();
-      expect(quantity.isFunctionalComplexType()).toBe(false);
-    });
-  });
-
-  describe(`Test ${Class.prototype.isCollectiveType.name}()`, () => {
-    it('Test broad kind', () => {
-      const kind = model.createKind();
-      expect(kind.isCollectiveType()).toBe(false);
+    it('should be true if restrictedTo = [ quantity ]', () => {
+      c = proj.classBuilder().quantity().build();
+      expect(c.isMomentType()).toBeFalse();
     });
 
-    it('Test broad collective', () => {
-      const collective = model.createCollective();
-      expect(collective.isCollectiveType()).toBe(true);
-    });
-
-    it('Test broad quantity', () => {
-      const quantity = model.createQuantity();
-      expect(quantity.isCollectiveType()).toBe(false);
+    it('should be false if restrictedTo = []', () => {
+      c = proj.classBuilder().build();
+      expect(c.isMomentType()).toBeFalse();
     });
   });
 
-  describe(`Test ${Class.prototype.isQuantityType.name}()`, () => {
-    it('Test broad kind', () => {
-      const kind = model.createKind();
-      expect(kind.isQuantityType()).toBe(false);
+  describe(`Test ${Class.prototype.isSubstantialType.name}()`, () => {
+    it('should be true if restrictedTo = [ collective ]', () => {
+      c = proj.classBuilder().collectiveType().build();
+      expect(c.isSubstantialType()).toBeTrue();
     });
 
-    it('Test broad collective', () => {
-      const collective = model.createCollective();
-      expect(collective.isQuantityType()).toBe(false);
+    it('should be true if restrictedTo = [ functiona-complex ]', () => {
+      c = proj.classBuilder().functionalComplexType().build();
+      expect(c.isSubstantialType()).toBeTrue();
     });
 
-    it('Test broad quantity', () => {
-      const quantity = model.createQuantity();
-      expect(quantity.isQuantityType()).toBe(true);
-    });
-  });
-
-  describe(`Test ${Class.prototype.isIntrinsicMomentType.name}()`, () => {
-    it('Test broad mode', () => {
-      const mode = model.createIntrinsicMode('mode');
-      expect(mode.isIntrinsicMomentType()).toBe(true);
+    it('should be true if restrictedTo = [ quantity ]', () => {
+      c = proj.classBuilder().quantity().build();
+      expect(c.isSubstantialType()).toBeTrue();
     });
 
-    it('Test broad quality', () => {
-      const quality = model.createQuality('quality');
-      expect(quality.isIntrinsicMomentType()).toBe(true);
+    it('should be true if restrictedTo = [ collective, functional-complex, quantity ]', () => {
+      c = proj
+        .classBuilder()
+        .quantity()
+        .functionalComplexType()
+        .collectiveType()
+        .build();
+      expect(c.isSubstantialType()).toBeTrue();
     });
 
-    it('Test broad categoryOfIntrinsicMoments', () => {
-      const categoryOfIntrinsicMoments = model.createCategory(
-        'categoryOfMoments',
-        [...natureUtils.IntrinsicMomentNatures]
-      );
-      expect(categoryOfIntrinsicMoments.isIntrinsicMomentType()).toBe(true);
+    it('should be false if restrictedTo = [ relator ]', () => {
+      c = proj.classBuilder().relatorType().build();
+      expect(c.isSubstantialType()).toBeFalse();
     });
 
-    it('Test regular relator', () => {
-      const relator = model.createRelator('relator');
-      expect(relator.isIntrinsicMomentType()).toBe(false);
-    });
-
-    it('Test broad categoryOfExtrinsicMoments', () => {
-      const categoryOfExtrinsicMoments = model.createCategory(
-        'categoryOfExtrinsicMoments',
-        [...natureUtils.ExtrinsicMomentNatures]
-      );
-      expect(categoryOfExtrinsicMoments.isIntrinsicMomentType()).toBe(false);
-    });
-  });
-
-  describe(`Test ${Class.prototype.isExtrinsicMomentType.name}()`, () => {
-    it('Test broad mode', () => {
-      const mode = model.createExtrinsicMode('mode');
-      expect(mode.isExtrinsicMomentType()).toBe(true);
-    });
-
-    it('Test regular relator', () => {
-      const relator = model.createRelator('relator');
-      expect(relator.isExtrinsicMomentType()).toBe(true);
-    });
-
-    it('Test broad categoryOfExtrinsicMoments', () => {
-      const categoryOfExtrinsicMoments = model.createCategory(
-        'categoryOfExtrinsicMoments',
-        [...natureUtils.ExtrinsicMomentNatures]
-      );
-      expect(categoryOfExtrinsicMoments.isExtrinsicMomentType()).toBe(true);
-    });
-
-    it('Test broad quality', () => {
-      const quality = model.createQuality('quality');
-      expect(quality.isExtrinsicMomentType()).toBe(false);
-    });
-
-    it('Test broad categoryOfIntrinsicMoments', () => {
-      const categoryOfIntrinsicMoments = model.createCategory(
-        'categoryOfMoments',
-        [...natureUtils.IntrinsicMomentNatures]
-      );
-      expect(categoryOfIntrinsicMoments.isExtrinsicMomentType()).toBe(false);
-    });
-  });
-
-  describe(`Test ${Class.prototype.allowsOnlyIntrinsicModes.name}()`, () => {
-    it('Test mode', () => {
-      const mode = model.createIntrinsicMode('mode');
-      expect(mode.allowsOnlyIntrinsicModes()).toBe(true);
-    });
-
-    it('Test quality', () => {
-      const quality = model.createQuality('quality');
-      expect(quality.allowsOnlyIntrinsicModes()).toBe(false);
-    });
-  });
-
-  describe(`Test ${Class.prototype.isRestrictedToQuality.name}()`, () => {
-    it('Test quality', () => {
-      const quality = model.createQuality('quality');
-      expect(quality.isRestrictedToQuality()).toBe(true);
-    });
-
-    it('Test mode', () => {
-      const mode = model.createIntrinsicMode('mode');
-      expect(mode.isRestrictedToQuality()).toBe(false);
-    });
-  });
-
-  describe(`Test ${Class.prototype.isExtrinsicModeType.name}()`, () => {
-    it('Test mode', () => {
-      const mode = model.createExtrinsicMode('mode');
-      expect(mode.isExtrinsicModeType()).toBe(true);
-    });
-
-    it('Test relator', () => {
-      const relator = model.createRelator('relator');
-      expect(relator.isExtrinsicModeType()).toBe(false);
-    });
-  });
-
-  describe(`Test ${Class.prototype.isRelatorType.name}()`, () => {
-    it('Test relator', () => {
-      const relator = model.createRelator('relator');
-      expect(relator.isRelatorType()).toBe(true);
-    });
-
-    it('Test mode', () => {
-      const mode = model.createExtrinsicMode('mode');
-      expect(mode.isRelatorType()).toBe(false);
-    });
-  });
-
-  describe(`Test ${Class.prototype.isEventType.name}()`, () => {
-    it(`Test event`, () => {
-      const event = model.createEvent();
-      expect(event.isEventType()).toBe(true);
-    });
-
-    it(`Test situation`, () => {
-      const situation = model.createSituation('situation');
-      expect(situation.isEventType()).toBe(false);
-    });
-  });
-
-  describe(`Test ${Class.prototype.isSituationType.name}()`, () => {
-    it(`Test situation`, () => {
-      const situation = model.createSituation('situation');
-      expect(situation.isSituationType()).toBe(true);
-    });
-
-    it(`Test type`, () => {
-      const type = model.createType();
-      expect(type.isSituationType()).toBe(false);
-    });
-  });
-
-  describe(`Test ${Class.prototype.isHighOrderType.name}()`, () => {
-    it(`Test type`, () => {
-      const type = model.createType();
-      expect(type.isHighOrderType()).toBe(true);
-    });
-
-    it(`Test abstract`, () => {
-      const abstract = model.createAbstract();
-      expect(abstract.isHighOrderType()).toBe(false);
-    });
-  });
-
-  describe(`Test ${Class.prototype.isAbstractType.name}()`, () => {
-    it(`Test abstract`, () => {
-      const abstract = model.createAbstract();
-      expect(abstract.isAbstractType()).toBe(true);
-    });
-
-    it(`Test event`, () => {
-      const event = model.createEvent();
-      expect(event.isAbstractType()).toBe(false);
+    it('should be false if restrictedTo = []', () => {
+      c = proj.classBuilder().build();
+      expect(c.isSubstantialType()).toBeFalse();
     });
   });
 });

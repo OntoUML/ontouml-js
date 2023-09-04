@@ -542,11 +542,11 @@ describe('Relation Tests', () => {
     const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
-    it('Test binary relation', () => expect(heavierThan.isBinary()).toBe(true));
+    it('Test binary relation', () => expect(heavierThan.isBinary()).toBeTrue());
     it('Test derivation relation', () =>
-      expect(derivation.isBinary()).toBe(true));
+      expect(derivation.isBinary()).toBeTrue());
     it('Test ternary relation', () =>
-      expect(metPersonAt.isBinary()).toBe(false));
+      expect(metPersonAt.isBinary()).toBeFalse());
   });
 
   describe('Test isTernary()', () => {
@@ -558,10 +558,10 @@ describe('Relation Tests', () => {
     const derivation = model.createDerivation(heavierThan, weight);
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
-    it('Test binary relation', () => expect(heavierThan.isNary()).toBe(false));
+    it('Test binary relation', () => expect(heavierThan.isNary()).toBeFalse());
     it('Test derivation relation', () =>
-      expect(derivation.isNary()).toBe(false));
-    it('Test ternary relation', () => expect(metPersonAt.isNary()).toBe(true));
+      expect(derivation.isNary()).toBeFalse());
+    it('Test ternary relation', () => expect(metPersonAt.isNary()).toBeTrue());
   });
 
   describe('Test isBinaryClassRelation()', () => {
@@ -574,11 +574,11 @@ describe('Relation Tests', () => {
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test binary relation', () =>
-      expect(heavierThan.isBinaryClassRelation()).toBe(true));
+      expect(heavierThan.isBinaryClassRelation()).toBeTrue());
     it('Test derivation relation', () =>
-      expect(derivation.isBinaryClassRelation()).toBe(false));
+      expect(derivation.isBinaryClassRelation()).toBeFalse());
     it('Test ternary relation', () =>
-      expect(metPersonAt.isBinaryClassRelation()).toBe(false));
+      expect(metPersonAt.isBinaryClassRelation()).toBeFalse());
   });
 
   describe('Test isDerivation()', () => {
@@ -591,11 +591,11 @@ describe('Relation Tests', () => {
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test binary relation', () =>
-      expect(heavierThan.fromRelationToClass()).toBe(false));
+      expect(heavierThan.fromRelationToClass()).toBeFalse());
     it('Test derivation relation', () =>
-      expect(derivation.fromRelationToClass()).toBe(true));
+      expect(derivation.fromRelationToClass()).toBeTrue());
     it('Test ternary relation', () =>
-      expect(metPersonAt.fromRelationToClass()).toBe(false));
+      expect(metPersonAt.fromRelationToClass()).toBeFalse());
   });
 
   describe('Test isTernaryClassRelation()', () => {
@@ -608,11 +608,11 @@ describe('Relation Tests', () => {
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test binary relation', () =>
-      expect(heavierThan.isNaryClassRelation()).toBe(false));
+      expect(heavierThan.isNaryClassRelation()).toBeFalse());
     it('Test derivation relation', () =>
-      expect(derivation.isNaryClassRelation()).toBe(false));
+      expect(derivation.isNaryClassRelation()).toBeFalse());
     it('Test ternary relation', () =>
-      expect(metPersonAt.isNaryClassRelation()).toBe(true));
+      expect(metPersonAt.isNaryClassRelation()).toBeTrue());
   });
 
   describe('Test isPartWholeRelation()', () => {
@@ -625,11 +625,11 @@ describe('Relation Tests', () => {
     const partOf = model.createPartWholeRelation(event, event);
 
     it('Test function call', () =>
-      expect(heavierThan.isPartWholeRelation()).toBe(false));
+      expect(heavierThan.isPartWholeRelation()).toBeFalse());
     it('Test function call', () =>
-      expect(memberOf.isPartWholeRelation()).toBe(true));
+      expect(memberOf.isPartWholeRelation()).toBeTrue());
     it('Test function call', () =>
-      expect(partOf.isPartWholeRelation()).toBe(true));
+      expect(partOf.isPartWholeRelation()).toBeTrue());
   });
 
   describe('Test isExistentialDependency()', () => {
@@ -640,9 +640,9 @@ describe('Relation Tests', () => {
     const characterization = model.createCharacterization(weight, person);
 
     it('Test function call', () =>
-      expect(worksFor.isExistentialDependency()).toBe(false));
+      expect(worksFor.isExistentialDependency()).toBeFalse());
     it('Test function call', () =>
-      expect(characterization.isExistentialDependency()).toBe(true));
+      expect(characterization.isExistentialDependency()).toBeTrue());
   });
 
   describe('Test isSourceExistentiallyDependent()', () => {
@@ -653,9 +653,9 @@ describe('Relation Tests', () => {
     const characterization = model.createCharacterization(weight, person);
 
     it('Test function call', () =>
-      expect(worksFor.isSourceExistentiallyDependent()).toBe(false));
+      expect(worksFor.isSourceExistentiallyDependent()).toBeFalse());
     it('Test function call', () =>
-      expect(characterization.isSourceExistentiallyDependent()).toBe(true));
+      expect(characterization.isSourceExistentiallyDependent()).toBeTrue());
   });
 
   describe('Test isTargetExistentiallyDependent()', () => {
@@ -666,9 +666,9 @@ describe('Relation Tests', () => {
     const characterization = model.createCharacterization(weight, person);
 
     it('Test function call', () =>
-      expect(heavierThan.isTargetExistentiallyDependent()).toBe(true));
+      expect(heavierThan.isTargetExistentiallyDependent()).toBeTrue());
     it('Test function call', () =>
-      expect(characterization.isTargetExistentiallyDependent()).toBe(false));
+      expect(characterization.isTargetExistentiallyDependent()).toBeFalse());
   });
 
   describe('Test isExistentialDependenceRelation()', () => {
@@ -679,9 +679,9 @@ describe('Relation Tests', () => {
     const characterization = model.createCharacterization(weight, person);
 
     it('Test function call', () =>
-      expect(worksFor.isExistentialDependency()).toBe(false));
+      expect(worksFor.isExistentialDependency()).toBeFalse());
     it('Test function call', () =>
-      expect(characterization.isExistentialDependency()).toBe(true));
+      expect(characterization.isExistentialDependency()).toBeTrue());
   });
 
   describe('Test holdsBetween()', () => {
@@ -695,9 +695,9 @@ describe('Relation Tests', () => {
       relationEnd.propertyType === person;
 
     it('Test function call', () =>
-      expect(knows.holdsBetween(condition, condition)).toBe(true));
+      expect(knows.holdsBetween(condition, condition)).toBeTrue());
     it('Test function call', () =>
-      expect(characterization.holdsBetween(condition, condition)).toBe(false));
+      expect(characterization.holdsBetween(condition, condition)).toBeFalse());
   });
 
   describe('Test holdsBetweenEvents()', () => {
@@ -710,9 +710,9 @@ describe('Relation Tests', () => {
     const characterization = model.createCharacterization(weight, person);
 
     it('Test function call', () =>
-      expect(participational.holdsBetweenEvents()).toBe(true));
+      expect(participational.holdsBetweenEvents()).toBeTrue());
     it('Test function call', () =>
-      expect(characterization.holdsBetweenEvents()).toBe(false));
+      expect(characterization.holdsBetweenEvents()).toBeFalse());
   });
 
   describe('Test holdsBetweenMoments()', () => {
@@ -724,9 +724,9 @@ describe('Relation Tests', () => {
     const characterization = model.createCharacterization(gpa, enrollment);
 
     it('Test function call', () =>
-      expect(mediation.holdsBetweenMoments()).toBe(false));
+      expect(mediation.holdsBetweenMoments()).toBeFalse());
     it('Test function call', () =>
-      expect(characterization.holdsBetweenMoments()).toBe(true));
+      expect(characterization.holdsBetweenMoments()).toBeTrue());
   });
 
   describe('Test holdsBetweenSubstantials()', () => {
@@ -738,9 +738,9 @@ describe('Relation Tests', () => {
     const characterization = model.createCharacterization(weight, person);
 
     it('Test function call', () =>
-      expect(memberOf.holdsBetweenSubstantials()).toBe(true));
+      expect(memberOf.holdsBetweenSubstantials()).toBeTrue());
     it('Test function call', () =>
-      expect(characterization.holdsBetweenSubstantials()).toBe(false));
+      expect(characterization.holdsBetweenSubstantials()).toBeFalse());
   });
 
   describe('Test clone()', () => {

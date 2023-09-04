@@ -24,135 +24,6 @@ export class Finder {
     this.project = project;
   }
 
-  getElementById(id: String): OntoumlElement {
-    return this.project.getAllContents().filter(e => e.id === id)?.[0];
-  }
-
-  getClassById(id: String): Class {
-    return this.getClasses().filter(e => e.id === id)?.[0];
-  }
-
-  getRelationById(id: String): Relation {
-    return this.getRelations().filter(e => e.id === id)?.[0];
-  }
-
-  getPropertyById(id: String): Property {
-    return this.getProperties().filter(e => e.id === id)?.[0];
-  }
-
-  getGeneralizationById(id: String): Generalization {
-    return this.getGeneralizations().filter(e => e.id === id)?.[0];
-  }
-
-  getGeneralizationSetById(id: String): GeneralizationSet {
-    return this.getGeneralizationSets().filter(e => e.id === id)?.[0];
-  }
-
-  getPackageById(id: String): Package {
-    return this.getPackages().filter(e => e.id === id)?.[0];
-  }
-
-  /**
-   * @returns all the properties contained in the project. That is, the ends of all relations and the attributes of all classes.
-   */
-  getProperties(): Property[] {
-    return this.project
-      .getAllContents()
-      .filter(e => e instanceof Property) as Property[];
-  }
-
-  /**
-   *
-   * @returns the attributes of all classes contained in the project.
-   */
-  getAttributes(): Property[] {
-    return this.getProperties().filter(p => p.isAttribute());
-  }
-
-  /**
-   *
-   * @returns the ends of all relations contained in the project.
-   */
-  getRelationEnds(): Property[] {
-    return this.getProperties().filter(p => p.isRelationEnd());
-  }
-
-  /**
-   *
-   * @returns all relations contained in the project.
-   */
-  getRelations(): Relation[] {
-    return this.project
-      .getAllContents()
-      .filter(e => e instanceof Relation) as Relation[];
-  }
-
-  /**
-   *
-   * @returns all binary relations contained in the project.
-   */
-  getBinaryRelations(): BinaryRelation[] {
-    return this.getRelations().filter(e => e.isBinary()) as BinaryRelation[];
-  }
-
-  /**
-   *
-   * @returns all n-ary relations contained in the project.
-   */
-  getNaryRelations(): NaryRelation[] {
-    return this.getRelations().filter(e => e.isNary()) as NaryRelation[];
-  }
-
-  /**
-   *
-   * @returns all generalizations contained in the project.
-   */
-  getGeneralizations(): Generalization[] {
-    return this.project
-      .getAllContents()
-      .filter(e => e instanceof Generalization) as Generalization[];
-  }
-
-  /**
-   *
-   * @returns all generalization sets contained in the project.
-   */
-  getGeneralizationSets(): GeneralizationSet[] {
-    return this.project
-      .getAllContents()
-      .filter(e => e instanceof GeneralizationSet) as GeneralizationSet[];
-  }
-
-  /**
-   *
-   * @returns all packages contained in the project.
-   */
-  getPackages(): Package[] {
-    return this.project
-      .getAllContents()
-      .filter(e => e instanceof Package) as Package[];
-  }
-
-  /**
-   *
-   * @returns all classes contained in the project.
-   */
-  getClasses(): Class[] {
-    return this.project
-      .getAllContents()
-      .filter(e => e instanceof Class) as Class[];
-  }
-
-  /**
-   *
-   * @returns the literals of all enumerations contained in the project.
-   */
-  getLiterals(): Literal[] {
-    return this.project
-      .getAllContents()
-      .filter(e => e instanceof Literal) as Literal[];
-  }
-
   /**
    *
    * @returns all model elements contained in the project.
@@ -167,10 +38,8 @@ export class Finder {
    *
    * @returns all attributes contained in the project whose stereotype is included in {@link stereotypes}.
    */
-  getAttributesByStereotype(
-    stereotypes: readonly PropertyStereotype[]
-  ): Property[] {
-    return this.getAttributes()
+  getAttributesByStereotype(stereotypes: PropertyStereotype[]): Property[] {
+    return this.project.attributes
       .filter(a => a.hasStereotype())
       .filter(a => stereotypes.includes(a.stereotype!));
   }
@@ -179,21 +48,20 @@ export class Finder {
    *
    * @returns all classes contained in the project whose stereotype is included in {@link stereotypes}.
    */
-  getClassesByStereotype(stereotypes: readonly ClassStereotype[]): Class[] {
-    this.getAttributesByStereotype;
-    return this.getClasses()
+  getClassesByStereotype(stereotypes: ClassStereotype[]): Class[] {
+    return this.project.classes
       .filter(c => c.hasStereotype())
       .filter(c => stereotypes.includes(c.stereotype!));
   }
 
   /**
    *
-   * @returns all relations contained in the project whose stereotype is included in {@link stereotypes}.
+   * @returns all binary relations contained in the project whose stereotype is included in {@link stereotypes}.
    */
-  getRelationsByStereotype(
-    stereotypes: readonly RelationStereotype[]
-  ): Relation[] {
-    return this.getRelations()
+  getBinaryRelationsByStereotype(
+    stereotypes: RelationStereotype[]
+  ): BinaryRelation[] {
+    return this.project.binaryRelations
       .filter(r => r.hasStereotype())
       .filter(r => stereotypes.includes(r.stereotype!));
   }
@@ -203,7 +71,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «type».
    */
   getTypes(): Class[] {
-    return this.getClasses().filter(c => c.isType());
+    return this.project.classes.filter(c => c.isType());
   }
 
   /**
@@ -211,7 +79,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «historicalRoles».
    */
   getHistoricalRoles(): Class[] {
-    return this.getClasses().filter(c => c.isHistoricalRole());
+    return this.project.classes.filter(c => c.isHistoricalRole());
   }
 
   /**
@@ -219,7 +87,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «historicalRoleMixin».
    */
   getHistoricalRoleMixins(): Class[] {
-    return this.getClasses().filter(c => c.isHistoricalRoleMixin());
+    return this.project.classes.filter(c => c.isHistoricalRoleMixin());
   }
 
   /**
@@ -227,7 +95,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «event».
    */
   getEvents(): Class[] {
-    return this.getClasses().filter(c => c.isEvent());
+    return this.project.classes.filter(c => c.isEvent());
   }
 
   /**
@@ -235,7 +103,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «situation».
    */
   getSituations(): Class[] {
-    return this.getClasses().filter(c => c.isSituation());
+    return this.project.classes.filter(c => c.isSituation());
   }
 
   /**
@@ -243,7 +111,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «category».
    */
   getCategories(): Class[] {
-    return this.getClasses().filter(c => c.isCategory());
+    return this.project.classes.filter(c => c.isCategory());
   }
 
   /**
@@ -251,7 +119,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «mixin».
    */
   getMixins(): Class[] {
-    return this.getClasses().filter(c => c.isMixin());
+    return this.project.classes.filter(c => c.isMixin());
   }
 
   /**
@@ -259,7 +127,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «roleMixin».
    */
   getRoleMixins(): Class[] {
-    return this.getClasses().filter(c => c.isRoleMixin());
+    return this.project.classes.filter(c => c.isRoleMixin());
   }
 
   /**
@@ -267,7 +135,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «phaseMixin».
    */
   getPhaseMixins(): Class[] {
-    return this.getClasses().filter(c => c.isPhaseMixin());
+    return this.project.classes.filter(c => c.isPhaseMixin());
   }
 
   /**
@@ -275,7 +143,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «kind».
    */
   getKinds(): Class[] {
-    return this.getClasses().filter(c => c.isKind());
+    return this.project.classes.filter(c => c.isKind());
   }
 
   /**
@@ -283,7 +151,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «collective».
    */
   getCollectives(): Class[] {
-    return this.getClasses().filter(c => c.isCollective());
+    return this.project.classes.filter(c => c.isCollective());
   }
 
   /**
@@ -291,7 +159,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «quantity».
    */
   getQuantities(): Class[] {
-    return this.getClasses().filter(c => c.isQuantity());
+    return this.project.classes.filter(c => c.isQuantity());
   }
 
   /**
@@ -299,7 +167,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «relator».
    */
   getRelators(): Class[] {
-    return this.getClasses().filter(c => c.isQuantity());
+    return this.project.classes.filter(c => c.isQuantity());
   }
 
   /**
@@ -307,7 +175,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «quality».
    */
   getQualities(): Class[] {
-    return this.getClasses().filter(c => c.isQuality());
+    return this.project.classes.filter(c => c.isQuality());
   }
 
   /**
@@ -315,7 +183,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «mode».
    */
   getModes(): Class[] {
-    return this.getClasses().filter(c => c.isMode());
+    return this.project.classes.filter(c => c.isMode());
   }
 
   /**
@@ -323,7 +191,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «subkind».
    */
   getSubkinds(): Class[] {
-    return this.getClasses().filter(c => c.isSubkind());
+    return this.project.classes.filter(c => c.isSubkind());
   }
 
   /**
@@ -331,7 +199,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «role».
    */
   getRoles(): Class[] {
-    return this.getClasses().filter(c => c.isRole());
+    return this.project.classes.filter(c => c.isRole());
   }
 
   /**
@@ -339,7 +207,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «phase».
    */
   getPhases(): Class[] {
-    return this.getClasses().filter(c => c.isPhase());
+    return this.project.classes.filter(c => c.isPhase());
   }
 
   /**
@@ -347,7 +215,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «enumeration».
    */
   getEnumerations(): Class[] {
-    return this.getClasses().filter(c => c.isEnumeration());
+    return this.project.classes.filter(c => c.isEnumeration());
   }
 
   /**
@@ -355,7 +223,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «datatype».
    */
   getDatatypes(): Class[] {
-    return this.getClasses().filter(c => c.isDatatype());
+    return this.project.classes.filter(c => c.isDatatype());
   }
 
   /**
@@ -363,7 +231,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «abstract».
    */
   getAbstracts(): Class[] {
-    return this.getClasses().filter(c => c.isAbstractStereotype());
+    return this.project.classes.filter(c => c.isAbstractStereotype());
   }
 
   /**
@@ -372,7 +240,7 @@ export class Finder {
    * @see Class.isSortal
    */
   getSortals(): Class[] {
-    return this.getClasses().filter(c => c.isSortal());
+    return this.project.classes.filter(c => c.isSortal());
   }
 
   /**
@@ -381,7 +249,7 @@ export class Finder {
    * @see Class.isNonSortal
    */
   getNonSortals(): Class[] {
-    return this.getClasses().filter(c => c.isNonSortal());
+    return this.project.classes.filter(c => c.isNonSortal());
   }
 
   /**
@@ -390,7 +258,7 @@ export class Finder {
    * @see Class.isAntiRigid
    */
   getAntiRigidTypes(): Class[] {
-    return this.getClasses().filter(c => c.isAntiRigid());
+    return this.project.classes.filter(c => c.isAntiRigid());
   }
 
   /**
@@ -399,7 +267,7 @@ export class Finder {
    * @see Class.isSemiRigid
    */
   getSemiRigidTypes(): Class[] {
-    return this.getClasses().filter(c => c.isSemiRigid());
+    return this.project.classes.filter(c => c.isSemiRigid());
   }
 
   /**
@@ -408,7 +276,7 @@ export class Finder {
    * @see Class.isRigid
    */
   getRigidTypes(): Class[] {
-    return this.getClasses().filter(c => c.isRigid());
+    return this.project.classes.filter(c => c.isRigid());
   }
 
   /**
@@ -416,7 +284,7 @@ export class Finder {
    * @returns all classes whose field `restrictedTo` includes only {@link Nature.FUNCTIONAL_COMPLEX}.
    */
   getFunctionalComplexTypes(): Class[] {
-    return this.getClasses().filter(c => c.isFunctionalComplexType());
+    return this.project.classes.filter(c => c.isFunctionalComplexType());
   }
 
   /**
@@ -424,7 +292,7 @@ export class Finder {
    * @returns all classes whose field `restrictedTo` includes only {@link Nature.COLLECTIVE}.
    */
   getCollectiveTypes(): Class[] {
-    return this.getClasses().filter(c => c.isCollectiveType());
+    return this.project.classes.filter(c => c.isCollectiveType());
   }
 
   /**
@@ -432,7 +300,7 @@ export class Finder {
    * @returns all classes whose field `restrictedTo` includes only {@link Nature.QUANTITY}.
    */
   getQuantityTypes(): Class[] {
-    return this.getClasses().filter(c => c.isQuantityType());
+    return this.project.classes.filter(c => c.isQuantityType());
   }
 
   /**
@@ -440,7 +308,7 @@ export class Finder {
    * @returns all classes whose field `restrictedTo` includes {@link Nature.INTRINSIC_MODE} and/or {@link Nature.EXTRINSIC_MODE} .
    */
   getModeTypes(): Class[] {
-    return this.getClasses().filter(c => c.isMode());
+    return this.project.classes.filter(c => c.isMode());
   }
 
   /**
@@ -448,7 +316,7 @@ export class Finder {
    * @returns all classes whose field `restrictedTo` includes only {@link Nature.INTRINSIC_MODE}.
    */
   getInstricModeTypes(): Class[] {
-    return this.getClasses().filter(c => c.isIntrinsicModeType());
+    return this.project.classes.filter(c => c.isIntrinsicModeType());
   }
 
   /**
@@ -456,7 +324,7 @@ export class Finder {
    * @returns all classes whose field `restrictedTo` includes only {@link Nature.EXTRINSIC_MODE}.
    */
   getExtrinsicModeTypes(): Class[] {
-    return this.getClasses().filter(c => c.isExtrinsicModeType());
+    return this.project.classes.filter(c => c.isExtrinsicModeType());
   }
 
   /**
@@ -464,7 +332,7 @@ export class Finder {
    * @returns all classes whose field `restrictedTo` includes only {@link Nature.QUALITY}.
    */
   getQualityTypes(): Class[] {
-    return this.getClasses().filter(c => c.isQualityType());
+    return this.project.classes.filter(c => c.isQualityType());
   }
 
   /**
@@ -472,7 +340,7 @@ export class Finder {
    * @returns all classes whose field `restrictedTo` includes only {@link Nature.RELATOR}.
    */
   getRelatorTypes(): Class[] {
-    return this.getClasses().filter(c => c.isRelator());
+    return this.project.classes.filter(c => c.isRelator());
   }
 
   /**
@@ -480,7 +348,7 @@ export class Finder {
    * @returns all classes whose field `restrictedTo` includes only {@link Nature.TYPE}.
    */
   getHighOrderTypes(): Class[] {
-    return this.getClasses().filter(c => c.isHighOrderType());
+    return this.project.classes.filter(c => c.isHighOrderType());
   }
 
   /**
@@ -488,82 +356,158 @@ export class Finder {
    * @returns all classes whose field `restrictedTo` includes only {@link Nature.EVENT}.
    */
   getEventTypes(): Class[] {
-    return this.getClasses().filter(c => c.isEventType());
+    return this.project.classes.filter(c => c.isEventType());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «bringsAbout».
+   */
   getBringsAboutRelation(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isBringsAbout());
+    return this.project.binaryRelations.filter(r => r.isBringsAbout());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «characterization».
+   */
   getCharacterizations(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isCharacterization());
+    return this.project.binaryRelations.filter(r => r.isCharacterization());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «».
+   */
   getComparatives(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isComparative());
+    return this.project.binaryRelations.filter(r => r.isComparative());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «componentOf».
+   */
   getComponentOfRelations(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isComponentOf());
+    return this.project.binaryRelations.filter(r => r.isComponentOf());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «creation».
+   */
   getCreations(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isCreation());
+    return this.project.binaryRelations.filter(r => r.isCreation());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «derivation».
+   */
   getDerivations(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isDerivation());
+    return this.project.binaryRelations.filter(r => r.isDerivation());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «externalDependence».
+   */
   getExternalDependencies(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isExternalDependence());
+    return this.project.binaryRelations.filter(r => r.isExternalDependence());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «historicalDependence».
+   */
   getHistoricalDependencies(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isHistoricalDependence());
+    return this.project.binaryRelations.filter(r => r.isHistoricalDependence());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «instantiation».
+   */
   getInstantiations(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isInstantiation());
+    return this.project.binaryRelations.filter(r => r.isInstantiation());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «manifestation».
+   */
   getManifestations(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isManifestation());
+    return this.project.binaryRelations.filter(r => r.isManifestation());
   }
 
+  /**
+   *
+   * @returns all relations in the project stereotyped as «material».
+   */
   getMaterialRelations(): Relation[] {
-    return this.getRelations().filter(r => r.isMaterial());
+    return this.project.relations.filter(r => r.isMaterial());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «mediation».
+   */
   getMediations(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isMediation());
+    return this.project.binaryRelations.filter(r => r.isMediation());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «memberOf».
+   */
   getMemberOfs(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isMemberOf());
+    return this.project.binaryRelations.filter(r => r.isMemberOf());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «participation».
+   */
   getParticipations(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isParticipation());
+    return this.project.binaryRelations.filter(r => r.isParticipation());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «participational».
+   */
   getParticipationals(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isParticipational());
+    return this.project.binaryRelations.filter(r => r.isParticipational());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «subCollectionOf».
+   */
   getSubCollectionOfs(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isSubCollectionOf());
+    return this.project.binaryRelations.filter(r => r.isSubCollectionOf());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «subQuantityOf».
+   */
   getSubQuantityOfs(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isSubQuantityOf());
+    return this.project.binaryRelations.filter(r => r.isSubQuantityOf());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «termination».
+   */
   getTerminations(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isTermination());
+    return this.project.binaryRelations.filter(r => r.isTermination());
   }
 
+  /**
+   *
+   * @returns all binary relations in the project stereotyped as «triggers».
+   */
   getTriggersRelations(): BinaryRelation[] {
-    return this.getBinaryRelations().filter(r => r.isTriggers());
+    return this.project.binaryRelations.filter(r => r.isTriggers());
   }
 }

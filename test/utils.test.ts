@@ -29,37 +29,37 @@ describe('Utils Test', () => {
     it('A and B are empty', () => {
       const A = [];
       const B = [];
-      expect(utils.intersects(A, B)).toBe(false);
+      expect(utils.intersects(A, B)).toBeFalse();
     });
     it('A superset of B', () => {
       const A = [2, 1, 3];
       const B = [1];
-      expect(utils.intersects(A, B)).toBe(true);
+      expect(utils.intersects(A, B)).toBeTrue();
     });
     it('A subset of B', () => {
       const A = [3];
       const B = [2, 1, 3];
-      expect(utils.intersects(A, B)).toBe(true);
+      expect(utils.intersects(A, B)).toBeTrue();
     });
     it('A same contents as B', () => {
       const A = [3, 2, 1];
       const B = [1, 3, 2];
-      expect(utils.intersects(A, B)).toBe(true);
+      expect(utils.intersects(A, B)).toBeTrue();
     });
     it('A overlaps with B', () => {
       const A = [2, 1];
       const B = [3, 2];
-      expect(utils.intersects(A, B)).toBe(true);
+      expect(utils.intersects(A, B)).toBeTrue();
     });
     it('A is disjoint with B', () => {
       const A = [3, 2];
       const B = [1, 4];
-      expect(utils.intersects(A, B)).toBe(false);
+      expect(utils.intersects(A, B)).toBeFalse();
     });
     it('A and B undefined or null', () => {
       const A = null;
       const B = undefined;
-      expect(utils.intersects(A, B)).toBe(false);
+      expect(utils.intersects(A, B)).toBeFalse();
     });
   });
 
@@ -67,37 +67,37 @@ describe('Utils Test', () => {
     it('A and B are empty', () => {
       const A = [];
       const B = [];
-      expect(utils.includesAll(A, B)).toBe(true);
+      expect(utils.includesAll(A, B)).toBeTrue();
     });
     it('A superset of B', () => {
       const A = [2, 1, 3];
       const B = [1];
-      expect(utils.includesAll(A, B)).toBe(true);
+      expect(utils.includesAll(A, B)).toBeTrue();
     });
     it('A subset of B', () => {
       const A = [3];
       const B = [2, 1, 3];
-      expect(utils.includesAll(A, B)).toBe(false);
+      expect(utils.includesAll(A, B)).toBeFalse();
     });
     it('A same contents as B', () => {
       const A = [3, 2, 1];
       const B = [1, 3, 2];
-      expect(utils.includesAll(A, B)).toBe(true);
+      expect(utils.includesAll(A, B)).toBeTrue();
     });
     it('A overlaps with B', () => {
       const A = [2, 1];
       const B = [3, 2];
-      expect(utils.includesAll(A, B)).toBe(false);
+      expect(utils.includesAll(A, B)).toBeFalse();
     });
     it('A is disjoint with B', () => {
       const A = [3, 2];
       const B = [1, 4];
-      expect(utils.includesAll(A, B)).toBe(false);
+      expect(utils.includesAll(A, B)).toBeFalse();
     });
     it('A and B undefined or null', () => {
       const A = null;
       const B = undefined;
-      expect(utils.includesAll(A, B)).toBe(false);
+      expect(utils.includesAll(A, B)).toBeFalse();
     });
   });
 
@@ -105,37 +105,37 @@ describe('Utils Test', () => {
     it('A and B are empty', () => {
       const A = [];
       const B = [];
-      expect(utils.equalContents(A, B)).toBe(true);
+      expect(utils.equalContents(A, B)).toBeTrue();
     });
     it('A superset of B', () => {
       const A = [2, 1, 3];
       const B = [1];
-      expect(utils.equalContents(A, B)).toBe(false);
+      expect(utils.equalContents(A, B)).toBeFalse();
     });
     it('A subset of B', () => {
       const A = [3];
       const B = [2, 1, 3];
-      expect(utils.equalContents(A, B)).toBe(false);
+      expect(utils.equalContents(A, B)).toBeFalse();
     });
     it('A same contents as B', () => {
       const A = [3, 2, 1];
       const B = [1, 3, 2];
-      expect(utils.equalContents(A, B)).toBe(true);
+      expect(utils.equalContents(A, B)).toBeTrue();
     });
     it('A overlaps with B', () => {
       const A = [2, 1];
       const B = [3, 2];
-      expect(utils.equalContents(A, B)).toBe(false);
+      expect(utils.equalContents(A, B)).toBeFalse();
     });
     it('A is disjoint with B', () => {
       const A = [3, 2];
       const B = [1, 4];
-      expect(utils.equalContents(A, B)).toBe(false);
+      expect(utils.equalContents(A, B)).toBeFalse();
     });
     it('A and B undefined or null', () => {
       const A = null;
       const B = undefined;
-      expect(utils.equalContents(A, B)).toBe(false);
+      expect(utils.equalContents(A, B)).toBeFalse();
     });
   });
 });

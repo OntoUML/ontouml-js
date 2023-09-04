@@ -6,27 +6,27 @@ describe(`Cardinality Tests`, () => {
 
     it('Test 0..* (CARDINALITY_MAX_AS_NUMBER)', () => {
       prop.cardinality.setCardinality(0, CARDINALITY_MAX_AS_NUMBER);
-      expect(prop.cardinality.isZeroToMany()).toBe(true);
+      expect(prop.cardinality.isZeroToMany()).toBeTrue();
     });
 
     it('Test 0..* (lowerBound only)', () => {
       prop.cardinality.setCardinality(0);
-      expect(prop.cardinality.isZeroToMany()).toBe(true);
+      expect(prop.cardinality.isZeroToMany()).toBeTrue();
     });
 
     it('Test 0..1', () => {
       prop.cardinality.setCardinality(0, 1);
-      expect(prop.cardinality.isZeroToOne()).toBe(true);
+      expect(prop.cardinality.isZeroToOne()).toBeTrue();
     });
 
     it('Test 1..*', () => {
       prop.cardinality.setCardinality(1, CARDINALITY_MAX_AS_NUMBER);
-      expect(prop.cardinality.isOneToMany()).toBe(true);
+      expect(prop.cardinality.isOneToMany()).toBeTrue();
     });
 
     it('Test 1..1', () => {
       prop.cardinality.setCardinality(1, 1);
-      expect(prop.cardinality.isOneToOne()).toBe(true);
+      expect(prop.cardinality.isOneToOne()).toBeTrue();
     });
   });
 
@@ -35,7 +35,7 @@ describe(`Cardinality Tests`, () => {
     prop.cardinality.setZeroToOne();
 
     it('Test cardinality', () =>
-      expect(prop.cardinality.isZeroToOne()).toBe(true));
+      expect(prop.cardinality.isZeroToOne()).toBeTrue());
   });
 
   describe(`Test ${Cardinality.prototype.setZeroToMany.name}()`, () => {
@@ -43,7 +43,7 @@ describe(`Cardinality Tests`, () => {
     prop.cardinality.setZeroToMany();
 
     it('Test cardinality', () =>
-      expect(prop.cardinality.isZeroToMany()).toBe(true));
+      expect(prop.cardinality.isZeroToMany()).toBeTrue());
   });
 
   describe(`Test ${Cardinality.prototype.setOneToOne.name}()`, () => {
@@ -51,7 +51,7 @@ describe(`Cardinality Tests`, () => {
     prop.cardinality.setOneToOne();
 
     it('Test cardinality', () =>
-      expect(prop.cardinality.isOneToOne()).toBe(true));
+      expect(prop.cardinality.isOneToOne()).toBeTrue());
   });
 
   describe(`Test ${Cardinality.prototype.setOneToMany.name}()`, () => {
@@ -59,20 +59,20 @@ describe(`Cardinality Tests`, () => {
     prop.cardinality.setOneToMany();
 
     it('Test cardinality', () =>
-      expect(prop.cardinality.isOneToMany()).toBe(true));
+      expect(prop.cardinality.isOneToMany()).toBeTrue());
   });
 
   describe(`Test ${Cardinality.prototype.isOptional.name}()`, () => {
     const prop = new Property();
 
     it('Test prop', () => {
-      expect(prop.cardinality.isOptional()).toBe(true);
+      expect(prop.cardinality.isOptional()).toBeTrue();
       prop.cardinality.setCardinality(0, 1);
-      expect(prop.cardinality.isOptional()).toBe(true);
+      expect(prop.cardinality.isOptional()).toBeTrue();
       prop.cardinality.setCardinality(1, CARDINALITY_MAX_AS_NUMBER);
-      expect(prop.cardinality.isOptional()).toBe(false);
+      expect(prop.cardinality.isOptional()).toBeFalse();
       prop.cardinality.setCardinality(1, 1);
-      expect(prop.cardinality.isOptional()).toBe(false);
+      expect(prop.cardinality.isOptional()).toBeFalse();
     });
   });
 
@@ -80,13 +80,13 @@ describe(`Cardinality Tests`, () => {
     const prop = new Property();
 
     it('Test prop', () => {
-      expect(prop.cardinality.isMandatory()).toBe(false);
+      expect(prop.cardinality.isMandatory()).toBeFalse();
       prop.cardinality.setCardinality(0, 1);
-      expect(prop.cardinality.isMandatory()).toBe(false);
+      expect(prop.cardinality.isMandatory()).toBeFalse();
       prop.cardinality.setCardinality(1, CARDINALITY_MAX_AS_NUMBER);
-      expect(prop.cardinality.isMandatory()).toBe(true);
+      expect(prop.cardinality.isMandatory()).toBeTrue();
       prop.cardinality.setCardinality(1, 1);
-      expect(prop.cardinality.isMandatory()).toBe(true);
+      expect(prop.cardinality.isMandatory()).toBeTrue();
     });
   });
 
@@ -94,13 +94,13 @@ describe(`Cardinality Tests`, () => {
     const prop = new Property();
 
     it('Test prop', () => {
-      expect(prop.cardinality.isZeroToOne()).toBe(false);
+      expect(prop.cardinality.isZeroToOne()).toBeFalse();
       prop.cardinality.setCardinality(0, 1);
-      expect(prop.cardinality.isZeroToOne()).toBe(true);
+      expect(prop.cardinality.isZeroToOne()).toBeTrue();
       prop.cardinality.setCardinality(1, CARDINALITY_MAX_AS_NUMBER);
-      expect(prop.cardinality.isZeroToOne()).toBe(false);
+      expect(prop.cardinality.isZeroToOne()).toBeFalse();
       prop.cardinality.setCardinality(1, 1);
-      expect(prop.cardinality.isZeroToOne()).toBe(false);
+      expect(prop.cardinality.isZeroToOne()).toBeFalse();
     });
   });
 
@@ -108,13 +108,13 @@ describe(`Cardinality Tests`, () => {
     const prop = new Property();
 
     it('Test prop', () => {
-      expect(prop.cardinality.isZeroToMany()).toBe(true);
+      expect(prop.cardinality.isZeroToMany()).toBeTrue();
       prop.cardinality.setCardinality(0, 1);
-      expect(prop.cardinality.isZeroToMany()).toBe(false);
+      expect(prop.cardinality.isZeroToMany()).toBeFalse();
       prop.cardinality.setCardinality(1, CARDINALITY_MAX_AS_NUMBER);
-      expect(prop.cardinality.isZeroToMany()).toBe(false);
+      expect(prop.cardinality.isZeroToMany()).toBeFalse();
       prop.cardinality.setCardinality(1, 1);
-      expect(prop.cardinality.isZeroToMany()).toBe(false);
+      expect(prop.cardinality.isZeroToMany()).toBeFalse();
     });
   });
 
@@ -122,13 +122,13 @@ describe(`Cardinality Tests`, () => {
     const prop = new Property();
 
     it('Test prop', () => {
-      expect(prop.cardinality.isOneToOne()).toBe(false);
+      expect(prop.cardinality.isOneToOne()).toBeFalse();
       prop.cardinality.setCardinality(0, 1);
-      expect(prop.cardinality.isOneToOne()).toBe(false);
+      expect(prop.cardinality.isOneToOne()).toBeFalse();
       prop.cardinality.setCardinality(1, CARDINALITY_MAX_AS_NUMBER);
-      expect(prop.cardinality.isOneToOne()).toBe(false);
+      expect(prop.cardinality.isOneToOne()).toBeFalse();
       prop.cardinality.setCardinality(1, 1);
-      expect(prop.cardinality.isOneToOne()).toBe(true);
+      expect(prop.cardinality.isOneToOne()).toBeTrue();
     });
   });
 
@@ -136,13 +136,13 @@ describe(`Cardinality Tests`, () => {
     const prop = new Property();
 
     it('Test prop', () => {
-      expect(prop.cardinality.isOneToMany()).toBe(false);
+      expect(prop.cardinality.isOneToMany()).toBeFalse();
       prop.cardinality.setCardinality(0, 1);
-      expect(prop.cardinality.isOneToMany()).toBe(false);
+      expect(prop.cardinality.isOneToMany()).toBeFalse();
       prop.cardinality.setCardinality(1, CARDINALITY_MAX_AS_NUMBER);
-      expect(prop.cardinality.isOneToMany()).toBe(true);
+      expect(prop.cardinality.isOneToMany()).toBeTrue();
       prop.cardinality.setCardinality(1, 1);
-      expect(prop.cardinality.isOneToMany()).toBe(false);
+      expect(prop.cardinality.isOneToMany()).toBeFalse();
     });
   });
 
@@ -150,11 +150,11 @@ describe(`Cardinality Tests`, () => {
     const prop = new Property();
 
     it('Test prop', () => {
-      expect(prop.cardinality.isValid()).toBe(true);
+      expect(prop.cardinality.isValid()).toBeTrue();
       prop.cardinality.setCardinality(1, CARDINALITY_MAX_AS_NUMBER);
-      expect(prop.cardinality.isValid()).toBe(true);
+      expect(prop.cardinality.isValid()).toBeTrue();
       prop.cardinality.value = '-1..-1';
-      expect(prop.cardinality.isValid()).toBe(false);
+      expect(prop.cardinality.isValid()).toBeFalse();
     });
   });
 });

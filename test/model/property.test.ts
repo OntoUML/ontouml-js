@@ -19,7 +19,7 @@ describe(`${Property.name} Tests`, () => {
     it('Test function call', () =>
       expect(
         startDate.isStereotypeOneOf(stereotypeUtils.PropertyStereotypes)
-      ).toBe(true));
+      ).toBeTrue());
   });
 
   describe(`Test ${Property.prototype.hasValidStereotype.name}()`, () => {
@@ -32,15 +32,15 @@ describe(`${Property.name} Tests`, () => {
     startDate.stereotype = PropertyStereotype.BEGIN;
 
     it('should return true for an attribute with an OntoUML stereotype', () => {
-      expect(startDate.hasValidStereotype()).toBe(true);
+      expect(startDate.hasValidStereotype()).toBeTrue();
     });
 
     it('should return true for an attribute without a stereotype (by default; allowsNone: true)', () => {
-      expect(precedes.hasValidStereotype()).toBe(true);
+      expect(precedes.hasValidStereotype()).toBeTrue();
     });
 
     it('should return false for an attribute without a stereotype (allowsNone: false)', () => {
-      expect(precedes.hasValidStereotype(false)).toBe(false);
+      expect(precedes.hasValidStereotype(false)).toBeFalse();
     });
   });
 
@@ -60,7 +60,7 @@ describe(`${Property.name} Tests`, () => {
     it('Test serialization', () =>
       expect(() => JSON.stringify(precedes)).not.toThrow());
     it('Test serialization', () =>
-      expect(serializationUtils.validate(endDate.project)).toBe(true));
+      expect(serializationUtils.validate(endDate.project)).toBeTrue());
   });
 
   describe(`Test ${Property.prototype.setContainer.name}()`, () => {
@@ -90,9 +90,9 @@ describe(`${Property.name} Tests`, () => {
     const startDate = summerFestival.createAttribute(date);
     const precedes = model.createBinaryRelation(summerFestival, summerFestival);
 
-    it('Test startDate', () => expect(startDate.isAttribute()).toBe(true));
+    it('Test startDate', () => expect(startDate.isAttribute()).toBeTrue());
     it('Test precedes', () =>
-      expect(precedes.getSourceEnd().isAttribute()).toBe(false));
+      expect(precedes.getSourceEnd().isAttribute()).toBeFalse());
   });
 
   describe(`Test ${Property.prototype.isRelationEnd.name}()`, () => {
@@ -102,9 +102,9 @@ describe(`${Property.name} Tests`, () => {
     const startDate = summerFestival.createAttribute(date);
     const precedes = model.createBinaryRelation(summerFestival, summerFestival);
 
-    it('Test startDate', () => expect(startDate.isRelationEnd()).toBe(false));
+    it('Test startDate', () => expect(startDate.isRelationEnd()).toBeFalse());
     it('Test precedes', () =>
-      expect(precedes.getSourceEnd().isRelationEnd()).toBe(true));
+      expect(precedes.getSourceEnd().isRelationEnd()).toBeTrue());
   });
 
   describe(`Test ${Property.prototype.hasPropertyType.name}()`, () => {
@@ -115,12 +115,12 @@ describe(`${Property.name} Tests`, () => {
     const precedes = model.createBinaryRelation(event, event);
     const prop = new Property();
 
-    it('Test startDate', () => expect(startDate.hasPropertyType()).toBe(true));
+    it('Test startDate', () => expect(startDate.hasPropertyType()).toBeTrue());
     it('Test precedes', () =>
-      expect(precedes.getSourceEnd().hasPropertyType()).toBe(true));
+      expect(precedes.getSourceEnd().hasPropertyType()).toBeTrue());
     it('Test precedes', () =>
-      expect(precedes.getTargetEnd().hasPropertyType()).toBe(true));
-    it('Test prop', () => expect(prop.hasPropertyType()).toBe(false));
+      expect(precedes.getTargetEnd().hasPropertyType()).toBeTrue());
+    it('Test prop', () => expect(prop.hasPropertyType()).toBeFalse());
   });
 
   describe(`Test ${Property.prototype.isShared.name}()`, () => {
@@ -133,12 +133,12 @@ describe(`${Property.name} Tests`, () => {
 
     partOf.getTargetEnd().aggregationKind = AggregationKind.SHARED;
 
-    it('Test startDate', () => expect(startDate.isShared()).toBe(false));
+    it('Test startDate', () => expect(startDate.isShared()).toBeFalse());
     it('Test partOf', () =>
-      expect(partOf.getSourceEnd().isShared()).toBe(false));
+      expect(partOf.getSourceEnd().isShared()).toBeFalse());
     it('Test partOf', () =>
-      expect(partOf.getTargetEnd().isShared()).toBe(true));
-    it('Test prop', () => expect(prop.isShared()).toBe(false));
+      expect(partOf.getTargetEnd().isShared()).toBeTrue());
+    it('Test prop', () => expect(prop.isShared()).toBeFalse());
   });
 
   describe(`Test ${Property.prototype.isComposite.name}()`, () => {
@@ -151,12 +151,12 @@ describe(`${Property.name} Tests`, () => {
 
     partOf.getTargetEnd().aggregationKind = AggregationKind.COMPOSITE;
 
-    it('Test startDate', () => expect(startDate.isComposite()).toBe(false));
+    it('Test startDate', () => expect(startDate.isComposite()).toBeFalse());
     it('Test partOf', () =>
-      expect(partOf.getSourceEnd().isComposite()).toBe(false));
+      expect(partOf.getSourceEnd().isComposite()).toBeFalse());
     it('Test partOf', () =>
-      expect(partOf.getTargetEnd().isComposite()).toBe(true));
-    it('Test prop', () => expect(prop.isComposite()).toBe(false));
+      expect(partOf.getTargetEnd().isComposite()).toBeTrue());
+    it('Test prop', () => expect(prop.isComposite()).toBeFalse());
   });
 
   describe(`Test ${Property.prototype.isAggregationEnd.name}()`, () => {
@@ -170,12 +170,12 @@ describe(`${Property.name} Tests`, () => {
     partOf.getTargetEnd().aggregationKind = AggregationKind.SHARED;
 
     it('Test startDate', () =>
-      expect(startDate.isAggregationEnd()).toBe(false));
+      expect(startDate.isAggregationEnd()).toBeFalse());
     it('Test partOf', () =>
-      expect(partOf.getSourceEnd().isAggregationEnd()).toBe(false));
+      expect(partOf.getSourceEnd().isAggregationEnd()).toBeFalse());
     it('Test partOf', () =>
-      expect(partOf.getTargetEnd().isAggregationEnd()).toBe(true));
-    it('Test prop', () => expect(prop.isAggregationEnd()).toBe(false));
+      expect(partOf.getTargetEnd().isAggregationEnd()).toBeTrue());
+    it('Test prop', () => expect(prop.isAggregationEnd()).toBeFalse());
   });
 
   describe(`Test ${Property.prototype.getOppositeEnd.name}()`, () => {

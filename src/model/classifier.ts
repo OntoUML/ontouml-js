@@ -89,19 +89,15 @@ export abstract class Classifier<
   }
 
   getGeneralizationsWhereGeneral(): Generalization[] {
-    return this.getGeneralizations().filter(
-      (gen: Generalization) => this === gen.general
-    );
+    return this.getGeneralizations().filter(gen => this === gen.general);
   }
 
   getGeneralizationsWhereSpecific(): Generalization[] {
-    return this.getGeneralizations().filter(
-      (gen: Generalization) => this === gen.specific
-    );
+    return this.getGeneralizations().filter(gen => this === gen.specific);
   }
 
   getGeneralizationSets(): GeneralizationSet[] {
-    return this.project!.finder.getGeneralizationSets().filter(gs =>
+    return this.project!.generalizationSets.filter(gs =>
       gs.getInvolvedClassifiers().includes(this)
     );
   }
@@ -164,7 +160,7 @@ export abstract class Classifier<
   getRelations(): Relation[] {
     this.assertProject();
 
-    let relations = this.project!.finder.getRelations().filter(r =>
+    let relations = this.project!.relations.filter(r =>
       r.getMembers().includes(this)
     );
 
@@ -177,10 +173,7 @@ export abstract class Classifier<
    */
   getIncomingRelations(): BinaryRelation[] {
     this.assertProject();
-
-    return this.project!.finder.getBinaryRelations().filter(
-      r => r.getTarget() === this
-    );
+    return this.project!.binaryRelations.filter(r => r.getTarget() === this);
   }
 
   /**
@@ -189,10 +182,7 @@ export abstract class Classifier<
    */
   getOutgoingRelations(): BinaryRelation[] {
     this.assertProject();
-
-    return this.project!.finder.getBinaryRelations().filter(
-      r => r.getSource() === this
-    );
+    return this.project!.binaryRelations.filter(r => r.getSource() === this);
   }
 
   /**

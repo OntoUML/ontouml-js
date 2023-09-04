@@ -7,11 +7,11 @@ describe('Test isStereotypeValid()', () => {
   const worksFor = model.createBinaryRelation(person, person);
 
   it('should return true for a relation with an OntoUML stereotype', () =>
-    expect(knows.hasValidStereotype()).toBe(true));
+    expect(knows.hasValidStereotype()).toBeTrue());
   it('should return true for a relation without a stereotype (by default; allowsNone: true)', () =>
-    expect(worksFor.hasValidStereotype()).toBe(true));
+    expect(worksFor.hasValidStereotype()).toBeTrue());
   it('should return false for a relation without a stereotype (allowsNone: false)', () =>
-    expect(worksFor.hasValidStereotype(false)).toBe(false));
+    expect(worksFor.hasValidStereotype(false)).toBeFalse());
 });
 
 describe('Test hasAnyStereotype()', () => {
@@ -20,7 +20,7 @@ describe('Test hasAnyStereotype()', () => {
   const knows = model.createMaterialRelation(person, person);
 
   it('Test function call', () =>
-    expect(knows.isStereotypeOneOf([RelationStereotype.MATERIAL])).toBe(true));
+    expect(knows.isStereotypeOneOf([RelationStereotype.MATERIAL])).toBeTrue());
 });
 
 describe('Test hasExistentialDependenceStereotype()', () => {
@@ -31,9 +31,9 @@ describe('Test hasExistentialDependenceStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(worksFor.hasExistentialDependencyStereotype()).toBe(false));
+    expect(worksFor.hasExistentialDependencyStereotype()).toBeFalse());
   it('Test function call', () =>
-    expect(characterization.hasExistentialDependencyStereotype()).toBe(true));
+    expect(characterization.hasExistentialDependencyStereotype()).toBeTrue());
 });
 
 describe('Test hasMaterialStereotype()', () => {
@@ -44,9 +44,9 @@ describe('Test hasMaterialStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(worksFor.hasMaterialStereotype()).toBe(true));
+    expect(worksFor.hasMaterialStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(characterization.hasMaterialStereotype()).toBe(false));
+    expect(characterization.hasMaterialStereotype()).toBeFalse());
 });
 
 describe('Test hasDerivationStereotype()', () => {
@@ -57,9 +57,9 @@ describe('Test hasDerivationStereotype()', () => {
   const derivation = model.createDerivation(heavierThan, weight);
 
   it('Test function call', () =>
-    expect(derivation.hasDerivationStereotype()).toBe(true));
+    expect(derivation.hasDerivationStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(heavierThan.hasDerivationStereotype()).toBe(false));
+    expect(heavierThan.hasDerivationStereotype()).toBeFalse());
 });
 
 describe('Test hasComparativeStereotype()', () => {
@@ -70,9 +70,9 @@ describe('Test hasComparativeStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(heavierThan.hasComparativeStereotype()).toBe(true));
+    expect(heavierThan.hasComparativeStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(characterization.hasComparativeStereotype()).toBe(false));
+    expect(characterization.hasComparativeStereotype()).toBeFalse());
 });
 
 describe('Test hasMediationStereotype()', () => {
@@ -84,9 +84,9 @@ describe('Test hasMediationStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(mediation.hasMediationStereotype()).toBe(true));
+    expect(mediation.hasMediationStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(characterization.hasMediationStereotype()).toBe(false));
+    expect(characterization.hasMediationStereotype()).toBeFalse());
 });
 
 describe('Test hasCharacterizationStereotype()', () => {
@@ -97,9 +97,9 @@ describe('Test hasCharacterizationStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(characterization.hasCharacterizationStereotype()).toBe(true));
+    expect(characterization.hasCharacterizationStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(worksFor.hasCharacterizationStereotype()).toBe(false));
+    expect(worksFor.hasCharacterizationStereotype()).toBeFalse());
 });
 
 describe('Test hasExternalDependenceStereotype()', () => {
@@ -110,9 +110,9 @@ describe('Test hasExternalDependenceStereotype()', () => {
   const externalDependence = model.createExternalDependence(commitment, person);
 
   it('Test function call', () =>
-    expect(externalDependence.hasExternalDependenceStereotype()).toBe(true));
+    expect(externalDependence.hasExternalDependenceStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(worksFor.hasExternalDependenceStereotype()).toBe(false));
+    expect(worksFor.hasExternalDependenceStereotype()).toBeFalse());
 });
 
 describe('Test hasComponentOfStereotype()', () => {
@@ -124,9 +124,9 @@ describe('Test hasComponentOfStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(componentOf.hasComponentOfStereotype()).toBe(true));
+    expect(componentOf.hasComponentOfStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(characterization.hasComponentOfStereotype()).toBe(false));
+    expect(characterization.hasComponentOfStereotype()).toBeFalse());
 });
 
 describe('Test hasMemberOfStereotype()', () => {
@@ -138,9 +138,9 @@ describe('Test hasMemberOfStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(memberOf.hasMemberOfStereotype()).toBe(true));
+    expect(memberOf.hasMemberOfStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(characterization.hasMemberOfStereotype()).toBe(false));
+    expect(characterization.hasMemberOfStereotype()).toBeFalse());
 });
 
 describe('Test hasSubCollectionOfStereotype()', () => {
@@ -155,9 +155,9 @@ describe('Test hasSubCollectionOfStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(subCollectionOf.hasSubCollectionOfStereotype()).toBe(true));
+    expect(subCollectionOf.hasSubCollectionOfStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(characterization.hasSubCollectionOfStereotype()).toBe(false));
+    expect(characterization.hasSubCollectionOfStereotype()).toBeFalse());
 });
 
 describe('Test hasSubQuantityOfStereotype()', () => {
@@ -170,9 +170,9 @@ describe('Test hasSubQuantityOfStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(subQuantityOf.hasSubQuantityOfStereotype()).toBe(true));
+    expect(subQuantityOf.hasSubQuantityOfStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(characterization.hasSubQuantityOfStereotype()).toBe(false));
+    expect(characterization.hasSubQuantityOfStereotype()).toBeFalse());
 });
 
 describe('Test hasInstantiationStereotype()', () => {
@@ -184,9 +184,9 @@ describe('Test hasInstantiationStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(instantiation.hasInstantiationStereotype()).toBe(true));
+    expect(instantiation.hasInstantiationStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(characterization.hasInstantiationStereotype()).toBe(false));
+    expect(characterization.hasInstantiationStereotype()).toBeFalse());
 });
 
 describe('Test hasTerminationStereotype()', () => {
@@ -198,9 +198,9 @@ describe('Test hasTerminationStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(terminates.hasTerminationStereotype()).toBe(true));
+    expect(terminates.hasTerminationStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(characterization.hasTerminationStereotype()).toBe(false));
+    expect(characterization.hasTerminationStereotype()).toBeFalse());
 });
 
 describe('Test hasParticipationalStereotype()', () => {
@@ -213,9 +213,9 @@ describe('Test hasParticipationalStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(participational.hasParticipationalStereotype()).toBe(true));
+    expect(participational.hasParticipationalStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(characterization.hasParticipationalStereotype()).toBe(false));
+    expect(characterization.hasParticipationalStereotype()).toBeFalse());
 });
 
 describe('Test hasParticipationStereotype()', () => {
@@ -227,9 +227,9 @@ describe('Test hasParticipationStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(participation.hasParticipationStereotype()).toBe(true));
+    expect(participation.hasParticipationStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(characterization.hasParticipationStereotype()).toBe(false));
+    expect(characterization.hasParticipationStereotype()).toBeFalse());
 });
 
 describe('Test hasHistoricalDependenceStereotype()', () => {
@@ -248,7 +248,7 @@ describe('Test hasHistoricalDependenceStereotype()', () => {
       true
     ));
   it('Test function call', () =>
-    expect(characterization.hasHistoricalDependenceStereotype()).toBe(false));
+    expect(characterization.hasHistoricalDependenceStereotype()).toBeFalse());
 });
 
 describe('Test hasCreationStereotype()', () => {
@@ -260,9 +260,9 @@ describe('Test hasCreationStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(creation.hasCreationStereotype()).toBe(true));
+    expect(creation.hasCreationStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(characterization.hasCreationStereotype()).toBe(false));
+    expect(characterization.hasCreationStereotype()).toBeFalse());
 });
 
 describe('Test hasManifestationStereotype()', () => {
@@ -277,9 +277,9 @@ describe('Test hasManifestationStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(manifestation.hasManifestationStereotype()).toBe(true));
+    expect(manifestation.hasManifestationStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(characterization.hasManifestationStereotype()).toBe(false));
+    expect(characterization.hasManifestationStereotype()).toBeFalse());
 });
 
 describe('Test hasBringsAboutStereotype()', () => {
@@ -295,9 +295,9 @@ describe('Test hasBringsAboutStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(bringsAbout.hasBringsAboutStereotype()).toBe(true));
+    expect(bringsAbout.hasBringsAboutStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(characterization.hasBringsAboutStereotype()).toBe(false));
+    expect(characterization.hasBringsAboutStereotype()).toBeFalse());
 });
 
 describe('Test hasTriggersStereotype()', () => {
@@ -313,7 +313,7 @@ describe('Test hasTriggersStereotype()', () => {
   const characterization = model.createCharacterization(weight, person);
 
   it('Test function call', () =>
-    expect(bringsAbout.hasTriggersStereotype()).toBe(true));
+    expect(bringsAbout.hasTriggersStereotype()).toBeTrue());
   it('Test function call', () =>
-    expect(characterization.hasTriggersStereotype()).toBe(false));
+    expect(characterization.hasTriggersStereotype()).toBeFalse());
 });

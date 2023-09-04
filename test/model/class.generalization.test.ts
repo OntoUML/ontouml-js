@@ -7,219 +7,108 @@ import {
 } from '../../src';
 
 describe(`${Class.name} Tests`, () => {
-  let project: Project;
+  let proj: Project;
 
-  beforeEach(() => {
-    project = new Project();
-  });
+  describe(`Test on model Agent <|- Person, with a generalization set`, () => {
+    let agent: Class, person: Class;
+    let gen: Generalization;
+    let gs: GeneralizationSet;
 
-  describe(`Test ${Class.prototype.getGeneralizations.name}()`, () => {
-    it('Test function call', () => {
-      const agent = model.createClass();
-      const person = model.createClass();
-      model.createGeneralization(agent, person);
-
-      expect(agent.getGeneralizations().length).toBe(1);
+    beforeAll(() => {
+      proj = new Project();
+      agent = proj.classBuilder().build();
+      person = proj.classBuilder().build();
+      gen = person.addParent(agent);
+      gs = proj.generalizationSetBuilder().generalizations(gen).build();
     });
-  });
 
-  describe(`Test ${Class.prototype.getGeneralizationSets.name}()`, () => {
-    it('Test function call', () => {
-      const agent = model.createClass();
-      const person = model.createClass();
-      const agentIntoPerson = model.createGeneralization(agent, person);
-      model.createGeneralizationSet(agentIntoPerson);
-
-      expect(agent.getGeneralizationSets().length).toBe(1);
+    it('agent.getGeneralizations() should return [ gen ]', () => {
+      expect(agent.getGeneralizations()).toIncludeSameMembers([gen]);
     });
-  });
 
-  describe(`Test ${Class.prototype.getGeneralizationsWhereGeneral.name}()`, () => {
-    it('Test function call', () => {
-      const agent = model.createClass();
-      const person = model.createClass();
-      model.createGeneralization(agent, person);
-
-      expect(agent.getGeneralizationsWhereGeneral().length).toBe(1);
+    it('agent.getGeneralizationSets() should return [ gs ]', () => {
+      expect(agent.getGeneralizationSets()).toIncludeSameMembers([gs]);
     });
-  });
 
-  describe(`Test ${Class.prototype.getGeneralizationsWhereSpecific.name}()`, () => {
-    it('Test function call', () => {
-      const agent = model.createClass();
-      const person = model.createClass();
-      model.createGeneralization(agent, person);
-
-      expect(agent.getGeneralizationsWhereGeneral().length).toBe(1);
+    it('agent.getGeneralizationsWhereGeneral() should return [ gen ]', () => {
+      expect(agent.getGeneralizationsWhereGeneral()).toIncludeSameMembers([
+        gen
+      ]);
     });
-  });
 
-  describe(`Test ${Class.prototype.getGeneralizationSetsWhereGeneral.name}()`, () => {
-    it('Test function call', () => {
-      const agent = model.createClass();
-      const person = model.createClass();
-      const agentIntoPerson = model.createGeneralization(agent, person);
-      model.createGeneralizationSet(agentIntoPerson);
-
-      expect(agent.getGeneralizationSetsWhereGeneral().length).toBe(1);
+    it('person.getGeneralizationsWhereGeneral() should return an empty array', () => {
+      expect(person.getGeneralizationsWhereGeneral()).toBeEmpty();
     });
-  });
 
-  describe(`Test ${Class.prototype.getGeneralizationSetsWhereSpecific.name}()`, () => {
-    it('Test function call', () => {
-      const agent = model.createClass();
-      const person = model.createClass();
-      const agentIntoPerson = model.createGeneralization(agent, person);
-      model.createGeneralizationSet(agentIntoPerson);
+    it('agent.getGeneralizationsWhereSpecific() should return an empty array', () => {
+      expect(agent.getGeneralizationsWhereSpecific()).toBeEmpty();
+    });
 
-      expect(person.getGeneralizationSetsWhereSpecific().length).toBe(1);
+    it('person.getGeneralizationsWhereSpecific() should return [ gen ]', () => {
+      expect(person.getGeneralizationsWhereSpecific()).toIncludeSameMembers([
+        gen
+      ]);
+    });
+
+    it('agent.getGeneralizationSetsWhereGeneral() should return [ gen ]', () => {
+      expect(agent.getGeneralizationSetsWhereGeneral()).toIncludeSameMembers([
+        gs
+      ]);
+    });
+
+    it('person.getGeneralizationSetsWhereGeneral() should return an empty array', () => {
+      expect(person.getGeneralizationSetsWhereGeneral()).toBeEmpty();
+    });
+
+    it('agent.getGeneralizationSetsWhereSpecific() should return an empty array]', () => {
+      expect(agent.getGeneralizationSetsWhereSpecific()).toBeEmpty();
+    });
+
+    it('person.getGeneralizationSetsWhereSpecific() should return [ gs ]', () => {
+      expect(person.getGeneralizationSetsWhereSpecific()).toIncludeSameMembers([
+        gs
+      ]);
     });
   });
 
   describe(`Test ${Class.prototype.getGeneralizationSetsWhereCategorizer.name}()`, () => {
-    let pkg: Package;
     let agent: Class, agentType: Class, person: Class, organization: Class;
-    let agentIntoPerson, agentIntoOrganization: Generalization;
-    let genSet: GeneralizationSet;
+    let gen1, gen2: Generalization;
+    let gs: GeneralizationSet;
 
     beforeAll(() => {
-      pkg = model.createPackage();
-      agent = model.createClass();
-      agentType = model.createClass();
-      person = model.createClass();
-      organization = pkg.createClass();
-      agentIntoPerson = model.createGeneralization(agent, person);
-      agentIntoOrganization = model.createGeneralization(agent, organization);
-      genSet = pkg.createGeneralizationSet(
-        [agentIntoPerson, agentIntoOrganization],
-        false,
-        false,
-        agentType
-      );
+      agent = proj.classBuilder().category().build();
+      agentType = proj.classBuilder().type().build();
+      person = proj.classBuilder().kind().build();
+      organization = proj.classBuilder().kind().build();
+      gen1 = person.addParent(agent);
+      gen2 = organization.addParent(agent);
+
+      gs = proj
+        .generalizationSetBuilder()
+        .generalizations(gen1, gen2)
+        .categorizer(agentType)
+        .build();
     });
 
-    it('Test agent generalization sets', () => {
-      const agentGeneralizationSets =
-        agent.getGeneralizationSetsWhereCategorizer();
-      expect(agentGeneralizationSets.length).toBe(0);
+    it('agent.getGeneralizationSetsWhereCategorizer() should return an empty array', () => {
+      const gens = agent.getGeneralizationSetsWhereCategorizer();
+      expect(gens).toBeEmpty();
     });
 
-    it('Test person generalization sets', () => {
-      const personGeneralizationSets =
-        person.getGeneralizationSetsWhereCategorizer();
-      expect(personGeneralizationSets.length).toBe(0);
+    it('agent.getGeneralizationSetsWhereCategorizer() should return an empty array', () => {
+      const gens = person.getGeneralizationSetsWhereCategorizer();
+      expect(gens).toBeEmpty();
     });
 
-    it('Test organization generalization sets', () => {
-      const organizationGeneralizationSets =
-        organization.getGeneralizationSetsWhereCategorizer();
-      expect(organizationGeneralizationSets.length).toBe(0);
+    it('agent.getGeneralizationSetsWhereCategorizer() should return an empty array', () => {
+      const gens = organization.getGeneralizationSetsWhereCategorizer();
+      expect(gens).toBeEmpty();
     });
 
-    it('Test agentType generalization sets', () => {
-      const agentTypeGeneralizationSets =
-        agentType.getGeneralizationSetsWhereCategorizer();
-      expect(agentTypeGeneralizationSets).toContain(genSet);
-      expect(agentTypeGeneralizationSets.length).toBe(1);
-    });
-  });
-
-  describe(`Test ${Class.prototype.getAttributes.name}()`, () => {
-    it('Retrieve own attributes', () => {
-      const agent = model.createCategory();
-      const person = model.createKind();
-      const text = model.createDatatype();
-      const alias = agent.createAttribute(text);
-      const surname = person.createAttribute(text);
-      model.createGeneralization(agent, person);
-
-      expect(agent.getAttributes()).toEqual([alias]);
-      expect(person.getAttributes()).toEqual([surname]);
-      expect(text.getAttributes()).toEqual([]);
-    });
-
-    it('Test exception', () => {
-      const enumeration = model.createEnumeration();
-      expect(() => enumeration.getAttributes()).toThrow();
-    });
-  });
-
-  describe(`Test ${Class.prototype.getAllAttributes.name}()`, () => {
-    it('Retrieve all attributes', () => {
-      const agent = model.createCategory();
-      const person = model.createKind();
-      const text = model.createDatatype();
-      const alias = agent.createAttribute(text);
-      const surname = person.createAttribute(text);
-      model.createGeneralization(agent, person);
-      const personAttributes = person.getAllAttributes();
-
-      expect(personAttributes).toContain(alias);
-      expect(personAttributes).toContain(surname);
-      expect(personAttributes.length).toBe(2);
-      expect(text.getAttributes()).toEqual([]);
-    });
-
-    it('Test exception', () => {
-      const enumeration = model.createEnumeration();
-      expect(() => enumeration.getAllAttributes()).toThrow();
-    });
-  });
-
-  describe(`Test ${Class.prototype.getLiterals.name}()`, () => {
-    it('Retrieve own literals', () => {
-      const enumerationA = model.createEnumeration();
-      const enumerationB = model.createEnumeration();
-      const enumerationN = model.createEnumeration();
-      const litA = enumerationA.createLiteral();
-      const litB = enumerationB.createLiteral();
-
-      model.createGeneralization(enumerationA, enumerationB);
-      expect(enumerationA.getLiterals()).toEqual([litA]);
-      expect(enumerationB.getLiterals()).toEqual([litB]);
-      expect(enumerationN.getLiterals()).toEqual([]);
-    });
-
-    it('Test exception', () => {
-      const _class = model.createClass();
-      expect(() => _class.getLiterals()).toThrow();
-    });
-  });
-
-  describe(`Test ${Class.prototype.getAllLiterals.name}()`, () => {
-    it('Retrieve all literals', () => {
-      const enumerationA = model.createEnumeration();
-      const enumerationB = model.createEnumeration();
-      const enumerationN = model.createEnumeration();
-      const litA = enumerationA.createLiteral();
-      const litB = enumerationB.createLiteral();
-
-      model.createGeneralization(enumerationA, enumerationB);
-      const bLiterals = enumerationB.getAllLiterals();
-
-      expect(bLiterals).toContain(litA);
-      expect(bLiterals).toContain(litB);
-      expect(bLiterals.length).toBe(2);
-      expect(enumerationN.getAllLiterals()).toEqual([]);
-    });
-
-    it('Test exception', () => {
-      const _class = model.createClass();
-      expect(() => _class.getAllLiterals()).toThrow();
-    });
-  });
-
-  describe(`Test ${Class.prototype.clone.name}()`, () => {
-    it('Test method', () => {
-      const classA = model.createClass();
-      const classB = classA.clone();
-      expect(classA).toEqual(classB);
-    });
-
-    it('Test method', () => {
-      const classC = new Class();
-      const classD = classC.clone();
-      expect(classC).toEqual(classD);
+    it('agent.getGeneralizationSetsWhereCategorizer() should return [ gs ]', () => {
+      const gens = agentType.getGeneralizationSetsWhereCategorizer();
+      expect(gens).toIncludeSameMembers([gs]);
     });
   });
 });

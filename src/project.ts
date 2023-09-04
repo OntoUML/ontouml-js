@@ -23,7 +23,9 @@ import {
   ClassBuilder,
   GeneralizationBuilder,
   BinaryRelation,
-  NaryRelation
+  NaryRelation,
+  GeneralizationSetBuilder,
+  Relation
 } from '.';
 
 export class Project extends NamedElement {
@@ -61,28 +63,60 @@ export class Project extends NamedElement {
     return Object.values(this._classes);
   }
 
+  public class(id: string): Class | undefined {
+    return this._classes[id];
+  }
+
+  public get relations(): Relation[] {
+    return [...this.binaryRelations, ...this.naryRelations];
+  }
+
   public get binaryRelations(): BinaryRelation[] {
     return Object.values(this._binaryRelations);
+  }
+
+  public binaryRelation(id: string): BinaryRelation | undefined {
+    return this._binaryRelations[id];
   }
 
   public get naryRelations(): NaryRelation[] {
     return Object.values(this._naryRelations);
   }
 
+  public naryRelation(id: string): NaryRelation | undefined {
+    return this._naryRelations[id];
+  }
+
   public get generalizations(): Generalization[] {
     return Object.values(this._generalizations);
+  }
+
+  public generalization(id: string): Generalization | undefined {
+    return this._generalizations[id];
   }
 
   public get generalizationSets(): GeneralizationSet[] {
     return Object.values(this._generalizationSets);
   }
 
+  public generalizationSet(id: string): GeneralizationSet | undefined {
+    return this._generalizationSets[id];
+  }
+
   public get packages(): Package[] {
     return Object.values(this._packages);
   }
 
+  public package(id: string): Package | undefined {
+    return this._packages[id];
+  }
+
   public get properties(): Property[] {
     return Object.values(this._properties);
+  }
+
+  public property(id: string): Property | undefined {
+    return this._properties[id];
   }
 
   public get attributes(): Property[] {
@@ -97,12 +131,39 @@ export class Project extends NamedElement {
     return Object.values(this._literals);
   }
 
+  public literal(id: string): Literal | undefined {
+    return this._literals[id];
+  }
+
   public get notes(): Note[] {
     return Object.values(this._notes);
   }
 
+  public note(id: string): Note | undefined {
+    return this._notes[id];
+  }
+
   public get links(): Link[] {
     return Object.values(this._links);
+  }
+
+  public link(id: string): Link | undefined {
+    return this._links[id];
+  }
+
+  public element(id: string): OntoumlElement | undefined {
+    return (
+      this.class(id) ||
+      this.binaryRelation(id) ||
+      this.naryRelation(id) ||
+      this.generalization(id) ||
+      this.generalizationSet(id) ||
+      this.package(id) ||
+      this.property(id) ||
+      this.literal(id) ||
+      this.note(id) ||
+      this.link(id)
+    );
   }
 
   // createModel(base?: Partial<Package>): Package {
@@ -130,6 +191,10 @@ export class Project extends NamedElement {
 
   generalizationBuilder(): GeneralizationBuilder {
     return new GeneralizationBuilder(this);
+  }
+
+  generalizationSetBuilder(): GeneralizationSetBuilder {
+    return new GeneralizationSetBuilder(this);
   }
 
   add(e: OntoumlElement): void {

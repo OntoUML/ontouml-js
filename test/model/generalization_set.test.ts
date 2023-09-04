@@ -30,22 +30,22 @@ describe(`GeneralizationSet Tests`, () => {
   describe(`Test isPartition()`, () => {
     it('should be false if isDisjoint: false', () => {
       gs = model.createGeneralizationSet([], false, false);
-      expect(gs.isPartition()).toBe(false);
+      expect(gs.isPartition()).toBeFalse();
     });
 
     it('should be false if isComplete: false', () => {
       gs = model.createGeneralizationSet([], true, false);
-      expect(gs.isPartition()).toBe(false);
+      expect(gs.isPartition()).toBeFalse();
     });
 
     it('should be false if isDisjoint: false and isComplete: false', () => {
       gs = model.createGeneralizationSet([], false, false);
-      expect(gs.isPartition()).toBe(false);
+      expect(gs.isPartition()).toBeFalse();
     });
 
     it('should be true if isDisjoint: true and isComplete: true', () => {
       gs = model.createGeneralizationSet([], true, true);
-      expect(gs.isPartition()).toBe(true);
+      expect(gs.isPartition()).toBeTrue();
     });
   });
 
@@ -167,24 +167,24 @@ describe(`GeneralizationSet Tests`, () => {
   describe(`Test involvesClasses()`, () => {
     it('Test function call', () => {
       gs = model.createGeneralizationSet([gen1]);
-      expect(gs.involvesClasses()).toBe(true);
+      expect(gs.involvesClasses()).toBeTrue();
     });
 
     it('Test function call', () => {
       gs2 = model.createGeneralizationSet([gen3]);
-      expect(gs2.involvesClasses()).toBe(false);
+      expect(gs2.involvesClasses()).toBeFalse();
     });
   });
 
   describe(`Test involvesRelations()`, () => {
     it('Test function call', () => {
       const gs = model.createGeneralizationSet([gen1]);
-      expect(gs.involvesRelations()).toBe(false);
+      expect(gs.involvesRelations()).toBeFalse();
     });
 
     it('Test function call', () => {
       const gs2 = model.createGeneralizationSet([gen3]);
-      expect(gs2.involvesRelations()).toBe(true);
+      expect(gs2.involvesRelations()).toBeTrue();
     });
   });
 

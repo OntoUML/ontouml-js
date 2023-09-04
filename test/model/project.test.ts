@@ -130,7 +130,7 @@ describe('Project tests', () => {
     });
 
     it('Should serialize into an object compliant with the OntoUML JSON schema', () => {
-      expect(serializationUtils.validate(project)).toBe(true);
+      expect(serializationUtils.validate(project)).toBeTrue();
     });
   });
 
