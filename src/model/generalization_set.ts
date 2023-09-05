@@ -7,15 +7,11 @@ import {
   Package,
   Relation,
   Project,
-  PackageableElement,
   ModelElement,
   utils
 } from '..';
 
-export class GeneralizationSet
-  extends ModelElement
-  implements PackageableElement
-{
+export class GeneralizationSet extends ModelElement {
   isDisjoint: boolean = false;
   isComplete: boolean = false;
   categorizer?: Class;

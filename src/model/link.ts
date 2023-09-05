@@ -4,11 +4,10 @@ import {
   Project,
   OntoumlElement,
   Package,
-  Note,
-  PackageableElement
+  Note
 } from '..';
 
-export class Link extends ModelElement implements PackageableElement {
+export class Link extends ModelElement {
   note: Note;
   element: ModelElement;
 

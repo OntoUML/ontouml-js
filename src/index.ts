@@ -5,7 +5,6 @@ export * from './named_element';
 export * from './resource';
 export * from './utils';
 export * from './finder';
-export * from './model/packageable_element';
 export * from './model/model_element';
 export * from './model/note';
 export * from './model/link';

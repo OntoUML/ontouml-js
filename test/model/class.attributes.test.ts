@@ -1,103 +1,142 @@
-import {
-  Class,
-  Project,
-  Package,
-  Generalization,
-  GeneralizationSet,
-  Property
-} from '../../src';
+import { Class, Project, Property, Literal } from '../../src';
 
-describe(`${Class.name} Tests`, () => {
+describe(`Tests attributes getters`, () => {
   let proj: Project;
   let agent: Class, person: Class, text: Class;
   let alias: Property, surname: Property;
 
   beforeAll(() => {
+    proj = new Project();
+
     agent = proj.classBuilder().category().build();
     person = proj.classBuilder().kind().build();
     text = proj.classBuilder().datatype().build();
 
+    person.addParent(agent);
+
     alias = agent.attributeBuilder().type(text).build();
-    surname = agent.attributeBuilder().type(text).build();
-
-    agent.addChild(person);
+    surname = person.attributeBuilder().type(text).build();
   });
 
-  describe(`Test ${Class.prototype.attributes}()`, () => {
-    it('Retrieve own attributes', () => {
-      expect(agent.attributes).toEqual([alias]);
-      expect(person.attributes).toEqual([surname]);
-      expect(text.attributes).toEqual([]);
-    });
+  it('agent.attributes should return only own attributes = [ alias ]', () => {
+    expect(agent.attributes).toIncludeSameMembers([alias]);
   });
 
-  describe(`Test ${Class.prototype.getAllAttributes.name}()`, () => {
-    it('Retrieve all attributes', () => {
-      const personAttributes = person.getAllAttributes();
-
-      expect(personAttributes).toContain(alias);
-      expect(personAttributes).toContain(surname);
-      expect(personAttributes.length).toBe(2);
-      expect(text.attributes).toEqual([]);
-    });
+  it('person.attributes should return only own attributes = [ surname ]', () => {
+    expect(person.attributes).toIncludeSameMembers([surname]);
   });
 
-  // Tiago: CONTINUE HERE.
+  it('text.attributes should return an empty array = [ ]', () => {
+    expect(text.attributes).toBeEmpty();
+  });
 
-  // describe(`Test ${Class.prototype.getLiterals.name}()`, () => {
-  //   it('Retrieve own literals', () => {
-  //     const enumerationA = proj.createEnumeration();
-  //     const enumerationB = proj.createEnumeration();
-  //     const enumerationN = proj.createEnumeration();
-  //     const litA = enumerationA.createLiteral();
-  //     const litB = enumerationB.createLiteral();
+  it('agent.getAllAttributes() should return [ alias, surname ]', () => {
+    const attributes = agent.getAllAttributes();
+    expect(attributes).toIncludeSameMembers([alias]);
+  });
 
-  //     proj.createGeneralization(enumerationA, enumerationB);
-  //     expect(enumerationA.getLiterals()).toEqual([litA]);
-  //     expect(enumerationB.getLiterals()).toEqual([litB]);
-  //     expect(enumerationN.getLiterals()).toEqual([]);
-  //   });
+  it('person.getAllAttributes() should return [ alias, surname ]', () => {
+    const attributes = person.getAllAttributes();
+    expect(attributes).toIncludeSameMembers([alias, surname]);
+  });
 
-  //   it('Test exception', () => {
-  //     const _class = proj.classBuilder().build();
-  //     expect(() => _class.getLiterals()).toThrow();
-  //   });
-  // });
+  it('text.getAllAttributes() should return an empty array = [ ]', () => {
+    const attributes = text.getAllAttributes();
+    expect(attributes).toBeEmpty();
+  });
+});
 
-  // describe(`Test ${Class.prototype.getAllLiterals.name}()`, () => {
-  //   it('Retrieve all literals', () => {
-  //     const enumerationA = proj.createEnumeration();
-  //     const enumerationB = proj.createEnumeration();
-  //     const enumerationN = proj.createEnumeration();
-  //     const litA = enumerationA.createLiteral();
-  //     const litB = enumerationB.createLiteral();
+describe(`Test literal getters`, () => {
+  let proj: Project;
+  let enumA: Class, enumB: Class, enumN: Class;
+  let litA: Literal, litB: Literal;
 
-  //     proj.createGeneralization(enumerationA, enumerationB);
-  //     const bLiterals = enumerationB.getAllLiterals();
+  beforeAll(() => {
+    proj = new Project();
 
-  //     expect(bLiterals).toContain(litA);
-  //     expect(bLiterals).toContain(litB);
-  //     expect(bLiterals.length).toBe(2);
-  //     expect(enumerationN.getAllLiterals()).toEqual([]);
-  //   });
+    enumA = proj.classBuilder().enumeration().build();
+    enumB = proj.classBuilder().enumeration().build();
+    enumN = proj.classBuilder().enumeration().build();
 
-  //   it('Test exception', () => {
-  //     const _class = proj.classBuilder().build();
-  //     expect(() => _class.getAllLiterals()).toThrow();
-  //   });
-  // });
+    enumB.addParent(enumA);
 
-  // describe(`Test ${Class.prototype.clone.name}()`, () => {
-  //   it('Test method', () => {
-  //     const classA = proj.classBuilder().build();
-  //     const classB = classA.clone();
-  //     expect(classA).toEqual(classB);
-  //   });
+    litA = enumA.literalBuilder().build();
+    litB = enumB.literalBuilder().build();
+  });
 
-  //   it('Test method', () => {
-  //     const classC = new Class();
-  //     const classD = classC.clone();
-  //     expect(classC).toEqual(classD);
-  //   });
-  // });
+  it('enumA.literals should return [ litA ]', () => {
+    expect(enumA.literals).toIncludeSameMembers([litA]);
+  });
+
+  it('enumB.literals should return [ litB ]', () => {
+    expect(enumB.literals).toIncludeSameMembers([litB]);
+  });
+
+  it('enumN.literals should return an empty array = [ ]', () => {
+    expect(enumN.literals).toBeEmpty();
+  });
+
+  it('enumA.getAllLiterals() should return [ litA ]', () => {
+    expect(enumA.getAllLiterals()).toIncludeSameMembers([litA]);
+  });
+
+  it('enumB.getAllLiterals() should return [ litB ]', () => {
+    expect(enumB.getAllLiterals()).toIncludeSameMembers([litA, litB]);
+  });
+
+  it('enumN.getAllLiterals() should return an empty array = [ ]', () => {
+    expect(enumN.getAllLiterals()).toBeEmpty();
+  });
+});
+
+describe(`Test ${Class.prototype.hasAttributes.name}()`, () => {
+  let proj: Project;
+  let clazz: Class;
+
+  beforeEach(() => {
+    proj = new Project();
+    clazz = proj.classBuilder().build();
+  });
+
+  it('hasAttributes() should return false if the class has no attributes', () => {
+    expect(clazz.hasAttributes()).toBeFalsy();
+  });
+
+  it('hasAttributes() should return true if the class has 1 attribute', () => {
+    clazz.attributeBuilder().build();
+    expect(clazz.hasAttributes()).toBeTruthy();
+  });
+
+  it('hasAttributes() should return true if the class has 3 attributes', () => {
+    clazz.attributeBuilder().build();
+    clazz.attributeBuilder().build();
+    clazz.attributeBuilder().build();
+    expect(clazz.hasAttributes()).toBeTruthy();
+  });
+});
+
+describe(`Test ${Class.prototype.hasLiterals.name}()`, () => {
+  let proj: Project;
+  let clazz: Class;
+
+  beforeEach(() => {
+    proj = new Project();
+    clazz = proj.classBuilder().enumeration().build();
+  });
+
+  it('hasLiterals() should return false if the class has no literals', () => {
+    expect(clazz.hasLiterals()).toBeFalsy();
+  });
+
+  it('hasLiterals() should return true if the class has 1 literal', () => {
+    clazz.literalBuilder().build();
+    expect(clazz.hasLiterals()).toBeTruthy();
+  });
+
+  it('hasLiterals() should return true if the class has 3 literals', () => {
+    clazz.literalBuilder().build();
+    clazz.literalBuilder().build();
+    clazz.literalBuilder().build();
+    expect(clazz.hasLiterals()).toBeTruthy();
+  });
 });

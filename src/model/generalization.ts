@@ -7,11 +7,10 @@ import {
   Package,
   Relation,
   Project,
-  ModelElement,
-  PackageableElement
+  ModelElement
 } from '..';
 
-export class Generalization extends ModelElement implements PackageableElement {
+export class Generalization extends ModelElement {
   general?: Classifier<any, any>;
   specific?: Classifier<any, any>;
   // TODO: add function to enable _genSets to be private

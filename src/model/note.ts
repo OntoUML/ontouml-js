@@ -4,11 +4,10 @@ import {
   MultilingualText,
   Project,
   OntoumlElement,
-  Package,
-  PackageableElement
+  Package
 } from '..';
 
-export class Note extends ModelElement implements PackageableElement {
+export class Note extends ModelElement {
   text: MultilingualText;
 
   constructor(project: Project) {

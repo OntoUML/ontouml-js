@@ -5,25 +5,43 @@ import {
   utils,
   Class,
   AggregationKind,
-  ClassStereotype,
-  Nature,
   RelationStereotype,
   Generalization,
   GeneralizationSet,
   Relation,
   Classifier,
   Project,
-  PackageableElement,
   BinaryRelation,
   NaryRelation,
-  ModelElement
+  ModelElement,
+  Link,
+  Note
 } from '..';
 
-export class Package extends ModelElement implements PackageableElement {
-  contents: ModelElement[] = [];
+export type PackageableElement =
+  | Class
+  | Relation
+  | Generalization
+  | GeneralizationSet
+  | Package
+  | Link
+  | Note;
+
+export class Package extends ModelElement {
+  private _contents: PackageableElement[] = [];
 
   constructor(project: Project, container?: Package) {
     super(project, container);
+  }
+
+  public get contents(): PackageableElement[] {
+    return [...this._contents];
+  }
+
+  // TODO: Check this method
+  public set contents(contents: PackageableElement[]) {
+    this._contents = [];
+    this.addContents(contents);
   }
 
   public override get container(): Package | undefined {
@@ -34,7 +52,11 @@ export class Package extends ModelElement implements PackageableElement {
     super.container = newContainer;
   }
 
-  addContent<T extends ModelElement>(child: T): T {
+  override getContents(): OntoumlElement[] {
+    return this.contents as unknown as OntoumlElement[];
+  }
+
+  addContent<T extends PackageableElement>(child: T): T {
     if (child == null) {
       throw new Error('Cannot add null child.');
     }
@@ -48,26 +70,17 @@ export class Package extends ModelElement implements PackageableElement {
     return child;
   }
 
-  addContents<T extends ModelElement>(contents: T[]): T[] {
+  addContents<T extends PackageableElement>(contents: T[]): T[] {
     if (!contents) throw new Error('Cannot add null array.');
 
     return contents.filter(x => x !== null).map(x => this.addContent(x));
   }
 
-  setContents<T extends ModelElement>(contents: T[]): T[] {
-    this.contents = [];
-    return this.addContents(contents);
-  }
-
-  removeContent<T extends ModelElement>(child: T): boolean {
+  removeContent<T extends PackageableElement>(child: T): boolean {
     const originalLength = this.contents.length;
     let removed = remove(this.contents, x => child === x);
 
     return originalLength > removed.length;
-  }
-
-  getContents(): OntoumlElement[] {
-    return this.contents ? [...this.contents] : [];
   }
 
   override toJSON(): any {
@@ -77,182 +90,6 @@ export class Package extends ModelElement implements PackageableElement {
     };
 
     return { ...super.toJSON(), ...object };
-  }
-
-  createPackage(name?: string): Package {
-    this.assertProject();
-
-    let pkg = new Package(this.project!, this.container);
-
-    if (name) {
-      pkg.name.addText(name);
-    }
-
-    return this.addContent(pkg);
-  }
-
-  // TODO: documentation
-  createClass(
-    name?: string,
-    stereotype?: string,
-    natures?: Nature | Nature[]
-  ): Class {
-    this.assertProject();
-
-    let clazz = new Class(this.project!, this);
-
-    if (name) {
-      clazz.name.addText(name);
-    }
-
-    //FIXME: add stereotype
-    if (natures) {
-      clazz.restrictedTo = utils.arrayFrom(natures);
-    }
-
-    return this.addContent(clazz);
-  }
-
-  createType(name?: string): Class {
-    return this.createClass(name, ClassStereotype.TYPE, Nature.TYPE);
-  }
-
-  createHistoricalRole(name?: string): Class {
-    return this.createClass(
-      name,
-      ClassStereotype.HISTORICAL_ROLE,
-      Nature.FUNCTIONAL_COMPLEX
-    );
-  }
-
-  createHistoricalRoleMixin(name?: string, natures?: Nature | Nature[]): Class {
-    const c = this.createClass(
-      name,
-      ClassStereotype.HISTORICAL_ROLE_MIXIN,
-      natures || Nature.FUNCTIONAL_COMPLEX
-    );
-    c.isAbstract = true;
-    return c;
-  }
-
-  createEvent(name?: string): Class {
-    return this.createClass(name, ClassStereotype.EVENT, Nature.EVENT);
-  }
-
-  createSituation(name?: string): Class {
-    return this.createClass(name, ClassStereotype.SITUATION, Nature.SITUATION);
-  }
-
-  createCategory(name?: string, natures?: Nature | Nature[]): Class {
-    const c = this.createClass(
-      name,
-      ClassStereotype.CATEGORY,
-      natures || Nature.FUNCTIONAL_COMPLEX
-    );
-    c.isAbstract = true;
-    return c;
-  }
-
-  createMixin(name?: string, natures?: Nature | Nature[]): Class {
-    const c = this.createClass(
-      name,
-      ClassStereotype.MIXIN,
-      natures || Nature.FUNCTIONAL_COMPLEX
-    );
-    c.isAbstract = true;
-    return c;
-  }
-
-  createRoleMixin(name?: string, natures?: Nature | Nature[]): Class {
-    const c = this.createClass(
-      name,
-      ClassStereotype.ROLE_MIXIN,
-      natures || Nature.FUNCTIONAL_COMPLEX
-    );
-    c.isAbstract = true;
-    return c;
-  }
-
-  createPhaseMixin(name?: string, natures?: Nature | Nature[]): Class {
-    const c = this.createClass(
-      name,
-      ClassStereotype.PHASE_MIXIN,
-      natures || Nature.FUNCTIONAL_COMPLEX
-    );
-    c.isAbstract = true;
-    return c;
-  }
-
-  createKind(name?: string): Class {
-    return this.createClass(
-      name,
-      ClassStereotype.KIND,
-      Nature.FUNCTIONAL_COMPLEX
-    );
-  }
-
-  createCollective(name?: string): Class {
-    return this.createClass(
-      name,
-      ClassStereotype.COLLECTIVE,
-      Nature.COLLECTIVE
-    );
-  }
-
-  createQuantity(name?: string): Class {
-    return this.createClass(name, ClassStereotype.QUANTITY, Nature.QUANTITY);
-  }
-
-  createRelator(name?: string): Class {
-    return this.createClass(name, ClassStereotype.RELATOR, Nature.RELATOR);
-  }
-
-  createQuality(name?: string): Class {
-    return this.createClass(name, ClassStereotype.QUALITY, Nature.QUALITY);
-  }
-
-  createIntrinsicMode(name?: string): Class {
-    return this.createClass(name, ClassStereotype.MODE, Nature.INTRINSIC_MODE);
-  }
-
-  createExtrinsicMode(name?: string): Class {
-    return this.createClass(name, ClassStereotype.MODE, Nature.EXTRINSIC_MODE);
-  }
-
-  createSubkind(name?: string, nature?: Nature): Class {
-    return this.createClass(
-      name,
-      ClassStereotype.SUBKIND,
-      nature || Nature.FUNCTIONAL_COMPLEX
-    );
-  }
-
-  createRole(name?: string, nature?: Nature): Class {
-    return this.createClass(
-      name,
-      ClassStereotype.ROLE,
-      nature || Nature.FUNCTIONAL_COMPLEX
-    );
-  }
-
-  createPhase(name?: string, nature?: Nature): Class {
-    return this.createClass(
-      name,
-      ClassStereotype.PHASE,
-      nature || Nature.FUNCTIONAL_COMPLEX
-    );
-  }
-
-  createAbstract(name?: string): Class {
-    return this.createClass(name, ClassStereotype.ABSTRACT, Nature.ABSTRACT);
-  }
-
-  createDatatype(name?: string): Class {
-    return this.createClass(name, ClassStereotype.DATATYPE, Nature.ABSTRACT);
-  }
-
-  createEnumeration(name?: string): Class {
-    return this.createClass(name, ClassStereotype.ENUMERATION, Nature.ABSTRACT);
   }
 
   createNaryRelation(
@@ -796,7 +633,7 @@ export class Package extends ModelElement implements PackageableElement {
         .getContents()
         .map(c => (c instanceof Package ? c.clone(false) : c.clone()));
 
-      this.setContents(clonedContents as ModelElement[]);
+      this.contents = clonedContents as PackageableElement[];
     }
 
     if (replaceReferences) {

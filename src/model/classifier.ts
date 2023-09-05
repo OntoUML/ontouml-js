@@ -8,7 +8,6 @@ import {
   Class,
   Relation,
   Project,
-  PackageableElement,
   BinaryRelation,
   NaryRelation,
   Decoratable
@@ -16,12 +15,9 @@ import {
 
 // TODO: check whether the first generics term "T" is really necessary; it seems redundant
 export abstract class Classifier<
-    T extends Classifier<T, S>,
-    S extends Stereotype
-  >
-  extends Decoratable<S>
-  implements PackageableElement
-{
+  T extends Classifier<T, S>,
+  S extends Stereotype
+> extends Decoratable<S> {
   isAbstract: boolean = false;
   protected _properties: Property[] = [];
 

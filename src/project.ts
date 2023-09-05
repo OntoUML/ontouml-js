@@ -25,7 +25,8 @@ import {
   BinaryRelation,
   NaryRelation,
   GeneralizationSetBuilder,
-  Relation
+  Relation,
+  PackageBuilder
 } from '.';
 
 export class Project extends NamedElement {
@@ -195,6 +196,10 @@ export class Project extends NamedElement {
 
   generalizationSetBuilder(): GeneralizationSetBuilder {
     return new GeneralizationSetBuilder(this);
+  }
+
+  packageBuilder(): PackageBuilder {
+    return new PackageBuilder(this);
   }
 
   add(e: OntoumlElement): void {
