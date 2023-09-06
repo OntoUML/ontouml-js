@@ -218,7 +218,7 @@ describe(`${Property.name} Tests`, () => {
 
   describe(`Test ${Property.prototype.clone.name}()`, () => {
     const model = new Project().createModel();
-    const classA = model.createClass();
+    const classA = proj.classBuilder().build();
     const propA = classA.createAttribute(classA);
     const propB = propA.clone();
 

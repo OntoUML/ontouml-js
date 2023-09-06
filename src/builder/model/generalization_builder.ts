@@ -1,9 +1,7 @@
 import {
   Classifier,
   Generalization,
-  ModelElement,
   Package,
-  Project,
   utils,
   ModelElementBuilder
 } from '../..';
@@ -29,6 +27,8 @@ export class GeneralizationBuilder extends ModelElementBuilder<GeneralizationBui
     this.element = new Generalization(this.project, this._container);
     this.element.general = this._general;
     this.element.specific = this._specific;
+
+    this._container?.addContent(this.element);
 
     super.build();
     return this.element;

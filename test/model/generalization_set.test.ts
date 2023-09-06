@@ -17,13 +17,17 @@ describe(`GeneralizationSet Tests`, () => {
 
   beforeEach(() => {
     model = new Project().createModel();
-    agent = model.createClass();
-    person = model.createClass();
-    organization = model.createClass();
+    agent = proj.classBuilder().build();
+    person = proj.classBuilder().build();
+    organization = proj.classBuilder().build();
     gen1 = model.createGeneralization(agent, person);
     gen2 = model.createGeneralization(agent, organization);
-    knows = model.createBinaryRelation(person, person);
-    friendsWith = model.createBinaryRelation(person, person);
+    knows = proj.binaryRelationBuilder().source(person).target(person).build();
+    friendsWith = proj
+      .binaryRelationBuilder()
+      .source(person)
+      .target(person)
+      .build();
     gen3 = model.createGeneralization(knows, friendsWith);
   });
 
@@ -54,7 +58,7 @@ describe(`GeneralizationSet Tests`, () => {
     let gen3: Generalization;
 
     beforeEach(() => {
-      man = model.createClass();
+      man = proj.classBuilder().build();
       gen3 = model.createGeneralization(person, man);
     });
 
@@ -190,8 +194,8 @@ describe(`GeneralizationSet Tests`, () => {
 
   describe(`Test clone()`, () => {
     it('Test method', () => {
-      const classA = model.createClass();
-      const classB = model.createClass();
+      const classA = proj.classBuilder().build();
+      const classB = proj.classBuilder().build();
       const genA = model.createGeneralization(classA, classB);
       const genSetA = model.createGeneralizationSet(genA);
       const genSetB = genSetA.clone();
@@ -228,9 +232,9 @@ describe(`GeneralizationSet Tests`, () => {
 
   describe(`Test toJSON()`, () => {
     const model = new Project().createModel();
-    const agentType = model.createClass();
-    const agent = model.createClass();
-    const person = model.createClass();
+    const agentType = proj.classBuilder().build();
+    const agent = proj.classBuilder().build();
+    const person = proj.classBuilder().build();
     const gen = model.createGeneralization(agent, person, 'agentType');
     const genSet = model.createGeneralizationSet([gen], true, false, agentType);
 

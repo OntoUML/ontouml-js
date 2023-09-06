@@ -108,7 +108,7 @@ describe(`${Class.name} Tests`, () => {
 
   // describe(`Test ${Class.prototype.clone.name}()`, () => {
   //   it('Test method', () => {
-  //     const classA = model.createClass();
+  //     const classA = proj.classBuilder().build();
   //     const classB = classA.clone();
   //     expect(classA).toEqual(classB);
   //   });

@@ -1,37 +1,65 @@
-import { Project, Relation } from '../../src';
+import { Project } from '../../src';
 
-describe('Relation: test ancestor-related query methods', () => {
-  const model = new Project().createModel();
-  const person = model.createClass();
-  const knows = model.createBinaryRelation(person, person);
-  const isFriendsWith = model.createBinaryRelation(person, person);
-  const isBestFriendsWith = model.createBinaryRelation(person, person);
-  model.createGeneralization(knows, isFriendsWith);
-  model.createGeneralization(isFriendsWith, isBestFriendsWith);
+describe('Relation: test descendants-related query methods', () => {
+  const proj = new Project();
+  const person = proj.classBuilder().build();
+
+  const knows = proj
+    .binaryRelationBuilder()
+    .source(person)
+    .target(person)
+    .build();
+
+  const friendOf = proj
+    .binaryRelationBuilder()
+    .source(person)
+    .target(person)
+    .build();
+
+  const bestFriendOf = proj
+    .binaryRelationBuilder()
+    .source(person)
+    .target(person)
+    .build();
+
+  proj.generalizationBuilder().general(knows).specific(friendOf).build();
+  proj.generalizationBuilder().general(friendOf).specific(bestFriendOf).build();
 
   describe('Test getChildren()', () => {
-    it('Test function call', () =>
-      expect(knows.getChildren()).toContain(isFriendsWith));
-    it('Test function call', () => expect(knows.getChildren().length).toBe(1));
+    let children;
+
+    it('should return [ ] for bestFriendOf', () => {
+      children = bestFriendOf.getChildren();
+      expect(children).toBeEmpty();
+    });
+
+    it('should return [ bestFriendOf ] for friendOf', () => {
+      children = friendOf.getChildren();
+      expect(children).toIncludeSameMembers([bestFriendOf]);
+    });
+
+    it('should return [ friendOf ] for knows', () => {
+      children = knows.getChildren();
+      expect(children).toIncludeSameMembers([friendOf]);
+    });
   });
 
   describe('Test getDescendants()', () => {
-    it('Test function call', () =>
-      expect(knows.getDescendants()).toContain(isFriendsWith));
-    it('Test function call', () =>
-      expect(knows.getDescendants()).toContain(isBestFriendsWith));
-    it('Test function call', () =>
-      expect(knows.getDescendants().length).toBe(2));
-  });
+    let descendants;
 
-  describe('Test getFilteredDescendants()', () => {
-    const filter = (descendent: Relation) => descendent === isBestFriendsWith;
+    it('should return [ ] for bestFriendOf', () => {
+      descendants = bestFriendOf.getDescendants();
+      expect(descendants).toBeEmpty();
+    });
 
-    it('Test function call', () =>
-      expect(knows.getFilteredDescendants(filter)).toContain(
-        isBestFriendsWith
-      ));
-    it('Test function call', () =>
-      expect(knows.getFilteredDescendants(filter).length).toBe(1));
+    it('should return [ bestFriendOf ] for friendOf', () => {
+      descendants = friendOf.getDescendants();
+      expect(descendants).toIncludeSameMembers([bestFriendOf]);
+    });
+
+    it('should return [ friendOf, knows ] for knows', () => {
+      descendants = knows.getDescendants();
+      expect(descendants).toIncludeSameMembers([friendOf, bestFriendOf]);
+    });
   });
 });

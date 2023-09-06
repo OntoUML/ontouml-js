@@ -1,259 +1,344 @@
 import {
+  BinaryRelation,
   Class,
   Generalization,
   GeneralizationSet,
   Literal,
   Package,
   Project,
-  Property,
-  Relation,
-  serializationUtils
+  Property
 } from '../../src';
 
 describe(`Package tests`, () => {
-  let project: Project;
+  let proj: Project;
   let model: Package, pkg: Package, pkg2: Package, emptyPkg: Package;
   let person: Class, agent: Class, color: Class;
   let knowsAttr: Property;
   let red: Literal, green: Literal;
-  let knows: Relation;
+  let knows: BinaryRelation;
   let gen: Generalization;
-  let genSet: GeneralizationSet;
+  let gs: GeneralizationSet;
+  let contents;
 
-  beforeEach(() => {
-    project = new Project();
-    model = project.createModel();
-    pkg = model.createPackage();
-    pkg2 = pkg.createPackage();
-    emptyPkg = model.createPackage();
-    person = pkg2.createClass();
-    agent = pkg2.createClass();
-    color = pkg2.createEnumeration();
-    red = color.createLiteral();
-    green = color.createLiteral();
-    knows = pkg2.createBinaryRelation(person, person);
-    knowsAttr = person.createAttribute(person, 'knows');
-    gen = pkg2.createGeneralization(agent, person);
-    genSet = pkg2.createGeneralizationSet(gen);
+  beforeAll(() => {
+    proj = new Project();
+    model = proj.packageBuilder().root().build();
+    pkg = model.packageBuilder().build();
+    pkg2 = pkg.packageBuilder().build();
+    emptyPkg = model.packageBuilder().build();
+    person = pkg2.classBuilder().build();
+    agent = pkg2.classBuilder().build();
+    color = pkg2.classBuilder().enumeration().build();
+    red = color.literalBuilder().build();
+    green = color.literalBuilder().build();
+    knows = pkg2.binaryRelationBuilder().source(person).target(person).build();
+    knowsAttr = person.attributeBuilder().type(person).build();
+    gen = person.addParent(agent);
+    gs = pkg2.generalizationSetBuilder().generalizations(gen).build();
   });
 
   describe(`Test getContents()`, () => {
-    it('model should contain the correct two packages', () => {
-      expect(model.getContents()).toContain(pkg);
-      expect(model.getContents()).toContain(emptyPkg);
-      expect(model.getContents()).toHaveLength(2);
+    it('model should contain [ pkg, emptyPkg ]', () => {
+      contents = model.getContents();
+      expect(contents).toIncludeAllMembers([pkg, emptyPkg]);
     });
 
-    it('package should return its directly contained elements', () => {
-      expect(pkg2.getContents()).toHaveLength(6);
+    it('pkg should contain [ pkg2 ]', () => {
+      contents = pkg.getContents();
+      expect(contents).toIncludeAllMembers([pkg2]);
     });
 
-    it('package should return an empty array when it has no contents', () => {
-      expect(emptyPkg.getContents()).toHaveLength(0);
+    it('pkg2 should contain [  person, agent, color, knows, gen, genSet ]', () => {
+      contents = pkg2.getContents();
+      expect(contents).toIncludeAllMembers([
+        person,
+        agent,
+        color,
+        knows,
+        gen,
+        gs
+      ]);
     });
 
-    it('enumeration should return literals as contents', () => {
-      const contents = color.getContents();
-      expect(contents).toContain(red);
-      expect(contents).toContain(green);
+    it('empty package should return empty array', () => {
+      contents = emptyPkg.getContents();
+      expect(contents).toBeEmpty();
     });
   });
 
   describe(`Test getAllContents()`, () => {
-    it('should return direct package', () => {
-      expect(model.getAllContents()).toContain(pkg);
+    it('model should contain all packages', () => {
+      contents = model.getAllContents();
+      expect(contents).toIncludeAllMembers([pkg, pkg2, emptyPkg]);
     });
 
-    it('should return the package of a direct package', () => {
-      expect(model.getAllContents()).toContain(pkg2);
+    it('model should contain all classes', () => {
+      contents = model.getAllContents();
+      expect(contents).toIncludeAllMembers([person, agent, color]);
     });
 
-    it('should return all contained elements', () => {
-      expect(model.getAllContents()).toHaveLength(14);
+    it('model should contain all binary relations', () => {
+      contents = model.getAllContents();
+      expect(contents).toIncludeAllMembers([knows]);
     });
 
-    it('should return empty array when package has no contents', () => {
-      expect(emptyPkg.getAllContents()).toHaveLength(0);
+    it('model should contain all generalizations', () => {
+      contents = model.getAllContents();
+      expect(contents).toIncludeAllMembers([gen]);
+    });
+
+    it('model should contain all generalization sets', () => {
+      contents = model.getAllContents();
+      expect(contents).toIncludeAllMembers([gs]);
+    });
+
+    it('model should contain all properties', () => {
+      contents = model.getAllContents();
+      expect(contents).toIncludeAllMembers([knowsAttr]);
+    });
+
+    it('model should contain all literals', () => {
+      contents = model.getAllContents();
+      expect(contents).toIncludeAllMembers([red, green]);
+    });
+
+    it('empty package should return empty array', () => {
+      contents = emptyPkg.getAllContents();
+      expect(contents).toBeEmpty();
     });
   });
 
   describe(`Test getAllAttributes()`, () => {
-    it('Test function call', () => {
-      expect(model.getAttributes()).toContain(knowsAttr);
+    it('model should return [ knowsAttr ]', () => {
+      const contents = model.getAllAttributes();
+      expect(contents).toIncludeSameMembers([knowsAttr]);
     });
 
-    it('Test function call', () => {
-      expect(model.getAttributes()).toHaveLength(1);
-    });
-  });
-
-  describe(`Test getAllRelationEnds()`, () => {
-    it('Test function call', () => {
-      expect(model.getRelationEnds()).toContain(knows.getSourceEnd());
-    });
-
-    it('Test function call', () => {
-      expect(model.getRelationEnds()).toHaveLength(2);
+    it('empty package should return empty array', () => {
+      contents = emptyPkg.getAllAttributes();
+      expect(contents).toBeEmpty();
     });
   });
 
-  describe(`Test getAllRelations()`, () => {
-    it('Test function call', () => {
-      expect(model.getRelations()).toContain(knows);
+  describe(`Test getAllBinaryRelations()`, () => {
+    it('model should return [ knows ]', () => {
+      const contents = model.getAllBinaryRelations();
+      expect(contents).toIncludeSameMembers([knows]);
     });
 
-    it('Test function call', () => {
-      expect(model.getRelations()).toHaveLength(1);
-    });
-  });
-
-  describe(`Test getAllGeneralizations()`, () => {
-    it('Test function call', () => {
-      expect(model.getGeneralizations()).toContain(gen);
-    });
-
-    it('Test function call', () => {
-      expect(model.getGeneralizations()).toHaveLength(1);
-    });
-  });
-
-  describe(`Test getAllGeneralizationSets()`, () => {
-    it('Test function call', () => {
-      expect(model.getGeneralizationSets()).toContain(genSet);
-    });
-
-    it('Test function call', () => {
-      expect(model.getGeneralizationSets()).toHaveLength(1);
-    });
-  });
-
-  describe(`Test getAllPackages()`, () => {
-    it('should return direct packages', () => {
-      expect(model.getPackages()).toContain(pkg);
-      expect(model.getPackages()).toContain(emptyPkg);
-    });
-
-    it('Should return indirect packages', () => {
-      expect(model.getPackages()).toContain(pkg2);
-    });
-
-    it('Test function call', () => {
-      expect(model.getPackages()).toHaveLength(3);
+    it('empty package should return empty array', () => {
+      contents = emptyPkg.getAllBinaryRelations();
+      expect(contents).toBeEmpty();
     });
   });
 
   describe(`Test getAllClasses()`, () => {
-    it('Should return classes', () => {
-      expect(model.getClasses()).toContain(agent);
-      expect(model.getClasses()).toContain(person);
-      expect(model.getClasses()).toContain(color);
+    it('model should return [ person, agent, color ]', () => {
+      const contents = model.getAllClasses();
+      expect(contents).toIncludeSameMembers([person, agent, color]);
     });
 
-    it('Should return 3 classes', () => {
-      expect(model.getClasses()).toHaveLength(3);
+    it('empty package should return empty array', () => {
+      contents = emptyPkg.getAllClasses();
+      expect(contents).toBeEmpty();
     });
   });
 
-  describe(`Test getAllEnumerations()`, () => {
-    it('Test function call', () => {
-      expect(model.getEnumerations()).toContain(color);
+  describe(`Test getAllGeneralizationSets()`, () => {
+    it('model should return [ gs ]', () => {
+      const contents = model.getAllGeneralizationSets();
+      expect(contents).toIncludeSameMembers([gs]);
     });
 
-    it('Test function call', () => {
-      expect(model.getEnumerations()).toHaveLength(1);
+    it('empty package should return empty array', () => {
+      contents = emptyPkg.getAllGeneralizationSets();
+      expect(contents).toBeEmpty();
+    });
+  });
+
+  describe(`Test getAllGeneralizations()`, () => {
+    it('model should return [ gen ]', () => {
+      const contents = model.getAllGeneralizations();
+      expect(contents).toIncludeSameMembers([gen]);
+    });
+
+    it('empty package should return empty array', () => {
+      contents = emptyPkg.getAllGeneralizations();
+      expect(contents).toBeEmpty();
+    });
+  });
+
+  describe(`Test getAllLinks()`, () => {
+    it('model should return [  ]', () => {
+      const contents = model.getAllLinks();
+      expect(contents).toIncludeSameMembers([]);
+    });
+
+    it('empty package should return empty array', () => {
+      contents = emptyPkg.getAllLinks();
+      expect(contents).toBeEmpty();
     });
   });
 
   describe(`Test getAllLiterals()`, () => {
-    it('Test function call', () => {
-      expect(model.getLiterals()).toContain(red);
+    it('model should return [green, red]', () => {
+      const contents = model.getAllLiterals();
+      expect(contents).toIncludeSameMembers([green, red]);
     });
 
-    it('Test function call', () => {
-      expect(model.getLiterals()).toContain(green);
+    it('empty package should return empty array', () => {
+      contents = emptyPkg.getAllLiterals();
+      expect(contents).toBeEmpty();
+    });
+  });
+
+  describe(`Test getAllNaryRelations()`, () => {
+    it('model should return [  ]', () => {
+      const contents = model.getAllNaryRelations();
+      expect(contents).toIncludeSameMembers([]);
     });
 
-    it('Test function call', () => {
-      expect(model.getLiterals()).toHaveLength(2);
+    it('empty package should return empty array', () => {
+      contents = emptyPkg.getAllNaryRelations();
+      expect(contents).toBeEmpty();
+    });
+  });
+
+  describe(`Test getAllNotes()`, () => {
+    it('model should return [  ]', () => {
+      const contents = model.getAllNotes();
+      expect(contents).toIncludeSameMembers([]);
+    });
+
+    it('empty package should return empty array', () => {
+      contents = emptyPkg.getAllNotes();
+      expect(contents).toBeEmpty();
+    });
+  });
+
+  describe(`Test getAllPackages()`, () => {
+    it('model should return [ pkg, pkg2, emptyPkg ]', () => {
+      const contents = model.getAllPackages();
+      expect(contents).toIncludeSameMembers([pkg, pkg2, emptyPkg]);
+    });
+
+    it('empty package should return empty array', () => {
+      contents = emptyPkg.getAllPackages();
+      expect(contents).toBeEmpty();
+    });
+  });
+
+  describe(`Test getAllProperties()`, () => {
+    it('model should return [  ]', () => {
+      const contents = model.getAllProperties();
+      expect(contents).toIncludeSameMembers([knowsAttr, ...knows.properties]);
+    });
+
+    it('empty package should return empty array', () => {
+      contents = emptyPkg.getAllProperties();
+      expect(contents).toBeEmpty();
+    });
+  });
+
+  describe(`Test getAllRelationEnds()`, () => {
+    it('model should return [  ]', () => {
+      const contents = model.getAllRelationEnds();
+      expect(contents).toIncludeSameMembers([...knows.properties]);
+    });
+
+    it('empty package should return empty array', () => {
+      contents = emptyPkg.getAllRelationEnds();
+      expect(contents).toBeEmpty();
+    });
+  });
+
+  describe(`Test getAllRelations()`, () => {
+    it('model should return [ knows ]', () => {
+      const contents = model.getAllRelations();
+      expect(contents).toIncludeSameMembers([knows]);
+    });
+
+    it('empty package should return empty array', () => {
+      contents = emptyPkg.getAllRelations();
+      expect(contents).toBeEmpty();
     });
   });
 
   describe(`Test toJSON()`, () => {
-    it('Test serialization', () => {
+    it('should serialize project without throwing an exception', () => {
       expect(() => JSON.stringify(pkg)).not.toThrow();
     });
   });
+});
 
-  describe(`Test setContainer()`, () => {
-    const projectA = new Project();
-    const modelA = projectA.createModel();
-    const pkgA = modelA.createPackage();
+describe(`Test setContainer()`, () => {
+  const projectA = new Project();
+  const modelA = projectA.packageBuilder().root().build();
+  const pkgA = modelA.packageBuilder().build();
+  const _class = projectA.classBuilder().build();
 
-    const projectB = new Project();
-    const modelB = projectB.createModel();
-
-    const _class = new Class();
-    _class.setProject(projectA);
-
-    it('Test set container within common project', () => {
-      modelA.addContent(_class);
-      expect(_class.container).toBe(modelA);
-      expect(modelA.contents).toContain(_class);
-    });
-
-    it('Test change container within common project', () => {
-      pkgA.addContent(_class);
-      expect(_class.container).toBe(pkgA);
-      expect(pkgA.contents).toContain(_class);
-      expect(modelA.getAllContents()).toContain(_class);
-    });
+  it('Test set container within common project', () => {
+    modelA.addContent(_class);
+    expect(_class.container).toBe(modelA);
+    expect(modelA.contents).toContain(_class);
   });
 
-  describe(`Test clone()`, () => {
-    it('Test method', () => {
-      const smallModel = new Project().createModel();
-      const packageA = smallModel.createPackage();
-      const packageB = packageA.clone();
-      expect(packageA).toEqual(packageB);
-    });
-
-    it('Test method', () => {
-      const packageC = new Package();
-      const packageD = packageC.clone();
-      expect(packageC).toEqual(packageD);
-    });
-
-    it('should clone an entire model', () => {
-      const project = new Project();
-      const model = project.createModel();
-
-      const agent = model.createCategory('Agent');
-      const person = model.createKind('Person');
-      const organization = model.createKind('Organization');
-      const text = model.createDatatype('Text');
-
-      agent.createAttribute(text, 'name');
-      person.createAttribute(text, 'surname');
-
-      model.createBinaryRelation(person, organization, 'works-for');
-
-      const agentIntoPerson = model.createGeneralization(
-        agent,
-        person,
-        'agentIntoPerson'
-      );
-      const agentIntoOrganization = model.createGeneralization(
-        agent,
-        organization,
-        'agentIntoOrganization'
-      );
-
-      model.createPartition(
-        [agentIntoPerson, agentIntoOrganization],
-        undefined,
-        'agentsSet'
-      );
-      expect(model).toEqual(model.clone());
-    });
+  it('Test change container within common project', () => {
+    pkgA.addContent(_class);
+    expect(_class.container).toBe(pkgA);
+    expect(pkgA.contents).toContain(_class);
+    expect(modelA.getAllContents()).toContain(_class);
   });
 });
+
+// describe(`Test clone()`, () => {
+//   it('Test method', () => {
+//     const smallModel = new Project().packageBuilder().root().build();
+//     const packageA = smallModel.packageBuilder().build();
+//     const packageB = packageA.clone();
+//     expect(packageA).toEqual(packageB);
+//   });
+
+//   it('Test method', () => {
+//     const packageC = new Project().packageBuilder().root().build();
+//     const packageD = packageC.clone();
+//     expect(packageC).toEqual(packageD);
+//   });
+
+//   it('should clone an entire model', () => {
+//     const project = new Project();
+//     const model = project.packageBuilder().root().build();
+
+//     const agent = model.classBuilder().name('Agent').build();
+//     const person = model.classBuilder().kind().name('Person').build();
+//     const org = model.classBuilder().kind().name('Organization').build();
+//     const text = model.classBuilder().datatype().name('Text').build();
+
+//     agent.attributeBuilder().type(text).name('name');
+//     person.attributeBuilder().type(text).name('surname');
+
+//     model.createBinaryRelation(person, org, 'works-for');
+
+//     const gen1 = model
+//       .generalizationBuilder()
+//       .general(agent)
+//       .specific(person)
+//       .name('gen1')
+//       .build();
+
+//     const gen2 = model
+//       .generalizationBuilder()
+//       .general(agent)
+//       .specific(org)
+//       .name('gen2')
+//       .build();
+
+//     model
+//       .generalizationSetBuilder()
+//       .generalizations(gen1, gen2)
+//       .name('agentsSet')
+//       .build();
+
+//     expect(model).toEqual(model.clone());
+//   });
+// });

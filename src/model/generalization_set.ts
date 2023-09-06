@@ -34,11 +34,11 @@ export class GeneralizationSet extends ModelElement {
   }
 
   public override get container(): Package | undefined {
-    return this.container as Package;
+    return this._container as Package;
   }
 
   public override set container(newContainer: Package | undefined) {
-    super.container = newContainer;
+    super._container = newContainer;
   }
 
   getContents(): OntoumlElement[] {

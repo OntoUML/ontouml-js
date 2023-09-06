@@ -3,8 +3,8 @@ import { Generalization, Project, serializationUtils } from '../../src';
 describe(`${Generalization.name} Tests`, () => {
   describe(`Test ${Generalization.prototype.toJSON.name}()`, () => {
     const model = new Project().createModel();
-    const agent = model.createClass();
-    const person = model.createClass();
+    const agent = proj.classBuilder().build();
+    const person = proj.classBuilder().build();
     const gen = model.createGeneralization(agent, person, 'agentType');
 
     it('Test serialization', () =>
@@ -14,7 +14,7 @@ describe(`${Generalization.name} Tests`, () => {
   describe(`Test ${Generalization.prototype.setContainer.name}()`, () => {
     const model = new Project().createModel();
     const pkg = model.createPackage();
-    const agent = model.createClass();
+    const agent = proj.classBuilder().build();
     const person = pkg.createClass();
     const gen = model.createGeneralization(agent, person);
 
@@ -35,11 +35,15 @@ describe(`${Generalization.name} Tests`, () => {
 
   describe(`Test ${Generalization.prototype.getGeneralizationSets.name}()`, () => {
     const model = new Project().createModel();
-    const agent = model.createClass();
-    const person = model.createClass();
+    const agent = proj.classBuilder().build();
+    const person = proj.classBuilder().build();
 
     const knows = model.createBinaryRelation(agent, agent);
-    const friendsWith = model.createBinaryRelation(person, person);
+    const friendsWith = proj
+      .binaryRelationBuilder()
+      .source(person)
+      .target(person)
+      .build();
 
     const personGeneralization = model.createGeneralization(agent, person);
     const studentGeneralization = model.createGeneralization(agent, person);
@@ -69,11 +73,15 @@ describe(`${Generalization.name} Tests`, () => {
 
   describe(`Test ${Generalization.prototype.involvesClasses.name}()`, () => {
     const model = new Project().createModel();
-    const agent = model.createClass();
-    const person = model.createClass();
+    const agent = proj.classBuilder().build();
+    const person = proj.classBuilder().build();
 
     const knows = model.createBinaryRelation(agent, agent);
-    const friendsWith = model.createBinaryRelation(person, person);
+    const friendsWith = proj
+      .binaryRelationBuilder()
+      .source(person)
+      .target(person)
+      .build();
 
     const classGeneralization = model.createGeneralization(agent, person);
     const relationGeneralization = model.createGeneralization(
@@ -89,11 +97,15 @@ describe(`${Generalization.name} Tests`, () => {
 
   describe(`Test ${Generalization.prototype.involvesRelations.name}()`, () => {
     const model = new Project().createModel();
-    const agent = model.createClass();
-    const person = model.createClass();
+    const agent = proj.classBuilder().build();
+    const person = proj.classBuilder().build();
 
     const knows = model.createBinaryRelation(agent, agent);
-    const friendsWith = model.createBinaryRelation(person, person);
+    const friendsWith = proj
+      .binaryRelationBuilder()
+      .source(person)
+      .target(person)
+      .build();
 
     const classGeneralization = model.createGeneralization(agent, person);
     const relationGeneralization = model.createGeneralization(
@@ -109,8 +121,8 @@ describe(`${Generalization.name} Tests`, () => {
 
   describe(`Test ${Generalization.prototype.clone.name}()`, () => {
     const model = new Project().createModel();
-    const classA = model.createClass();
-    const classB = model.createClass();
+    const classA = proj.classBuilder().build();
+    const classB = proj.classBuilder().build();
     const genA = model.createGeneralization(classA, classB);
     const genB = genA.clone();
 

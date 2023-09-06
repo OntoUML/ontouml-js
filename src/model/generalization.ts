@@ -25,11 +25,11 @@ export class Generalization extends ModelElement {
   }
 
   public override get container(): Package | undefined {
-    return this.container as Package;
+    return this._container as Package;
   }
 
   public override set container(newContainer: Package | undefined) {
-    super.container = newContainer;
+    this._container = newContainer;
   }
 
   // Move this to OntoumlElement as a default implementation.

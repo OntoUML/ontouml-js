@@ -41,7 +41,7 @@ describe(`Package tests`, () => {
     let clazz: Class;
 
     beforeEach(() => {
-      clazz = model.createClass();
+      clazz = proj.classBuilder().build();
     });
 
     it('Test instantiation', () => {
@@ -434,8 +434,8 @@ describe(`Package tests`, () => {
     let source: Class, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createBinaryRelation(source, target);
     });
 
@@ -455,9 +455,13 @@ describe(`Package tests`, () => {
     let person, weight: Class;
 
     beforeEach(() => {
-      person = model.createClass();
-      weight = model.createClass();
-      heavierThan = model.createBinaryRelation(person, person);
+      person = proj.classBuilder().build();
+      weight = proj.classBuilder().build();
+      heavierThan = proj
+        .binaryRelationBuilder()
+        .source(person)
+        .target(person)
+        .build();
       derivation = model.createDerivation(heavierThan, weight);
     });
 
@@ -479,9 +483,9 @@ describe(`Package tests`, () => {
     let memberA: Class, memberB: Class, memberC: Class;
 
     beforeEach(() => {
-      memberA = model.createClass();
-      memberB = model.createClass();
-      memberC = model.createClass();
+      memberA = proj.classBuilder().build();
+      memberB = proj.classBuilder().build();
+      memberC = proj.classBuilder().build();
       relation = model.createNaryRelation([memberA, memberB, memberC]);
     });
 
@@ -507,8 +511,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createMaterialRelation(source, target);
     });
 
@@ -522,8 +526,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createComparativeRelation(source, target);
     });
 
@@ -537,8 +541,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createMediation(source, target);
     });
 
@@ -552,8 +556,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createCharacterization(source, target);
     });
 
@@ -567,8 +571,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createExternalDependence(source, target);
     });
 
@@ -582,8 +586,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createComponentOf(source, target);
     });
 
@@ -602,8 +606,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createMemberOfRelation(source, target);
     });
 
@@ -622,8 +626,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createSubCollectionOf(source, target);
     });
 
@@ -642,8 +646,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createSubQuantityOf(source, target);
     });
 
@@ -662,8 +666,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createInstantiation(source, target);
     });
 
@@ -677,8 +681,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createTermination(source, target);
     });
 
@@ -692,8 +696,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createParticipational(source, target);
     });
 
@@ -712,8 +716,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createParticipation(source, target);
     });
 
@@ -727,8 +731,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createHistoricalDependence(source, target);
     });
 
@@ -742,8 +746,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createCreationRelation(source, target);
     });
 
@@ -757,8 +761,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createManifestationRelation(source, target);
     });
 
@@ -772,8 +776,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createBringsAboutRelation(source, target);
     });
 
@@ -787,8 +791,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createTriggersRelation(source, target);
     });
 
@@ -802,8 +806,8 @@ describe(`Package tests`, () => {
     let source, target: Class;
 
     beforeEach(() => {
-      source = model.createClass();
-      target = model.createClass();
+      source = proj.classBuilder().build();
+      target = proj.classBuilder().build();
       relation = model.createPartWholeRelation(source, target);
     });
 
@@ -822,8 +826,8 @@ describe(`Package tests`, () => {
     let general, specific: Class;
 
     beforeEach(() => {
-      general = model.createClass();
-      specific = model.createClass();
+      general = proj.classBuilder().build();
+      specific = proj.classBuilder().build();
       gen = model.createGeneralization(general, specific);
     });
 
@@ -846,8 +850,8 @@ describe(`Package tests`, () => {
     let general, specific: Class;
 
     beforeEach(() => {
-      general = model.createClass();
-      specific = model.createClass();
+      general = proj.classBuilder().build();
+      specific = proj.classBuilder().build();
       gen = model.createGeneralization(general, specific);
       genSet = model.createGeneralizationSet(gen);
     });
@@ -871,8 +875,8 @@ describe(`Package tests`, () => {
     let general, specific: Class;
 
     beforeEach(() => {
-      general = model.createClass();
-      specific = model.createClass();
+      general = proj.classBuilder().build();
+      specific = proj.classBuilder().build();
       gen = model.createGeneralization(general, specific);
       genSet = model.createPartition(gen);
     });

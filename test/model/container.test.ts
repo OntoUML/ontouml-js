@@ -81,7 +81,7 @@ describe('Container tests', () => {
     const alive = livingStatus.createLiteral();
     const deceased = livingStatus.createLiteral();
 
-    const person = model.createClass();
+    const person = proj.classBuilder().build();
     const knows = person.createAttribute(person);
     const status = person.createAttribute(livingStatus);
 

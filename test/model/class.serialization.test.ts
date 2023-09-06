@@ -54,7 +54,7 @@ describe('Test Class serialization', () => {
   });
 
   // it('Test empty class serialization', () => {
-  //   const emptyClass = model.createClass();
+  //   const emptyClass = proj.classBuilder().build();
   //   const serialization = emptyClass.toJSON();
 
   //   expect(serialization.stereotype).toEqual(null);

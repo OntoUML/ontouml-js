@@ -14,7 +14,7 @@ describe(`${Literal.name} Tests`, () => {
 
   describe(`Test ${Literal.prototype.setContainer.name}()`, () => {
     const model = new Project().createModel();
-    const _enum = model.createClass();
+    const _enum = proj.classBuilder().build();
     const lit = new Literal({ project: model.project });
 
     it('Test function call', () => {

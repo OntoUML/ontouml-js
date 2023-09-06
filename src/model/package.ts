@@ -15,12 +15,18 @@ import {
   NaryRelation,
   ModelElement,
   Link,
-  Note
+  Note,
+  ClassBuilder,
+  GeneralizationBuilder,
+  GeneralizationSetBuilder,
+  PackageBuilder,
+  Property,
+  Literal,
+  BinaryRelationBuilder
 } from '..';
 
 export type PackageableElement =
-  | Class
-  | Relation
+  | Classifier<any, any>
   | Generalization
   | GeneralizationSet
   | Package
@@ -45,15 +51,123 @@ export class Package extends ModelElement {
   }
 
   public override get container(): Package | undefined {
-    return this.container as Package;
+    return this._container as Package;
   }
 
   public override set container(newContainer: Package | undefined) {
-    super.container = newContainer;
+    this._container = newContainer;
   }
 
   override getContents(): OntoumlElement[] {
     return this.contents as unknown as OntoumlElement[];
+  }
+
+  public get classes(): Class[] {
+    return this._contents.filter(e => e instanceof Class) as Class[];
+  }
+
+  public get relations(): Relation[] {
+    return this._contents.filter(e => e instanceof Relation) as Relation[];
+  }
+
+  public get binaryRelations(): BinaryRelation[] {
+    return this.relations.filter(
+      e => e instanceof BinaryRelation
+    ) as BinaryRelation[];
+  }
+
+  public get naryRelations(): NaryRelation[] {
+    return this.relations.filter(
+      e => e instanceof NaryRelation
+    ) as NaryRelation[];
+  }
+
+  public get generalizations(): Generalization[] {
+    return this._contents.filter(
+      e => e instanceof Generalization
+    ) as Generalization[];
+  }
+
+  public get generalizationSets(): GeneralizationSet[] {
+    return this._contents.filter(
+      e => e instanceof GeneralizationSet
+    ) as GeneralizationSet[];
+  }
+
+  public get packages(): Package[] {
+    return this._contents.filter(e => e instanceof Package) as Package[];
+  }
+
+  public get notes(): Note[] {
+    return this._contents.filter(e => e instanceof Note) as Note[];
+  }
+
+  public get links(): Link[] {
+    return this._contents.filter(e => e instanceof Link) as Link[];
+  }
+
+  public getAllClasses(): Class[] {
+    return this.getAllContents().filter(e => e instanceof Class) as Class[];
+  }
+
+  public getAllRelations(): Relation[] {
+    return this.getAllContents().filter(
+      e => e instanceof Relation
+    ) as Relation[];
+  }
+
+  public getAllBinaryRelations(): BinaryRelation[] {
+    return this.getAllRelations().filter(
+      e => e instanceof BinaryRelation
+    ) as BinaryRelation[];
+  }
+
+  public getAllNaryRelations(): NaryRelation[] {
+    return this.getAllRelations().filter(
+      e => e instanceof NaryRelation
+    ) as NaryRelation[];
+  }
+
+  public getAllGeneralizations(): Generalization[] {
+    return this.getAllContents().filter(
+      e => e instanceof Generalization
+    ) as Generalization[];
+  }
+
+  public getAllGeneralizationSets(): GeneralizationSet[] {
+    return this.getAllContents().filter(
+      e => e instanceof GeneralizationSet
+    ) as GeneralizationSet[];
+  }
+
+  public getAllPackages(): Package[] {
+    return this.getAllContents().filter(e => e instanceof Package) as Package[];
+  }
+
+  public getAllNotes(): Note[] {
+    return this.getAllContents().filter(e => e instanceof Note) as Note[];
+  }
+
+  public getAllLinks(): Link[] {
+    return this.getAllContents().filter(e => e instanceof Link) as Link[];
+  }
+
+  public getAllProperties(): Property[] {
+    return this.getAllContents().filter(
+      e => e instanceof Property
+    ) as Property[];
+  }
+
+  public getAllAttributes(): Property[] {
+    return this.getAllProperties().filter(p => p.isAttribute());
+  }
+
+  public getAllRelationEnds(): Property[] {
+    return this.getAllProperties().filter(p => p.isRelationEnd());
+  }
+
+  public getAllLiterals(): Literal[] {
+    return this.getAllContents().filter(e => e instanceof Literal) as Literal[];
   }
 
   addContent<T extends PackageableElement>(child: T): T {
@@ -66,7 +180,7 @@ export class Package extends ModelElement {
     }
 
     child.container = this;
-    this.contents.push(child);
+    this._contents.push(child);
     return child;
   }
 
@@ -90,6 +204,31 @@ export class Package extends ModelElement {
     };
 
     return { ...super.toJSON(), ...object };
+  }
+
+  classBuilder(): ClassBuilder {
+    this.assertProject();
+    return new ClassBuilder(this.project!).container(this);
+  }
+
+  generalizationBuilder(): GeneralizationBuilder {
+    this.assertProject();
+    return new GeneralizationBuilder(this.project!).container(this);
+  }
+
+  generalizationSetBuilder(): GeneralizationSetBuilder {
+    this.assertProject();
+    return new GeneralizationSetBuilder(this.project!).container(this);
+  }
+
+  packageBuilder(): PackageBuilder {
+    this.assertProject();
+    return new PackageBuilder(this.project!).container(this);
+  }
+
+  binaryRelationBuilder(): BinaryRelationBuilder {
+    this.assertProject();
+    return new BinaryRelationBuilder(this.project!).container(this);
   }
 
   createNaryRelation(
@@ -539,81 +678,6 @@ export class Package extends ModelElement {
     targetEnd.aggregationKind = AggregationKind.COMPOSITE;
 
     return relation;
-  }
-
-  createGeneralization(
-    general: Classifier<any, any>,
-    specific: Classifier<any, any>,
-    name?: string
-  ): Generalization {
-    this.assertProject();
-
-    let gen = this.project!.generalizationBuilder()
-      .general(general)
-      .specific(specific)
-      .container(this)
-      .build();
-
-    if (name) {
-      gen.name.addText(name);
-    }
-
-    return this.addContent(gen);
-  }
-
-  createGeneralizationSet(
-    generalizations?: Generalization | Generalization[],
-    isDisjoint: boolean = false,
-    isComplete: boolean = false,
-    name?: string
-  ): GeneralizationSet {
-    this.assertProject();
-
-    let gs = new GeneralizationSet(this.project!, this);
-    gs.isComplete = isComplete;
-    gs.isDisjoint = isDisjoint;
-
-    if (generalizations) {
-      gs.generalizations = utils.arrayFrom(generalizations);
-    }
-
-    if (name) {
-      gs.name.addText(name);
-    }
-
-    return this.addContent(gs);
-  }
-
-  createPartition(
-    generalizations: Generalization | Generalization[],
-    name?: string
-  ): GeneralizationSet {
-    return this.createGeneralizationSet(generalizations, true, true, name);
-  }
-
-  createPartitionFromClasses(
-    general: Class,
-    specifics: Class[],
-    name?: string
-  ): GeneralizationSet {
-    const generalizations = specifics.map(s => s.addParent(general));
-    return this.createGeneralizationSet(generalizations, true, true, name);
-  }
-
-  createGeneralizationSetFromClasses(
-    general: Class,
-    specifics: Class[],
-    isDisjoint: boolean = false,
-    isComplete: boolean = false,
-    name?: string
-  ): GeneralizationSet {
-    const generalizations = specifics.map(s => s.addParent(general));
-    return this.createGeneralizationSet(
-      generalizations,
-      isDisjoint,
-      isComplete,
-      name
-    );
   }
 
   /**

@@ -34,7 +34,6 @@ export class ClassBuilder extends ClassifierBuilder<
   ClassBuilder,
   ClassStereotype
 > {
-  override _container?: Package;
   override element?: Class;
 
   private _restrictedTo: Nature[] = [];
@@ -57,7 +56,6 @@ export class ClassBuilder extends ClassifierBuilder<
     this.element.restrictedTo = this._restrictedTo;
 
     super.build();
-
     return this.element;
   }
 
