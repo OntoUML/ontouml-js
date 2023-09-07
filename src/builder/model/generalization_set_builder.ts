@@ -22,6 +22,8 @@ export class GeneralizationSetBuilder extends ModelElementBuilder<Generalization
     this.element.categorizer = this._categorizer;
     this.element.generalizations = this._generalizations;
 
+    this._generalizations.forEach(g => g.addGeneralizationSet(this.element!));
+
     this._container?.addContent(this.element);
 
     super.build();

@@ -1,135 +1,96 @@
-import { Generalization, Project, serializationUtils } from '../../src';
+import {
+  BinaryRelation,
+  Class,
+  Generalization,
+  GeneralizationSet,
+  Project
+} from '../../src';
 
-describe(`${Generalization.name} Tests`, () => {
-  describe(`Test ${Generalization.prototype.toJSON.name}()`, () => {
-    const model = new Project().createModel();
-    const agent = proj.classBuilder().build();
-    const person = proj.classBuilder().build();
-    const gen = model.createGeneralization(agent, person, 'agentType');
+describe(`Generalization tests`, () => {
+  let proj: Project;
+  let agent: Class, person: Class, organization: Class;
+  let knows: BinaryRelation, friendOf: BinaryRelation;
+  let genPer: Generalization,
+    genOrg: Generalization,
+    genFriendOf: Generalization;
+  let agentSet: GeneralizationSet, relSet: GeneralizationSet;
 
-    it('Test serialization', () =>
-      expect(() => JSON.stringify(gen)).not.toThrow());
-  });
+  beforeEach(() => {
+    proj = new Project();
 
-  describe(`Test ${Generalization.prototype.setContainer.name}()`, () => {
-    const model = new Project().createModel();
-    const pkg = model.createPackage();
-    const agent = proj.classBuilder().build();
-    const person = pkg.createClass();
-    const gen = model.createGeneralization(agent, person);
+    agent = proj.classBuilder().category().build();
+    person = proj.classBuilder().kind().build();
+    organization = proj.classBuilder().kind().build();
 
-    it('Test function call', () => {
-      expect(gen.container).toBe(model);
-      expect(gen.container).not.toBe(pkg);
-      expect(model.getContents()).toContain(gen);
-      expect(pkg.getContents()).not.toContain(gen);
+    genPer = person.addParent(agent);
+    genOrg = organization.addParent(agent);
+    agentSet = proj.generalizationSetBuilder().generalizations(genPer).build();
 
-      pkg.addContent(gen);
-
-      expect(gen.container).toBe(pkg);
-      expect(gen.container).not.toBe(model);
-      expect(pkg.getContents()).toContain(gen);
-      expect(model.getContents()).not.toContain(gen);
-    });
-  });
-
-  describe(`Test ${Generalization.prototype.getGeneralizationSets.name}()`, () => {
-    const model = new Project().createModel();
-    const agent = proj.classBuilder().build();
-    const person = proj.classBuilder().build();
-
-    const knows = model.createBinaryRelation(agent, agent);
-    const friendsWith = proj
+    knows = proj
       .binaryRelationBuilder()
+      .material()
+      .source(agent)
+      .target(agent)
+      .build();
+
+    friendOf = proj
+      .binaryRelationBuilder()
+      .material()
       .source(person)
       .target(person)
       .build();
 
-    const personGeneralization = model.createGeneralization(agent, person);
-    const studentGeneralization = model.createGeneralization(agent, person);
-    const relationGeneralization = model.createGeneralization(
-      knows,
-      friendsWith
-    );
+    genFriendOf = friendOf.addParent(knows);
 
-    const genSet1 = model.createGeneralizationSet([personGeneralization]);
-    const genSet2 = model.createGeneralizationSet([relationGeneralization]);
+    relSet = proj
+      .generalizationSetBuilder()
+      .generalizations(genFriendOf)
+      .build();
+  });
 
-    it('Test retrieve genSet1', () => {
-      const genSets = personGeneralization.getGeneralizationSets();
-      expect(genSets).toContain(genSet1);
-      expect(genSets.length).toBe(1);
+  describe(`Test ${Generalization.prototype.toJSON.name}()`, () => {
+    it('should serialize generalization without throwing an exception', () =>
+      expect(() => JSON.stringify(genPer)).not.toThrow());
+  });
+
+  describe(`Test cross reference of generalization sets`, () => {
+    it('should retrieve agentSet from genPer', () => {
+      expect(genPer.generalizationSets).toIncludeSameMembers([agentSet]);
     });
 
-    it('Test retrieve genSet2', () => {
-      const genSets = relationGeneralization.getGeneralizationSets();
-      expect(genSets).toContain(genSet2);
-      expect(genSets.length).toBe(1);
+    it('should retrieve agentSet from genOrg', () => {
+      expect(genPer.generalizationSets).toIncludeSameMembers([agentSet]);
     });
 
-    it('Test retrieve from studentGeneralization', () =>
-      expect(studentGeneralization.getGeneralizationSets().length).toBe(0));
+    it('should retrieve relSet from genFriendOf', () => {
+      expect(genFriendOf.generalizationSets).toIncludeSameMembers([relSet]);
+    });
   });
 
   describe(`Test ${Generalization.prototype.involvesClasses.name}()`, () => {
-    const model = new Project().createModel();
-    const agent = proj.classBuilder().build();
-    const person = proj.classBuilder().build();
+    it('should return true when the both the general and the specific are classes', () => {
+      expect(genPer.involvesClasses()).toBeTrue();
+    });
 
-    const knows = model.createBinaryRelation(agent, agent);
-    const friendsWith = proj
-      .binaryRelationBuilder()
-      .source(person)
-      .target(person)
-      .build();
-
-    const classGeneralization = model.createGeneralization(agent, person);
-    const relationGeneralization = model.createGeneralization(
-      knows,
-      friendsWith
-    );
-
-    it('Test class generalization', () =>
-      expect(classGeneralization.involvesClasses()).toBeTruthy());
-    it('Test class generalization', () =>
-      expect(relationGeneralization.involvesClasses()).toBeFalsy());
+    it('should return true when the both the general and the specific are relations', () => {
+      expect(genFriendOf.involvesClasses()).toBeFalse();
+    });
   });
 
   describe(`Test ${Generalization.prototype.involvesRelations.name}()`, () => {
-    const model = new Project().createModel();
-    const agent = proj.classBuilder().build();
-    const person = proj.classBuilder().build();
+    it('should return true when the both the general and the specific are relations', () => {
+      expect(genPer.involvesRelations()).toBeFalse();
+    });
 
-    const knows = model.createBinaryRelation(agent, agent);
-    const friendsWith = proj
-      .binaryRelationBuilder()
-      .source(person)
-      .target(person)
-      .build();
-
-    const classGeneralization = model.createGeneralization(agent, person);
-    const relationGeneralization = model.createGeneralization(
-      knows,
-      friendsWith
-    );
-
-    it('Test class generalization', () =>
-      expect(classGeneralization.involvesRelations()).toBeFalsy());
-    it('Test class generalization', () =>
-      expect(relationGeneralization.involvesRelations()).toBeTruthy());
+    it('should return true when the both the general and the specific are classes', () => {
+      expect(genFriendOf.involvesRelations()).toBeTrue();
+    });
   });
 
   describe(`Test ${Generalization.prototype.clone.name}()`, () => {
-    const model = new Project().createModel();
-    const classA = proj.classBuilder().build();
-    const classB = proj.classBuilder().build();
-    const genA = model.createGeneralization(classA, classB);
-    const genB = genA.clone();
-
-    const genC = new Generalization();
-    const genD = genC.clone();
-
-    it('Test method', () => expect(genA).toEqual(genB));
-    it('Test method', () => expect(genC).toEqual(genD));
+    it('cloned generalization should be qualitatively equal', () => {
+      const genClone = genPer.clone();
+      expect(genClone).toEqual(genPer);
+    });
   });
 });

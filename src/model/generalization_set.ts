@@ -15,7 +15,7 @@ export class GeneralizationSet extends ModelElement {
   isDisjoint: boolean = false;
   isComplete: boolean = false;
   categorizer?: Class;
-  private _generalizations: Generalization[] = [];
+  _generalizations: Set<Generalization> = new Set();
 
   constructor(project: Project, container?: Package) {
     super(project, container);
@@ -27,10 +27,18 @@ export class GeneralizationSet extends ModelElement {
 
   // FIXME: TEST me
   public set generalizations(generalizations: Generalization[]) {
-    this._generalizations.forEach(g => utils.removeById(g._genSets, this));
+    this._generalizations.forEach(g => this.removeGeneralization(g));
+    generalizations.forEach(g => this.addGeneralization(g));
+  }
 
-    this.generalizations.forEach(g => g._genSets.push(this));
-    this._generalizations = generalizations;
+  public addGeneralization(g: Generalization): void {
+    this._generalizations.add(g);
+    g._generalizationSets.add(this);
+  }
+
+  public removeGeneralization(g: Generalization): void {
+    this._generalizations.delete(g);
+    g._generalizationSets.delete(this);
   }
 
   public override get container(): Package | undefined {
@@ -234,7 +242,7 @@ export class GeneralizationSet extends ModelElement {
       isDisjoint: this.isDisjoint,
       isComplete: this.isComplete,
       categorizer: this.categorizer?.id || null,
-      generalizations: this._generalizations.map(g => g.id)
+      generalizations: this.generalizations.map(g => g.id)
     };
 
     return { ...super.toJSON(), ...object };

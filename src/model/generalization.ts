@@ -13,15 +13,24 @@ import {
 export class Generalization extends ModelElement {
   general?: Classifier<any, any>;
   specific?: Classifier<any, any>;
-  // TODO: add function to enable _genSets to be private
-  _genSets: GeneralizationSet[] = [];
+  _generalizationSets: Set<GeneralizationSet> = new Set();
 
   constructor(project: Project, container: Package | undefined) {
     super(project, container);
   }
 
-  public get genSets(): GeneralizationSet[] {
-    return [...this._genSets];
+  public get generalizationSets(): GeneralizationSet[] {
+    return [...this._generalizationSets];
+  }
+
+  public addGeneralizationSet(gs: GeneralizationSet) {
+    this._generalizationSets.add(gs);
+    gs._generalizations.add(this);
+  }
+
+  public removeGeneralizationSet(gs: GeneralizationSet) {
+    this._generalizationSets.delete(gs);
+    gs._generalizations.delete(this);
   }
 
   public override get container(): Package | undefined {
