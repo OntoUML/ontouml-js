@@ -7,172 +7,30 @@ import {
 } from '../../src';
 
 describe('Relation Tests', () => {
-  describe('Test getGeneralizations()', () => {
-    const model = new Project().createModel();
-    const person = proj.classBuilder().build();
-    const knows = proj
-      .binaryRelationBuilder()
-      .source(person)
-      .target(person)
-      .build();
-    const isFriendsWith = proj
-      .binaryRelationBuilder()
-      .source(person)
-      .target(person)
-      .build();
-    const gen = proj
-      .generalizationBuilder()
-      .general(knows)
-      .target(isFriendsWith)
-      .build();
+  const proj = new Project();
+  const person = proj.classBuilder().build();
 
-    it('Test function call', () =>
-      expect(knows.getGeneralizations()).toContain(gen));
-    it('Test function call', () =>
-      expect(knows.getGeneralizations().length).toBe(1));
-  });
+  const knows = proj
+    .binaryRelationBuilder()
+    .source(person)
+    .target(person)
+    .build();
 
-  describe('Test getGeneralizationSets()', () => {
-    const model = new Project().createModel();
-    const person = proj.classBuilder().build();
-    const knows = proj
-      .binaryRelationBuilder()
-      .source(person)
-      .target(person)
-      .build();
-    const isFriendsWith = proj
-      .binaryRelationBuilder()
-      .source(person)
-      .target(person)
-      .build();
-    const gen = proj
-      .generalizationBuilder()
-      .general(knows)
-      .target(isFriendsWith)
-      .build();
-    const genSet = model.createGeneralizationSet(gen);
+  const isFriendsWith = proj
+    .binaryRelationBuilder()
+    .source(person)
+    .target(person)
+    .build();
 
-    it('Test function call', () =>
-      expect(knows.getGeneralizationSets()).toContain(genSet));
-    it('Test function call', () =>
-      expect(knows.getGeneralizationSets().length).toBe(1));
-  });
+  const gen = proj
+    .generalizationBuilder()
+    .general(knows)
+    .specific(isFriendsWith)
+    .build();
 
-  describe('Test getGeneralizationsWhereGeneral()', () => {
-    const model = new Project().createModel();
-    const person = proj.classBuilder().build();
-    const knows = proj
-      .binaryRelationBuilder()
-      .source(person)
-      .target(person)
-      .build();
-    const isFriendsWith = proj
-      .binaryRelationBuilder()
-      .source(person)
-      .target(person)
-      .build();
-    const gen = proj
-      .generalizationBuilder()
-      .general(knows)
-      .target(isFriendsWith)
-      .build();
-
-    it('Test function call', () =>
-      expect(knows.getGeneralizationsWhereGeneral()).toContain(gen));
-    it('Test function call', () =>
-      expect(knows.getGeneralizationsWhereGeneral().length).toBe(1));
-  });
-
-  describe('Test getGeneralizationsWhereSpecific()', () => {
-    const model = new Project().createModel();
-    const person = proj.classBuilder().build();
-    const knows = proj
-      .binaryRelationBuilder()
-      .source(person)
-      .target(person)
-      .build();
-    const isFriendsWith = proj
-      .binaryRelationBuilder()
-      .source(person)
-      .target(person)
-      .build();
-    const gen = proj
-      .generalizationBuilder()
-      .general(knows)
-      .target(isFriendsWith)
-      .build();
-
-    it('Test function call', () =>
-      expect(isFriendsWith.getGeneralizationsWhereSpecific()).toContain(gen));
-    it('Test function call', () =>
-      expect(isFriendsWith.getGeneralizationsWhereSpecific().length).toBe(1));
-  });
-
-  describe('Test getGeneralizationSetsWhereGeneral()', () => {
-    const model = new Project().createModel();
-    const person = proj.classBuilder().build();
-    const knows = proj
-      .binaryRelationBuilder()
-      .source(person)
-      .target(person)
-      .build();
-    const isFriendsWith = proj
-      .binaryRelationBuilder()
-      .source(person)
-      .target(person)
-      .build();
-    const gen = proj
-      .generalizationBuilder()
-      .general(knows)
-      .target(isFriendsWith)
-      .build();
-    const genSet = model.createGeneralizationSet(gen);
-
-    it('Test function call', () =>
-      expect(knows.getGeneralizationSetsWhereGeneral()).toContain(genSet));
-    it('Test function call', () =>
-      expect(knows.getGeneralizationSetsWhereGeneral().length).toBe(1));
-  });
-
-  describe('Test getGeneralizationSetsWhereSpecific()', () => {
-    const model = new Project().createModel();
-    const person = proj.classBuilder().build();
-    const knows = proj
-      .binaryRelationBuilder()
-      .source(person)
-      .target(person)
-      .build();
-    const isFriendsWith = proj
-      .binaryRelationBuilder()
-      .source(person)
-      .target(person)
-      .build();
-    const gen = proj
-      .generalizationBuilder()
-      .general(knows)
-      .target(isFriendsWith)
-      .build();
-    const genSet = model.createGeneralizationSet(gen);
-
-    it('Test function call', () =>
-      expect(isFriendsWith.getGeneralizationSetsWhereSpecific()).toContain(
-        genSet
-      ));
-    it('Test function call', () =>
-      expect(isFriendsWith.getGeneralizationSetsWhereSpecific().length).toBe(
-        1
-      ));
-  });
+  const genSet = proj.generalizationSetBuilder().generalizations(gen).build();
 
   describe('Test getContents()', () => {
-    const model = new Project().createModel();
-    const person = proj.classBuilder().build();
-    const knows = proj
-      .binaryRelationBuilder()
-      .source(person)
-      .target(person)
-      .build();
-
     it('Test function call', () =>
       expect(knows.getContents()).toContain(knows.getTargetEnd()));
     it('Test function call', () =>
@@ -181,14 +39,6 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getAllContents()', () => {
-    const model = new Project().createModel();
-    const person = proj.classBuilder().build();
-    const knows = proj
-      .binaryRelationBuilder()
-      .source(person)
-      .target(person)
-      .build();
-
     it('Test function call', () =>
       expect(knows.getAllContents()).toContain(knows.getTargetEnd()));
     it('Test function call', () =>
@@ -198,7 +48,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test createSourceEnd()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const knows = model.createRelation();
 
@@ -211,7 +61,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test createTargetEnd()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const knows = model.createRelation();
 
@@ -224,7 +74,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test createMemberEnd()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const metPersonAt = model.createRelation();
@@ -242,7 +92,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getSourceEnd()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -263,7 +113,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getTargetEnd()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -284,7 +134,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getMemberEnd()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -305,7 +155,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getSourceClassEnd()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -326,7 +176,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getTargetClassEnd()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -347,7 +197,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getDerivingRelationEnd()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -370,7 +220,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getDerivedClassEnd()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -391,7 +241,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getMemberClassEnd()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -412,7 +262,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getSource()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -437,7 +287,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getTarget()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -462,7 +312,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getMember()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -485,7 +335,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getSourceClass()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -508,7 +358,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getTargetClass()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -531,7 +381,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getMemberClass()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -554,7 +404,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getDerivingRelation()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -577,7 +427,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getDerivedClass()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -600,7 +450,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getSourceStereotype()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = model.createKind();
     const heavierThan = proj
       .binaryRelationBuilder()
@@ -613,7 +463,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getTargetStereotype()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = model.createKind();
     const heavierThan = proj
       .binaryRelationBuilder()
@@ -626,7 +476,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getSourceClassStereotype()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = model.createKind();
     const heavierThan = proj
       .binaryRelationBuilder()
@@ -641,7 +491,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getTargetClassStereotype()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = model.createKind();
     const heavierThan = proj
       .binaryRelationBuilder()
@@ -656,7 +506,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getMemberClassStereotype()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = model.createKind();
     const place = model.createKind();
     const metPersonAt = model.createTernaryRelation([person, person, place]);
@@ -668,7 +518,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getDerivingRelationStereotype()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = model.createKind();
     const weight = model.createQuality();
     const heavierThan = model.createComparativeRelation(person, person);
@@ -681,7 +531,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test getDerivedClassStereotype()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = model.createKind();
     const weight = model.createQuality();
     const heavierThan = model.createComparativeRelation(person, person);
@@ -694,7 +544,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test isBinary()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -714,7 +564,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test isTernary()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -733,7 +583,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test isBinaryClassRelation()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -754,7 +604,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test isDerivation()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -775,7 +625,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test isTernaryClassRelation()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const place = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
@@ -796,7 +646,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test isPartWholeRelation()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const organization = proj.classBuilder().build();
     const event = proj.classBuilder().build();
@@ -817,7 +667,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test isExistentialDependency()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
     const worksFor = model.createMaterialRelation(person, person);
@@ -830,7 +680,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test isSourceExistentiallyDependent()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
     const worksFor = model.createMaterialRelation(person, person);
@@ -843,7 +693,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test isTargetExistentiallyDependent()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
     const heavierThan = model.createComparativeRelation(person, person);
@@ -856,7 +706,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test isExistentialDependenceRelation()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
     const worksFor = model.createMaterialRelation(person, person);
@@ -869,7 +719,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test holdsBetween()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = proj.classBuilder().build();
     const weight = proj.classBuilder().build();
     const knows = model.createMaterialRelation(person, person);
@@ -885,7 +735,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test holdsBetweenEvents()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const soccerMatch = model.createEvent();
     const goalEvent = model.createEvent();
     const person = model.createKind();
@@ -900,7 +750,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test holdsBetweenMoments()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = model.createKind();
     const enrollment = model.createRelator();
     const gpa = model.createQuality();
@@ -914,7 +764,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test holdsBetweenSubstantials()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const person = model.createKind();
     const organization = model.createKind();
     const weight = model.createQuality();
@@ -928,7 +778,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test clone()', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const classA = proj.classBuilder().build();
     const relationA = model.createBinaryRelation(classA, classA);
     const relationB = relationA.clone();
@@ -941,7 +791,7 @@ describe('Relation Tests', () => {
   });
 
   describe('Test involves(class)', () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const husband = model.createRole();
     const man = model.createSubkind();
     const wife = model.createRole();
