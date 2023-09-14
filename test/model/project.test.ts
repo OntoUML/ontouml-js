@@ -107,16 +107,16 @@ describe('Project tests', () => {
   });
 
   it(`Test getAllEnumerations()`, () => {
-    const enumeration = pkg.createEnumeration('Enumeration');
+    const enumeration = pkg.classBuilder().enumeration().build('Enumeration');
     const enumerations = project.getEnumerations();
     expect(enumerations).toContain(enumeration);
     expect(enumerations.length).toBe(1);
   });
 
   it(`Test getAllLiterals()`, () => {
-    const enumeration = pkg.createEnumeration('Enumeration');
-    const literal1 = enumeration.createLiteral();
-    const literal2 = enumeration.createLiteral();
+    const enumeration = pkg.classBuilder().enumeration().build('Enumeration');
+    const literal1 = enumeration.literalBuilder().build();
+    const literal2 = enumeration.literalBuilder().build();
 
     const literals = project.getLiterals();
     expect(literals).toContain(literal1);

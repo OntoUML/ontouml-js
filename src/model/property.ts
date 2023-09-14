@@ -28,10 +28,10 @@ export class Property extends Decoratable<PropertyStereotype> {
   isReadOnly: boolean = false;
 
   constructor(
-    container: Classifier<any, any>,
+    classifier: Classifier<any, any>,
     propertyType?: Classifier<any, any>
   ) {
-    super(container.project!, container);
+    super(classifier.project!);
     this.propertyType = propertyType;
   }
 

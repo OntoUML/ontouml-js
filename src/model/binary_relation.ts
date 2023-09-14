@@ -13,11 +13,10 @@ import {
 export class BinaryRelation extends Relation {
   constructor(
     project: Project,
-    container: Package | undefined,
     source: Classifier<any, any>,
     target: Classifier<any, any>
   ) {
-    super(project, container, [source, target]);
+    super(project, [source, target]);
   }
 
   assertTypedSource() {

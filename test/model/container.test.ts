@@ -77,9 +77,9 @@ describe('Container tests', () => {
   it('Get class contents', () => {
     const model = new Package();
     const text = model.createDatatype();
-    const livingStatus = model.createEnumeration();
-    const alive = livingStatus.createLiteral();
-    const deceased = livingStatus.createLiteral();
+    const livingStatus = model.classBuilder().enumeration().build();
+    const alive = livingStatus.literalBuilder().build();
+    const deceased = livingStatus.literalBuilder().build();
 
     const person = proj.classBuilder().build();
     const knows = person.createAttribute(person);

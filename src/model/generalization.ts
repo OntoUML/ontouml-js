@@ -11,34 +11,26 @@ import {
 } from '..';
 
 export class Generalization extends ModelElement {
-  general?: Classifier<any, any>;
-  specific?: Classifier<any, any>;
+  general: Classifier<any, any>;
+  specific: Classifier<any, any>;
   _generalizationSets: Set<GeneralizationSet> = new Set();
 
-  constructor(project: Project, container: Package | undefined) {
-    super(project, container);
+  constructor(
+    project: Project,
+    general: Classifier<any, any>,
+    specific: Classifier<any, any>
+  ) {
+    super(project);
+    this.general = general;
+    this.specific = specific;
   }
 
   public get generalizationSets(): GeneralizationSet[] {
     return [...this._generalizationSets];
   }
 
-  public addGeneralizationSet(gs: GeneralizationSet) {
-    this._generalizationSets.add(gs);
-    gs._generalizations.add(this);
-  }
-
-  public removeGeneralizationSet(gs: GeneralizationSet) {
-    this._generalizationSets.delete(gs);
-    gs._generalizations.delete(this);
-  }
-
   public override get container(): Package | undefined {
     return this._container as Package;
-  }
-
-  public override set container(newContainer: Package | undefined) {
-    this._container = newContainer;
   }
 
   // Move this to OntoumlElement as a default implementation.
@@ -46,46 +38,11 @@ export class Generalization extends ModelElement {
     return [];
   }
 
-  // TODO: Fix this to update references
-  // getGeneralizationSets(): GeneralizationSet[] {
-  //   let root : Package | null = this.getRoot();
-
-  //   if(!root){
-  //     throw new Error('Root package is null. Cannot retrieve generalizations.');
-  //   }
-  //   return root.getGeneralizationSets()
-  //              .filter(gs => gs.generalizations && gs.generalizations.includes(this));
-  // }
-
-  // TODO: check the need for these assertions considering that general and specific are mandatory
-  assertFieldsDefined() {
-    this.assertSpecificDefined();
-    this.assertGeneralDefined();
-  }
-
-  assertSpecificDefined() {
-    if (!this.specific) {
-      throw new Error(
-        'The `specific` field of this generalization set is not defined.'
-      );
-    }
-  }
-
-  assertGeneralDefined() {
-    if (!this.specific) {
-      throw new Error(
-        'The `general` field of this generalization set is not defined.'
-      );
-    }
-  }
-
   involvesClasses(): boolean {
-    this.assertFieldsDefined();
     return this.general instanceof Class && this.specific instanceof Class;
   }
 
   involvesRelations(): boolean {
-    this.assertFieldsDefined();
     return (
       this.general instanceof Relation && this.specific instanceof Relation
     );

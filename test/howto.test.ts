@@ -48,9 +48,9 @@ it('Test the example presented in the "Usage" section of the README file', () =>
 
     // the API is constantly updated to include helpful methods to facilitate building OntoUML models
     studiesAt.getTargetEnd().name.addText('school');
-    studiesAt.getTargetEnd().cardinality.setZeroToMany();
+    studiesAt.getTargetEnd().cardinality.setAsZeroToMany();
     studiesAt.getSourceEnd().name.addText('student');
-    studiesAt.getSourceEnd().cardinality.setOneToMany();
+    studiesAt.getSourceEnd().cardinality.setAsOneToMany();
 
     enrollment.attributeBuilder().type(date).name('enrollment date').build();
 

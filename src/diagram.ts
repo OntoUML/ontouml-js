@@ -209,10 +209,7 @@ export class Diagram extends OntoumlElement {
   }
 
   addGeneralization(gen: Generalization): GeneralizationView {
-    gen.assertGeneralDefined();
     let sourceView = this.findOrCreateView(gen.general!);
-
-    gen.assertSpecificDefined();
     let targetView = this.findOrCreateView(gen.specific!);
 
     let generalizationView = new GeneralizationView(

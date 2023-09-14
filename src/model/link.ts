@@ -11,23 +11,14 @@ export class Link extends ModelElement {
   note: Note;
   element: ModelElement;
 
-  constructor(
-    project: Project,
-    container: Package | undefined,
-    note: Note,
-    element: ModelElement
-  ) {
-    super(project, container);
+  constructor(project: Project, note: Note, element: ModelElement) {
+    super(project);
     this.note = note;
     this.element = element;
   }
 
   public override get container(): Package | undefined {
     return this.container as Package;
-  }
-
-  public override set container(newContainer: Package | undefined) {
-    super.container = newContainer;
   }
 
   override toJSON(): any {

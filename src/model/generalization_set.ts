@@ -17,8 +17,8 @@ export class GeneralizationSet extends ModelElement {
   categorizer?: Class;
   _generalizations: Set<Generalization> = new Set();
 
-  constructor(project: Project, container?: Package) {
-    super(project, container);
+  constructor(project: Project) {
+    super(project);
   }
 
   public get generalizations(): Generalization[] {
@@ -43,10 +43,6 @@ export class GeneralizationSet extends ModelElement {
 
   public override get container(): Package | undefined {
     return this._container as Package;
-  }
-
-  public override set container(newContainer: Package | undefined) {
-    super._container = newContainer;
   }
 
   getContents(): OntoumlElement[] {
@@ -112,10 +108,7 @@ export class GeneralizationSet extends ModelElement {
       );
     }
 
-    this.generalizations.forEach(g => g.assertSpecificDefined());
-    let specifics = this.generalizations.map(
-      g => g.specific as Classifier<any, any>
-    );
+    let specifics = this.generalizations.map(g => g.specific);
 
     return Array.from(new Set(specifics));
   }
@@ -205,8 +198,6 @@ export class GeneralizationSet extends ModelElement {
     if (this.generalizations.length == 0) {
       throw new Error('Generalization array is empty.');
     }
-
-    this.generalizations.every(g => g.assertFieldsDefined());
   }
 
   //FIX ME

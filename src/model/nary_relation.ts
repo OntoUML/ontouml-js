@@ -8,12 +8,8 @@ import {
 } from '..';
 
 export class NaryRelation extends Relation {
-  constructor(
-    project: Project,
-    container: Package | undefined,
-    members: Classifier<any, any>[]
-  ) {
-    super(project, container, members);
+  constructor(project: Project, members: Classifier<any, any>[]) {
+    super(project, members);
 
     if (members.length < 3) {
       throw new Error(

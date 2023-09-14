@@ -2,15 +2,12 @@ import { OntoumlElement, OntoumlType, Class, ModelElement } from '..';
 
 export class Literal extends ModelElement {
   constructor(container: Class) {
-    super(container.project!, container);
+    super(container.project!);
+    container.addLiteral(this);
   }
 
   public override get container(): Class {
     return this._container as Class;
-  }
-
-  public override set container(newContainer: Class) {
-    super._container = newContainer;
   }
 
   getContents(): OntoumlElement[] {
@@ -24,7 +21,7 @@ export class Literal extends ModelElement {
   //TODO: DOUBLE CHECK this method
   replace(originalElement: ModelElement, newElement: ModelElement): void {
     if (this.container === originalElement) {
-      this.container = newElement as Class;
+      this._container = newElement as Class;
     }
   }
 

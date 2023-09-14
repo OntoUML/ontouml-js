@@ -13,7 +13,6 @@ export abstract class ModelElementBuilder<
     super.build();
 
     this.assertElement();
-    this.element!.container = this._container;
     this.element!.customProperties = this._customProperties;
 
     return this.element!;

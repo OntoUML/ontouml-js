@@ -21,16 +21,12 @@ export abstract class Classifier<
   isAbstract: boolean = false;
   protected _properties: Property[] = [];
 
-  constructor(project: Project, container?: Package) {
-    super(project, container);
+  constructor(project: Project) {
+    super(project);
   }
 
   public override get container(): Package | undefined {
     return this._container as Package;
-  }
-
-  public override set container(newContainer: Package | undefined) {
-    this._container = newContainer;
   }
 
   public get properties(): Property[] {
@@ -39,6 +35,16 @@ export abstract class Classifier<
 
   public set properties(value: Property[]) {
     this._properties = value;
+  }
+
+  public addProperty(p: Property): void {
+    this._properties.push(p);
+    p._container = this;
+  }
+
+  public removeProperty(p: Property): void {
+    this._properties.push(p);
+    p._container = undefined;
   }
 
   asClass(): Class {

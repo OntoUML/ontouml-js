@@ -16,7 +16,6 @@ export class LiteralBuilder extends ModelElementBuilder<LiteralBuilder> {
   override build(): Literal {
     this.element = new Literal(this._container);
     super.build();
-    this._container.addLiteral(this.element);
     return this.element;
   }
 

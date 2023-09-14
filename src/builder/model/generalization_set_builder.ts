@@ -22,7 +22,7 @@ export class GeneralizationSetBuilder extends ModelElementBuilder<Generalization
     this.element.categorizer = this._categorizer;
     this.element.generalizations = this._generalizations;
 
-    this._generalizations.forEach(g => g.addGeneralizationSet(this.element!));
+    this._generalizations.forEach(g => this.element?.addGeneralization(g));
 
     this._container?.addContent(this.element);
 
@@ -32,6 +32,12 @@ export class GeneralizationSetBuilder extends ModelElementBuilder<Generalization
 
   override container(container: Package): GeneralizationSetBuilder {
     this._container = container;
+    return this;
+  }
+
+  partition(): GeneralizationSetBuilder {
+    this.disjoint();
+    this.complete();
     return this;
   }
 

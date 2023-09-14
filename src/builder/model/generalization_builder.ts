@@ -24,9 +24,11 @@ export class GeneralizationBuilder extends ModelElementBuilder<GeneralizationBui
     this.assertSpecificSet();
     utils.assertSameProject(this._general!, this._specific!);
 
-    this.element = new Generalization(this.project, this._container);
-    this.element.general = this._general;
-    this.element.specific = this._specific;
+    this.element = new Generalization(
+      this.project,
+      this._general!,
+      this._specific!
+    );
 
     this._container?.addContent(this.element);
 

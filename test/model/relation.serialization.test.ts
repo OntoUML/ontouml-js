@@ -1,7 +1,7 @@
 import { Project } from '../../src';
 
 describe('Test toJSON()', () => {
-  const model = new Project().createModel();
+  const proj = new Project();
   const person = proj.classBuilder().build();
   const knows = model.createMaterialRelation(person, person);
 

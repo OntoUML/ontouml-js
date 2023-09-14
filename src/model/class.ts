@@ -53,12 +53,12 @@ import {
 
 export class Class extends Classifier<Class, ClassStereotype> {
   private _restrictedTo: Nature[] = [];
-  private _literals: Literal[] = [];
+  private _literals: Set<Literal> = new Set();
   private _order: number = 1;
   isPowertype: boolean = false;
 
-  constructor(project: Project, container?: Package) {
-    super(project, container);
+  constructor(project: Project) {
+    super(project);
   }
 
   attributeBuilder(): AttributeBuilder {
@@ -105,8 +105,9 @@ export class Class extends Classifier<Class, ClassStereotype> {
     return [...this._literals];
   }
 
-  public set literals(value: Literal[]) {
-    this._literals = [...new Set(value)];
+  public set literals(literals: Literal[]) {
+    this._literals.forEach(l => this.deleteLiteral(l));
+    literals.forEach(l => this.addLiteral(l));
   }
 
   public get order(): number {
@@ -151,13 +152,39 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
   addAttribute(attribute: Property): void {
     this._properties.push(attribute);
-    attribute.container = this;
+    attribute._container = this;
   }
 
   addLiteral(literal: Literal): void {
     this.assertEnumeration();
-    this._literals.push(literal);
-    literal.container = this;
+
+    if (!literal) {
+      throw new Error('Parameter literal should be defined. Given: ' + literal);
+    }
+
+    if (this._literals.has(literal)) {
+      throw new Error('Literal is already contained by the enumeration.');
+    }
+
+    literal.container?.deleteLiteral(literal);
+
+    this._literals.add(literal);
+    literal._container = this;
+  }
+
+  deleteLiteral(literal: Literal): void {
+    this.assertEnumeration();
+
+    if (!literal) {
+      throw new Error('Parameter literal should be defined. Given: ' + literal);
+    }
+
+    if (!this._literals.has(literal)) {
+      throw new Error('Literal is not contained by the enumeration.');
+    }
+
+    this._literals.delete(literal);
+    literal._container = undefined;
   }
 
   hasAttributes(): boolean {
@@ -601,7 +628,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
   /** @returns both own and inherited literals */
   getAllLiterals(): Literal[] {
     const thisAndAncestors = [this, ...this.getAncestors()];
-    return thisAndAncestors.flatMap(c => c._literals);
+    return thisAndAncestors.flatMap(c => [...c._literals]);
   }
 
   clone(): Class {
@@ -623,8 +650,8 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   replace(originalElement: ModelElement, newElement: ModelElement): void {
-    if (this.container === originalElement) {
-      this.container = newElement as Package;
+    if (this._container === originalElement) {
+      this._container = newElement as Package;
     }
 
     this.getContents()

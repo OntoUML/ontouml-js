@@ -13,12 +13,8 @@ export abstract class Relation extends Classifier<
   Relation,
   RelationStereotype
 > {
-  protected constructor(
-    project: Project,
-    container: Package | undefined,
-    members: Classifier<any, any>[]
-  ) {
-    super(project, container);
+  protected constructor(project: Project, members: Classifier<any, any>[]) {
+    super(project);
 
     if (members.length < 2) {
       throw new Error(
@@ -176,7 +172,7 @@ export abstract class Relation extends Classifier<
 
   replace(originalElement: ModelElement, newElement: ModelElement): void {
     if (this.container === originalElement) {
-      this.container = newElement as Package;
+      this._container = newElement as Package;
     }
 
     this.getContents()

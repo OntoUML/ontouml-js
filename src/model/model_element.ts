@@ -3,11 +3,10 @@ import { OntoumlElement, Project, NamedElement } from '..';
 
 export abstract class ModelElement extends NamedElement {
   customProperties: object = {};
-  protected _container?: ModelElement;
+  _container?: ModelElement;
 
-  constructor(project: Project, container?: ModelElement) {
+  constructor(project: Project) {
     super(project);
-    this.container = container;
   }
 
   // TODO: This method is no longer necessary.

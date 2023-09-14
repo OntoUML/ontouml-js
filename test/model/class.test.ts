@@ -88,35 +88,33 @@ describe(`${Class.name} Tests`, () => {
       expect(clazz.container).toBeUndefined();
     });
 
-    it('clazz.container should set the given package as the container', () => {
-      clazz.container = pkgA;
+    it('addContent should set the given package as the container', () => {
+      pkgA.addContent(clazz);
       expect(clazz.container).toBe(pkgA);
+      expect(pkgA.contents).toContain(clazz);
     });
 
-    it('clazz.container should replace previous container', () => {
-      clazz.container = pkgA;
-      clazz.container = pkgB;
+    it('subsequent invokation of addContent should replace previous container', () => {
+      pkgA.addContent(clazz);
+      pkgB.addContent(clazz);
       expect(clazz.container).toBe(pkgB);
+      expect(pkgB.contents).toContain(clazz);
+      expect(pkgA.contents).not.toContain(clazz);
     });
 
-    it('clazz.container should replace previous container with undefined', () => {
-      clazz.container = pkgA;
-      clazz.container = undefined;
+    it('removeContent should set container to undefined', () => {
+      pkgA.addContent(clazz);
+      pkgA.removeContent(clazz);
       expect(clazz.container).toBeUndefined();
+      expect(pkgA.contents).not.toContain(clazz);
     });
   });
 
-  // describe(`Test ${Class.prototype.clone.name}()`, () => {
-  //   it('Test method', () => {
-  //     const classA = proj.classBuilder().build();
-  //     const classB = classA.clone();
-  //     expect(classA).toEqual(classB);
-  //   });
-
-  //   it('Test method', () => {
-  //     const classC = new Class();
-  //     const classD = classC.clone();
-  //     expect(classC).toEqual(classD);
-  //   });
-  // });
+  describe(`Test ${Class.prototype.clone.name}()`, () => {
+    it('Test method', () => {
+      const classA = proj.classBuilder().build();
+      const classB = classA.clone();
+      expect(classA).toEqual(classB);
+    });
+  });
 });

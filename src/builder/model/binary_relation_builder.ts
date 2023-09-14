@@ -54,7 +54,6 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   override build(): BinaryRelation {
     this.element = new BinaryRelation(
       this.project,
-      this._container,
       this._source!,
       this._target!
     );

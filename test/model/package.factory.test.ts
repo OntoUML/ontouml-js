@@ -393,11 +393,11 @@ describe(`Package tests`, () => {
     });
   });
 
-  describe(`Test createEnumeration()`, () => {
+  describe(`Test classBuilder().enumeration().build()`, () => {
     let clazz: Class;
 
     beforeEach(() => {
-      clazz = model.createEnumeration();
+      clazz = model.classBuilder().enumeration().build();
     });
 
     it('Test stereotype', () => {

@@ -76,7 +76,7 @@ describe('Test Class serialization', () => {
   //     isPowertype: true,
   //     order: ORDERLESS_LEVEL
   //   });
-  //   const enumeration = model.createEnumeration();
+  //   const enumeration = model.classBuilder().enumeration().build();
   //   const attribute = fullyFeaturedCategory.createAttribute(enumeration);
   //   const serialization = fullyFeaturedCategory.toJSON();
 
@@ -92,8 +92,8 @@ describe('Test Class serialization', () => {
   // });
 
   // it('Test enumeration serialization', () => {
-  //   const enumeration = model.createEnumeration();
-  //   const literal = enumeration.createLiteral();
+  //   const enumeration = model.classBuilder().enumeration().build();
+  //   const literal = enumeration.literalBuilder().build();
   //   const serialization = enumeration.toJSON();
 
   //   expect(serialization.stereotype).toContain(ClassStereotype.ENUMERATION);

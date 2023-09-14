@@ -9,7 +9,7 @@ import {
 
 describe(`${Property.name} Tests`, () => {
   describe(`Test ${Property.prototype.isStereotypeOneOf.name}()`, () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const date = model.createDatatype();
     const summerFestival = model.createEvent();
     const startDate = summerFestival.createAttribute(date);
@@ -23,7 +23,7 @@ describe(`${Property.name} Tests`, () => {
   });
 
   describe(`Test ${Property.prototype.hasValidStereotype.name}()`, () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const date = model.createDatatype();
     const summerFestival = model.createEvent();
     const startDate = summerFestival.createAttribute(date);
@@ -45,7 +45,7 @@ describe(`${Property.name} Tests`, () => {
   });
 
   describe(`Test ${Property.prototype.toJSON.name}()`, () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const date = model.createDatatype();
     const summerFestival = model.createEvent();
     const startDate = summerFestival.createAttribute(date);
@@ -64,7 +64,7 @@ describe(`${Property.name} Tests`, () => {
   });
 
   describe(`Test ${Property.prototype.setContainer.name}()`, () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const date = model.createDatatype();
     const summerFestival = model.createEvent();
     const startDate = new Property({
@@ -84,7 +84,7 @@ describe(`${Property.name} Tests`, () => {
   });
 
   describe(`Test ${Property.prototype.isAttribute.name}()`, () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const date = model.createDatatype();
     const summerFestival = model.createEvent();
     const startDate = summerFestival.createAttribute(date);
@@ -96,7 +96,7 @@ describe(`${Property.name} Tests`, () => {
   });
 
   describe(`Test ${Property.prototype.isRelationEnd.name}()`, () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const date = model.createDatatype();
     const summerFestival = model.createEvent();
     const startDate = summerFestival.createAttribute(date);
@@ -108,7 +108,7 @@ describe(`${Property.name} Tests`, () => {
   });
 
   describe(`Test ${Property.prototype.hasPropertyType.name}()`, () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const date = model.createDatatype();
     const event = model.createEvent();
     const startDate = event.createAttribute(date);
@@ -124,7 +124,7 @@ describe(`${Property.name} Tests`, () => {
   });
 
   describe(`Test ${Property.prototype.isShared.name}()`, () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const date = model.createDatatype();
     const event = model.createEvent();
     const startDate = event.createAttribute(date);
@@ -142,7 +142,7 @@ describe(`${Property.name} Tests`, () => {
   });
 
   describe(`Test ${Property.prototype.isComposite.name}()`, () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const date = model.createDatatype();
     const event = model.createEvent();
     const startDate = event.createAttribute(date);
@@ -160,7 +160,7 @@ describe(`${Property.name} Tests`, () => {
   });
 
   describe(`Test ${Property.prototype.isAggregationEnd.name}()`, () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const date = model.createDatatype();
     const event = model.createEvent();
     const startDate = event.createAttribute(date);
@@ -179,7 +179,7 @@ describe(`${Property.name} Tests`, () => {
   });
 
   describe(`Test ${Property.prototype.getOppositeEnd.name}()`, () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const date = model.createDatatype();
     const event = model.createEvent();
     const startDate = event.createAttribute(date);
@@ -200,7 +200,7 @@ describe(`${Property.name} Tests`, () => {
   });
 
   describe(`Test ${Property.prototype.getOtherEnds.name}()`, () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const date = model.createDatatype();
     const event = model.createEvent();
     const startDate = event.createAttribute(date);
@@ -217,7 +217,7 @@ describe(`${Property.name} Tests`, () => {
   });
 
   describe(`Test ${Property.prototype.clone.name}()`, () => {
-    const model = new Project().createModel();
+    const proj = new Project();
     const classA = proj.classBuilder().build();
     const propA = classA.createAttribute(classA);
     const propB = propA.clone();

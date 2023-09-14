@@ -19,10 +19,6 @@ export class Note extends ModelElement {
     return this.container as Package;
   }
 
-  public override set container(newContainer: Package | undefined) {
-    super.container = newContainer;
-  }
-
   override toJSON(): any {
     const object: any = {
       type: OntoumlType.NOTE,

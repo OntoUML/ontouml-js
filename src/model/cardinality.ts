@@ -90,7 +90,7 @@ export class Cardinality {
     return bounds && bounds.lowerBound;
   }
 
-  setLowerBoundFromNumber(lowerBound: number): void {
+  setLowerBound(lowerBound: number): void {
     if (lowerBound < 0) {
       throw new Error('Lower bound must be a positive number');
     } else if (lowerBound === CARDINALITY_MAX_AS_NUMBER) {
@@ -117,7 +117,7 @@ export class Cardinality {
     return bounds && bounds.upperBound;
   }
 
-  setUpperBoundFromNumber(upperBound: number): void {
+  setUpperBound(upperBound: number): void {
     if (upperBound < 1) {
       throw new Error(
         'Upper bound must be a positive number greater than zero'
@@ -133,9 +133,10 @@ export class Cardinality {
     const { lowerBound, upperBound } = this.getCardinalityBoundsAsNumbers();
     return (
       this.isCardinalityStringValid() &&
-      lowerBound <= upperBound &&
+      lowerBound >= 0 &&
       lowerBound < CARDINALITY_MAX_AS_NUMBER &&
-      upperBound > 0
+      upperBound > 0 &&
+      lowerBound <= upperBound
     );
   }
 
@@ -163,7 +164,7 @@ export class Cardinality {
     return this.value || null;
   }
 
-  setCardinality(lowerBound: number, upperBound?: number): void {
+  setBounds(lowerBound: number, upperBound?: number): void {
     if (lowerBound < 0) {
       throw new Error(
         'Lower bound must be greater than or equal to 0. Supplied value: ' +
@@ -239,19 +240,19 @@ export class Cardinality {
     );
   }
 
-  setZeroToOne(): void {
+  setAsZeroToOne(): void {
     this.value = CardinalityValues.ZERO_TO_ONE;
   }
 
-  setZeroToMany(): void {
+  setAsZeroToMany(): void {
     this.value = CardinalityValues.ZERO_TO_MANY;
   }
 
-  setOneToOne(): void {
+  setAsOneToOne(): void {
     this.value = CardinalityValues.ONE_TO_ONE;
   }
 
-  setOneToMany(): void {
+  setAsOneToMany(): void {
     this.value = CardinalityValues.ONE_TO_MANY;
   }
 }
