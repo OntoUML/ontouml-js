@@ -13,37 +13,37 @@ describe('MultilingualText Tests', () => {
   // product.name.addAll({ 'en-US': 'Product', 'pt-BR': 'Produto' });
 
   it('Test null/undefined text', () => {
-    expect(text.getText()).toBe(null);
+    expect(text.get()).toBe(null);
   });
 
   it('Test string text', () => {
-    text.addText('Pessoa', 'pt');
-    expect(text.getText('pt')).toBe('Pessoa');
+    text.add('Pessoa', 'pt');
+    expect(text.get('pt')).toBe('Pessoa');
   });
 
   it('Test get default language', () => {
-    text.addText('Person');
-    expect(text.getText()).toBe('Person');
+    text.add('Person');
+    expect(text.get()).toBe('Person');
   });
 
   it('Test get specific language if possible', () => {
-    text.addText('Person', 'en');
-    text.addText('Pessoa', 'pt');
-    expect(text.getText()).toBe('Person');
+    text.add('Person', 'en');
+    text.add('Pessoa', 'pt');
+    expect(text.get()).toBe('Person');
 
     MultilingualText.languagePreference = ['pt', 'en'];
-    expect(text.getText()).toBe('Pessoa');
+    expect(text.get()).toBe('Pessoa');
   });
 
   it("Test add text using invalid tag fallbacks to default language ('en')", () => {
-    expect(() => text.addText('Person', 'xx')).not.toThrow();
-    expect(text.getText()).toBe('Person');
+    expect(() => text.add('Person', 'xx')).not.toThrow();
+    expect(text.get()).toBe('Person');
   });
 
   it("Test get text using invalid tag fallbacks to default language ('en')", () => {
     let value;
-    text.addText('Person', 'en');
-    expect(() => (value = text.getText('xx'))).not.toThrow();
+    text.add('Person', 'en');
+    expect(() => (value = text.get('xx'))).not.toThrow();
     expect(value).toBe('Person');
   });
 });

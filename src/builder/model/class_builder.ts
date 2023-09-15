@@ -317,7 +317,7 @@ export class ClassBuilder extends ClassifierBuilder<
    */
   historicalRoleMixin(): ClassBuilder {
     this._stereotype = HISTORICAL_ROLE_MIXIN;
-    this.restrictedTo(Nature.SITUATION);
+    this.restrictedTo(Nature.FUNCTIONAL_COMPLEX);
     this.abstract();
     return this;
   }

@@ -21,7 +21,7 @@ export abstract class NamedElementBuilder<
   }
 
   name(value: string, language: string = MultilingualText.defaultLanguage): B {
-    this._name.addText(value, language);
+    this._name.add(value, language);
     return this as unknown as B;
   }
 
@@ -29,7 +29,7 @@ export abstract class NamedElementBuilder<
     value: string,
     language: string = MultilingualText.defaultLanguage
   ): B {
-    this._description.addText(value, language);
+    this._description.add(value, language);
     return this as unknown as B;
   }
 }

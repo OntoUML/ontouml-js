@@ -13,37 +13,42 @@ import {
 describe('Serialization tests', () => {
   it('Project serialization', () => {
     const project = new Project();
-    project.addName('Name');
+    project.name.add('Name');
 
-    const model = project.createModel();
-    model.addName('Model');
+    const model = project.packageBuilder().name('Model').build();
 
-    const agent = model.createCategory('Agent');
-    const person = model.createKind('Person');
-    const organization = model.createKind('Organization');
-    const text = model.createDatatype('Text');
+    const agent = model.classBuilder().category().name('Agent').build();
+    const person = model.classBuilder().kind().name('Person').build();
+    const organization = model
+      .classBuilder()
+      .kind()
+      .name('Organization')
+      .build();
+    const text = model.classBuilder().datatype().name('Text').build();
 
-    agent.createAttribute(text, 'name');
-    person.createAttribute(text, 'surname');
+    agent.attributeBuilder().type(text).name('name').build();
+    person.attributeBuilder().type(text).name('surname').build();
 
-    const worksFor = model.createMediation(person, organization, 'works-for');
+    const worksFor = model
+      .binaryRelationBuilder()
+      .source(person)
+      .target(organization)
+      .name('works-for')
+      .material()
+      .build();
 
-    const agentIntoPerson = model.createGeneralization(
-      agent,
-      person,
-      'agentIntoPerson'
-    );
-    const agentIntoOrganization = model.createGeneralization(
-      agent,
-      organization,
-      'agentIntoOrganization'
-    );
+    const agentIntoPerson = person.addParent(agent);
+    agentIntoPerson.name.add('agentIntoPerson');
 
-    const agentSet = model.createPartition(
-      [agentIntoPerson, agentIntoOrganization],
-      null,
-      'agentsSet'
-    );
+    const agentIntoOrganization = organization.addParent(agent);
+    agentIntoOrganization.name.add('agentIntoOrganization');
+
+    const agentSet = model
+      .generalizationSetBuilder()
+      .generalizations(agentIntoPerson, agentIntoOrganization)
+      .partition()
+      .name('agentsSet')
+      .build();
 
     const diagram = project.createDiagram();
 
@@ -130,16 +135,21 @@ describe('Serialization tests', () => {
   // });
 
   describe(`Test serialization.${serializationUtils.parse.name}()`, () => {
+    let proj: Project;
+
+    beforeEach(() => {
+      proj = new Project();
+    });
+
     it(`Test ${Project.name} de-serialization`, () => {
-      const project = new Project();
-      const serialization = JSON.stringify(project);
+      const serialization = JSON.stringify(proj);
 
       expect(() => serializationUtils.parse(serialization)).not.toThrow();
-      expect(serializationUtils.parse(serialization)).toEqual(project);
+      expect(serializationUtils.parse(serialization)).toEqual(proj);
     });
 
     it(`Test ${Package.name} de-serialization`, () => {
-      const pkg = new Package();
+      const pkg = proj.packageBuilder().build();
       const serialization = JSON.stringify(pkg);
 
       expect(() => serializationUtils.parse(serialization)).not.toThrow();
@@ -147,7 +157,7 @@ describe('Serialization tests', () => {
     });
 
     it(`Test ${Class.name} de-serialization`, () => {
-      const _class = new Class({ order: 5 });
+      const _class = proj.classBuilder().order(5).build();
       const serialization = JSON.stringify(_class);
 
       expect(() => serializationUtils.parse(serialization)).not.toThrow();
@@ -155,16 +165,16 @@ describe('Serialization tests', () => {
     });
 
     it(`Test ${Generalization.name} de-serialization`, () => {
-      const pkg = new Package({ id: 'pkg_id' });
-      const agent = new Class({ id: 'agent_id' });
-      const person = new Class({ id: 'person_id' });
-      const gen = new Generalization({
-        id: 'gen_id',
-        general: agent,
-        specific: person
-      });
+      const pkg = proj.packageBuilder().id('pkg_id').build();
+      const agent = pkg.classBuilder().id('agent_id').build();
+      const person = pkg.classBuilder().id('person_id').build();
 
-      pkg.contents = [agent, person, gen];
+      pkg
+        .generalizationBuilder()
+        .id('gen_id')
+        .general(agent)
+        .specific(person)
+        .build();
 
       const serialization = JSON.stringify(pkg);
 
@@ -173,13 +183,20 @@ describe('Serialization tests', () => {
     });
 
     it(`Test ${GeneralizationSet.name} de-serialization`, () => {
-      const pkg = new Package();
-      const agent = new Class();
-      const person = new Class();
-      const gen = new Generalization({ general: agent, specific: person });
-      const genset = new GeneralizationSet({ generalizations: [gen] });
+      const pkg = proj.packageBuilder().build();
+      const agent = pkg.classBuilder().build();
+      const person = pkg.classBuilder().build();
 
-      pkg.contents = [agent, person, gen, genset];
+      const gen = pkg
+        .generalizationBuilder()
+        .general(agent)
+        .specific(person)
+        .build();
+
+      const genset = pkg
+        .generalizationSetBuilder()
+        .generalizations(gen)
+        .build();
 
       const serialization = JSON.stringify(pkg);
 
@@ -188,31 +205,32 @@ describe('Serialization tests', () => {
     });
 
     it(`Test ${Property.name} de-serialization`, () => {
-      const _class = new Class();
-      const prop = new Property({ propertyType: _class });
+      const clazz = proj.classBuilder().build();
+      clazz.attributeBuilder().type(clazz).build();
 
-      _class.properties = [prop];
-
-      const serialization = JSON.stringify(_class);
+      const serialization = JSON.stringify(clazz);
 
       expect(() => serializationUtils.parse(serialization)).not.toThrow();
-      expect(serializationUtils.parse(serialization)).toEqual(_class);
+      expect(serializationUtils.parse(serialization)).toEqual(clazz);
     });
 
     it(`Test ${Literal.name} de-serialization`, () => {
-      const _class = new Class();
-      const lit = new Literal();
+      const clazz = proj.classBuilder().build();
+      const lit = clazz.literalBuilder().build();
 
-      _class.literals = [lit];
-
-      const serialization = JSON.stringify(_class);
+      const serialization = JSON.stringify(clazz);
 
       expect(() => serializationUtils.parse(serialization)).not.toThrow();
-      expect(serializationUtils.parse(serialization)).toEqual(_class);
+      expect(serializationUtils.parse(serialization)).toEqual(clazz);
     });
 
     it(`Test ${Relation.name} de-serialization`, () => {
-      const relation = new Relation();
+      const clazz = proj.classBuilder().build();
+      const relation = proj
+        .binaryRelationBuilder()
+        .source(clazz)
+        .target(clazz)
+        .build();
 
       const serialization = JSON.stringify(relation);
 
@@ -221,43 +239,40 @@ describe('Serialization tests', () => {
     });
 
     it(`Test full project de-serialization`, () => {
-      const project = new Project();
-      project.addName('MyProject');
+      proj.name.add('MyProject');
 
-      const model = project.createModel();
-      model.addName('Model');
+      const model = proj.packageBuilder().build();
+      model.name.add('Model');
 
-      const agent = model.createCategory('Agent');
-      const person = model.createKind('Person');
-      const organization = model.createKind('Organization');
-      const text = model.createDatatype('Text');
+      const agent = model.classBuilder().category().name('Agent').build();
+      const person = model.classBuilder().kind().name('Person').build();
+      const org = model.classBuilder().kind().name('Organization').build();
+      const text = model.classBuilder().datatype().name('Text').build();
 
-      agent.createAttribute(text, 'name');
-      person.createAttribute(text, 'surname');
+      agent.attributeBuilder().type(text).name('name').build();
+      person.attributeBuilder().type(text).name('surname').build();
 
-      model.createMaterialRelation(person, organization, 'works-for');
+      model
+        .binaryRelationBuilder()
+        .material()
+        .source(person)
+        .target(org)
+        .name('works-for')
+        .build();
 
-      const agentIntoPerson = model.createGeneralization(
-        agent,
-        person,
-        'agentIntoPerson'
-      );
-      const agentIntoOrganization = model.createGeneralization(
-        agent,
-        organization,
-        'agentIntoOrganization'
-      );
+      const agentIntoPerson = person.addParent(agent);
+      const agentIntoOrganization = org.addParent(agent);
 
-      model.createPartition(
-        [agentIntoPerson, agentIntoOrganization],
-        null,
-        'agentsSet'
-      );
+      model
+        .generalizationSetBuilder()
+        .generalizations(agentIntoPerson, agentIntoOrganization)
+        .partition()
+        .name('agentsSet');
 
-      const serialization = JSON.stringify(project);
+      const serialization = JSON.stringify(proj);
 
       expect(() => serializationUtils.parse(serialization)).not.toThrow();
-      expect(serializationUtils.parse(serialization)).toEqual(project);
+      expect(serializationUtils.parse(serialization)).toEqual(proj);
     });
   });
 });

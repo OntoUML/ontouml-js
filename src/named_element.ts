@@ -66,7 +66,7 @@ export abstract class NamedElement extends OntoumlElement {
   }
 
   getNameOrId(language?: string): string {
-    return this.name.getText(language) || this.id;
+    return this.name.get(language) || this.id;
   }
 
   override toJSON(): any {

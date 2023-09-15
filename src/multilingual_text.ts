@@ -13,10 +13,10 @@ export class MultilingualText {
   private textMap: Map<string, string> = new Map<string, string>();
 
   constructor(value?: string, language?: string) {
-    if (value != null) this.addText(value, language);
+    if (value != null) this.add(value, language);
   }
 
-  getText(language?: string): string {
+  get(language?: string): string {
     if (language) {
       assertValidTag(language);
 
@@ -38,7 +38,7 @@ export class MultilingualText {
     throw new Error('No textual value defined.');
   }
 
-  addText(
+  add(
     value: string,
     language: string = MultilingualText.defaultLanguage
   ): void {
@@ -48,7 +48,7 @@ export class MultilingualText {
 
   addAll(obj: { [key: string]: string }) {
     Object.entries(obj).forEach(([value, language]) => {
-      this.addText(value, language);
+      this.add(value, language);
     });
   }
 

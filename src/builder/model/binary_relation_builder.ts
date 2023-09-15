@@ -52,6 +52,14 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * - `isDerived: false,`
    */
   override build(): BinaryRelation {
+    if (!this._source) {
+      throw new Error('Cannot build a relation without a source.');
+    }
+
+    if (!this._target) {
+      throw new Error('Cannot build a relation without a target.');
+    }
+
     this.element = new BinaryRelation(
       this.project,
       this._source!,
@@ -61,12 +69,12 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
     this.element.getSourceEnd().cardinality.value = this._sourceCardinality;
     this.element.getSourceEnd().isReadOnly = this._sourceIsReadOnly;
     this.element.getSourceEnd().isOrdered = this._sourceIsOrdered;
-    this.element.getSourceEnd().aggregationKind = this._aggregationKind;
+    this.element.getSourceEnd().aggregationKind = AggregationKind.NONE;
 
     this.element.getTargetEnd().cardinality.value = this._targetCardinality;
     this.element.getTargetEnd().isReadOnly = this._targetIsReadOnly;
     this.element.getTargetEnd().isOrdered = this._targetIsOrdered;
-    this.element.getSourceEnd().aggregationKind = AggregationKind.NONE;
+    this.element.getTargetEnd().aggregationKind = this._aggregationKind;
 
     super.build();
     return this.element;
@@ -279,7 +287,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    */
   subCollectionOf(): BinaryRelationBuilder {
     this._stereotype = SUBCOLLECTION_OF;
-    this.aggregation();
+    this.composition();
     this.sourceCardinality('1');
     this.targetCardinality('1..*');
     return this;

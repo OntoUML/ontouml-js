@@ -241,7 +241,7 @@ export class Package extends ModelElement {
     let rel = new NaryRelation(this.project!, members);
 
     if (name) {
-      rel.name.addText(name);
+      rel.name.add(name);
     }
 
     if (stereotype && stereotype != RelationStereotype.MATERIAL) {
@@ -265,7 +265,7 @@ export class Package extends ModelElement {
     let rel = new BinaryRelation(this.project!, source, target);
 
     if (name) {
-      rel.name.addText(name);
+      rel.name.add(name);
     }
 
     if (stereotype) {

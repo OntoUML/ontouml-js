@@ -4,7 +4,7 @@ it('Test the example presented in the "Usage" section of the README file', () =>
   expect(() => {
     // Every OntoUML element can be created from a constructor that can receive a partial object as references for its creation
     const project = new Project(); // creates an OntoUML project
-    project.name.addText('My Project');
+    project.name.add('My Project');
 
     // Projects contain an instance of Package  dubbed model that contains all model elements in the project
     // Container elements, e.g., projects and packages, also serve as factories for their contents
@@ -47,9 +47,9 @@ it('Test the example presented in the "Usage" section of the README file', () =>
       .build();
 
     // the API is constantly updated to include helpful methods to facilitate building OntoUML models
-    studiesAt.getTargetEnd().name.addText('school');
+    studiesAt.getTargetEnd().name.add('school');
     studiesAt.getTargetEnd().cardinality.setAsZeroToMany();
-    studiesAt.getSourceEnd().name.addText('student');
+    studiesAt.getSourceEnd().name.add('student');
     studiesAt.getSourceEnd().cardinality.setAsOneToMany();
 
     enrollment.attributeBuilder().type(date).name('enrollment date').build();

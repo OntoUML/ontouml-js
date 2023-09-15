@@ -6,12 +6,12 @@ export class Resource {
   URI?: string;
 
   getName(language?: string): string {
-    return this.name.getText(language);
+    return this.name.get(language);
   }
 
   addName(value: string, language?: string): void {
     if (!this.name) this.name = new MultilingualText();
-    this.name.addText(value, language);
+    this.name.add(value, language);
   }
 
   setName(value: string | MultilingualText, language?: string): void {
