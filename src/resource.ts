@@ -5,7 +5,7 @@ export class Resource {
   private name: MultilingualText = new MultilingualText();
   URI?: string;
 
-  getName(language?: string): string {
+  getName(language?: string): string | null {
     return this.name.get(language);
   }
 

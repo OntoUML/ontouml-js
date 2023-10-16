@@ -27,6 +27,12 @@ describe('Class: test ancestor-related query methods', () => {
 
   describe(`Test ${Class.prototype.getParents.name}()`, () => {
     it('should return an empty array for «mixin» thing', () => {
+      const x = `:c1 a ontouml:Class . 
+                 :c2 a ontouml:Class . 
+                 :g a ontouml:Generalization ; 
+                    ontouml:specific :c1 ; +
+                    ontouml:general :c2 . `;
+
       const parents = thing.getParents();
       expect(parents).toBeEmpty();
     });

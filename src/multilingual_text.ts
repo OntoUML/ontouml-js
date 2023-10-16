@@ -16,7 +16,13 @@ export class MultilingualText {
     if (value != null) this.add(value, language);
   }
 
-  get(language?: string): string {
+  /**
+   *
+   * If no language is provided, returns value based on the static field languagePreference.
+   * If no such values exist, returns the first value it finds.
+   * If no values are defined, returns null.
+   */
+  get(language?: string): string | null {
     if (language) {
       assertValidTag(language);
 
@@ -35,7 +41,7 @@ export class MultilingualText {
 
     if (this.textMap.size > 0) return [...this.textMap.entries()][0][1];
 
-    throw new Error('No textual value defined.');
+    return null;
   }
 
   add(
