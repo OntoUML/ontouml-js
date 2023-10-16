@@ -2,67 +2,96 @@ import {
   Class,
   Relation,
   Property,
-  ClassStereotype,
+  Project,
   PropertyStereotype,
-  RelationStereotype
+  RelationStereotype,
+  BinaryRelation
 } from '../../src';
 
-describe('Decoratable Interface Tests', () => {
-  it('Class with no stereotypes', () => {
-    const _class = new Class();
-    expect(_class.stereotype).toBeNull();
-    expect(_class.hasValidStereotype()).not.toBeTruthy();
+describe('hasValidStereotype()', () => {
+  let proj: Project;
+  let c: Class;
+  let r: BinaryRelation;
+  let p: Property;
+
+  beforeEach(() => {
+    proj = new Project();
   });
 
-  it('Class with single stereotype', () => {
-    // Invalid stereotype
-    const _class = new Class({ stereotype: 'asd' as ClassStereotype });
-    expect(_class.stereotype).toEqual('asd');
-    expect(_class.hasValidStereotype()).not.toBeTruthy();
-
-    // Valid stereotype
-    _class.stereotype = ClassStereotype.KIND;
-    expect(_class.stereotype).toEqual(ClassStereotype.KIND);
-    expect(_class.hasValidStereotype()).toBeTruthy();
+  it('should return false for a class without a stereotype', () => {
+    c = proj.classBuilder().build();
+    expect(c.hasValidStereotype()).toBeFalse();
   });
 
-  it('Relation with no stereotypes', () => {
-    const relation = new Relation();
-    expect(relation.stereotype).toBeNull();
-    expect(relation.hasValidStereotype()).toBeTruthy();
+  it('should return true for a class without a stereotype if `allowsTrue = true`', () => {
+    c = proj.classBuilder().build();
+    expect(c.hasValidStereotype(true)).toBeTrue();
   });
 
-  it('Relation with single stereotype', () => {
-    // Invalid stereotype
-    const relation = new Relation({
-      stereotype: 'asd' as RelationStereotype
-    });
-    expect(relation.stereotype).toEqual('asd');
-    expect(relation.hasValidStereotype()).not.toBeTruthy();
-
-    // Valid stereotype
-    relation.stereotype = RelationStereotype.MATERIAL;
-    expect(relation.stereotype).toEqual(RelationStereotype.MATERIAL);
-    expect(relation.hasValidStereotype()).toBeTruthy();
+  it('should return false for a class with a custom stereotype', () => {
+    c = proj.classBuilder().stereotype('asd').build();
+    expect(c.hasValidStereotype()).toBeFalse();
   });
 
-  it('Property with no stereotypes', () => {
-    const property = new Property();
-    expect(property.stereotype).toBeNull();
-    expect(property.hasValidStereotype()).toBeTruthy();
+  it('should return true for a class stereotyped as «kind»', () => {
+    c = proj.classBuilder().kind().build();
+    expect(c.hasValidStereotype()).toBeTrue();
   });
 
-  it('Property with single stereotype', () => {
-    // Invalid stereotype
-    const property = new Property({
-      stereotype: 'asd' as PropertyStereotype
-    });
-    expect(property.stereotype).toEqual('asd');
-    expect(property.hasValidStereotype()).not.toBeTruthy();
+  it('should return false for a relation without a stereotype', () => {
+    c = proj.classBuilder().build();
+    r = proj.binaryRelationBuilder().source(c).target(c).build();
+    expect(r.hasValidStereotype()).toBeFalse();
+  });
 
-    // Valid stereotype
-    property.stereotype = PropertyStereotype.BEGIN;
-    expect(property.stereotype).toEqual(PropertyStereotype.BEGIN);
-    expect(property.hasValidStereotype()).toBeTruthy();
+  it('should return true for a relation without a stereotype if `allowsTrue = true`', () => {
+    c = proj.classBuilder().build();
+    r = proj.binaryRelationBuilder().source(c).target(c).build();
+    expect(r.hasValidStereotype(true)).toBeTrue();
+  });
+
+  it('should return false for a relation with a custom stereotype', () => {
+    c = proj.classBuilder().build();
+    r = proj
+      .binaryRelationBuilder()
+      .source(c)
+      .target(c)
+      .stereotype('my-stereotype')
+      .build();
+
+    expect(r.hasValidStereotype()).toBeFalse();
+  });
+
+  it('should return true for a relation stereotyped as «material»', () => {
+    c = proj.classBuilder().build();
+    r = proj.binaryRelationBuilder().source(c).target(c).material().build();
+
+    expect(r.hasValidStereotype()).toBeTrue();
+  });
+
+  it('should return false for a property without a stereotype', () => {
+    c = proj.classBuilder().build();
+    p = c.attributeBuilder().build();
+    expect(p.hasValidStereotype()).toBeFalse();
+  });
+
+  it('should return true for a property without a stereotype if `allowsTrue = true`', () => {
+    c = proj.classBuilder().build();
+    p = c.attributeBuilder().build();
+    expect(p.hasValidStereotype(true)).toBeTrue();
+  });
+
+  it('should return false for a property with a custom stereotype', () => {
+    c = proj.classBuilder().build();
+    p = c.attributeBuilder().stereotype('asd').build();
+
+    expect(p.hasValidStereotype()).toBeFalse();
+  });
+
+  it('should return true for a property stereotyped as «begin»', () => {
+    c = proj.classBuilder().build();
+    p = c.attributeBuilder().begin().build();
+
+    expect(p.hasValidStereotype()).toBeTrue();
   });
 });
