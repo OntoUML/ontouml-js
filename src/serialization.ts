@@ -1,25 +1,4 @@
-import {
-  Project,
-  OntoumlType,
-  OntoumlElement,
-  ModelElement,
-  Package,
-  Class,
-  Relation,
-  Generalization,
-  GeneralizationSet,
-  Property,
-  Literal,
-  Diagram,
-  ClassView,
-  BinaryRelationView,
-  GeneralizationView,
-  GeneralizationSetView,
-  PackageView,
-  Rectangle,
-  Text,
-  Path
-} from '.';
+import { Project, OntoumlType, OntoumlElement, ModelElement } from '.';
 
 function getElementMap(element: OntoumlElement): Map<string, OntoumlElement> {
   const map: Map<string, OntoumlElement> = new Map();

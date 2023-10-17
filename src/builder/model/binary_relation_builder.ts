@@ -66,15 +66,19 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
       this._target!
     );
 
-    this.element.getSourceEnd().cardinality.value = this._sourceCardinality;
-    this.element.getSourceEnd().isReadOnly = this._sourceIsReadOnly;
-    this.element.getSourceEnd().isOrdered = this._sourceIsOrdered;
-    this.element.getSourceEnd().aggregationKind = AggregationKind.NONE;
+    const sourceEnd = this.element.getSourceEnd();
+    sourceEnd.cardinality.value = this._sourceCardinality;
+    sourceEnd.isReadOnly = this._sourceIsReadOnly;
+    sourceEnd.isOrdered = this._sourceIsOrdered;
+    sourceEnd.aggregationKind = AggregationKind.NONE;
+    this.project.add(sourceEnd);
 
-    this.element.getTargetEnd().cardinality.value = this._targetCardinality;
-    this.element.getTargetEnd().isReadOnly = this._targetIsReadOnly;
-    this.element.getTargetEnd().isOrdered = this._targetIsOrdered;
-    this.element.getTargetEnd().aggregationKind = this._aggregationKind;
+    const targetEnd = this.element.getTargetEnd();
+    targetEnd.cardinality.value = this._targetCardinality;
+    targetEnd.isReadOnly = this._targetIsReadOnly;
+    targetEnd.isOrdered = this._targetIsOrdered;
+    targetEnd.aggregationKind = this._aggregationKind;
+    this.project.add(targetEnd);
 
     super.build();
     return this.element;

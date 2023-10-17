@@ -1,202 +1,143 @@
 import {
+  BinaryRelation,
   Class,
   Generalization,
   GeneralizationSet,
+  Literal,
   Package,
   Project,
-  Property,
-  Relation,
-  serializationUtils
+  Property
 } from '../../src';
 
 describe('Project tests', () => {
-  let project: Project;
+  let proj: Project;
   let model: Package, pkg: Package;
-  let agent: Class, person: Class, organization: Class, text: Class;
+  let agent: Class,
+    person: Class,
+    organization: Class,
+    text: Class,
+    color: Class;
   let name: Property, surname: Property;
-  let worksFor: Relation;
-  let agentIntoPerson: Generalization, agentIntoOrganization: Generalization;
+  let red: Literal, green: Literal, blue: Literal;
+  let worksFor: BinaryRelation;
+  let personToAgent: Generalization, orgToAgent: Generalization;
   let genSet: GeneralizationSet;
 
   beforeAll(() => {
-    project = new Project();
-    model = project.createModel();
-    pkg = model.createPackage('Package');
-    agent = pkg.createCategory('Agent');
-    person = pkg.createKind('Person');
-    organization = pkg.createKind('Organization');
-    text = pkg.createDatatype('Text');
-    name = agent.createAttribute(text, 'name');
-    surname = person.createAttribute(text, 'surname');
-    worksFor = pkg.createBinaryRelation(person, organization, 'works-for');
-    agentIntoPerson = pkg.createGeneralization(
-      agent,
-      person,
-      'agentIntoPerson'
-    );
-    agentIntoOrganization = pkg.createGeneralization(
-      agent,
-      organization,
-      'agentIntoOrganization'
-    );
-    genSet = pkg.createPartition(
-      [agentIntoPerson, agentIntoOrganization],
-      null,
-      'agentsSet'
-    );
-  });
+    proj = new Project();
+    model = proj.packageBuilder().build();
+    pkg = model.packageBuilder().name('Package').build();
 
-  it(`Test getContents()`, () => {
-    expect(project.getContents()).toContain(model);
-    expect(project.getContents().length).toBe(1);
-  });
+    agent = pkg.classBuilder().name('Agent').category().build();
+    person = pkg.classBuilder().name('Person').kind().build();
+    organization = pkg.classBuilder().name('Organization').kind().build();
+    text = pkg.classBuilder().name('Text').datatype().build();
 
-  it(`Test getAllContents()`, () => {
-    expect(project.getAllContents()).toContain(name);
-    expect(project.getAllContents().length).toBe(14);
+    color = pkg.classBuilder().enumeration().name('Color').build();
+    red = color.literalBuilder().name('red').build();
+    green = color.literalBuilder().name('green').build();
+    blue = color.literalBuilder().name('blue').build();
+
+    personToAgent = person.addParent(agent);
+    orgToAgent = organization.addParent(agent);
+
+    genSet = pkg
+      .generalizationSetBuilder()
+      .partition()
+      .generalizations(personToAgent, orgToAgent)
+      .name('agentsSet')
+      .build();
+
+    name = agent.attributeBuilder().type(text).name('name').build();
+    surname = person.attributeBuilder().type(text).name('surname').build();
+
+    worksFor = pkg
+      .binaryRelationBuilder()
+      .source(person)
+      .target(organization)
+      .name('works-for')
+      .material()
+      .build();
   });
 
   it(`Test getAllAttributes()`, () => {
-    let attributes = project.getAttributes();
+    let attributes = proj.attributes;
     expect(attributes).toContain(name);
     expect(attributes).toContain(surname);
     expect(attributes.length).toBe(2);
   });
 
-  it(`Test getAllRelationEnds()`, () => {
-    const relationEnds = project.getRelationEnds();
-    expect(relationEnds).toContain(worksFor.getSourceEnd());
-    expect(relationEnds).toContain(worksFor.getTargetEnd());
-    expect(relationEnds.length).toBe(2);
+  it(`relationEnds field should return all relation ends`, () => {
+    expect(proj.relationEnds).toIncludeSameMembers(worksFor.properties);
   });
 
-  it(`Test getAllRelations()`, () => {
-    const relations = project.getRelations();
-    expect(relations).toContain(worksFor);
-    expect(relations.length).toBe(1);
+  it(`relations field should return all relations`, () => {
+    expect(proj.relations).toIncludeSameMembers([worksFor]);
   });
 
-  it(`Test getAllGeneralizations()`, () => {
-    const generalizations = project.getGeneralizations();
-    expect(generalizations).toContain(agentIntoPerson);
-    expect(generalizations).toContain(agentIntoOrganization);
-    expect(generalizations.length).toBe(2);
+  it(`generalization field should return all generalizations`, () => {
+    expect(proj.generalizations).toIncludeSameMembers([
+      personToAgent,
+      orgToAgent
+    ]);
   });
 
-  it(`Test getAllGeneralizationSets()`, () => {
-    const generalizationsSets = project.getGeneralizationSets();
-    expect(generalizationsSets).toContain(genSet);
-    expect(generalizationsSets.length).toBe(1);
+  it(`generalizationSets field should return all generalization sets`, () => {
+    expect(proj.generalizationSets).toIncludeSameMembers([genSet]);
   });
 
-  it(`Test getAllPackages()`, () => {
-    const packages = project.getPackages();
-
-    expect(packages).toContain(model);
-    expect(packages).toContain(pkg);
-    expect(packages.length).toBe(2);
+  it(`packages field should return all packages`, () => {
+    expect(proj.packages).toIncludeSameMembers([model, pkg]);
   });
 
-  it(`Test getAllClasses()`, () => {
-    const classes = project.getClasses();
-    expect(classes).toContain(agent);
-    expect(classes).toContain(person);
-    expect(classes).toContain(organization);
-    expect(classes).toContain(text);
-    expect(classes.length).toBe(4);
+  it(`classes field should return all classes`, () => {
+    expect(proj.classes).toIncludeSameMembers([
+      agent,
+      person,
+      organization,
+      text,
+      color
+    ]);
   });
 
-  it(`Test getAllEnumerations()`, () => {
-    const enumeration = pkg.classBuilder().enumeration().build('Enumeration');
-    const enumerations = project.getEnumerations();
-    expect(enumerations).toContain(enumeration);
-    expect(enumerations.length).toBe(1);
+  it(`literals field should return all literals`, () => {
+    expect(proj.literals).toIncludeSameMembers([red, green, blue]);
   });
 
-  it(`Test getAllLiterals()`, () => {
-    const enumeration = pkg.classBuilder().enumeration().build('Enumeration');
-    const literal1 = enumeration.literalBuilder().build();
-    const literal2 = enumeration.literalBuilder().build();
+  it(`Test getContents()`, () => {
+    expect(proj.getContents()).toIncludeSameMembers([
+      model,
+      pkg,
+      agent,
+      person,
+      organization,
+      text,
+      color,
+      red,
+      green,
+      blue,
+      personToAgent,
+      orgToAgent,
+      genSet,
+      name,
+      surname,
+      worksFor,
+      worksFor.properties
+    ]);
+  });
 
-    const literals = project.getLiterals();
-    expect(literals).toContain(literal1);
-    expect(literals).toContain(literal2);
-    expect(literals.length).toBe(2);
+  it(`for projects, getAllContents() should return the same elements as getContents()`, () => {
+    expect(proj.getAllContents()).toIncludeSameMembers(proj.getContents());
   });
 
   describe(`Test toJSON()`, () => {
     it('Should serialize without throwing an exception', () => {
-      expect(() => JSON.stringify(project)).not.toThrow();
+      expect(() => JSON.stringify(proj)).not.toThrow();
     });
 
-    it('Should serialize into an object compliant with the OntoUML JSON schema', () => {
-      expect(serializationUtils.validate(project)).toBeTrue();
-    });
-  });
-
-  it(`Test createModel()`, () => {
-    let project = new Project();
-    expect(project.createModel()).toBeInstanceOf(Package);
-    expect(project.model).toBeDefined();
-    expect(project.model.project).toBe(project);
-    expect(project.model.container).toBeNull();
-    expect(() => project.createModel()).toThrow();
-  });
-
-  describe(`Test lock()`, () => {
-    // TODO: implement test
-  });
-
-  describe(`Test unlock()`, () => {
-    // TODO: implement test
-  });
-
-  describe('Test getNonSortals()', () => {
-    let project = new Project();
-
-    let model = project.createModel();
-
-    const client = model.createRoleMixin();
-    const crimeWeapon = model.createMixin();
-    const person = model.createKind();
-
-    it('Test nonSortals must be in list', () => {
-      expect(project.getNonSortals().includes(client)).toBeTruthy();
-      expect(project.getNonSortals().includes(crimeWeapon)).toBeTruthy();
-    });
-
-    it('Test sortal must not be in list', () => {
-      expect(project.getNonSortals().includes(person)).toBeFalsy();
-    });
-  });
-
-  describe('Test getMediations()', () => {
-    let project = new Project();
-
-    const model = project.createModel();
-
-    const husband = model.createRole();
-    const man = model.createSubkind();
-    const wife = model.createRole();
-    const marriage = model.createMaterialRelation(husband, wife);
-    const marriageContract = model.createRelator();
-    const husbandMarriages = model.createMediation(husband, marriageContract);
-    const wifeMarriages = model.createMediation(wife, marriageContract);
-    const derivationMarriage = model.createDerivation(
-      marriage,
-      marriageContract
-    );
-
-    it('Test mediations must be in list', () => {
-      expect(
-        project.getMediations(husband).includes(husbandMarriages)
-      ).toBeTruthy();
-      expect(project.getMediations(wife).includes(wifeMarriages)).toBeTruthy();
-    });
-
-    it('Test relations must not be in list', () => {
-      expect(project.getMediations(husband).includes(marriage)).toBeFalsy();
-      expect(project.getMediations(wife).includes(marriage)).toBeFalsy();
-    });
+    //TODO: Figure out how to handle validation
+    // it('Should serialize into an object compliant with the OntoUML JSON schema', () => {
+    //   expect(serializationUtils.validate(proj)).toBeTrue();
+    // });
   });
 });

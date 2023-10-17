@@ -3,10 +3,7 @@ import {
   Class,
   Generalization,
   GeneralizationSet,
-  Package,
-  Project,
-  Relation,
-  serializationUtils
+  Project
 } from '../../src';
 
 describe(`GeneralizationSet Tests`, () => {

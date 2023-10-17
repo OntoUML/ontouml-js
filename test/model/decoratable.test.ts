@@ -1,12 +1,4 @@
-import {
-  Class,
-  Relation,
-  Property,
-  Project,
-  PropertyStereotype,
-  RelationStereotype,
-  BinaryRelation
-} from '../../src';
+import { Class, Property, Project, BinaryRelation } from '../../src';
 
 describe('hasValidStereotype()', () => {
   let proj: Project;
