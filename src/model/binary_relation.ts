@@ -19,10 +19,24 @@ export class BinaryRelation extends Relation {
     super(project, [source, target]);
   }
 
-  assertTypedSource() {
-    const source = this.getSource();
+  public get sourceEnd(): Property {
+    return this._properties[0];
+  }
 
-    if (!source) {
+  public get targetEnd(): Property {
+    return this._properties[1];
+  }
+
+  public get source(): Classifier<any, any> | undefined {
+    return this.sourceEnd.propertyType;
+  }
+
+  public get target(): Classifier<any, any> | undefined {
+    return this.targetEnd.propertyType;
+  }
+
+  assertTypedSource() {
+    if (!this.source) {
       throw new Error(
         'The type of the source end of the relation is undefined.'
       );
@@ -36,9 +50,7 @@ export class BinaryRelation extends Relation {
   }
 
   assertTypedTarget() {
-    const target = this.getTarget();
-
-    if (!target) {
+    if (!this.target) {
       throw new Error(
         'The type of the target end of the relation is undefined.'
       );
@@ -61,54 +73,36 @@ export class BinaryRelation extends Relation {
     return Object.values(RelationStereotype);
   }
 
-  getSourceEnd(): Property {
-    return this._properties[0];
-  }
-
-  getTargetEnd(): Property {
-    return this._properties[1];
-  }
-
-  getSource(): Classifier<any, any> | undefined {
-    return this.getSourceEnd().propertyType;
-  }
-
-  getTarget(): Classifier<any, any> | undefined {
-    return this.getTargetEnd().propertyType;
-  }
-
   isSourceClass(): boolean {
     this.assertTypedSource();
-    return this.getSource() instanceof Class;
+    return this.source instanceof Class;
   }
 
   isTargetClass(): boolean {
     this.assertTypedTarget();
-    return this.getTarget() instanceof Class;
+    return this.target instanceof Class;
   }
 
   getSourceAsClass(): Class {
     this.assertSourceAsClass();
-    return this.getSource() as Class;
+    return this.source as Class;
   }
 
   getTargetAsClass(): Class {
     this.assertTargetAsClass();
-    return this.getTarget() as Class;
+    return this.target as Class;
   }
 
   isPartWholeRelation(): boolean {
     return (
       this.holdsBetweenClasses() &&
-      this.getTargetEnd().isAggregationEnd() &&
-      !this.getSourceEnd().isAggregationEnd()
+      this.targetEnd.isAggregationEnd() &&
+      !this.sourceEnd.isAggregationEnd()
     );
   }
 
   fromRelationToClass(): boolean {
-    return (
-      this.getSource() instanceof Relation && this.getTarget() instanceof Class
-    );
+    return this.source instanceof Relation && this.target instanceof Class;
   }
 
   isDerivation(): boolean {
@@ -190,7 +184,7 @@ export class BinaryRelation extends Relation {
   }
 
   isExistentialDependence(): boolean {
-    return this.getSourceEnd().isReadOnly || this.getTargetEnd().isReadOnly;
+    return this.sourceEnd.isReadOnly || this.targetEnd.isReadOnly;
   }
 
   getDerivedRelation(): Relation {
@@ -232,7 +226,7 @@ export class BinaryRelation extends Relation {
 
     this.assertTargetAsClass();
 
-    return this.getTargetEnd();
+    return this.targetEnd;
   }
 
   getRelator(): Class {
@@ -248,7 +242,7 @@ export class BinaryRelation extends Relation {
       throw new Error('The source of the relation is not a relator type.');
     }
 
-    return this.getSourceEnd();
+    return this.sourceEnd;
   }
 
   getBearer(): Class {
@@ -262,7 +256,7 @@ export class BinaryRelation extends Relation {
 
     this.assertTargetAsClass();
 
-    return this.getTargetEnd();
+    return this.targetEnd;
   }
 
   getCharacterizer(): Class {
@@ -280,7 +274,7 @@ export class BinaryRelation extends Relation {
       );
     }
 
-    return this.getSourceEnd();
+    return this.sourceEnd;
   }
 
   // All part-whole relations and parthood without stereotype
@@ -300,7 +294,7 @@ export class BinaryRelation extends Relation {
       );
     }
 
-    return this.getSourceEnd();
+    return this.sourceEnd;
   }
 
   getWholeClass(): Class {

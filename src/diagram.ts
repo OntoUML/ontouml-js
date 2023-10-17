@@ -184,10 +184,10 @@ export class Diagram extends OntoumlElement {
 
   addBinaryRelation(rel: BinaryRelation): BinaryRelationView {
     rel.assertTypedSource();
-    let sourceView = this.findOrCreateView(rel.getSource()!);
+    let sourceView = this.findOrCreateView(rel.source!);
 
     rel.assertTypedTarget();
-    let targetView = this.findOrCreateView(rel.getTarget()!);
+    let targetView = this.findOrCreateView(rel.target!);
 
     let relationView = new BinaryRelationView(rel, sourceView, targetView);
 

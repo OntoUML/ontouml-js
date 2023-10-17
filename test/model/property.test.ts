@@ -3,8 +3,7 @@ import {
   Project,
   Property,
   PropertyStereotype,
-  serializationUtils,
-  stereotypeUtils
+  serializationUtils
 } from '../../src';
 
 describe(`${Property.name} Tests`, () => {

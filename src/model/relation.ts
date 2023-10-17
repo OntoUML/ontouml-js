@@ -31,8 +31,9 @@ export abstract class Relation extends Classifier<
    * @param member - classifier for the property type
    * */
   private createRelationEnd(member: Classifier<any, any>): Property {
-    const memberEnd = new Property(this, member);
+    const memberEnd = new Property(this.project!, member);
     this._properties.push(memberEnd);
+    memberEnd._container = this;
 
     return memberEnd;
   }

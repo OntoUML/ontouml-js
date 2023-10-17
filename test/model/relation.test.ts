@@ -32,17 +32,17 @@ describe('Relation Tests', () => {
 
   describe('Test getContents()', () => {
     it('Test function call', () =>
-      expect(knows.getContents()).toContain(knows.getTargetEnd()));
+      expect(knows.getContents()).toContain(knows.targetEnd));
     it('Test function call', () =>
-      expect(knows.getContents()).toContain(knows.getSourceEnd()));
+      expect(knows.getContents()).toContain(knows.sourceEnd));
     it('Test function call', () => expect(knows.getContents().length).toBe(2));
   });
 
   describe('Test getAllContents()', () => {
     it('Test function call', () =>
-      expect(knows.getAllContents()).toContain(knows.getTargetEnd()));
+      expect(knows.getAllContents()).toContain(knows.targetEnd));
     it('Test function call', () =>
-      expect(knows.getAllContents()).toContain(knows.getSourceEnd()));
+      expect(knows.getAllContents()).toContain(knows.sourceEnd));
     it('Test function call', () =>
       expect(knows.getAllContents().length).toBe(2));
   });
@@ -105,7 +105,7 @@ describe('Relation Tests', () => {
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve source end', () =>
-      expect(heavierThan.getSourceEnd()).toBe(heavierThan.properties[0]));
+      expect(heavierThan.sourceEnd).toBe(heavierThan.properties[0]));
     it('Test retrieve source end', () =>
       expect(derivation.getSourceEnd()).toBe(derivation.properties[0]));
     it('Test exception on ternary relation', () =>
@@ -126,7 +126,7 @@ describe('Relation Tests', () => {
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve target end', () =>
-      expect(heavierThan.getTargetEnd()).toBe(heavierThan.properties[1]));
+      expect(heavierThan.targetEnd).toBe(heavierThan.properties[1]));
     it('Test retrieve target end', () =>
       expect(derivation.getTargetEnd()).toBe(derivation.properties[1]));
     it('Test exception on ternary relation', () =>
@@ -275,9 +275,7 @@ describe('Relation Tests', () => {
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve source', () =>
-      expect(heavierThan.getSource()).toBe(
-        heavierThan.properties[0].propertyType
-      ));
+      expect(heavierThan.source).toBe(heavierThan.properties[0].propertyType));
     it('Test retrieve source', () =>
       expect(derivation.getSource()).toBe(
         derivation.properties[0].propertyType
@@ -300,9 +298,7 @@ describe('Relation Tests', () => {
     const metPersonAt = model.createTernaryRelation([person, person, place]);
 
     it('Test retrieve target', () =>
-      expect(heavierThan.getTarget()).toBe(
-        heavierThan.properties[1].propertyType
-      ));
+      expect(heavierThan.target).toBe(heavierThan.properties[1].propertyType));
     it('Test retrieve target', () =>
       expect(derivation.getTarget()).toBe(
         derivation.properties[1].propertyType

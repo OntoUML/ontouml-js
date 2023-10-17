@@ -27,7 +27,8 @@ import {
   GeneralizationSetBuilder,
   Relation,
   PackageBuilder,
-  BinaryRelationBuilder
+  BinaryRelationBuilder,
+  NaryRelationBuilder
 } from '.';
 
 export class Project extends NamedElement {
@@ -207,6 +208,10 @@ export class Project extends NamedElement {
     return new BinaryRelationBuilder(this);
   }
 
+  // naryRelationBuilder(): NaryRelationBuilder {
+  //   return new NaryRelationBuilder(this);
+  // }
+
   add(e: OntoumlElement): void {
     if (!e) {
       throw new Error('Cannot add a null or undefined element.');
@@ -263,6 +268,10 @@ export class Project extends NamedElement {
     if (diagrams === null) return;
 
     this.addDiagrams(diagrams);
+  }
+
+  override getAllContents(): OntoumlElement[] {
+    return this.getContents();
   }
 
   getContents(): OntoumlElement[] {

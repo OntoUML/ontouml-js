@@ -41,7 +41,7 @@ export class AttributeBuilder extends DecoratableBuilder<
    * - `cardinality: "0..*"`
    */
   override build(): Property {
-    this.element = new Property(this._container);
+    this.element = new Property(this.project);
 
     super.build();
 

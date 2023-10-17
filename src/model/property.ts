@@ -9,7 +9,8 @@ import {
   Relation,
   BinaryRelation,
   NaryRelation,
-  Decoratable
+  Decoratable,
+  Project
 } from '..';
 
 export enum AggregationKind {
@@ -27,11 +28,8 @@ export class Property extends Decoratable<PropertyStereotype> {
   isOrdered: boolean = false;
   isReadOnly: boolean = false;
 
-  constructor(
-    classifier: Classifier<any, any>,
-    propertyType?: Classifier<any, any>
-  ) {
-    super(classifier.project!);
+  constructor(project: Project, propertyType?: Classifier<any, any>) {
+    super(project);
     this.propertyType = propertyType;
   }
 
@@ -82,7 +80,7 @@ export class Property extends Decoratable<PropertyStereotype> {
       return false;
     }
 
-    return (this.container as BinaryRelation).getSourceEnd() === this;
+    return (this.container as BinaryRelation).sourceEnd === this;
   }
 
   isTarget(): boolean {
@@ -90,7 +88,7 @@ export class Property extends Decoratable<PropertyStereotype> {
       return false;
     }
 
-    return (this.container as BinaryRelation).getTargetEnd() === this;
+    return (this.container as BinaryRelation).targetEnd === this;
   }
 
   hasPropertyType(): boolean {
@@ -134,9 +132,9 @@ export class Property extends Decoratable<PropertyStereotype> {
    */
   getOppositeEnd(): Property {
     const container = this.getBinaryRelation();
-    return this !== container.getSourceEnd()
-      ? container.getSourceEnd()
-      : container.getTargetEnd();
+    return this !== container.sourceEnd
+      ? container.sourceEnd
+      : container.targetEnd;
   }
 
   /**

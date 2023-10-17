@@ -8,7 +8,6 @@ describe(`Binary relation builder`, () => {
   beforeEach(() => {
     proj = new Project();
     clazz = proj.classBuilder().build();
-    clazz = proj.classBuilder().build();
   });
 
   describe(`Test defaults`, () => {
@@ -25,11 +24,23 @@ describe(`Binary relation builder`, () => {
     });
 
     it('should set the source', () => {
-      expect(rel.getSource()).toBe(clazz);
+      expect(rel.source).toBe(clazz);
     });
 
     it('should set the target', () => {
-      expect(rel.getTarget()).toBe(clazz);
+      expect(rel.target).toBe(clazz);
+    });
+
+    it('should be created without a container', () => {
+      expect(rel.container).toBeUndefined();
+    });
+
+    it('should set the container of the source end to be the relation', () => {
+      expect(rel.sourceEnd.container).toBe(rel);
+    });
+
+    it('should set the container of the target end to be the relation', () => {
+      expect(rel.targetEnd.container).toBe(rel);
     });
   });
 
@@ -167,9 +178,7 @@ describe(`Binary relation builder`, () => {
       expect(rel.isComponentOf()).toBeTrue();
     });
     it('should set the aggregation kind on the target end to COMPOSITE', () => {
-      expect(rel.getTargetEnd().aggregationKind).toBe(
-        AggregationKind.COMPOSITE
-      );
+      expect(rel.targetEnd.aggregationKind).toBe(AggregationKind.COMPOSITE);
     });
   });
 
@@ -188,7 +197,7 @@ describe(`Binary relation builder`, () => {
     });
 
     it('should set the aggregation kind on the target end to COMPOSITE', () => {
-      expect(rel.getTargetEnd().aggregationKind).toBe(AggregationKind.SHARED);
+      expect(rel.targetEnd.aggregationKind).toBe(AggregationKind.SHARED);
     });
   });
 
@@ -207,9 +216,7 @@ describe(`Binary relation builder`, () => {
     });
 
     it('should set the aggregation kind on the target end to COMPOSITE', () => {
-      expect(rel.getTargetEnd().aggregationKind).toBe(
-        AggregationKind.COMPOSITE
-      );
+      expect(rel.targetEnd.aggregationKind).toBe(AggregationKind.COMPOSITE);
     });
   });
 
@@ -227,9 +234,7 @@ describe(`Binary relation builder`, () => {
       expect(rel.isSubQuantityOf()).toBeTrue();
     });
     it('should set the aggregation kind on the target end to COMPOSITE', () => {
-      expect(rel.getTargetEnd().aggregationKind).toBe(
-        AggregationKind.COMPOSITE
-      );
+      expect(rel.targetEnd.aggregationKind).toBe(AggregationKind.COMPOSITE);
     });
   });
 
@@ -277,9 +282,7 @@ describe(`Binary relation builder`, () => {
       expect(rel.isParticipational()).toBeTrue();
     });
     it('should set the aggregation kind on the target end to COMPOSITE', () => {
-      expect(rel.getTargetEnd().aggregationKind).toBe(
-        AggregationKind.COMPOSITE
-      );
+      expect(rel.targetEnd.aggregationKind).toBe(AggregationKind.COMPOSITE);
     });
   });
 
@@ -308,7 +311,7 @@ describe(`Binary relation builder`, () => {
         .build();
     });
 
-    it('should create relation stereotyped as «»', () => {
+    it('should create relation stereotyped as «historicalDependence»', () => {
       expect(rel.isHistoricalDependence()).toBeTrue();
     });
   });
@@ -323,7 +326,7 @@ describe(`Binary relation builder`, () => {
         .build();
     });
 
-    it('should create relation stereotyped as «»', () => {
+    it('should create relation stereotyped as «creation»', () => {
       expect(rel.isCreation()).toBeTrue();
     });
   });
@@ -338,7 +341,7 @@ describe(`Binary relation builder`, () => {
         .build();
     });
 
-    it('should create relation stereotyped as «»', () => {
+    it('should create relation stereotyped as «manifestation»', () => {
       expect(rel.isManifestation()).toBeTrue();
     });
   });
@@ -353,7 +356,7 @@ describe(`Binary relation builder`, () => {
         .build();
     });
 
-    it('should create relation stereotyped as «»', () => {
+    it('should create relation stereotyped as «bringsAbout»', () => {
       expect(rel.isBringsAbout()).toBeTrue();
     });
   });
@@ -368,7 +371,7 @@ describe(`Binary relation builder`, () => {
         .build();
     });
 
-    it('should create relation stereotyped as «»', () => {
+    it('should create relation stereotyped as «triggers»', () => {
       expect(rel.isTriggers()).toBeTrue();
     });
   });
@@ -388,9 +391,7 @@ describe(`Binary relation builder`, () => {
     });
 
     it('should set the aggregation kind on the target end to COMPOSITE', () => {
-      expect(rel.getTargetEnd().aggregationKind).toBe(
-        AggregationKind.COMPOSITE
-      );
+      expect(rel.targetEnd.aggregationKind).toBe(AggregationKind.COMPOSITE);
     });
   });
 
@@ -409,7 +410,7 @@ describe(`Binary relation builder`, () => {
     });
 
     it('should set the aggregation kind on the target end to SHARED', () => {
-      expect(rel.getTargetEnd().aggregationKind).toBe(AggregationKind.SHARED);
+      expect(rel.targetEnd.aggregationKind).toBe(AggregationKind.SHARED);
     });
   });
 });

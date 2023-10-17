@@ -175,7 +175,7 @@ export abstract class Classifier<
    */
   getIncomingRelations(): BinaryRelation[] {
     this.assertProject();
-    return this.project!.binaryRelations.filter(r => r.getTarget() === this);
+    return this.project!.binaryRelations.filter(r => r.target === this);
   }
 
   /**
@@ -184,7 +184,7 @@ export abstract class Classifier<
    */
   getOutgoingRelations(): BinaryRelation[] {
     this.assertProject();
-    return this.project!.binaryRelations.filter(r => r.getSource() === this);
+    return this.project!.binaryRelations.filter(r => r.source === this);
   }
 
   /**

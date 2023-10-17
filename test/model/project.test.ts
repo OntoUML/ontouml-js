@@ -60,11 +60,16 @@ describe('Project tests', () => {
       .build();
   });
 
-  it(`Test getAllAttributes()`, () => {
-    let attributes = proj.attributes;
-    expect(attributes).toContain(name);
-    expect(attributes).toContain(surname);
-    expect(attributes.length).toBe(2);
+  it(`properties field should return all attributes and relation ends`, () => {
+    expect(proj.properties).toIncludeSameMembers([
+      name,
+      surname,
+      ...worksFor.properties
+    ]);
+  });
+
+  it(`attributes field should return all attributes `, () => {
+    expect(proj.attributes).toIncludeSameMembers([name, surname]);
   });
 
   it(`relationEnds field should return all relation ends`, () => {
@@ -104,7 +109,7 @@ describe('Project tests', () => {
     expect(proj.literals).toIncludeSameMembers([red, green, blue]);
   });
 
-  it(`Test getContents()`, () => {
+  it(`getContents() should return all ontouml elements in the project`, () => {
     expect(proj.getContents()).toIncludeSameMembers([
       model,
       pkg,
@@ -122,7 +127,7 @@ describe('Project tests', () => {
       name,
       surname,
       worksFor,
-      worksFor.properties
+      ...worksFor.properties
     ]);
   });
 
@@ -130,6 +135,7 @@ describe('Project tests', () => {
     expect(proj.getAllContents()).toIncludeSameMembers(proj.getContents());
   });
 
+  // TODO: Fix the serialization
   describe(`Test toJSON()`, () => {
     it('Should serialize without throwing an exception', () => {
       expect(() => JSON.stringify(proj)).not.toThrow();
