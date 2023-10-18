@@ -285,13 +285,7 @@ export class BinaryRelation extends Relation {
 
   getPartEnd(): Property {
     if (!this.isPartWholeRelation()) {
-      throw new Error('The relation is not a «characterization».');
-    }
-
-    if (!this.getSourceAsClass().isCharacterizer()) {
-      throw new Error(
-        'The source of the relation is not a mode or quality type.'
-      );
+      throw new Error('The object is not a part-whole relation.');
     }
 
     return this.sourceEnd;
@@ -302,7 +296,11 @@ export class BinaryRelation extends Relation {
   }
 
   getWholeEnd(): Property {
-    throw new Error('Method unimplemented!');
+    if (!this.isPartWholeRelation()) {
+      throw new Error('The object is not a part-whole relation.');
+    }
+
+    return this.targetEnd;
   }
 
   getDependedClass(): Class {
