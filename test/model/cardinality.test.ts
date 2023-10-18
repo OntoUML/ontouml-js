@@ -14,7 +14,7 @@ describe(`Cardinality Tests`, () => {
   beforeEach(() => {
     proj = new Project();
     clazz = proj.classBuilder().build();
-    prop = clazz.attributeBuilder().build();
+    prop = clazz.propertyBuilder().build();
   });
 
   describe(`Test setCardinality()`, () => {

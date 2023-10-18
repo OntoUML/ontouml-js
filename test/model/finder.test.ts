@@ -35,10 +35,10 @@ describe('Project tests', () => {
     pkg = model.packageBuilder().name('Package').build();
 
     agent = pkg.classBuilder().name('Agent').category().build();
-    name = agent.attributeBuilder().type(text).name('name').build();
+    name = agent.propertyBuilder().type(text).name('name').build();
 
     person = pkg.classBuilder().name('Person').kind().build();
-    surname = person.attributeBuilder().type(text).name('surname').build();
+    surname = person.propertyBuilder().type(text).name('surname').build();
 
     organization = pkg.classBuilder().name('Organization').kind().build();
     client = model.classBuilder().name('Client').roleMixin().build();

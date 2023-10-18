@@ -46,7 +46,7 @@ export * from './builder/named_element_builder';
 export * from './builder/model/model_element_builder';
 export * from './builder/model/decoratable_builder';
 export * from './builder/model/classifier_builder';
-export * from './builder/model/attribute_builder';
+export * from './builder/model/property_builder';
 export * from './builder/model/binary_relation_builder';
 export * from './builder/model/class_builder';
 export * from './builder/model/generalization_builder';

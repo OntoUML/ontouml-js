@@ -32,7 +32,7 @@ describe(`Package tests`, () => {
     red = color.literalBuilder().build();
     green = color.literalBuilder().build();
     knows = pkg2.binaryRelationBuilder().source(person).target(person).build();
-    knowsAttr = person.attributeBuilder().type(person).build();
+    knowsAttr = person.propertyBuilder().type(person).build();
     gen = person.addParent(agent);
     gs = pkg2.generalizationSetBuilder().generalizations(gen).build();
   });
@@ -314,8 +314,8 @@ describe(`Test setContainer()`, () => {
 //     const org = model.classBuilder().kind().name('Organization').build();
 //     const text = model.classBuilder().datatype().name('Text').build();
 
-//     agent.attributeBuilder().type(text).name('name');
-//     person.attributeBuilder().type(text).name('surname');
+//     agent.propertyBuilder().type(text).name('name');
+//     person.propertyBuilder().type(text).name('surname');
 
 //     model.createBinaryRelation(person, org, 'works-for');
 

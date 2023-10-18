@@ -26,8 +26,8 @@ describe('Serialization tests', () => {
       .build();
     const text = model.classBuilder().datatype().name('Text').build();
 
-    agent.attributeBuilder().type(text).name('name').build();
-    person.attributeBuilder().type(text).name('surname').build();
+    agent.propertyBuilder().type(text).name('name').build();
+    person.propertyBuilder().type(text).name('surname').build();
 
     const worksFor = model
       .binaryRelationBuilder()
@@ -206,7 +206,7 @@ describe('Serialization tests', () => {
 
     it(`Test ${Property.name} de-serialization`, () => {
       const clazz = proj.classBuilder().build();
-      clazz.attributeBuilder().type(clazz).build();
+      clazz.propertyBuilder().type(clazz).build();
 
       const serialization = JSON.stringify(clazz);
 
@@ -249,8 +249,8 @@ describe('Serialization tests', () => {
       const org = model.classBuilder().kind().name('Organization').build();
       const text = model.classBuilder().datatype().name('Text').build();
 
-      agent.attributeBuilder().type(text).name('name').build();
-      person.attributeBuilder().type(text).name('surname').build();
+      agent.propertyBuilder().type(text).name('name').build();
+      person.propertyBuilder().type(text).name('surname').build();
 
       model
         .binaryRelationBuilder()

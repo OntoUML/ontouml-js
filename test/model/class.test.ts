@@ -18,7 +18,7 @@ describe(`${Class.name} Tests`, () => {
 
     it('clazz.getContents() should return an array containing exactly the one attribute of the class', () => {
       clazz = proj.classBuilder().build();
-      const attribute = clazz.attributeBuilder().build();
+      const attribute = clazz.propertyBuilder().build();
 
       const contents = clazz.getContents();
       expect(contents).toEqual([attribute]);
@@ -26,8 +26,8 @@ describe(`${Class.name} Tests`, () => {
 
     it('clazz.getContents() should return an array containing exactly the two attributes of the class', () => {
       clazz = proj.classBuilder().build();
-      const attribute1 = clazz.attributeBuilder().build();
-      const attribute2 = clazz.attributeBuilder().build();
+      const attribute1 = clazz.propertyBuilder().build();
+      const attribute2 = clazz.propertyBuilder().build();
 
       const contents = clazz.getContents();
       expect(contents).toIncludeSameMembers([attribute1, attribute2]);
@@ -52,7 +52,7 @@ describe(`${Class.name} Tests`, () => {
 
     it('clazz.getContents() should return the attributes and the literals of the class', () => {
       clazz = proj.classBuilder().enumeration().build();
-      const attribute = clazz.attributeBuilder().build();
+      const attribute = clazz.propertyBuilder().build();
       const literal = clazz.literalBuilder().build();
 
       const contents = clazz.getContents();
@@ -63,7 +63,7 @@ describe(`${Class.name} Tests`, () => {
   describe(`Test ${Class.prototype.getAllContents.name}()`, () => {
     it('clazz.getAllContents() should return the same values as getContents()', () => {
       clazz = proj.classBuilder().enumeration().build();
-      clazz.attributeBuilder().build();
+      clazz.propertyBuilder().build();
       clazz.literalBuilder().build();
 
       const contents = clazz.getContents();

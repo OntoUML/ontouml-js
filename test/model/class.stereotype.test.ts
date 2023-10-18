@@ -100,47 +100,47 @@ describe('Test Class stereotype-related query methods', () => {
 
     it('should be true if the datatype has one attribute', () => {
       c = proj.classBuilder().datatype().build();
-      c.attributeBuilder().build();
+      c.propertyBuilder().build();
 
       expect(c.isComplexDatatype()).toBeTrue();
     });
 
     it('should be true if the datatype has two attributes', () => {
       c = proj.classBuilder().datatype().build();
-      c.attributeBuilder().build();
-      c.attributeBuilder().build();
+      c.propertyBuilder().build();
+      c.propertyBuilder().build();
 
       expect(c.isComplexDatatype()).toBeTrue();
     });
 
     it('should be false if the class is stereotyped as «enum»', () => {
       c = proj.classBuilder().enumeration().build();
-      c.attributeBuilder().build();
-      c.attributeBuilder().build();
+      c.propertyBuilder().build();
+      c.propertyBuilder().build();
 
       expect(c.isComplexDatatype()).toBeFalse();
     });
 
     it('should be false if the class is stereotyped as «abstract»', () => {
       c = proj.classBuilder().abstract().build();
-      c.attributeBuilder().build();
-      c.attributeBuilder().build();
+      c.propertyBuilder().build();
+      c.propertyBuilder().build();
 
       expect(c.isComplexDatatype()).toBeFalse();
     });
 
     it('should be false if the class is stereotyped as «kind»', () => {
       c = proj.classBuilder().kind().build();
-      c.attributeBuilder().build();
-      c.attributeBuilder().build();
+      c.propertyBuilder().build();
+      c.propertyBuilder().build();
 
       expect(c.isComplexDatatype()).toBeFalse();
     });
 
     it('should be false if the class is not decorated with a stereotype', () => {
       c = proj.classBuilder().build();
-      c.attributeBuilder().build();
-      c.attributeBuilder().build();
+      c.propertyBuilder().build();
+      c.propertyBuilder().build();
 
       expect(c.isComplexDatatype()).toBeFalse();
     });

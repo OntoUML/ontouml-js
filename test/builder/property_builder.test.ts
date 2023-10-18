@@ -1,7 +1,6 @@
-import { Class, Property, Project } from '../../src';
-import { AttributeBuilder } from '../../src/builder/model/attribute_builder';
+import { Class, Property, Project, PropertyBuilder } from '../../src';
 
-describe(`${AttributeBuilder.name} Tests`, () => {
+describe(`${PropertyBuilder.name} Tests`, () => {
   let proj: Project;
   let clazz: Class;
   let attr: Property;
@@ -9,7 +8,7 @@ describe(`${AttributeBuilder.name} Tests`, () => {
   beforeEach(() => {
     proj = new Project();
     clazz = proj.classBuilder().category().build();
-    attr = clazz.attributeBuilder().build();
+    attr = clazz.propertyBuilder().build();
   });
 
   describe(`Test defaults`, () => {

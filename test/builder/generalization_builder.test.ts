@@ -9,8 +9,8 @@ import {
 
 describe(`Generalization builder tests`, () => {
   let proj: Project;
-  let person: Class, man: Class, woman: Class;
-  let manToPer: Generalization, womanToPer: Generalization;
+  let person: Class, man: Class;
+  let manToPer: Generalization;
 
   beforeAll(() => {
     proj = new Project();

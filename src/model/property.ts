@@ -107,8 +107,15 @@ export class Property extends Decoratable<PropertyStereotype> {
     );
   }
 
-  isAggregationEnd(): boolean {
+  isWholeEnd(): boolean {
     return this.isShared() || this.isComposite();
+  }
+
+  isPartEnd(): boolean {
+    return (
+      this.getOppositeEnd().isWholeEnd() &&
+      this.aggregationKind === AggregationKind.NONE
+    );
   }
 
   getRelation(): Relation {

@@ -48,8 +48,8 @@ describe('Project tests', () => {
       .name('agentsSet')
       .build();
 
-    name = agent.attributeBuilder().type(text).name('name').build();
-    surname = person.attributeBuilder().type(text).name('surname').build();
+    name = agent.propertyBuilder().type(text).name('name').build();
+    surname = person.propertyBuilder().type(text).name('surname').build();
 
     worksFor = pkg
       .binaryRelationBuilder()

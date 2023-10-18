@@ -52,7 +52,7 @@ it('Test the example presented in the "Usage" section of the README file', () =>
     studiesAt.sourceEnd.name.add('student');
     studiesAt.sourceEnd.cardinality.setAsOneToMany();
 
-    enrollment.attributeBuilder().type(date).name('enrollment date').build();
+    enrollment.propertyBuilder().type(date).name('enrollment date').build();
 
     // Containers also include methods to easily support retrieving their contents
     project.attributes; // returns all contained attributes

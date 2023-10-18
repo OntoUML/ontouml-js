@@ -45,7 +45,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   _aggregationKind: AggregationKind = AggregationKind.NONE;
 
   /**
-   * Builds an instance of {@link Relation} with the parameters passed to the builder. **WARNING:** the ordering in which methods are evoked may affect the resulting object. When no methods are evoked, the created class has the following defaults:
+   * Builds an instance of {@link BinaryRelation} with the parameters passed to the builder. **WARNING:** the ordering in which methods are evoked may affect the resulting object. When no methods are evoked, the created class has the following defaults:
    * - `id: "randomly-generated-id",`
    * - `created: new Date(),`
    * - `isAbstract: false,`
@@ -135,7 +135,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype field and set default values in case of a known ClassStereotype.
+   * Sets the stereotype field and set default values in case of a known RelationStereotype.
    */
   override stereotype(stereotype: string): BinaryRelationBuilder {
     switch (stereotype) {

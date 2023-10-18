@@ -11,12 +11,12 @@ import {
   PropertyStereotype
 } from '../..';
 
-export class AttributeBuilder extends DecoratableBuilder<
-  AttributeBuilder,
+export class PropertyBuilder extends DecoratableBuilder<
+  PropertyBuilder,
   PropertyStereotype
 > {
   protected override element?: Property;
-  protected override readonly _container: Class;
+  protected override readonly _container: Classifier<any, any>;
   private _propertyType?: Classifier<any, any>;
   private _subsettedProperties: Set<Property> = new Set();
   private _redefinedProperties: Set<Property> = new Set();
@@ -26,7 +26,7 @@ export class AttributeBuilder extends DecoratableBuilder<
   private _isOrdered: boolean = false;
   private _isReadOnly: boolean = false;
 
-  constructor(c: Class) {
+  constructor(c: Classifier<any, any>) {
     super(c.project!);
     this._container = c;
   }
@@ -56,74 +56,75 @@ export class AttributeBuilder extends DecoratableBuilder<
     this.element.isOrdered = this._isOrdered;
     this.element.isReadOnly = this._isReadOnly;
 
-    this._container.addAttribute(this.element);
+    this._container.addProperty(this.element!);
+
     return this.element;
   }
 
-  override container(_: ModelElement): AttributeBuilder {
+  override container(_: ModelElement): PropertyBuilder {
     throw new Error('Container already set on constructor.');
   }
 
-  type(c: Class): AttributeBuilder {
+  type(c: Class): PropertyBuilder {
     this._propertyType = c;
     return this;
   }
 
-  ordered(): AttributeBuilder {
+  ordered(): PropertyBuilder {
     this._isOrdered = true;
     return this;
   }
 
-  unordered(): AttributeBuilder {
+  unordered(): PropertyBuilder {
     this._isOrdered = false;
     return this;
   }
 
-  readOnly(): AttributeBuilder {
+  readOnly(): PropertyBuilder {
     this._isReadOnly = true;
     return this;
   }
 
-  writable(): AttributeBuilder {
+  writable(): PropertyBuilder {
     this._isReadOnly = false;
     return this;
   }
 
-  subsets(p: Property): AttributeBuilder {
+  subsets(p: Property): PropertyBuilder {
     this._subsettedProperties.add(p);
     return this;
   }
 
-  redefines(p: Property): AttributeBuilder {
+  redefines(p: Property): PropertyBuilder {
     this._redefinedProperties.add(p);
     return this;
   }
 
-  cardinality(value: string): AttributeBuilder {
+  cardinality(value: string): PropertyBuilder {
     this._cardinality = new Cardinality(value);
     return this;
   }
 
-  optional(): AttributeBuilder {
+  optional(): PropertyBuilder {
     return this.cardinality(CardinalityValues.ZERO_TO_ONE);
   }
 
-  many(): AttributeBuilder {
+  many(): PropertyBuilder {
     return this.cardinality(CardinalityValues.MANY);
   }
 
-  one(): AttributeBuilder {
+  one(): PropertyBuilder {
     return this.cardinality(CardinalityValues.ONE);
   }
 
-  some(): AttributeBuilder {
+  some(): PropertyBuilder {
     return this.cardinality(CardinalityValues.ONE_TO_MANY);
   }
 
   /**
    * Sets the stereotype field and set default values in case of a known PropertyStereotype.
    */
-  override stereotype(stereotype: string): AttributeBuilder {
+  override stereotype(stereotype: string): PropertyBuilder {
     switch (stereotype) {
       case BEGIN:
         return this.begin();
@@ -139,7 +140,7 @@ export class AttributeBuilder extends DecoratableBuilder<
    * - `isReadOnly = true`
    * - `cardinality = "1"`
    */
-  begin(): AttributeBuilder {
+  begin(): PropertyBuilder {
     this._stereotype = BEGIN;
     this.readOnly();
     this.one();
@@ -151,7 +152,7 @@ export class AttributeBuilder extends DecoratableBuilder<
    * - `isReadOnly = true`
    * - `cardinality = "1"`
    */
-  end(): AttributeBuilder {
+  end(): PropertyBuilder {
     this._stereotype = END;
     this.readOnly();
     this.one();

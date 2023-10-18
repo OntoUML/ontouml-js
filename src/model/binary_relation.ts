@@ -96,8 +96,8 @@ export class BinaryRelation extends Relation {
   isPartWholeRelation(): boolean {
     return (
       this.holdsBetweenClasses() &&
-      this.targetEnd.isAggregationEnd() &&
-      !this.sourceEnd.isAggregationEnd()
+      this.targetEnd.isWholeEnd() &&
+      !this.sourceEnd.isWholeEnd()
     );
   }
 

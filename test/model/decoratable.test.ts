@@ -63,26 +63,26 @@ describe('hasValidStereotype()', () => {
 
   it('should return false for a property without a stereotype', () => {
     c = proj.classBuilder().build();
-    p = c.attributeBuilder().build();
+    p = c.propertyBuilder().build();
     expect(p.hasValidStereotype()).toBeFalse();
   });
 
   it('should return true for a property without a stereotype if `allowsTrue = true`', () => {
     c = proj.classBuilder().build();
-    p = c.attributeBuilder().build();
+    p = c.propertyBuilder().build();
     expect(p.hasValidStereotype(true)).toBeTrue();
   });
 
   it('should return false for a property with a custom stereotype', () => {
     c = proj.classBuilder().build();
-    p = c.attributeBuilder().stereotype('asd').build();
+    p = c.propertyBuilder().stereotype('asd').build();
 
     expect(p.hasValidStereotype()).toBeFalse();
   });
 
   it('should return true for a property stereotyped as «begin»', () => {
     c = proj.classBuilder().build();
-    p = c.attributeBuilder().begin().build();
+    p = c.propertyBuilder().begin().build();
 
     expect(p.hasValidStereotype()).toBeTrue();
   });

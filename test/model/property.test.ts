@@ -1,230 +1,179 @@
 import {
   AggregationKind,
+  BEGIN,
+  BinaryRelation,
+  Class,
   Project,
-  Property,
-  PropertyStereotype,
-  serializationUtils
+  Property
 } from '../../src';
 
-describe(`${Property.name} Tests`, () => {
-  describe(`Test ${Property.prototype.isStereotypeOneOf.name}()`, () => {
-    const proj = new Project();
-    const date = model.createDatatype();
-    const summerFestival = model.createEvent();
-    const startDate = summerFestival.createAttribute(date);
+describe(`Attribute tests`, () => {
+  let proj: Project;
+  let date: Class, concert: Class;
+  let start: Property;
+  let isPartOf: BinaryRelation;
 
-    startDate.stereotype = PropertyStereotype.BEGIN;
-
-    it('Test function call', () =>
-      expect(
-        startDate.isStereotypeOneOf(stereotypeUtils.PropertyStereotypes)
-      ).toBeTrue());
+  beforeEach(() => {
+    proj = new Project();
+    date = proj.classBuilder().datatype().build();
+    concert = proj.classBuilder().event().build();
+    start = concert.propertyBuilder().type(date).build();
+    isPartOf = proj
+      .binaryRelationBuilder()
+      .source(concert)
+      .target(concert)
+      .aggregation()
+      .build();
   });
 
   describe(`Test ${Property.prototype.hasValidStereotype.name}()`, () => {
-    const proj = new Project();
-    const date = model.createDatatype();
-    const summerFestival = model.createEvent();
-    const startDate = summerFestival.createAttribute(date);
-    const precedes = summerFestival.createAttribute(summerFestival);
-
-    startDate.stereotype = PropertyStereotype.BEGIN;
-
-    it('should return true for an attribute with an OntoUML stereotype', () => {
-      expect(startDate.hasValidStereotype()).toBeTrue();
+    it('should return false for an attribute without a stereotype', () => {
+      expect(start.hasValidStereotype()).toBeFalse();
     });
 
-    it('should return true for an attribute without a stereotype (by default; allowsNone: true)', () => {
-      expect(precedes.hasValidStereotype()).toBeTrue();
+    it('should return true for an attribute stereotyped as «begin»', () => {
+      start.stereotype = BEGIN;
+      expect(start.hasValidStereotype()).toBeTrue();
     });
 
-    it('should return false for an attribute without a stereotype (allowsNone: false)', () => {
-      expect(precedes.hasValidStereotype(false)).toBeFalse();
-    });
-  });
-
-  describe(`Test ${Property.prototype.toJSON.name}()`, () => {
-    const proj = new Project();
-    const date = model.createDatatype();
-    const summerFestival = model.createEvent();
-    const startDate = summerFestival.createAttribute(date);
-    const endDate = summerFestival.createAttribute(date);
-    const precedes = summerFestival.createAttribute(summerFestival);
-
-    startDate.stereotype = PropertyStereotype.BEGIN;
-    endDate.stereotype = PropertyStereotype.END;
-
-    it('Test serialization', () =>
-      expect(() => JSON.stringify(startDate)).not.toThrow());
-    it('Test serialization', () =>
-      expect(() => JSON.stringify(precedes)).not.toThrow());
-    it('Test serialization', () =>
-      expect(serializationUtils.validate(endDate.project)).toBeTrue());
-  });
-
-  describe(`Test ${Property.prototype.setContainer.name}()`, () => {
-    const proj = new Project();
-    const date = model.createDatatype();
-    const summerFestival = model.createEvent();
-    const startDate = new Property({
-      propertyType: date,
-      project: model.project
-    });
-
-    it('Test function call', () => {
-      expect(startDate.container).not.toBe(summerFestival);
-      expect(summerFestival.getContents()).not.toContain(startDate);
-
-      summerFestival.addAttribute(startDate);
-
-      expect(startDate.container).toBe(summerFestival);
-      expect(summerFestival.getContents()).toContain(startDate);
+    it('should return false for an decorated with a custom stereotype', () => {
+      start.stereotype = 'my-stereotype' as any;
+      expect(start.hasValidStereotype()).toBeFalse();
     });
   });
 
   describe(`Test ${Property.prototype.isAttribute.name}()`, () => {
-    const proj = new Project();
-    const date = model.createDatatype();
-    const summerFestival = model.createEvent();
-    const startDate = summerFestival.createAttribute(date);
-    const precedes = model.createBinaryRelation(summerFestival, summerFestival);
+    it('should return true for a property owned by a class', () => {
+      expect(start.isAttribute()).toBeTrue();
+    });
 
-    it('Test startDate', () => expect(startDate.isAttribute()).toBeTrue());
-    it('Test precedes', () =>
-      expect(precedes.getSourceEnd().isAttribute()).toBeFalse());
+    it('should return false for a property owned by a relation', () => {
+      expect(isPartOf.sourceEnd.isAttribute()).toBeFalse();
+    });
   });
 
   describe(`Test ${Property.prototype.isRelationEnd.name}()`, () => {
-    const proj = new Project();
-    const date = model.createDatatype();
-    const summerFestival = model.createEvent();
-    const startDate = summerFestival.createAttribute(date);
-    const precedes = model.createBinaryRelation(summerFestival, summerFestival);
+    it('should return false for a property owned by a class', () => {
+      expect(start.isRelationEnd()).toBeFalse();
+    });
 
-    it('Test startDate', () => expect(startDate.isRelationEnd()).toBeFalse());
-    it('Test precedes', () =>
-      expect(precedes.getSourceEnd().isRelationEnd()).toBeTrue());
+    it('should return true for a property owned by a relation', () => {
+      expect(isPartOf.sourceEnd.isRelationEnd()).toBeTrue();
+    });
   });
 
   describe(`Test ${Property.prototype.hasPropertyType.name}()`, () => {
-    const proj = new Project();
-    const date = model.createDatatype();
-    const event = model.createEvent();
-    const startDate = event.createAttribute(date);
-    const precedes = model.createBinaryRelation(event, event);
-    const prop = new Property();
+    it('should return true if the property type is set', () => {
+      expect(start.hasPropertyType()).toBeTrue();
+    });
 
-    it('Test startDate', () => expect(startDate.hasPropertyType()).toBeTrue());
-    it('Test precedes', () =>
-      expect(precedes.getSourceEnd().hasPropertyType()).toBeTrue());
-    it('Test precedes', () =>
-      expect(precedes.getTargetEnd().hasPropertyType()).toBeTrue());
-    it('Test prop', () => expect(prop.hasPropertyType()).toBeFalse());
+    it('should return false if the property type is undefined', () => {
+      start.propertyType = undefined;
+      expect(start.hasPropertyType()).toBeFalse();
+    });
   });
 
   describe(`Test ${Property.prototype.isShared.name}()`, () => {
-    const proj = new Project();
-    const date = model.createDatatype();
-    const event = model.createEvent();
-    const startDate = event.createAttribute(date);
-    const partOf = model.createPartWholeRelation(event, event);
-    const prop = new Property();
+    it('should return true if aggregation kind = SHARED', () => {
+      isPartOf.targetEnd.aggregationKind = AggregationKind.SHARED;
+      expect(isPartOf.targetEnd.isShared()).toBeTrue();
+    });
 
-    partOf.getTargetEnd().aggregationKind = AggregationKind.SHARED;
+    it('should return false if aggregation kind = COMPOSITE', () => {
+      isPartOf.targetEnd.aggregationKind = AggregationKind.COMPOSITE;
+      expect(isPartOf.targetEnd.isShared()).toBeFalse();
+    });
 
-    it('Test startDate', () => expect(startDate.isShared()).toBeFalse());
-    it('Test partOf', () =>
-      expect(partOf.getSourceEnd().isShared()).toBeFalse());
-    it('Test partOf', () =>
-      expect(partOf.getTargetEnd().isShared()).toBeTrue());
-    it('Test prop', () => expect(prop.isShared()).toBeFalse());
+    it('should return false if aggregation kind = NONE', () => {
+      isPartOf.targetEnd.aggregationKind = AggregationKind.NONE;
+      expect(isPartOf.targetEnd.isShared()).toBeFalse();
+    });
   });
 
   describe(`Test ${Property.prototype.isComposite.name}()`, () => {
-    const proj = new Project();
-    const date = model.createDatatype();
-    const event = model.createEvent();
-    const startDate = event.createAttribute(date);
-    const partOf = model.createPartWholeRelation(event, event);
-    const prop = new Property();
+    it('should return true if aggregation kind = SHARED', () => {
+      isPartOf.targetEnd.aggregationKind = AggregationKind.SHARED;
+      expect(isPartOf.targetEnd.isComposite()).toBeFalse();
+    });
 
-    partOf.getTargetEnd().aggregationKind = AggregationKind.COMPOSITE;
+    it('should return false if aggregation kind = COMPOSITE', () => {
+      isPartOf.targetEnd.aggregationKind = AggregationKind.COMPOSITE;
+      expect(isPartOf.targetEnd.isComposite()).toBeTrue();
+    });
 
-    it('Test startDate', () => expect(startDate.isComposite()).toBeFalse());
-    it('Test partOf', () =>
-      expect(partOf.getSourceEnd().isComposite()).toBeFalse());
-    it('Test partOf', () =>
-      expect(partOf.getTargetEnd().isComposite()).toBeTrue());
-    it('Test prop', () => expect(prop.isComposite()).toBeFalse());
+    it('should return false if aggregation kind = NONE', () => {
+      isPartOf.targetEnd.aggregationKind = AggregationKind.NONE;
+      expect(isPartOf.targetEnd.isComposite()).toBeFalse();
+    });
   });
 
-  describe(`Test ${Property.prototype.isAggregationEnd.name}()`, () => {
-    const proj = new Project();
-    const date = model.createDatatype();
-    const event = model.createEvent();
-    const startDate = event.createAttribute(date);
-    const partOf = model.createPartWholeRelation(event, event);
-    const prop = new Property();
+  describe(`Test ${Property.prototype.isWholeEnd.name}()`, () => {
+    it('should return true if aggregation kind = SHARED', () => {
+      isPartOf.targetEnd.aggregationKind = AggregationKind.SHARED;
+      expect(isPartOf.targetEnd.isWholeEnd()).toBeTrue();
+    });
 
-    partOf.getTargetEnd().aggregationKind = AggregationKind.SHARED;
+    it('should return true if aggregation kind = COMPOSITE', () => {
+      isPartOf.targetEnd.aggregationKind = AggregationKind.COMPOSITE;
+      expect(isPartOf.targetEnd.isWholeEnd()).toBeTrue();
+    });
 
-    it('Test startDate', () =>
-      expect(startDate.isAggregationEnd()).toBeFalse());
-    it('Test partOf', () =>
-      expect(partOf.getSourceEnd().isAggregationEnd()).toBeFalse());
-    it('Test partOf', () =>
-      expect(partOf.getTargetEnd().isAggregationEnd()).toBeTrue());
-    it('Test prop', () => expect(prop.isAggregationEnd()).toBeFalse());
+    it('should return false if aggregation kind = NONE', () => {
+      isPartOf.targetEnd.aggregationKind = AggregationKind.NONE;
+      expect(isPartOf.targetEnd.isWholeEnd()).toBeFalse();
+    });
   });
 
   describe(`Test ${Property.prototype.getOppositeEnd.name}()`, () => {
-    const proj = new Project();
-    const date = model.createDatatype();
-    const event = model.createEvent();
-    const startDate = event.createAttribute(date);
-    const partOf = model.createPartWholeRelation(event, event);
+    it('should return target end when invoked on source end', () => {
+      expect(isPartOf.sourceEnd.getOppositeEnd()).toBe(isPartOf.targetEnd);
+    });
 
-    partOf.getTargetEnd().aggregationKind = AggregationKind.SHARED;
+    it('should return source end when invoked on target end', () => {
+      expect(isPartOf.targetEnd.getOppositeEnd()).toBe(isPartOf.sourceEnd);
+    });
 
-    it('Test startDate', () =>
-      expect(() => startDate.getOppositeEnd()).toThrow());
-    it('Test partOf', () =>
-      expect(partOf.getSourceEnd().getOppositeEnd()).toBe(
-        partOf.getTargetEnd()
-      ));
-    it('Test partOf', () =>
-      expect(partOf.getTargetEnd().getOppositeEnd()).toBe(
-        partOf.getSourceEnd()
-      ));
+    it('should break when invoked on an attribute', () => {
+      expect(() => start.getOppositeEnd()).toThrowError();
+    });
+
+    it('should break when invoked on a relation end of an n-ary relation', () => {
+      const naryRel = proj
+        .naryRelationBuilder()
+        .members(concert, concert, concert)
+        .build();
+
+      expect(() => naryRel.properties[0].getOppositeEnd()).toThrowError();
+    });
   });
 
   describe(`Test ${Property.prototype.getOtherEnds.name}()`, () => {
-    const proj = new Project();
-    const date = model.createDatatype();
-    const event = model.createEvent();
-    const startDate = event.createAttribute(date);
-    const heldBetween = model.createTernaryRelation([event, event, event]);
-    const end0 = heldBetween.getMemberEnd(0);
-    const end1 = heldBetween.getMemberEnd(1);
-    const end2 = heldBetween.getMemberEnd(2);
+    it('should return an array with the target end when invoked on the source end of a binary relation', () => {
+      expect(isPartOf.sourceEnd.getOtherEnds()).toIncludeSameMembers([
+        isPartOf.targetEnd
+      ]);
+    });
 
-    it('Test startDate', () =>
-      expect(() => startDate.getOtherEnds()).toThrow());
-    it('Test end0', () => expect(end0.getOtherEnds()).toContain(end1));
-    it('Test end0', () => expect(end0.getOtherEnds()).toContain(end2));
-    it('Test end0', () => expect(end0.getOtherEnds().length).toBe(2));
-  });
+    it('should return an array with the source end when invoked on the target end of a binary relation', () => {
+      expect(isPartOf.targetEnd.getOtherEnds()).toIncludeSameMembers([
+        isPartOf.sourceEnd
+      ]);
+    });
 
-  describe(`Test ${Property.prototype.clone.name}()`, () => {
-    const proj = new Project();
-    const classA = proj.classBuilder().build();
-    const propA = classA.createAttribute(classA);
-    const propB = propA.clone();
+    it('should break when invoked on an attribute', () => {
+      expect(() => start.getOtherEnds()).toThrowError();
+    });
 
-    const propC = new Property();
-    const propD = propC.clone();
+    it('should return the other other ends when invoked on a relation end of an n-ary relation', () => {
+      const naryRel = proj
+        .naryRelationBuilder()
+        .members(concert, concert, concert)
+        .build();
 
-    it('Test method', () => expect(propA).toEqual(propB));
-    it('Test method', () => expect(propC).toEqual(propD));
+      expect(naryRel.properties[0].getOtherEnds()).toIncludeSameMembers([
+        naryRel.properties[1],
+        naryRel.properties[2]
+      ]);
+    });
   });
 });

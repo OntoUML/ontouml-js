@@ -14,8 +14,8 @@ describe(`Tests attributes getters`, () => {
 
     person.addParent(agent);
 
-    alias = agent.attributeBuilder().type(text).build();
-    surname = person.attributeBuilder().type(text).build();
+    alias = agent.propertyBuilder().type(text).build();
+    surname = person.propertyBuilder().type(text).build();
   });
 
   it('agent.attributes should return only own attributes = [ alias ]', () => {
@@ -103,14 +103,14 @@ describe(`Test ${Class.prototype.hasAttributes.name}()`, () => {
   });
 
   it('hasAttributes() should return true if the class has 1 attribute', () => {
-    clazz.attributeBuilder().build();
+    clazz.propertyBuilder().build();
     expect(clazz.hasAttributes()).toBeTruthy();
   });
 
   it('hasAttributes() should return true if the class has 3 attributes', () => {
-    clazz.attributeBuilder().build();
-    clazz.attributeBuilder().build();
-    clazz.attributeBuilder().build();
+    clazz.propertyBuilder().build();
+    clazz.propertyBuilder().build();
+    clazz.propertyBuilder().build();
     expect(clazz.hasAttributes()).toBeTruthy();
   });
 });

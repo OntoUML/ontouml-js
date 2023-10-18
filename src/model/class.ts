@@ -45,7 +45,7 @@ import {
   ULTIMATE_SORTAL_STEREOTYPES,
   BASE_SORTAL_STEREOTYPES,
   Classifier,
-  AttributeBuilder,
+  PropertyBuilder,
   LiteralBuilder
 } from '..';
 
@@ -61,11 +61,12 @@ export class Class extends Classifier<Class, ClassStereotype> {
     super(project);
   }
 
-  attributeBuilder(): AttributeBuilder {
-    return new AttributeBuilder(this);
+  propertyBuilder(): PropertyBuilder {
+    return new PropertyBuilder(this);
   }
 
   literalBuilder(): LiteralBuilder {
+    this.assertEnumeration();
     return new LiteralBuilder(this);
   }
 

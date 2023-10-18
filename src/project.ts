@@ -208,9 +208,9 @@ export class Project extends NamedElement {
     return new BinaryRelationBuilder(this);
   }
 
-  // naryRelationBuilder(): NaryRelationBuilder {
-  //   return new NaryRelationBuilder(this);
-  // }
+  naryRelationBuilder(): NaryRelationBuilder {
+    return new NaryRelationBuilder(this);
+  }
 
   add(e: OntoumlElement): void {
     if (!e) {
@@ -306,6 +306,10 @@ export class Project extends NamedElement {
     };
 
     return { ...object, ...super.toJSON() };
+  }
+
+  override toString(): string {
+    return 'Hello';
   }
 
   // No reference fields to resolve/replace

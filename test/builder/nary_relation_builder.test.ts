@@ -1,61 +1,75 @@
-import { Class, Generalization, Project, Relation } from '../../src';
+import { Class, Project, Relation } from '../../src';
 
 describe(`Nary relation builder tests`, () => {
   let proj: Project;
-  let relation: Relation;
-  let memberA: Class, memberB: Class, memberC: Class;
+  let buysFrom: Relation;
+  let customer: Class, product: Class, seller: Class;
 
   beforeEach(() => {
     proj = new Project();
-    memberA = proj.classBuilder().build();
-    memberB = proj.classBuilder().build();
-    memberC = proj.classBuilder().build();
-    // TODO: After implementing nary relation builder
-    // relation = proj.naryRelationBuilder()([memberA, memberB, memberC]);
+    customer = proj.classBuilder().build();
+    product = proj.classBuilder().build();
+    seller = proj.classBuilder().build();
   });
 
-  describe(`Test createTernaryRelation()`, () => {
-    it('relation should be ternary', () => {
-      expect(relation.isNary()).toBeTrue();
-    });
-
-    it('relation should have the correct first member', () => {
-      expect(relation.getMember(0)).toBe(memberA);
-    });
-
-    it('relation should have the correct second member', () => {
-      expect(relation.getMember(1)).toBe(memberB);
-    });
-
-    it('relation should have the correct third member', () => {
-      expect(relation.getMember(2)).toBe(memberC);
-    });
-  });
-
-  describe(`Test createGeneralization()`, () => {
-    let gen: Generalization;
-    let general, specific: Class;
-
+  describe(`Test default values`, () => {
     beforeEach(() => {
-      general = proj.classBuilder().build();
-      specific = proj.classBuilder().build();
-      gen = model
-        .generalizationBuilder()
-        .general(general)
-        .specific(specific)
+      buysFrom = proj
+        .naryRelationBuilder()
+        .members(customer, product, seller)
         .build();
     });
 
-    it('Test instantiation', () => {
-      expect(gen).toBeInstanceOf(Generalization);
+    it('relation should have a reference to the project', () => {
+      expect(buysFrom.project).toBe(proj);
     });
 
-    it('Test container', () => {
-      expect(gen.container).toBe(model);
+    it('relation should have undefined container', () => {
+      expect(buysFrom.container).toBeUndefined();
     });
 
-    it('Test project', () => {
-      expect(gen.project).toBe(model.project);
+    it('relation should have undefined stereotype', () => {
+      expect(buysFrom.stereotype).toBeUndefined();
     });
+
+    it('relation should be n-ary', () => {
+      expect(buysFrom.isNary()).toBeTrue();
+    });
+
+    it('relation should have the correct first member', () => {
+      expect(buysFrom.getMember(0)).toBe(customer);
+    });
+
+    it('relation should have the correct second member', () => {
+      expect(buysFrom.getMember(1)).toBe(product);
+    });
+
+    it('relation should have the correct third member', () => {
+      expect(buysFrom.getMember(2)).toBe(seller);
+    });
+
+    it('relation should have all three members', () => {
+      expect(buysFrom.getMembers()).toIncludeSameMembers([
+        customer,
+        product,
+        seller
+      ]);
+    });
+  });
+
+  it('build() should throw an exception if no member is supplied', () => {
+    expect(() => proj.naryRelationBuilder().build()).toThrowError();
+  });
+
+  it('build() should throw an exception if 1 member is supplied', () => {
+    expect(() =>
+      proj.naryRelationBuilder().members(customer).build()
+    ).toThrowError();
+  });
+
+  it('build() should throw an exception if 2 member are supplied', () => {
+    expect(() =>
+      proj.naryRelationBuilder().members(customer, product).build()
+    ).toThrowError();
   });
 });
