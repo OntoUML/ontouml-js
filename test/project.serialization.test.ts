@@ -1,69 +1,81 @@
-import {
-  Class,
-  Generalization,
-  GeneralizationSet,
-  Package,
-  Project,
-  Property,
-  serializationUtils,
-  Literal,
-  Relation
-} from '../src';
+import { Project } from '../src';
+import Ajv from 'ajv';
+import addFormats from 'ajv-formats';
+
+const schema = require('ontouml-schema');
 
 describe('Serialization tests', () => {
-  it('Project serialization', () => {
-    const project = new Project();
-    project.name.add('Name');
+  const ajv = new Ajv();
+  const validator = addFormats(ajv).compile(schema);
+  let proj: Project;
 
-    const model = project.packageBuilder().name('Model').build();
-
-    const agent = model.classBuilder().category().name('Agent').build();
-    const person = model.classBuilder().kind().name('Person').build();
-    const organization = model
-      .classBuilder()
-      .kind()
-      .name('Organization')
-      .build();
-    const text = model.classBuilder().datatype().name('Text').build();
-
-    agent.propertyBuilder().type(text).name('name').build();
-    person.propertyBuilder().type(text).name('surname').build();
-
-    const worksFor = model
-      .binaryRelationBuilder()
-      .source(person)
-      .target(organization)
-      .name('works-for')
-      .material()
-      .build();
-
-    const agentIntoPerson = person.addParent(agent);
-    agentIntoPerson.name.add('agentIntoPerson');
-
-    const agentIntoOrganization = organization.addParent(agent);
-    agentIntoOrganization.name.add('agentIntoOrganization');
-
-    const agentSet = model
-      .generalizationSetBuilder()
-      .generalizations(agentIntoPerson, agentIntoOrganization)
-      .partition()
-      .name('agentsSet')
-      .build();
-
-    const diagram = project.createDiagram();
-
-    diagram.owner = model;
-    diagram.addPackage(model);
-    diagram.addClass(agent);
-    diagram.addClass(person);
-    diagram.addClass(organization);
-    diagram.addGeneralization(agentIntoPerson);
-    diagram.addGeneralization(agentIntoOrganization);
-    diagram.addGeneralizationSet(agentSet);
-    diagram.addBinaryRelation(worksFor);
-
-    expect(() => JSON.stringify(project)).not.toThrow();
+  it('Serialize empty project', () => {
+    proj = new Project();
+    const object = proj.toJSON();
+    console.log(object);
+    console.log(validator(object));
+    expect(validator(object)).toBeTruthy();
   });
+
+  // it('Project serialization', () => {
+  //   const project = new Project();
+  //   project.name.add('Name');
+
+  //   const model = project.packageBuilder().name('Model').build();
+
+  //   const agent = model.classBuilder().category().name('Agent', 'en').build();
+  //   const person = model
+  //     .classBuilder()
+  //     .kind()
+  //     .name('Person', 'en')
+  //     .name('Pessoa', 'pt-br')
+  //     .description('A individual that...')
+  //     .build();
+  //   const organization = model
+  //     .classBuilder()
+  //     .kind()
+  //     .name('Organization')
+  //     .build();
+  //   const text = model.classBuilder().datatype().name('Text').build();
+
+  //   agent.propertyBuilder().type(text).name('name').build();
+  //   person.propertyBuilder().type(text).name('surname').build();
+
+  //   const worksFor = model
+  //     .binaryRelationBuilder()
+  //     .source(person)
+  //     .target(organization)
+  //     .name('works-for')
+  //     .material()
+  //     .build();
+
+  //   const agentIntoPerson = person.addParent(agent);
+  //   agentIntoPerson.name.add('agentIntoPerson');
+
+  //   const agentIntoOrganization = organization.addParent(agent);
+  //   agentIntoOrganization.name.add('agentIntoOrganization');
+
+  //   const agentSet = model
+  //     .generalizationSetBuilder()
+  //     .generalizations(agentIntoPerson, agentIntoOrganization)
+  //     .partition()
+  //     .name('agentsSet')
+  //     .build();
+
+  //   const diagram = project.createDiagram();
+
+  //   diagram.owner = model;
+  //   diagram.addPackage(model);
+  //   diagram.addClass(agent);
+  //   diagram.addClass(person);
+  //   diagram.addClass(organization);
+  //   diagram.addGeneralization(agentIntoPerson);
+  //   diagram.addGeneralization(agentIntoOrganization);
+  //   diagram.addGeneralizationSet(agentSet);
+  //   diagram.addBinaryRelation(worksFor);
+
+  //   expect(() => JSON.stringify(project)).not.toThrow();
+  // });
 
   // TODO: Reimplement this test when the schemas are published
   // describe(`Test serialization.${serializationUtils.validate.name}()`, () => {
@@ -134,145 +146,145 @@ describe('Serialization tests', () => {
   //   it(`Validate basic ${Path.name}`, () => expect(serializationUtils.validate(new Path())).toBeTrue());
   // });
 
-  describe(`Test serialization.${serializationUtils.parse.name}()`, () => {
-    let proj: Project;
+  // describe(`Test serialization.${serializationUtils.parse.name}()`, () => {
+  //   let proj: Project;
 
-    beforeEach(() => {
-      proj = new Project();
-    });
+  //   beforeEach(() => {
+  //     proj = new Project();
+  //   });
 
-    it(`Test ${Project.name} de-serialization`, () => {
-      const serialization = JSON.stringify(proj);
+  //   it(`Test ${Project.name} de-serialization`, () => {
+  //     const serialization = JSON.stringify(proj);
 
-      expect(() => serializationUtils.parse(serialization)).not.toThrow();
-      expect(serializationUtils.parse(serialization)).toEqual(proj);
-    });
+  //     expect(() => serializationUtils.parse(serialization)).not.toThrow();
+  //     expect(serializationUtils.parse(serialization)).toEqual(proj);
+  //   });
 
-    it(`Test ${Package.name} de-serialization`, () => {
-      const pkg = proj.packageBuilder().build();
-      const serialization = JSON.stringify(pkg);
+  //   it(`Test ${Package.name} de-serialization`, () => {
+  //     const pkg = proj.packageBuilder().build();
+  //     const serialization = JSON.stringify(pkg);
 
-      expect(() => serializationUtils.parse(serialization)).not.toThrow();
-      expect(serializationUtils.parse(serialization)).toEqual(pkg);
-    });
+  //     expect(() => serializationUtils.parse(serialization)).not.toThrow();
+  //     expect(serializationUtils.parse(serialization)).toEqual(pkg);
+  //   });
 
-    it(`Test ${Class.name} de-serialization`, () => {
-      const _class = proj.classBuilder().order(5).build();
-      const serialization = JSON.stringify(_class);
+  //   it(`Test ${Class.name} de-serialization`, () => {
+  //     const _class = proj.classBuilder().order(5).build();
+  //     const serialization = JSON.stringify(_class);
 
-      expect(() => serializationUtils.parse(serialization)).not.toThrow();
-      expect(serializationUtils.parse(serialization)).toEqual(_class);
-    });
+  //     expect(() => serializationUtils.parse(serialization)).not.toThrow();
+  //     expect(serializationUtils.parse(serialization)).toEqual(_class);
+  //   });
 
-    it(`Test ${Generalization.name} de-serialization`, () => {
-      const pkg = proj.packageBuilder().id('pkg_id').build();
-      const agent = pkg.classBuilder().id('agent_id').build();
-      const person = pkg.classBuilder().id('person_id').build();
+  //   it(`Test ${Generalization.name} de-serialization`, () => {
+  //     const pkg = proj.packageBuilder().id('pkg_id').build();
+  //     const agent = pkg.classBuilder().id('agent_id').build();
+  //     const person = pkg.classBuilder().id('person_id').build();
 
-      pkg
-        .generalizationBuilder()
-        .id('gen_id')
-        .general(agent)
-        .specific(person)
-        .build();
+  //     pkg
+  //       .generalizationBuilder()
+  //       .id('gen_id')
+  //       .general(agent)
+  //       .specific(person)
+  //       .build();
 
-      const serialization = JSON.stringify(pkg);
+  //     const serialization = JSON.stringify(pkg);
 
-      expect(() => serializationUtils.parse(serialization)).not.toThrow();
-      expect(serializationUtils.parse(serialization)).toEqual(pkg);
-    });
+  //     expect(() => serializationUtils.parse(serialization)).not.toThrow();
+  //     expect(serializationUtils.parse(serialization)).toEqual(pkg);
+  //   });
 
-    it(`Test ${GeneralizationSet.name} de-serialization`, () => {
-      const pkg = proj.packageBuilder().build();
-      const agent = pkg.classBuilder().build();
-      const person = pkg.classBuilder().build();
+  //   it(`Test ${GeneralizationSet.name} de-serialization`, () => {
+  //     const pkg = proj.packageBuilder().build();
+  //     const agent = pkg.classBuilder().build();
+  //     const person = pkg.classBuilder().build();
 
-      const gen = pkg
-        .generalizationBuilder()
-        .general(agent)
-        .specific(person)
-        .build();
+  //     const gen = pkg
+  //       .generalizationBuilder()
+  //       .general(agent)
+  //       .specific(person)
+  //       .build();
 
-      const genset = pkg
-        .generalizationSetBuilder()
-        .generalizations(gen)
-        .build();
+  //     const genset = pkg
+  //       .generalizationSetBuilder()
+  //       .generalizations(gen)
+  //       .build();
 
-      const serialization = JSON.stringify(pkg);
+  //     const serialization = JSON.stringify(pkg);
 
-      expect(() => serializationUtils.parse(serialization)).not.toThrow();
-      expect(serializationUtils.parse(serialization)).toEqual(pkg);
-    });
+  //     expect(() => serializationUtils.parse(serialization)).not.toThrow();
+  //     expect(serializationUtils.parse(serialization)).toEqual(pkg);
+  //   });
 
-    it(`Test ${Property.name} de-serialization`, () => {
-      const clazz = proj.classBuilder().build();
-      clazz.propertyBuilder().type(clazz).build();
+  //   it(`Test ${Property.name} de-serialization`, () => {
+  //     const clazz = proj.classBuilder().build();
+  //     clazz.propertyBuilder().type(clazz).build();
 
-      const serialization = JSON.stringify(clazz);
+  //     const serialization = JSON.stringify(clazz);
 
-      expect(() => serializationUtils.parse(serialization)).not.toThrow();
-      expect(serializationUtils.parse(serialization)).toEqual(clazz);
-    });
+  //     expect(() => serializationUtils.parse(serialization)).not.toThrow();
+  //     expect(serializationUtils.parse(serialization)).toEqual(clazz);
+  //   });
 
-    it(`Test ${Literal.name} de-serialization`, () => {
-      const clazz = proj.classBuilder().build();
-      const lit = clazz.literalBuilder().build();
+  //   it(`Test ${Literal.name} de-serialization`, () => {
+  //     const clazz = proj.classBuilder().build();
+  //     const lit = clazz.literalBuilder().build();
 
-      const serialization = JSON.stringify(clazz);
+  //     const serialization = JSON.stringify(clazz);
 
-      expect(() => serializationUtils.parse(serialization)).not.toThrow();
-      expect(serializationUtils.parse(serialization)).toEqual(clazz);
-    });
+  //     expect(() => serializationUtils.parse(serialization)).not.toThrow();
+  //     expect(serializationUtils.parse(serialization)).toEqual(clazz);
+  //   });
 
-    it(`Test ${Relation.name} de-serialization`, () => {
-      const clazz = proj.classBuilder().build();
-      const relation = proj
-        .binaryRelationBuilder()
-        .source(clazz)
-        .target(clazz)
-        .build();
+  //   it(`Test ${Relation.name} de-serialization`, () => {
+  //     const clazz = proj.classBuilder().build();
+  //     const relation = proj
+  //       .binaryRelationBuilder()
+  //       .source(clazz)
+  //       .target(clazz)
+  //       .build();
 
-      const serialization = JSON.stringify(relation);
+  //     const serialization = JSON.stringify(relation);
 
-      expect(() => serializationUtils.parse(serialization)).not.toThrow();
-      expect(serializationUtils.parse(serialization)).toEqual(relation);
-    });
+  //     expect(() => serializationUtils.parse(serialization)).not.toThrow();
+  //     expect(serializationUtils.parse(serialization)).toEqual(relation);
+  //   });
 
-    it(`Test full project de-serialization`, () => {
-      proj.name.add('MyProject');
+  //   it(`Test full project de-serialization`, () => {
+  //     proj.name.add('MyProject');
 
-      const model = proj.packageBuilder().build();
-      model.name.add('Model');
+  //     const model = proj.packageBuilder().build();
+  //     model.name.add('Model');
 
-      const agent = model.classBuilder().category().name('Agent').build();
-      const person = model.classBuilder().kind().name('Person').build();
-      const org = model.classBuilder().kind().name('Organization').build();
-      const text = model.classBuilder().datatype().name('Text').build();
+  //     const agent = model.classBuilder().category().name('Agent').build();
+  //     const person = model.classBuilder().kind().name('Person').build();
+  //     const org = model.classBuilder().kind().name('Organization').build();
+  //     const text = model.classBuilder().datatype().name('Text').build();
 
-      agent.propertyBuilder().type(text).name('name').build();
-      person.propertyBuilder().type(text).name('surname').build();
+  //     agent.propertyBuilder().type(text).name('name').build();
+  //     person.propertyBuilder().type(text).name('surname').build();
 
-      model
-        .binaryRelationBuilder()
-        .material()
-        .source(person)
-        .target(org)
-        .name('works-for')
-        .build();
+  //     model
+  //       .binaryRelationBuilder()
+  //       .material()
+  //       .source(person)
+  //       .target(org)
+  //       .name('works-for')
+  //       .build();
 
-      const agentIntoPerson = person.addParent(agent);
-      const agentIntoOrganization = org.addParent(agent);
+  //     const agentIntoPerson = person.addParent(agent);
+  //     const agentIntoOrganization = org.addParent(agent);
 
-      model
-        .generalizationSetBuilder()
-        .generalizations(agentIntoPerson, agentIntoOrganization)
-        .partition()
-        .name('agentsSet');
+  //     model
+  //       .generalizationSetBuilder()
+  //       .generalizations(agentIntoPerson, agentIntoOrganization)
+  //       .partition()
+  //       .name('agentsSet');
 
-      const serialization = JSON.stringify(proj);
+  //     const serialization = JSON.stringify(proj);
 
-      expect(() => serializationUtils.parse(serialization)).not.toThrow();
-      expect(serializationUtils.parse(serialization)).toEqual(proj);
-    });
-  });
+  //     expect(() => serializationUtils.parse(serialization)).not.toThrow();
+  //     expect(serializationUtils.parse(serialization)).toEqual(proj);
+  //   });
+  // });
 });

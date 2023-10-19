@@ -7,7 +7,7 @@ import {
   Package,
   Project,
   Property
-} from '../../src';
+} from '../src';
 
 describe('Project tests', () => {
   let proj: Project;

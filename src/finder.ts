@@ -1,19 +1,13 @@
 import {
   BinaryRelation,
   Class,
-  Generalization,
-  GeneralizationSet,
-  Literal,
   ModelElement,
-  NaryRelation,
   Nature,
-  Package,
   Property,
   Relation,
   ClassStereotype,
   PropertyStereotype,
   RelationStereotype,
-  OntoumlElement,
   Project
 } from '.';
 
@@ -22,6 +16,10 @@ export class Finder {
 
   constructor(project: Project) {
     this.project = project;
+  }
+
+  toJSON(): any {
+    return { type: 'Finder', project: this.project.id };
   }
 
   /**

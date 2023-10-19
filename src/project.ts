@@ -28,7 +28,8 @@ import {
   Relation,
   PackageBuilder,
   BinaryRelationBuilder,
-  NaryRelationBuilder
+  NaryRelationBuilder,
+  Resource
 } from '.';
 
 export class Project extends NamedElement {
@@ -55,6 +56,22 @@ export class Project extends NamedElement {
   private _packageViews: { [key: string]: PackageView } = {};
   private _noteViews: { [key: string]: NoteView } = {};
   private _noteLinkViews: { [key: string]: LinkView } = {};
+
+  publisher?: string;
+  designedForTasks: string[] = [];
+  license?: string;
+  accessRights: string[] = [];
+  themes: string[] = [];
+  contexts: string[] = [];
+  ontologyTypes: string[] = [];
+  representationStyle?: string;
+  namespace?: string;
+  landingPages: string[] = [];
+  sources: string[] = [];
+  bibliographicCitations: string[] = [];
+  keywords: string[] = [];
+  acronyms: string[] = [];
+  languages: string[] = [];
 
   constructor() {
     super();
@@ -306,10 +323,6 @@ export class Project extends NamedElement {
     };
 
     return { ...object, ...super.toJSON() };
-  }
-
-  override toString(): string {
-    return 'Hello';
   }
 
   // No reference fields to resolve/replace

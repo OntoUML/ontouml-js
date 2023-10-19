@@ -1,12 +1,21 @@
 import _ from 'lodash';
 import { OntoumlElement, Project, NamedElement } from '..';
 
-export abstract class ModelElement extends NamedElement {
+export interface ProjectElement {
+  project: Project;
+}
+
+export abstract class ModelElement
+  extends NamedElement
+  implements ProjectElement
+{
+  project: Project;
   customProperties: object = {};
   _container?: ModelElement;
 
   constructor(project: Project) {
     super(project);
+    this.project = project;
   }
 
   // TODO: This method is no longer necessary.

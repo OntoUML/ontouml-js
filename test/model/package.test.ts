@@ -106,6 +106,17 @@ describe(`Package tests`, () => {
       contents = emptyPkg.getAllContents();
       expect(contents).toBeEmpty();
     });
+
+    it('should throw an error on circular containment (A contains B, B contains A)', () => {
+      proj = new Project();
+      const pkgA = proj.packageBuilder().build();
+      const pkgB = proj.packageBuilder().build();
+
+      pkgA.addContent(pkgB);
+      pkgB.addContent(pkgA);
+
+      expect(() => pkgA.getAllContents()).toThrowError();
+    });
   });
 
   describe(`Test getAllAttributes()`, () => {
