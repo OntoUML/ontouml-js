@@ -189,29 +189,58 @@ export class Ontouml2Alloy implements Service {
         relation.removeSelfFromContainer();
         this.generateRemovalIssue(relation, `Relation '${relation.getName()}' was removed due to being connected to an unsupported class '${target.getName()}'.`);
       }
+    }
 
+    // Remove derivation relations that are structurally invalid 
+    for (const relation of this.model.getAllRelations()) {
+      if (relation.hasDerivationStereotype() && !relation.isDerivation()) {
+        const relationName = relation.getName() || relation.id;
+        relation.removeSelfFromContainer();
+        this.generateRemovalIssue(relation, `Relation '${relationName}' was removed because it is stereotyped as derivation but structurally invalid.`);
+      }
+    }
+
+    // Remove generalizations with missing elements
+    for (const generalization of this.model.getAllGeneralizations()) {
+      const source = generalization.specific;
+      const target = generalization.general;
+
+      if (!source || !target) {
+        generalization.removeSelfFromContainer();
+        const genName = generalization.getName() || `${source?.getName() ?? '?'} -> ${target?.getName() ?? '?'}`;
+        this.generateRemovalIssue(generalization, `Generalization '${genName}' was removed due to having a missing element.`);
+      }
     }
   
-    // Remove generalizations consisting of unsupported or null elements
+    // Remove generalizations consisting of unsupported elements
     for (const generalization of this.model.getAllGeneralizations()) {
       const source = generalization.specific;
       const target = generalization.general;
   
-      if (!source || !target || this.hasUnsupportedStereotype(source) || this.hasUnsupportedStereotype(target)) {
+      if (this.hasUnsupportedStereotype(source) || this.hasUnsupportedStereotype(target)) {
         generalization.removeSelfFromContainer();
-        const genName = generalization.getName() || `${source?.getName() ?? '?'} -> ${target?.getName() ?? '?'}`;
-        this.generateRemovalIssue(generalization, `Generalization '${genName}' was removed due to having an unsupported or missing element.`);
+        const genName = generalization.getName() || `${source.getName()} -> ${target.getName()}`;
+        this.generateRemovalIssue(generalization, `Generalization '${genName}' was removed due to having an unsupported element.`);
+      }
+    }
+
+    // Remove generalization sets with missing generalizations array
+    for (const generalizationSet of this.model.getAllGeneralizationSets()) {
+      if (!generalizationSet.generalizations) {
+        generalizationSet.removeSelfFromContainer();
+        const genSetName = generalizationSet.getName() || generalizationSet.id;
+        this.generateRemovalIssue(generalizationSet, `Generalization Set '${genSetName}' was removed due to missing generalizations.`);
       }
     }
 
     // Remove generalization sets containing unsupported elements
     for (const generalizationSet of this.model.getAllGeneralizationSets()) {
-      if (!generalizationSet.generalizations || generalizationSet.generalizations.some(gen => (gen.specific && this.hasUnsupportedStereotype(gen.specific)) || (gen.general && this.hasUnsupportedStereotype(gen.general)))) {
+      if (generalizationSet.generalizations.some(gen => (gen.specific && this.hasUnsupportedStereotype(gen.specific)) || (gen.general && this.hasUnsupportedStereotype(gen.general)))) {
           generalizationSet.removeSelfFromContainer();
-          const genSetNames = (generalizationSet.generalizations ?? []).map(gen => gen.getName() || `${gen.specific?.getName() ?? '?'} -> ${gen.general?.getName() ?? '?'}`).join(', ');
+          const genSetNames = generalizationSet.generalizations.map(gen => gen.getName() || `${gen.specific?.getName() ?? '?'} -> ${gen.general?.getName() ?? '?'}`).join(', ');
           const genSetName = generalizationSet.getName() || `{${genSetNames}}`;
   
-          const removalDescription = `Generalization Set '${genSetName}' was removed due to containing an unsupported element or missing generalizations.`;
+          const removalDescription = `Generalization Set '${genSetName}' was removed due to containing an unsupported element.`;
           
           this.generateRemovalIssue(generalizationSet, removalDescription);
       }

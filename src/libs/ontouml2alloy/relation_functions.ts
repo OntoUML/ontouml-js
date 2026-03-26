@@ -113,11 +113,6 @@ function transformMaterialRelation(transformer: Ontouml2Alloy, relation: Relatio
 function transformDerivationRelation(transformer: Ontouml2Alloy, relation: Relation) {
 	//TODO: take Comparatives, External Dependence into account
 
-	if (!relation.isDerivation()) {
-		console.warn(`Skipping derivation "${relation.getName() || relation.id}": stereotyped as derivation but structurally invalid.`);
-		return;
-	}
-
 	if (relation.getDerivingRelationStereotype() === RelationStereotype.MATERIAL
 		&& relation.getDerivedClassStereotype() === ClassStereotype.RELATOR) {
 
