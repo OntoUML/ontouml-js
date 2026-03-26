@@ -13,6 +13,10 @@ import {
 
 export function transformProperty(transformer: Ontouml2Alloy, property: Property) {
 	if (property.container instanceof Class && property.container.hasDatatypeStereotype()) {
+		if (!property.propertyType) {
+			console.warn(`Skipping datatype attribute "${property.getName() || property.id}": no propertyType defined`);
+			return;
+		}
 		transformDatatypeAttribute(transformer, property);
 		return;
 	} else if (property.container instanceof Relation && holdsBetweenDatatypes(property.container)) {
@@ -20,6 +24,11 @@ export function transformProperty(transformer: Ontouml2Alloy, property: Property
 	}
 
 	if (property.isAttribute()) {
+		if (!property.propertyType) {
+			console.warn(`Skipping attribute "${property.getName() || property.id}": no propertyType defined`);
+			return;
+		}
+		
 		if (property.isOrdered) {
 			transformOrderedAttribute(transformer, property);
 		} else {

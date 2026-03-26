@@ -16,20 +16,23 @@ export function transformGeneralizationSet(transformer: Ontouml2Alloy, genSet: G
     return;
   }
 
-  const classParents = genSet.generalizations.map((gen: Generalization) => gen.getGeneralClass());
-  const onlyClassParent = classParents.length === genSet.generalizations.length;
-  const parent = genSet.getGeneralClass();
-  const uniqueParent = !!parent;
+  const classParents = (genSet.generalizations as Generalization[])
+    .map(gen => gen.general)
+    .filter(parent => parent && parent.type === OntoumlType.CLASS_TYPE);
+  const onlyClassParents = classParents.length === genSet.generalizations.length;
+  const uniqueParent = classParents.length > 0 && classParents.every(p => p === classParents[0]);
 
-  if (!uniqueParent || !onlyClassParent) {
+  if (!onlyClassParents || !uniqueParent) {
     return;
   }
+
+  const parent = classParents[0];
 
   const children = (genSet.generalizations as Generalization[])
     .map(gen => getNormalizedName(transformer, gen.specific));
 
   let fact = 'fact generalizationSet {\n';
-  if (genSet.isDisjoint) fact += '        disjoint[' + children.join(',') + ']\n';
+  if (genSet.isDisjoint) fact += '        disj[' + children.join(',') + ']\n';
   if (genSet.isComplete) fact += '        ' + getNormalizedName(transformer, parent) + ' = ' + children.join('+') + '\n';
   fact += '}';
 

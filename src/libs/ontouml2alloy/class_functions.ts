@@ -33,6 +33,8 @@ export function transformClass(transformer: Ontouml2Alloy, _class: Class) { //Th
     transformRelatorConstraint(transformer, _class);
   }
 
+  // QUESTION: if we add this as a constraint, should we enforce abstractness for non-sortal stereotype? 
+  // if (_class.isAbstract || _class.hasNonSortalStereotype()) {
   if (_class.isAbstract) {
     transformAbstractClass(transformer, _class);
   }
@@ -164,29 +166,30 @@ function transformWeakSupplementationConstraint(transformer: Ontouml2Alloy, _cla
   }
 }
 
+// UPDATED: Ultimate sortals (Kind, Collective, Quantity, Relator, Quality, Mode)
+// provide identity and must be pairwise disjoint. Non-sortals like Category
+// are NOT made disjoint, e.g. a Kind can spezialize multiple Categories.
 function transformDisjointNaturesConstraint(transformer: Ontouml2Alloy, _class: Class) {
-  if (!isTopLevel(_class, transformer.model.getAllGeneralizations())) {
+  if (!_class.hasUltimateSortalStereotype()) {
     return;
   }
 
-  let differentNaturedClasses = [];
+  let otherUltimateSortals = [];
   for (const otherClass of transformer.model.getAllClasses()) {
-    if (isTopLevel(otherClass, transformer.model.getAllGeneralizations())
-      && !otherClass.restrictedToContainedIn(_class.restrictedTo)) {
-
-      differentNaturedClasses.push(getNormalizedName(transformer, otherClass));
+    if (otherClass !== _class && otherClass.hasUltimateSortalStereotype()) {
+      otherUltimateSortals.push(getNormalizedName(transformer, otherClass));
     }
   }
 
-  if (differentNaturedClasses.length) {
+  if (otherUltimateSortals.length) {
     const className = getNormalizedName(transformer, _class);
-    if (differentNaturedClasses.length == 1) {
+    if (otherUltimateSortals.length == 1) {
       transformer.addWorldFieldFact(
-        'disjoint[' + className + ',' + differentNaturedClasses[0] + ']'
+        'disj[' + className + ',' + otherUltimateSortals[0] + ']'
       );
     } else {
       transformer.addWorldFieldFact(
-        'disjoint[' + className + ',(' + differentNaturedClasses.join('+') + ')]'
+        'disj[' + className + ',(' + otherUltimateSortals.join('+') + ')]'
       );
     }
   }
@@ -197,15 +200,14 @@ export function transformAdditionalClassConstraints(transformer: Ontouml2Alloy) 
   let aspectClasses = [];
 
   for (const _class of transformer.model.getAllClasses()) {
-    if (_class.isRestrictedToEndurant() && isTopLevel(_class, transformer.model.getAllGeneralizations())) {
+    if (_class.isRestrictedToEndurant() && _class.hasUltimateSortalStereotype()) {
       const className = getNormalizedName(transformer, _class);
 
+      // kind, collective, quantity 
       if (_class.isRestrictedToSubstantial()) {
         objectClasses.push(className);
+      // mode, quality, relator 
       } else if (_class.isRestrictedToMoment()) {
-        aspectClasses.push(className);
-      } else {
-        objectClasses.push(className);
         aspectClasses.push(className);
       }
     }

@@ -130,17 +130,13 @@ export class Ontouml2Alloy implements Service {
   }
 
   hasUnsupportedStereotype(decoratable: Decoratable<any>) {
-    return decoratable.hasAnyStereotype(['event', 'situation' ,'type'] || decoratable == null );
+    return decoratable == null || decoratable.hasAnyStereotype(['event', 'situation', 'type']);
   }
   
+  // TODO in general the whole code base would benefit from being more functional, i.e. less state and side effects. But can consider this later. 
   removeUnsupportedElements() {
-    const classes = this.model.getAllClasses();
-    const relations = this.model.getAllRelations();
-    const generalizations = this.model.getAllGeneralizations();
-    const generalizationSets = this.model.getAllGeneralizationSets();
-
     // Remove classes with unsupported stereotypes
-    for (const _class of classes) {
+    for (const _class of this.model.getAllClasses()) {
 
       if (this.hasUnsupportedStereotype(_class)) {
   
@@ -165,8 +161,23 @@ export class Ontouml2Alloy implements Service {
       }
     }
   
+    // Remove non-binary (ternary/n-ary) relations, which are not supported by the transformation
+    for (const relation of this.model.getAllRelations()) {
+      if (!relation.isBinary()) {
+        let description = `Non-binary relation removed. Only binary relations are supported.`;
+        try {
+          const relationName = relation.getName() || relation.id;
+          const endCount = relation.properties?.length ?? 0;
+          const memberNames = relation.getMembers().map(m => m.getName() || m.id).join(', ');
+          description = `Relation '${relationName}' was removed because it is a non-binary relation with ${endCount} ends (members: ${memberNames}). Only binary relations are supported.`;
+        } catch (_) { /* use fallback description */ }
+        relation.removeSelfFromContainer();
+        this.generateRemovalIssue(relation, description);
+      }
+    }
+
     // Remove relations connected to unsupported classes
-    for (const relation of relations) {
+    for (const relation of this.model.getAllRelations()) {
       const source = relation.getSource();
       const target = relation.getTarget();
   
@@ -181,26 +192,26 @@ export class Ontouml2Alloy implements Service {
 
     }
   
-    // Remove generalizations consisting of unsupported elements
-    for (const generalization of generalizations) {
+    // Remove generalizations consisting of unsupported or null elements
+    for (const generalization of this.model.getAllGeneralizations()) {
       const source = generalization.specific;
       const target = generalization.general;
   
-      if ((source && this.hasUnsupportedStereotype(source)) || (target && this.hasUnsupportedStereotype(target))) {
+      if (!source || !target || this.hasUnsupportedStereotype(source) || this.hasUnsupportedStereotype(target)) {
         generalization.removeSelfFromContainer();
-        const genName = generalization.getName() || `${source.getName()} -> ${target.getName()}`;
-        this.generateRemovalIssue(generalization, `Generalization '${genName}' was removed due to having an unsupported element.`);
+        const genName = generalization.getName() || `${source?.getName() ?? '?'} -> ${target?.getName() ?? '?'}`;
+        this.generateRemovalIssue(generalization, `Generalization '${genName}' was removed due to having an unsupported or missing element.`);
       }
     }
 
     // Remove generalization sets containing unsupported elements
-    for (const generalizationSet of generalizationSets) {
-      if (generalizationSet.generalizations.some(gen => this.hasUnsupportedStereotype(gen.specific) || this.hasUnsupportedStereotype(gen.general))) {
+    for (const generalizationSet of this.model.getAllGeneralizationSets()) {
+      if (!generalizationSet.generalizations || generalizationSet.generalizations.some(gen => (gen.specific && this.hasUnsupportedStereotype(gen.specific)) || (gen.general && this.hasUnsupportedStereotype(gen.general)))) {
           generalizationSet.removeSelfFromContainer();
-          const genSetNames = generalizationSet.generalizations.map(gen => gen.getName() || `${gen.specific.getName()} -> ${gen.general.getName()}`).join(', ');
+          const genSetNames = (generalizationSet.generalizations ?? []).map(gen => gen.getName() || `${gen.specific?.getName() ?? '?'} -> ${gen.general?.getName() ?? '?'}`).join(', ');
           const genSetName = generalizationSet.getName() || `{${genSetNames}}`;
   
-          const removalDescription = `Generalization Set '${genSetName}' was removed due to containing an unsupported element.`;
+          const removalDescription = `Generalization Set '${genSetName}' was removed due to containing an unsupported element or missing generalizations.`;
           
           this.generateRemovalIssue(generalizationSet, removalDescription);
       }

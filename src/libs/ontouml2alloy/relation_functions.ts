@@ -87,7 +87,7 @@ function transformMediationRelation(transformer: Ontouml2Alloy, relation: Relati
 
 function transformMaterialRelation(transformer: Ontouml2Alloy, relation: Relation) {
 	for (const rel of transformer.model.getAllRelations()) {
-		if (rel.hasDerivationStereotype() && rel.getDerivingRelation() === relation
+		if (rel.hasDerivationStereotype() && rel.isDerivation() && rel.getDerivingRelation() === relation
 			&& rel.getDerivedClassStereotype() === ClassStereotype.RELATOR) {
 
 			let materialName = getNormalizedName(transformer, relation);
@@ -113,6 +113,11 @@ function transformMaterialRelation(transformer: Ontouml2Alloy, relation: Relatio
 function transformDerivationRelation(transformer: Ontouml2Alloy, relation: Relation) {
 	//TODO: take Comparatives, External Dependence into account
 
+	if (!relation.isDerivation()) {
+		console.warn(`Skipping derivation "${relation.getName() || relation.id}": stereotyped as derivation but structurally invalid.`);
+		return;
+	}
+
 	if (relation.getDerivingRelationStereotype() === RelationStereotype.MATERIAL
 		&& relation.getDerivedClassStereotype() === ClassStereotype.RELATOR) {
 
@@ -137,6 +142,18 @@ function transformDerivationRelation(transformer: Ontouml2Alloy, relation: Relat
 					
 					mediation2 = rel;
 			}
+
+			if (mediation1 && mediation2) break;
+		}
+
+		if (!mediation2 && materialSource === materialTarget && mediation1) {
+			mediation2 = mediation1;
+		}
+
+		// QUESTION should we even handle this? 
+		if (!mediation1 || !mediation2) {
+			console.warn(`Skipping derivation "${relation.getName() || relation.id}": could not find medations. Info: mediation1 ${mediation1} and mediation2 ${mediation2}`);
+			return;
 		}
 
 		let materialName = getNormalizedName(transformer, material);
@@ -155,6 +172,7 @@ function transformDerivationRelation(transformer: Ontouml2Alloy, relation: Relat
 		);
 	}
 }
+
 
 function transformPartWholeRelation(transformer: Ontouml2Alloy, relation: Relation) {
 	let relationName = getNormalizedName(transformer, relation);
