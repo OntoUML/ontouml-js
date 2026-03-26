@@ -1,6 +1,7 @@
 import { OntoumlElement, Class, ClassStereotype, Relation, Generalization, Cardinality } from '@libs/ontouml';
 import { Ontouml2Alloy } from '.';
 
+// TODO Linn: update this one!! 
 export const reservedKeywords = [
 	'abstract', 'all', 'and', 'as', 'assert',
 	'but', 'check', 'disj', 'else', 'exactly',
@@ -133,7 +134,7 @@ export function getAlias(element: OntoumlElement, name: string, aliases: [Ontoum
 export function isMaterialConnectedToDerivation(material: Relation, relations: Relation[]) {
 	if (material.hasMaterialStereotype()) {
 		for (const rel of relations) {
-			if (rel.hasDerivationStereotype() && rel.getDerivingRelation() === material
+			if (rel.hasDerivationStereotype() && rel.isDerivation() && rel.getDerivingRelation() === material
 				&& rel.getDerivedClassStereotype() === ClassStereotype.RELATOR) {
 					return true;
 			}
