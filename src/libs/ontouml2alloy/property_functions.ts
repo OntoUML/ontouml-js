@@ -1,4 +1,4 @@
-import { Property, Class, Relation } from '@libs/ontouml';
+import { Property, Class, Relation, ClassStereotype } from '@libs/ontouml';
 import { Ontouml2Alloy } from '.';
 import {
 	getNormalizedName,
@@ -190,16 +190,22 @@ function transformRelationSourceEnd(transformer: Ontouml2Alloy, sourceEnd: Prope
 	const oppositeName = getNormalizedName(transformer, (sourceEnd.container as Relation).getTarget());
 	const sourceEndAlias = getAlias(sourceEnd, sourceEndName, transformer.aliases);
 
+	const sourceIsDatatype = (sourceEnd.container as Relation).getSourceStereotype() === ClassStereotype.DATATYPE;
+	const oppositeIsDatatype = (sourceEnd.container as Relation).getTargetStereotype() === ClassStereotype.DATATYPE;
+	const sourceAlloyType = sourceIsDatatype ? sourceName : 'World.' + sourceName;
+	const oppositeAlloyType = oppositeIsDatatype ? oppositeName : 'World.' + oppositeName;
+	const oppositeQuantifier = oppositeIsDatatype ? oppositeName : 'w.' + oppositeName;
+
 	if (isMaterialConnectedToDerivation(sourceEnd.container as Relation, transformer.model.getAllRelations())
 		|| sourceEnd.isOrdered || sourceEnd.getOppositeEnd().isOrdered) {
 		transformer.addFun(
-			'fun ' + sourceEndAlias + ' [x: World.' + oppositeName + ', w: World] : set World.' + sourceName + ' {\n' +
+			'fun ' + sourceEndAlias + ' [x: ' + oppositeAlloyType + ', w: World] : set ' + sourceAlloyType + ' {\n' +
 			'        (select13[w.' + relationName + ']).x\n' +
 			'}'
 		);
 	} else {
 		transformer.addFun(
-			'fun ' + sourceEndAlias + ' [x: World.' + oppositeName + ', w: World] : set World.' + sourceName + ' {\n' +
+			'fun ' + sourceEndAlias + ' [x: ' + oppositeAlloyType + ', w: World] : set ' + sourceAlloyType + ' {\n' +
 			'        (w.' + relationName + ').x\n' +
 			'}'
 		);
@@ -220,26 +226,26 @@ function transformRelationSourceEnd(transformer: Ontouml2Alloy, sourceEnd: Prope
 			if (lowerBound === upperBound) {
 				transformer.addFact(
 					'fact multiplicity {\n' +
-					'        all w: World, x: w.' + oppositeName + ' | #' + sourceEndAlias + '[x,w]=' + lowerBound + '\n' +
+					'        all w: World, x: ' + oppositeQuantifier + ' | #' + sourceEndAlias + '[x,w]=' + lowerBound + '\n' +
 					'}'
 				);
 			} else {
 				transformer.addFact(
 					'fact multiplicity {\n' +
-					'        all w: World, x: w.' + oppositeName + ' | #' + sourceEndAlias + '[x,w]>=' + lowerBound + ' and #' + sourceEndAlias + '[x,w]<=' + upperBound + '\n' +
+					'        all w: World, x: ' + oppositeQuantifier + ' | #' + sourceEndAlias + '[x,w]>=' + lowerBound + ' and #' + sourceEndAlias + '[x,w]<=' + upperBound + '\n' +
 					'}'
 				);
 			}
 		} else if (lowerBound) {
 			transformer.addFact(
 				'fact multiplicity {\n' +
-				'        all w: World, x: w.' + oppositeName + ' | #' + sourceEndAlias + '[x,w]>=' + lowerBound + '\n' +
+				'        all w: World, x: ' + oppositeQuantifier + ' | #' + sourceEndAlias + '[x,w]>=' + lowerBound + '\n' +
 				'}'
 			);
 		} else if (upperBound) {
 			transformer.addFact(
 				'fact multiplicity {\n' +
-				'        all w: World, x: w.' + oppositeName + ' | #' + sourceEndAlias + '[x,w]<=' + upperBound + '\n' +
+				'        all w: World, x: ' + oppositeQuantifier + ' | #' + sourceEndAlias + '[x,w]<=' + upperBound + '\n' +
 				'}'
 			);
 		}
@@ -261,16 +267,22 @@ function transformRelationTargetEnd(transformer: Ontouml2Alloy, targetEnd: Prope
 	const oppositeName = getNormalizedName(transformer, (targetEnd.container as Relation).getSource());
 	const targetEndAlias = getAlias(targetEnd, targetEndName, transformer.aliases);
 
+	const targetIsDatatype = (targetEnd.container as Relation).getTargetStereotype() === ClassStereotype.DATATYPE;
+	const oppositeIsDatatype = (targetEnd.container as Relation).getSourceStereotype() === ClassStereotype.DATATYPE;
+	const targetAlloyType = targetIsDatatype ? targetName : 'World.' + targetName;
+	const oppositeAlloyType = oppositeIsDatatype ? oppositeName : 'World.' + oppositeName;
+	const oppositeQuantifier = oppositeIsDatatype ? oppositeName : 'w.' + oppositeName;
+
 	if (isMaterialConnectedToDerivation(targetEnd.container as Relation, transformer.model.getAllRelations())
 		|| targetEnd.isOrdered || targetEnd.getOppositeEnd().isOrdered) {
 		transformer.addFun(
-			'fun ' + targetEndAlias + ' [x: World.' + oppositeName + ', w: World] : set World.' + targetName + ' {\n' +
+			'fun ' + targetEndAlias + ' [x: ' + oppositeAlloyType + ', w: World] : set ' + targetAlloyType + ' {\n' +
 			'        x.(select13[w.' + relationName + '])\n' +
 			'}'
 		);
 	} else {
 		transformer.addFun(
-			'fun ' + targetEndAlias + ' [x: World.' + oppositeName + ', w: World] : set World.' + targetName + ' {\n' +
+			'fun ' + targetEndAlias + ' [x: ' + oppositeAlloyType + ', w: World] : set ' + targetAlloyType + ' {\n' +
 			'        x.(w.' + relationName + ')\n' +
 			'}'
 		);
@@ -293,26 +305,26 @@ function transformRelationTargetEnd(transformer: Ontouml2Alloy, targetEnd: Prope
 			if (lowerBound === upperBound) {
 				transformer.addFact(
 					'fact multiplicity {\n' +
-					'        all w: World, x: w.' + oppositeName + ' | #' + targetEndAlias + '[x,w]=' + lowerBound + '\n' +
+					'        all w: World, x: ' + oppositeQuantifier + ' | #' + targetEndAlias + '[x,w]=' + lowerBound + '\n' +
 					'}'
 				);
 			} else {
 				transformer.addFact(
 					'fact multiplicity {\n' +
-					'        all w: World, x: w.' + oppositeName + ' | #' + targetEndAlias + '[x,w]>=' + lowerBound + ' and #' + targetEndAlias + '[x,w]<=' + upperBound + '\n' +
+					'        all w: World, x: ' + oppositeQuantifier + ' | #' + targetEndAlias + '[x,w]>=' + lowerBound + ' and #' + targetEndAlias + '[x,w]<=' + upperBound + '\n' +
 					'}'
 				);
 			}
 		} else if (lowerBound) {
 			transformer.addFact(
 				'fact multiplicity {\n' +
-				'        all w: World, x: w.' + oppositeName + ' | #' + targetEndAlias + '[x,w]>=' + lowerBound + '\n' +
+				'        all w: World, x: ' + oppositeQuantifier + ' | #' + targetEndAlias + '[x,w]>=' + lowerBound + '\n' +
 				'}'
 			);
 		} else if (upperBound) {
 			transformer.addFact(
 				'fact multiplicity {\n' +
-				'        all w: World, x: w.' + oppositeName + ' | #' + targetEndAlias + '[x,w]<=' + upperBound + '\n' +
+				'        all w: World, x: ' + oppositeQuantifier + ' | #' + targetEndAlias + '[x,w]<=' + upperBound + '\n' +
 				'}'
 			);
 		}
