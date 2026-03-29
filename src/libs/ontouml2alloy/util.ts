@@ -1,23 +1,12 @@
 import { OntoumlElement, Class, ClassStereotype, Relation, Generalization, Cardinality } from '@libs/ontouml';
 import { Ontouml2Alloy } from '.';
 
-// TODO Linn: update this one!! 
-export const reservedKeywords = [
-	'abstract', 'all', 'and', 'as', 'assert',
-	'but', 'check', 'disj', 'else', 'exactly',
-	'extends', 'fact', 'for', 'fun', 'iden',
-	'iff', 'implies', 'in', 'Int', 'let',
-	'lone', 'module', 'no', 'none', 'not',
-	'one', 'open', 'or', 'pred', 'run',
-	'set', 'sig', 'some', 'sum', 'univ'
-];
+export const reservedKeywords =['for', 'pred', 'sig', 'enum', 'in', 'since', 'triggered', 'check', 'some', 'not', 'after', 'but', 'let', 'always', 'int', 'no', 'releases', 'before', 'expect', 'else', 'seq', 'extends', 'none', 'one', 'steps', 'abstract', 'once', 'run', 'exactly', 'disj', 'iff', 'string', 'module', 'sum', 'set', 'implies', 'until', 'historically', 'open', 'or', 'all', 'as', 'fact', 'univ', 'eventually', 'and', 'assert', 'var', 'iden', 'lone', 'fun', 'this', 'private', 
+	// transformation specific.
+	'object', 'world', 'aspect', 'datatype', 'endurant'];
 
-export const forbiddenCharacters = [
-	' ', '!', '@', '#', '$', '%', '&',
-	'*', '(', ')', '-', '+', '=', '{',
-	'}', '[', ']', '|', '\\', ';', ':',
-	',', '.', '<', '>', '/', '?'
-];
+export const forbiddenCharacters = ['{', '*', ':', '$', '%', '~', ',', '’', '‘', '(', '-', '|', '#', ')', '}', ';', '[', ' ', '.', "'", '+', ']', '<', '=', '!', '>', '^', '\\', '&', '?', '/', '@'];
+
 
 //TODO multi-language support
 export function getNormalizedName(transformer: Ontouml2Alloy, element: OntoumlElement) {
@@ -44,7 +33,7 @@ export function getNormalizedName(transformer: Ontouml2Alloy, element: OntoumlEl
 	}
 
 	//Check if the normalized name is a reserved keyword or 'Unnamed', if so, add the type of ontouml element to the name
-	if (reservedKeywords.includes(normalizedName) || normalizedName == 'Unnamed' ) {
+	if (reservedKeywords.includes(normalizedName.toLowerCase()) || normalizedName == 'Unnamed' ) {
 		normalizedName += `_${(element.type).toLowerCase()}`;
 	}
 
