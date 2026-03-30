@@ -45,12 +45,36 @@ describe('Name normalization' , () => {
             const normalized = getNormalizedName(transformer, element);
             expect(normalized).toBe('PeRsoN');
           });
+
+          it('preserves Latin accented letters. Café -> Café', () => {
+            element.addName('Café');
+            const normalized = getNormalizedName(transformer, element);
+            expect(normalized).toBe('Café');
+          });
+
+          it('preserves non-latin characters. Person日本 -> Person日本', () => {
+            element.addName('Person日本');
+            const normalized = getNormalizedName(transformer, element);
+            expect(normalized).toBe('Person日本');
+          });
+
+          it('preserves trailing numbers. Person42 -> Person42', () => {
+            element.addName('Person42');
+            const normalized = getNormalizedName(transformer, element);
+            expect(normalized).toBe('Person42');
+          });
+
+          it('preserves numbers in the middle. Ha1lo -> Ha1lo', () => {
+            element.addName('Ha1lo');
+            const normalized = getNormalizedName(transformer, element);
+            expect(normalized).toBe('Ha1lo');
+          });
     
     })
     
     describe("Inappropriate names are normalized properly", () => {
             
-        //normalization of reserved keywords: abstract -> abstract_OntoumlElementType
+        //normalization of reserved keywords: abstract -> abstract_<OntoumlElementType>
         reservedKeywords.forEach(keyword => {
             it(`should normalize the reserved keyword "${keyword}"`, () => {
                 element.addName(keyword);
@@ -88,7 +112,7 @@ describe('Name normalization' , () => {
     
             const result = generateAlloy(model);
     
-            expect(result).toContain('sig Date in Datatype {\n        relation: String\n}');
+            expect(result).toContain('sig Date in Datatype {\n        relation: String_class\n}');
         });
 
         it('should normalize two classes with no name/only forbidden characters', () => {
@@ -121,7 +145,33 @@ describe('Name normalization' , () => {
     
     });
 
+    describe('Reserved keyword matching is case-insensitive', () => {
 
+        it('Object -> Object_class', () => {
+            element.addName('Object');
+            const normalized = getNormalizedName(transformer, element);
+            expect(normalized).toBe('Object_class');
+        });
+
+        it('ABSTRACT -> ABSTRACT_class', () => {
+            element.addName('ABSTRACT');
+            const normalized = getNormalizedName(transformer, element);
+            expect(normalized).toBe('ABSTRACT_class');
+        });
+
+        it('Datatype -> Datatype_class', () => {
+            element.addName('Datatype');
+            const normalized = getNormalizedName(transformer, element);
+            expect(normalized).toBe('Datatype_class');
+        });
+
+        it('preserves original casing in the output. DiSj -> DiSj_class', () => {
+            element.addName('DiSj');
+            const normalized = getNormalizedName(transformer, element);
+            expect(normalized).toBe('DiSj_class');
+        });
+
+    });
 
 }) 
 
