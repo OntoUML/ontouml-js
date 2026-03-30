@@ -224,6 +224,20 @@ export class Ontouml2Alloy implements Service {
       }
     }
 
+    // Remove "dead" generalizations whose specific or general was removed in earlier passes
+    const liveElements = new Set([
+      ...this.model.getAllClasses().map(c => c.id),
+      ...this.model.getAllRelations().map(r => r.id)
+    ]);
+    for (const generalization of this.model.getAllGeneralizations()) {
+      if (!liveElements.has(generalization.specific?.id) || !liveElements.has(generalization.general?.id)) {
+        generalization.removeSelfFromContainer();
+        const specName = generalization.specific?.getName() ?? '?';
+        const genName = generalization.general?.getName() ?? '?';
+        this.generateRemovalIssue(generalization, `Generalization '${specName} -> ${genName}' was removed because its specific or general element was removed.`);
+      }
+    }
+
     // Remove generalization sets with missing generalizations array
     for (const generalizationSet of this.model.getAllGeneralizationSets()) {
       if (!generalizationSet.generalizations) {
