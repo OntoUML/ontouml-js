@@ -28,6 +28,7 @@ export function transformClass(transformer: Ontouml2Alloy, _class: Class) { //Th
     return;
   }
 
+  // by this point, the class should be an endurant
   // QUESTION if a class is not restricted to anything, should we default to Endurant (since datatype, enumeration and endurant are the only natures that can be an end of a relation) or skip entirely (in which case we also need to clean up all the relations)? 
   if (_class.isRestrictedToEndurant() || !_class.restrictedTo || _class.restrictedTo.length === 0) {
     transformEndurantClass(transformer, _class);
