@@ -190,11 +190,11 @@ function transformRelationSourceEnd(transformer: Ontouml2Alloy, sourceEnd: Prope
 	const oppositeName = getNormalizedName(transformer, (sourceEnd.container as Relation).getTarget());
 	const sourceEndAlias = getAlias(sourceEnd, sourceEndName, transformer.aliases);
 
-	const sourceIsDatatype = (sourceEnd.container as Relation).getSourceStereotype() === ClassStereotype.DATATYPE;
-	const oppositeIsDatatype = (sourceEnd.container as Relation).getTargetStereotype() === ClassStereotype.DATATYPE;
-	const sourceAlloyType = sourceIsDatatype ? sourceName : 'World.' + sourceName;
-	const oppositeAlloyType = oppositeIsDatatype ? oppositeName : 'World.' + oppositeName;
-	const oppositeQuantifier = oppositeIsDatatype ? oppositeName : 'w.' + oppositeName;
+	const sourceIsValueType = [ClassStereotype.DATATYPE, ClassStereotype.ENUMERATION].includes((sourceEnd.container as Relation).getSourceStereotype() as ClassStereotype);
+	const oppositeIsValueType = [ClassStereotype.DATATYPE, ClassStereotype.ENUMERATION].includes((sourceEnd.container as Relation).getTargetStereotype() as ClassStereotype);
+	const sourceAlloyType = sourceIsValueType ? sourceName : 'World.' + sourceName;
+	const oppositeAlloyType = oppositeIsValueType ? oppositeName : 'World.' + oppositeName;
+	const oppositeQuantifier = oppositeIsValueType ? oppositeName : 'w.' + oppositeName;
 
 	if (isMaterialConnectedToDerivation(sourceEnd.container as Relation, transformer.model.getAllRelations())
 		|| sourceEnd.isOrdered || sourceEnd.getOppositeEnd().isOrdered) {
@@ -267,11 +267,11 @@ function transformRelationTargetEnd(transformer: Ontouml2Alloy, targetEnd: Prope
 	const oppositeName = getNormalizedName(transformer, (targetEnd.container as Relation).getSource());
 	const targetEndAlias = getAlias(targetEnd, targetEndName, transformer.aliases);
 
-	const targetIsDatatype = (targetEnd.container as Relation).getTargetStereotype() === ClassStereotype.DATATYPE;
-	const oppositeIsDatatype = (targetEnd.container as Relation).getSourceStereotype() === ClassStereotype.DATATYPE;
-	const targetAlloyType = targetIsDatatype ? targetName : 'World.' + targetName;
-	const oppositeAlloyType = oppositeIsDatatype ? oppositeName : 'World.' + oppositeName;
-	const oppositeQuantifier = oppositeIsDatatype ? oppositeName : 'w.' + oppositeName;
+	const targetIsValueType = [ClassStereotype.DATATYPE, ClassStereotype.ENUMERATION].includes((targetEnd.container as Relation).getTargetStereotype() as ClassStereotype);
+	const oppositeIsValueType = [ClassStereotype.DATATYPE, ClassStereotype.ENUMERATION].includes((targetEnd.container as Relation).getSourceStereotype() as ClassStereotype);
+	const targetAlloyType = targetIsValueType ? targetName : 'World.' + targetName;
+	const oppositeAlloyType = oppositeIsValueType ? oppositeName : 'World.' + oppositeName;
+	const oppositeQuantifier = oppositeIsValueType ? oppositeName : 'w.' + oppositeName;
 
 	if (isMaterialConnectedToDerivation(targetEnd.container as Relation, transformer.model.getAllRelations())
 		|| targetEnd.isOrdered || targetEnd.getOppositeEnd().isOrdered) {
