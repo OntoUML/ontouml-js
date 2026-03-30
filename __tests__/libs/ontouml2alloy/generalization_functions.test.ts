@@ -5,50 +5,44 @@ import { generateAlloy, generateFact, generateWorldFieldForClass, generateFun, g
 import { Package, Project } from '@libs/ontouml';
 
 describe('Generalization functions', () => {
+  describe('transformGeneralization function', () => {
+    let project: Project;
+    let model: Package;
 
-    describe ('transformGeneralization function',() => {
+    beforeEach(() => {
+      project = new Project();
+      model = project.createModel();
+    });
 
-        let project: Project;
-        let model: Package;
- 
-        beforeEach(() => {
-            project = new Project();
-            model = project.createModel();
-          });
+    it('Between classes', () => {
+      const parent = model.createKind('Person');
+      const child = model.createSubkind('Man');
+      model.createGeneralization(parent, child);
+      const result = generateAlloy(model);
 
-        it('Between classes', () => {
-            const parent = model.createKind('Person');
-            const child = model.createSubkind('Man');
-            model.createGeneralization(parent, child);
-            const result = generateAlloy(model);
+      expect(result).toContain(generateFact('generalization', ['Man in Person']));
+    });
 
-            expect(result).toContain(generateFact('generalization',['Man in Person']));
-          });
-        
-          it('Between datatypes', () => {
-            const parent = model.createDatatype('Color');
-            const child1 = model.createDatatype('ColorInRgb');
-            model.createGeneralization(parent, child1);
+    it('Between datatypes', () => {
+      const parent = model.createDatatype('Color');
+      const child1 = model.createDatatype('ColorInRgb');
+      model.createGeneralization(parent, child1);
 
-            let result = generateAlloy(model);
+      let result = generateAlloy(model);
 
-            expect(result).toContain(generateFact('generalization',['ColorInRgb in Color']));
-            expect(result).toContain(generateFact('additionalDatatypeFacts',['Datatype = Color+ColorInRgb']))
+      expect(result).toContain(generateFact('generalization', ['ColorInRgb in Color']));
+      expect(result).toContain(generateFact('additionalDatatypeFacts', ['Datatype = Color+ColorInRgb']));
+    });
 
-          });
+    it('Between relations', () => {
+      const _class = model.createKind('Person');
+      const parent = model.createMaterialRelation(_class, _class, 'likes');
+      const child = model.createMaterialRelation(_class, _class, 'loves');
+      model.createGeneralization(parent, child);
 
-          it('Between relations', () => {
-            const _class = model.createKind('Person');
-            const parent = model.createMaterialRelation(_class, _class, 'likes');
-            const child = model.createMaterialRelation(_class, _class, 'loves');
-            model.createGeneralization(parent, child);
-        
-            const result = generateAlloy(model);
+      const result = generateAlloy(model);
 
-            expect(result).toContain(generateFact('generalization',['loves in likes']));
-          });
-
-    })
-    
+      expect(result).toContain(generateFact('generalization', ['loves in likes']));
+    });
   });
-  
+});

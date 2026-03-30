@@ -1,10 +1,8 @@
 import { Class, OntoumlElement, Package, Project, Property, Relation } from '@libs/ontouml';
-import { generateAlloy, generateFact, generateWorldFieldForClass, generateWorldFact, generateFun } from './helpers'
+import { generateAlloy, generateFact, generateWorldFieldForClass, generateWorldFact, generateFun } from './helpers';
 import { Ontouml2Alloy } from '@libs/ontouml2alloy/index';
 
-
-describe("removeUnsupportedElements function", () => {
-
+describe('removeUnsupportedElements function', () => {
   let project: Project;
   let model: Package;
 
@@ -14,7 +12,6 @@ describe("removeUnsupportedElements function", () => {
   });
 
   it('removes <<event>> & connected generalizations, attributes', () => {
-
     // Add unsupported elements to the model
     const parent = model.createEvent('Ceremony');
     const child1 = model.createEvent('Wedding');
@@ -42,7 +39,7 @@ describe("removeUnsupportedElements function", () => {
     expect(result).not.toContain('Enschede');
     expect(result).not.toContain(generateFact('generalization', ['Wedding in Ceremony']));
     expect(result).not.toContain(generateFact('generalization', ['Graduation in Ceremony']));
-    expect(result).not.toContain(generateFact('generalizationSet', ['disjoint[Wedding,Graduation]']));
+    expect(result).not.toContain(generateFact('generalizationSet', ['disj[Wedding,Graduation]']));
 
     // Check if supported elements are retained
     expect(result).toContain('Person');
@@ -145,8 +142,7 @@ describe("removeUnsupportedElements function", () => {
 
     expect(result).not.toContain(generateFact('generalization', ['Wedding in Ceremony']));
     expect(result).not.toContain(generateFact('generalization', ['Graduation in Ceremony']));
-    expect(result).not.toContain(generateFact('generalizationSet', ['disjoint[Wedding,Graduation]']));
-
+    expect(result).not.toContain(generateFact('generalizationSet', ['disj[Wedding,Graduation]']));
 
     expect(issues).toBeDefined();
     expect(issues.length).toBe(6);
@@ -169,7 +165,7 @@ describe("removeUnsupportedElements function", () => {
 
     expect(result).toContain(generateFact('generalization', ['Man in Person']));
     expect(result).not.toContain(generateFact('generalization', ['Graduation in Person']));
-    expect(result).not.toContain(generateFact('generalizationSet', ['disjoint[Graduation,Man]']));
+    expect(result).not.toContain(generateFact('generalizationSet', ['disj[Graduation,Man]']));
 
     expect(issues).toBeDefined();
     expect(issues.length).toBe(3);
@@ -227,5 +223,4 @@ describe("removeUnsupportedElements function", () => {
     expect(issues.length).toBe(2);
     expect(issues.map(issue => issue.id)).toContain(unsupportedAttribute.id);
   });
-
 });
