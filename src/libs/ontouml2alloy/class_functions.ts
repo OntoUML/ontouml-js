@@ -4,6 +4,12 @@ import { Ontouml2Alloy } from '.';
 import { getNormalizedName, isTopLevel, getAlias } from './util';
 
 export function transformClass(transformer: Ontouml2Alloy, _class: Class) { //This line defines a function named transformClass that takes two parameters: transformer (of type Ontouml2Alloy) and _class (of type Class).
+
+  // TODO move to input validation (discuss how and what to handle.. )
+  if (!Object.values(ClassStereotype).includes(_class.stereotype)) {
+    throw new Error(`Unknown or unsupported class stereotype: ${String(_class.stereotype)}`);
+  }
+
   if (_class.hasAnyStereotype([ClassStereotype.EVENT, ClassStereotype.SITUATION, ClassStereotype.TYPE])) { //This line checks if the given class _class has any of the stereotypes EVENT, SITUATION or TYPE. If it does, the function immediately returns without doing anything.
     return;
   }
@@ -22,9 +28,22 @@ export function transformClass(transformer: Ontouml2Alloy, _class: Class) { //Th
     return;
   }
 
-  if (_class.isRestrictedToEndurant()) {
+  // QUESTION if a class is not restricted to anything, should we default to Endurant (since datatype, enumeration and endurant are the only natures that can be an end of a relation) or skip entirely (in which case we also need to clean up all the relations)? 
+  if (_class.isRestrictedToEndurant() || !_class.restrictedTo || _class.restrictedTo.length === 0) {
     transformEndurantClass(transformer, _class);
+  } else {
+    // QUESTION: consider removing these classes (and their connected relations/generalizations) in removeUnsupportedElements instead of throwing. Or move to input validation.
+    throw new Error(
+      `Class '${_class.getName()}' has restrictedTo [${_class.restrictedTo.join(', ')}] which contains no endurant natures. Non-endurant natures are not yet supported.`
+    );
   }
+
+  // former solution:
+  // if (_class.isRestrictedToEndurant()) {
+  //   transformEndurantClass(transformer, _class);
+  // }
+
+  
   /*
     This line checks if the given class _class is a restricted endurant. If it is, the transformEndurantClass function is called with the transformer and _class parameters.
   */
@@ -245,7 +264,7 @@ export function transformAdditionalDatatypeConstraints(transformer: Ontouml2Allo
       transformer.addFact(
         'fact additionalDatatypeFacts {\n' +
         '        Datatype = ' + datatypesNames.join('+') + '\n' +
-        '        disjoint[' + topLevelDatatypesNames.join(',') + ']\n' +
+        '        disj[' + topLevelDatatypesNames.join(',') + ']\n' +
         '}'
       );
     } else {
