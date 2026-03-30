@@ -53,6 +53,9 @@ function transformOrderedAttribute(transformer: Ontouml2Alloy, attribute: Proper
 	const datatypeName = getNormalizedName(transformer, attribute.propertyType);
 	const funAlias = getAlias(attribute, attributeName, transformer.aliases);
 	const cardinality = getCardinalityKeyword(attribute.cardinality);
+	const isValueType = attribute.propertyType instanceof Class
+		&& [ClassStereotype.DATATYPE, ClassStereotype.ENUMERATION].includes(attribute.propertyType.stereotype as ClassStereotype);
+	const alloyTypeName = isValueType ? datatypeName : 'World.' + datatypeName;
 
 	transformer.addWorldFieldDeclaration(
 		(attributeName + ': set ' + ownerClassName + ' set -> set Int set -> ' + cardinality + ' ' + datatypeName).replace(/\s{2,}/g, ' ')
@@ -66,7 +69,7 @@ function transformOrderedAttribute(transformer: Ontouml2Alloy, attribute: Proper
 	);
 
 	transformer.addFun(
-		'fun ' + funAlias + ' [x: World.' + ownerClassName + ', w: World] : set ' + datatypeName + ' {\n' +
+		'fun ' + funAlias + ' [x: World.' + ownerClassName + ', w: World] : set ' + alloyTypeName + ' {\n' +
 		'        x.(w.' + attributeName + ')\n' +
 		'}'
 	);
@@ -120,13 +123,16 @@ function transformGeneralAttribute(transformer: Ontouml2Alloy, attribute: Proper
 	const datatypeName = getNormalizedName(transformer, attribute.propertyType);
 	const cardinality = getCardinalityKeyword(attribute.cardinality);
 	const funAlias = getAlias(attribute, attributeName, transformer.aliases);
+	const isValueType = attribute.propertyType instanceof Class
+		&& [ClassStereotype.DATATYPE, ClassStereotype.ENUMERATION].includes(attribute.propertyType.stereotype as ClassStereotype);
+	const alloyTypeName = isValueType ? datatypeName : 'World.' + datatypeName;
 
 	transformer.addWorldFieldDeclaration(
 		(attributeName + ': set ' + ownerClassName + ' set -> ' + cardinality + ' ' + datatypeName).replace(/\s{2,}/g, ' ')
 	);
 
 	transformer.addFun(
-		'fun ' + funAlias + ' [x: World.' + ownerClassName + ', w: World] : set ' + datatypeName + ' {\n' +
+		'fun ' + funAlias + ' [x: World.' + ownerClassName + ', w: World] : set ' + alloyTypeName + ' {\n' +
 		'        x.(w.' + attributeName + ')\n' +
 		'}'
 	);
