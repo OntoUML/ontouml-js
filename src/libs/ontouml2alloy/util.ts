@@ -21,11 +21,16 @@ export function getNormalizedName(transformer: Ontouml2Alloy, element: OntoumlEl
 	if(normalizedName == null) {
         normalizedName = `${(element.type).toLowerCase()}`;
     }
-
-    //Replace forbidden characters with an empty string
+    
+	// Replace forbidden characters with an empty string
+    // Redundant due to the added regex below, but serves as a safety net and explicit coding of reserved characters by the Alloy language
     forbiddenCharacters.forEach(char => {
         normalizedName = normalizedName.replace(new RegExp(`\\${char}`, 'g'), '');
     });
+
+    // keep characters accepted by Alloy: Unicode letters (\p{L}) and Unicode numbers (\p{N})
+    normalizedName = normalizedName.normalize('NFC');
+    normalizedName = normalizedName.replace(/[^\p{L}\p{N}_]/gu, '');
 
 	//Check if the name is an empty string, if so, replace it with the type of the ontouml element
 	if(!normalizedName){ 
