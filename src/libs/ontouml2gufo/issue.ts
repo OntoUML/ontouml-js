@@ -226,7 +226,7 @@ export class Issue implements ServiceIssue {
         .join(', ')
         .replace(/,(?!.*,)/gim, ' and')}.`,
       data: {
-        elements: repeatedElements.map((elem) => ({ id: elem.id, name: elem.name }))
+        elements: repeatedElements.map(elem => ({ id: elem.id, name: elem.name }))
       }
     };
 

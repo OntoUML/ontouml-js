@@ -50,8 +50,8 @@ export class Ontouml2Alloy implements Service {
     this.funs = [];
     this.visible = ['exists'];
     this.aliases = [];
-    this.normalizedNames = {} //added
-    this.issues = [] //added
+    this.normalizedNames = {}; //added
+    this.issues = []; //added
   }
 
   getAlloyCode(): string[] {
@@ -62,11 +62,11 @@ export class Ontouml2Alloy implements Service {
     return this.facts;
   } //getter to test
 
-  getDatatype() : [string, string[]][]{
+  getDatatype(): [string, string[]][] {
     return this.datatypes;
   } //getter to test
 
-  getAliases(){
+  getAliases() {
     return this.aliases;
   }
 
@@ -132,35 +132,38 @@ export class Ontouml2Alloy implements Service {
   hasUnsupportedStereotype(decoratable: Decoratable<any>) {
     return decoratable == null || decoratable.hasAnyStereotype(['event', 'situation', 'type']);
   }
-  
-  // TODO in general the whole code base would benefit from being more functional, i.e. less state and side effects. But can consider this later. 
+
+  // TODO in general the whole code base would benefit from being more functional, i.e. less state and side effects. But can consider this later.
   removeUnsupportedElements() {
     // Remove classes with unsupported stereotypes
     for (const _class of this.model.getAllClasses()) {
-
       if (this.hasUnsupportedStereotype(_class)) {
-  
         // Remove properties of the class
         for (const property of _class.properties) {
           property.removeSelfFromContainer();
           const attributeName = property.getName() || 'with no name';
-          this.generateRemovalIssue(property, `Attribute '${attributeName}' of the class '${_class.getName()}' was removed due to the class having an unsupported stereotype.`);
+          this.generateRemovalIssue(
+            property,
+            `Attribute '${attributeName}' of the class '${_class.getName()}' was removed due to the class having an unsupported stereotype.`
+          );
         }
 
         _class.removeSelfFromContainer();
         this.generateRemovalIssue(_class, `Class '${_class.getName()}' was removed due to having an unsupported stereotype.`);
       }
-      
     }
 
     // Remove attributes with undefined propertyType
     for (const property of this.model.getAllAttributes()) {
-      if(!property.propertyType || this.hasUnsupportedStereotype(property.propertyType)){
+      if (!property.propertyType || this.hasUnsupportedStereotype(property.propertyType)) {
         property.removeSelfFromContainer();
-        this.generateRemovalIssue(property, `Attribute '${property.getName()}' was removed due to undefined/unsupported propertyType.`);
+        this.generateRemovalIssue(
+          property,
+          `Attribute '${property.getName()}' was removed due to undefined/unsupported propertyType.`
+        );
       }
     }
-  
+
     // Remove non-binary (ternary/n-ary) relations, which are not supported by the transformation
     for (const relation of this.model.getAllRelations()) {
       if (!relation.isBinary()) {
@@ -168,9 +171,14 @@ export class Ontouml2Alloy implements Service {
         try {
           const relationName = relation.getName() || relation.id;
           const endCount = relation.properties?.length ?? 0;
-          const memberNames = relation.getMembers().map(m => m.getName() || m.id).join(', ');
+          const memberNames = relation
+            .getMembers()
+            .map(m => m.getName() || m.id)
+            .join(', ');
           description = `Relation '${relationName}' was removed because it is a non-binary relation with ${endCount} ends (members: ${memberNames}). Only binary relations are supported.`;
-        } catch (_) { /* use fallback description */ }
+        } catch (_) {
+          /* use fallback description */
+        }
         relation.removeSelfFromContainer();
         this.generateRemovalIssue(relation, description);
       }
@@ -180,23 +188,32 @@ export class Ontouml2Alloy implements Service {
     for (const relation of this.model.getAllRelations()) {
       const source = relation.getSource();
       const target = relation.getTarget();
-  
+
       if (source && this.hasUnsupportedStereotype(source)) {
         source.removeSelfFromContainer();
         relation.removeSelfFromContainer();
-        this.generateRemovalIssue(relation, `Relation '${relation.getName()}' was removed due to being connected to an unsupported class '${source.getName()}'.`);
+        this.generateRemovalIssue(
+          relation,
+          `Relation '${relation.getName()}' was removed due to being connected to an unsupported class '${source.getName()}'.`
+        );
       } else if (target && this.hasUnsupportedStereotype(target)) {
         relation.removeSelfFromContainer();
-        this.generateRemovalIssue(relation, `Relation '${relation.getName()}' was removed due to being connected to an unsupported class '${target.getName()}'.`);
+        this.generateRemovalIssue(
+          relation,
+          `Relation '${relation.getName()}' was removed due to being connected to an unsupported class '${target.getName()}'.`
+        );
       }
     }
 
-    // Remove derivation relations that are structurally invalid 
+    // Remove derivation relations that are structurally invalid
     for (const relation of this.model.getAllRelations()) {
       if (relation.hasDerivationStereotype() && !relation.isDerivation()) {
         const relationName = relation.getName() || relation.id;
         relation.removeSelfFromContainer();
-        this.generateRemovalIssue(relation, `Relation '${relationName}' was removed because it is stereotyped as derivation but structurally invalid.`);
+        this.generateRemovalIssue(
+          relation,
+          `Relation '${relationName}' was removed because it is stereotyped as derivation but structurally invalid.`
+        );
       }
     }
 
@@ -211,30 +228,33 @@ export class Ontouml2Alloy implements Service {
         this.generateRemovalIssue(generalization, `Generalization '${genName}' was removed due to having a missing element.`);
       }
     }
-  
+
     // Remove generalizations consisting of unsupported elements
     for (const generalization of this.model.getAllGeneralizations()) {
       const source = generalization.specific;
       const target = generalization.general;
-  
+
       if (this.hasUnsupportedStereotype(source) || this.hasUnsupportedStereotype(target)) {
         generalization.removeSelfFromContainer();
         const genName = generalization.getName() || `${source.getName()} -> ${target.getName()}`;
-        this.generateRemovalIssue(generalization, `Generalization '${genName}' was removed due to having an unsupported element.`);
+        this.generateRemovalIssue(
+          generalization,
+          `Generalization '${genName}' was removed due to having an unsupported element.`
+        );
       }
     }
 
     // Remove "dead" generalizations whose specific or general was removed in earlier passes
-    const liveElements = new Set([
-      ...this.model.getAllClasses().map(c => c.id),
-      ...this.model.getAllRelations().map(r => r.id)
-    ]);
+    const liveElements = new Set([...this.model.getAllClasses().map(c => c.id), ...this.model.getAllRelations().map(r => r.id)]);
     for (const generalization of this.model.getAllGeneralizations()) {
       if (!liveElements.has(generalization.specific?.id) || !liveElements.has(generalization.general?.id)) {
         generalization.removeSelfFromContainer();
         const specName = generalization.specific?.getName() ?? '?';
         const genName = generalization.general?.getName() ?? '?';
-        this.generateRemovalIssue(generalization, `Generalization '${specName} -> ${genName}' was removed because its specific or general element was removed.`);
+        this.generateRemovalIssue(
+          generalization,
+          `Generalization '${specName} -> ${genName}' was removed because its specific or general element was removed.`
+        );
       }
     }
 
@@ -243,25 +263,35 @@ export class Ontouml2Alloy implements Service {
       if (!generalizationSet.generalizations) {
         generalizationSet.removeSelfFromContainer();
         const genSetName = generalizationSet.getName() || generalizationSet.id;
-        this.generateRemovalIssue(generalizationSet, `Generalization Set '${genSetName}' was removed due to missing generalizations.`);
+        this.generateRemovalIssue(
+          generalizationSet,
+          `Generalization Set '${genSetName}' was removed due to missing generalizations.`
+        );
       }
     }
 
     // Remove generalization sets containing unsupported elements
     for (const generalizationSet of this.model.getAllGeneralizationSets()) {
-      if (generalizationSet.generalizations.some(gen => (gen.specific && this.hasUnsupportedStereotype(gen.specific)) || (gen.general && this.hasUnsupportedStereotype(gen.general)))) {
-          generalizationSet.removeSelfFromContainer();
-          const genSetNames = generalizationSet.generalizations.map(gen => gen.getName() || `${gen.specific?.getName() ?? '?'} -> ${gen.general?.getName() ?? '?'}`).join(', ');
-          const genSetName = generalizationSet.getName() || `{${genSetNames}}`;
-  
-          const removalDescription = `Generalization Set '${genSetName}' was removed due to containing an unsupported element.`;
-          
-          this.generateRemovalIssue(generalizationSet, removalDescription);
+      if (
+        generalizationSet.generalizations.some(
+          gen =>
+            (gen.specific && this.hasUnsupportedStereotype(gen.specific)) ||
+            (gen.general && this.hasUnsupportedStereotype(gen.general))
+        )
+      ) {
+        generalizationSet.removeSelfFromContainer();
+        const genSetNames = generalizationSet.generalizations
+          .map(gen => gen.getName() || `${gen.specific?.getName() ?? '?'} -> ${gen.general?.getName() ?? '?'}`)
+          .join(', ');
+        const genSetName = generalizationSet.getName() || `{${genSetNames}}`;
+
+        const removalDescription = `Generalization Set '${genSetName}' was removed due to containing an unsupported element.`;
+
+        this.generateRemovalIssue(generalizationSet, removalDescription);
       }
+    }
   }
 
-  }
-  
   generateRemovalIssue(element: OntoumlElement, description: string) {
     const issue: ServiceIssue = {
       id: element.id,
@@ -273,8 +303,7 @@ export class Ontouml2Alloy implements Service {
     };
     this.issues.push(issue);
   }
-  
-  
+
   /*
     Lines 81-105 define a method transform() that calls the different transformation functions, 
     removes duplicate facts and functions, and writes the generated Alloy code to the alloyCode property.
@@ -297,25 +326,20 @@ export class Ontouml2Alloy implements Service {
   writeDatatypes() {
     for (const datatype of this.datatypes) {
       const datatypeName = datatype[0];
-      const datatypeProperties = [... new Set(datatype[1])];
+      const datatypeProperties = [...new Set(datatype[1])];
 
       if (datatypeProperties.length) {
         this.alloyCode[0] +=
-          'sig ' + datatypeName + ' in Datatype {\n' + 
-          '        ' + datatypeProperties.join(',\n        ') + '\n' +
-          '}\n\n'
+          'sig ' + datatypeName + ' in Datatype {\n' + '        ' + datatypeProperties.join(',\n        ') + '\n' + '}\n\n';
       } else {
-        this.alloyCode[0] +=
-          'sig ' + datatypeName + ' in Datatype {}\n\n'
+        this.alloyCode[0] += 'sig ' + datatypeName + ' in Datatype {}\n\n';
       }
     }
   }
 
   writeEnums() {
     if (this.enums.length) {
-      this.alloyCode[0] +=
-        this.enums.join('\n\n') +
-        '\n\n';
+      this.alloyCode[0] += this.enums.join('\n\n') + '\n\n';
     }
   }
 
@@ -323,13 +347,12 @@ export class Ontouml2Alloy implements Service {
     this.alloyCode[0] +=
       'abstract sig World {\n' +
       '        exists: some Endurant,\n' +
-      '        ' + this.worldFieldDeclarations.join(',\n        ') + '\n' +
+      '        ' +
+      this.worldFieldDeclarations.join(',\n        ') +
+      '\n' +
       '}';
-    if(this.worldFieldFacts.length) {
-      this.alloyCode[0] +=
-        ' {\n' +
-        '        '+ this.worldFieldFacts.join('\n        ') + '\n' +
-        '}';
+    if (this.worldFieldFacts.length) {
+      this.alloyCode[0] += ' {\n' + '        ' + this.worldFieldFacts.join('\n        ') + '\n' + '}';
     }
     this.alloyCode[0] += '\n\n';
   }
@@ -342,29 +365,20 @@ export class Ontouml2Alloy implements Service {
       '}\n\n';
 
     if (this.relationPropertiesFacts.length) {
-      this.alloyCode[0] += 
-        'fact relationProperties {\n' +
-        '        '+ this.relationPropertiesFacts.join('\n        ') + '\n' +
-        '}\n\n'
+      this.alloyCode[0] +=
+        'fact relationProperties {\n' + '        ' + this.relationPropertiesFacts.join('\n        ') + '\n' + '}\n\n';
     }
-    
+
     if (this.facts.length) {
-      this.alloyCode[0] += 
-        this.facts.join('\n\n') +
-        '\n\n';
+      this.alloyCode[0] += this.facts.join('\n\n') + '\n\n';
     }
   }
 
   writeFuns() {
-    this.alloyCode[0] +=
-      'fun visible : World->univ {\n' +
-      '        ' + this.visible.join('+') + '\n' +
-      '}\n\n';
-    
+    this.alloyCode[0] += 'fun visible : World->univ {\n' + '        ' + this.visible.join('+') + '\n' + '}\n\n';
+
     if (this.funs.length) {
-      this.alloyCode[0] +=
-        this.funs.join('\n\n') +
-        '\n\n';
+      this.alloyCode[0] += this.funs.join('\n\n') + '\n\n';
     }
   }
 
@@ -471,7 +485,6 @@ export class Ontouml2Alloy implements Service {
   transformGeneralizations() {
     let generalizations = this.model.getAllGeneralizations();
 
-
     for (const gen of generalizations) {
       transformGeneralization(this, gen);
     }
@@ -514,7 +527,7 @@ export class Ontouml2Alloy implements Service {
       },
       issues: this.issues.length > 0 ? this.issues : undefined
     };
-  }//method to check prerequisites for trasnforming a class
+  } //method to check prerequisites for trasnforming a class
   /*
     After performing all the necessary transformations, the run method is called, which calls the 
     transform method and returns the resulting Alloy code in an object with three properties: mainModule, 
