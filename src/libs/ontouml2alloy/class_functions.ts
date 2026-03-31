@@ -63,7 +63,6 @@ export function transformClass(transformer: Ontouml2Alloy, _class: Class) {
   }
 
   transformWeakSupplementationConstraint(transformer, _class);
-  transformDisjointNaturesConstraint(transformer, _class);
 }
 
 function transformAbstractClass(transformer: Ontouml2Alloy, _class: Class) {
@@ -183,25 +182,15 @@ function transformWeakSupplementationConstraint(transformer: Ontouml2Alloy, _cla
 // UPDATED: Ultimate sortals (Kind, Collective, Quantity, Relator, Quality, Mode)
 // provide identity and must be pairwise disjoint. Non-sortals like Category
 // are NOT made disjoint, e.g. a Kind can spezialize multiple Categories.
-function transformDisjointNaturesConstraint(transformer: Ontouml2Alloy, _class: Class) {
-  if (!_class.hasUltimateSortalStereotype()) {
-    return;
-  }
+export function transformDisjointUltimateSortalsConstraint(transformer: Ontouml2Alloy) {
+  const ultimateSortals = transformer.model
+    .getAllClasses()
+    .filter(_class => _class.hasUltimateSortalStereotype())
+    .map(ultimateSortalClass => getNormalizedName(transformer, ultimateSortalClass))
+    .sort();
 
-  let otherUltimateSortals = [];
-  for (const otherClass of transformer.model.getAllClasses()) {
-    if (otherClass !== _class && otherClass.hasUltimateSortalStereotype()) {
-      otherUltimateSortals.push(getNormalizedName(transformer, otherClass));
-    }
-  }
-
-  if (otherUltimateSortals.length) {
-    const className = getNormalizedName(transformer, _class);
-    if (otherUltimateSortals.length == 1) {
-      transformer.addWorldFieldFact('disj[' + className + ',' + otherUltimateSortals[0] + ']');
-    } else {
-      transformer.addWorldFieldFact('disj[' + className + ',(' + otherUltimateSortals.join('+') + ')]');
-    }
+  if (ultimateSortals.length >= 2) {
+    transformer.addWorldFieldFact('disj[' + ultimateSortals.join(',') + ']');
   }
 }
 

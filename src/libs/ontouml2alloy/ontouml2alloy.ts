@@ -4,6 +4,7 @@ import {
   transformClass,
   transformAdditionalClassConstraints,
   transformAdditionalDatatypeConstraints,
+  transformDisjointUltimateSortalsConstraint,
   transformCharacterizationConstraint,
   transformGeneralization,
   transformGeneralizationSet,
@@ -472,6 +473,7 @@ export class Ontouml2Alloy implements Service {
     }
 
     transformAdditionalClassConstraints(this);
+    transformDisjointUltimateSortalsConstraint(this);
     transformAdditionalDatatypeConstraints(this);
 
     return true;
