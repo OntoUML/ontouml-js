@@ -56,8 +56,6 @@ export function transformClass(transformer: Ontouml2Alloy, _class: Class) {
     transformRelatorConstraint(transformer, _class);
   }
 
-  // QUESTION: if we add this as a constraint, should we enforce abstractness for non-sortal stereotype?
-  // if (_class.isAbstract || _class.hasNonSortalStereotype()) {
   if (_class.isAbstract) {
     transformAbstractClass(transformer, _class);
   }
@@ -72,6 +70,10 @@ function transformAbstractClass(transformer: Ontouml2Alloy, _class: Class) {
   if (subtypes.length) {
     transformer.addFact(
       'fact abstractClass {\n' + '        all w: World | w.' + className + ' = ' + subtypes.join('+') + '\n' + '}'
+    );
+  } else if (!transformer.options?.allowAbstractLeafInstances) {
+    transformer.addFact(
+      'fact abstractClass {\n' + '        all w: World | no w.' + className + '\n' + '}'
     );
   }
 }

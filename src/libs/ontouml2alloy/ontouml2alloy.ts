@@ -13,8 +13,14 @@ import {
 import { Service, ServiceIssue, ServiceIssueSeverity } from '..';
 import { type } from 'os';
 
+export interface Ontouml2AlloyOptions {
+  // when true, abstract classes that are leaves can have instances
+  allowAbstractLeafInstances?: boolean;
+}
+
 export class Ontouml2Alloy implements Service {
   model: Package;
+  options: Ontouml2AlloyOptions;
   alloyCode: string[]; // [mainModule, worldStructureModule, ontologicalPropertiesModule]
   datatypes: [string, string[]][]; // [datatypeName, datatypeProperties]
   enums: string[];
@@ -35,12 +41,13 @@ export class Ontouml2Alloy implements Service {
     The transform() method is the main method of the class that orchestrates the transformation process.
   */
 
-  constructor(input: Project | Package, options?: null) {
+  constructor(input: Project | Package, options?: Ontouml2AlloyOptions) {
     if (input instanceof Project) {
       this.model = input.model;
     } else if (input instanceof Package) {
       this.model = input;
     }
+    this.options = options || {};
     this.alloyCode = ['', '', ''];
     this.datatypes = [];
     this.enums = [];
