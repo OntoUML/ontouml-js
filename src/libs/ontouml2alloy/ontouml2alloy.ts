@@ -1,4 +1,4 @@
-import { OntoumlElement, Project, Package, Decoratable, Stereotype, ClassStereotype } from '@libs/ontouml';
+import { OntoumlElement, Project, Package } from '@libs/ontouml';
 import {
   transformProperty,
   transformClass,
@@ -10,7 +10,8 @@ import {
   transformGeneralizationSet,
   transformRelation
 } from './';
-import { Service, ServiceIssue, ServiceIssueSeverity } from '..';
+import { Service, ServiceIssue } from '..';
+import { Ontouml2AlloyPreprocessor } from './preprocessor';
 
 export interface Ontouml2AlloyOptions {
   // when true, abstract classes that are leaves can have instances
@@ -31,7 +32,8 @@ export class Ontouml2Alloy implements Service {
   visible: string[];
   aliases: [OntoumlElement, string][]; //[element, alias]; used in transformRelatorConstraint
   normalizedNames: { [key: string]: string }; //added; OntoumlElement ID, normalizedName
-  issues: ServiceIssue[]; //added, to store removed elements
+  issues: ServiceIssue[];
+  preprocessor: Ontouml2AlloyPreprocessor;
 
   /*
     Lines 13-33 define a class Ontouml2Alloy that implements Service. The class has a constructor
@@ -57,8 +59,9 @@ export class Ontouml2Alloy implements Service {
     this.funs = [];
     this.visible = ['exists'];
     this.aliases = [];
-    this.normalizedNames = {}; //added
-    this.issues = []; //added
+    this.normalizedNames = {};
+    this.issues = [];
+    this.preprocessor = new Ontouml2AlloyPreprocessor(this.model);
   }
 
   getAlloyCode(): string[] {
@@ -109,29 +112,7 @@ export class Ontouml2Alloy implements Service {
     this.visible.push(term);
   }
 
-  validate(): ServiceIssue[] {
-    const errors: ServiceIssue[] = [];
-    const validStereotypes = new Set(Object.values(ClassStereotype));
-
-    for (const _class of this.model.getAllClasses()) {
-      if (!validStereotypes.has(_class.stereotype)) {
-        errors.push({
-          id: _class.id,
-          code: 'UNKNOWN_CLASS_STEREOTYPE',
-          severity: ServiceIssueSeverity.ERROR,
-          title: 'Unknown Class Stereotype',
-          description: `Class '${_class.getName() || _class.id}' has unknown or unsupported stereotype '${String(_class.stereotype)}'.`,
-          data: _class
-        });
-      }
-    }
-
-    return errors;
-  }
-
   transform() {
-    this.removeUnsupportedElements();
-
     this.transformClasses();
     this.transformGeneralizations();
     this.transformGeneralizationSets();
@@ -155,183 +136,6 @@ export class Ontouml2Alloy implements Service {
     this.writeWorldStructureModule();
     this.writeOntologicalPropertiesModule();
   }
-
-  hasUnsupportedStereotype(decoratable: Decoratable<any>) {
-    return decoratable == null || decoratable.hasAnyStereotype(['event', 'situation', 'type']);
-  }
-
-  removeUnsupportedElements() {
-    for (const _class of this.model.getAllClasses()) {
-      if (this.hasUnsupportedStereotype(_class)) {
-        // Remove properties of the class
-        for (const property of _class.properties) {
-          property.removeSelfFromContainer();
-          const attributeName = property.getName() || 'with no name';
-          this.generateRemovalIssue(
-            property,
-            `Attribute '${attributeName}' of the class '${_class.getName() || _class.id}' was removed due to the class having an unsupported stereotype.`
-          );
-        }
-
-        _class.removeSelfFromContainer();
-        this.generateRemovalIssue(_class, `Class '${_class.getName() || _class.id}' was removed due to having an unsupported stereotype.`);
-      }
-    }
-
-    // Remove attributes with undefined propertyType
-    for (const property of this.model.getAllAttributes()) {
-      if (!property.propertyType || this.hasUnsupportedStereotype(property.propertyType)) {
-        property.removeSelfFromContainer();
-        this.generateRemovalIssue(
-          property,
-          `Attribute '${property.getName() || property.id}' was removed due to undefined/unsupported propertyType.`
-        );
-      }
-    }
-
-    // Remove non-binary (ternary/n-ary) relations, which are not supported by the transformation
-    for (const relation of this.model.getAllRelations()) {
-      if (!relation.isBinary()) {
-        let description = `Non-binary relation removed. Only binary relations are supported.`;
-        try {
-          const relationName = relation.getName() || relation.id;
-          const endCount = relation.properties?.length ?? 0;
-          const memberNames = relation
-            .getMembers()
-            .map(m => m.getName() || m.id)
-            .join(', ');
-          description = `Relation '${relationName}' was removed because it is a non-binary relation with ${endCount} ends (members: ${memberNames}). Only binary relations are supported.`;
-        } catch (_) {
-          /* use fallback description */
-        }
-        relation.removeSelfFromContainer();
-        this.generateRemovalIssue(relation, description);
-      }
-    }
-
-    // Remove relations connected to unsupported classes
-    for (const relation of this.model.getAllRelations()) {
-      const source = relation.getSource();
-      const target = relation.getTarget();
-
-      if (source && this.hasUnsupportedStereotype(source)) {
-        relation.removeSelfFromContainer();
-        this.generateRemovalIssue(
-          relation,
-          `Relation '${relation.getName() || relation.id}' was removed due to being connected to an unsupported class '${source.getName() || source.id}'.`
-        );
-      } else if (target && this.hasUnsupportedStereotype(target)) {
-        relation.removeSelfFromContainer();
-        this.generateRemovalIssue(
-          relation,
-          `Relation '${relation.getName() || relation.id}' was removed due to being connected to an unsupported class '${target.getName() || target.id}'.`
-        );
-      }
-    }
-
-    // Remove derivation relations that are structurally invalid
-    for (const relation of this.model.getAllRelations()) {
-      if (relation.hasDerivationStereotype() && !relation.isDerivation()) {
-        const relationName = relation.getName() || relation.id;
-        relation.removeSelfFromContainer();
-        this.generateRemovalIssue(
-          relation,
-          `Relation '${relationName}' was removed because it is stereotyped as derivation but structurally invalid.`
-        );
-      }
-    }
-
-    // Remove generalizations with missing elements
-    for (const generalization of this.model.getAllGeneralizations()) {
-      const source = generalization.specific;
-      const target = generalization.general;
-
-      if (!source || !target) {
-        generalization.removeSelfFromContainer();
-        const genName = generalization.getName() || `${source?.getName() ?? '?'} -> ${target?.getName() ?? '?'}`;
-        this.generateRemovalIssue(generalization, `Generalization '${genName}' was removed due to having a missing element.`);
-      }
-    }
-
-    // Remove generalizations consisting of unsupported elements
-    for (const generalization of this.model.getAllGeneralizations()) {
-      const source = generalization.specific;
-      const target = generalization.general;
-
-      if (this.hasUnsupportedStereotype(source) || this.hasUnsupportedStereotype(target)) {
-        generalization.removeSelfFromContainer();
-        const genName = generalization.getName() || `${source?.getName() ?? '?'} -> ${target?.getName() ?? '?'}`;
-        this.generateRemovalIssue(
-          generalization,
-          `Generalization '${genName}' was removed due to having an unsupported element.`
-        );
-      }
-    }
-
-    // Remove "dead" generalizations whose specific or general was removed in earlier passes
-    const liveElements = new Set([...this.model.getAllClasses().map(c => c.id), ...this.model.getAllRelations().map(r => r.id)]);
-    for (const generalization of this.model.getAllGeneralizations()) {
-      if (!liveElements.has(generalization.specific?.id) || !liveElements.has(generalization.general?.id)) {
-        generalization.removeSelfFromContainer();
-        const specName = generalization.specific?.getName() ?? '?';
-        const genName = generalization.general?.getName() ?? '?';
-        this.generateRemovalIssue(
-          generalization,
-          `Generalization '${specName} -> ${genName}' was removed because its specific or general element was removed.`
-        );
-      }
-    }
-
-    // Remove generalization sets with missing generalizations array
-    for (const generalizationSet of this.model.getAllGeneralizationSets()) {
-      if (!generalizationSet.generalizations) {
-        generalizationSet.removeSelfFromContainer();
-        const genSetName = generalizationSet.getName() || generalizationSet.id;
-        this.generateRemovalIssue(
-          generalizationSet,
-          `Generalization Set '${genSetName}' was removed due to missing generalizations.`
-        );
-      }
-    }
-
-    // Remove generalization sets containing unsupported elements
-    for (const generalizationSet of this.model.getAllGeneralizationSets()) {
-      if (
-        generalizationSet.generalizations.some(
-          gen =>
-            (gen.specific && this.hasUnsupportedStereotype(gen.specific)) ||
-            (gen.general && this.hasUnsupportedStereotype(gen.general))
-        )
-      ) {
-        generalizationSet.removeSelfFromContainer();
-        const genSetNames = generalizationSet.generalizations
-          .map(gen => gen.getName() || `${gen.specific?.getName() ?? '?'} -> ${gen.general?.getName() ?? '?'}`)
-          .join(', ');
-        const genSetName = generalizationSet.getName() || `{${genSetNames}}`;
-
-        const removalDescription = `Generalization Set '${genSetName}' was removed due to containing an unsupported element.`;
-
-        this.generateRemovalIssue(generalizationSet, removalDescription);
-      }
-    }
-  }
-
-  generateRemovalIssue(element: OntoumlElement, description: string) {
-    const issue: ServiceIssue = {
-      id: element.id,
-      code: 'UNSUPPORTED_ELEMENT_REMOVED',
-      severity: ServiceIssueSeverity.WARNING,
-      title: 'Unsupported Element Removed',
-      description: description,
-      data: element
-    };
-    this.issues.push(issue);
-  }
-
-  /*
-    Lines 81-105 define a method transform() that calls the different transformation functions, 
-    removes duplicate facts and functions, and writes the generated Alloy code to the alloyCode property.
-  */
 
   writePreamble() {
     this.alloyCode[0] +=
@@ -542,13 +346,11 @@ export class Ontouml2Alloy implements Service {
   }
 
   run(): { result: any; issues?: ServiceIssue[] } {
-    const validationErrors = this.validate();
-    if (validationErrors.length > 0) {
-      this.issues.push(...validationErrors);
-      return {
-        result: null,
-        issues: this.issues
-      };
+    const { ok, issues } = this.preprocessor.run();
+    this.issues.push(...issues);
+
+    if (!ok) {
+      return { result: null, issues: this.issues };
     }
 
     this.transform();
