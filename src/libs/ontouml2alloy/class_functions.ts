@@ -4,15 +4,7 @@ import { Ontouml2Alloy } from '.';
 import { getNormalizedName, isTopLevel, getAlias } from './util';
 
 export function transformClass(transformer: Ontouml2Alloy, _class: Class) {
-  //This line defines a function named transformClass that takes two parameters: transformer (of type Ontouml2Alloy) and _class (of type Class).
-
-  // TODO move to input validation (discuss how and what to handle.. )
-  if (!Object.values(ClassStereotype).includes(_class.stereotype)) {
-    throw new Error(`Unknown or unsupported class stereotype: ${String(_class.stereotype)}`);
-  }
-
   if (_class.hasAnyStereotype([ClassStereotype.EVENT, ClassStereotype.SITUATION, ClassStereotype.TYPE])) {
-    //This line checks if the given class _class has any of the stereotypes EVENT, SITUATION or TYPE. If it does, the function immediately returns without doing anything.
     return;
   }
 

@@ -1,4 +1,4 @@
-import { OntoumlElement, Project, Package, Decoratable, Stereotype } from '@libs/ontouml';
+import { OntoumlElement, Project, Package, Decoratable, Stereotype, ClassStereotype } from '@libs/ontouml';
 import {
   transformProperty,
   transformClass,
@@ -11,7 +11,6 @@ import {
   transformRelation
 } from './';
 import { Service, ServiceIssue, ServiceIssueSeverity } from '..';
-import { type } from 'os';
 
 export interface Ontouml2AlloyOptions {
   // when true, abstract classes that are leaves can have instances
@@ -110,6 +109,26 @@ export class Ontouml2Alloy implements Service {
     this.visible.push(term);
   }
 
+  validate(): ServiceIssue[] {
+    const errors: ServiceIssue[] = [];
+    const validStereotypes = new Set(Object.values(ClassStereotype));
+
+    for (const _class of this.model.getAllClasses()) {
+      if (!validStereotypes.has(_class.stereotype)) {
+        errors.push({
+          id: _class.id,
+          code: 'UNKNOWN_CLASS_STEREOTYPE',
+          severity: ServiceIssueSeverity.ERROR,
+          title: 'Unknown Class Stereotype',
+          description: `Class '${_class.getName() || _class.id}' has unknown or unsupported stereotype '${String(_class.stereotype)}'.`,
+          data: _class
+        });
+      }
+    }
+
+    return errors;
+  }
+
   transform() {
     this.removeUnsupportedElements();
 
@@ -141,9 +160,7 @@ export class Ontouml2Alloy implements Service {
     return decoratable == null || decoratable.hasAnyStereotype(['event', 'situation', 'type']);
   }
 
-  // TODO in general the whole code base would benefit from being more functional, i.e. less state and side effects. But can consider this later.
   removeUnsupportedElements() {
-    // Remove classes with unsupported stereotypes
     for (const _class of this.model.getAllClasses()) {
       if (this.hasUnsupportedStereotype(_class)) {
         // Remove properties of the class
@@ -152,12 +169,12 @@ export class Ontouml2Alloy implements Service {
           const attributeName = property.getName() || 'with no name';
           this.generateRemovalIssue(
             property,
-            `Attribute '${attributeName}' of the class '${_class.getName()}' was removed due to the class having an unsupported stereotype.`
+            `Attribute '${attributeName}' of the class '${_class.getName() || _class.id}' was removed due to the class having an unsupported stereotype.`
           );
         }
 
         _class.removeSelfFromContainer();
-        this.generateRemovalIssue(_class, `Class '${_class.getName()}' was removed due to having an unsupported stereotype.`);
+        this.generateRemovalIssue(_class, `Class '${_class.getName() || _class.id}' was removed due to having an unsupported stereotype.`);
       }
     }
 
@@ -167,7 +184,7 @@ export class Ontouml2Alloy implements Service {
         property.removeSelfFromContainer();
         this.generateRemovalIssue(
           property,
-          `Attribute '${property.getName()}' was removed due to undefined/unsupported propertyType.`
+          `Attribute '${property.getName() || property.id}' was removed due to undefined/unsupported propertyType.`
         );
       }
     }
@@ -198,17 +215,16 @@ export class Ontouml2Alloy implements Service {
       const target = relation.getTarget();
 
       if (source && this.hasUnsupportedStereotype(source)) {
-        source.removeSelfFromContainer();
         relation.removeSelfFromContainer();
         this.generateRemovalIssue(
           relation,
-          `Relation '${relation.getName()}' was removed due to being connected to an unsupported class '${source.getName()}'.`
+          `Relation '${relation.getName() || relation.id}' was removed due to being connected to an unsupported class '${source.getName() || source.id}'.`
         );
       } else if (target && this.hasUnsupportedStereotype(target)) {
         relation.removeSelfFromContainer();
         this.generateRemovalIssue(
           relation,
-          `Relation '${relation.getName()}' was removed due to being connected to an unsupported class '${target.getName()}'.`
+          `Relation '${relation.getName() || relation.id}' was removed due to being connected to an unsupported class '${target.getName() || target.id}'.`
         );
       }
     }
@@ -244,7 +260,7 @@ export class Ontouml2Alloy implements Service {
 
       if (this.hasUnsupportedStereotype(source) || this.hasUnsupportedStereotype(target)) {
         generalization.removeSelfFromContainer();
-        const genName = generalization.getName() || `${source.getName()} -> ${target.getName()}`;
+        const genName = generalization.getName() || `${source?.getName() ?? '?'} -> ${target?.getName() ?? '?'}`;
         this.generateRemovalIssue(
           generalization,
           `Generalization '${genName}' was removed due to having an unsupported element.`
@@ -526,6 +542,15 @@ export class Ontouml2Alloy implements Service {
   }
 
   run(): { result: any; issues?: ServiceIssue[] } {
+    const validationErrors = this.validate();
+    if (validationErrors.length > 0) {
+      this.issues.push(...validationErrors);
+      return {
+        result: null,
+        issues: this.issues
+      };
+    }
+
     this.transform();
 
     return {
@@ -536,11 +561,5 @@ export class Ontouml2Alloy implements Service {
       },
       issues: this.issues.length > 0 ? this.issues : undefined
     };
-  } //method to check prerequisites for trasnforming a class
-  /*
-    After performing all the necessary transformations, the run method is called, which calls the 
-    transform method and returns the resulting Alloy code in an object with three properties: mainModule, 
-    worldStructureModule, and ontologicalPropertiesModule. The issues property is currently set to undefined, 
-    but it could be used to report any issues or errors that occur during the transformation process.
-  */
+  }
 }
