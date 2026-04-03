@@ -277,7 +277,9 @@ function transformDatatypeRelation(transformer: Ontouml2Alloy, relation: Relatio
       code: 'DATATYPE_NOT_FOUND',
       severity: ServiceIssueSeverity.WARNING,
       title: 'Datatype Not Found',
-      description: `Relation '${relation.getName() || relation.id}' was skipped because datatype '${sourceName}' was not transformed.`,
+      description: `Relation '${
+        relation.getName() || relation.id
+      }' was skipped because datatype '${sourceName}' was not transformed.`,
       data: relation
     });
     return;

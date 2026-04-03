@@ -1,4 +1,4 @@
-import { OntoumlElement, Package, Decoratable, ClassStereotype, natureUtils } from '@libs/ontouml';
+import { OntoumlElement, Package, Decoratable, ClassStereotype, Classifier, natureUtils } from '@libs/ontouml';
 import { ServiceIssue, ServiceIssueSeverity } from '..';
 
 export class Ontouml2AlloyPreprocessor {
@@ -83,7 +83,7 @@ export class Ontouml2AlloyPreprocessor {
     for (const _class of this.model.getAllClasses()) {
       if (this.hasUnsupportedStereotype(_class)) {
         for (const property of _class.properties) {
-          property.removeSelfFromContainer();
+          this.removeProperty(property);
           const attributeName = property.getName() || 'with no name';
           this.generateRemovalIssue(
             property,
@@ -105,7 +105,7 @@ export class Ontouml2AlloyPreprocessor {
     for (const _class of this.model.getAllClasses()) {
       if (!_class.isRestrictedToEndurant() && !_class.hasDatatypeStereotype() && !_class.hasEnumerationStereotype()) {
         for (const property of _class.properties) {
-          property.removeSelfFromContainer();
+          this.removeProperty(property);
           this.generateRemovalIssue(
             property,
             `Attribute '${property.getName() || 'with no name'}' of class '${
@@ -128,7 +128,7 @@ export class Ontouml2AlloyPreprocessor {
     // Remove attributes with undefined propertyType
     for (const property of this.model.getAllAttributes()) {
       if (!property.propertyType || this.hasUnsupportedStereotype(property.propertyType)) {
-        property.removeSelfFromContainer();
+        this.removeProperty(property);
         this.generateRemovalIssue(
           property,
           `Attribute '${property.getName() || property.id}' was removed due to undefined/unsupported propertyType.`
@@ -281,6 +281,15 @@ export class Ontouml2AlloyPreprocessor {
 
         this.generateRemovalIssue(generalizationSet, removalDescription);
       }
+    }
+  }
+
+  // Removes a property from its owning Classifier's properties array
+  // The base removeSelfFromContainer() only handles Package containers, but properties are owned by Classifiers
+  private removeProperty(property: OntoumlElement) {
+    const owner = property.container;
+    if (owner instanceof Classifier) {
+      owner.properties = owner.properties.filter(p => p !== property);
     }
   }
 

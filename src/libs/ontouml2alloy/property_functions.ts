@@ -520,7 +520,9 @@ function transformDatatypeAttribute(transformer: Ontouml2Alloy, attribute: Prope
       code: 'DATATYPE_NOT_FOUND',
       severity: ServiceIssueSeverity.WARNING,
       title: 'Datatype Not Found',
-      description: `Attribute '${attribute.getName() || attribute.id}' was skipped because datatype '${ownerDatatypeName}' was not transformed.`,
+      description: `Attribute '${
+        attribute.getName() || attribute.id
+      }' was skipped because datatype '${ownerDatatypeName}' was not transformed.`,
       data: attribute
     });
     return;
