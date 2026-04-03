@@ -14,7 +14,7 @@ import { Service, ServiceIssue } from '..';
 import { Ontouml2AlloyPreprocessor } from './preprocessor';
 
 export interface Ontouml2AlloyOptions {
-  // when true, abstract classes that are leaves can have instances
+  // when true, abstract classes that are leaves can have instances. Default is false.
   allowAbstractLeafInstances?: boolean;
 }
 

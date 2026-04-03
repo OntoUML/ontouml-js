@@ -165,16 +165,22 @@ export function transformAdditionalClassConstraints(transformer: Ontouml2Alloy) 
   let aspectClasses = [];
 
   for (const _class of transformer.model.getAllClasses()) {
-    if (_class.isRestrictedToEndurant() && _class.hasUltimateSortalStereotype()) {
-      const className = getNormalizedName(transformer, _class);
+    if (!_class.isRestrictedToEndurant()) continue;
 
-      // kind, collective, quantity
-      if (_class.isRestrictedToSubstantial()) {
-        objectClasses.push(className);
-        // mode, quality, relator
-      } else if (_class.isRestrictedToMoment()) {
-        aspectClasses.push(className);
-      }
+    const isUltimateSortal = _class.hasUltimateSortalStereotype();
+    const isInstantiableAbstractLeaf =
+      transformer.options?.allowAbstractLeafInstances && _class.isAbstract && _class.getChildren().length === 0;
+
+    if (!isUltimateSortal && !isInstantiableAbstractLeaf) continue;
+
+    const className = getNormalizedName(transformer, _class);
+
+    // kind, collective, quantity or abstract leaf that should be instantiable
+    if (_class.isRestrictedToSubstantial()) {
+      objectClasses.push(className);
+    // mode, quality, relator or abstract leaf that should be instantiable
+    } else if (_class.isRestrictedToMoment()) {
+      aspectClasses.push(className);
     }
   }
 
