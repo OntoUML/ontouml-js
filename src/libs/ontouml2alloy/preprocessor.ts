@@ -35,9 +35,7 @@ export class Ontouml2AlloyPreprocessor {
           code: 'UNKNOWN_CLASS_STEREOTYPE',
           severity: ServiceIssueSeverity.ERROR,
           title: 'Unknown Class Stereotype',
-          description: `Class '${_class.getName() || _class.id}' has unknown or unsupported stereotype '${String(
-            _class.stereotype
-          )}'.`,
+          description: `Class '${_class.getName() || _class.id}' has unknown or unsupported stereotype «${_class.stereotype}».`,
           data: _class
         });
       }
@@ -89,14 +87,14 @@ export class Ontouml2AlloyPreprocessor {
             property,
             `Attribute '${attributeName}' of the class '${
               _class.getName() || _class.id
-            }' was removed due to the class having an unsupported stereotype.`
+            }' was removed due to the class having an unsupported stereotype «${_class.stereotype}».`
           );
         }
 
         _class.removeSelfFromContainer();
         this.generateRemovalIssue(
           _class,
-          `Class '${_class.getName() || _class.id}' was removed due to having an unsupported stereotype.`
+          `Class '${_class.getName() || _class.id}' was removed due to having an unsupported stereotype «${_class.stereotype}».`
         );
       }
     }
