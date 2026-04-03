@@ -221,8 +221,11 @@ export class Ontouml2AlloyPreprocessor {
     }
 
     // Remove relations whose source or target class was removed in earlier passes
+    // Derivation relations are skipped here because their source end points to a Relation, and they are already handled by the dedicated pass above.
     const liveClasses = new Set(this.model.getAllClasses().map(c => c.id));
     for (const relation of this.model.getAllRelations()) {
+      if (relation.hasDerivationStereotype()) continue;
+
       const sourceId = relation.getSource()?.id;
       const targetId = relation.getTarget()?.id;
       if (!liveClasses.has(sourceId) || !liveClasses.has(targetId)) {
