@@ -1,5 +1,6 @@
 import { ClassStereotype, Relation, RelationStereotype } from '@libs/ontouml';
 import { Ontouml2Alloy } from './';
+import { ServiceIssueSeverity } from '..';
 import {
   getNormalizedName,
   getCardinalityKeyword,
@@ -159,13 +160,17 @@ function transformDerivationRelation(transformer: Ontouml2Alloy, relation: Relat
       mediation2 = mediation1;
     }
 
-    // QUESTION should we even handle this?
     if (!mediation1 || !mediation2) {
-      console.warn(
-        `Skipping derivation "${
+      transformer.issues.push({
+        id: relation.id,
+        code: 'INCOMPLETE_RELATOR_PATTERN',
+        severity: ServiceIssueSeverity.WARNING,
+        title: 'Incomplete Relator Pattern',
+        description: `Derivation '${
           relation.getName() || relation.id
-        }": could not find medations. Info: mediation1 ${mediation1} and mediation2 ${mediation2}`
-      );
+        }' was skipped because the required mediations for its Relator Pattern could not be found.`,
+        data: relation
+      });
       return;
     }
 
@@ -265,6 +270,18 @@ function transformDatatypeRelation(transformer: Ontouml2Alloy, relation: Relatio
   const sourceName = getNormalizedName(transformer, relation.getSource());
   const targetName = getNormalizedName(transformer, relation.getTarget());
   const sourceDatatype = getCorrespondingDatatype(sourceName, transformer.datatypes);
+
+  if (!sourceDatatype) {
+    transformer.issues.push({
+      id: relation.id,
+      code: 'DATATYPE_NOT_FOUND',
+      severity: ServiceIssueSeverity.WARNING,
+      title: 'Datatype Not Found',
+      description: `Relation '${relation.getName() || relation.id}' was skipped because datatype '${sourceName}' was not transformed.`,
+      data: relation
+    });
+    return;
+  }
 
   let relationName = getNormalizedName(transformer, relation);
 

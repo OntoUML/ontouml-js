@@ -1,5 +1,6 @@
 import { Property, Class, Relation, ClassStereotype } from '@libs/ontouml';
 import { Ontouml2Alloy } from '.';
+import { ServiceIssueSeverity } from '..';
 import {
   getNormalizedName,
   getCardinalityKeyword,
@@ -13,10 +14,6 @@ import {
 
 export function transformProperty(transformer: Ontouml2Alloy, property: Property) {
   if (property.container instanceof Class && property.container.hasDatatypeStereotype()) {
-    if (!property.propertyType) {
-      console.warn(`Skipping datatype attribute "${property.getName() || property.id}": no propertyType defined`);
-      return;
-    }
     transformDatatypeAttribute(transformer, property);
     return;
   } else if (property.container instanceof Relation && holdsBetweenDatatypes(property.container)) {
@@ -24,11 +21,6 @@ export function transformProperty(transformer: Ontouml2Alloy, property: Property
   }
 
   if (property.isAttribute()) {
-    if (!property.propertyType) {
-      console.warn(`Skipping attribute "${property.getName() || property.id}": no propertyType defined`);
-      return;
-    }
-
     if (property.isOrdered) {
       transformOrderedAttribute(transformer, property);
     } else {
@@ -521,6 +513,19 @@ function transformDatatypeAttribute(transformer: Ontouml2Alloy, attribute: Prope
   const attributeName = getNormalizedName(transformer, attribute);
   const ownerDatatypeName = getNormalizedName(transformer, attribute.container);
   const ownerDatatype = getCorrespondingDatatype(ownerDatatypeName, transformer.datatypes);
+
+  if (!ownerDatatype) {
+    transformer.issues.push({
+      id: attribute.id,
+      code: 'DATATYPE_NOT_FOUND',
+      severity: ServiceIssueSeverity.WARNING,
+      title: 'Datatype Not Found',
+      description: `Attribute '${attribute.getName() || attribute.id}' was skipped because datatype '${ownerDatatypeName}' was not transformed.`,
+      data: attribute
+    });
+    return;
+  }
+
   const cardinality = getCardinalityKeyword(attribute.cardinality);
   const datatypeName = getNormalizedName(transformer, attribute.propertyType);
 

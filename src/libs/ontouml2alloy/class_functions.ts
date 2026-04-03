@@ -1,17 +1,9 @@
-import { Class, ClassStereotype, Relation } from '@libs/ontouml';
+import { Class, Relation } from '@libs/ontouml';
 import { RelationStereotype } from '@libs/ontouml/model/stereotypes';
 import { Ontouml2Alloy } from '.';
 import { getNormalizedName, isTopLevel, getAlias } from './util';
 
 export function transformClass(transformer: Ontouml2Alloy, _class: Class) {
-  if (_class.hasAnyStereotype([ClassStereotype.EVENT, ClassStereotype.SITUATION, ClassStereotype.TYPE])) {
-    return;
-  }
-
-  if (_class.hasAbstractStereotype()) {
-    _class.stereotype = ClassStereotype.DATATYPE;
-  }
-
   if (_class.hasDatatypeStereotype()) {
     transformDatatypeClass(transformer, _class);
     return;
@@ -22,27 +14,9 @@ export function transformClass(transformer: Ontouml2Alloy, _class: Class) {
     return;
   }
 
-  // by this point, the class should be an endurant
-  // QUESTION if a class is not restricted to anything, should we default to Endurant (since datatype, enumeration and endurant are the only natures that can be an end of a relation) or skip entirely (in which case we also need to clean up all the relations)?
-  if (_class.isRestrictedToEndurant() || !_class.restrictedTo || _class.restrictedTo.length === 0) {
+  if (_class.isRestrictedToEndurant()) {
     transformEndurantClass(transformer, _class);
-  } else {
-    // QUESTION: consider removing these classes (and their connected relations/generalizations) in removeUnsupportedElements instead of throwing. Or move to input validation.
-    throw new Error(
-      `Class '${_class.getName()}' has restrictedTo [${_class.restrictedTo.join(
-        ', '
-      )}] which contains no endurant natures. Non-endurant natures are not yet supported.`
-    );
   }
-
-  // former solution:
-  // if (_class.isRestrictedToEndurant()) {
-  //   transformEndurantClass(transformer, _class);
-  // }
-
-  /*
-    This line checks if the given class _class is a restricted endurant. If it is, the transformEndurantClass function is called with the transformer and _class parameters.
-  */
 
   if (_class.hasRelatorStereotype()) {
     transformRelatorConstraint(transformer, _class);
@@ -64,9 +38,7 @@ function transformAbstractClass(transformer: Ontouml2Alloy, _class: Class) {
       'fact abstractClass {\n' + '        all w: World | w.' + className + ' = ' + subtypes.join('+') + '\n' + '}'
     );
   } else if (!transformer.options?.allowAbstractLeafInstances) {
-    transformer.addFact(
-      'fact abstractClass {\n' + '        all w: World | no w.' + className + '\n' + '}'
-    );
+    transformer.addFact('fact abstractClass {\n' + '        all w: World | no w.' + className + '\n' + '}');
   }
 }
 

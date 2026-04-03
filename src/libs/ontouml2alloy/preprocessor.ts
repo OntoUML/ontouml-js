@@ -1,4 +1,4 @@
-import { OntoumlElement, Package, Decoratable, ClassStereotype } from '@libs/ontouml';
+import { OntoumlElement, Package, Decoratable, ClassStereotype, natureUtils } from '@libs/ontouml';
 import { ServiceIssue, ServiceIssueSeverity } from '..';
 
 export class Ontouml2AlloyPreprocessor {
@@ -17,7 +17,10 @@ export class Ontouml2AlloyPreprocessor {
       return { ok: false, issues: this.issues };
     }
 
+    this.applyDefaults();
+
     this.removeUnsupportedElements();
+
     return { ok: true, issues: this.issues };
   }
 
@@ -32,7 +35,9 @@ export class Ontouml2AlloyPreprocessor {
           code: 'UNKNOWN_CLASS_STEREOTYPE',
           severity: ServiceIssueSeverity.ERROR,
           title: 'Unknown Class Stereotype',
-          description: `Class '${_class.getName() || _class.id}' has unknown or unsupported stereotype '${String(_class.stereotype)}'.`,
+          description: `Class '${_class.getName() || _class.id}' has unknown or unsupported stereotype '${String(
+            _class.stereotype
+          )}'.`,
           data: _class
         });
       }
@@ -45,7 +50,36 @@ export class Ontouml2AlloyPreprocessor {
     return decoratable == null || decoratable.hasAnyStereotype(['event', 'situation', 'type']);
   }
 
+  // Normalizes (remapping and defaulting) model metadata before removal/transformation.
+  applyDefaults() {
+    for (const _class of this.model.getAllClasses()) {
+      if (_class.hasAbstractStereotype()) {
+        _class.stereotype = ClassStereotype.DATATYPE;
+      }
+    }
+
+    for (const _class of this.model.getAllClasses()) {
+      if (_class.hasDatatypeStereotype() || _class.hasEnumerationStereotype()) {
+        continue;
+      }
+      if (!_class.restrictedTo || _class.restrictedTo.length === 0) {
+        _class.restrictedTo = [...natureUtils.EndurantNatures];
+        this.issues.push({
+          id: _class.id,
+          code: 'MISSING_VALUE_DEFAULTED',
+          severity: ServiceIssueSeverity.WARNING,
+          title: 'Missing Value Defaulted',
+          description: `Class '${
+            _class.getName() || _class.id
+          }' had no restrictedTo natures and was defaulted to all endurant natures.`,
+          data: _class
+        });
+      }
+    }
+  }
+
   removeUnsupportedElements() {
+    // Remove classes with unsupported stereotypes
     for (const _class of this.model.getAllClasses()) {
       if (this.hasUnsupportedStereotype(_class)) {
         for (const property of _class.properties) {
@@ -53,12 +87,41 @@ export class Ontouml2AlloyPreprocessor {
           const attributeName = property.getName() || 'with no name';
           this.generateRemovalIssue(
             property,
-            `Attribute '${attributeName}' of the class '${_class.getName() || _class.id}' was removed due to the class having an unsupported stereotype.`
+            `Attribute '${attributeName}' of the class '${
+              _class.getName() || _class.id
+            }' was removed due to the class having an unsupported stereotype.`
           );
         }
 
         _class.removeSelfFromContainer();
-        this.generateRemovalIssue(_class, `Class '${_class.getName() || _class.id}' was removed due to having an unsupported stereotype.`);
+        this.generateRemovalIssue(
+          _class,
+          `Class '${_class.getName() || _class.id}' was removed due to having an unsupported stereotype.`
+        );
+      }
+    }
+
+    // Remove classes whose restrictedTo contains no endurant natures
+    for (const _class of this.model.getAllClasses()) {
+      if (!_class.isRestrictedToEndurant() && !_class.hasDatatypeStereotype() && !_class.hasEnumerationStereotype()) {
+        for (const property of _class.properties) {
+          property.removeSelfFromContainer();
+          this.generateRemovalIssue(
+            property,
+            `Attribute '${property.getName() || 'with no name'}' of class '${
+              _class.getName() || _class.id
+            }' was removed because the class has no endurant natures.`
+          );
+        }
+
+        const natures = _class.restrictedTo?.join(', ') ?? 'none';
+        _class.removeSelfFromContainer();
+        this.generateRemovalIssue(
+          _class,
+          `Class '${
+            _class.getName() || _class.id
+          }' was removed because its restrictedTo [${natures}] contains no endurant natures.`
+        );
       }
     }
 
@@ -93,6 +156,7 @@ export class Ontouml2AlloyPreprocessor {
       }
     }
 
+    // TODO this is redundant due to dead relation pass, but message is more explicit. Preference?
     // Remove relations connected to unsupported classes
     for (const relation of this.model.getAllRelations()) {
       const source = relation.getSource();
@@ -102,13 +166,17 @@ export class Ontouml2AlloyPreprocessor {
         relation.removeSelfFromContainer();
         this.generateRemovalIssue(
           relation,
-          `Relation '${relation.getName() || relation.id}' was removed due to being connected to an unsupported class '${source.getName() || source.id}'.`
+          `Relation '${relation.getName() || relation.id}' was removed due to being connected to an unsupported class '${
+            source.getName() || source.id
+          }'.`
         );
       } else if (target && this.hasUnsupportedStereotype(target)) {
         relation.removeSelfFromContainer();
         this.generateRemovalIssue(
           relation,
-          `Relation '${relation.getName() || relation.id}' was removed due to being connected to an unsupported class '${target.getName() || target.id}'.`
+          `Relation '${relation.getName() || relation.id}' was removed due to being connected to an unsupported class '${
+            target.getName() || target.id
+          }'.`
         );
       }
     }
@@ -132,11 +200,13 @@ export class Ontouml2AlloyPreprocessor {
 
       if (!source || !target) {
         generalization.removeSelfFromContainer();
-        const genName = generalization.getName() || `${source?.getName() || source?.id || '?'} -> ${target?.getName() || target?.id || '?'}`;
+        const genName =
+          generalization.getName() || `${source?.getName() || source?.id || '?'} -> ${target?.getName() || target?.id || '?'}`;
         this.generateRemovalIssue(generalization, `Generalization '${genName}' was removed due to having a missing element.`);
       }
     }
 
+    // TODO this is redundant due to dead generalization pass, but message is more explicit. Preference?
     // Remove generalizations consisting of unsupported elements
     for (const generalization of this.model.getAllGeneralizations()) {
       const source = generalization.specific;
@@ -152,8 +222,22 @@ export class Ontouml2AlloyPreprocessor {
       }
     }
 
-    // Remove "dead" generalizations whose specific or general was removed in earlier passes
-    const liveElements = new Set([...this.model.getAllClasses().map(c => c.id), ...this.model.getAllRelations().map(r => r.id)]);
+    // Remove relations whose source or target class was removed in earlier passes
+    const liveClasses = new Set(this.model.getAllClasses().map(c => c.id));
+    for (const relation of this.model.getAllRelations()) {
+      const sourceId = relation.getSource()?.id;
+      const targetId = relation.getTarget()?.id;
+      if (!liveClasses.has(sourceId) || !liveClasses.has(targetId)) {
+        relation.removeSelfFromContainer();
+        this.generateRemovalIssue(
+          relation,
+          `Relation '${relation.getName() || relation.id}' was removed because its source or target class was removed.`
+        );
+      }
+    }
+
+    // Remove generalizations whose specific or general was removed in earlier passes
+    const liveElements = new Set([...liveClasses, ...this.model.getAllRelations().map(r => r.id)]);
     for (const generalization of this.model.getAllGeneralizations()) {
       if (!liveElements.has(generalization.specific?.id) || !liveElements.has(generalization.general?.id)) {
         generalization.removeSelfFromContainer();
