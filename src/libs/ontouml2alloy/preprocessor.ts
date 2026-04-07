@@ -57,9 +57,10 @@ export class Ontouml2AlloyPreprocessor {
     }
 
     for (const _class of this.model.getAllClasses()) {
-      if (_class.hasDatatypeStereotype() || _class.hasEnumerationStereotype()) {
+      if (_class.hasDatatypeStereotype() || _class.hasEnumerationStereotype() || this.hasUnsupportedStereotype(_class)) {
         continue;
       }
+
       if (!_class.restrictedTo || _class.restrictedTo.length === 0) {
         _class.restrictedTo = [...natureUtils.EndurantNatures];
         this.issues.push({

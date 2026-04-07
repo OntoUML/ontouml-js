@@ -140,17 +140,6 @@ describe('Class Functions', () => {
       expect(result).toContain(generateWorldFieldForClass('Child', 'Object'));
     });
 
-    it('should transform «abstract» class', () => {
-      let temp = model.createAbstract('Goal');
-      const _number = model.createDatatype('Date');
-      temp.createAttribute(_number, 'until');
-
-      const result = generateAlloy(model);
-
-      const factLines = ['Datatype = Goal+Date', 'disj[Goal,Date]'];
-      expect(result).toContain(generateFact('additionalDatatypeFacts', factLines));
-    });
-
     it('should transform «mode» class { allowed=[intrinsic-mode] }', () => {
       model.createIntrinsicMode('Skill');
       const result = generateAlloy(model);
