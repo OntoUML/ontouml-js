@@ -102,7 +102,9 @@ export class Ontouml2AlloyPreprocessor {
 
     // Remove classes whose restrictedTo contains no endurant natures
     for (const _class of this.model.getAllClasses()) {
-      if (!_class.isRestrictedToEndurant() && !_class.hasDatatypeStereotype() && !_class.hasEnumerationStereotype()) {
+      if (_class.hasDatatypeStereotype() || _class.hasEnumerationStereotype()) continue;
+
+      if (!_class.isRestrictedToEndurant()) {
         for (const property of _class.properties) {
           this.removeProperty(property);
           this.generateRemovalIssue(
@@ -124,7 +126,7 @@ export class Ontouml2AlloyPreprocessor {
       }
     }
 
-    // Remove attributes with undefined propertyType
+    // Remove attributes with undefined or unsupported propertyType
     for (const property of this.model.getAllAttributes()) {
       if (!property.propertyType || this.hasUnsupportedStereotype(property.propertyType)) {
         this.removeProperty(property);
@@ -135,21 +137,16 @@ export class Ontouml2AlloyPreprocessor {
       }
     }
 
-    // Remove non-binary (ternary/n-ary) relations, which are not supported by the transformation
+    // Remove non-binary relations, which are not supported by the transformation
     for (const relation of this.model.getAllRelations()) {
       if (!relation.isBinary()) {
-        let description = `Non-binary relation removed. Only binary relations are supported.`;
-        try {
-          const relationName = relation.getName() || relation.id;
-          const endCount = relation.properties?.length ?? 0;
-          const memberNames = relation
-            .getMembers()
-            .map(m => m.getName() || m.id)
-            .join(', ');
-          description = `Relation '${relationName}' was removed because it is a non-binary relation with ${endCount} ends (members: ${memberNames}). Only binary relations are supported.`;
-        } catch (_) {
-          /* use fallback description */
-        }
+        const relationName = relation.getName() || relation.id;
+        const endCount = relation.properties?.length ?? 0;
+        const memberNames = relation
+          .getMembers()
+          .map(m => m.getName() || m.id)
+          .join(', ');
+        const description = `Relation '${relationName}' was removed because it is a non-binary relation with ${endCount} ends (members: ${memberNames}). Only binary relations are supported.`;
         relation.removeSelfFromContainer();
         this.generateRemovalIssue(relation, description);
       }
