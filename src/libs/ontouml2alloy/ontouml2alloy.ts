@@ -1,4 +1,4 @@
-import { OntoumlElement, Project, Package } from '@libs/ontouml';
+import { OntoumlElement, Project, Package, Class, Relation } from '@libs/ontouml';
 import {
   transformProperty,
   transformClass,
@@ -12,6 +12,8 @@ import {
 } from './';
 import { Service, ServiceIssue } from '..';
 import { Ontouml2AlloyPreprocessor } from './preprocessor';
+import { getNormalizedName } from './util';
+import { TransformationMetadata, TransformationClassInfo, TransformationRelationInfo } from './transformation_metadata';
 
 export interface Ontouml2AlloyOptions {
   // when true, abstract classes that are leaves can have instances. Default is false.
@@ -345,6 +347,42 @@ export class Ontouml2Alloy implements Service {
     }
   }
 
+  // Metadata about the transformed model, i.e. the model elements retained after unsupported element removal
+  generateMetadata(): TransformationMetadata {
+    const classes: TransformationClassInfo[] = this.model.getAllClasses().map((_class: Class) => ({
+      id: _class.id,
+      name: _class.getName(),
+      alloyName: this.normalizedNames[_class.id] || getNormalizedName(this, _class),
+      stereotype: _class.stereotype || null,
+      natures: _class.restrictedTo || []
+    }));
+
+    const relations: TransformationRelationInfo[] = this.model
+      .getAllRelations()
+      // filtering out derivation stereotypes for now.
+      .filter((relation: Relation) => !relation.hasDerivationStereotype())
+      .map((relation: Relation) => {
+        const source = relation.getSourceClass();
+        const target = relation.getTargetClass();
+        return {
+          id: relation.id,
+          name: relation.getName(),
+          alloyName: this.normalizedNames[relation.id] || getNormalizedName(this, relation),
+          stereotype: relation.stereotype || null,
+          source: {
+            className: source.getName(),
+            alloyName: this.normalizedNames[source.id] || getNormalizedName(this, source)
+          },
+          target: {
+            className: target.getName(),
+            alloyName: this.normalizedNames[target.id] || getNormalizedName(this, target)
+          }
+        };
+      });
+
+    return { classes, relations };
+  }
+
   run(): { result: any; issues?: ServiceIssue[] } {
     const { ok, issues } = this.preprocessor.run();
     this.issues.push(...issues);
@@ -359,7 +397,8 @@ export class Ontouml2Alloy implements Service {
       result: {
         mainModule: this.getAlloyCode()[0],
         worldStructureModule: this.getAlloyCode()[1],
-        ontologicalPropertiesModule: this.getAlloyCode()[2]
+        ontologicalPropertiesModule: this.getAlloyCode()[2],
+        transformationMetadata: this.generateMetadata()
       },
       issues: this.issues.length > 0 ? this.issues : undefined
     };

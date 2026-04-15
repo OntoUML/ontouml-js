@@ -5,3 +5,4 @@ export * from './generalization_set_functions';
 export * from './relation_functions';
 export * from './preprocessor';
 export * from './ontouml2alloy';
+export * from './transformation_metadata';
