@@ -78,7 +78,16 @@ export class Ontouml2AlloyPreprocessor {
   }
 
   removeUnsupportedElements() {
-    // Remove classes with unsupported stereotypes
+    this.removeClassesWithUnsupportedStereotypes();
+    this.removeClassesNotRestrictedToEndurant();
+    this.removeAttributesWithInvalidType();
+    this.removeUnsupportedRelations();
+    this.removeUnsupportedGeneralizations();
+    this.removeInvalidGeneralizationSets();
+    this.removeOrphanedElements();
+  }
+
+  private removeClassesWithUnsupportedStereotypes() {
     for (const _class of this.model.getAllClasses()) {
       if (this.hasUnsupportedStereotype(_class)) {
         for (const property of _class.properties) {
@@ -99,8 +108,9 @@ export class Ontouml2AlloyPreprocessor {
         );
       }
     }
+  }
 
-    // Remove classes whose restrictedTo contains no endurant natures
+  private removeClassesNotRestrictedToEndurant() {
     for (const _class of this.model.getAllClasses()) {
       if (_class.hasDatatypeStereotype() || _class.hasEnumerationStereotype()) continue;
 
@@ -125,8 +135,9 @@ export class Ontouml2AlloyPreprocessor {
         );
       }
     }
+  }
 
-    // Remove attributes with undefined or unsupported propertyType
+  private removeAttributesWithInvalidType() {
     for (const property of this.model.getAllAttributes()) {
       if (!property.propertyType || this.hasUnsupportedStereotype(property.propertyType)) {
         this.removeProperty(property);
@@ -136,8 +147,10 @@ export class Ontouml2AlloyPreprocessor {
         );
       }
     }
+  }
 
-    // Remove non-binary relations, which are not supported by the transformation
+  private removeUnsupportedRelations() {
+    // Remove non-binary relations
     for (const relation of this.model.getAllRelations()) {
       if (!relation.isBinary()) {
         const relationName = relation.getName() || relation.id;
@@ -152,7 +165,6 @@ export class Ontouml2AlloyPreprocessor {
       }
     }
 
-    // TODO this is redundant due to dead relation pass, but message is more explicit. Preference?
     // Remove relations connected to unsupported classes
     for (const relation of this.model.getAllRelations()) {
       const source = relation.getSource();
@@ -188,7 +200,9 @@ export class Ontouml2AlloyPreprocessor {
         );
       }
     }
+  }
 
+  private removeUnsupportedGeneralizations() {
     // Remove generalizations with missing elements
     for (const generalization of this.model.getAllGeneralizations()) {
       const source = generalization.specific;
@@ -202,7 +216,6 @@ export class Ontouml2AlloyPreprocessor {
       }
     }
 
-    // TODO this is redundant due to dead generalization pass, but message is more explicit. Preference?
     // Remove generalizations consisting of unsupported elements
     for (const generalization of this.model.getAllGeneralizations()) {
       const source = generalization.specific;
@@ -217,38 +230,9 @@ export class Ontouml2AlloyPreprocessor {
         );
       }
     }
+  }
 
-    // Remove relations whose source or target class was removed in earlier passes
-    // Derivation relations are skipped here because their source end points to a Relation, and they are already handled by the dedicated pass above.
-    const liveClasses = new Set(this.model.getAllClasses().map(c => c.id));
-    for (const relation of this.model.getAllRelations()) {
-      if (relation.hasDerivationStereotype()) continue;
-
-      const sourceId = relation.getSource()?.id;
-      const targetId = relation.getTarget()?.id;
-      if (!liveClasses.has(sourceId) || !liveClasses.has(targetId)) {
-        relation.removeSelfFromContainer();
-        this.generateRemovalIssue(
-          relation,
-          `Relation '${relation.getName() || relation.id}' was removed because its source or target class was removed.`
-        );
-      }
-    }
-
-    // Remove generalizations whose specific or general was removed in earlier passes
-    const liveElements = new Set([...liveClasses, ...this.model.getAllRelations().map(r => r.id)]);
-    for (const generalization of this.model.getAllGeneralizations()) {
-      if (!liveElements.has(generalization.specific?.id) || !liveElements.has(generalization.general?.id)) {
-        generalization.removeSelfFromContainer();
-        const specName = generalization.specific?.getName() ?? '?';
-        const genName = generalization.general?.getName() ?? '?';
-        this.generateRemovalIssue(
-          generalization,
-          `Generalization '${specName} -> ${genName}' was removed because its specific or general element was removed.`
-        );
-      }
-    }
-
+  private removeInvalidGeneralizationSets() {
     // Remove generalization sets with missing generalizations array
     for (const generalizationSet of this.model.getAllGeneralizationSets()) {
       if (!generalizationSet.generalizations) {
@@ -279,6 +263,39 @@ export class Ontouml2AlloyPreprocessor {
         const removalDescription = `Generalization Set '${genSetName}' was removed due to containing an unsupported element.`;
 
         this.generateRemovalIssue(generalizationSet, removalDescription);
+      }
+    }
+  }
+
+  private removeOrphanedElements() {
+    // Remove relations whose source or target class was removed in earlier passes
+    // Derivation relations are skipped here because their source end points to a Relation, and they are already handled by the dedicated pass above.
+    const liveClasses = new Set(this.model.getAllClasses().map(c => c.id));
+    for (const relation of this.model.getAllRelations()) {
+      if (relation.hasDerivationStereotype()) continue;
+
+      const sourceId = relation.getSource()?.id;
+      const targetId = relation.getTarget()?.id;
+      if (!liveClasses.has(sourceId) || !liveClasses.has(targetId)) {
+        relation.removeSelfFromContainer();
+        this.generateRemovalIssue(
+          relation,
+          `Relation '${relation.getName() || relation.id}' was removed because its source or target class was removed.`
+        );
+      }
+    }
+
+    // Remove generalizations whose specific or general was removed in earlier passes
+    const liveElements = new Set([...liveClasses, ...this.model.getAllRelations().map(r => r.id)]);
+    for (const generalization of this.model.getAllGeneralizations()) {
+      if (!liveElements.has(generalization.specific?.id) || !liveElements.has(generalization.general?.id)) {
+        generalization.removeSelfFromContainer();
+        const specName = generalization.specific?.getName() ?? '?';
+        const genName = generalization.general?.getName() ?? '?';
+        this.generateRemovalIssue(
+          generalization,
+          `Generalization '${specName} -> ${genName}' was removed because its specific or general element was removed.`
+        );
       }
     }
   }
