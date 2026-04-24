@@ -356,6 +356,12 @@ export class Ontouml2Alloy implements Service {
       stereotype: _class.stereotype || null,
       natures: _class.restrictedTo || []
     }));
+    
+    const aliasFor = (element: OntoumlElement | null | undefined): string | null => {
+      if (!element) return null;
+      const found = this.aliases.find(a => a[0] === element);
+      return found ? found[1] : null;
+    };
 
     const relations: TransformationRelationInfo[] = this.model
       .getAllRelations()
@@ -376,7 +382,9 @@ export class Ontouml2Alloy implements Service {
           target: {
             className: target.getName(),
             alloyName: this.normalizedNames[target.id] || getNormalizedName(this, target)
-          }
+          },
+          targetAccessor: aliasFor(relation.getTargetEnd()),
+          sourceAccessor: aliasFor(relation.getSourceEnd())
         };
       });
 

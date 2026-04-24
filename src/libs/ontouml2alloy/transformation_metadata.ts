@@ -13,6 +13,10 @@ export interface TransformationRelationInfo {
   stereotype: string | null;
   source: { className: string | null; alloyName: string };
   target: { className: string | null; alloyName: string };
+  // the targetAccessor function returns the targets of a source instance
+  targetAccessor: string | null;
+  // the sourceAccessor function returns the sources of a target instance.
+  sourceAccessor: string | null;
 }
 
 export interface TransformationMetadata {
