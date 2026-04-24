@@ -128,7 +128,6 @@ describe('Class Functions', () => {
       model.createRole('Student');
       const result = generateAlloy(model);
 
-      expect(result).toContain(generateFact('antirigid', ['antirigidity[Student,Object,exists]']));
       expect(result).toContain(generateWorldFieldForClass('Student', 'Object'));
     });
 
@@ -136,7 +135,6 @@ describe('Class Functions', () => {
       model.createPhase('Child');
       const result = generateAlloy(model);
 
-      expect(result).toContain(generateFact('antirigid', ['antirigidity[Child,Object,exists]']));
       expect(result).toContain(generateWorldFieldForClass('Child', 'Object'));
     });
 
@@ -176,7 +174,6 @@ describe('Class Functions', () => {
       model.createRoleMixin('Customer');
       const result = generateAlloy(model);
 
-      expect(result).toContain(generateFact('antirigid', ['antirigidity[Customer,Object,exists]']));
       expect(result).toContain(generateWorldFieldForClass('Customer', 'Object'));
     });
 
@@ -185,7 +182,6 @@ describe('Class Functions', () => {
       model.createPhaseMixin('Infant');
       const result = generateAlloy(model);
 
-      expect(result).toContain(generateFact('antirigid', ['antirigidity[Infant,Object,exists]']));
       expect(result).toContain(generateWorldFieldForClass('Infant', 'Object'));
     });
 

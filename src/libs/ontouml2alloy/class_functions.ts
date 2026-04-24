@@ -58,9 +58,17 @@ function transformEndurantClass(transformer: Ontouml2Alloy, _class: Class) {
 
   if (_class.hasRigidStereotype()) {
     transformer.addFact('fact rigid {\n' + '        rigidity[' + className + ',' + nature + ',exists]\n' + '}');
-  } else if (_class.hasAntiRigidStereotype()) {
-    transformer.addFact('fact antirigid {\n' + '        antirigidity[' + className + ',' + nature + ',exists]\n' + '}');
   }
+  // Anti-rigidity is intentioanlly not emitted as a fact. 
+  // Enforcing anti-rigidity overconstrains possible instances during simulation, 
+  // antirigidity is preserved via its stereotype in transformation_metadata.json
+  // and can be opted in to via the mandatory_antirigidity scenario.
+  // TODO consider adding it behind a flag instead. But, then the current antirigidity fact will also need to be rewritten.
+  
+  // else if (_class.hasAntiRigidStereotype()) {
+  //   transformer.addFact('fact antirigid {\n' + '        antirigidity[' + className + ',' + nature + ',exists]\n' + '}');
+  // }
+
 }
 
 function transformDatatypeClass(transformer: Ontouml2Alloy, _class: Class) {
