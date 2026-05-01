@@ -256,6 +256,34 @@ describe('preprocessor', () => {
   });
 
   describe('removeUnsupportedElements', () => {
+    describe('empty enumerations', () => {
+      it('removes enumeration classes with no literals and emits UNSUPPORTED_ELEMENT_REMOVED', () => {
+        const status = model.createEnumeration('Status');
+        status.literals = [];
+
+        preprocessor.removeUnsupportedElements();
+
+        expect(model.getAllClasses().map(c => c.getName())).not.toContain('Status');
+        const issue = preprocessor.issues.find(i => i.id === status.id);
+        expect(issue).toBeDefined();
+        expect(issue.code).toBe('UNSUPPORTED_ELEMENT_REMOVED');
+      });
+
+      it('removes attributes whose propertyType was an empty enumeration removed earlier in preprocessing', () => {
+        const person = model.createKind('Person');
+        const status = model.createEnumeration('Status');
+        status.literals = [];
+        const attr = person.createAttribute(status, 'status');
+
+        preprocessor.removeUnsupportedElements();
+
+        expect(person.properties.map(p => p.getName())).not.toContain('status');
+        const issue = preprocessor.issues.find(i => i.id === attr.id);
+        expect(issue).toBeDefined();
+        expect(issue.code).toBe('UNSUPPORTED_ELEMENT_REMOVED');
+      });
+    });
+
     describe('unsupported stereotypes', () => {
       it('removes <<event>> classes from the model', () => {
         model.createEvent('Birthday');

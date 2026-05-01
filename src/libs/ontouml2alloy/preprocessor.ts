@@ -80,6 +80,7 @@ export class Ontouml2AlloyPreprocessor {
   removeUnsupportedElements() {
     this.removeClassesWithUnsupportedStereotypes();
     this.removeClassesNotRestrictedToEndurant();
+    this.removeEnumerationsWithoutLiterals();
     this.removeAttributesWithInvalidType();
     this.removeUnsupportedRelations();
     this.removeUnsupportedGeneralizations();
@@ -138,13 +139,35 @@ export class Ontouml2AlloyPreprocessor {
   }
 
   private removeAttributesWithInvalidType() {
+    const liveClassIds = new Set(this.model.getAllClasses().map(_class => _class.id));
+
     for (const property of this.model.getAllAttributes()) {
-      if (!property.propertyType || this.hasUnsupportedStereotype(property.propertyType)) {
+      const typeWasRemoved = !!property.propertyType?.id && !liveClassIds.has(property.propertyType.id);
+
+      if (!property.propertyType || this.hasUnsupportedStereotype(property.propertyType) || typeWasRemoved) {
         this.removeProperty(property);
         this.generateRemovalIssue(
           property,
-          `Attribute '${property.getName() || property.id}' was removed due to undefined/unsupported propertyType.`
+          `Attribute '${property.getName() || property.id}' was removed due to undefined/unsupported/removed propertyType.`
         );
+      }
+    }
+  }
+
+  private removeEnumerationsWithoutLiterals() {
+    for (const _class of this.model.getAllClasses()) {
+      if (_class.hasEnumerationStereotype() && (!_class.literals || _class.literals.length === 0)) {
+        _class.removeSelfFromContainer();
+        this.issues.push({
+          id: _class.id,
+          code: 'EMPTY_ENUM_REMOVED',
+          severity: ServiceIssueSeverity.WARNING,
+          title: 'Empty Enumeration Removed',
+          description: `Enumeration '${
+            _class.getName() || _class.id
+          }' was removed because it has no literals and cannot be transformed to Alloy enum.`,
+          data: _class
+        });
       }
     }
   }
