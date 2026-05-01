@@ -405,6 +405,7 @@ describe('preprocessor', () => {
       it('retains enumerations regardless of restrictedTo', () => {
         const colour = model.createEnumeration('Colour');
         colour.restrictedTo = [OntologicalNature.event];
+        colour.createLiteral('red');
 
         expect(model.getAllClasses().map(c => c.getName())).toContain('Colour');
 

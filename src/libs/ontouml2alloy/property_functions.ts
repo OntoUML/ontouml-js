@@ -1,6 +1,6 @@
 import { Property, Class, Relation, ClassStereotype } from '@libs/ontouml';
 import { Ontouml2Alloy } from '.';
-import { ServiceIssueSeverity } from '..';
+import { createIssue, IssueType } from './issue';
 import {
   getNormalizedName,
   getCardinalityKeyword,
@@ -515,16 +515,13 @@ function transformDatatypeAttribute(transformer: Ontouml2Alloy, attribute: Prope
   const ownerDatatype = getCorrespondingDatatype(ownerDatatypeName, transformer.datatypes);
 
   if (!ownerDatatype) {
-    transformer.issues.push({
-      id: attribute.id,
-      code: 'DATATYPE_NOT_FOUND',
-      severity: ServiceIssueSeverity.WARNING,
-      title: 'Datatype Not Found',
-      description: `Attribute '${
-        attribute.getName() || attribute.id
-      }' was skipped because datatype '${ownerDatatypeName}' was not transformed.`,
-      data: attribute
-    });
+    transformer.issues.push(
+      createIssue(
+        attribute,
+        IssueType.DATATYPE_NOT_FOUND,
+        `Attribute '${attribute.getName() || attribute.id}' was skipped because datatype '${ownerDatatypeName}' was not transformed.`
+      )
+    );
     return;
   }
 

@@ -1,6 +1,6 @@
 import { ClassStereotype, Relation, RelationStereotype } from '@libs/ontouml';
 import { Ontouml2Alloy } from './';
-import { ServiceIssueSeverity } from '..';
+import { createIssue, IssueType } from './issue';
 import {
   getNormalizedName,
   getCardinalityKeyword,
@@ -161,16 +161,13 @@ function transformDerivationRelation(transformer: Ontouml2Alloy, relation: Relat
     }
 
     if (!mediation1 || !mediation2) {
-      transformer.issues.push({
-        id: relation.id,
-        code: 'INCOMPLETE_RELATOR_PATTERN',
-        severity: ServiceIssueSeverity.WARNING,
-        title: 'Incomplete Relator Pattern',
-        description: `Derivation '${
-          relation.getName() || relation.id
-        }' was skipped because the required mediations for its Relator Pattern could not be found.`,
-        data: relation
-      });
+      transformer.issues.push(
+        createIssue(
+          relation,
+          IssueType.INCOMPLETE_RELATOR_PATTERN,
+          `Derivation '${relation.getName() || relation.id}' was skipped because the required mediations for its Relator Pattern could not be found.`
+        )
+      );
       return;
     }
 
@@ -272,16 +269,13 @@ function transformDatatypeRelation(transformer: Ontouml2Alloy, relation: Relatio
   const sourceDatatype = getCorrespondingDatatype(sourceName, transformer.datatypes);
 
   if (!sourceDatatype) {
-    transformer.issues.push({
-      id: relation.id,
-      code: 'DATATYPE_NOT_FOUND',
-      severity: ServiceIssueSeverity.WARNING,
-      title: 'Datatype Not Found',
-      description: `Relation '${
-        relation.getName() || relation.id
-      }' was skipped because datatype '${sourceName}' was not transformed.`,
-      data: relation
-    });
+    transformer.issues.push(
+      createIssue(
+        relation,
+        IssueType.DATATYPE_NOT_FOUND,
+        `Relation '${relation.getName() || relation.id}' was skipped because datatype '${sourceName}' was not transformed.`
+      )
+    );
     return;
   }
 

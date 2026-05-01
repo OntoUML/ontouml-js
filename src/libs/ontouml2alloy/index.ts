@@ -6,3 +6,4 @@ export * from './relation_functions';
 export * from './preprocessor';
 export * from './ontouml2alloy';
 export * from './transformation_metadata';
+export * from './issue';

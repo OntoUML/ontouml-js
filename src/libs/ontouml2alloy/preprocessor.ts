@@ -1,5 +1,6 @@
 import { OntoumlElement, Package, Decoratable, ClassStereotype, Classifier, natureUtils } from '@libs/ontouml';
-import { ServiceIssue, ServiceIssueSeverity } from '..';
+import { ServiceIssue } from '..';
+import { createIssue, IssueType } from './issue';
 
 export class Ontouml2AlloyPreprocessor {
   private model: Package;
@@ -30,14 +31,13 @@ export class Ontouml2AlloyPreprocessor {
 
     for (const _class of this.model.getAllClasses()) {
       if (!validStereotypes.has(_class.stereotype)) {
-        errors.push({
-          id: _class.id,
-          code: 'UNKNOWN_CLASS_STEREOTYPE',
-          severity: ServiceIssueSeverity.ERROR,
-          title: 'Unknown Class Stereotype',
-          description: `Class '${_class.getName() || _class.id}' has unknown or unsupported stereotype «${_class.stereotype}».`,
-          data: _class
-        });
+        errors.push(
+          createIssue(
+            _class,
+            IssueType.UNKNOWN_CLASS_STEREOTYPE,
+            `Class '${_class.getName() || _class.id}' has unknown or unsupported stereotype «${_class.stereotype}».`
+          )
+        );
       }
     }
 
@@ -63,16 +63,13 @@ export class Ontouml2AlloyPreprocessor {
 
       if (!_class.restrictedTo || _class.restrictedTo.length === 0) {
         _class.restrictedTo = [...natureUtils.EndurantNatures];
-        this.issues.push({
-          id: _class.id,
-          code: 'MISSING_VALUE_DEFAULTED',
-          severity: ServiceIssueSeverity.WARNING,
-          title: 'Missing Value Defaulted',
-          description: `Class '${
-            _class.getName() || _class.id
-          }' had no restrictedTo natures and was defaulted to all endurant natures.`,
-          data: _class
-        });
+        this.issues.push(
+          createIssue(
+            _class,
+            IssueType.MISSING_VALUE_DEFAULTED,
+            `Class '${_class.getName() || _class.id}' had no restrictedTo natures and was defaulted to all endurant natures.`
+          )
+        );
       }
     }
   }
@@ -94,8 +91,9 @@ export class Ontouml2AlloyPreprocessor {
         for (const property of _class.properties) {
           this.removeProperty(property);
           const attributeName = property.getName() || 'with no name';
-          this.generateRemovalIssue(
+          this.generateIssue(
             property,
+            IssueType.UNSUPPORTED_ELEMENT_REMOVED,
             `Attribute '${attributeName}' of the class '${
               _class.getName() || _class.id
             }' was removed due to the class having an unsupported stereotype «${_class.stereotype}».`
@@ -103,8 +101,9 @@ export class Ontouml2AlloyPreprocessor {
         }
 
         _class.removeSelfFromContainer();
-        this.generateRemovalIssue(
+        this.generateIssue(
           _class,
+          IssueType.UNSUPPORTED_ELEMENT_REMOVED,
           `Class '${_class.getName() || _class.id}' was removed due to having an unsupported stereotype «${_class.stereotype}».`
         );
       }
@@ -118,8 +117,9 @@ export class Ontouml2AlloyPreprocessor {
       if (!_class.isRestrictedToEndurant()) {
         for (const property of _class.properties) {
           this.removeProperty(property);
-          this.generateRemovalIssue(
+          this.generateIssue(
             property,
+            IssueType.UNSUPPORTED_ELEMENT_REMOVED,
             `Attribute '${property.getName() || 'with no name'}' of class '${
               _class.getName() || _class.id
             }' was removed because the class has no endurant natures.`
@@ -128,8 +128,9 @@ export class Ontouml2AlloyPreprocessor {
 
         const natures = _class.restrictedTo?.join(', ') ?? 'none';
         _class.removeSelfFromContainer();
-        this.generateRemovalIssue(
+        this.generateIssue(
           _class,
+          IssueType.UNSUPPORTED_ELEMENT_REMOVED,
           `Class '${
             _class.getName() || _class.id
           }' was removed because its restrictedTo [${natures}] contains no endurant natures.`
@@ -146,8 +147,9 @@ export class Ontouml2AlloyPreprocessor {
 
       if (!property.propertyType || this.hasUnsupportedStereotype(property.propertyType) || typeWasRemoved) {
         this.removeProperty(property);
-        this.generateRemovalIssue(
+        this.generateIssue(
           property,
+          IssueType.UNSUPPORTED_ELEMENT_REMOVED,
           `Attribute '${property.getName() || property.id}' was removed due to undefined/unsupported/removed propertyType.`
         );
       }
@@ -158,16 +160,13 @@ export class Ontouml2AlloyPreprocessor {
     for (const _class of this.model.getAllClasses()) {
       if (_class.hasEnumerationStereotype() && (!_class.literals || _class.literals.length === 0)) {
         _class.removeSelfFromContainer();
-        this.issues.push({
-          id: _class.id,
-          code: 'EMPTY_ENUM_REMOVED',
-          severity: ServiceIssueSeverity.WARNING,
-          title: 'Empty Enumeration Removed',
-          description: `Enumeration '${
+        this.generateIssue(
+          _class,
+          IssueType.UNSUPPORTED_ELEMENT_REMOVED,
+          `Enumeration '${
             _class.getName() || _class.id
-          }' was removed because it has no literals and cannot be transformed to Alloy enum.`,
-          data: _class
-        });
+          }' was removed because it has no literals and cannot be transformed to Alloy enum.`
+        );
       }
     }
   }
@@ -184,7 +183,7 @@ export class Ontouml2AlloyPreprocessor {
           .join(', ');
         const description = `Relation '${relationName}' was removed because it is a non-binary relation with ${endCount} ends (members: ${memberNames}). Only binary relations are supported.`;
         relation.removeSelfFromContainer();
-        this.generateRemovalIssue(relation, description);
+        this.generateIssue(relation, IssueType.UNSUPPORTED_ELEMENT_REMOVED, description);
       }
     }
 
@@ -195,16 +194,18 @@ export class Ontouml2AlloyPreprocessor {
 
       if (source && this.hasUnsupportedStereotype(source)) {
         relation.removeSelfFromContainer();
-        this.generateRemovalIssue(
+        this.generateIssue(
           relation,
+          IssueType.UNSUPPORTED_ELEMENT_REMOVED,
           `Relation '${relation.getName() || relation.id}' was removed due to being connected to an unsupported class '${
             source.getName() || source.id
           }'.`
         );
       } else if (target && this.hasUnsupportedStereotype(target)) {
         relation.removeSelfFromContainer();
-        this.generateRemovalIssue(
+        this.generateIssue(
           relation,
+          IssueType.UNSUPPORTED_ELEMENT_REMOVED,
           `Relation '${relation.getName() || relation.id}' was removed due to being connected to an unsupported class '${
             target.getName() || target.id
           }'.`
@@ -217,8 +218,9 @@ export class Ontouml2AlloyPreprocessor {
       if (relation.hasDerivationStereotype() && !relation.isDerivation()) {
         const relationName = relation.getName() || relation.id;
         relation.removeSelfFromContainer();
-        this.generateRemovalIssue(
+        this.generateIssue(
           relation,
+          IssueType.UNSUPPORTED_ELEMENT_REMOVED,
           `Relation '${relationName}' was removed because it is stereotyped as derivation but structurally invalid.`
         );
       }
@@ -235,7 +237,11 @@ export class Ontouml2AlloyPreprocessor {
         generalization.removeSelfFromContainer();
         const genName =
           generalization.getName() || `${source?.getName() || source?.id || '?'} -> ${target?.getName() || target?.id || '?'}`;
-        this.generateRemovalIssue(generalization, `Generalization '${genName}' was removed due to having a missing element.`);
+        this.generateIssue(
+          generalization,
+          IssueType.UNSUPPORTED_ELEMENT_REMOVED,
+          `Generalization '${genName}' was removed due to having a missing element.`
+        );
       }
     }
 
@@ -247,8 +253,9 @@ export class Ontouml2AlloyPreprocessor {
       if (this.hasUnsupportedStereotype(source) || this.hasUnsupportedStereotype(target)) {
         generalization.removeSelfFromContainer();
         const genName = generalization.getName() || `${source?.getName() ?? '?'} -> ${target?.getName() ?? '?'}`;
-        this.generateRemovalIssue(
+        this.generateIssue(
           generalization,
+          IssueType.UNSUPPORTED_ELEMENT_REMOVED,
           `Generalization '${genName}' was removed due to having an unsupported element.`
         );
       }
@@ -261,8 +268,9 @@ export class Ontouml2AlloyPreprocessor {
       if (!generalizationSet.generalizations) {
         generalizationSet.removeSelfFromContainer();
         const genSetName = generalizationSet.getName() || generalizationSet.id;
-        this.generateRemovalIssue(
+        this.generateIssue(
           generalizationSet,
+          IssueType.UNSUPPORTED_ELEMENT_REMOVED,
           `Generalization Set '${genSetName}' was removed due to missing generalizations.`
         );
       }
@@ -285,7 +293,7 @@ export class Ontouml2AlloyPreprocessor {
 
         const removalDescription = `Generalization Set '${genSetName}' was removed due to containing an unsupported element.`;
 
-        this.generateRemovalIssue(generalizationSet, removalDescription);
+        this.generateIssue(generalizationSet, IssueType.UNSUPPORTED_ELEMENT_REMOVED, removalDescription);
       }
     }
   }
@@ -301,8 +309,9 @@ export class Ontouml2AlloyPreprocessor {
       const targetId = relation.getTarget()?.id;
       if (!liveClasses.has(sourceId) || !liveClasses.has(targetId)) {
         relation.removeSelfFromContainer();
-        this.generateRemovalIssue(
+        this.generateIssue(
           relation,
+          IssueType.UNSUPPORTED_ELEMENT_REMOVED,
           `Relation '${relation.getName() || relation.id}' was removed because its source or target class was removed.`
         );
       }
@@ -315,8 +324,9 @@ export class Ontouml2AlloyPreprocessor {
         generalization.removeSelfFromContainer();
         const specName = generalization.specific?.getName() ?? '?';
         const genName = generalization.general?.getName() ?? '?';
-        this.generateRemovalIssue(
+        this.generateIssue(
           generalization,
+          IssueType.UNSUPPORTED_ELEMENT_REMOVED,
           `Generalization '${specName} -> ${genName}' was removed because its specific or general element was removed.`
         );
       }
@@ -332,15 +342,11 @@ export class Ontouml2AlloyPreprocessor {
     }
   }
 
-  private generateRemovalIssue(element: OntoumlElement, description: string) {
-    const issue: ServiceIssue = {
-      id: element.id,
-      code: 'UNSUPPORTED_ELEMENT_REMOVED',
-      severity: ServiceIssueSeverity.WARNING,
-      title: 'Unsupported Element Removed',
-      description: description,
-      data: element
-    };
-    this.issues.push(issue);
+  private generateIssue(
+    element: OntoumlElement,
+    issueType: Pick<ServiceIssue, 'code' | 'severity' | 'title'>,
+    description: string
+  ) {
+    this.issues.push(createIssue(element, issueType, description));
   }
 }
