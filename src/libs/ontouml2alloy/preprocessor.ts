@@ -1,4 +1,4 @@
-import { OntoumlElement, Package, Decoratable, ClassStereotype, Classifier, natureUtils } from '@libs/ontouml';
+import { OntoumlElement, Package, Decoratable, ClassStereotype, Classifier, Class, natureUtils } from '@libs/ontouml';
 import { ServiceIssue } from '..';
 import { createIssue, IssueType } from './issue';
 
@@ -143,8 +143,26 @@ export class Ontouml2AlloyPreprocessor {
     const liveClassIds = new Set(this.model.getAllClasses().map(_class => _class.id));
 
     for (const property of this.model.getAllAttributes()) {
+      // Remove attributes with non enum/datatype propertyType. Not supported (yet). 
+      const ownerIsDatatype = property.container instanceof Class && property.container.hasDatatypeStereotype();
+      const hasUnsupportedPropertyType =
+      ownerIsDatatype &&
+      !!property.propertyType &&
+      (!(property.propertyType instanceof Class) ||
+      (!property.propertyType.hasDatatypeStereotype() && !property.propertyType.hasEnumerationStereotype()));
+      
+      if (hasUnsupportedPropertyType) {
+        this.removeProperty(property);
+        this.generateIssue(
+          property,
+          IssueType.UNSUPPORTED_ELEMENT_REMOVED,
+          `Attribute '${property.getName() || property.id}' was removed because datatype attributes can only be typed by datatypes/enumerations.`
+        );
+        continue;
+      }
+      
+      // Remove attributes pointing to types that were removed
       const typeWasRemoved = !!property.propertyType?.id && !liveClassIds.has(property.propertyType.id);
-
       if (!property.propertyType || this.hasUnsupportedStereotype(property.propertyType) || typeWasRemoved) {
         this.removeProperty(property);
         this.generateIssue(

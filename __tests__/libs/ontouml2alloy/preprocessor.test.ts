@@ -452,6 +452,21 @@ describe('preprocessor', () => {
         expect(person.properties.map(p => p.getName())).not.toContain('trigger');
         expect(preprocessor.issues.map(i => i.id)).toContain(trigger.id);
       });
+
+      it('removes datatype attributes with non-enum or datatype property type and emits UNSUPPORTED_ELEMENT_REMOVED', () => {
+        const measurement = model.createDatatype('Measurement');
+        const quality = model.createKind('Person');
+        const by = measurement.createAttribute(quality, 'by');
+
+        expect(measurement.properties.map(p => p.getName())).toContain('by');
+
+        preprocessor.removeUnsupportedElements();
+
+        expect(measurement.properties.map(p => p.getName())).not.toContain('by');
+        const issue = preprocessor.issues.find(i => i.id === by.id);
+        expect(issue).toBeDefined();
+        expect(issue.code).toBe('UNSUPPORTED_ELEMENT_REMOVED');
+      });
     });
 
     describe('non-binary relations', () => {
