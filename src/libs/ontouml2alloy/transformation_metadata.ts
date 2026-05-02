@@ -19,7 +19,13 @@ export interface TransformationRelationInfo {
   sourceAccessor: string | null;
 }
 
+export interface TransformationGeneralizationInfo {
+  specific: string; // child
+  general: string; // parent
+}
+
 export interface TransformationMetadata {
   classes: TransformationClassInfo[];
   relations: TransformationRelationInfo[];
+  generalizations: TransformationGeneralizationInfo[];
 }

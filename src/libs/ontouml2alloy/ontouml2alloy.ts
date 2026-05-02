@@ -13,7 +13,7 @@ import {
 import { Service, ServiceIssue } from '..';
 import { Ontouml2AlloyPreprocessor } from './preprocessor';
 import { getNormalizedName } from './util';
-import { TransformationMetadata, TransformationClassInfo, TransformationRelationInfo } from './transformation_metadata';
+import { TransformationMetadata, TransformationClassInfo, TransformationRelationInfo, TransformationGeneralizationInfo } from './transformation_metadata';
 
 export interface Ontouml2AlloyOptions {
   // when true, abstract classes that are leaves can have instances. Default is false.
@@ -388,7 +388,19 @@ export class Ontouml2Alloy implements Service {
         };
       });
 
-    return { classes, relations };
+    const generalizations: TransformationGeneralizationInfo[] = this.model
+      .getAllGeneralizations()
+      .filter(g => g.specific instanceof Class && g.general instanceof Class)
+      .map(g => {
+        const specific = g.specific as Class;
+        const general = g.general as Class;
+        return {
+          specific: this.normalizedNames[specific.id] || getNormalizedName(this, specific),
+          general: this.normalizedNames[general.id] || getNormalizedName(this, general)
+        };
+      });
+
+    return { classes, relations, generalizations };
   }
 
   run(): { result: any; issues?: ServiceIssue[] } {
