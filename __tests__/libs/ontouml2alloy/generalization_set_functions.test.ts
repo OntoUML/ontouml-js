@@ -111,4 +111,26 @@ describe('Generalization Set Functions', () => {
     const result = generateAlloy(model);
     expect(result).toContain(generateFact('generalizationSet', ['disj[Customer,Provider]', 'Agent = Customer+Provider']));
   });
+
+  it('does not emit invalid disjoint constraint for single-child disjoint set', () => {
+    const parent = model.createKind('Mammal');
+    const child = model.createSubkind('Human');
+    const gen = model.createGeneralization(parent, child);
+    model.createGeneralizationSet([gen], true, false);
+
+    const result = generateAlloy(model);
+    expect(result).not.toContain(generateFact('generalizationSet', ['disj[Human]']));
+  });
+
+  it('emits disjoint constraint for two-child disjoint set', () => {
+    const parent = model.createKind('Mammal');
+    const child1 = model.createSubkind('Human');
+    const gen1 = model.createGeneralization(parent, child1);
+    const child2 = model.createSubkind('Dog');
+    const gen2 = model.createGeneralization(parent, child2);
+    model.createGeneralizationSet([gen1,gen2], true, false);
+
+    const result = generateAlloy(model);
+    expect(result).toContain(generateFact('generalizationSet', ['disj[Human,Dog]']));
+  });
 });
