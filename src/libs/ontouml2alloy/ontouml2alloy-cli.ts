@@ -27,7 +27,14 @@ const allowAbstractLeafInstances = values['allow-abstract-leaf-instances'];
 fs.mkdirSync(outputDir, { recursive: true });
 
 const jsonContent = fs.readFileSync(inputFile, 'utf-8');
-const model = serializationUtils.parse(jsonContent);
+let model;
+
+try {
+  model = serializationUtils.parse(jsonContent);
+} catch (_err) {
+  console.error(JSON.stringify({ errors: ['Invalid input model: could not parse/deserialize OntoUML JSON.'] }));
+  process.exit(1);
+}
 
 const transformer = new Ontouml2Alloy(model, { allowAbstractLeafInstances });
 const { result, issues } = transformer.run();
