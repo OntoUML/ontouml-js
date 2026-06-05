@@ -18,7 +18,7 @@ export class Ontouml2AlloyPreprocessor {
       return { ok: false, issues: this.issues };
     }
 
-    this.applyDefaults();
+    this.remapStereotypes();
 
     this.removeUnsupportedElements();
 
@@ -48,30 +48,16 @@ export class Ontouml2AlloyPreprocessor {
     return decoratable == null || decoratable.hasAnyStereotype(['event', 'situation', 'type']);
   }
 
-  // Normalizes (remapping and defaulting) model metadata before removal/transformation.
-  applyDefaults() {
-    for (const _class of this.model.getAllClasses()) {
-      if (_class.hasAbstractStereotype()) {
-        _class.stereotype = ClassStereotype.DATATYPE;
-      }
-    }
+  remapStereotypes() {
+    this.remapAbstractToDatatype();
+  }
 
+  private remapAbstractToDatatype(){
     for (const _class of this.model.getAllClasses()) {
-      if (_class.hasDatatypeStereotype() || _class.hasEnumerationStereotype() || this.hasUnsupportedStereotype(_class)) {
-        continue;
+        if (_class.hasAbstractStereotype()) {
+          _class.stereotype = ClassStereotype.DATATYPE;
+        }
       }
-
-      if (!_class.restrictedTo || _class.restrictedTo.length === 0) {
-        _class.restrictedTo = [...natureUtils.EndurantNatures];
-        this.issues.push(
-          createIssue(
-            _class,
-            IssueType.MISSING_VALUE_DEFAULTED,
-            `Class '${_class.getName() || _class.id}' had no restrictedTo natures and was defaulted to all endurant natures.`
-          )
-        );
-      }
-    }
   }
 
   removeUnsupportedElements() {

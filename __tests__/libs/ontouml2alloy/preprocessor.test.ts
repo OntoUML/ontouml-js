@@ -144,12 +144,12 @@ describe('preprocessor', () => {
     });
   });
 
-  describe('applyDefaults', () => {
+  describe('remapStereotypes', () => {
     describe('abstract-to-datatype remapping', () => {
       it('remaps <<abstract>> stereotype to <<datatype>>', () => {
         const goal = model.createAbstract('Goal');
 
-        preprocessor.applyDefaults();
+        preprocessor.remapStereotypes();
 
         expect(goal.stereotype).toBe(ClassStereotype.DATATYPE);
       });
@@ -159,98 +159,10 @@ describe('preprocessor', () => {
         const number = model.createDatatype('Number');
         goal.createAttribute(number, 'priority');
 
-        preprocessor.applyDefaults();
+        preprocessor.remapStereotypes();
 
         expect(goal.properties).toHaveLength(1);
         expect(goal.properties[0].getName()).toBe('priority');
-      });
-
-      it('does not touch non-abstract stereotypes', () => {
-        const person = model.createKind('Person');
-
-        preprocessor.applyDefaults();
-
-        expect(person.stereotype).toBe(ClassStereotype.KIND);
-      });
-    });
-
-    describe('missing restrictedTo defaulting', () => {
-      it('endurant with undefined restrictedTo gets defaulted to all endurant natures to include the class in the transformation', () => {
-        const kind = model.createKind('Person');
-        kind.restrictedTo = [];
-
-        preprocessor.applyDefaults();
-
-        expect(kind.restrictedTo).toEqual(expect.arrayContaining(natureUtils.EndurantNatures));
-      });
-
-      it('emits a warning when defaulting restrictedTo', () => {
-        const kind = model.createKind('Person');
-        kind.restrictedTo = [];
-
-        preprocessor.applyDefaults();
-
-        expect(preprocessor.issues).toHaveLength(1);
-        expect(preprocessor.issues[0].code).toBe('MISSING_VALUE_DEFAULTED');
-        expect(preprocessor.issues[0].severity).toBe(ServiceIssueSeverity.WARNING);
-        expect(preprocessor.issues[0].description).toContain('Person');
-      });
-
-      it('does not default restrictedTo for datatypes', () => {
-        const datatype = model.createDatatype('Text');
-        datatype.restrictedTo = [];
-
-        preprocessor.applyDefaults();
-
-        expect(datatype.restrictedTo).toEqual([]);
-        expect(preprocessor.issues).toHaveLength(0);
-      });
-
-      it('does not default restrictedTo for enumerations', () => {
-        const enumeration = model.createEnumeration('Colour');
-        enumeration.restrictedTo = [];
-
-        preprocessor.applyDefaults();
-
-        expect(enumeration.restrictedTo).toEqual([]);
-      });
-
-      it('does not default restrictedTo for event', () => {
-        const event = model.createEvent('Birthday');
-        event.restrictedTo = [];
-
-        preprocessor.applyDefaults();
-
-        expect(event.restrictedTo).toEqual([]);
-      });
-
-      it('does not default restrictedTo for situation', () => {
-        const situation = model.createSituation('Hazard');
-        situation.restrictedTo = [];
-
-        preprocessor.applyDefaults();
-
-        expect(situation.restrictedTo).toEqual([]);
-      });
-
-      it('does not default restrictedTo for type', () => {
-        const type = model.createType('PaymentMethod');
-        type.restrictedTo = [];
-
-        preprocessor.applyDefaults();
-
-        expect(type.restrictedTo).toEqual([]);
-      });
-
-      it('does not overwrite existing restrictedTo', () => {
-        const person = model.createKind('Person');
-        const original = [OntologicalNature.functional_complex];
-        person.restrictedTo = [...original];
-
-        preprocessor.applyDefaults();
-
-        expect(person.restrictedTo).toEqual(original);
-        expect(preprocessor.issues).toHaveLength(0);
       });
     });
   });
