@@ -607,6 +607,59 @@ describe('preprocessor', () => {
         expect(model.getAllGeneralizationSets()).toHaveLength(1);
         expect(preprocessor.issues).toHaveLength(0);
       });
+
+      it('removes a generalization set over relations', () => {
+        const agent = model.createKind('Agent');
+        const person = model.createKind('Person');
+        const knows = model.createBinaryRelation(agent, agent);
+        const friendsWith = model.createBinaryRelation(person, person);
+        const relationGeneralization = model.createGeneralization(knows, friendsWith);
+        const generalizationSet = model.createGeneralizationSet([relationGeneralization], true, false);
+
+        expect(model.getAllGeneralizationSets()).toHaveLength(1);
+        expect(generalizationSet.involvesClasses()).toBe(false);
+
+        preprocessor.removeUnsupportedElements();
+
+        expect(model.getAllGeneralizationSets()).toHaveLength(0);
+        expect(preprocessor.issues.map(i => i.id)).toContain(generalizationSet.id);
+      });
+
+      it('removes a generalization set without a unique common parent class', () => {
+        const animal = model.createKind('Animal');
+        const plant = model.createKind('Plant');
+        const dog = model.createSubkind('Dog');
+        const tree = model.createSubkind('Tree');
+        const dogGeneralization = model.createGeneralization(animal, dog);
+        const treeGeneralization = model.createGeneralization(plant, tree);
+        const generalizationSet = model.createGeneralizationSet([dogGeneralization, treeGeneralization], true, false);
+
+        expect(model.getAllGeneralizationSets()).toHaveLength(1);
+
+        preprocessor.removeUnsupportedElements();
+
+        expect(model.getAllGeneralizationSets()).toHaveLength(0);
+        expect(preprocessor.issues.map(i => i.id)).toContain(generalizationSet.id);
+      });
+
+      it('removes a generalization set when one of its member classes was removed earlier', () => {
+        const parent = model.createKind('Person');
+        parent.restrictedTo = [...natureUtils.EndurantNatures];
+        const child = model.createPhase('Child');
+        child.restrictedTo = [];
+        const adult = model.createPhase('Adult');
+        adult.restrictedTo = [...natureUtils.EndurantNatures];
+        const childGen = model.createGeneralization(parent, child);
+        const adultGen = model.createGeneralization(parent, adult);
+        const generalizationSet = model.createGeneralizationSet([childGen, adultGen], true, true);
+
+        expect(model.getAllGeneralizationSets()).toHaveLength(1);
+
+        preprocessor.removeUnsupportedElements();
+
+        expect(model.getAllGeneralizationSets()).toHaveLength(0);
+        expect(preprocessor.issues.map(i => i.id)).toContain(generalizationSet.id);
+      });
     });
   });
 });

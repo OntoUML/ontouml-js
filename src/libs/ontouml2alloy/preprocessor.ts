@@ -129,24 +129,24 @@ export class Ontouml2AlloyPreprocessor {
     const liveClassIds = new Set(this.model.getAllClasses().map(_class => _class.id));
 
     for (const property of this.model.getAllAttributes()) {
-      // Remove attributes with non enum/datatype propertyType. Not supported (yet). 
+      // Remove attributes with non enum/datatype propertyType. Not supported (yet).
       const ownerIsDatatype = property.container instanceof Class && property.container.hasDatatypeStereotype();
       const hasUnsupportedPropertyType =
       ownerIsDatatype &&
       !!property.propertyType &&
       (!(property.propertyType instanceof Class) ||
       (!property.propertyType.hasDatatypeStereotype() && !property.propertyType.hasEnumerationStereotype()));
-      
+
       if (hasUnsupportedPropertyType) {
         this.removeProperty(property);
         this.generateIssue(
           property,
           IssueType.UNSUPPORTED_ELEMENT_REMOVED,
-          `Attribute '${property.getName() || property.id}' was removed because datatype attributes can only be typed by datatypes/enumerations.`
+          `Attribute '${property.getName() || property.id}' was removed because attributes can only be typed by datatypes/enumerations.`
         );
         continue;
       }
-      
+
       // Remove attributes pointing to types that were removed
       const typeWasRemoved = !!property.propertyType?.id && !liveClassIds.has(property.propertyType.id);
       if (!property.propertyType || this.hasUnsupportedStereotype(property.propertyType) || typeWasRemoved) {
@@ -300,6 +300,34 @@ export class Ontouml2AlloyPreprocessor {
         this.generateIssue(generalizationSet, IssueType.UNSUPPORTED_ELEMENT_REMOVED, removalDescription);
       }
     }
+
+    // Remove generalization sets that do not involve classes on both ends
+    for (const generalizationSet of this.model.getAllGeneralizationSets()) {
+      if (!generalizationSet.involvesClasses()) {
+        const genSetName = generalizationSet.getName() || generalizationSet.id;
+        generalizationSet.removeSelfFromContainer();
+        this.generateIssue(
+          generalizationSet,
+          IssueType.UNSUPPORTED_ELEMENT_REMOVED,
+          `Generalization Set '${genSetName}' was removed because not all of its members are class-to-class generalisations.`
+        );
+      }
+    }
+
+    // Remove generalization sets without a unique common parent class
+    for (const generalizationSet of this.model.getAllGeneralizationSets()) {
+      const generals = generalizationSet.generalizations.map(gen => gen.general);
+      const hasUniqueParent = generals.length > 0 && generals.every(g => g === generals[0]);
+      if (!hasUniqueParent) {
+        const genSetName = generalizationSet.getName() || generalizationSet.id;
+        generalizationSet.removeSelfFromContainer();
+        this.generateIssue(
+          generalizationSet,
+          IssueType.UNSUPPORTED_ELEMENT_REMOVED,
+          `Generalization Set '${genSetName}' was removed because it does not have a unique common parent class.`
+        );
+      }
+    }
   }
 
   private removeOrphanedElements() {
@@ -332,6 +360,21 @@ export class Ontouml2AlloyPreprocessor {
           generalization,
           IssueType.UNSUPPORTED_ELEMENT_REMOVED,
           `Generalization '${specName} -> ${genName}' was removed because its specific or general element was removed.`
+        );
+      }
+    }
+
+    // Remove generalization sets whose members were removed in earlier passes.
+    const liveGeneralizationIds = new Set(this.model.getAllGeneralizations().map(g => g.id));
+    for (const generalizationSet of this.model.getAllGeneralizationSets()) {
+      const hasRemovedMember = generalizationSet.generalizations.some(gen => !liveGeneralizationIds.has(gen.id));
+      if (hasRemovedMember) {
+        const genSetName = generalizationSet.getName() || generalizationSet.id;
+        generalizationSet.removeSelfFromContainer();
+        this.generateIssue(
+          generalizationSet,
+          IssueType.UNSUPPORTED_ELEMENT_REMOVED,
+          `Generalization Set '${genSetName}' was removed because one or more of its members were removed.`
         );
       }
     }

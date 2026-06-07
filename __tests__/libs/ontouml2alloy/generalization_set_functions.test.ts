@@ -1,5 +1,5 @@
 import { transformGeneralizationSet, Ontouml2Alloy } from '@libs/ontouml2alloy';
-import { Package, Project } from '@libs/ontouml';
+import { natureUtils, OntologicalNature, Package, Project } from '@libs/ontouml';
 import { generateAlloy, generateFact, generateWorldFieldForClass } from './helpers';
 import { Generalization } from '@libs/ontouml';
 
@@ -132,5 +132,69 @@ describe('Generalization Set Functions', () => {
 
     const result = generateAlloy(model);
     expect(result).toContain(generateFact('generalizationSet', ['disj[Human,Dog]']));
+  });
+
+  it('does not emit generalizationSet fact for relation generalizations', () => {
+    const agent = model.createKind('Agent');
+    const person = model.createKind('Person');
+    const knows = model.createBinaryRelation(agent, agent);
+    const friendsWith = model.createBinaryRelation(person, person);
+    const relationGeneralization = model.createGeneralization(knows, friendsWith);
+    model.createGeneralizationSet([relationGeneralization], true, false);
+
+    const ontouml2alloy = new Ontouml2Alloy(model);
+    const { result } = ontouml2alloy.run();
+
+    expect(result.mainModule).not.toContain('fact generalizationSet');
+  });
+
+  it('does not emit generalizationSet fact when members have different parent classes', () => {
+    const animal = model.createKind('Animal');
+    const plant = model.createKind('Plant');
+    const dog = model.createSubkind('Dog');
+    const tree = model.createSubkind('Tree');
+    const dogGeneralization = model.createGeneralization(animal, dog);
+    const treeGeneralization = model.createGeneralization(plant, tree);
+    model.createGeneralizationSet([dogGeneralization, treeGeneralization], true, false);
+
+    const ontouml2alloy = new Ontouml2Alloy(model);
+    const { result } = ontouml2alloy.run();
+
+    expect(result.mainModule).not.toContain('fact generalizationSet');
+  });
+
+  it('does not emit generalizationSet fact when one member class was removed during preprocessing', () => {
+    const parent = model.createKind('Person');
+    parent.restrictedTo = [...natureUtils.EndurantNatures];
+    const child = model.createPhase('Child');
+    child.restrictedTo = [];
+    const adult = model.createPhase('Adult');
+    adult.restrictedTo = [...natureUtils.EndurantNatures];
+    const childGen = model.createGeneralization(parent, child);
+    const adultGen = model.createGeneralization(parent, adult);
+    model.createGeneralizationSet([childGen, adultGen], true, true);
+
+    const ontouml2alloy = new Ontouml2Alloy(model);
+    const { result } = ontouml2alloy.run();
+
+    expect(result.mainModule).not.toContain('fact generalizationSet');
+  });
+
+  it('still emits surviving classes when a generalizationSet is dropped due to a removed member', () => {
+    const parent = model.createKind('Person');
+    parent.restrictedTo = [...natureUtils.EndurantNatures];
+    const child = model.createPhase('Child');
+    child.restrictedTo = [];
+    const adult = model.createPhase('Adult');
+    adult.restrictedTo = [...natureUtils.EndurantNatures];
+    const childGen = model.createGeneralization(parent, child);
+    const adultGen = model.createGeneralization(parent, adult);
+    model.createGeneralizationSet([childGen, adultGen], true, true);
+
+    const ontouml2alloy = new Ontouml2Alloy(model);
+    const { result } = ontouml2alloy.run();
+
+    expect(result.mainModule).toContain('Adult');
+    expect(result.mainModule).toContain('Person');
   });
 });
