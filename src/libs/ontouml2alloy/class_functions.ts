@@ -59,16 +59,10 @@ function transformEndurantClass(transformer: Ontouml2Alloy, _class: Class) {
   if (_class.hasRigidStereotype()) {
     transformer.addFact('fact rigid {\n' + '        rigidity[' + className + ',' + nature + ',exists]\n' + '}');
   }
-  // Anti-rigidity is intentioanlly not emitted as a fact. 
-  // Enforcing anti-rigidity overconstrains possible instances during simulation, 
+  // Anti-rigidity is intentioanlly not emitted as a fact.
+  // Enforcing anti-rigidity overconstrains possible instances during simulation,
   // antirigidity is preserved via its stereotype in transformation_metadata.json
   // and can be opted in to via the mandatory_antirigidity scenario.
-  // TODO consider adding it behind a flag instead. But, then the current antirigidity fact will also need to be rewritten.
-  
-  // else if (_class.hasAntiRigidStereotype()) {
-  //   transformer.addFact('fact antirigid {\n' + '        antirigidity[' + className + ',' + nature + ',exists]\n' + '}');
-  // }
-
 }
 
 function transformDatatypeClass(transformer: Ontouml2Alloy, _class: Class) {
@@ -79,10 +73,7 @@ function transformDatatypeClass(transformer: Ontouml2Alloy, _class: Class) {
 function transformEnumerationClass(transformer: Ontouml2Alloy, _class: Class) {
   const enumName = getNormalizedName(transformer, _class);
   const literals = _class.literals.map(literal => getNormalizedName(transformer, literal));
-
-  if (literals.length) {
-    transformer.addEnum('enum ' + enumName + ' {\n' + '        ' + literals.join(', ') + '}');
-  }
+  transformer.addEnum('enum ' + enumName + ' {\n' + '        ' + literals.join(', ') + '}');
 }
 
 function transformRelatorConstraint(transformer: Ontouml2Alloy, _class: Class) {
@@ -153,9 +144,9 @@ function transformWeakSupplementationConstraint(transformer: Ontouml2Alloy, _cla
   }
 }
 
-// UPDATED: Ultimate sortals (Kind, Collective, Quantity, Relator, Quality, Mode)
+// Ultimate sortals (Kind, Collective, Quantity, Relator, Quality, Mode)
 // provide identity and must be pairwise disjoint. Non-sortals like Category
-// are NOT made disjoint, e.g. a Kind can spezialize multiple Categories.
+// are NOT disjoint, e.g. a Kind can specialise multiple Categories.
 export function transformDisjointUltimateSortalsConstraint(transformer: Ontouml2Alloy) {
   const ultimateSortals = transformer.model
     .getAllClasses()
@@ -173,8 +164,6 @@ export function transformAdditionalClassConstraints(transformer: Ontouml2Alloy) 
   let aspectClasses = [];
 
   for (const _class of transformer.model.getAllClasses()) {
-    if (!_class.isRestrictedToEndurant()) continue;
-
     const isUltimateSortal = _class.hasUltimateSortalStereotype();
     const isInstantiableAbstractLeaf =
       transformer.options?.allowAbstractLeafInstances && _class.isAbstract && _class.getChildren().length === 0;

@@ -39,8 +39,8 @@ export class Ontouml2Alloy implements Service {
 
   /*
     Lines 13-33 define a class Ontouml2Alloy that implements Service. The class has a constructor
-    with an input parameter that can be either a Project or a Package object. The class has many properties 
-    that are used to store the different parts of the Alloy code generated during the transformation process. 
+    with an input parameter that can be either a Project or a Package object. The class has many properties
+    that are used to store the different parts of the Alloy code generated during the transformation process.
     The transform() method is the main method of the class that orchestrates the transformation process.
   */
 
@@ -308,8 +308,8 @@ export class Ontouml2Alloy implements Service {
     return true;
   }
   /*
-  This method retrieves all the classes present in the model and applies a transformation 
-  to each of them using the transformClass() function. After that, it applies transformations to 
+  This method retrieves all the classes present in the model and applies a transformation
+  to each of them using the transformClass() function. After that, it applies transformations to
   additional class constraints and datatype constraints. Finally, it returns true.
   */
 
@@ -356,7 +356,7 @@ export class Ontouml2Alloy implements Service {
       stereotype: _class.stereotype || null,
       natures: _class.restrictedTo || []
     }));
-    
+
     const aliasFor = (element: OntoumlElement | null | undefined): string | null => {
       if (!element) return null;
       const found = this.aliases.find(a => a[0] === element);
@@ -365,7 +365,6 @@ export class Ontouml2Alloy implements Service {
 
     const relations: TransformationRelationInfo[] = this.model
       .getAllRelations()
-      // filtering out derivation stereotypes for now.
       .filter((relation: Relation) => !relation.hasDerivationStereotype())
       .map((relation: Relation) => {
         const source = relation.getSourceClass();

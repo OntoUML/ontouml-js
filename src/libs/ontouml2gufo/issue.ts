@@ -92,7 +92,7 @@ export class Issue implements ServiceIssue {
   static createInvalidCustomPackagePrefix(prefix: string, forbiddenPrefixes: string[], packageEl): Issue {
     const warning = {
       ...IssueType.INVALID_CUSTOM_PACKAGE_PREFIX,
-      description: `The prefix "${prefix}" is already used by another package imported by gUFO. Avoid using the following prefixes: 
+      description: `The prefix "${prefix}" is already used by another package imported by gUFO. Avoid using the following prefixes:
         ${forbiddenPrefixes.join(', ')}.`,
       data: {
         prefix,
@@ -119,7 +119,7 @@ export class Issue implements ServiceIssue {
   static createInvalidPackagePrefix(prefix: string, forbiddenPrefixes: string[]): Issue {
     const warning = {
       ...IssueType.INVALID_PACKAGE_PREFIX,
-      description: `The prefix "${prefix}" is already used by another package imported by gUFO. Beware of the following prefixes: 
+      description: `The prefix "${prefix}" is already used by another package imported by gUFO. Beware of the following prefixes:
         ${forbiddenPrefixes.join(', ')}.`,
       data: { prefix }
     };
@@ -226,7 +226,7 @@ export class Issue implements ServiceIssue {
         .join(', ')
         .replace(/,(?!.*,)/gim, ' and')}.`,
       data: {
-        elements: repeatedElements.map(elem => ({ id: elem.id, name: elem.name }))
+        elements: repeatedElements.map((elem) => ({ id: elem.id, name: elem.name }))
       }
     };
 

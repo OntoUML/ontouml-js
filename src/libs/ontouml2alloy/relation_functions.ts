@@ -137,7 +137,8 @@ function transformDerivationRelation(transformer: Ontouml2Alloy, relation: Relat
 
     let mediation1 = null;
     let mediation2 = null;
-
+    
+    // The <<mediation>> relations are not directly reachable from the derivation, soo all relations are scanned
     for (const rel of transformer.model.getAllRelations()) {
       if (
         mediation1 === null &&
@@ -156,10 +157,12 @@ function transformDerivationRelation(transformer: Ontouml2Alloy, relation: Relat
       if (mediation1 && mediation2) break;
     }
 
+    // self relation
     if (!mediation2 && materialSource === materialTarget && mediation1) {
       mediation2 = mediation1;
     }
 
+    // Incomplete relator pattern. Requires the above full search, and is handled here instead of in preprocessor. 
     if (!mediation1 || !mediation2) {
       transformer.issues.push(
         createIssue(
@@ -267,18 +270,6 @@ function transformDatatypeRelation(transformer: Ontouml2Alloy, relation: Relatio
   const sourceName = getNormalizedName(transformer, relation.getSource());
   const targetName = getNormalizedName(transformer, relation.getTarget());
   const sourceDatatype = getCorrespondingDatatype(sourceName, transformer.datatypes);
-
-  if (!sourceDatatype) {
-    transformer.issues.push(
-      createIssue(
-        relation,
-        IssueType.DATATYPE_NOT_FOUND,
-        `Relation '${relation.getName() || relation.id}' was skipped because datatype '${sourceName}' was not transformed.`
-      )
-    );
-    return;
-  }
-
   let relationName = getNormalizedName(transformer, relation);
 
   sourceDatatype[1].push(relationName + ': ' + targetName);

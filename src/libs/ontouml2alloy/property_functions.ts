@@ -1,6 +1,5 @@
 import { Property, Class, Relation, ClassStereotype } from '@libs/ontouml';
 import { Ontouml2Alloy } from '.';
-import { createIssue, IssueType } from './issue';
 import {
   getNormalizedName,
   getCardinalityKeyword,
@@ -513,18 +512,6 @@ function transformDatatypeAttribute(transformer: Ontouml2Alloy, attribute: Prope
   const attributeName = getNormalizedName(transformer, attribute);
   const ownerDatatypeName = getNormalizedName(transformer, attribute.container);
   const ownerDatatype = getCorrespondingDatatype(ownerDatatypeName, transformer.datatypes);
-
-  if (!ownerDatatype) {
-    transformer.issues.push(
-      createIssue(
-        attribute,
-        IssueType.DATATYPE_NOT_FOUND,
-        `Attribute '${attribute.getName() || attribute.id}' was skipped because datatype '${ownerDatatypeName}' was not transformed.`
-      )
-    );
-    return;
-  }
-
   const cardinality = getCardinalityKeyword(attribute.cardinality);
   const datatypeName = getNormalizedName(transformer, attribute.propertyType);
 
