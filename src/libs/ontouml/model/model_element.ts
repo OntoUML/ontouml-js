@@ -69,4 +69,10 @@ export abstract class ModelElement extends OntoumlElement {
   resolveReferences(_elementReferenceMap: Map<string, OntoumlElement>): void {
     // TODO: resolve references within propertyAssignments
   }
+
+  removeSelfFromContainer(): void {
+      if (this.container && this.container instanceof Package) {
+        (this.container as Package).removeContent(this);
+      }
+  }
 }

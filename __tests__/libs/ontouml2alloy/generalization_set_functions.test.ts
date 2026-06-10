@@ -1,0 +1,200 @@
+import { transformGeneralizationSet, Ontouml2Alloy } from '@libs/ontouml2alloy';
+import { natureUtils, OntologicalNature, Package, Project } from '@libs/ontouml';
+import { generateAlloy, generateFact, generateWorldFieldForClass } from './helpers';
+import { Generalization } from '@libs/ontouml';
+
+describe('Generalization Set Functions', () => {
+  let project: Project;
+  let model: Package;
+
+  beforeEach(() => {
+    project = new Project();
+    model = project.createModel();
+  });
+
+  describe('«kind» Person <|- «subkind» Man, «subkind» Woman, all options', () => {
+    let gen1: Generalization;
+    let gen2: Generalization;
+
+    beforeEach(() => {
+      const parent = model.createKind('Person');
+      const child1 = model.createSubkind('Man');
+      const child2 = model.createSubkind('Woman');
+
+      gen1 = model.createGeneralization(parent, child1);
+      gen2 = model.createGeneralization(parent, child2);
+    });
+
+    it('disjoint - true, complete - true', () => {
+      model.createGeneralizationSet(
+        [gen1, gen2],
+        true, // isDisjoint
+        true // isComplete
+      );
+
+      const result = generateAlloy(model);
+
+      expect(result).toContain(generateFact('generalizationSet', ['disj[Man,Woman]', 'Person = Man+Woman']));
+    });
+
+    it('disjoint - false, complete - false', () => {
+      model.createGeneralizationSet(
+        [gen1, gen2],
+        false, // isDisjoint
+        false // isComplete
+      );
+
+      const result = generateAlloy(model);
+
+      expect(result).not.toContain(generateFact('generalizationSet', ['disj[Man,Woman]', 'Person = Man+Woman']));
+    });
+
+    it('disjoint - true, complete - false', () => {
+      model.createGeneralizationSet(
+        [gen1, gen2],
+        true, // isDisjoint
+        false // isComplete
+      );
+
+      const result = generateAlloy(model);
+
+      expect(result).toContain(generateFact('generalizationSet', ['disj[Man,Woman]']));
+      expect(result).not.toContain(generateFact('generalizationSet', ['Person = Man+Woman']));
+    });
+
+    it('disjoint - false, complete - true', () => {
+      model.createGeneralizationSet(
+        [gen1, gen2],
+        false, // isDisjoint
+        true // isComplete
+      );
+
+      const result = generateAlloy(model);
+
+      expect(result).not.toContain(generateFact('generalizationSet', ['disj[Man,Woman]']));
+      expect(result).toContain(generateFact('generalizationSet', ['Person = Man+Woman']));
+    });
+  });
+
+  it('«datatype» Color <|- «datatype» ColorInRgb, «datatype» ColorInHsv', () => {
+    const parent = model.createDatatype('Color');
+    const child1 = model.createDatatype('ColorInRgb');
+    const child2 = model.createDatatype('ColorInHsv');
+    const gen1 = model.createGeneralization(parent, child1, 'gen1');
+    const gen2 = model.createGeneralization(parent, child2, 'gen2');
+    model.createGeneralizationSet([gen1, gen2], true, false);
+
+    const result = generateAlloy(model);
+    expect(result).toContain(generateFact('generalizationSet', ['disj[ColorInRgb,ColorInHsv]']));
+  });
+
+  it('«kind» Person <|- «phase» Child, «phase» Adult ', () => {
+    const parent = model.createKind('Person');
+    const child1 = model.createPhase('Child');
+    const child2 = model.createPhase('Adult');
+    const gen1 = model.createGeneralization(parent, child1);
+    const gen2 = model.createGeneralization(parent, child2);
+    model.createPartition([gen1, gen2]);
+
+    const result = generateAlloy(model);
+    expect(result).toContain(generateFact('generalizationSet', ['disj[Child,Adult]', 'Person = Child+Adult']));
+  });
+
+  it('«category» Agent <|- «roleMixin» Customer, «roleMixin» Provider', () => {
+    const parent = model.createCategory('Agent');
+    const child1 = model.createRoleMixin('Customer');
+    const child2 = model.createRoleMixin('Provider');
+    const gen1 = model.createGeneralization(parent, child1);
+    const gen2 = model.createGeneralization(parent, child2);
+    model.createPartition([gen1, gen2]);
+
+    const result = generateAlloy(model);
+    expect(result).toContain(generateFact('generalizationSet', ['disj[Customer,Provider]', 'Agent = Customer+Provider']));
+  });
+
+  it('does not emit invalid disjoint constraint for single-child disjoint set', () => {
+    const parent = model.createKind('Mammal');
+    const child = model.createSubkind('Human');
+    const gen = model.createGeneralization(parent, child);
+    model.createGeneralizationSet([gen], true, false);
+
+    const result = generateAlloy(model);
+    expect(result).not.toContain(generateFact('generalizationSet', ['disj[Human]']));
+  });
+
+  it('emits disjoint constraint for two-child disjoint set', () => {
+    const parent = model.createKind('Mammal');
+    const child1 = model.createSubkind('Human');
+    const gen1 = model.createGeneralization(parent, child1);
+    const child2 = model.createSubkind('Dog');
+    const gen2 = model.createGeneralization(parent, child2);
+    model.createGeneralizationSet([gen1,gen2], true, false);
+
+    const result = generateAlloy(model);
+    expect(result).toContain(generateFact('generalizationSet', ['disj[Human,Dog]']));
+  });
+
+  it('does not emit generalizationSet fact for relation generalizations', () => {
+    const agent = model.createKind('Agent');
+    const person = model.createKind('Person');
+    const knows = model.createBinaryRelation(agent, agent);
+    const friendsWith = model.createBinaryRelation(person, person);
+    const relationGeneralization = model.createGeneralization(knows, friendsWith);
+    model.createGeneralizationSet([relationGeneralization], true, false);
+
+    const ontouml2alloy = new Ontouml2Alloy(model);
+    const { result } = ontouml2alloy.run();
+
+    expect(result.mainModule).not.toContain('fact generalizationSet');
+  });
+
+  it('does not emit generalizationSet fact when members have different parent classes', () => {
+    const animal = model.createKind('Animal');
+    const plant = model.createKind('Plant');
+    const dog = model.createSubkind('Dog');
+    const tree = model.createSubkind('Tree');
+    const dogGeneralization = model.createGeneralization(animal, dog);
+    const treeGeneralization = model.createGeneralization(plant, tree);
+    model.createGeneralizationSet([dogGeneralization, treeGeneralization], true, false);
+
+    const ontouml2alloy = new Ontouml2Alloy(model);
+    const { result } = ontouml2alloy.run();
+
+    expect(result.mainModule).not.toContain('fact generalizationSet');
+  });
+
+  it('does not emit generalizationSet fact when one member class was removed during preprocessing', () => {
+    const parent = model.createKind('Person');
+    parent.restrictedTo = [...natureUtils.EndurantNatures];
+    const child = model.createPhase('Child');
+    child.restrictedTo = [];
+    const adult = model.createPhase('Adult');
+    adult.restrictedTo = [...natureUtils.EndurantNatures];
+    const childGen = model.createGeneralization(parent, child);
+    const adultGen = model.createGeneralization(parent, adult);
+    model.createGeneralizationSet([childGen, adultGen], true, true);
+
+    const ontouml2alloy = new Ontouml2Alloy(model);
+    const { result } = ontouml2alloy.run();
+
+    expect(result.mainModule).not.toContain('fact generalizationSet');
+  });
+
+  it('still emits surviving classes when a generalizationSet is dropped due to a removed member', () => {
+    const parent = model.createKind('Person');
+    parent.restrictedTo = [...natureUtils.EndurantNatures];
+    const child = model.createPhase('Child');
+    child.restrictedTo = [];
+    const adult = model.createPhase('Adult');
+    adult.restrictedTo = [...natureUtils.EndurantNatures];
+    const childGen = model.createGeneralization(parent, child);
+    const adultGen = model.createGeneralization(parent, adult);
+    model.createGeneralizationSet([childGen, adultGen], true, true);
+
+    const ontouml2alloy = new Ontouml2Alloy(model);
+    const { result } = ontouml2alloy.run();
+
+    expect(result.mainModule).toContain('Adult');
+    expect(result.mainModule).toContain('Person');
+  });
+});
