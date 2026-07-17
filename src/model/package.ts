@@ -10,7 +10,7 @@ import {
   BinaryRelation,
   NaryRelation,
   ModelElement,
-  Link,
+  Anchor,
   Note,
   ClassBuilder,
   GeneralizationBuilder,
@@ -28,7 +28,7 @@ export type PackageableElement =
   | Generalization
   | GeneralizationSet
   | Package
-  | Link
+  | Anchor
   | Note;
 
 export class Package extends ModelElement {
@@ -46,31 +46,6 @@ export class Package extends ModelElement {
   override set contents(contents: PackageableElement[]) {
     this._contents = [];
     this.addContents(contents);
-  }
-
-  getAllContents(): ProjectElement[] {
-    let children = this.contents;
-
-    if (children.length == 0) {
-      return children;
-    }
-
-    let descendants = children
-      .filter(c => c instanceof Package)
-      .map(c => c as Package)
-      .flatMap(child => child.getAllContents());
-
-    let properties = children
-      .filter(c => c instanceof Classifier)
-      .map(c => c as Classifier<any, any>)
-      .flatMap(c => c.properties);
-
-    let literals = children
-      .filter(c => c instanceof Class)
-      .map(c => c as Class)
-      .flatMap(c => c.literals);
-
-    return [...children, ...properties, ...literals, ...descendants];
   }
 
   public override get container(): Package | undefined {
@@ -121,8 +96,8 @@ export class Package extends ModelElement {
     return this._contents.filter(e => e instanceof Note) as Note[];
   }
 
-  public get links(): Link[] {
-    return this._contents.filter(e => e instanceof Link) as Link[];
+  public get anchors(): Anchor[] {
+    return this._contents.filter(e => e instanceof Anchor) as Anchor[];
   }
 
   public getAllClasses(): Class[] {
@@ -167,8 +142,8 @@ export class Package extends ModelElement {
     return this.getAllContents().filter(e => e instanceof Note) as Note[];
   }
 
-  public getAllLinks(): Link[] {
-    return this.getAllContents().filter(e => e instanceof Link) as Link[];
+  public getAllAnchors(): Anchor[] {
+    return this.getAllContents().filter(e => e instanceof Anchor) as Anchor[];
   }
 
   public getAllProperties(): Property[] {

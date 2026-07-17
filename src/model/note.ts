@@ -15,7 +15,7 @@ export class Note extends ModelElement {
   }
 
   public override get container(): Package | undefined {
-    return this.container as Package;
+    return this._container as Package;
   }
 
   override toJSON(): any {

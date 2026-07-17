@@ -7,8 +7,8 @@ import {
 } from '../..';
 
 export class GeneralizationBuilder extends ModelElementBuilder<GeneralizationBuilder> {
-  protected override element?: Generalization;
-  protected override _container?: Package;
+  protected declare element?: Generalization;
+  protected declare _container?: Package;
   private _general?: Classifier<any, any>;
   private _specific?: Classifier<any, any>;
 

@@ -22,8 +22,8 @@ export abstract class BinaryConnectorView<
   override toJSON(): any {
     return {
       ...super.toJSON(),
-      source: this.source.id,
-      target: this.target.id,
+      sourceView: this.source.id,
+      targetView: this.target.id,
       path: this.path.id
     };
   }

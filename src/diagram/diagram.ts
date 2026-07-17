@@ -53,7 +53,7 @@ export class Diagram extends OntoumlElement implements ProjectElement {
     this._project = value;
   }
 
-  getAllContents(): (View<any> | Shape)[] {
+  override getAllContents(): (View<any> | Shape)[] {
     const views = this.views;
     const shapes = views.flatMap(v => v.shapes);
 
@@ -117,7 +117,7 @@ export class Diagram extends OntoumlElement implements ProjectElement {
       return;
     }
 
-    this.views.push(element);
+    this._views.add(element);
   }
 
   addElements(elements: View<any>[]): void {
@@ -253,7 +253,7 @@ export class Diagram extends OntoumlElement implements ProjectElement {
     const object: any = {
       type: OntoumlType.DIAGRAM,
       owner: this.owner?.id || null,
-      contents: this.views.map(v => v.id)
+      views: this.views.map(v => v.id)
     };
 
     return { ...object, ...super.toJSON() };

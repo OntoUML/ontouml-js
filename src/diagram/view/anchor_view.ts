@@ -1,11 +1,11 @@
-import { View, Path, Link, NoteView, OntoumlElement, Shape } from '../..';
+import { OntoumlType, View, Path, Anchor, NoteView, Shape } from '../..';
 
-export abstract class LinkView extends View<Link> {
+export class AnchorView extends View<Anchor> {
   noteView: NoteView;
   elementView: View<any>;
   path: Path;
 
-  constructor(element: Link, noteView: NoteView, elementView: View<any>) {
+  constructor(element: Anchor, noteView: NoteView, elementView: View<any>) {
     super(element);
 
     this.path = new Path();
@@ -19,9 +19,10 @@ export abstract class LinkView extends View<Link> {
 
   override toJSON(): any {
     return {
+      type: OntoumlType.ANCHOR_VIEW,
       ...super.toJSON(),
-      source: this.noteView.id,
-      target: this.elementView.id,
+      sourceView: this.noteView.id,
+      targetView: this.elementView.id,
       path: this.path.id
     };
   }

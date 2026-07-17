@@ -53,7 +53,7 @@ export class MultilingualText {
   }
 
   addAll(obj: { [key: string]: string }) {
-    Object.entries(obj).forEach(([value, language]) => {
+    Object.entries(obj).forEach(([language, value]) => {
       this.add(value, language);
     });
   }

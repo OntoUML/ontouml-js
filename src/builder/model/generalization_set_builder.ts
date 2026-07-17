@@ -7,8 +7,8 @@ import {
 } from '../..';
 
 export class GeneralizationSetBuilder extends ModelElementBuilder<GeneralizationSetBuilder> {
-  protected override element?: GeneralizationSet;
-  protected override _container?: Package;
+  protected declare element?: GeneralizationSet;
+  protected declare _container?: Package;
   private _isDisjoint: boolean = false;
   private _isComplete: boolean = false;
   private _categorizer?: Class;

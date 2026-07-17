@@ -1,9 +1,5 @@
-import { Project } from '../../src';
-
-describe(`Package tests`, () => {
-  let proj: Project;
-
-  //   it('should break if publisher is not a valid URI', () => {
-  //     proj =
-  //   });
+describe(`Project builder tests`, () => {
+  // TODO: Implement ProjectBuilder (see src/builder/project_builder.ts) and
+  // test it here. The builder is not yet part of the public API.
+  it.todo('should build a project with metadata fields');
 });

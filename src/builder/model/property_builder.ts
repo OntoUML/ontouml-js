@@ -15,7 +15,7 @@ export class PropertyBuilder extends DecoratableBuilder<
   PropertyBuilder,
   PropertyStereotype
 > {
-  protected override element?: Property;
+  protected declare element?: Property;
   protected override readonly _container: Classifier<any, any>;
   private _propertyType?: Classifier<any, any>;
   private _subsettedProperties: Set<Property> = new Set();

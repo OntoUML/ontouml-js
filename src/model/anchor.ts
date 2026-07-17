@@ -8,7 +8,7 @@ import {
   ProjectElement
 } from '..';
 
-export class Link extends ModelElement {
+export class Anchor extends ModelElement {
   note: Note;
   element: ModelElement;
 
@@ -19,12 +19,12 @@ export class Link extends ModelElement {
   }
 
   public override get container(): Package | undefined {
-    return this.container as Package;
+    return this._container as Package;
   }
 
   override toJSON(): any {
     const object: any = {
-      type: OntoumlType.NOTE_LINK,
+      type: OntoumlType.ANCHOR,
       note: this.note.id,
       element: this.element.id
     };

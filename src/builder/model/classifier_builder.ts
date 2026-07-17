@@ -4,8 +4,8 @@ export abstract class ClassifierBuilder<
   B extends ClassifierBuilder<B, S>,
   S extends Stereotype
 > extends DecoratableBuilder<B, S> {
-  protected override element?: Classifier<any, any>;
-  override _container?: Package;
+  protected declare element?: Classifier<any, any>;
+  declare _container?: Package;
   protected _isAbstract: boolean = false;
 
   override build(): Classifier<any, any> {

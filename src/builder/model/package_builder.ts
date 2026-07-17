@@ -1,8 +1,8 @@
 import { ModelElementBuilder, Package, PackageableElement } from '../..';
 
 export class PackageBuilder extends ModelElementBuilder<PackageBuilder> {
-  protected override element?: Package;
-  protected override _container?: Package;
+  protected declare element?: Package;
+  protected declare _container?: Package;
   private _contents: PackageableElement[] = [];
   private _isRoot: boolean = false;
 

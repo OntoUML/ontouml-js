@@ -9,6 +9,37 @@ export abstract class OntoumlElement {
     return [];
   }
 
+  /** @returns every element directly or indirectly contained by this element,
+   * without duplicates.
+   *
+   * @throws an error if a circular containment is detected. */
+  getAllContents(): OntoumlElement[] {
+    const contents = new Set<OntoumlElement>();
+    const path: OntoumlElement[] = [this];
+
+    const collect = (element: OntoumlElement) => {
+      for (const content of element.getContents()) {
+        if (path.includes(content)) {
+          throw new Error(
+            `Circular containment detected involving element '${content.id}'.`
+          );
+        }
+
+        if (contents.has(content)) {
+          continue;
+        }
+
+        contents.add(content);
+        path.push(content);
+        collect(content);
+        path.pop();
+      }
+    };
+
+    collect(this);
+    return [...contents];
+  }
+
   toJSON(): any {
     const object: any = {
       id: this.id,

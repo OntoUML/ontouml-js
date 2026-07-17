@@ -43,7 +43,7 @@ export abstract class Classifier<
   }
 
   public removeProperty(p: Property): void {
-    this._properties.push(p);
+    this._properties = this._properties.filter(property => property !== p);
     p._container = undefined;
   }
 

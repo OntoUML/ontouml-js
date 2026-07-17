@@ -34,7 +34,7 @@ export class ClassBuilder extends ClassifierBuilder<
   ClassBuilder,
   ClassStereotype
 > {
-  override element?: Class;
+  declare element?: Class;
 
   private _restrictedTo: Nature[] = [];
   private _order: number = 1;

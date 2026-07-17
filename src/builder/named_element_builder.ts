@@ -6,7 +6,7 @@ import { OntoumlElementBuilder } from './ontouml_element_builder';
 export abstract class NamedElementBuilder<
   B extends NamedElementBuilder<B>
 > extends OntoumlElementBuilder<B> {
-  protected override element?: NamedElement;
+  protected declare element?: NamedElement;
   private _name: MultilingualText = new MultilingualText();
   private _description: MultilingualText = new MultilingualText();
 

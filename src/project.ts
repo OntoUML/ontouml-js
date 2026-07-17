@@ -15,11 +15,11 @@ import {
   Finder,
   Class,
   Note,
-  Link,
+  Anchor,
   PackageView,
   NoteView,
   NaryRelationView,
-  LinkView,
+  AnchorView,
   ClassBuilder,
   GeneralizationBuilder,
   BinaryRelation,
@@ -45,7 +45,7 @@ export class Project extends NamedElement {
   private _properties: { [key: string]: Property } = {};
   private _literals: { [key: string]: Literal } = {};
   private _notes: { [key: string]: Note } = {};
-  private _links: { [key: string]: Link } = {};
+  private _anchors: { [key: string]: Anchor } = {};
   private _diagrams: { [key: string]: Diagram } = {};
   private _classViews: { [key: string]: ClassView } = {};
   private _binaryRelationViews: { [key: string]: BinaryRelationView } = {};
@@ -55,7 +55,7 @@ export class Project extends NamedElement {
     {};
   private _packageViews: { [key: string]: PackageView } = {};
   private _noteViews: { [key: string]: NoteView } = {};
-  private _linkViews: { [key: string]: LinkView } = {};
+  private _anchorViews: { [key: string]: AnchorView } = {};
 
   license?: string;
   namespace?: string;
@@ -163,12 +163,12 @@ export class Project extends NamedElement {
     return this._notes[id];
   }
 
-  get links(): Link[] {
-    return Object.values(this._links);
+  get anchors(): Anchor[] {
+    return Object.values(this._anchors);
   }
 
-  link(id: string): Link | undefined {
-    return this._links[id];
+  anchor(id: string): Anchor | undefined {
+    return this._anchors[id];
   }
 
   element(id: string): OntoumlElement | undefined {
@@ -182,7 +182,7 @@ export class Project extends NamedElement {
       this.property(id) ||
       this.literal(id) ||
       this.note(id) ||
-      this.link(id)
+      this.anchor(id)
     );
   }
 
@@ -431,8 +431,8 @@ export class Project extends NamedElement {
       this._literals[e.id] = e;
     } else if (e instanceof Note) {
       this._notes[e.id] = e;
-    } else if (e instanceof Link) {
-      this._links[e.id] = e;
+    } else if (e instanceof Anchor) {
+      this._anchors[e.id] = e;
     }
   }
 
@@ -477,7 +477,7 @@ export class Project extends NamedElement {
       ...Object.values(this._properties),
       ...Object.values(this._literals),
       ...Object.values(this._notes),
-      ...Object.values(this._links),
+      ...Object.values(this._anchors),
       ...Object.values(this._diagrams),
       ...Object.values(this._classViews),
       ...Object.values(this._binaryRelationViews),
@@ -486,14 +486,8 @@ export class Project extends NamedElement {
       ...Object.values(this._generalizationSetViews),
       ...Object.values(this._packageViews),
       ...Object.values(this._noteViews),
-      ...Object.values(this._linkViews)
+      ...Object.values(this._anchorViews)
     ];
-  }
-
-  private arrayToJSON(array: OntoumlElement[]): object {
-    return array
-      .map(e => e.toJSON())
-      .reduce((json, e: OntoumlElement) => (json = { ...json, [e.id]: e }));
   }
 
   override toJSON(): any {
@@ -515,26 +509,8 @@ export class Project extends NamedElement {
       ontologyTypes: this.ontologyTypes,
       sources: this.sources,
       themes: this.themes,
-      root: this.root || null,
-      elements: {
-        ...this.arrayToJSON(this.classes)
-        // ...this._binaryRelations,
-        // ...this._naryRelations,
-        // ...this._generalizations,
-        // ...this._generalizationSets,
-        // ...this._packages,
-        // ...this._notes,
-        // ...this._links,
-        // ...this._diagrams,
-        // ...this._classViews,
-        // ...this._binaryRelationViews,
-        // ...this._nAryRelationViews,
-        // ...this._generalizationViews,
-        // ...this._generalizationSetViews,
-        // ...this._packageViews,
-        // ...this._noteViews,
-        // ...this._linkViews
-      }
+      root: this.root?.id ?? null,
+      elements: this.getContents().map(e => e.toJSON())
     };
   }
 

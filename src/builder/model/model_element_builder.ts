@@ -3,7 +3,7 @@ import { ModelElement, NamedElementBuilder } from '../..';
 export abstract class ModelElementBuilder<
   B extends ModelElementBuilder<B>
 > extends NamedElementBuilder<B> {
-  protected override element?: ModelElement;
+  protected declare element?: ModelElement;
   protected _container?: ModelElement;
   protected _customProperties: { [key: string]: any } = {};
 

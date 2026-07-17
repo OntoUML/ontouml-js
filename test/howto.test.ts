@@ -10,6 +10,7 @@ it('Test the example presented in the "Usage" section of the README file', () =>
     // Container elements, e.g., projects and packages, also serve as factories for their contents
     const model = project
       .packageBuilder()
+      .root()
       .name('Model a.k.a. Root Package')
       .build(); // creates a "model" Package
 

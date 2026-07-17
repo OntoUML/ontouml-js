@@ -20,37 +20,62 @@ This package is designed to support manipulating OntoUML models and their serial
 ```javascript
 import { Project, serializationUtils } from 'ontouml-js';
 
-// Every OntoUML element can be created from a constructor that can receive a partial object as references for its creation
-const project = new Project({ name: 'My Project' }); // creates an OntoUML projects
+// Creates an OntoUML project
+const project = new Project();
+project.name.add('My Project');
 
-// Projects contain an instance of Package  dubbed model that contains all model elements in the project
-// Container elements, e.g., projects and packages, also serve as factories for their contents
-const model = project.createModel({ name: 'Model a.k.a. Root Package' }); // creates a "model" Package
+// Projects serve as factories of builders for their contents
+const model = project
+  .packageBuilder()
+  .root()
+  .name('Model a.k.a. Root Package')
+  .build();
 
-// Instead of partial objects, "factory" methods receive more suitable lists of arguments to facilitating populating elements
-const person = model.createKind('Person');
-const school = model.createKind('School');
-const date = model.createDatatype('Date');
-const enrollment = model.createRelator('Enrollment');
-const studiesAt = model.createMaterialRelation(person, school, 'studies at');
+// Container elements, e.g., packages and classes, are also factories of
+// builders for their contents
+const person = model.classBuilder().kind().name('Person').build();
+const school = model.classBuilder().kind().name('School').build();
+const date = model.classBuilder().datatype().name('Date').build();
+const enrollment = model.classBuilder().relator().name('Enrollment').build();
 
-model.createMediationRelation(enrollment, person);
-model.createMediationRelation(enrollment, school);
+const studiesAt = model
+  .binaryRelationBuilder()
+  .material()
+  .name('studies at')
+  .source(person)
+  .target(school)
+  .build();
 
-// our API is constantly updated to include helpful methods to facilitate building OntoUML models
-studiesAt.getTargetEnd().name = 'school';
-studiesAt.getTargetEnd().setCardinalityToMany();
-studiesAt.getSourceEnd().name = 'student';
-studiesAt.getSourceEnd().cardinality = '1..*';
+model
+  .binaryRelationBuilder()
+  .mediation()
+  .source(enrollment)
+  .target(person)
+  .build();
 
-enrollment.createAttribute(date, 'enrollment date');
+model
+  .binaryRelationBuilder()
+  .mediation()
+  .source(enrollment)
+  .target(school)
+  .build();
+
+// The API is constantly updated to include helpful methods to facilitate
+// building OntoUML models
+studiesAt.targetEnd.name.add('school');
+studiesAt.targetEnd.cardinality.setAsZeroToMany();
+studiesAt.sourceEnd.name.add('student');
+studiesAt.sourceEnd.cardinality.setAsOneToMany();
+
+enrollment.propertyBuilder().type(date).name('enrollment date').build();
 
 // Containers also include methods to easily support retrieving their contents
-model.getAllAttributes(); // returns all contained attributes
-model.getAllClasses(); // returns all contained classes
-model.getAllGeneralizations(); // returns all contained generalizations
+project.attributes; // returns all contained attributes
+model.classes; // returns all contained classes
+model.generalizations; // returns all contained generalizations
 
-// Any element can be easily serialized into JSON, and properly serialized elements can be deserialized just as easily
+// Projects can be serialized into ontouml-schema compliant JSON files, and
+// serialized projects can be deserialized just as easily
 const projectSerialization = JSON.stringify(project);
 const projectCopy = serializationUtils.parse(projectSerialization);
 ```

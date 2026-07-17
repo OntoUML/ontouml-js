@@ -179,14 +179,14 @@ describe(`Package tests`, () => {
     });
   });
 
-  describe(`Test getAllLinks()`, () => {
+  describe(`Test getAllAnchors()`, () => {
     it('model should return [  ]', () => {
-      const contents = model.getAllLinks();
+      const contents = model.getAllAnchors();
       expect(contents).toIncludeSameMembers([]);
     });
 
     it('empty package should return empty array', () => {
-      contents = emptyPkg.getAllLinks();
+      contents = emptyPkg.getAllAnchors();
       expect(contents).toBeEmpty();
     });
   });

@@ -24,7 +24,7 @@ export abstract class View<T extends ModelElement> extends OntoumlElement {
   override toJSON(): any {
     return {
       ...super.toJSON(),
-      element: this.element.id
+      isViewOf: this.element.id
     };
   }
 }

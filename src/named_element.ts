@@ -75,7 +75,7 @@ export abstract class NamedElement extends OntoumlElement {
 
   set contributors(array: string[]) {
     utils.assertArray(array);
-    this._creators = new Set(array);
+    this._contributors = new Set(array);
   }
 
   addContributor(value: string): void {
@@ -95,8 +95,8 @@ export abstract class NamedElement extends OntoumlElement {
     const object = {
       name: this.name.toJSON(),
       description: this.description.toJSON(),
-      alternativeNames: this.alternativeNames,
-      editorialNotes: this.editorialNotes,
+      alternativeNames: this.alternativeNames.map(text => text.toJSON()),
+      editorialNotes: this.editorialNotes.map(text => text.toJSON()),
       creators: this.creators,
       contributors: this.contributors
     };

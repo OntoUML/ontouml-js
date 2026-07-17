@@ -11,7 +11,7 @@ export class NaryRelationBuilder extends ClassifierBuilder<
   NaryRelationBuilder,
   RelationStereotype
 > {
-  override element?: NaryRelation;
+  declare element?: NaryRelation;
   private _members: Classifier<any, any>[] = [];
 
   /**

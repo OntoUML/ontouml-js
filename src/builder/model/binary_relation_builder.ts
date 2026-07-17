@@ -31,8 +31,8 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   BinaryRelationBuilder,
   RelationStereotype
 > {
-  override _container?: Package;
-  override element?: BinaryRelation;
+  declare _container?: Package;
+  declare element?: BinaryRelation;
 
   _source?: Classifier<any, any>;
   _target?: Classifier<any, any>;
