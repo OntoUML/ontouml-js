@@ -3,7 +3,8 @@ import {
   ModelElement,
   MultilingualText,
   Project,
-  Package
+  Package,
+  AnchorBuilder
 } from '..';
 
 export class Note extends ModelElement {
@@ -16,6 +17,12 @@ export class Note extends ModelElement {
 
   public override get container(): Package | undefined {
     return this._container as Package;
+  }
+
+  /** @returns a builder for an {@link Anchor} that connects this note to a
+   * model element. */
+  anchorBuilder(): AnchorBuilder {
+    return new AnchorBuilder(this.project!).note(this);
   }
 
   override toJSON(): any {

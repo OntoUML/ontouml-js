@@ -29,6 +29,7 @@ export class NaryRelationBuilder extends ClassifierBuilder<
     }
 
     this.element = new NaryRelation(this.project, this._members);
+    this.element.properties.forEach(end => this.project.add(end));
 
     super.build();
 

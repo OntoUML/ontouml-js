@@ -1,6 +1,7 @@
 import {
   BinaryRelation,
   Class,
+  ClassStereotype,
   Generalization,
   GeneralizationSet,
   Literal,
@@ -107,5 +108,89 @@ describe('Project tests', () => {
     const list = proj.finder.getMediations();
     expect(list).toHaveLength(2);
     expect(list).toIncludeSameMembers([involvesEmployee, involvesEmployer]);
+  });
+
+  it('getKinds() should return the classes stereotyped as «kind»', () => {
+    expect(proj.finder.getKinds()).toIncludeSameMembers([person, organization]);
+  });
+
+  it('getCategories() should return the classes stereotyped as «category»', () => {
+    expect(proj.finder.getCategories()).toEqual([agent]);
+  });
+
+  it('getMixins() should return the classes stereotyped as «mixin»', () => {
+    expect(proj.finder.getMixins()).toEqual([crimeWeapon]);
+  });
+
+  it('getRoleMixins() should return the classes stereotyped as «roleMixin»', () => {
+    expect(proj.finder.getRoleMixins()).toEqual([client]);
+  });
+
+  it('getRelators() should return the classes stereotyped as «relator»', () => {
+    expect(proj.finder.getRelators()).toEqual([employment]);
+  });
+
+  it('getDatatypes() should return the classes stereotyped as «datatype»', () => {
+    expect(proj.finder.getDatatypes()).toEqual([text]);
+  });
+
+  it('getEnumerations() should return the classes stereotyped as «enumeration»', () => {
+    expect(proj.finder.getEnumerations()).toEqual([color]);
+  });
+
+  it('getRigidTypes() should return kinds, relators, the category, the datatype, and the enumeration', () => {
+    expect(proj.finder.getRigidTypes()).toIncludeSameMembers([
+      person,
+      organization,
+      employment,
+      agent,
+      text,
+      color
+    ]);
+  });
+
+  it('getAntiRigidTypes() should return the roleMixin', () => {
+    expect(proj.finder.getAntiRigidTypes()).toEqual([client]);
+  });
+
+  it('getSemiRigidTypes() should return the mixin', () => {
+    expect(proj.finder.getSemiRigidTypes()).toEqual([crimeWeapon]);
+  });
+
+  it('getClassesByStereotype() should filter classes by the given stereotypes', () => {
+    expect(
+      proj.finder.getClassesByStereotype([
+        ClassStereotype.KIND,
+        ClassStereotype.CATEGORY
+      ])
+    ).toIncludeSameMembers([person, organization, agent]);
+  });
+
+  it('getMaterialRelations() should return the material relations', () => {
+    expect(proj.finder.getMaterialRelations()).toEqual([worksFor]);
+  });
+
+  it('getDerivations() should return the derivation relations', () => {
+    expect(proj.finder.getDerivations()).toEqual([derivation]);
+  });
+
+  it('getFunctionalComplexTypes() should return the classes restricted to functional complexes', () => {
+    expect(proj.finder.getFunctionalComplexTypes()).toIncludeSameMembers([
+      agent,
+      person,
+      organization,
+      client,
+      crimeWeapon
+    ]);
+  });
+
+  it('getRelatorTypes() should return the classes restricted to relators', () => {
+    expect(proj.finder.getRelatorTypes()).toEqual([employment]);
+  });
+
+  it('getModelElements() should return every model element in the project', () => {
+    expect(proj.finder.getModelElements()).toIncludeSameMembers(
+      proj.getContents()
+    );
   });
 });

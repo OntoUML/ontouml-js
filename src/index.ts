@@ -1,6 +1,7 @@
 export * from './ontouml_type';
 export * from './ontouml_element';
 export * from './multilingual_text';
+export * from './resource';
 export * from './named_element';
 export * from './utils';
 export * from './finder';
@@ -56,4 +57,5 @@ export * from './builder/model/nary_relation_builder';
 export * from './builder/model/note_builder';
 export * from './builder/model/anchor_builder';
 export * from './builder/model/package_builder';
+export * from './builder/project_builder';
 export * from './project';

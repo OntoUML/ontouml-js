@@ -19,23 +19,24 @@ import {
   Decoratable,
   Classifier,
   MultilingualText,
+  Resource,
   Cardinality,
   Nature,
-  ClassStereotype,
   AggregationKind,
-  parseOrder
+  parseOrder,
+  Diagram,
+  View,
+  ClassView,
+  PackageView,
+  NoteView,
+  BinaryRelationView,
+  GeneralizationView,
+  NaryRelationView,
+  GeneralizationSetView,
+  AnchorView
 } from '.';
 
-const DIAGRAM_TYPES: string[] = [
-  OntoumlType.DIAGRAM,
-  OntoumlType.CLASS_VIEW,
-  OntoumlType.BINARY_RELATION_VIEW,
-  OntoumlType.NARY_RELATION_VIEW,
-  OntoumlType.GENERALIZATION_VIEW,
-  OntoumlType.GENERALIZATION_SET_VIEW,
-  OntoumlType.PACKAGE_VIEW,
-  OntoumlType.NOTE_VIEW,
-  OntoumlType.ANCHOR_VIEW,
+const SHAPE_TYPES: string[] = [
   OntoumlType.RECTANGLE,
   OntoumlType.DIAMOND,
   OntoumlType.TEXT,
@@ -52,6 +53,12 @@ function textFromJSON(raw: any): MultilingualText {
   }
 
   return text;
+}
+
+function resourceFromJSON(raw: any): Resource {
+  const resource = new Resource(raw?.URI ?? undefined);
+  resource.name = textFromJSON(raw?.name);
+  return resource;
 }
 
 function setOntoumlElementFields(element: OntoumlElement, raw: any): void {
@@ -71,8 +78,8 @@ function setNamedElementFields(element: NamedElement, raw: any): void {
   element.description = textFromJSON(raw.description);
   element.alternativeNames = (raw.alternativeNames ?? []).map(textFromJSON);
   element.editorialNotes = (raw.editorialNotes ?? []).map(textFromJSON);
-  element.creators = raw.creators ?? [];
-  element.contributors = raw.contributors ?? [];
+  element.creators = (raw.creators ?? []).map(resourceFromJSON);
+  element.contributors = (raw.contributors ?? []).map(resourceFromJSON);
 }
 
 function setModelElementFields(element: ModelElement, raw: any): void {
@@ -129,13 +136,13 @@ function getResolved<T extends OntoumlElement>(
  * defined by the OntoUML JSON Schema (https://w3id.org/ontouml/schema), and
  * returns the corresponding instance of `Project`.
  *
- * The current implementation supports the abstract syntax of the language
- * (i.e., model elements). Support for the deserialization of the concrete
- * syntax (i.e., diagrams, views, and shapes) is still to be implemented.
+ * Model elements, diagrams, and views are fully supported. Shapes are not
+ * part of the project serialization (the schema defines no container for
+ * them), so the shapes of parsed views keep their serialized identifiers but
+ * are recreated with default dimensions and positions.
  *
- * @throws an error if the string is not a serialized `Project`, if references
- * between elements cannot be resolved, or if the serialization contains
- * diagrams. */
+ * @throws an error if the string is not a serialized `Project` or if
+ * references between elements cannot be resolved. */
 function parse(serializedProject: string): Project {
   const raw = JSON.parse(serializedProject);
 
@@ -148,28 +155,34 @@ function parse(serializedProject: string): Project {
   const project = new Project();
   setNamedElementFields(project, raw);
 
-  project.license = raw.license ?? undefined;
+  project.license = raw.license ? resourceFromJSON(raw.license) : undefined;
   project.namespace = raw.namespace ?? undefined;
-  project.publisher = raw.publisher ?? undefined;
-  project.representationStyle = raw.representationStyle ?? undefined;
-  project.accessRights = raw.accessRights ?? [];
+  project.publisher = raw.publisher
+    ? resourceFromJSON(raw.publisher)
+    : undefined;
+  project.representationStyle = raw.representationStyle
+    ? resourceFromJSON(raw.representationStyle)
+    : undefined;
+  project.accessRights = (raw.accessRights ?? []).map(resourceFromJSON);
   project.acronyms = raw.acronyms ?? [];
-  project.bibliographicCitations = raw.bibliographicCitations ?? [];
-  project.contexts = raw.contexts ?? [];
-  project.designedForTasks = raw.designedForTasks ?? [];
-  project.keywords = raw.keywords ?? [];
+  project.bibliographicCitations = (raw.bibliographicCitations ?? []).map(
+    textFromJSON
+  );
+  project.contexts = (raw.contexts ?? []).map(resourceFromJSON);
+  project.designedForTasks = (raw.designedForTasks ?? []).map(resourceFromJSON);
+  project.keywords = (raw.keywords ?? []).map(textFromJSON);
   project.landingPages = raw.landingPages ?? [];
   project.languages = raw.languages ?? [];
-  project.ontologyTypes = raw.ontologyTypes ?? [];
+  project.ontologyTypes = (raw.ontologyTypes ?? []).map(resourceFromJSON);
   project.sources = raw.sources ?? [];
-  project.themes = raw.themes ?? [];
+  project.themes = (raw.themes ?? []).map(resourceFromJSON);
 
   const rawElements: any[] = raw.elements ?? [];
 
-  const unsupported = rawElements.find(e => DIAGRAM_TYPES.includes(e?.type));
+  const unsupported = rawElements.find(e => SHAPE_TYPES.includes(e?.type));
   if (unsupported) {
     throw new Error(
-      `Cannot parse element of type '${unsupported.type}'. The deserialization of diagrams, views, and shapes is not yet supported.`
+      `Cannot parse element of type '${unsupported.type}'. Shapes are contained by views and are not supported as project elements.`
     );
   }
 
@@ -426,6 +439,202 @@ function parse(serializedProject: string): Project {
         ) as PackageableElement
       );
     }
+  }
+
+  // Node views, which represent a single model element in a diagram
+  for (const rawView of rawOfType(OntoumlType.CLASS_VIEW)) {
+    const view = new ClassView(
+      getResolved<Class>(elements, rawView.isViewOf, rawView.id, 'isViewOf')
+    );
+    setOntoumlElementFields(view, rawView);
+    if (rawView.rectangle) view.rectangle.id = rawView.rectangle;
+    register(view);
+  }
+
+  for (const rawView of rawOfType(OntoumlType.PACKAGE_VIEW)) {
+    const view = new PackageView(
+      getResolved<Package>(elements, rawView.isViewOf, rawView.id, 'isViewOf')
+    );
+    setOntoumlElementFields(view, rawView);
+    if (rawView.rectangle) view.rectangle.id = rawView.rectangle;
+    register(view);
+  }
+
+  for (const rawView of rawOfType(OntoumlType.NOTE_VIEW)) {
+    const view = new NoteView(
+      getResolved<Note>(elements, rawView.isViewOf, rawView.id, 'isViewOf')
+    );
+    setOntoumlElementFields(view, rawView);
+    if (rawView.text) view.text.id = rawView.text;
+    register(view);
+  }
+
+  // Connector views, whose endpoints may reference other connector views
+  // (e.g., in derivations), are created once their endpoints are available
+  const pendingConnectorViews = [
+    ...rawOfType(OntoumlType.BINARY_RELATION_VIEW),
+    ...rawOfType(OntoumlType.GENERALIZATION_VIEW),
+    ...rawOfType(OntoumlType.NARY_RELATION_VIEW),
+    ...rawOfType(OntoumlType.ANCHOR_VIEW)
+  ];
+
+  while (pendingConnectorViews.length > 0) {
+    const position = pendingConnectorViews.findIndex(rawView => {
+      const endpoints =
+        rawView.type === OntoumlType.NARY_RELATION_VIEW
+          ? rawView.members ?? []
+          : [rawView.sourceView, rawView.targetView];
+
+      return endpoints.every(
+        (viewId: string) => !viewId || elements.has(viewId)
+      );
+    });
+
+    if (position < 0) {
+      throw new Error(
+        `Could not resolve the endpoints of the views '${pendingConnectorViews
+          .map(v => v.id)
+          .join("', '")}'.`
+      );
+    }
+
+    const rawView = pendingConnectorViews.splice(position, 1)[0];
+
+    if (rawView.type === OntoumlType.BINARY_RELATION_VIEW) {
+      const view = new BinaryRelationView(
+        getResolved<BinaryRelation>(
+          elements,
+          rawView.isViewOf,
+          rawView.id,
+          'isViewOf'
+        ),
+        getResolved<View<any>>(
+          elements,
+          rawView.sourceView,
+          rawView.id,
+          'sourceView'
+        ),
+        getResolved<View<any>>(
+          elements,
+          rawView.targetView,
+          rawView.id,
+          'targetView'
+        )
+      );
+      setOntoumlElementFields(view, rawView);
+      if (rawView.path) view.path.id = rawView.path;
+      register(view);
+    } else if (rawView.type === OntoumlType.GENERALIZATION_VIEW) {
+      const view = new GeneralizationView(
+        getResolved<Generalization>(
+          elements,
+          rawView.isViewOf,
+          rawView.id,
+          'isViewOf'
+        ),
+        getResolved<View<any>>(
+          elements,
+          rawView.sourceView,
+          rawView.id,
+          'sourceView'
+        ),
+        getResolved<View<any>>(
+          elements,
+          rawView.targetView,
+          rawView.id,
+          'targetView'
+        )
+      );
+      setOntoumlElementFields(view, rawView);
+      if (rawView.path) view.path.id = rawView.path;
+      register(view);
+    } else if (rawView.type === OntoumlType.NARY_RELATION_VIEW) {
+      const members = (rawView.members ?? []).map((memberId: string) =>
+        getResolved<ClassView>(elements, memberId, rawView.id, 'members')
+      );
+      const view = new NaryRelationView(
+        getResolved<NaryRelation>(
+          elements,
+          rawView.isViewOf,
+          rawView.id,
+          'isViewOf'
+        ),
+        members
+      );
+      setOntoumlElementFields(view, rawView);
+      if (rawView.diamond) view.diamond.id = rawView.diamond;
+      const paths = view.paths;
+      (rawView.paths ?? []).forEach((pathId: string, index: number) => {
+        if (paths[index]) paths[index].id = pathId;
+      });
+      register(view);
+    } else {
+      const view = new AnchorView(
+        getResolved<Anchor>(elements, rawView.isViewOf, rawView.id, 'isViewOf'),
+        getResolved<NoteView>(
+          elements,
+          rawView.sourceView,
+          rawView.id,
+          'sourceView'
+        ),
+        getResolved<View<any>>(
+          elements,
+          rawView.targetView,
+          rawView.id,
+          'targetView'
+        )
+      );
+      setOntoumlElementFields(view, rawView);
+      if (rawView.path) view.path.id = rawView.path;
+      register(view);
+    }
+  }
+
+  // Generalization set views, which reference generalization views
+  for (const rawView of rawOfType(OntoumlType.GENERALIZATION_SET_VIEW)) {
+    const view = new GeneralizationSetView(
+      getResolved<GeneralizationSet>(
+        elements,
+        rawView.isViewOf,
+        rawView.id,
+        'isViewOf'
+      )
+    );
+    setOntoumlElementFields(view, rawView);
+    if (rawView.text) view.text.id = rawView.text;
+    view.generalizations = (rawView.generalizations ?? []).map(
+      (viewId: string) =>
+        getResolved<GeneralizationView>(
+          elements,
+          viewId,
+          rawView.id,
+          'generalizations'
+        )
+    );
+    register(view);
+  }
+
+  // Diagrams
+  for (const rawDiagram of rawOfType(OntoumlType.DIAGRAM)) {
+    const diagram = new Diagram(project);
+    setOntoumlElementFields(diagram, rawDiagram);
+
+    if (rawDiagram.owner) {
+      diagram.owner = getResolved<ModelElement>(
+        elements,
+        rawDiagram.owner,
+        rawDiagram.id,
+        'owner'
+      );
+    }
+
+    // The views setter is used on purpose: unlike addView(), it does not
+    // register the views in the project, which is done in order at the end
+    diagram.views = (rawDiagram.views ?? []).map((viewId: string) =>
+      getResolved<View<any>>(elements, viewId, rawDiagram.id, 'views')
+    );
+
+    register(diagram);
   }
 
   // Root package

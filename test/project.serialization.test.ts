@@ -1,10 +1,9 @@
 import {
-  BinaryRelation,
-  Class,
   Generalization,
-  GeneralizationSet,
+  MultilingualText,
   Package,
   Project,
+  Resource,
   serializationUtils
 } from '../src';
 import Ajv from 'ajv';
@@ -157,18 +156,32 @@ describe('Serialization tests', () => {
     it(`Should preserve project metadata`, () => {
       const proj = new Project();
       proj.name.add('Named project');
-      proj.publisher = 'https://example.org/publisher';
+      proj.publisher = new Resource(
+        'https://example.org/publisher',
+        'Example Publisher'
+      );
+      proj.license = new Resource(
+        'https://creativecommons.org/licenses/by/4.0/'
+      );
       proj.acronyms = ['NP'];
       proj.languages = ['en', 'pt'];
-      proj.keywords = ['testing'];
+      proj.keywords = [new MultilingualText('testing')];
+      proj.addCreator(new Resource('https://orcid.org/0000-0000', 'Someone'));
 
       const parsed = serializationUtils.parse(JSON.stringify(proj));
 
       expect(parsed.name.get()).toEqual('Named project');
-      expect(parsed.publisher).toEqual('https://example.org/publisher');
+      expect(parsed.publisher?.uri).toEqual('https://example.org/publisher');
+      expect(parsed.publisher?.name.get()).toEqual('Example Publisher');
+      expect(parsed.license?.uri).toEqual(
+        'https://creativecommons.org/licenses/by/4.0/'
+      );
       expect(parsed.acronyms).toEqual(['NP']);
       expect(parsed.languages).toEqual(['en', 'pt']);
-      expect(parsed.keywords).toEqual(['testing']);
+      expect(parsed.keywords.map(k => k.get())).toEqual(['testing']);
+      expect(parsed.creators).toHaveLength(1);
+      expect(parsed.creators[0].name.get()).toEqual('Someone');
+      expect(JSON.stringify(parsed)).toEqual(JSON.stringify(proj));
     });
 
     it(`Should throw on inputs that are not serialized projects`, () => {

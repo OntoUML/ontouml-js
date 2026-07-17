@@ -7,10 +7,37 @@ describe('MultilingualText Tests', () => {
     text = new MultilingualText();
   });
 
-  // TODO: check comments
-  // person.addName('Person');
-  // organization.name.addAll({ en: 'Organization', 'en-US': 'Private Organization', 'pt-BR': 'Organização' });
-  // product.name.addAll({ 'en-US': 'Product', 'pt-BR': 'Produto' });
+  it('addAll() saves values keyed by their language tags', () => {
+    text.addAll({
+      en: 'Organization',
+      'en-US': 'Private Organization',
+      'pt-BR': 'Organização'
+    });
+
+    expect(text.get('en')).toBe('Organization');
+    expect(text.get('en-US')).toBe('Private Organization');
+    expect(text.get('pt-BR')).toBe('Organização');
+  });
+
+  it('entries() returns all language-value pairs', () => {
+    text.addAll({ en: 'Person', pt: 'Pessoa' });
+    expect(text.entries()).toIncludeSameMembers([
+      ['en', 'Person'],
+      ['pt', 'Pessoa']
+    ]);
+  });
+
+  it('clear() removes all values', () => {
+    text.add('Person');
+    text.clear();
+    expect(text.get()).toBeNull();
+  });
+
+  it('toJSON() returns null when empty and a language map otherwise', () => {
+    expect(text.toJSON()).toBeNull();
+    text.add('Person', 'en');
+    expect(text.toJSON()).toEqual({ en: 'Person' });
+  });
 
   it('add() saves value using the language tag', () => {
     text.add('Pessoa', 'pt');

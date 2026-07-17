@@ -1,12 +1,12 @@
-import { MultilingualText, OntoumlElement, utils } from '.';
+import { MultilingualText, OntoumlElement, Resource, utils } from '.';
 
 export abstract class NamedElement extends OntoumlElement {
   name: MultilingualText;
   description: MultilingualText;
   private _alternativeNames: Set<MultilingualText> = new Set();
   private _editorialNotes: Set<MultilingualText> = new Set();
-  private _creators: Set<string> = new Set();
-  private _contributors: Set<string> = new Set();
+  private _creators: Set<Resource> = new Set();
+  private _contributors: Set<Resource> = new Set();
 
   constructor() {
     super();
@@ -51,39 +51,39 @@ export abstract class NamedElement extends OntoumlElement {
     return this._editorialNotes.delete(value);
   }
 
-  get creators(): string[] {
+  get creators(): Resource[] {
     return [...this._creators];
   }
 
-  set creators(array: string[]) {
+  set creators(array: Resource[]) {
     utils.assertArray(array);
     this._creators = new Set(array);
   }
 
-  addCreator(value: string): void {
+  addCreator(value: Resource): void {
     utils.assertValue(value);
     this._creators.add(value);
   }
 
-  removeCreator(value: string): boolean {
+  removeCreator(value: Resource): boolean {
     return this._creators.delete(value);
   }
 
-  get contributors(): string[] {
+  get contributors(): Resource[] {
     return [...this._contributors];
   }
 
-  set contributors(array: string[]) {
+  set contributors(array: Resource[]) {
     utils.assertArray(array);
     this._contributors = new Set(array);
   }
 
-  addContributor(value: string): void {
+  addContributor(value: Resource): void {
     utils.assertValue(value);
     this._contributors.add(value);
   }
 
-  removeContributor(value: string): boolean {
+  removeContributor(value: Resource): boolean {
     return this._contributors.delete(value);
   }
 
@@ -97,8 +97,8 @@ export abstract class NamedElement extends OntoumlElement {
       description: this.description.toJSON(),
       alternativeNames: this.alternativeNames.map(text => text.toJSON()),
       editorialNotes: this.editorialNotes.map(text => text.toJSON()),
-      creators: this.creators,
-      contributors: this.contributors
+      creators: this.creators.map(resource => resource.toJSON()),
+      contributors: this.contributors.map(resource => resource.toJSON())
     };
 
     return { ...super.toJSON(), ...object };

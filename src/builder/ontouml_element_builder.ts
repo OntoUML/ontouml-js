@@ -8,15 +8,17 @@ export abstract class OntoumlElementBuilder<
   protected project: Project;
   private _id: string = uniqid();
 
-  constructor(project: Project) {
-    this.project = project;
+  /** @param project - the project that will contain the built element. Only
+   * absent when the built element is a project itself. */
+  constructor(project?: Project) {
+    this.project = project!;
   }
 
   build(): OntoumlElement {
     this.assertElement();
 
     this.element!.id = this._id;
-    this.project.add(this.element!);
+    this.project?.add(this.element!);
     return this.element!;
   }
 

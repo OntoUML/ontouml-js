@@ -118,6 +118,7 @@ export class Diagram extends OntoumlElement implements ProjectElement {
     }
 
     this._views.add(element);
+    this.project?.add(element);
   }
 
   addElements(elements: View<any>[]): void {
@@ -147,7 +148,7 @@ export class Diagram extends OntoumlElement implements ProjectElement {
   }
 
   containsView(modelElement: ModelElement): boolean {
-    return !!this.findView(modelElement) !== null;
+    return !!this.findView(modelElement);
   }
 
   addModelElements(modelElements: ModelElement[]): View<any>[] | undefined {
@@ -169,7 +170,7 @@ export class Diagram extends OntoumlElement implements ProjectElement {
     if (modelElement instanceof Class) return this.addClass(modelElement);
     if (modelElement instanceof BinaryRelation && modelElement.isBinary())
       return this.addBinaryRelation(modelElement);
-    if (modelElement instanceof NaryRelation && modelElement.isBinary())
+    if (modelElement instanceof NaryRelation && modelElement.isNary())
       return this.addNaryRelation(modelElement);
     if (modelElement instanceof Generalization)
       return this.addGeneralization(modelElement);

@@ -19,6 +19,9 @@ import {
   Property,
   Literal,
   BinaryRelationBuilder,
+  NaryRelationBuilder,
+  NoteBuilder,
+  AnchorBuilder,
   ProjectElement,
   OntoumlElement
 } from '..';
@@ -224,5 +227,17 @@ export class Package extends ModelElement {
 
   binaryRelationBuilder(): BinaryRelationBuilder {
     return new BinaryRelationBuilder(this.project!).container(this);
+  }
+
+  naryRelationBuilder(): NaryRelationBuilder {
+    return new NaryRelationBuilder(this.project!).container(this);
+  }
+
+  noteBuilder(): NoteBuilder {
+    return new NoteBuilder(this.project!).container(this);
+  }
+
+  anchorBuilder(): AnchorBuilder {
+    return new AnchorBuilder(this.project!).container(this);
   }
 }

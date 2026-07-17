@@ -29,6 +29,11 @@ import {
   PackageBuilder,
   BinaryRelationBuilder,
   NaryRelationBuilder,
+  NoteBuilder,
+  AnchorBuilder,
+  ProjectBuilder,
+  MultilingualText,
+  Resource,
   utils
 } from '.';
 
@@ -57,21 +62,21 @@ export class Project extends NamedElement {
   private _noteViews: { [key: string]: NoteView } = {};
   private _anchorViews: { [key: string]: AnchorView } = {};
 
-  license?: string;
+  license?: Resource;
   namespace?: string;
-  publisher?: string;
-  representationStyle?: string;
-  private _accessRights: Set<string> = new Set();
+  publisher?: Resource;
+  representationStyle?: Resource;
+  private _accessRights: Set<Resource> = new Set();
   private _acronyms: Set<string> = new Set();
-  private _bibliographicCitations: Set<string> = new Set();
-  private _contexts: Set<string> = new Set();
-  private _designedForTasks: Set<string> = new Set();
-  private _keywords: Set<string> = new Set();
+  private _bibliographicCitations: Set<MultilingualText> = new Set();
+  private _contexts: Set<Resource> = new Set();
+  private _designedForTasks: Set<Resource> = new Set();
+  private _keywords: Set<MultilingualText> = new Set();
   private _landingPages: Set<string> = new Set();
   private _languages: Set<string> = new Set();
-  private _ontologyTypes: Set<string> = new Set();
+  private _ontologyTypes: Set<Resource> = new Set();
   private _sources: Set<string> = new Set();
-  private _themes: Set<string> = new Set();
+  private _themes: Set<Resource> = new Set();
 
   constructor() {
     super();
@@ -171,6 +176,14 @@ export class Project extends NamedElement {
     return this._anchors[id];
   }
 
+  get diagrams(): Diagram[] {
+    return Object.values(this._diagrams);
+  }
+
+  diagram(id: string): Diagram | undefined {
+    return this._diagrams[id];
+  }
+
   element(id: string): OntoumlElement | undefined {
     return (
       this.class(id) ||
@@ -186,93 +199,93 @@ export class Project extends NamedElement {
     );
   }
 
-  get designedForTasks(): string[] {
+  get designedForTasks(): Resource[] {
     return [...this._designedForTasks];
   }
 
-  set designedForTasks(array: string[]) {
+  set designedForTasks(array: Resource[]) {
     utils.assertArray(array);
     this._designedForTasks = new Set(array);
   }
 
-  addDesignedForTask(value: string) {
+  addDesignedForTask(value: Resource) {
     utils.assertValue(value);
     this._designedForTasks.add(value);
   }
 
-  removeDesignedForTask(value: string) {
+  removeDesignedForTask(value: Resource) {
     this._designedForTasks.delete(value);
   }
 
-  get accessRights(): string[] {
+  get accessRights(): Resource[] {
     return [...this._accessRights];
   }
 
-  set accessRights(array: string[]) {
+  set accessRights(array: Resource[]) {
     utils.assertArray(array);
     this._accessRights = new Set(array);
   }
 
-  addAccessRights(value: string) {
+  addAccessRights(value: Resource) {
     utils.assertValue(value);
     this._accessRights.add(value);
   }
 
-  remove(value: string) {
+  removeAccessRights(value: Resource) {
     this._accessRights.delete(value);
   }
 
-  get themes(): string[] {
+  get themes(): Resource[] {
     return [...this._themes];
   }
 
-  set themes(array: string[]) {
+  set themes(array: Resource[]) {
     utils.assertArray(array);
     this._themes = new Set(array);
   }
 
-  addTheme(value: string) {
+  addTheme(value: Resource) {
     utils.assertValue(value);
     this._themes.add(value);
   }
 
-  removeTheme(value: string) {
+  removeTheme(value: Resource) {
     this._themes.delete(value);
   }
 
-  get contexts(): string[] {
+  get contexts(): Resource[] {
     return [...this._contexts];
   }
 
-  set contexts(array: string[]) {
+  set contexts(array: Resource[]) {
     utils.assertArray(array);
     this._contexts = new Set(array);
   }
 
-  addContext(value: string) {
+  addContext(value: Resource) {
     utils.assertValue(value);
     this._contexts.add(value);
   }
 
-  removeContext(value: string) {
+  removeContext(value: Resource) {
     this._contexts.delete(value);
   }
 
-  get ontologyTypes(): string[] {
+  get ontologyTypes(): Resource[] {
     return [...this._ontologyTypes];
   }
 
-  set ontologyTypes(array: string[]) {
+  set ontologyTypes(array: Resource[]) {
     utils.assertArray(array);
     this._ontologyTypes = new Set(array);
   }
 
-  addOntologyType(value: string) {
+  addOntologyType(value: Resource) {
     utils.assertValue(value);
     this._ontologyTypes.add(value);
   }
 
-  removeOntologyType(value: string) {
+  removeOntologyType(value: Resource) {
     this._ontologyTypes.delete(value);
   }
 
@@ -312,39 +325,39 @@ export class Project extends NamedElement {
     this._sources.delete(value);
   }
 
-  get bibliographicCitations(): string[] {
+  get bibliographicCitations(): MultilingualText[] {
     return [...this._bibliographicCitations];
   }
 
-  set bibliographicCitations(array: string[]) {
+  set bibliographicCitations(array: MultilingualText[]) {
     utils.assertArray(array);
     this._bibliographicCitations = new Set(array);
   }
 
-  addBibliographiCitation(value: string) {
+  addBibliographicCitation(value: MultilingualText) {
     utils.assertValue(value);
     this._bibliographicCitations.add(value);
   }
 
-  removeBibliographicCitation(value: string) {
+  removeBibliographicCitation(value: MultilingualText) {
     this._bibliographicCitations.delete(value);
   }
 
-  get keywords(): string[] {
+  get keywords(): MultilingualText[] {
     return [...this._keywords];
   }
 
-  set keywords(array: string[]) {
+  set keywords(array: MultilingualText[]) {
     utils.assertArray(array);
     this._keywords = new Set(array);
   }
 
-  addKeyword(value: string) {
+  addKeyword(value: MultilingualText) {
     utils.assertValue(value);
     this._keywords.add(value);
   }
 
-  removeKeyword(value: string) {
+  removeKeyword(value: MultilingualText) {
     this._keywords.delete(value);
   }
 
@@ -408,6 +421,18 @@ export class Project extends NamedElement {
     return new NaryRelationBuilder(this);
   }
 
+  noteBuilder(): NoteBuilder {
+    return new NoteBuilder(this);
+  }
+
+  anchorBuilder(): AnchorBuilder {
+    return new AnchorBuilder(this);
+  }
+
+  static builder(): ProjectBuilder {
+    return new ProjectBuilder();
+  }
+
   add(e: OntoumlElement): void {
     if (!e) {
       throw new Error('Cannot add a null or undefined element.');
@@ -433,6 +458,24 @@ export class Project extends NamedElement {
       this._notes[e.id] = e;
     } else if (e instanceof Anchor) {
       this._anchors[e.id] = e;
+    } else if (e instanceof Diagram) {
+      this._diagrams[e.id] = e;
+    } else if (e instanceof ClassView) {
+      this._classViews[e.id] = e;
+    } else if (e instanceof BinaryRelationView) {
+      this._binaryRelationViews[e.id] = e;
+    } else if (e instanceof NaryRelationView) {
+      this._nAryRelationViews[e.id] = e;
+    } else if (e instanceof GeneralizationView) {
+      this._generalizationViews[e.id] = e;
+    } else if (e instanceof GeneralizationSetView) {
+      this._generalizationSetViews[e.id] = e;
+    } else if (e instanceof PackageView) {
+      this._packageViews[e.id] = e;
+    } else if (e instanceof NoteView) {
+      this._noteViews[e.id] = e;
+    } else if (e instanceof AnchorView) {
+      this._anchorViews[e.id] = e;
     }
   }
 
@@ -494,21 +537,21 @@ export class Project extends NamedElement {
     return {
       type: OntoumlType.PROJECT,
       ...super.toJSON(),
-      license: this.license || null,
+      license: this.license?.toJSON() ?? null,
       namespace: this.namespace || null,
-      publisher: this.publisher || null,
-      representationStyle: this.representationStyle || null,
-      accessRights: this.accessRights,
+      publisher: this.publisher?.toJSON() ?? null,
+      representationStyle: this.representationStyle?.toJSON() ?? null,
+      accessRights: this.accessRights.map(r => r.toJSON()),
       acronyms: this.acronyms,
-      bibliographicCitations: this.bibliographicCitations,
-      contexts: this.contexts,
-      designedForTasks: this.designedForTasks,
-      keywords: this.keywords,
+      bibliographicCitations: this.bibliographicCitations.map(t => t.toJSON()),
+      contexts: this.contexts.map(r => r.toJSON()),
+      designedForTasks: this.designedForTasks.map(r => r.toJSON()),
+      keywords: this.keywords.map(t => t.toJSON()),
       landingPages: this.landingPages,
       languages: this.languages,
-      ontologyTypes: this.ontologyTypes,
+      ontologyTypes: this.ontologyTypes.map(r => r.toJSON()),
       sources: this.sources,
-      themes: this.themes,
+      themes: this.themes.map(r => r.toJSON()),
       root: this.root?.id ?? null,
       elements: this.getContents().map(e => e.toJSON())
     };

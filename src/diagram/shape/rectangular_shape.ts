@@ -54,10 +54,9 @@ export abstract class RectangularShape extends Shape {
 
   override toJSON(): any {
     const object = {
+      topLeft: { x: this.topLeft.x, y: this.topLeft.y },
       width: this.width,
-      height: this.height,
-      x: this.topLeft.x,
-      y: this.topLeft.y
+      height: this.height
     };
 
     return { ...object, ...super.toJSON() };

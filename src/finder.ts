@@ -165,7 +165,7 @@ export class Finder {
    * @returns all classes contained in the package that are stereotyped as «relator».
    */
   getRelators(): Class[] {
-    return this.project.classes.filter(c => c.isQuantity());
+    return this.project.classes.filter(c => c.isRelator());
   }
 
   /**
@@ -306,14 +306,16 @@ export class Finder {
    * @returns all classes whose field `restrictedTo` includes {@link Nature.INTRINSIC_MODE} and/or {@link Nature.EXTRINSIC_MODE} .
    */
   getModeTypes(): Class[] {
-    return this.project.classes.filter(c => c.isMode());
+    return this.project.classes.filter(c =>
+      c.allowsOnly([Nature.INTRINSIC_MODE, Nature.EXTRINSIC_MODE])
+    );
   }
 
   /**
    *
    * @returns all classes whose field `restrictedTo` includes only {@link Nature.INTRINSIC_MODE}.
    */
-  getInstricModeTypes(): Class[] {
+  getIntrinsicModeTypes(): Class[] {
     return this.project.classes.filter(c => c.isIntrinsicModeType());
   }
 
@@ -338,7 +340,7 @@ export class Finder {
    * @returns all classes whose field `restrictedTo` includes only {@link Nature.RELATOR}.
    */
   getRelatorTypes(): Class[] {
-    return this.project.classes.filter(c => c.isRelator());
+    return this.project.classes.filter(c => c.isRelatorType());
   }
 
   /**

@@ -19,15 +19,12 @@ export class Path extends Shape {
       );
     }
 
+    this._points = [];
     this.addPoints(points);
   }
 
   moveTo(x: number, y: number): void {
-    if (!this.points) {
-      this.points = [];
-    }
-
-    this.points.push(new Point(x, y));
+    this.addPoint(new Point(x, y));
   }
 
   addPoints(points: Point[]): void {
@@ -35,12 +32,13 @@ export class Path extends Shape {
   }
 
   addPoint(point: Point): void {
-    if (point != null) this.points.push(point);
+    if (point != null) this._points.push(point);
   }
 
   override toJSON(): any {
     const object = {
-      type: OntoumlType.PATH
+      type: OntoumlType.PATH,
+      points: this._points.map(p => ({ x: p.x, y: p.y }))
     };
 
     return { ...object, ...super.toJSON() };
