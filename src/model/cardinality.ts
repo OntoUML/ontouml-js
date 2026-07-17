@@ -1,17 +1,47 @@
 const SEPARATOR = '..';
+
+/** The symbol used to represent an unbounded upper bound (`"*"`). */
 export const CARDINALITY_MAX = '*';
+
+/** The numeric counterpart of {@link CARDINALITY_MAX} (`Infinity`). */
 export const CARDINALITY_MAX_AS_NUMBER = Infinity;
 
+/** Commonly used cardinality values in their string representation. */
 export enum CardinalityValues {
+  /** At most one (`0..1`). */
   ZERO_TO_ONE = '0..1',
+
+  /** Any number, including none (`0..*`). */
   ZERO_TO_MANY = '0..*',
+
+  /** Exactly one (`1`). */
   ONE = '1',
+
+  /** Exactly one (`1..1`). */
   ONE_TO_ONE = '1..1',
+
+  /** At least one (`1..*`). */
   ONE_TO_MANY = '1..*',
+
+  /** Any number, including none (`*`). */
   MANY = '*'
 }
 
+/**
+ * The multiplicity of a {@link Property}, expressed as an interval that
+ * constrains how many values the property may take — e.g., how many
+ * instances of the class at one end of a relation may be linked to an
+ * instance of the class at the other end.
+ *
+ * The cardinality is stored as a string in the format `"lowerBound..upperBound"`
+ * (e.g., `"0..1"`, `"1..*"`), where a single value (e.g., `"2"`) denotes an
+ * interval whose bounds coincide and `"*"` denotes an unbounded upper bound.
+ */
 export class Cardinality {
+  /**
+   * The string representation of the cardinality (e.g., `"0..*"`), or `null`
+   * when the cardinality is not set.
+   */
   value: string | null;
 
   constructor(base?: Partial<Cardinality>);
@@ -51,6 +81,12 @@ export class Cardinality {
     }
   }
 
+  /**
+   * Splits the cardinality into its lower and upper bounds as strings. A
+   * single-valued cardinality (e.g., `"2"`) yields equal bounds.
+   *
+   * @throws an error if the cardinality is not set.
+   */
   getCardinalityBounds(): { lowerBound: string; upperBound: string } {
     if (!this.value) throw new Error('Cardinality bounds are not set.');
 
@@ -61,6 +97,12 @@ export class Cardinality {
     return { lowerBound: bounds[0], upperBound: bounds[1] };
   }
 
+  /**
+   * Splits the cardinality into its lower and upper bounds as numbers, where
+   * an unbounded upper bound (`"*"`) is represented as `Infinity`.
+   *
+   * @throws an error if the cardinality is not set.
+   */
   getCardinalityBoundsAsNumbers(): { lowerBound: number; upperBound: number } {
     const cardinality = this.getCardinalityBounds();
 
@@ -73,11 +115,13 @@ export class Cardinality {
     return { lowerBound, upperBound };
   }
 
+  /** The lower bound of the cardinality as a string (e.g., `"0"`). */
   get lowerBound(): string {
     const bounds = this.getCardinalityBounds();
     return bounds && bounds.lowerBound;
   }
 
+  /** Sets the lower bound of the cardinality, preserving the upper bound. */
   set lowerBound(lowerBound: string) {
     const bounds = this.getCardinalityBounds() || {
       upperBound: CARDINALITY_MAX
@@ -85,11 +129,19 @@ export class Cardinality {
     this.value = `${lowerBound}..${bounds.upperBound}`;
   }
 
+  /**
+   * Retrieves the lower bound of the cardinality as a number.
+   */
   getLowerBoundAsNumber(): number {
     const bounds = this.getCardinalityBoundsAsNumbers();
     return bounds && bounds.lowerBound;
   }
 
+  /**
+   * Sets the lower bound of the cardinality from a number.
+   *
+   * @throws an error if the value is negative, unbounded, or `NaN`.
+   */
   setLowerBound(lowerBound: number): void {
     if (lowerBound < 0) {
       throw new Error('Lower bound must be a positive number');
@@ -102,21 +154,33 @@ export class Cardinality {
     this.lowerBound = `${lowerBound}`;
   }
 
+  /** The upper bound of the cardinality as a string (e.g., `"*"`). */
   get upperBound(): string {
     const bounds = this.getCardinalityBounds();
     return bounds && bounds.upperBound;
   }
 
+  /** Sets the upper bound of the cardinality, preserving the lower bound. */
   set upperBound(upperBound: string) {
     const bounds = this.getCardinalityBounds() || { lowerBound: '0' };
     this.value = `${bounds.lowerBound}..${upperBound}`;
   }
 
+  /**
+   * Retrieves the upper bound of the cardinality as a number, where an
+   * unbounded upper bound is represented as `Infinity`.
+   */
   getUpperBoundAsNumber(): number {
     const bounds = this.getCardinalityBoundsAsNumbers();
     return bounds && bounds.upperBound;
   }
 
+  /**
+   * Sets the upper bound of the cardinality from a number, where `Infinity`
+   * denotes an unbounded upper bound.
+   *
+   * @throws an error if the value is smaller than one.
+   */
   setUpperBound(upperBound: number): void {
     if (upperBound < 1) {
       throw new Error(
@@ -129,6 +193,12 @@ export class Cardinality {
     }`;
   }
 
+  /**
+   * Checks whether the cardinality denotes a well-formed, non-empty
+   * interval, i.e., whether its string representation is valid, its lower
+   * bound is a non-negative bounded number, its upper bound is positive, and
+   * the lower bound does not exceed the upper bound.
+   */
   isValid(): boolean {
     const { lowerBound, upperBound } = this.getCardinalityBoundsAsNumbers();
     return (
@@ -140,6 +210,10 @@ export class Cardinality {
     );
   }
 
+  /**
+   * Checks whether the string representation of the cardinality matches the
+   * expected format (e.g., `"1"`, `"0..*"`, `"2..4"`).
+   */
   isCardinalityStringValid(): boolean {
     if (!this.value) return false;
 
@@ -147,23 +221,41 @@ export class Cardinality {
     return regex.test(this.value);
   }
 
+  /**
+   * Checks whether the lower bound cannot be parsed as an integer.
+   */
   isLowerBoundValid(): boolean {
     return isNaN(Number.parseInt(this.lowerBound));
   }
 
+  /**
+   * Checks whether the upper bound cannot be parsed as an integer.
+   */
   isUpperBoundValid(): boolean {
     return isNaN(Number.parseInt(this.upperBound));
   }
 
+  /**
+   * Checks whether the cardinality has a bounded upper limit, i.e., an
+   * upper bound other than `"*"`.
+   */
   isBounded(): boolean {
     const bounds = this.getCardinalityBounds();
     return bounds && bounds.upperBound !== CARDINALITY_MAX;
   }
 
+  /** Serializes the cardinality as its string value, or `null` when unset. */
   toJSON(): any {
     return this.value || null;
   }
 
+  /**
+   * Sets both bounds of the cardinality at once. When the upper bound is
+   * omitted or `Infinity`, the cardinality becomes unbounded (`"*"`).
+   *
+   * @throws an error if the bounds are out of range or the lower bound
+   *         exceeds the upper bound.
+   */
   setBounds(lowerBound: number, upperBound?: number): void {
     if (lowerBound < 0) {
       throw new Error(
@@ -196,14 +288,23 @@ export class Cardinality {
     }
   }
 
+  /**
+   * Checks whether the property is optional, i.e., whether the lower bound
+   * of the cardinality is zero.
+   */
   isOptional(): boolean {
     return this.getLowerBoundAsNumber() === 0;
   }
 
+  /**
+   * Checks whether the property is mandatory, i.e., whether the lower bound
+   * of the cardinality is greater than zero.
+   */
   isMandatory(): boolean {
     return !this.isOptional();
   }
 
+  /** Checks whether the cardinality is exactly `0..1`. */
   isZeroToOne(): boolean {
     const cardinality = this.getCardinalityBoundsAsNumbers();
     return (
@@ -213,6 +314,7 @@ export class Cardinality {
     );
   }
 
+  /** Checks whether the cardinality is exactly `0..*`. */
   isZeroToMany(): boolean {
     const cardinality = this.getCardinalityBoundsAsNumbers();
     return (
@@ -222,6 +324,7 @@ export class Cardinality {
     );
   }
 
+  /** Checks whether the cardinality is exactly `1..1`. */
   isOneToOne(): boolean {
     const cardinality = this.getCardinalityBoundsAsNumbers();
     return (
@@ -231,6 +334,7 @@ export class Cardinality {
     );
   }
 
+  /** Checks whether the cardinality is exactly `1..*`. */
   isOneToMany(): boolean {
     const cardinality = this.getCardinalityBoundsAsNumbers();
     return (
@@ -240,18 +344,22 @@ export class Cardinality {
     );
   }
 
+  /** Sets the cardinality to `0..1`. */
   setAsZeroToOne(): void {
     this.value = CardinalityValues.ZERO_TO_ONE;
   }
 
+  /** Sets the cardinality to `0..*`. */
   setAsZeroToMany(): void {
     this.value = CardinalityValues.ZERO_TO_MANY;
   }
 
+  /** Sets the cardinality to `1..1`. */
   setAsOneToOne(): void {
     this.value = CardinalityValues.ONE_TO_ONE;
   }
 
+  /** Sets the cardinality to `1..*`. */
   setAsOneToMany(): void {
     this.value = CardinalityValues.ONE_TO_MANY;
   }

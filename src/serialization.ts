@@ -36,6 +36,8 @@ import {
   AnchorView
 } from '.';
 
+/** The discriminator values of shapes, which are contained by views and are
+ * not accepted as top-level project elements. */
 const SHAPE_TYPES: string[] = [
   OntoumlType.RECTANGLE,
   OntoumlType.DIAMOND,
@@ -43,6 +45,10 @@ const SHAPE_TYPES: string[] = [
   OntoumlType.PATH
 ];
 
+/**
+ * Deserializes an object mapping language tags to text values into a
+ * {@link MultilingualText}.
+ */
 function textFromJSON(raw: any): MultilingualText {
   const text = new MultilingualText();
 
@@ -55,12 +61,20 @@ function textFromJSON(raw: any): MultilingualText {
   return text;
 }
 
+/**
+ * Deserializes an object with `URI` and `name` fields into a
+ * {@link Resource}.
+ */
 function resourceFromJSON(raw: any): Resource {
   const resource = new Resource(raw?.URI ?? undefined);
   resource.name = textFromJSON(raw?.name);
   return resource;
 }
 
+/**
+ * Copies the fields defined by {@link OntoumlElement} (id and timestamps)
+ * from a raw serialized object into an element.
+ */
 function setOntoumlElementFields(element: OntoumlElement, raw: any): void {
   element.id = raw.id;
 
@@ -71,6 +85,10 @@ function setOntoumlElementFields(element: OntoumlElement, raw: any): void {
   element.modified = raw.modified ? new Date(raw.modified) : undefined;
 }
 
+/**
+ * Copies the fields defined by {@link NamedElement} (name, description, and
+ * authorship metadata) from a raw serialized object into an element.
+ */
 function setNamedElementFields(element: NamedElement, raw: any): void {
   setOntoumlElementFields(element, raw);
 
@@ -82,17 +100,32 @@ function setNamedElementFields(element: NamedElement, raw: any): void {
   element.contributors = (raw.contributors ?? []).map(resourceFromJSON);
 }
 
+/**
+ * Copies the fields defined by {@link ModelElement} (custom properties, in
+ * addition to the named element fields) from a raw serialized object into an
+ * element.
+ */
 function setModelElementFields(element: ModelElement, raw: any): void {
   setNamedElementFields(element, raw);
   element.customProperties = raw.customProperties ?? {};
 }
 
+/**
+ * Copies the fields defined by {@link Decoratable} (stereotype and
+ * derivation flag) from a raw serialized object into an element.
+ */
 function setDecoratableFields(element: Decoratable<any>, raw: any): void {
   setModelElementFields(element, raw);
   element.stereotype = raw.stereotype ?? undefined;
   element.isDerived = raw.isDerived ?? false;
 }
 
+/**
+ * Copies the fields defined by {@link Property} (cardinality, aggregation
+ * kind, ordering and read-only flags, and property type) from a raw
+ * serialized object into a property, resolving the property type against the
+ * elements deserialized so far.
+ */
 function setPropertyFields(
   property: Property,
   raw: any,
@@ -115,6 +148,16 @@ function setPropertyFields(
   }
 }
 
+/**
+ * Returns the deserialized element registered under `referenceId`.
+ *
+ * @param ownerId - id of the element holding the reference; used to compose
+ *        the error message.
+ * @param field - name of the field holding the reference; used to compose
+ *        the error message.
+ * @throws an error accusing a broken reference if no element with a matching
+ *         id has been registered.
+ */
 function getResolved<T extends OntoumlElement>(
   elements: Map<string, OntoumlElement>,
   referenceId: string,
@@ -132,17 +175,20 @@ function getResolved<T extends OntoumlElement>(
   return element as T;
 }
 
-/** Parse function that receives a `Project` serialized into a string, as
- * defined by the OntoUML JSON Schema (https://w3id.org/ontouml/schema), and
- * returns the corresponding instance of `Project`.
+/**
+ * Parses a {@link Project} serialized into a string, as defined by the
+ * OntoUML JSON Schema (https://w3id.org/ontouml/schema), and returns the
+ * corresponding instance of {@link Project}.
  *
  * Model elements, diagrams, and views are fully supported. Shapes are not
  * part of the project serialization (the schema defines no container for
  * them), so the shapes of parsed views keep their serialized identifiers but
  * are recreated with default dimensions and positions.
  *
- * @throws an error if the string is not a serialized `Project` or if
- * references between elements cannot be resolved. */
+ * @param serializedProject - the JSON string to parse.
+ * @throws an error if the string is not a serialized {@link Project} or if
+ *         references between elements cannot be resolved.
+ */
 function parse(serializedProject: string): Project {
   const raw = JSON.parse(serializedProject);
 
@@ -661,8 +707,16 @@ function parse(serializedProject: string): Project {
   return project;
 }
 
-/** A utility module designed to support the de-serialization of
- * `OntoumlElement` objects. */
+/**
+ * A utility module supporting the deserialization of {@link OntoumlElement}
+ * objects serialized according to the OntoUML JSON Schema
+ * (https://w3id.org/ontouml/schema).
+ *
+ * @example
+ * ```typescript
+ * const project = serializationUtils.parse(json);
+ * ```
+ */
 export const serializationUtils = {
   parse
 };

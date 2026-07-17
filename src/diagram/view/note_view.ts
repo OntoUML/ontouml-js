@@ -1,6 +1,11 @@
 import { OntoumlType, View, Note, Text, OntoumlElement, Shape } from '../..';
 
+/**
+ * The view of a {@link Note} in a {@link Diagram}, rendered as a
+ * {@link Text} box (100 × 50 by default).
+ */
 export class NoteView extends View<Note> {
+  /** The text box that renders the note on the diagram canvas. */
   readonly text: Text;
 
   constructor(note: Note) {
@@ -11,6 +16,7 @@ export class NoteView extends View<Note> {
     this.text.height = 50;
   }
 
+  /** The shapes that render this view: its {@link text} box. */
   override get shapes(): Shape[] {
     return [this.text];
   }

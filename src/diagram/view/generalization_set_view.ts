@@ -7,8 +7,16 @@ import {
   Shape
 } from '../..';
 
+/**
+ * The view of a {@link GeneralizationSet} in a {@link Diagram}, rendered as
+ * a {@link Text} label (100 × 50 by default) associated with the views of
+ * the generalizations it groups.
+ */
 export class GeneralizationSetView extends View<GeneralizationSet> {
+  /** The text label that renders the generalization set on the canvas. */
   text: Text;
+
+  /** The views of the generalizations grouped by the set in this diagram. */
   generalizations: GeneralizationView[] = [];
 
   constructor(genSet: GeneralizationSet) {
@@ -19,6 +27,7 @@ export class GeneralizationSetView extends View<GeneralizationSet> {
     this.text.height = 50;
   }
 
+  /** The shapes that render this view: its {@link text} label. */
   override get shapes(): Shape[] {
     return [this.text];
   }

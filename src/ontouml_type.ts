@@ -1,3 +1,10 @@
+/**
+ * The discriminator values used in the `type` field of serialized elements,
+ * as defined by the OntoUML JSON Schema (https://w3id.org/ontouml/schema).
+ * Each value identifies the concrete type of an {@link OntoumlElement} in a
+ * serialized project, covering model elements (e.g., `Class`,
+ * `Generalization`), diagrams, views, and shapes.
+ */
 export enum OntoumlType {
   PROJECT = 'Project',
   PACKAGE = 'Package',

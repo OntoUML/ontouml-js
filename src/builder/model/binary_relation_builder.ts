@@ -27,6 +27,26 @@ import {
   AggregationKind
 } from '../..';
 
+/**
+ * A fluent builder for {@link BinaryRelation} instances.
+ *
+ * This builder configures the source and target ends of the relation
+ * (classifier, cardinality, ordering, read-only status, and aggregation
+ * kind), as well as its OntoUML stereotype, offering shortcut methods such
+ * as `material()` and `mediation()` that also apply the default
+ * meta-property values prescribed for each stereotype.
+ *
+ * @example
+ * ```typescript
+ * const marriedTo = project
+ *   .binaryRelationBuilder()
+ *   .material()
+ *   .name('married to')
+ *   .source(person)
+ *   .target(person)
+ *   .build();
+ * ```
+ */
 export class BinaryRelationBuilder extends ClassifierBuilder<
   BinaryRelationBuilder,
   RelationStereotype
@@ -45,7 +65,11 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   _aggregationKind: AggregationKind = AggregationKind.NONE;
 
   /**
-   * Builds an instance of {@link BinaryRelation} with the parameters passed to the builder. **WARNING:** the ordering in which methods are evoked may affect the resulting object. When no methods are evoked, the created class has the following defaults:
+   * Builds an instance of {@link BinaryRelation} with the parameters passed
+   * to the builder. Both the source and the target classifiers are required
+   * before `build()` is evoked. **WARNING:** the ordering in which methods
+   * are evoked may affect the resulting object. When no methods are evoked,
+   * the created relation has the following defaults:
    * - `id: "randomly-generated-id",`
    * - `created: new Date(),`
    * - `isAbstract: false,`
@@ -84,58 +108,124 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
     return this.element;
   }
 
+  /**
+   * Sets the {@link Classifier} connected to the source end of the relation.
+   *
+   * @returns this builder, for method chaining.
+   */
   source(classifier: Classifier<any, any>): BinaryRelationBuilder {
     this._source = classifier;
     return this;
   }
 
+  /**
+   * Sets the {@link Classifier} connected to the target end of the relation.
+   *
+   * @returns this builder, for method chaining.
+   */
   target(classifier: Classifier<any, any>): BinaryRelationBuilder {
     this._target = classifier;
     return this;
   }
 
+  /**
+   * Sets the cardinality of the source end of the relation.
+   *
+   * @param value - the cardinality expression (e.g., `"1"`, `"0..*"`).
+   * @returns this builder, for method chaining.
+   */
   sourceCardinality(value: string): BinaryRelationBuilder {
     this._sourceCardinality = value;
     return this;
   }
 
+  /**
+   * Sets the cardinality of the target end of the relation.
+   *
+   * @param value - the cardinality expression (e.g., `"1"`, `"0..*"`).
+   * @returns this builder, for method chaining.
+   */
   targetCardinality(value: string): BinaryRelationBuilder {
     this._targetCardinality = value;
     return this;
   }
 
+  /**
+   * Sets the source end of the relation as read-only, i.e., as an end whose
+   * values cannot change once assigned.
+   *
+   * @returns this builder, for method chaining.
+   */
   sourceReadOnly(): BinaryRelationBuilder {
     this._sourceIsReadOnly = true;
     return this;
   }
 
+  /**
+   * Sets the target end of the relation as read-only, i.e., as an end whose
+   * values cannot change once assigned.
+   *
+   * @returns this builder, for method chaining.
+   */
   targetReadOnly(): BinaryRelationBuilder {
     this._targetIsReadOnly = true;
     return this;
   }
 
+  /**
+   * Sets the source end of the relation as ordered, i.e., as an end whose
+   * values are arranged in a meaningful sequence.
+   *
+   * @returns this builder, for method chaining.
+   */
   sourceOrdered(): BinaryRelationBuilder {
     this._sourceIsOrdered = true;
     return this;
   }
 
+  /**
+   * Sets the target end of the relation as ordered, i.e., as an end whose
+   * values are arranged in a meaningful sequence.
+   *
+   * @returns this builder, for method chaining.
+   */
   targetOrdered(): BinaryRelationBuilder {
     this._targetIsOrdered = true;
     return this;
   }
 
+  /**
+   * Sets the aggregation kind of the target end of the relation to shared
+   * aggregation, marking the relation as a parthood in which parts may be
+   * shared among multiple wholes.
+   *
+   * @returns this builder, for method chaining.
+   */
   aggregation(): BinaryRelationBuilder {
     this._aggregationKind = AggregationKind.SHARED;
     return this;
   }
 
+  /**
+   * Sets the aggregation kind of the target end of the relation to composite
+   * aggregation, marking the relation as a parthood in which parts belong to
+   * at most one whole.
+   *
+   * @returns this builder, for method chaining.
+   */
   composition(): BinaryRelationBuilder {
     this._aggregationKind = AggregationKind.COMPOSITE;
     return this;
   }
 
   /**
-   * Sets the stereotype field and set default values in case of a known RelationStereotype.
+   * Sets the stereotype of the relation, delegating to the corresponding
+   * shortcut method (e.g., `material()`, `mediation()`) when the value is a
+   * known {@link RelationStereotype}, in which case the default meta-property
+   * values of the stereotype are also applied.
+   *
+   * @param stereotype - the stereotype to decorate the relation with.
+   * @returns this builder, for method chaining.
    */
   override stereotype(stereotype: string): BinaryRelationBuilder {
     switch (stereotype) {
@@ -183,14 +273,12 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «material» and default values:
-   * - isDerived = true
+   * Sets the stereotype of the relation to «material», which decorates
+   * relations between endurants that are founded on relators, such as being
+   * married to or being enrolled at. Also applies the following defaults:
+   * - `isDerived = true`
    *
-   * The values assigned to the source and target end are:
-   * - isReadOnly = false
-   * - isOrdered = false
-   * - multiplicty = 0..*
-   * - aggregationKind = NONE
+   * @returns this builder, for method chaining.
    */
   material(): BinaryRelationBuilder {
     this._stereotype = MATERIAL;
@@ -199,14 +287,14 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «derivation» and default values:
-   * - isDerived = false
+   * Sets the stereotype of the relation to «derivation», which decorates
+   * relations connecting a derived relation (e.g., a «material» relation) to
+   * the class (e.g., a «relator») from which it is derived. Also applies the
+   * following defaults:
+   * - `sourceCardinality = "1"`
+   * - `targetCardinality = "1"`
    *
-   * The values assigned to the source and target end are:
-   * - isReadOnly = false
-   * - isOrdered = false
-   * - multiplicty = 1
-   * - aggregationKind = NONE
+   * @returns this builder, for method chaining.
    */
   derivation(): BinaryRelationBuilder {
     this._stereotype = DERIVATION;
@@ -216,14 +304,13 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «comparative» and default values:
-   * - isDerived = true
+   * Sets the stereotype of the relation to «comparative», which decorates
+   * relations that hold between endurants by virtue of a comparison of their
+   * intrinsic aspects, such as being taller than. Also applies the following
+   * defaults:
+   * - `isDerived = true`
    *
-   * The values assigned to the source and target end are:
-   * - isReadOnly = false
-   * - isOrdered = false
-   * - multiplicty = 0..*
-   * - aggregationKind = NONE
+   * @returns this builder, for method chaining.
    */
   comparative(): BinaryRelationBuilder {
     this._stereotype = COMPARATIVE;
@@ -232,7 +319,14 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «mediation» and some default values for its meta-properties.
+   * Sets the stereotype of the relation to «mediation», which decorates
+   * relations between a relator and an endurant it mediates, such as a
+   * marriage and one of its spouses. Also applies the following defaults:
+   * - `sourceCardinality = "1..*"`
+   * - `targetCardinality = "1"`
+   * - `targetEnd.isReadOnly = true`
+   *
+   * @returns this builder, for method chaining.
    */
   mediation(): BinaryRelationBuilder {
     this._stereotype = MEDIATION;
@@ -243,7 +337,15 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «characterization» and some default values for its meta-properties.
+   * Sets the stereotype of the relation to «characterization», which
+   * decorates relations between an intrinsic aspect (a mode or a quality)
+   * and the endurant it characterizes, i.e., its bearer. Also applies the
+   * following defaults:
+   * - `sourceCardinality = "1..*"`
+   * - `targetCardinality = "1"`
+   * - `targetEnd.isReadOnly = true`
+   *
+   * @returns this builder, for method chaining.
    */
   characterization(): BinaryRelationBuilder {
     this._stereotype = CHARACTERIZATION;
@@ -254,7 +356,15 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «externalDependence» and some default values for its meta-properties.
+   * Sets the stereotype of the relation to «externalDependence», which
+   * decorates relations between an extrinsic mode and an endurant, other
+   * than its bearer, on which it depends, such as one's love for another.
+   * Also applies the following defaults:
+   * - `sourceCardinality = "0..*"`
+   * - `targetCardinality = "1"`
+   * - `targetEnd.isReadOnly = true`
+   *
+   * @returns this builder, for method chaining.
    */
   externalDependence(): BinaryRelationBuilder {
     this._stereotype = EXTERNAL_DEPENDENCE;
@@ -265,7 +375,14 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «componentOf» and some default values for its meta-properties.
+   * Sets the stereotype of the relation to «componentOf», which decorates
+   * parthood relations between functional complexes, such as an engine being
+   * a component of a car. Also applies the following defaults:
+   * - `aggregationKind = "COMPOSITE"`
+   * - `sourceCardinality = "1"`
+   * - `targetCardinality = "1..*"`
+   *
+   * @returns this builder, for method chaining.
    */
   componentOf(): BinaryRelationBuilder {
     this._stereotype = COMPONENT_OF;
@@ -276,7 +393,15 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «memberOf» and some default values for its meta-properties.
+   * Sets the stereotype of the relation to «memberOf», which decorates
+   * parthood relations between an entity and the collective of which it is a
+   * member, such as a tree being a member of a forest. Also applies the
+   * following defaults:
+   * - `aggregationKind = "SHARED"`
+   * - `sourceCardinality = "1..*"`
+   * - `targetCardinality = "1..*"`
+   *
+   * @returns this builder, for method chaining.
    */
   memberOf(): BinaryRelationBuilder {
     this._stereotype = MEMBER_OF;
@@ -287,7 +412,15 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «subCollectionOf» and some default values for its meta-properties.
+   * Sets the stereotype of the relation to «subCollectionOf», which decorates
+   * parthood relations between collectives, such as the north wing of a
+   * forest being a sub-collection of the forest. Also applies the following
+   * defaults:
+   * - `aggregationKind = "COMPOSITE"`
+   * - `sourceCardinality = "1"`
+   * - `targetCardinality = "1..*"`
+   *
+   * @returns this builder, for method chaining.
    */
   subCollectionOf(): BinaryRelationBuilder {
     this._stereotype = SUBCOLLECTION_OF;
@@ -298,7 +431,15 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «subQuantityOf» and some default values for its meta-properties.
+   * Sets the stereotype of the relation to «subQuantityOf», which decorates
+   * parthood relations between quantities, such as the alcohol in a glass of
+   * wine being a sub-quantity of the wine. Also applies the following
+   * defaults:
+   * - `aggregationKind = "COMPOSITE"`
+   * - `sourceCardinality = "1"`
+   * - `targetCardinality = "1"`
+   *
+   * @returns this builder, for method chaining.
    */
   subQuantityOf(): BinaryRelationBuilder {
     this._stereotype = SUBQUANTITY_OF;
@@ -309,7 +450,14 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «instantiation» and some default values for its meta-properties.
+   * Sets the stereotype of the relation to «instantiation», which decorates
+   * relations between an entity and the high-order type it instantiates,
+   * such as a person and a social role classifying persons. Also applies the
+   * following defaults:
+   * - `sourceCardinality = "1..*"`
+   * - `targetCardinality = "0..*"`
+   *
+   * @returns this builder, for method chaining.
    */
   instantiation(): BinaryRelationBuilder {
     this._stereotype = INSTANTIATION;
@@ -319,7 +467,13 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «termination» and some default values for its meta-properties.
+   * Sets the stereotype of the relation to «termination», which decorates
+   * relations between an event and the endurant whose existence it brings to
+   * an end. Also applies the following defaults:
+   * - `sourceCardinality = "1"`
+   * - `targetCardinality = "1"`
+   *
+   * @returns this builder, for method chaining.
    */
   termination(): BinaryRelationBuilder {
     this._stereotype = TERMINATION;
@@ -329,7 +483,14 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «participational» and some default values for its meta-properties.
+   * Sets the stereotype of the relation to «participational», which decorates
+   * parthood relations between events, in which the part is the participation
+   * of an entity in the whole event. Also applies the following defaults:
+   * - `aggregationKind = "COMPOSITE"`
+   * - `sourceCardinality = "1"`
+   * - `targetCardinality = "1..*"`
+   *
+   * @returns this builder, for method chaining.
    */
   participational(): BinaryRelationBuilder {
     this._stereotype = PARTICIPATIONAL;
@@ -340,7 +501,13 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «participation» and some default values for its meta-properties.
+   * Sets the stereotype of the relation to «participation», which decorates
+   * relations between an endurant and an event in which it participates,
+   * such as a groom and his wedding. Also applies the following defaults:
+   * - `sourceCardinality = "1..*"`
+   * - `targetCardinality = "1..*"`
+   *
+   * @returns this builder, for method chaining.
    */
   participation(): BinaryRelationBuilder {
     this._stereotype = PARTICIPATION;
@@ -350,7 +517,14 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «historicalDependence» and some default values for its meta-properties.
+   * Sets the stereotype of the relation to «historicalDependence», which
+   * decorates relations of historical dependence between entities, i.e.,
+   * relations in which an entity depends on the past existence or state of
+   * another. Also applies the following defaults:
+   * - `sourceCardinality = "1"`
+   * - `targetCardinality = "1"`
+   *
+   * @returns this builder, for method chaining.
    */
   historicalDependence(): BinaryRelationBuilder {
     this._stereotype = HISTORICAL_DEPENDENCE;
@@ -360,7 +534,13 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «creation» and some default values for its meta-properties.
+   * Sets the stereotype of the relation to «creation», which decorates
+   * relations between an event and the endurant it brings into existence.
+   * Also applies the following defaults:
+   * - `sourceCardinality = "1"`
+   * - `targetCardinality = "1"`
+   *
+   * @returns this builder, for method chaining.
    */
   creation(): BinaryRelationBuilder {
     this._stereotype = CREATION;
@@ -370,7 +550,14 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «manifestation» and some default values for its meta-properties.
+   * Sets the stereotype of the relation to «manifestation», which decorates
+   * relations between an event and the intrinsic aspect (mode or quality) it
+   * manifests, such as a symptom and the disease it manifests. Also applies
+   * the following defaults:
+   * - `sourceCardinality = "1"`
+   * - `targetCardinality = "1"`
+   *
+   * @returns this builder, for method chaining.
    */
   manifestation(): BinaryRelationBuilder {
     this._stereotype = MANIFESTATION;
@@ -380,7 +567,13 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «bringsAbout» and some default values for its meta-properties.
+   * Sets the stereotype of the relation to «bringsAbout», which decorates
+   * relations between an event and the situation it brings about. Also
+   * applies the following defaults:
+   * - `sourceCardinality = "1"`
+   * - `targetCardinality = "1"`
+   *
+   * @returns this builder, for method chaining.
    */
   bringsAbout(): BinaryRelationBuilder {
     this._stereotype = BRINGS_ABOUT;
@@ -390,7 +583,13 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «triggers» and some default values for its meta-properties.
+   * Sets the stereotype of the relation to «triggers», which decorates
+   * relations between a situation and the event it triggers when it obtains.
+   * Also applies the following defaults:
+   * - `sourceCardinality = "1"`
+   * - `targetCardinality = "1"`
+   *
+   * @returns this builder, for method chaining.
    */
   triggers(): BinaryRelationBuilder {
     this._stereotype = TRIGGERS;

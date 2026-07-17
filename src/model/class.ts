@@ -52,25 +52,55 @@ import {
 
 // import { PropertyBuilder } from '../builder/property_builder';
 
+/**
+ * A class in an OntoUML model, i.e., a type whose instances share common
+ * properties, such as `Person`, `Marriage`, or `Color`. Classes are
+ * typically decorated with a {@link ClassStereotype} that captures the
+ * ontological micro-theory governing the type (e.g., «kind», «role»,
+ * «relator»), and are restricted to the ontological natures their instances
+ * may have (see {@link restrictedTo}).
+ *
+ * A class may own attributes (see {@link Property}), and, when decorated
+ * with «enumeration», it may own literals (see {@link Literal}). High-order
+ * classes — whose instances are themselves types — are supported via
+ * {@link order} and {@link isPowertype}.
+ */
 export class Class extends Classifier<Class, ClassStereotype> {
   private _restrictedTo: Nature[] = [];
   private _literals: Set<Literal> = new Set();
   private _order: number = 1;
+
+  /**
+   * Indicates whether the class is a powertype, i.e., a high-order type
+   * whose instances are all the possible specializations of a given base
+   * type.
+   */
   isPowertype: boolean = false;
 
   constructor(project: Project) {
     super(project);
   }
 
+  /** Creates a builder for a {@link Property} owned by this class. */
   propertyBuilder(): PropertyBuilder {
     return new PropertyBuilder(this);
   }
 
+  /**
+   * Creates a builder for a {@link Literal} owned by this class.
+   *
+   * @throws an error if the class is not decorated with «enumeration».
+   */
   literalBuilder(): LiteralBuilder {
     this.assertEnumeration();
     return new LiteralBuilder(this);
   }
 
+  /**
+   * Asserts that this class is not decorated with «enumeration».
+   *
+   * @throws an error if the class is an enumeration.
+   */
   assertNonEnumeration(): void {
     if (this.stereotype === ENUMERATION)
       throw new Error(
@@ -78,6 +108,11 @@ export class Class extends Classifier<Class, ClassStereotype> {
       );
   }
 
+  /**
+   * Asserts that this class is decorated with «enumeration».
+   *
+   * @throws an error if the class is not an enumeration.
+   */
   assertEnumeration(): void {
     if (this.stereotype !== ENUMERATION)
       throw new Error(
@@ -85,37 +120,58 @@ export class Class extends Classifier<Class, ClassStereotype> {
       );
   }
 
+  /**
+   * The ontological natures that instances of this class may have. For
+   * example, a class `Person` decorated with «kind» is restricted to the
+   * functional complex nature, while a class `Insurable` may admit
+   * instances of multiple natures.
+   */
   public get restrictedTo(): Nature[] {
     return [...this._restrictedTo];
   }
 
+  /**
+   * Sets the ontological natures that instances of this class may have,
+   * discarding duplicates.
+   */
   public set restrictedTo(value: Nature[]) {
     this._restrictedTo = [...new Set(value)];
   }
 
-  /**
-   * @returns attributes defined in the class, excluding inherited ones.
-   * */
+  /** The attributes defined in this class, excluding inherited ones. */
   public get attributes(): Property[] {
     return this.properties;
   }
 
-  /**
-   * @returns literals defined in the class, excluding inherited ones.
-   * */
+  /** The literals defined in this class, excluding inherited ones. */
   public get literals(): Literal[] {
     return [...this._literals];
   }
 
+  /**
+   * Sets the literals defined in this class, detaching any previously owned
+   * literals.
+   */
   public set literals(literals: Literal[]) {
     this._literals.forEach(l => this.deleteLiteral(l));
     literals.forEach(l => this.addLiteral(l));
   }
 
+  /**
+   * The type order of this class: 1 for first-order classes (whose
+   * instances are individuals), 2 for second-order classes (whose instances
+   * are first-order types), and so on. Orderless classes are represented by
+   * {@link ORDERLESS_LEVEL}.
+   */
   public get order(): number {
     return this._order;
   }
 
+  /**
+   * Sets the type order of this class.
+   *
+   * @throws an error if the value is smaller than one.
+   */
   public set order(value: number) {
     if (value < 1) {
       throw new Error('The order of a class must be greater or equal to one');
@@ -124,10 +180,15 @@ export class Class extends Classifier<Class, ClassStereotype> {
     this._order = value;
   }
 
+  /** The attributes and literals owned by this class. */
   override get contents(): ModelElement[] {
     return [...this._properties, ...this._literals];
   }
 
+  /**
+   * Lists the stereotypes that OntoUML allows on classes, i.e., all values
+   * of {@link ClassStereotype}.
+   */
   getAllowedStereotypes(): ClassStereotype[] {
     return Object.values(ClassStereotype);
   }
@@ -144,6 +205,10 @@ export class Class extends Classifier<Class, ClassStereotype> {
     return { type: OntoumlType.CLASS, ...super.toJSON(), ...object };
   }
 
+  /**
+   * Retrieves the type order of this class as a string, where orderless
+   * classes are represented as `"*"`.
+   */
   public getOrderAsString(): string {
     if (this.order === ORDERLESS_LEVEL) {
       return '*';
@@ -152,11 +217,22 @@ export class Class extends Classifier<Class, ClassStereotype> {
     return this.order.toString();
   }
 
+  /**
+   * Adds an attribute to this class, setting the class as the attribute's
+   * container.
+   */
   addAttribute(attribute: Property): void {
     this._properties.push(attribute);
     attribute._container = this;
   }
 
+  /**
+   * Adds a literal to this enumeration, removing it from its previous
+   * enumeration, if any.
+   *
+   * @throws an error if the class is not an enumeration, the literal is
+   *         undefined, or the literal is already contained by the class.
+   */
   addLiteral(literal: Literal): void {
     this.assertEnumeration();
 
@@ -174,6 +250,13 @@ export class Class extends Classifier<Class, ClassStereotype> {
     literal._container = this;
   }
 
+  /**
+   * Removes a literal from this enumeration, clearing the literal's
+   * container.
+   *
+   * @throws an error if the class is not an enumeration, the literal is
+   *         undefined, or the literal is not contained by the class.
+   */
   deleteLiteral(literal: Literal): void {
     this.assertEnumeration();
 
@@ -189,19 +272,31 @@ export class Class extends Classifier<Class, ClassStereotype> {
     literal._container = undefined;
   }
 
+  /** Checks whether this class owns at least one attribute. */
   hasAttributes(): boolean {
     return !_.isEmpty(this._properties);
   }
 
+  /** Checks whether this class owns at least one literal. */
   hasLiterals(): boolean {
     return !_.isEmpty(this._literals);
   }
 
+  /**
+   * Checks whether this class allows instances of at least one of the given
+   * natures, i.e., whether {@link restrictedTo} intersects the given
+   * natures.
+   */
   allowsSome(natures: Nature | readonly Nature[]): boolean {
     const naturesArray = utils.arrayFrom(natures);
     return utils.intersects(this.restrictedTo, naturesArray);
   }
 
+  /**
+   * Checks whether this class only allows instances of the given natures,
+   * i.e., whether {@link restrictedTo} is a non-empty subset of the given
+   * natures.
+   */
   allowsOnly(natures: Nature | readonly Nature[]): boolean {
     const naturesArray = utils.arrayFrom(natures);
     return (
@@ -211,6 +306,11 @@ export class Class extends Classifier<Class, ClassStereotype> {
     );
   }
 
+  /**
+   * Checks whether this class allows instances of all of the given natures,
+   * i.e., whether {@link restrictedTo} is a non-empty superset of the given
+   * natures.
+   */
   allowsAll(natures: Nature | readonly Nature[]): boolean {
     const naturesArray = utils.arrayFrom(natures);
     return (
@@ -220,43 +320,84 @@ export class Class extends Classifier<Class, ClassStereotype> {
     );
   }
 
+  /**
+   * Checks whether this class allows instances of exactly the given
+   * natures, i.e., whether {@link restrictedTo} has the same contents as
+   * the given natures.
+   */
   allowsExactly(natures: Nature | readonly Nature[]): boolean {
     const naturesArray = utils.arrayFrom(natures);
     return utils.equalContents(this.restrictedTo, naturesArray);
   }
 
+  /**
+   * Checks whether the instances of this class are restricted to endurant
+   * natures (see {@link EndurantNatures}).
+   */
   isEndurantType(): boolean {
     return this.allowsOnly(EndurantNatures);
   }
 
+  /**
+   * Checks whether the instances of this class are restricted to
+   * substantial natures (see {@link SubstantialNatures}).
+   */
   isSubstantialType(): boolean {
     return this.allowsOnly(SubstantialNatures);
   }
 
+  /**
+   * Checks whether the instances of this class are restricted to moment
+   * natures (see {@link MomentNatures}).
+   */
   isMomentType(): boolean {
     return this.allowsOnly(MomentNatures);
   }
 
+  /**
+   * Checks whether the instances of this class are restricted to the
+   * functional complex nature.
+   */
   isFunctionalComplexType(): boolean {
     return this.allowsExactly(Nature.FUNCTIONAL_COMPLEX);
   }
 
+  /**
+   * Checks whether the instances of this class are restricted to the
+   * collective nature.
+   */
   isCollectiveType(): boolean {
     return this.allowsExactly(Nature.COLLECTIVE);
   }
 
+  /**
+   * Checks whether the instances of this class are restricted to the
+   * quantity nature.
+   */
   isQuantityType(): boolean {
     return this.allowsExactly(Nature.QUANTITY);
   }
 
+  /**
+   * Checks whether the instances of this class are restricted to intrinsic
+   * moment natures (see {@link IntrinsicMomentNatures}).
+   */
   isIntrinsicMomentType(): boolean {
     return this.allowsOnly(IntrinsicMomentNatures);
   }
 
+  /**
+   * Checks whether the instances of this class are restricted to extrinsic
+   * moment natures (see {@link ExtrinsicMomentNatures}).
+   */
   isExtrinsicMomentType(): boolean {
     return this.allowsOnly(ExtrinsicMomentNatures);
   }
 
+  /**
+   * Checks whether this class can characterize other types, i.e., whether
+   * its instances are restricted to mode and quality natures.
+   */
   isCharacterizer(): boolean {
     return this.allowsOnly([
       Nature.EXTRINSIC_MODE,
@@ -265,40 +406,74 @@ export class Class extends Classifier<Class, ClassStereotype> {
     ]);
   }
 
+  /**
+   * Checks whether the instances of this class are restricted to the
+   * relator nature.
+   */
   isRelatorType(): boolean {
     return this.allowsExactly(Nature.RELATOR);
   }
 
+  /**
+   * Checks whether the instances of this class are restricted to the
+   * intrinsic mode nature.
+   */
   isIntrinsicModeType(): boolean {
     return this.allowsExactly(Nature.INTRINSIC_MODE);
   }
 
+  /**
+   * Checks whether the instances of this class are restricted to the
+   * extrinsic mode nature.
+   */
   isExtrinsicModeType(): boolean {
     return this.allowsExactly(Nature.EXTRINSIC_MODE);
   }
 
+  /**
+   * Checks whether the instances of this class are restricted to the
+   * quality nature.
+   */
   isQualityType(): boolean {
     return this.allowsExactly(Nature.QUALITY);
   }
 
+  /**
+   * Checks whether the instances of this class are restricted to the event
+   * nature.
+   */
   isEventType(): boolean {
     return this.allowsExactly(Nature.EVENT);
   }
 
+  /**
+   * Checks whether the instances of this class are restricted to the
+   * situation nature.
+   */
   isSituationType(): boolean {
     return this.allowsExactly(Nature.SITUATION);
   }
 
+  /**
+   * Checks whether the instances of this class are restricted to the type
+   * nature, i.e., whether its instances are themselves types.
+   */
   isHighOrderType(): boolean {
     return this.allowsExactly(Nature.TYPE);
   }
 
+  /**
+   * Checks whether the instances of this class are restricted to the
+   * abstract nature.
+   */
   isAbstractType(): boolean {
     return this.allowsExactly(Nature.ABSTRACT);
   }
 
   /**
-   * @returns true if the class is decorated with a rigid stereotype.
+   * Checks whether this class is rigid, i.e., whether it necessarily
+   * applies to its instances in every world in which they exist.
+   *
    * @see RIGID_STEREOTYPES
    */
   isRigid(): boolean {
@@ -306,14 +481,19 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   /**
-   * @returns true if the class is decorated with a semi-rigid stereotype.
+   * Checks whether this class is semi-rigid, i.e., whether it applies
+   * necessarily to some of its instances and contingently to others.
+   *
    * @see SEMI_RIGID_STEREOTYPES
    */
   isSemiRigid(): boolean {
     return this.isStereotypeOneOf(SEMI_RIGID_STEREOTYPES);
   }
+
   /**
-   * @returns true if the class is decorated with an anti-rigid stereotype.
+   * Checks whether this class is anti-rigid, i.e., whether every instance
+   * can cease to be classified by it without ceasing to exist.
+   *
    * @see ANTI_RIGID_STEREOTYPES
    */
   isAntiRigid(): boolean {
@@ -321,7 +501,9 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   /**
-   * @returns true if the class is decorated with a non-sortal stereotype.
+   * Checks whether this class is a non-sortal, i.e., whether it classifies
+   * entities that follow different identity principles.
+   *
    * @see NON_SORTAL_STEREOTYPES
    */
   isNonSortal(): boolean {
@@ -329,7 +511,9 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   /**
-   * @returns true if the class is decorated with a sortal stereotype.
+   * Checks whether this class is a sortal, i.e., whether all of its
+   * instances follow the same identity principle.
+   *
    * @see SORTAL_STEREOTYPES
    */
   isSortal(): boolean {
@@ -337,7 +521,9 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   /**
-   * @returns true if the class is decorated with an ultimate sortal stereotype, i.e. a stereotype that indicates that the class provides an identity principle to its instances.
+   * Checks whether this class is an ultimate sortal, i.e., whether it
+   * provides the identity principle followed by its instances.
+   *
    * @see ULTIMATE_SORTAL_STEREOTYPES
    */
   isIdentityProvider(): boolean {
@@ -345,301 +531,285 @@ export class Class extends Classifier<Class, ClassStereotype> {
   }
 
   /**
-   * @returns true if the class is decorated with a base sortal stereotype.
+   * Checks whether this class is a base sortal, i.e., a sortal that
+   * inherits its identity principle from the ultimate sortal it
+   * specializes.
+   *
    * @see BASE_SORTAL_STEREOTYPES
    */
   isBaseSortal(): boolean {
     return this.isStereotypeOneOf(BASE_SORTAL_STEREOTYPES);
   }
 
-  /**
-   * @returns true if the class is stereotyped as «type».
-   */
+  /** Checks whether this class is stereotyped as «type». */
   isType(): boolean {
     return this.stereotype === TYPE;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «event».
-   */
+  /** Checks whether this class is stereotyped as «event». */
   isEvent(): boolean {
     return this.stereotype === EVENT;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «situation».
-   */
+  /** Checks whether this class is stereotyped as «situation». */
   isSituation(): boolean {
     return this.stereotype === SITUATION;
   }
 
-  /** TODO
-   * @returns true if the class is stereotyped as «abstract».
-   */
+  // TODO
+  /** Checks whether this class is stereotyped as «abstract». */
   isAbstractStereotype(): boolean {
     return this.stereotype === ABSTRACT;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «datatype».
-   */
+  /** Checks whether this class is stereotyped as «datatype». */
   isDatatype(): boolean {
     return this.stereotype === DATATYPE;
   }
 
+  /**
+   * Checks whether this class is a complex datatype, i.e., a «datatype»
+   * restricted to the abstract nature that owns attributes.
+   */
   isComplexDatatype(): boolean {
     return this.isAbstractType() && this.isDatatype() && this.hasAttributes();
   }
 
+  /**
+   * Checks whether this class is a primitive datatype, i.e., a «datatype»
+   * restricted to the abstract nature that owns no attributes.
+   */
   isPrimitiveDatatype(): boolean {
     return this.isAbstractType() && this.isDatatype() && !this.hasAttributes();
   }
 
-  /**
-   * @returns true if the class is stereotyped as «enumeration».
-   */
+  /** Checks whether this class is stereotyped as «enumeration». */
   isEnumeration(): boolean {
     return this.stereotype === ENUMERATION;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «kind».
-   */
+  /** Checks whether this class is stereotyped as «kind». */
   isKind(): boolean {
     return this.stereotype === KIND;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «collective».
-   */
+  /** Checks whether this class is stereotyped as «collective». */
   isCollective(): boolean {
     return this.stereotype === COLLECTIVE;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «quantity».
-   */
+  /** Checks whether this class is stereotyped as «quantity». */
   isQuantity(): boolean {
     return this.stereotype === QUANTITY;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «relator».
-   */
+  /** Checks whether this class is stereotyped as «relator». */
   isRelator(): boolean {
     return this.stereotype === RELATOR;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «quality».
-   */
+  /** Checks whether this class is stereotyped as «quality». */
   isQuality(): boolean {
     return this.stereotype === QUALITY;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «mode».
-   */
+  /** Checks whether this class is stereotyped as «mode». */
   isMode(): boolean {
     return this.stereotype === MODE;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «subkind».
-   */
+  /** Checks whether this class is stereotyped as «subkind». */
   isSubkind(): boolean {
     return this.stereotype === SUBKIND;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «phase».
-   */
+  /** Checks whether this class is stereotyped as «phase». */
   isPhase(): boolean {
     return this.stereotype === PHASE;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «role».
-   */
+  /** Checks whether this class is stereotyped as «role». */
   isRole(): boolean {
     return this.stereotype === ROLE;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «historicalRole».
-   */
+  /** Checks whether this class is stereotyped as «historicalRole». */
   isHistoricalRole(): boolean {
     return this.stereotype === HISTORICAL_ROLE;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «category».
-   */
+  /** Checks whether this class is stereotyped as «category». */
   isCategory(): boolean {
     return this.stereotype === CATEGORY;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «phaseMixin».
-   */
+  /** Checks whether this class is stereotyped as «phaseMixin». */
   isPhaseMixin(): boolean {
     return this.stereotype === PHASE_MIXIN;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «roleMixin».
-   */
+  /** Checks whether this class is stereotyped as «roleMixin». */
   isRoleMixin(): boolean {
     return this.stereotype === ROLE_MIXIN;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «historicalRoleMixin».
-   */
+  /** Checks whether this class is stereotyped as «historicalRoleMixin». */
   isHistoricalRoleMixin(): boolean {
     return this.stereotype === HISTORICAL_ROLE_MIXIN;
   }
 
-  /**
-   * @returns true if the class is stereotyped as «mixin».
-   */
+  /** Checks whether this class is stereotyped as «mixin». */
   isMixin(): boolean {
     return this.stereotype === MIXIN;
   }
 
   /**
-   *
-   * @returns an array of {@link Class} that are direct or indirect supertypes of the class and are stereotyped with one of {@link ULTIMATE_SORTAL_STEREOTYPES}.
+   * Retrieves the direct and indirect supertypes of this class that are
+   * ultimate sortals (see {@link ULTIMATE_SORTAL_STEREOTYPES}).
    */
   getIdentityProviderAncestors(): Class[] {
     return this.getAncestors().filter(a => a.isIdentityProvider());
   }
 
   /**
-   *
-   * @returns an array of {@link Class} that are direct or indirect subtypes of the class and are stereotyped with one of {@link ULTIMATE_SORTAL_STEREOTYPES}.
+   * Retrieves the direct and indirect subtypes of this class that are
+   * ultimate sortals (see {@link ULTIMATE_SORTAL_STEREOTYPES}).
    */
   getIdentityProviderDescendants(): Class[] {
     return this.getDescendants().filter(d => d.isIdentityProvider());
   }
 
   /**
-   *
-   * @returns an array of {@link Class} that are direct or indirect supertypes of the class and are stereotyped with one of {@link SORTAL_STEREOTYPES}.
+   * Retrieves the direct and indirect supertypes of this class that are
+   * sortals (see {@link SORTAL_STEREOTYPES}).
    */
   getSortalAncestors(): Class[] {
     return this.getAncestors().filter(a => a.isSortal());
   }
 
   /**
-   *
-   * @returns an array of {@link Class} that are direct or indirect subtypes of the class and are stereotyped with one of {@link SORTAL_STEREOTYPES}.
+   * Retrieves the direct and indirect subtypes of this class that are
+   * sortals (see {@link SORTAL_STEREOTYPES}).
    */
   getSortalDescendants(): Class[] {
     return this.getDescendants().filter(d => d.isSortal());
   }
 
   /**
-   *
-   * @returns an array of {@link Class} that are direct or indirect supertypes of the class and are stereotyped with one of {@link BASE_SORTAL_STEREOTYPES}.
+   * Retrieves the direct and indirect supertypes of this class that are
+   * base sortals (see {@link BASE_SORTAL_STEREOTYPES}).
    */
   getBaseSortalAncestors(): Class[] {
     return this.getAncestors().filter(a => a.isBaseSortal());
   }
 
   /**
-   *
-   * @returns an array of {@link Class} that are direct or indirect subtypes of the class and are stereotyped with one of {@link BASE_SORTAL_STEREOTYPES}.
+   * Retrieves the direct and indirect subtypes of this class that are base
+   * sortals (see {@link BASE_SORTAL_STEREOTYPES}).
    */
   getBaseSortalDescendants(): Class[] {
     return this.getDescendants().filter(d => d.isBaseSortal());
   }
 
   /**
-   *
-   * @returns an array of {@link Class} that are direct or indirect supertypes of the class and are non-sortal.
+   * Retrieves the direct and indirect supertypes of this class that are
+   * non-sortals (see {@link NON_SORTAL_STEREOTYPES}).
    */
   getNonSortalAncestors(): Class[] {
     return this.getAncestors().filter(a => a.isNonSortal());
   }
 
   /**
-   *
-   * @returns an array of {@link Class} that are direct or indirect subtypes of the class and are non-sortal.
+   * Retrieves the direct and indirect subtypes of this class that are
+   * non-sortals (see {@link NON_SORTAL_STEREOTYPES}).
    */
   getNonSortalDescendants(): Class[] {
     return this.getDescendants().filter(d => d.isNonSortal());
   }
 
   /**
-   *
-   * @returns an array of {@link Class} that are direct or indirect supertypes of the class and are rigid.
+   * Retrieves the direct and indirect supertypes of this class that are
+   * rigid (see {@link RIGID_STEREOTYPES}).
    */
   getRigidAncestors(): Class[] {
     return this.getAncestors().filter(a => a.isRigid());
   }
 
   /**
-   *
-   * @returns an array of {@link Class} that are direct or indirect subtypes of the class and are rigid.
+   * Retrieves the direct and indirect subtypes of this class that are rigid
+   * (see {@link RIGID_STEREOTYPES}).
    */
   getRigidDescendants(): Class[] {
     return this.getDescendants().filter(d => d.isRigid());
   }
 
   /**
-   *
-   * @returns an array of {@link Class} that are direct or indirect supertypes of the class and are semi-rigid.
+   * Retrieves the direct and indirect supertypes of this class that are
+   * semi-rigid (see {@link SEMI_RIGID_STEREOTYPES}).
    */
   getSemiRigidAncestors(): Class[] {
     return this.getAncestors().filter(a => a.isSemiRigid());
   }
 
   /**
-   *
-   * @returns an array of {@link Class} that are direct or indirect subtypes of the class and are semi-rigid.
+   * Retrieves the direct and indirect subtypes of this class that are
+   * semi-rigid (see {@link SEMI_RIGID_STEREOTYPES}).
    */
   getSemiRigidDescendants(): Class[] {
     return this.getDescendants().filter(d => d.isSemiRigid());
   }
 
   /**
-   *
-   * @returns an array of {@link Class} that are direct or indirect supertypes of the class and are anti-rigid.
+   * Retrieves the direct and indirect supertypes of this class that are
+   * anti-rigid (see {@link ANTI_RIGID_STEREOTYPES}).
    */
   getAntiRigidAncestors(): Class[] {
     return this.getAncestors().filter(a => a.isAntiRigid());
   }
 
   /**
-   *
-   * @returns an array of {@link Class} that are direct or indirect subtypes of the class and are anti-rigid.
+   * Retrieves the direct and indirect subtypes of this class that are
+   * anti-rigid (see {@link ANTI_RIGID_STEREOTYPES}).
    */
   getAntiRigidDescendants(): Class[] {
     return this.getDescendants().filter(d => d.isAntiRigid());
   }
 
   /**
-   * @returns an array of attributes ({@link Property}) that are either owned of inherited by the class.
-   * */
+   * Retrieves the attributes that are either owned or inherited by this
+   * class.
+   */
   getAllAttributes(): Property[] {
     const thisAndAncestors = [this, ...this.getAncestors()];
     return thisAndAncestors.flatMap(c => c._properties);
   }
 
-  /** @returns both own and inherited literals */
+  /**
+   * Retrieves the literals that are either owned or inherited by this
+   * class.
+   */
   getAllLiterals(): Literal[] {
     const thisAndAncestors = [this, ...this.getAncestors()];
     return thisAndAncestors.flatMap(c => [...c._literals]);
   }
 
+  /**
+   * Retrieves the generalization sets in which this class is the
+   * categorizer.
+   */
   getGeneralizationSetsWhereCategorizer(): GeneralizationSet[] {
     return this.getGeneralizationSets().filter(gs => gs.categorizer === this);
   }
 }
 
+/** The value of {@link Class.order} that denotes an orderless class. */
 export const ORDERLESS_LEVEL = Infinity;
 
+/**
+ * Parses the string representation of a type order (see
+ * {@link Class.getOrderAsString}) into a number, mapping `"*"` to
+ * {@link ORDERLESS_LEVEL} and invalid numbers to `1`.
+ */
 export function parseOrder(orderString: string): number {
   if (orderString === '*') {
     return ORDERLESS_LEVEL;

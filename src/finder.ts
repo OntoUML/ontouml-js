@@ -11,20 +11,39 @@ import {
   Project
 } from '.';
 
+/**
+ * A query helper that retrieves the elements of a {@link Project} by their
+ * OntoUML stereotypes and other classification criteria. For example, it can
+ * list all classes stereotyped as «kind», all rigid types, or all «mediation»
+ * relations in the project.
+ *
+ * Every project exposes an instance of this class through its `finder` field.
+ *
+ * @example
+ * ```typescript
+ * const kinds = project.finder.getKinds();
+ * const rigidTypes = project.finder.getRigidTypes();
+ * const mediations = project.finder.getMediations();
+ * ```
+ */
 export class Finder {
+  /** The project whose elements this finder queries. */
   project: Project;
 
   constructor(project: Project) {
     this.project = project;
   }
 
+  /**
+   * Returns a plain object representation of this finder, identifying its
+   * project by id, suitable for `JSON.stringify`.
+   */
   toJSON(): any {
     return { type: 'Finder', project: this.project.id };
   }
 
   /**
-   *
-   * @returns all model elements contained in the project.
+   * Retrieves all model elements contained in the project.
    */
   getModelElements(): ModelElement[] {
     return this.project
@@ -33,8 +52,10 @@ export class Finder {
   }
 
   /**
+   * Retrieves all attributes in the project whose stereotype is included in
+   * `stereotypes`.
    *
-   * @returns all attributes contained in the project whose stereotype is included in {@link stereotypes}.
+   * @param stereotypes - the property stereotypes to filter by.
    */
   getAttributesByStereotype(stereotypes: PropertyStereotype[]): Property[] {
     return this.project.attributes
@@ -43,8 +64,10 @@ export class Finder {
   }
 
   /**
+   * Retrieves all classes in the project whose stereotype is included in
+   * `stereotypes`.
    *
-   * @returns all classes contained in the project whose stereotype is included in {@link stereotypes}.
+   * @param stereotypes - the class stereotypes to filter by.
    */
   getClassesByStereotype(stereotypes: ClassStereotype[]): Class[] {
     return this.project.classes
@@ -53,8 +76,10 @@ export class Finder {
   }
 
   /**
+   * Retrieves all binary relations in the project whose stereotype is
+   * included in `stereotypes`.
    *
-   * @returns all binary relations contained in the project whose stereotype is included in {@link stereotypes}.
+   * @param stereotypes - the relation stereotypes to filter by.
    */
   getBinaryRelationsByStereotype(
     stereotypes: RelationStereotype[]
@@ -65,176 +90,158 @@ export class Finder {
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «type».
+   * Retrieves all classes in the project stereotyped as «type».
    */
   getTypes(): Class[] {
     return this.project.classes.filter(c => c.isType());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «historicalRoles».
+   * Retrieves all classes in the project stereotyped as «historicalRole».
    */
   getHistoricalRoles(): Class[] {
     return this.project.classes.filter(c => c.isHistoricalRole());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «historicalRoleMixin».
+   * Retrieves all classes in the project stereotyped as
+   * «historicalRoleMixin».
    */
   getHistoricalRoleMixins(): Class[] {
     return this.project.classes.filter(c => c.isHistoricalRoleMixin());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «event».
+   * Retrieves all classes in the project stereotyped as «event».
    */
   getEvents(): Class[] {
     return this.project.classes.filter(c => c.isEvent());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «situation».
+   * Retrieves all classes in the project stereotyped as «situation».
    */
   getSituations(): Class[] {
     return this.project.classes.filter(c => c.isSituation());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «category».
+   * Retrieves all classes in the project stereotyped as «category».
    */
   getCategories(): Class[] {
     return this.project.classes.filter(c => c.isCategory());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «mixin».
+   * Retrieves all classes in the project stereotyped as «mixin».
    */
   getMixins(): Class[] {
     return this.project.classes.filter(c => c.isMixin());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «roleMixin».
+   * Retrieves all classes in the project stereotyped as «roleMixin».
    */
   getRoleMixins(): Class[] {
     return this.project.classes.filter(c => c.isRoleMixin());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «phaseMixin».
+   * Retrieves all classes in the project stereotyped as «phaseMixin».
    */
   getPhaseMixins(): Class[] {
     return this.project.classes.filter(c => c.isPhaseMixin());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «kind».
+   * Retrieves all classes in the project stereotyped as «kind».
    */
   getKinds(): Class[] {
     return this.project.classes.filter(c => c.isKind());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «collective».
+   * Retrieves all classes in the project stereotyped as «collective».
    */
   getCollectives(): Class[] {
     return this.project.classes.filter(c => c.isCollective());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «quantity».
+   * Retrieves all classes in the project stereotyped as «quantity».
    */
   getQuantities(): Class[] {
     return this.project.classes.filter(c => c.isQuantity());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «relator».
+   * Retrieves all classes in the project stereotyped as «relator».
    */
   getRelators(): Class[] {
     return this.project.classes.filter(c => c.isRelator());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «quality».
+   * Retrieves all classes in the project stereotyped as «quality».
    */
   getQualities(): Class[] {
     return this.project.classes.filter(c => c.isQuality());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «mode».
+   * Retrieves all classes in the project stereotyped as «mode».
    */
   getModes(): Class[] {
     return this.project.classes.filter(c => c.isMode());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «subkind».
+   * Retrieves all classes in the project stereotyped as «subkind».
    */
   getSubkinds(): Class[] {
     return this.project.classes.filter(c => c.isSubkind());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «role».
+   * Retrieves all classes in the project stereotyped as «role».
    */
   getRoles(): Class[] {
     return this.project.classes.filter(c => c.isRole());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «phase».
+   * Retrieves all classes in the project stereotyped as «phase».
    */
   getPhases(): Class[] {
     return this.project.classes.filter(c => c.isPhase());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «enumeration».
+   * Retrieves all classes in the project stereotyped as «enumeration».
    */
   getEnumerations(): Class[] {
     return this.project.classes.filter(c => c.isEnumeration());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «datatype».
+   * Retrieves all classes in the project stereotyped as «datatype».
    */
   getDatatypes(): Class[] {
     return this.project.classes.filter(c => c.isDatatype());
   }
 
   /**
-   *
-   * @returns all classes contained in the package that are stereotyped as «abstract».
+   * Retrieves all classes in the project stereotyped as «abstract».
    */
   getAbstracts(): Class[] {
     return this.project.classes.filter(c => c.isAbstractStereotype());
   }
 
   /**
+   * Retrieves all classes in the project decorated with a sortal stereotype,
+   * i.e., a stereotype that carries or supplies an identity principle to the
+   * instances of the class.
    *
-   * @returns all classes in the project decorated with a sortal stereotype.
    * @see Class.isSortal
    */
   getSortals(): Class[] {
@@ -242,8 +249,10 @@ export class Finder {
   }
 
   /**
+   * Retrieves all classes in the project decorated with a non-sortal
+   * stereotype, i.e., a stereotype that classifies instances with different
+   * identity principles.
    *
-   * @returns all classes in the project decorated with a non-sortal stereotype.
    * @see Class.isNonSortal
    */
   getNonSortals(): Class[] {
@@ -251,8 +260,10 @@ export class Finder {
   }
 
   /**
+   * Retrieves all classes in the project decorated with an anti-rigid
+   * stereotype, i.e., a stereotype of classes whose instances can cease to be
+   * instances of them (e.g., «role», «phase»).
    *
-   * @returns all classes in the project decorated with an anti-rigid stereotype.
    * @see Class.isAntiRigid
    */
   getAntiRigidTypes(): Class[] {
@@ -260,8 +271,10 @@ export class Finder {
   }
 
   /**
+   * Retrieves all classes in the project decorated with a semi-rigid
+   * stereotype, i.e., a stereotype of classes that apply necessarily to some
+   * of their instances and contingently to others (e.g., «mixin»).
    *
-   * @returns all classes in the project decorated with a semi-rigid stereotype.
    * @see Class.isSemiRigid
    */
   getSemiRigidTypes(): Class[] {
@@ -269,8 +282,10 @@ export class Finder {
   }
 
   /**
+   * Retrieves all classes in the project decorated with a rigid stereotype,
+   * i.e., a stereotype of classes whose instances cannot cease to be
+   * instances of them (e.g., «kind», «subkind», «category»).
    *
-   * @returns all classes in the project decorated with a rigid stereotype.
    * @see Class.isRigid
    */
   getRigidTypes(): Class[] {
@@ -278,32 +293,32 @@ export class Finder {
   }
 
   /**
-   *
-   * @returns all classes whose field `restrictedTo` includes only {@link Nature.FUNCTIONAL_COMPLEX}.
+   * Retrieves all classes in the project whose instances are restricted to
+   * {@link Nature.FUNCTIONAL_COMPLEX} only.
    */
   getFunctionalComplexTypes(): Class[] {
     return this.project.classes.filter(c => c.isFunctionalComplexType());
   }
 
   /**
-   *
-   * @returns all classes whose field `restrictedTo` includes only {@link Nature.COLLECTIVE}.
+   * Retrieves all classes in the project whose instances are restricted to
+   * {@link Nature.COLLECTIVE} only.
    */
   getCollectiveTypes(): Class[] {
     return this.project.classes.filter(c => c.isCollectiveType());
   }
 
   /**
-   *
-   * @returns all classes whose field `restrictedTo` includes only {@link Nature.QUANTITY}.
+   * Retrieves all classes in the project whose instances are restricted to
+   * {@link Nature.QUANTITY} only.
    */
   getQuantityTypes(): Class[] {
     return this.project.classes.filter(c => c.isQuantityType());
   }
 
   /**
-   *
-   * @returns all classes whose field `restrictedTo` includes {@link Nature.INTRINSIC_MODE} and/or {@link Nature.EXTRINSIC_MODE} .
+   * Retrieves all classes in the project whose instances are restricted to
+   * {@link Nature.INTRINSIC_MODE} and/or {@link Nature.EXTRINSIC_MODE} only.
    */
   getModeTypes(): Class[] {
     return this.project.classes.filter(c =>
@@ -312,200 +327,197 @@ export class Finder {
   }
 
   /**
-   *
-   * @returns all classes whose field `restrictedTo` includes only {@link Nature.INTRINSIC_MODE}.
+   * Retrieves all classes in the project whose instances are restricted to
+   * {@link Nature.INTRINSIC_MODE} only.
    */
   getIntrinsicModeTypes(): Class[] {
     return this.project.classes.filter(c => c.isIntrinsicModeType());
   }
 
   /**
-   *
-   * @returns all classes whose field `restrictedTo` includes only {@link Nature.EXTRINSIC_MODE}.
+   * Retrieves all classes in the project whose instances are restricted to
+   * {@link Nature.EXTRINSIC_MODE} only.
    */
   getExtrinsicModeTypes(): Class[] {
     return this.project.classes.filter(c => c.isExtrinsicModeType());
   }
 
   /**
-   *
-   * @returns all classes whose field `restrictedTo` includes only {@link Nature.QUALITY}.
+   * Retrieves all classes in the project whose instances are restricted to
+   * {@link Nature.QUALITY} only.
    */
   getQualityTypes(): Class[] {
     return this.project.classes.filter(c => c.isQualityType());
   }
 
   /**
-   *
-   * @returns all classes whose field `restrictedTo` includes only {@link Nature.RELATOR}.
+   * Retrieves all classes in the project whose instances are restricted to
+   * {@link Nature.RELATOR} only.
    */
   getRelatorTypes(): Class[] {
     return this.project.classes.filter(c => c.isRelatorType());
   }
 
   /**
-   *
-   * @returns all classes whose field `restrictedTo` includes only {@link Nature.TYPE}.
+   * Retrieves all classes in the project whose instances are restricted to
+   * {@link Nature.TYPE} only, i.e., high-order types whose instances are
+   * themselves types.
    */
   getHighOrderTypes(): Class[] {
     return this.project.classes.filter(c => c.isHighOrderType());
   }
 
   /**
-   *
-   * @returns all classes whose field `restrictedTo` includes only {@link Nature.EVENT}.
+   * Retrieves all classes in the project whose instances are restricted to
+   * {@link Nature.EVENT} only.
    */
   getEventTypes(): Class[] {
     return this.project.classes.filter(c => c.isEventType());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «bringsAbout».
+   * Retrieves all binary relations in the project stereotyped as
+   * «bringsAbout».
    */
   getBringsAboutRelation(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isBringsAbout());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «characterization».
+   * Retrieves all binary relations in the project stereotyped as
+   * «characterization».
    */
   getCharacterizations(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isCharacterization());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «».
+   * Retrieves all binary relations in the project stereotyped as
+   * «comparative».
    */
   getComparatives(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isComparative());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «componentOf».
+   * Retrieves all binary relations in the project stereotyped as
+   * «componentOf».
    */
   getComponentOfRelations(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isComponentOf());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «creation».
+   * Retrieves all binary relations in the project stereotyped as «creation».
    */
   getCreations(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isCreation());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «derivation».
+   * Retrieves all binary relations in the project stereotyped as
+   * «derivation».
    */
   getDerivations(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isDerivation());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «externalDependence».
+   * Retrieves all binary relations in the project stereotyped as
+   * «externalDependence».
    */
   getExternalDependencies(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isExternalDependence());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «historicalDependence».
+   * Retrieves all binary relations in the project stereotyped as
+   * «historicalDependence».
    */
   getHistoricalDependencies(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isHistoricalDependence());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «instantiation».
+   * Retrieves all binary relations in the project stereotyped as
+   * «instantiation».
    */
   getInstantiations(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isInstantiation());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «manifestation».
+   * Retrieves all binary relations in the project stereotyped as
+   * «manifestation».
    */
   getManifestations(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isManifestation());
   }
 
   /**
-   *
-   * @returns all relations in the project stereotyped as «material».
+   * Retrieves all relations in the project stereotyped as «material»,
+   * whether binary or n-ary.
    */
   getMaterialRelations(): Relation[] {
     return this.project.relations.filter(r => r.isMaterial());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «mediation».
+   * Retrieves all binary relations in the project stereotyped as «mediation».
    */
   getMediations(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isMediation());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «memberOf».
+   * Retrieves all binary relations in the project stereotyped as «memberOf».
    */
   getMemberOfs(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isMemberOf());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «participation».
+   * Retrieves all binary relations in the project stereotyped as
+   * «participation».
    */
   getParticipations(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isParticipation());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «participational».
+   * Retrieves all binary relations in the project stereotyped as
+   * «participational».
    */
   getParticipationals(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isParticipational());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «subCollectionOf».
+   * Retrieves all binary relations in the project stereotyped as
+   * «subCollectionOf».
    */
   getSubCollectionOfs(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isSubCollectionOf());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «subQuantityOf».
+   * Retrieves all binary relations in the project stereotyped as
+   * «subQuantityOf».
    */
   getSubQuantityOfs(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isSubQuantityOf());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «termination».
+   * Retrieves all binary relations in the project stereotyped as
+   * «termination».
    */
   getTerminations(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isTermination());
   }
 
   /**
-   *
-   * @returns all binary relations in the project stereotyped as «triggers».
+   * Retrieves all binary relations in the project stereotyped as «triggers».
    */
   getTriggersRelations(): BinaryRelation[] {
     return this.project.binaryRelations.filter(r => r.isTriggers());

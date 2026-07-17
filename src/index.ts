@@ -2,6 +2,7 @@ export * from './ontouml_type';
 export * from './ontouml_element';
 export * from './multilingual_text';
 export * from './resource';
+export * from './metadata';
 export * from './named_element';
 export * from './utils';
 export * from './finder';

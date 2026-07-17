@@ -1,4 +1,11 @@
-import { Project, ProjectBuilder } from '../../src';
+import {
+  OntologyDevelopmentContext,
+  OntologyPurpose,
+  OntologyRepresentationStyle,
+  OntologyType,
+  Project,
+  ProjectBuilder
+} from '../../src';
 
 describe('Project builder tests', () => {
   it('should build a project with an id, a name, and a description', () => {
@@ -46,6 +53,33 @@ describe('Project builder tests', () => {
     expect(proj.designedForTasks).toHaveLength(1);
     expect(proj.ontologyTypes).toHaveLength(1);
     expect(proj.themes[0].name.get()).toEqual('Class S - Agriculture');
+  });
+
+  it('should resolve metadata vocabulary values to their official labels', () => {
+    const proj = new ProjectBuilder()
+      .representationStyle(OntologyRepresentationStyle.ONTOUML)
+      .context(OntologyDevelopmentContext.RESEARCH)
+      .designedForTask(OntologyPurpose.CONCEPTUAL_CLARIFICATION)
+      .ontologyType(OntologyType.DOMAIN)
+      .build();
+
+    expect(proj.representationStyle?.uri).toEqual(
+      OntologyRepresentationStyle.ONTOUML
+    );
+    expect(proj.representationStyle?.name.get('en')).toEqual('OntoUML Style');
+    expect(proj.contexts[0].name.get('en')).toEqual('Research Context');
+    expect(proj.designedForTasks[0].name.get('en')).toEqual(
+      'Conceptual Clarification Purpose'
+    );
+    expect(proj.ontologyTypes[0].name.get('en')).toEqual('Domain Ontology');
+  });
+
+  it('should not override explicit names of metadata vocabulary values', () => {
+    const proj = new ProjectBuilder()
+      .context(OntologyDevelopmentContext.INDUSTRY, 'Indústria', 'pt')
+      .build();
+
+    expect(proj.contexts[0].name.get('pt')).toEqual('Indústria');
   });
 
   it('should build a project with string- and text-valued metadata', () => {

@@ -7,6 +7,24 @@ import {
   COMPARATIVE
 } from '../..';
 
+/**
+ * A fluent builder for {@link NaryRelation} instances.
+ *
+ * This builder configures the members connected by the relation (at least
+ * three classifiers) and its OntoUML stereotype, offering shortcut methods
+ * for the stereotypes applicable to n-ary relations, namely `material()`
+ * and `comparative()`.
+ *
+ * @example
+ * ```typescript
+ * const treatedIn = project
+ *   .naryRelationBuilder()
+ *   .material()
+ *   .name('treated in')
+ *   .members(patient, hospital, disease)
+ *   .build();
+ * ```
+ */
 export class NaryRelationBuilder extends ClassifierBuilder<
   NaryRelationBuilder,
   RelationStereotype
@@ -15,7 +33,11 @@ export class NaryRelationBuilder extends ClassifierBuilder<
   private _members: Classifier<any, any>[] = [];
 
   /**
-   * Builds an instance of {@link NaryRelation} with the parameters passed to the builder. **WARNING:** the ordering in which methods are evoked may affect the resulting object. When no methods are evoked, the created class has the following defaults:
+   * Builds an instance of {@link NaryRelation} with the parameters passed to
+   * the builder. At least three members are required before `build()` is
+   * evoked. **WARNING:** the ordering in which methods are evoked may affect
+   * the resulting object. When no methods are evoked, the created relation
+   * has the following defaults:
    * - `id: "randomly-generated-id",`
    * - `created: new Date(),`
    * - `isAbstract: false,`
@@ -36,13 +58,26 @@ export class NaryRelationBuilder extends ClassifierBuilder<
     return this.element;
   }
 
+  /**
+   * Sets the {@link Classifier} instances connected by the ends of the
+   * relation, replacing any previously set members. At least three members
+   * are required to build the relation.
+   *
+   * @returns this builder, for method chaining.
+   */
   members(...members: Classifier<any, any>[]): NaryRelationBuilder {
     this._members = [...members];
     return this;
   }
 
   /**
-   * Sets the stereotype field and set default values in case of a known ClassStereotype.
+   * Sets the stereotype of the relation, delegating to the corresponding
+   * shortcut method (`material()` or `comparative()`) when the value is a
+   * {@link RelationStereotype} applicable to n-ary relations, in which case
+   * the default values of the stereotype are also applied.
+   *
+   * @param stereotype - the stereotype to decorate the relation with.
+   * @returns this builder, for method chaining.
    */
   override stereotype(stereotype: string): NaryRelationBuilder {
     switch (stereotype) {
@@ -56,14 +91,12 @@ export class NaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «material» and default values:
-   * - isDerived = true
+   * Sets the stereotype of the relation to «material», which decorates
+   * relations between endurants that are founded on relators, such as being
+   * treated in. Also applies the following defaults:
+   * - `isDerived = true`
    *
-   * The values assigned to all relation ends are:
-   * - isReadOnly = false
-   * - isOrdered = false
-   * - multiplicty = 0..*
-   * - aggregationKind = NONE
+   * @returns this builder, for method chaining.
    */
   material(): NaryRelationBuilder {
     this._stereotype = MATERIAL;
@@ -72,14 +105,12 @@ export class NaryRelationBuilder extends ClassifierBuilder<
   }
 
   /**
-   * Sets the stereotype of the binary relation to «comparative» and default values:
-   * - isDerived = true
+   * Sets the stereotype of the relation to «comparative», which decorates
+   * relations that hold between endurants by virtue of a comparison of their
+   * intrinsic aspects. Also applies the following defaults:
+   * - `isDerived = true`
    *
-   * The values assigned to the source and target end are:
-   * - isReadOnly = false
-   * - isOrdered = false
-   * - multiplicty = 0..*
-   * - aggregationKind = NONE
+   * @returns this builder, for method chaining.
    */
   comparative(): NaryRelationBuilder {
     this._stereotype = COMPARATIVE;

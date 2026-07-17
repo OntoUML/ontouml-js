@@ -7,7 +7,13 @@ import {
   AnchorBuilder
 } from '..';
 
+/**
+ * A free-text annotation that documents some aspect of a model, analogous to
+ * a UML comment. A note can be attached to the {@link ModelElement} it
+ * comments on by means of an {@link Anchor}.
+ */
 export class Note extends ModelElement {
+  /** The textual content of the note, possibly in multiple languages. */
   text: MultilingualText;
 
   constructor(project: Project) {
@@ -15,12 +21,15 @@ export class Note extends ModelElement {
     this.text = new MultilingualText();
   }
 
+  /** The package that contains this note, if any. */
   public override get container(): Package | undefined {
     return this._container as Package;
   }
 
-  /** @returns a builder for an {@link Anchor} that connects this note to a
-   * model element. */
+  /**
+   * Creates a builder for an {@link Anchor} that attaches this note to a
+   * model element.
+   */
   anchorBuilder(): AnchorBuilder {
     return new AnchorBuilder(this.project!).note(this);
   }
