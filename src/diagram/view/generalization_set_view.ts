@@ -1,4 +1,4 @@
-import { GeneralizationSet, OntoumlElement, OntoumlType, View, Text } from '..';
+import { GeneralizationSet, OntoumlType, View, Text, Shape } from '../..';
 
 export class GeneralizationSetView extends View<GeneralizationSet> {
   text: Text;
@@ -11,16 +11,15 @@ export class GeneralizationSetView extends View<GeneralizationSet> {
     this.text.height = 50;
   }
 
-  override getContents(): OntoumlElement[] {
+  override get shapes(): Shape[] {
     return [this.text];
   }
 
   override toJSON(): any {
-    const object = {
+    return {
       type: OntoumlType.GENERALIZATION_SET_VIEW,
+      ...super.toJSON(),
       text: this.text.id
     };
-
-    return { ...object, ...super.toJSON() };
   }
 }

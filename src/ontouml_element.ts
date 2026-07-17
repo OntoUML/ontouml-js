@@ -1,68 +1,12 @@
 import uniqid from 'uniqid';
-import _ from 'lodash';
-import { OntoumlType, Project } from '.';
 
 export abstract class OntoumlElement {
   id: string = uniqid();
   created: Date = new Date();
   modified?: Date;
-  private _project?: Project;
 
-  constructor(project?: Project) {
-    this._project = project;
-  }
-
-  get project(): Project | undefined {
-    return this._project;
-  }
-
-  set project(value: Project | undefined) {
-    this._project = value;
-    this.getContents().forEach(element => (element.project = value));
-  }
-
-  getAllContents(): OntoumlElement[] {
-    let children = this.getContents();
-
-    if (children.length == 0) {
-      return children;
-    }
-
-    let descendants = children.flatMap(child => child.getAllContents());
-
-    return children.concat(descendants);
-  }
-
-  assertProject() {
-    if (!this.project) {
-      throw new Error('The element has no project project.');
-    }
-  }
-
-  abstract getContents(): OntoumlElement[];
-
-  /** Clones the model element and all its contents. Replaces all references to
-   * original contents with references to cloned elements. */
-  abstract clone(): OntoumlElement;
-
-  // TODO: replace references in property assignments
-  /** Replaces references to `originalElement` with references to `newElement`.
-   * Designed to be used within clone(). */
-  abstract replace(
-    originalElement: OntoumlElement,
-    newElement: OntoumlElement
-  ): void;
-
-  lock(): void {
-    throw new Error('Method unimplemented!');
-  }
-
-  unlock(): void {
-    throw new Error('Method unimplemented!');
-  }
-
-  isLocked(): boolean {
-    throw new Error('Method unimplemented!');
+  getContents(): OntoumlElement[] {
+    return [];
   }
 
   toJSON(): any {
@@ -117,13 +61,4 @@ export abstract class OntoumlElement {
       throw new Error(message);
     }
   }
-}
-
-function setFieldAsConstant(element: OntoumlElement, type: OntoumlType) {
-  Object.defineProperty(element, 'type', {
-    value: type,
-    enumerable: true,
-    writable: false,
-    configurable: false
-  });
 }

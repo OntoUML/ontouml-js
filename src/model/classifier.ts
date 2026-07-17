@@ -64,8 +64,6 @@ export abstract class Classifier<
   }
 
   addParent(parent: T): Generalization {
-    this.assertProject();
-
     return this.project!.generalizationBuilder()
       .general(parent)
       .specific(this)
@@ -74,8 +72,6 @@ export abstract class Classifier<
   }
 
   addChild(child: T): Generalization {
-    this.assertProject();
-
     return this.project!.generalizationBuilder()
       .general(this)
       .specific(child)
@@ -160,13 +156,7 @@ export abstract class Classifier<
    * @returns returns relations connected to the classifier.
    */
   getRelations(): Relation[] {
-    this.assertProject();
-
-    let relations = this.project!.relations.filter(r =>
-      r.getMembers().includes(this)
-    );
-
-    return [...new Set(relations)];
+    return this.project.relations.filter(r => r.getMembers().includes(this));
   }
 
   /**
@@ -174,8 +164,7 @@ export abstract class Classifier<
    * @returns returns relations whose target is the classifier.
    */
   getIncomingRelations(): BinaryRelation[] {
-    this.assertProject();
-    return this.project!.binaryRelations.filter(r => r.target === this);
+    return this.project.binaryRelations.filter(r => r.target === this);
   }
 
   /**
@@ -183,8 +172,7 @@ export abstract class Classifier<
    * @returns returns relations whose source is the classifier.
    */
   getOutgoingRelations(): BinaryRelation[] {
-    this.assertProject();
-    return this.project!.binaryRelations.filter(r => r.source === this);
+    return this.project.binaryRelations.filter(r => r.source === this);
   }
 
   /**

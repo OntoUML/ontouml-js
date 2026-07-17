@@ -1,4 +1,11 @@
-import { OntoumlType, Package, View, OntoumlElement, Rectangle } from '..';
+import {
+  OntoumlType,
+  Package,
+  View,
+  Rectangle,
+  OntoumlElement,
+  Shape
+} from '../..';
 
 export class PackageView extends View<Package> {
   readonly rectangle: Rectangle;
@@ -11,16 +18,15 @@ export class PackageView extends View<Package> {
     this.rectangle.height = 30;
   }
 
-  override getContents(): OntoumlElement[] {
+  override get shapes(): Shape[] {
     return [this.rectangle];
   }
 
   override toJSON(): any {
-    const object = {
+    return {
       type: OntoumlType.PACKAGE_VIEW,
+      ...super.toJSON(),
       rectangle: this.rectangle.id
     };
-
-    return { ...object, ...super.toJSON() };
   }
 }

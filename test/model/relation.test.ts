@@ -21,12 +21,6 @@ describe('Relation Tests', () => {
     });
   });
 
-  describe('Test getAllContents()', () => {
-    it('should only include its properties', () => {
-      expect(knows.getAllContents()).toContain(knows.targetEnd);
-    });
-  });
-
   describe('Test isBinary()', () => {
     it('should be true for instances of BinaryRelation', () => {
       expect(knows.isBinary()).toBeTrue();

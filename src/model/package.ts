@@ -1,6 +1,5 @@
 import { remove } from 'lodash';
 import {
-  OntoumlElement,
   OntoumlType,
   Class,
   Generalization,
@@ -19,7 +18,9 @@ import {
   PackageBuilder,
   Property,
   Literal,
-  BinaryRelationBuilder
+  BinaryRelationBuilder,
+  ProjectElement,
+  OntoumlElement
 } from '..';
 
 export type PackageableElement =
@@ -37,14 +38,39 @@ export class Package extends ModelElement {
     super(project);
   }
 
-  public get contents(): PackageableElement[] {
+  override get contents(): PackageableElement[] {
     return [...this._contents];
   }
 
   // TODO: Check this method
-  public set contents(contents: PackageableElement[]) {
+  override set contents(contents: PackageableElement[]) {
     this._contents = [];
     this.addContents(contents);
+  }
+
+  getAllContents(): ProjectElement[] {
+    let children = this.contents;
+
+    if (children.length == 0) {
+      return children;
+    }
+
+    let descendants = children
+      .filter(c => c instanceof Package)
+      .map(c => c as Package)
+      .flatMap(child => child.getAllContents());
+
+    let properties = children
+      .filter(c => c instanceof Classifier)
+      .map(c => c as Classifier<any, any>)
+      .flatMap(c => c.properties);
+
+    let literals = children
+      .filter(c => c instanceof Class)
+      .map(c => c as Class)
+      .flatMap(c => c.literals);
+
+    return [...children, ...properties, ...literals, ...descendants];
   }
 
   public override get container(): Package | undefined {
@@ -52,7 +78,7 @@ export class Package extends ModelElement {
   }
 
   override getContents(): OntoumlElement[] {
-    return this.contents as unknown as OntoumlElement[];
+    return this.contents;
   }
 
   public get classes(): Class[] {
@@ -206,100 +232,22 @@ export class Package extends ModelElement {
   }
 
   classBuilder(): ClassBuilder {
-    this.assertProject();
     return new ClassBuilder(this.project!).container(this);
   }
 
   generalizationBuilder(): GeneralizationBuilder {
-    this.assertProject();
     return new GeneralizationBuilder(this.project!).container(this);
   }
 
   generalizationSetBuilder(): GeneralizationSetBuilder {
-    this.assertProject();
     return new GeneralizationSetBuilder(this.project!).container(this);
   }
 
   packageBuilder(): PackageBuilder {
-    this.assertProject();
     return new PackageBuilder(this.project!).container(this);
   }
 
   binaryRelationBuilder(): BinaryRelationBuilder {
-    this.assertProject();
     return new BinaryRelationBuilder(this.project!).container(this);
-  }
-
-  /**
-   * Clones the model element and all its contents. Replaces all references to
-   * original contents with references to their clones if
-   * `replaceReferences = true`. If `replaceReferences = false`, replace() will
-   * not be triggered, but this argument should only be used in recursive calls.
-   *
-   * @param replaceReferences - set to false on recursive calls to avoid
-   * unnecessary call to `replace()`.
-   *  */
-  clone(replaceReferences: boolean = true): Package {
-    const clone = { ...this };
-
-    if (clone.getContents()) {
-      const clonedContents = clone
-        .getContents()
-        .map(c => (c instanceof Package ? c.clone(false) : c.clone()));
-
-      this._contents = clonedContents as PackageableElement[];
-    }
-
-    if (replaceReferences) {
-      Package.triggersReplaceOnClonedPackage(this, clone);
-    }
-
-    return clone;
-  }
-
-  replace(originalElement: ModelElement, newElement: ModelElement): void {
-    if (this.container === originalElement) {
-      this._container = newElement as Package;
-    }
-
-    this.getContents().forEach(content =>
-      content.replace(originalElement, newElement)
-    );
-  }
-
-  /** Triggers `replace()` on `clonedPackage` and all of its contents, removing
-   * references to the contents of `originalPackage` with their references to
-   * their clones. */
-  static triggersReplaceOnClonedPackage(
-    originalPackage: Package,
-    clonedPackage: Package
-  ): void {
-    const replacementsMap = new Map<any, any>();
-
-    replacementsMap.set(originalPackage.id, {
-      originalContent: originalPackage,
-      newContent: clonedPackage
-    });
-
-    originalPackage.getAllContents().forEach(content =>
-      replacementsMap.set(content.id, {
-        originalContent: content,
-        newContent: null
-      })
-    );
-
-    clonedPackage.getAllContents().forEach(content => {
-      const id = content.id;
-      const entry = { ...replacementsMap.get(id), newContent: content };
-      replacementsMap.set(id, entry);
-    });
-
-    clonedPackage
-      .getContents()
-      .forEach(content =>
-        replacementsMap.forEach(({ originalContent, newContent }) =>
-          content.replace(originalContent, newContent!)
-        )
-      );
   }
 }

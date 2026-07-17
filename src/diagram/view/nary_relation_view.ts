@@ -3,10 +3,10 @@ import {
   Path,
   OntoumlType,
   ClassView,
-  OntoumlElement,
   Relation,
-  Diamond
-} from '..';
+  Diamond,
+  Shape
+} from '../..';
 
 export class NaryRelationView extends View<Relation> {
   private _members: ClassView[];
@@ -35,22 +35,22 @@ export class NaryRelationView extends View<Relation> {
   public get paths(): Path[] {
     return [...this._paths];
   }
+
   public set paths(value: Path[]) {
     this._paths = value;
   }
 
-  override getContents(): OntoumlElement[] {
+  override get shapes(): Shape[] {
     return [...this.paths, this.diamond];
   }
 
   override toJSON(): any {
-    const object: any = {
+    return {
       type: OntoumlType.NARY_RELATION_VIEW,
+      ...super.toJSON(),
       members: this.members.map(view => view.id),
       paths: this.paths.map(path => path.id),
       diamond: this.diamond.id
     };
-
-    return { ...object, ...super.toJSON() };
   }
 }

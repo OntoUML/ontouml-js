@@ -7,7 +7,8 @@ import {
   Package,
   Relation,
   Project,
-  ModelElement
+  ModelElement,
+  ProjectElement
 } from '..';
 
 export class Generalization extends ModelElement {
@@ -33,11 +34,6 @@ export class Generalization extends ModelElement {
     return this._container as Package;
   }
 
-  // Move this to OntoumlElement as a default implementation.
-  getContents(): OntoumlElement[] {
-    return [];
-  }
-
   involvesClasses(): boolean {
     return this.general instanceof Class && this.specific instanceof Class;
   }
@@ -46,23 +42,6 @@ export class Generalization extends ModelElement {
     return (
       this.general instanceof Relation && this.specific instanceof Relation
     );
-  }
-
-  clone(): Generalization {
-    return { ...this };
-  }
-
-  // TODO: Fixme
-  replace(originalElement: ModelElement, newElement: ModelElement): void {
-    // if (this.container === originalElement) {
-    //   this.container = newElement as Package;
-    // }
-    // if (this.general === originalElement) {
-    //   this.general = newElement as Classifier<any, any>;
-    // }
-    // if (this.specific === originalElement) {
-    //   this.specific = newElement as Classifier<any, any>;
-    // }
   }
 
   override toJSON(): any {

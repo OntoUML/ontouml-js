@@ -19,58 +19,85 @@ import {
   Rectangle,
   Shape,
   Text,
-  NaryRelationView
-} from '.';
+  NaryRelationView,
+  ProjectElement,
+  utils
+} from '..';
 
-export class Diagram extends OntoumlElement {
+export class Diagram extends OntoumlElement implements ProjectElement {
   owner?: ModelElement;
-  contents: View<any>[] = [];
+  private _project: Project;
+  private _views: Set<View<any>> = new Set();
 
-  constructor(project: Project, owner?: ModelElement) {
-    super(project);
-    this.owner = owner;
+  constructor(project: Project) {
+    super();
+
+    utils.assertValue(project);
+    this._project = project;
   }
 
-  getContents(): OntoumlElement[] {
-    return [...this.contents];
+  public get views(): View<any>[] {
+    return [...this._views];
+  }
+
+  public set views(value: View<any>[]) {
+    this._views = new Set(value);
+  }
+
+  get project(): Project {
+    return this._project;
+  }
+
+  set project(value: Project) {
+    utils.assertValue(value);
+    this._project = value;
+  }
+
+  getAllContents(): (View<any> | Shape)[] {
+    const views = this.views;
+    const shapes = views.flatMap(v => v.shapes);
+
+    return [...views, ...shapes];
+  }
+
+  override getContents(): OntoumlElement[] {
+    return this.views;
   }
 
   getClassViews(): ClassView[] {
-    return this.contents?.filter(
-      view => view instanceof ClassView
-    ) as ClassView[];
+    return this.views.filter(view => view instanceof ClassView) as ClassView[];
   }
 
   getRelationViews(): BinaryRelationView[] {
-    return this.contents.filter(
+    return this.views.filter(
       view => view instanceof BinaryRelationView
     ) as BinaryRelationView[];
   }
 
   getGeneralizationViews(): GeneralizationView[] {
-    return this.contents.filter(
+    return this.views.filter(
       view => view instanceof GeneralizationView
     ) as GeneralizationView[];
   }
 
   getGeneralizationSetViews(): GeneralizationSetView[] {
-    return this.contents.filter(
+    return this.views.filter(
       view => view instanceof GeneralizationSetView
     ) as GeneralizationSetView[];
   }
 
   getPackageViews(): PackageView[] {
-    return this.contents.filter(
+    return this.views.filter(
       view => view instanceof PackageView
     ) as PackageView[];
   }
 
   getRealizedModelElements(): ModelElement[] {
-    return this.contents.map(view => view.element);
+    return this.views.map(view => view.element);
   }
 
   getShapes(): Shape[] {
-    return this.contents?.flatMap(view => view.getContents()) || [];
+    return this.views.flatMap(view => view.getContents()) || [];
   }
 
   getRectangles(): Rectangle[] {
@@ -90,7 +117,7 @@ export class Diagram extends OntoumlElement {
       return;
     }
 
-    this.contents.push(element);
+    this.views.push(element);
   }
 
   addElements(elements: View<any>[]): void {
@@ -102,7 +129,7 @@ export class Diagram extends OntoumlElement {
   }
 
   setElements(elements: View<any>[]): void {
-    this.contents = [];
+    this.views = [];
 
     if (!elements) {
       return;
@@ -112,11 +139,11 @@ export class Diagram extends OntoumlElement {
   }
 
   findElementById(id: string): View<any> | undefined {
-    return this.contents.find(view => view.element.id === id);
+    return this.views.find(view => view.element.id === id);
   }
 
   findView(modelElement: ModelElement): View<any> | undefined {
-    return this.contents.find(view => view.element === modelElement);
+    return this.views.find(view => view.element === modelElement);
   }
 
   containsView(modelElement: ModelElement): boolean {
@@ -226,7 +253,7 @@ export class Diagram extends OntoumlElement {
     const object: any = {
       type: OntoumlType.DIAGRAM,
       owner: this.owner?.id || null,
-      contents: this.contents.map(v => v.id)
+      contents: this.views.map(v => v.id)
     };
 
     return { ...object, ...super.toJSON() };
@@ -243,12 +270,5 @@ export class Diagram extends OntoumlElement {
         'owner'
       );
     }
-  }
-
-  clone(): OntoumlElement {
-    throw new Error('Method not implemented.');
-  }
-  replace(originalElement: OntoumlElement, newElement: OntoumlElement): void {
-    throw new Error('Method not implemented.');
   }
 }

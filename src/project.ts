@@ -29,7 +29,7 @@ import {
   PackageBuilder,
   BinaryRelationBuilder,
   NaryRelationBuilder,
-  Resource
+  utils
 } from '.';
 
 export class Project extends NamedElement {
@@ -55,23 +55,23 @@ export class Project extends NamedElement {
     {};
   private _packageViews: { [key: string]: PackageView } = {};
   private _noteViews: { [key: string]: NoteView } = {};
-  private _noteLinkViews: { [key: string]: LinkView } = {};
+  private _linkViews: { [key: string]: LinkView } = {};
 
-  publisher?: string;
-  designedForTasks: string[] = [];
   license?: string;
-  accessRights: string[] = [];
-  themes: string[] = [];
-  contexts: string[] = [];
-  ontologyTypes: string[] = [];
-  representationStyle?: string;
   namespace?: string;
-  landingPages: string[] = [];
-  sources: string[] = [];
-  bibliographicCitations: string[] = [];
-  keywords: string[] = [];
-  acronyms: string[] = [];
-  languages: string[] = [];
+  publisher?: string;
+  representationStyle?: string;
+  private _accessRights: Set<string> = new Set();
+  private _acronyms: Set<string> = new Set();
+  private _bibliographicCitations: Set<string> = new Set();
+  private _contexts: Set<string> = new Set();
+  private _designedForTasks: Set<string> = new Set();
+  private _keywords: Set<string> = new Set();
+  private _landingPages: Set<string> = new Set();
+  private _languages: Set<string> = new Set();
+  private _ontologyTypes: Set<string> = new Set();
+  private _sources: Set<string> = new Set();
+  private _themes: Set<string> = new Set();
 
   constructor() {
     super();
@@ -79,99 +79,99 @@ export class Project extends NamedElement {
     this.finder = new Finder(this);
   }
 
-  public get classes(): Class[] {
+  get classes(): Class[] {
     return Object.values(this._classes);
   }
 
-  public class(id: string): Class | undefined {
+  class(id: string): Class | undefined {
     return this._classes[id];
   }
 
-  public get relations(): Relation[] {
+  get relations(): Relation[] {
     return [...this.binaryRelations, ...this.naryRelations];
   }
 
-  public get binaryRelations(): BinaryRelation[] {
+  get binaryRelations(): BinaryRelation[] {
     return Object.values(this._binaryRelations);
   }
 
-  public binaryRelation(id: string): BinaryRelation | undefined {
+  binaryRelation(id: string): BinaryRelation | undefined {
     return this._binaryRelations[id];
   }
 
-  public get naryRelations(): NaryRelation[] {
+  get naryRelations(): NaryRelation[] {
     return Object.values(this._naryRelations);
   }
 
-  public naryRelation(id: string): NaryRelation | undefined {
+  naryRelation(id: string): NaryRelation | undefined {
     return this._naryRelations[id];
   }
 
-  public get generalizations(): Generalization[] {
+  get generalizations(): Generalization[] {
     return Object.values(this._generalizations);
   }
 
-  public generalization(id: string): Generalization | undefined {
+  generalization(id: string): Generalization | undefined {
     return this._generalizations[id];
   }
 
-  public get generalizationSets(): GeneralizationSet[] {
+  get generalizationSets(): GeneralizationSet[] {
     return Object.values(this._generalizationSets);
   }
 
-  public generalizationSet(id: string): GeneralizationSet | undefined {
+  generalizationSet(id: string): GeneralizationSet | undefined {
     return this._generalizationSets[id];
   }
 
-  public get packages(): Package[] {
+  get packages(): Package[] {
     return Object.values(this._packages);
   }
 
-  public package(id: string): Package | undefined {
+  package(id: string): Package | undefined {
     return this._packages[id];
   }
 
-  public get properties(): Property[] {
+  get properties(): Property[] {
     return Object.values(this._properties);
   }
 
-  public property(id: string): Property | undefined {
+  property(id: string): Property | undefined {
     return this._properties[id];
   }
 
-  public get attributes(): Property[] {
+  get attributes(): Property[] {
     return Object.values(this._properties).filter(p => p.isAttribute());
   }
 
-  public get relationEnds(): Property[] {
+  get relationEnds(): Property[] {
     return Object.values(this._properties).filter(p => p.isRelationEnd());
   }
 
-  public get literals(): Literal[] {
+  get literals(): Literal[] {
     return Object.values(this._literals);
   }
 
-  public literal(id: string): Literal | undefined {
+  literal(id: string): Literal | undefined {
     return this._literals[id];
   }
 
-  public get notes(): Note[] {
+  get notes(): Note[] {
     return Object.values(this._notes);
   }
 
-  public note(id: string): Note | undefined {
+  note(id: string): Note | undefined {
     return this._notes[id];
   }
 
-  public get links(): Link[] {
+  get links(): Link[] {
     return Object.values(this._links);
   }
 
-  public link(id: string): Link | undefined {
+  link(id: string): Link | undefined {
     return this._links[id];
   }
 
-  public element(id: string): OntoumlElement | undefined {
+  element(id: string): OntoumlElement | undefined {
     return (
       this.class(id) ||
       this.binaryRelation(id) ||
@@ -186,24 +186,203 @@ export class Project extends NamedElement {
     );
   }
 
-  // createModel(base?: Partial<Package>): Package {
-  //   if (this.model) {
-  //     throw new Error('Model already defined');
-  //   }
+  get designedForTasks(): string[] {
+    return [...this._designedForTasks];
+  }
 
-  //   // TODO: Should the container of the model be the project?
-  //   this.model = new Package(base);
-  //   this.setProject(this);
+  set designedForTasks(array: string[]) {
+    utils.assertArray(array);
+    this._designedForTasks = new Set(array);
+  }
 
-  //   return this.model;
-  // }
+  addDesignedForTask(value: string) {
+    utils.assertValue(value);
+    this._designedForTasks.add(value);
+  }
 
-  // setModel(pkg: Package): void {
-  //   this.model = pkg;
-  //   if (pkg != null) {
-  //     this.model.setContainer(this);
-  //   }
-  // }
+  removeDesignedForTask(value: string) {
+    this._designedForTasks.delete(value);
+  }
+
+  get accessRights(): string[] {
+    return [...this._accessRights];
+  }
+
+  set accessRights(array: string[]) {
+    utils.assertArray(array);
+    this._accessRights = new Set(array);
+  }
+
+  addAccessRights(value: string) {
+    utils.assertValue(value);
+    this._accessRights.add(value);
+  }
+
+  remove(value: string) {
+    this._accessRights.delete(value);
+  }
+
+  get themes(): string[] {
+    return [...this._themes];
+  }
+
+  set themes(array: string[]) {
+    utils.assertArray(array);
+    this._themes = new Set(array);
+  }
+
+  addTheme(value: string) {
+    utils.assertValue(value);
+    this._themes.add(value);
+  }
+
+  removeTheme(value: string) {
+    this._themes.delete(value);
+  }
+
+  get contexts(): string[] {
+    return [...this._contexts];
+  }
+
+  set contexts(array: string[]) {
+    utils.assertArray(array);
+    this._contexts = new Set(array);
+  }
+
+  addContext(value: string) {
+    utils.assertValue(value);
+    this._contexts.add(value);
+  }
+
+  removeContext(value: string) {
+    this._contexts.delete(value);
+  }
+
+  get ontologyTypes(): string[] {
+    return [...this._ontologyTypes];
+  }
+
+  set ontologyTypes(array: string[]) {
+    utils.assertArray(array);
+    this._ontologyTypes = new Set(array);
+  }
+
+  addOntologyType(value: string) {
+    utils.assertValue(value);
+    this._ontologyTypes.add(value);
+  }
+
+  removeOntologyType(value: string) {
+    this._ontologyTypes.delete(value);
+  }
+
+  get landingPages(): string[] {
+    return [...this._landingPages];
+  }
+
+  set landingPages(array: string[]) {
+    utils.assertArray(array);
+    this._landingPages = new Set(array);
+  }
+
+  addLandingPage(value: string) {
+    utils.assertValue(value);
+    this._landingPages.add(value);
+  }
+
+  removeLandingPage(value: string) {
+    this._landingPages.delete(value);
+  }
+
+  get sources(): string[] {
+    return [...this._sources];
+  }
+
+  set sources(array: string[]) {
+    utils.assertArray(array);
+    this._sources = new Set(array);
+  }
+
+  addSource(value: string) {
+    utils.assertValue(value);
+    this._sources.add(value);
+  }
+
+  removeSource(value: string) {
+    this._sources.delete(value);
+  }
+
+  get bibliographicCitations(): string[] {
+    return [...this._bibliographicCitations];
+  }
+
+  set bibliographicCitations(array: string[]) {
+    utils.assertArray(array);
+    this._bibliographicCitations = new Set(array);
+  }
+
+  addBibliographiCitation(value: string) {
+    utils.assertValue(value);
+    this._bibliographicCitations.add(value);
+  }
+
+  removeBibliographicCitation(value: string) {
+    this._bibliographicCitations.delete(value);
+  }
+
+  get keywords(): string[] {
+    return [...this._keywords];
+  }
+
+  set keywords(array: string[]) {
+    utils.assertArray(array);
+    this._keywords = new Set(array);
+  }
+
+  addKeyword(value: string) {
+    utils.assertValue(value);
+    this._keywords.add(value);
+  }
+
+  removeKeyword(value: string) {
+    this._keywords.delete(value);
+  }
+
+  get acronyms(): string[] {
+    return [...this._acronyms];
+  }
+
+  set acronyms(array: string[]) {
+    utils.assertArray(array);
+    this._acronyms = new Set(array);
+  }
+
+  addAcronym(value: string) {
+    utils.assertValue(value);
+    this._acronyms.add(value);
+  }
+
+  removeAcronym(value: string) {
+    this._acronyms.delete(value);
+  }
+
+  get languages(): string[] {
+    return [...this._languages];
+  }
+
+  set languages(array: string[]) {
+    utils.assertArray(array);
+    this._languages = new Set(array);
+  }
+
+  addLanguage(value: string) {
+    utils.assertValue(value);
+    this._languages.add(value);
+  }
+
+  removeLanguage(value: string) {
+    this._languages.delete(value);
+  }
 
   classBuilder(): ClassBuilder {
     return new ClassBuilder(this);
@@ -287,11 +466,7 @@ export class Project extends NamedElement {
     this.addDiagrams(diagrams);
   }
 
-  override getAllContents(): OntoumlElement[] {
-    return this.getContents();
-  }
-
-  getContents(): OntoumlElement[] {
+  override getContents(): OntoumlElement[] {
     return [
       ...Object.values(this._classes),
       ...Object.values(this._binaryRelations),
@@ -311,28 +486,58 @@ export class Project extends NamedElement {
       ...Object.values(this._generalizationSetViews),
       ...Object.values(this._packageViews),
       ...Object.values(this._noteViews),
-      ...Object.values(this._noteLinkViews)
+      ...Object.values(this._linkViews)
     ];
   }
 
-  override toJSON(): any {
-    const object = {
-      type: OntoumlType.PROJECT,
-      root: this.root || null,
-      elements: null
-    };
+  private arrayToJSON(array: OntoumlElement[]): object {
+    return array
+      .map(e => e.toJSON())
+      .reduce((json, e: OntoumlElement) => (json = { ...json, [e.id]: e }));
+  }
 
-    return { ...object, ...super.toJSON() };
+  override toJSON(): any {
+    return {
+      type: OntoumlType.PROJECT,
+      ...super.toJSON(),
+      license: this.license || null,
+      namespace: this.namespace || null,
+      publisher: this.publisher || null,
+      representationStyle: this.representationStyle || null,
+      accessRights: this.accessRights,
+      acronyms: this.acronyms,
+      bibliographicCitations: this.bibliographicCitations,
+      contexts: this.contexts,
+      designedForTasks: this.designedForTasks,
+      keywords: this.keywords,
+      landingPages: this.landingPages,
+      languages: this.languages,
+      ontologyTypes: this.ontologyTypes,
+      sources: this.sources,
+      themes: this.themes,
+      root: this.root || null,
+      elements: {
+        ...this.arrayToJSON(this.classes)
+        // ...this._binaryRelations,
+        // ...this._naryRelations,
+        // ...this._generalizations,
+        // ...this._generalizationSets,
+        // ...this._packages,
+        // ...this._notes,
+        // ...this._links,
+        // ...this._diagrams,
+        // ...this._classViews,
+        // ...this._binaryRelationViews,
+        // ...this._nAryRelationViews,
+        // ...this._generalizationViews,
+        // ...this._generalizationSetViews,
+        // ...this._packageViews,
+        // ...this._noteViews,
+        // ...this._linkViews
+      }
+    };
   }
 
   // No reference fields to resolve/replace
   resolveReferences(_elementReferenceMap: Map<string, OntoumlElement>): void {}
-
-  clone(): OntoumlElement {
-    throw new Error('Method not implemented.');
-  }
-
-  replace(originalElement: OntoumlElement, newElement: OntoumlElement): void {
-    throw new Error('Method not implemented.');
-  }
 }

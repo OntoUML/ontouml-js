@@ -86,11 +86,4 @@ describe(`Generalization tests`, () => {
       expect(genFriendOf.involvesRelations()).toBeTrue();
     });
   });
-
-  describe(`Test ${Generalization.prototype.clone.name}()`, () => {
-    it('cloned generalization should be qualitatively equal', () => {
-      const genClone = genPer.clone();
-      expect(genClone).toEqual(genPer);
-    });
-  });
 });

@@ -1,68 +1,90 @@
-import _ from 'lodash';
-import { MultilingualText, Project, OntoumlElement, utils } from '.';
-import { Resource } from './resource';
+import { MultilingualText, OntoumlElement, utils } from '.';
 
 export abstract class NamedElement extends OntoumlElement {
   name: MultilingualText;
   description: MultilingualText;
-  private alternativeNames: Set<MultilingualText> = new Set();
-  private editorialNotes: Set<MultilingualText> = new Set();
-  private creators: Set<Resource> = new Set();
-  private contributors: Set<Resource> = new Set();
+  private _alternativeNames: Set<MultilingualText> = new Set();
+  private _editorialNotes: Set<MultilingualText> = new Set();
+  private _creators: Set<string> = new Set();
+  private _contributors: Set<string> = new Set();
 
-  constructor(project?: Project) {
-    super(project);
+  constructor() {
+    super();
 
     this.name = new MultilingualText();
     this.description = new MultilingualText();
   }
 
-  getAlternativeNames(): MultilingualText[] {
-    return [...this.alternativeNames];
+  get alternativeNames(): MultilingualText[] {
+    return [...this._alternativeNames];
+  }
+
+  set alternativeNames(array: MultilingualText[]) {
+    utils.assertArray(array);
+    this._alternativeNames = new Set(array);
   }
 
   addAlternativeName(value: MultilingualText): void {
-    this.alternativeNames.add(value);
+    utils.assertValue(value);
+    this._alternativeNames.add(value);
   }
 
   removeAlternativeName(value: MultilingualText): boolean {
-    return this.alternativeNames.delete(value);
+    return this._alternativeNames.delete(value);
   }
 
-  getEditorialNotes(): MultilingualText[] {
-    return [...this.editorialNotes];
+  get editorialNotes(): MultilingualText[] {
+    return [...this._editorialNotes];
+  }
+
+  set editorialNotes(array: MultilingualText[]) {
+    utils.assertArray(array);
+    this._editorialNotes = new Set(array);
   }
 
   addEditorialNote(value: MultilingualText): void {
-    this.editorialNotes.add(value);
+    utils.assertValue(value);
+    this._editorialNotes.add(value);
   }
 
   removeEditorialNote(value: MultilingualText): boolean {
-    return this.editorialNotes.delete(value);
+    return this._editorialNotes.delete(value);
   }
 
-  getCreators(): Resource[] {
-    return [...this.creators];
+  get creators(): string[] {
+    return [...this._creators];
   }
 
-  addCreator(value: Resource): void {
-    this.creators.add(value);
+  set creators(array: string[]) {
+    utils.assertArray(array);
+    this._creators = new Set(array);
   }
 
-  removeCreator(value: Resource): boolean {
-    return this.creators.delete(value);
+  addCreator(value: string): void {
+    utils.assertValue(value);
+    this._creators.add(value);
   }
 
-  getContributors(): Resource[] {
-    return [...this.contributors];
+  removeCreator(value: string): boolean {
+    return this._creators.delete(value);
   }
 
-  addContributor(value: Resource): void {
-    this.contributors.add(value);
+  get contributors(): string[] {
+    return [...this._contributors];
   }
 
-  removeContributor(value: Resource): boolean {
-    return this.contributors.delete(value);
+  set contributors(array: string[]) {
+    utils.assertArray(array);
+    this._creators = new Set(array);
+  }
+
+  addContributor(value: string): void {
+    utils.assertValue(value);
+    this._contributors.add(value);
+  }
+
+  removeContributor(value: string): boolean {
+    return this._contributors.delete(value);
   }
 
   getNameOrId(language?: string): string {
@@ -73,10 +95,10 @@ export abstract class NamedElement extends OntoumlElement {
     const object = {
       name: this.name.toJSON(),
       description: this.description.toJSON(),
-      alternativeNames: [...this.alternativeNames],
-      editorialNotes: [...this.editorialNotes],
-      creators: [...this.creators],
-      contributors: [...this.contributors]
+      alternativeNames: this.alternativeNames,
+      editorialNotes: this.editorialNotes,
+      creators: this.creators,
+      contributors: this.contributors
     };
 
     return { ...super.toJSON(), ...object };

@@ -161,14 +161,6 @@ describe(`GeneralizationSet Tests`, () => {
     });
   });
 
-  describe(`Test clone()`, () => {
-    it('Cloned generalization set should equal source', () => {
-      const clone = agentSet.clone();
-      agentSet.getInstantiationRelations;
-      expect(clone).toEqual(agentSet);
-    });
-  });
-
   describe(`Test getInstantiationRelations()`, () => {
     // TODO: implement test
   });

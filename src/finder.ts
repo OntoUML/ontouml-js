@@ -28,7 +28,7 @@ export class Finder {
    */
   getModelElements(): ModelElement[] {
     return this.project
-      .getAllContents()
+      .getContents()
       .filter(e => e instanceof ModelElement) as ModelElement[];
   }
 

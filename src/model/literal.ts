@@ -10,21 +10,6 @@ export class Literal extends ModelElement {
     return this._container as Class;
   }
 
-  getContents(): OntoumlElement[] {
-    return [];
-  }
-
-  clone(): Literal {
-    return { ...this };
-  }
-
-  //TODO: DOUBLE CHECK this method
-  replace(originalElement: ModelElement, newElement: ModelElement): void {
-    if (this.container === originalElement) {
-      this._container = newElement as Class;
-    }
-  }
-
   override toJSON() {
     return { type: OntoumlType.LITERAL, ...super.toJSON() };
   }

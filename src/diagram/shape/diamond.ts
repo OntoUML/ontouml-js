@@ -1,13 +1,13 @@
-import { OntoumlType, Point, RectangularShape } from '..';
+import { OntoumlType, Point, RectangularShape } from '../..';
 
-export class Text extends RectangularShape {
+export class Diamond extends RectangularShape {
   constructor(topLeft?: Point, width?: number, height?: number) {
     super(topLeft, width, height);
   }
 
   override toJSON(): any {
     const object = {
-      type: OntoumlType.TEXT
+      type: OntoumlType.DIAMOND
     };
 
     return { ...object, ...super.toJSON() };

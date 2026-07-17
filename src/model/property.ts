@@ -51,8 +51,28 @@ export class Property extends Decoratable<PropertyStereotype> {
     }
   }
 
-  getContents(): OntoumlElement[] {
-    return [];
+  getSubsettedProperties(): Property[] {
+    return [...this.subsettedProperties];
+  }
+
+  addSubsettedProperty(p: Property): void {
+    this.subsettedProperties.add(p);
+  }
+
+  removeSubsettedProperty(p: Property): boolean {
+    return this.subsettedProperties.delete(p);
+  }
+
+  getRedefinedProperties(): Property[] {
+    return [...this.redefinedProperties];
+  }
+
+  addRedefinedProperty(p: Property): void {
+    this.redefinedProperties.add(p);
+  }
+
+  removeRedefinedProperty(p: Property): boolean {
+    return this.redefinedProperties.delete(p);
   }
 
   getAllowedStereotypes(): PropertyStereotype[] {
@@ -153,49 +173,10 @@ export class Property extends Decoratable<PropertyStereotype> {
     return container.properties.filter(p => p !== this);
   }
 
-  clone(): Property {
-    return { ...this };
-  }
-
-  // TODO: reconsider the usefulness of this method
-  replace(originalElement: ModelElement, newElement: ModelElement): void {
-    throw new Error('Method unimplemented!');
-    // if (this.container === originalElement) {
-    //   this.container = newElement;
-    // }
-
-    // if (this.propertyType === originalElement) {
-    //   this.propertyType = newElement as Classifier<any, any>;
-    // }
-
-    // if (
-    //   this.subsettedProperties &&
-    //   this.subsettedProperties.includes(originalElement as any)
-    // ) {
-    //   this.subsettedProperties = this.subsettedProperties.map(
-    //     (subsettedProperty: Property) =>
-    //       subsettedProperty === originalElement
-    //         ? (newElement as Property)
-    //         : subsettedProperty
-    //   );
-    // }
-
-    // if (
-    //   this.redefinedProperties &&
-    //   this.redefinedProperties.includes(originalElement as any)
-    // ) {
-    //   this.redefinedProperties = this.redefinedProperties.map(
-    //     (redefinedProperty: Property) =>
-    //       redefinedProperty === originalElement
-    //         ? (newElement as Property)
-    //         : redefinedProperty
-    //   );
-    // }
-  }
-
   override toJSON(): any {
-    const object: any = {
+    return {
       type: OntoumlType.PROPERTY,
+      ...super.toJSON(),
       cardinality: this.cardinality.toJSON(),
       propertyType: this.propertyType?.id ?? null,
       subsettedProperties: [...this.subsettedProperties].map(p => p.id),
@@ -204,8 +185,6 @@ export class Property extends Decoratable<PropertyStereotype> {
       isOrdered: this.isOrdered ?? null,
       isReadOnly: this.isReadOnly ?? null
     };
-
-    return { ...super.toJSON(), ...object };
   }
 
   override resolveReferences(
@@ -223,29 +202,5 @@ export class Property extends Decoratable<PropertyStereotype> {
         'propertyType'
       );
     }
-  }
-
-  getSubsettedProperties(): Property[] {
-    return [...this.subsettedProperties];
-  }
-
-  addSubsettedProperty(p: Property): void {
-    this.subsettedProperties.add(p);
-  }
-
-  removeSubsettedProperty(p: Property): boolean {
-    return this.subsettedProperties.delete(p);
-  }
-
-  getRedefinedProperties(): Property[] {
-    return [...this.redefinedProperties];
-  }
-
-  addRedefinedProperty(p: Property): void {
-    this.redefinedProperties.add(p);
-  }
-
-  removeRedefinedProperty(p: Property): boolean {
-    return this.redefinedProperties.delete(p);
   }
 }

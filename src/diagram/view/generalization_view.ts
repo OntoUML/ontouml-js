@@ -1,4 +1,4 @@
-import { OntoumlType, BinaryConnectorView, Generalization, View } from '..';
+import { OntoumlType, BinaryConnectorView, Generalization, View } from '../..';
 
 export class GeneralizationView extends BinaryConnectorView<Generalization> {
   constructor(
@@ -10,10 +10,9 @@ export class GeneralizationView extends BinaryConnectorView<Generalization> {
   }
 
   override toJSON(): any {
-    const object: any = {
-      type: OntoumlType.GENERALIZATION_VIEW
+    return {
+      type: OntoumlType.GENERALIZATION_VIEW,
+      ...super.toJSON()
     };
-
-    return { ...object, ...super.toJSON() };
   }
 }

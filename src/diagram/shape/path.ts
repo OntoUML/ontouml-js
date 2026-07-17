@@ -1,4 +1,4 @@
-import { OntoumlType, Point, Shape } from '..';
+import { OntoumlType, Point, Shape } from '../..';
 
 export class Path extends Shape {
   private _points: Point[];

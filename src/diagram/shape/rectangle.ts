@@ -1,4 +1,4 @@
-import { OntoumlType, Point, RectangularShape } from '..';
+import { OntoumlType, Point, RectangularShape } from '../..';
 
 export class Rectangle extends RectangularShape {
   constructor(topLeft?: Point, width?: number, height?: number) {

@@ -3,7 +3,6 @@ import {
   ModelElement,
   MultilingualText,
   Project,
-  OntoumlElement,
   Package
 } from '..';
 
@@ -26,17 +25,5 @@ export class Note extends ModelElement {
     };
 
     return { ...super.toJSON(), ...object };
-  }
-
-  getContents(): OntoumlElement[] {
-    return [];
-  }
-
-  clone(): OntoumlElement {
-    throw new Error('Method not implemented.');
-  }
-
-  replace(originalElement: OntoumlElement, newElement: OntoumlElement): void {
-    throw new Error('Method not implemented.');
   }
 }

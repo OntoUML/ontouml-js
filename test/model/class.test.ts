@@ -60,18 +60,6 @@ describe(`${Class.name} Tests`, () => {
     });
   });
 
-  describe(`Test ${Class.prototype.getAllContents.name}()`, () => {
-    it('clazz.getAllContents() should return the same values as getContents()', () => {
-      clazz = proj.classBuilder().enumeration().build();
-      clazz.propertyBuilder().build();
-      clazz.literalBuilder().build();
-
-      const contents = clazz.getContents();
-      const allContents = clazz.getAllContents();
-      expect(allContents).toIncludeSameMembers(contents);
-    });
-  });
-
   describe(`Test setting container`, () => {
     let projA: Project;
     let pkgA: Package, pkgB: Package;
@@ -107,14 +95,6 @@ describe(`${Class.name} Tests`, () => {
       pkgA.removeContent(clazz);
       expect(clazz.container).toBeUndefined();
       expect(pkgA.contents).not.toContain(clazz);
-    });
-  });
-
-  describe(`Test ${Class.prototype.clone.name}()`, () => {
-    it('Test method', () => {
-      const classA = proj.classBuilder().build();
-      const classB = classA.clone();
-      expect(classA).toEqual(classB);
     });
   });
 });

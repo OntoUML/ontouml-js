@@ -8,7 +8,8 @@ import {
   Relation,
   Project,
   ModelElement,
-  utils
+  utils,
+  ProjectElement
 } from '..';
 
 export class GeneralizationSet extends ModelElement {
@@ -43,10 +44,6 @@ export class GeneralizationSet extends ModelElement {
 
   public override get container(): Package | undefined {
     return this._container as Package;
-  }
-
-  getContents(): OntoumlElement[] {
-    return [];
   }
 
   /**
@@ -198,26 +195,6 @@ export class GeneralizationSet extends ModelElement {
     if (this.generalizations.length == 0) {
       throw new Error('Generalization array is empty.');
     }
-  }
-
-  //FIX ME
-  clone(): GeneralizationSet {
-    let clone = { ...this };
-    return clone;
-  }
-
-  replace(originalElement: ModelElement, newElement: ModelElement): void {
-    // if (this.container === originalElement) {
-    //   this.container = newElement as Package;
-    // }
-    // if (this.categorizer === originalElement) {
-    //   this.categorizer = newElement as Class;
-    // }
-    // if (this.generalizations && this.generalizations.includes(originalElement as any)) {
-    //   this.generalizations = this.generalizations.map((gen: Generalization) =>
-    //     gen === originalElement ? (newElement as Generalization) : gen
-    //   );
-    // }
   }
 
   /** Get instantiation relations where the categorizer (or one of its ancestors) is the source */

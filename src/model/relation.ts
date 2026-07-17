@@ -73,7 +73,7 @@ export abstract class Relation extends Classifier<
     }
   }
 
-  getContents(): OntoumlElement[] {
+  override get contents(): ModelElement[] {
     return [...this.properties];
   }
 
@@ -157,27 +157,5 @@ export abstract class Relation extends Classifier<
     return this.getMembers().every(
       m => m instanceof Class && m.isSubstantialType()
     );
-  }
-
-  clone(): Relation {
-    const clone = { ...this };
-
-    if (clone.properties) {
-      clone.properties = clone.properties.map((attribute: Property) =>
-        attribute.clone()
-      );
-    }
-
-    return clone;
-  }
-
-  replace(originalElement: ModelElement, newElement: ModelElement): void {
-    if (this.container === originalElement) {
-      this._container = newElement as Package;
-    }
-
-    this.getContents()
-      .map(content => content as ModelElement)
-      .forEach(content => content.replace(originalElement, newElement));
   }
 }

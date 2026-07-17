@@ -46,7 +46,8 @@ import {
   BASE_SORTAL_STEREOTYPES,
   Classifier,
   PropertyBuilder,
-  LiteralBuilder
+  LiteralBuilder,
+  ProjectElement
 } from '..';
 
 // import { PropertyBuilder } from '../builder/property_builder';
@@ -123,7 +124,7 @@ export class Class extends Classifier<Class, ClassStereotype> {
     this._order = value;
   }
 
-  getContents(): OntoumlElement[] {
+  override get contents(): ModelElement[] {
     return [...this._properties, ...this._literals];
   }
 
@@ -630,35 +631,6 @@ export class Class extends Classifier<Class, ClassStereotype> {
   getAllLiterals(): Literal[] {
     const thisAndAncestors = [this, ...this.getAncestors()];
     return thisAndAncestors.flatMap(c => [...c._literals]);
-  }
-
-  clone(): Class {
-    const clone = { ...this };
-
-    if (clone.properties) {
-      clone.properties = clone.properties.map((attribute: Property) =>
-        attribute.clone()
-      );
-    }
-
-    if (clone.literals) {
-      clone.literals = clone.literals.map((literal: Literal) =>
-        literal.clone()
-      );
-    }
-
-    return clone;
-  }
-
-  replace(originalElement: ModelElement, newElement: ModelElement): void {
-    if (this._container === originalElement) {
-      this._container = newElement as Package;
-    }
-
-    this.getContents()
-      .filter(content => content instanceof ModelElement)
-      .map(content => content as ModelElement)
-      .forEach(content => content.replace(originalElement, newElement));
   }
 
   getGeneralizationSetsWhereCategorizer(): GeneralizationSet[] {

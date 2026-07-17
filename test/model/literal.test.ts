@@ -35,9 +35,4 @@ describe(`${Literal.name} Tests`, () => {
       expect(gameStatus.literals).not.toContain(scheduled);
     });
   });
-
-  it(`Test ${Literal.prototype.clone.name}()`, () => {
-    const cloned = gameStatus.clone();
-    expect(cloned).toEqual(gameStatus);
-  });
 });

@@ -1,57 +1,41 @@
 import _ from 'lodash';
-import { OntoumlElement, Project, NamedElement } from '..';
-
-export interface ProjectElement {
-  project: Project;
-}
+import { OntoumlElement, Project, NamedElement, ProjectElement } from '..';
 
 export abstract class ModelElement
   extends NamedElement
   implements ProjectElement
 {
-  project: Project;
-  customProperties: object = {};
+  _project: Project;
   _container?: ModelElement;
+  customProperties: object = {};
 
   constructor(project: Project) {
-    super(project);
-    this.project = project;
+    super();
+    this._project = project;
   }
 
-  // TODO: This method is no longer necessary.
-  /**
-   * Returns outermost package container of a model element which can either
-   * 'model' package of a project, a package without a container, or null. This
-   * is intended to support searches for other model elements within the same
-   * context, regardless of the presence of a container project.
-   */
-  // getRoot(): Package | undefined {
-  //   if (this?.project?.root) {
-  //     return this?.project?.root;
-  //   }
+  get contents(): ModelElement[] {
+    return [];
+  }
 
-  // let packageReference = this.container;
+  override getContents(): OntoumlElement[] {
+    return this.contents;
+  }
 
-  // while (packageReference && packageReference.container) {
-  //   packageReference = packageReference.container;
-  // }
+  get project(): Project {
+    return this._project;
+  }
 
-  // if (packageReference instanceof Package) {
-  //   return packageReference;
-  // }
+  set project(value: Project) {
+    this._project = value;
+    this.contents.forEach(me => (me.project = value));
+  }
 
-  // if (this instanceof Package) {
-  //   return this;
-  // }
-
-  // return null;
-  // }
-
-  public get container(): ModelElement | undefined {
+  get container(): ModelElement | undefined {
     return this._container;
   }
 
-  public set container(newContainer: ModelElement | undefined) {
+  set container(newContainer: ModelElement | undefined) {
     this._container = newContainer;
 
     if (newContainer?.project) {

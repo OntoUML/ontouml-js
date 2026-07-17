@@ -1,4 +1,4 @@
-import { View, Path, OntoumlElement, Link, NoteView } from '..';
+import { View, Path, Link, NoteView, OntoumlElement, Shape } from '../..';
 
 export abstract class LinkView extends View<Link> {
   noteView: NoteView;
@@ -13,17 +13,16 @@ export abstract class LinkView extends View<Link> {
     this.elementView = elementView;
   }
 
-  override getContents(): OntoumlElement[] {
+  override get shapes(): Shape[] {
     return [this.path];
   }
 
   override toJSON(): any {
-    const object: any = {
+    return {
+      ...super.toJSON(),
       source: this.noteView.id,
       target: this.elementView.id,
       path: this.path.id
     };
-
-    return { ...object, ...super.toJSON() };
   }
 }

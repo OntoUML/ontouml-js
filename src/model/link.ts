@@ -4,7 +4,8 @@ import {
   Project,
   OntoumlElement,
   Package,
-  Note
+  Note,
+  ProjectElement
 } from '..';
 
 export class Link extends ModelElement {
@@ -29,17 +30,5 @@ export class Link extends ModelElement {
     };
 
     return { ...super.toJSON(), ...object };
-  }
-
-  getContents(): OntoumlElement[] {
-    return [];
-  }
-
-  clone(): OntoumlElement {
-    throw new Error('Method not implemented.');
-  }
-
-  replace(originalElement: OntoumlElement, newElement: OntoumlElement): void {
-    throw new Error('Method not implemented.');
   }
 }
