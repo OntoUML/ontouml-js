@@ -823,9 +823,16 @@ export class Project extends NamedElement {
 
   /**
    * Creates a new {@link Diagram} and adds it to this project.
+   *
+   * @param name - optional name for the diagram, set in the default language.
    */
-  createDiagram(): Diagram {
+  createDiagram(name?: string): Diagram {
     const diagram = new Diagram(this);
+
+    if (name !== undefined) {
+      diagram.name.add(name);
+    }
+
     this.addDiagram(diagram);
     return diagram;
   }

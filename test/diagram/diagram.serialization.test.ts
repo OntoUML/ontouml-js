@@ -51,7 +51,8 @@ function buildProjectWithDiagram(): Project {
     .build();
   model.anchorBuilder().note(note).annotates(worksFor).build();
 
-  const diagram = proj.createDiagram();
+  const diagram = proj.createDiagram('Overview');
+  diagram.description.add('The main diagram of the project.');
   diagram.owner = model;
   diagram.addPackage(model);
   diagram.addBinaryRelation(worksFor);
@@ -110,6 +111,10 @@ describe('Diagram serialization tests', () => {
     expect(parsed.diagrams).toHaveLength(1);
 
     const diagram = parsed.diagrams[0] as Diagram;
+    expect(diagram.name.get()).toEqual('Overview');
+    expect(diagram.description.get()).toEqual(
+      'The main diagram of the project.'
+    );
     expect(diagram.owner).toBe(parsed.root);
     expect(diagram.views).toHaveLength(proj.diagrams[0].views.length);
 

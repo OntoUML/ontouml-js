@@ -20,6 +20,7 @@ import {
   Shape,
   Text,
   NaryRelationView,
+  NamedElement,
   ProjectElement,
   utils
 } from '..';
@@ -35,8 +36,11 @@ import {
  * elements, transitively creating views for required related elements, e.g.,
  * adding a relation also adds views for the classes it connects when these
  * are not yet depicted.
+ *
+ * Diagrams are named elements: they carry a multilingual name, description,
+ * and authorship metadata, like any other {@link NamedElement}.
  */
-export class Diagram extends OntoumlElement implements ProjectElement {
+export class Diagram extends NamedElement implements ProjectElement {
   /** The model element to which the diagram is attached, if any. */
   owner?: ModelElement;
 

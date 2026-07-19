@@ -682,7 +682,7 @@ function parse(serializedProject: string): Project {
   // Diagrams
   for (const rawDiagram of rawOfType(OntoumlType.DIAGRAM)) {
     const diagram = new Diagram(project);
-    setOntoumlElementFields(diagram, rawDiagram);
+    setNamedElementFields(diagram, rawDiagram);
 
     if (rawDiagram.owner) {
       diagram.owner = getResolved<ModelElement>(
