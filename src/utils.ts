@@ -97,8 +97,8 @@ function equalContents<T>(a: T[] | Set<T>, b: T[] | Set<T>): boolean {
 function arrayFrom<T>(input: T | readonly T[] | Set<T>): T[] {
   let resolvedInputArray: T[] = [];
 
-  if (Array.isArray(input) && !_.isEmpty(input)) {
-    resolvedInputArray = input;
+  if (Array.isArray(input)) {
+    resolvedInputArray = [...input];
   } else if (input instanceof Set) {
     resolvedInputArray = [...input];
   } else if (input) {

@@ -284,14 +284,13 @@ export class Package extends ModelElement {
    * @returns `true` if the element was contained in the package.
    */
   removeContent<T extends PackageableElement>(child: T): boolean {
-    const originalLength = this._contents.length;
-
     let removed = remove(this._contents, x => child === x);
+
     if (removed.length > 0) {
       child._container = undefined;
     }
 
-    return originalLength > removed.length;
+    return removed.length > 0;
   }
 
   /**

@@ -317,27 +317,31 @@ export abstract class Classifier<
   }
 
   /**
-   * Retrieves the relations connected to the ancestors of this classifier.
+   * Retrieves the relations connected to this classifier or to one of its
+   * ancestors.
    */
   getAllRelations(): Relation[] {
-    let relations = this.getAncestors().flatMap(a => a.getRelations());
+    const classifiers: Classifier<any, any>[] = [this, ...this.getAncestors()];
+    const relations = classifiers.flatMap(c => c.getRelations());
     return [...new Set(relations)];
   }
 
   /**
-   * Retrieves the binary relations whose target is an ancestor of this
-   * classifier.
+   * Retrieves the binary relations whose target is this classifier or one
+   * of its ancestors.
    */
   getAllIncomingRelations(): BinaryRelation[] {
-    return this.getAncestors().flatMap(a => a.getIncomingRelations());
+    const classifiers: Classifier<any, any>[] = [this, ...this.getAncestors()];
+    return classifiers.flatMap(c => c.getIncomingRelations());
   }
 
   /**
-   * Retrieves the binary relations whose source is an ancestor of this
-   * classifier.
+   * Retrieves the binary relations whose source is this classifier or one
+   * of its ancestors.
    */
   getAllOutgoingRelations(): BinaryRelation[] {
-    return this.getAncestors().flatMap(a => a.getOutgoingRelations());
+    const classifiers: Classifier<any, any>[] = [this, ...this.getAncestors()];
+    return classifiers.flatMap(c => c.getOutgoingRelations());
   }
 
   /**
@@ -350,10 +354,12 @@ export abstract class Classifier<
 
   /**
    * Retrieves the high-arity relations (see {@link NaryRelation}) connected
-   * to the ancestors of this classifier.
+   * to this classifier or to one of its ancestors.
    */
   getAllNaryRelations(): NaryRelation[] {
-    return this.getAncestors().flatMap(a => a.getNaryRelations());
+    const classifiers: Classifier<any, any>[] = [this, ...this.getAncestors()];
+    const relations = classifiers.flatMap(c => c.getNaryRelations());
+    return [...new Set(relations)];
   }
 
   /**

@@ -232,6 +232,25 @@ function parse(serializedProject: string): Project {
     );
   }
 
+  const seenIds = new Set<string>();
+  const duplicatedIds = new Set<string>();
+
+  for (const rawElement of rawElements) {
+    if (seenIds.has(rawElement?.id)) {
+      duplicatedIds.add(rawElement.id);
+    }
+
+    seenIds.add(rawElement?.id);
+  }
+
+  if (duplicatedIds.size > 0) {
+    throw new Error(
+      `Cannot parse a project whose elements have duplicated ids: '${[
+        ...duplicatedIds
+      ].join("', '")}'.`
+    );
+  }
+
   const rawById: Map<string, any> = new Map(rawElements.map(e => [e.id, e]));
   const elements: Map<string, OntoumlElement> = new Map();
 

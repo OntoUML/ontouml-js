@@ -213,26 +213,28 @@ export class GeneralizationSet extends ModelElement {
 
   /**
    * Retrieves every classifier involved in this generalization set: the
-   * general, the specifics, and the categorizer, when present.
+   * generals and specifics of its generalizations, and the categorizer,
+   * when present. An empty generalization set involves no classifiers
+   * besides its categorizer.
    */
   getInvolvedClassifiers(): Classifier<any, any>[] {
-    let involvedClassifiers: Classifier<any, any>[] = [];
-    const general = this.getGeneral();
-    const specifics = this.getSpecifics();
+    const involvedClassifiers = new Set<Classifier<any, any>>();
 
     if (this.categorizer) {
-      involvedClassifiers.push(this.categorizer);
+      involvedClassifiers.add(this.categorizer);
     }
 
-    if (general) {
-      involvedClassifiers.push(general);
+    for (const generalization of this._generalizations) {
+      if (generalization.general) {
+        involvedClassifiers.add(generalization.general);
+      }
+
+      if (generalization.specific) {
+        involvedClassifiers.add(generalization.specific);
+      }
     }
 
-    if (specifics) {
-      involvedClassifiers.push(...specifics);
-    }
-
-    return involvedClassifiers;
+    return [...involvedClassifiers];
   }
 
   /**

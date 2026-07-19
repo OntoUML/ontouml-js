@@ -857,15 +857,28 @@ export class Project extends NamedElement {
   }
 
   /**
-   * Sets the diagrams of this project, replacing any existing ones. Passing
-   * `null` clears the project's diagrams.
+   * Sets the diagrams of this project, replacing any existing ones. An
+   * empty array clears the project's diagrams. The views of the replaced
+   * diagrams are left untouched; to delete diagrams along with their views,
+   * use {@link removeAllDiagrams} or the diagram's `delete()` method.
+   *
+   * @throws an error if the array is null, undefined, or contains a null or
+   *         undefined member.
    */
   setDiagrams(diagrams: Diagram[]) {
+    utils.assertArray(diagrams);
+
     this._diagrams = {};
+    diagrams.forEach(d => this.addDiagram(d));
+  }
 
-    if (diagrams === null) return;
-
-    this.addDiagrams(diagrams);
+  /**
+   * Deletes every diagram of this project, along with the views the
+   * diagrams contain. The model elements depicted by the views are not
+   * affected.
+   */
+  removeAllDiagrams(): void {
+    this.diagrams.forEach(d => d.delete());
   }
 
   /**

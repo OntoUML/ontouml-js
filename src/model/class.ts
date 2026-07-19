@@ -144,10 +144,15 @@ export class Class extends Classifier<Class, ClassStereotype> {
   /**
    * Sets the type order of this class.
    *
-   * @throws an error if the value is smaller than one.
+   * @throws an error if the value is not an integer greater than or equal
+   *         to one or {@link ORDERLESS_LEVEL}.
    */
   public set order(value: number) {
-    if (value < 1) {
+    if (
+      Number.isNaN(value) ||
+      value < 1 ||
+      (!Number.isInteger(value) && value !== ORDERLESS_LEVEL)
+    ) {
       throw new Error('The order of a class must be greater or equal to one');
     }
 
@@ -808,7 +813,8 @@ export const ORDERLESS_LEVEL = Infinity;
 export function parseOrder(orderString: string): number {
   if (orderString === '*') {
     return ORDERLESS_LEVEL;
-  } else {
-    return isNaN(Number(orderString)) ? 1 : Number(orderString);
   }
+
+  const order = Number(orderString);
+  return Number.isInteger(order) && order >= 1 ? order : 1;
 }

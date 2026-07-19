@@ -68,9 +68,9 @@ export class Cardinality {
     } else if (arg1 !== undefined && arg2 !== undefined) {
       if (arg1 === null && arg2 === null) {
         this.value = null;
-      } else if (typeof arg1 === 'string' && typeof arg1 === 'string') {
+      } else if (typeof arg1 === 'string' && typeof arg2 === 'string') {
         this.value = `${arg1}..${arg2}`;
-      } else if (typeof arg1 === 'number' && typeof arg1 === 'number') {
+      } else if (typeof arg1 === 'number' && typeof arg2 === 'number') {
         this.value = `${arg1}..${arg2}`;
       } else {
         const msg = 'Bad cardinality input';
@@ -121,12 +121,15 @@ export class Cardinality {
     return bounds && bounds.lowerBound;
   }
 
-  /** Sets the lower bound of the cardinality, preserving the upper bound. */
+  /**
+   * Sets the lower bound of the cardinality, preserving the upper bound.
+   * When the cardinality is unset, the upper bound defaults to `"*"`.
+   */
   set lowerBound(lowerBound: string) {
-    const bounds = this.getCardinalityBounds() || {
-      upperBound: CARDINALITY_MAX
-    };
-    this.value = `${lowerBound}..${bounds.upperBound}`;
+    const upperBound = this.value
+      ? this.getCardinalityBounds().upperBound
+      : CARDINALITY_MAX;
+    this.value = `${lowerBound}..${upperBound}`;
   }
 
   /**
@@ -160,10 +163,15 @@ export class Cardinality {
     return bounds && bounds.upperBound;
   }
 
-  /** Sets the upper bound of the cardinality, preserving the lower bound. */
+  /**
+   * Sets the upper bound of the cardinality, preserving the lower bound.
+   * When the cardinality is unset, the lower bound defaults to `"0"`.
+   */
   set upperBound(upperBound: string) {
-    const bounds = this.getCardinalityBounds() || { lowerBound: '0' };
-    this.value = `${bounds.lowerBound}..${upperBound}`;
+    const lowerBound = this.value
+      ? this.getCardinalityBounds().lowerBound
+      : '0';
+    this.value = `${lowerBound}..${upperBound}`;
   }
 
   /**
@@ -179,13 +187,15 @@ export class Cardinality {
    * Sets the upper bound of the cardinality from a number, where `Infinity`
    * denotes an unbounded upper bound.
    *
-   * @throws an error if the value is smaller than one.
+   * @throws an error if the value is smaller than one or `NaN`.
    */
   setUpperBound(upperBound: number): void {
     if (upperBound < 1) {
       throw new Error(
         'Upper bound must be a positive number greater than zero'
       );
+    } else if (Number.isNaN(upperBound)) {
+      throw new Error('NaN upper bound value');
     }
 
     this.upperBound = `${
@@ -217,22 +227,26 @@ export class Cardinality {
   isCardinalityStringValid(): boolean {
     if (!this.value) return false;
 
-    const regex = /(\d+\.\.)?(\d+|\*)/;
+    const regex = /^(\d+\.\.)?(\d+|\*)$/;
     return regex.test(this.value);
   }
 
   /**
-   * Checks whether the lower bound cannot be parsed as an integer.
+   * Checks whether the lower bound can be parsed as an integer.
    */
   isLowerBoundValid(): boolean {
-    return isNaN(Number.parseInt(this.lowerBound));
+    return !isNaN(Number.parseInt(this.lowerBound));
   }
 
   /**
-   * Checks whether the upper bound cannot be parsed as an integer.
+   * Checks whether the upper bound can be parsed as an integer or is
+   * unbounded (`"*"`).
    */
   isUpperBoundValid(): boolean {
-    return isNaN(Number.parseInt(this.upperBound));
+    return (
+      this.upperBound === CARDINALITY_MAX ||
+      !isNaN(Number.parseInt(this.upperBound))
+    );
   }
 
   /**
@@ -257,20 +271,23 @@ export class Cardinality {
    *         exceeds the upper bound.
    */
   setBounds(lowerBound: number, upperBound?: number): void {
-    if (lowerBound < 0) {
+    if (lowerBound < 0 || Number.isNaN(lowerBound)) {
       throw new Error(
         'Lower bound must be greater than or equal to 0. Supplied value: ' +
           lowerBound
       );
     }
 
-    if (upperBound && upperBound <= 0) {
+    if (
+      upperBound !== undefined &&
+      (upperBound <= 0 || Number.isNaN(upperBound))
+    ) {
       throw new Error(
         'Upper bound must be a greater than 0. Supplied value: ' + upperBound
       );
     }
 
-    if (upperBound && lowerBound > upperBound) {
+    if (upperBound !== undefined && lowerBound > upperBound) {
       throw new Error(
         'Lower bound cannot be greater than upper bound. Supplied values: ' +
           lowerBound +

@@ -2,9 +2,10 @@ import tags from 'language-tags';
 
 /**
  * Throws an error if `language` is not a valid IETF BCP 47 language tag.
+ * Empty, null, and undefined values are rejected as well.
  */
 function assertValidTag(language: string) {
-  if (language && !tags.check(language)) {
+  if (!language || !tags.check(language)) {
     throw new Error('Invalid language tag: ' + language);
   }
 }
