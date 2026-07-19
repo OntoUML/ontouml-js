@@ -1,5 +1,4 @@
 import {
-  OntoumlElement,
   OntoumlType,
   Class,
   Classifier,
@@ -7,9 +6,7 @@ import {
   Package,
   Relation,
   Project,
-  ModelElement,
-  utils,
-  ProjectElement
+  ModelElement
 } from '..';
 
 /**
@@ -53,7 +50,6 @@ export class GeneralizationSet extends ModelElement {
     return [...this._generalizations];
   }
 
-  // FIXME: TEST me
   /**
    * Sets the generalizations grouped in this generalization set, detaching
    * any previously grouped generalizations.
@@ -81,6 +77,16 @@ export class GeneralizationSet extends ModelElement {
   }
 
   /**
+   * Detaches the generalizations grouped in this set — the generalizations
+   * themselves are preserved — in addition to the reference clean-up
+   * performed for every model element.
+   */
+  protected override removeReferences(): void {
+    this.generalizations.forEach(g => this.removeGeneralization(g));
+    super.removeReferences();
+  }
+
+  /**
    * Checks whether this generalization set is a partition, i.e., whether it
    * is both disjoint and complete.
    */
@@ -95,16 +101,16 @@ export class GeneralizationSet extends ModelElement {
    * general is a «category».
    */
   isPhasePartition(): boolean {
-    //FIXME: Simplify me!
+    if (!this.isPartition() || !this.involvesClasses()) {
+      return false;
+    }
+
+    const general = this.getGeneralAsClass();
+    const specifics = this.getSpecificsAsClasses();
+
     return (
-      this.isPartition() &&
-      this.involvesClasses() &&
-      ((this.getSpecificsAsClasses().every(specific => specific.isPhase()) &&
-        this.getGeneralAsClass().isSortal()) ||
-        (this.getSpecificsAsClasses().every(specific =>
-          specific.isPhaseMixin()
-        ) &&
-          this.getGeneralAsClass().isCategory()))
+      (general.isSortal() && specifics.every(s => s.isPhase())) ||
+      (general.isCategory() && specifics.every(s => s.isPhaseMixin()))
     );
   }
 
@@ -114,13 +120,11 @@ export class GeneralizationSet extends ModelElement {
    * general is a sortal.
    */
   isSubkindPartition(): boolean {
-    //FIXME: Simplify me!
     return (
       this.isPartition() &&
       this.involvesClasses() &&
-      this.getSpecificsAsClasses().every(specific => specific.isSubkind()) &&
-      this.getGeneralAsClass().isSortal()
-      //
+      this.getGeneralAsClass().isSortal() &&
+      this.getSpecificsAsClasses().every(s => s.isSubkind())
     );
   }
 
@@ -310,34 +314,5 @@ export class GeneralizationSet extends ModelElement {
     };
 
     return { ...super.toJSON(), ...object };
-  }
-
-  override resolveReferences(
-    elementReferenceMap: Map<string, OntoumlElement>
-  ): void {
-    super.resolveReferences(elementReferenceMap);
-
-    const { categorizer, generalizations } = this;
-
-    if (categorizer) {
-      this.categorizer = OntoumlElement.resolveReference(
-        categorizer,
-        elementReferenceMap,
-        this,
-        'categorizer'
-      );
-    }
-
-    if (Array.isArray(generalizations)) {
-      this.generalizations = generalizations.map(
-        (generalization: Generalization) =>
-          OntoumlElement.resolveReference(
-            generalization,
-            elementReferenceMap,
-            this,
-            'generalizations'
-          )
-      );
-    }
   }
 }

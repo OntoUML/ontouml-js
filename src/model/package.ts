@@ -22,7 +22,6 @@ import {
   NaryRelationBuilder,
   NoteBuilder,
   AnchorBuilder,
-  ProjectElement,
   OntoumlElement
 } from '..';
 
@@ -54,12 +53,12 @@ export class Package extends ModelElement {
     return [...this._contents];
   }
 
-  // TODO: Check this method
   /**
    * Sets the model elements directly contained in this package, detaching
    * any previous contents.
    */
   override set contents(contents: PackageableElement[]) {
+    this._contents.forEach(c => (c._container = undefined));
     this._contents = [];
     this.addContents(contents);
   }
@@ -293,6 +292,29 @@ export class Package extends ModelElement {
     }
 
     return originalLength > removed.length;
+  }
+
+  /**
+   * Deletes every model element contained in this package, recursively, in
+   * addition to the dependents deleted for every model element (anchors
+   * and views).
+   */
+  protected override deleteDependents(): void {
+    this.contents.forEach(c => c.delete());
+    super.deleteDependents();
+  }
+
+  /**
+   * Clears the project's root package field when this package is the root,
+   * in addition to the reference clean-up performed for every model
+   * element.
+   */
+  protected override removeReferences(): void {
+    if (this.project.root === this) {
+      this.project.root = undefined;
+    }
+
+    super.removeReferences();
   }
 
   override toJSON(): any {

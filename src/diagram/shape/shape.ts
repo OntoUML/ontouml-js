@@ -10,10 +10,4 @@ export abstract class Shape extends OntoumlElement {
   constructor() {
     super();
   }
-
-  /**
-   * Does nothing, as shapes hold no references to other elements that would
-   * need resolving after deserialization.
-   */
-  resolveReferences(_elementReferenceMap: Map<string, OntoumlElement>): void {}
 }

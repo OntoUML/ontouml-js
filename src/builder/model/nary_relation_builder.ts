@@ -2,9 +2,7 @@ import {
   ClassifierBuilder,
   RelationStereotype,
   NaryRelation,
-  Classifier,
-  MATERIAL,
-  COMPARATIVE
+  Classifier
 } from '../..';
 
 /**
@@ -81,9 +79,9 @@ export class NaryRelationBuilder extends ClassifierBuilder<
    */
   override stereotype(stereotype: string): NaryRelationBuilder {
     switch (stereotype) {
-      case MATERIAL:
+      case RelationStereotype.MATERIAL:
         return this.material();
-      case COMPARATIVE:
+      case RelationStereotype.COMPARATIVE:
         return this.comparative();
     }
 
@@ -99,7 +97,7 @@ export class NaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   material(): NaryRelationBuilder {
-    this._stereotype = MATERIAL;
+    this._stereotype = RelationStereotype.MATERIAL;
     this.derived();
     return this;
   }
@@ -113,7 +111,7 @@ export class NaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   comparative(): NaryRelationBuilder {
-    this._stereotype = COMPARATIVE;
+    this._stereotype = RelationStereotype.COMPARATIVE;
     this.derived();
     return this;
   }

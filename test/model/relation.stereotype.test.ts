@@ -1,4 +1,4 @@
-import { COMPARATIVE, MATERIAL, Project, RelationStereotype } from '../../src';
+import { COMPARATIVE, MATERIAL, Project } from '../../src';
 
 describe('Tests related to relations and stereotypes', () => {
   const proj = new Project();

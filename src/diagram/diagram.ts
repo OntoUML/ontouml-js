@@ -161,6 +161,31 @@ export class Diagram extends OntoumlElement implements ProjectElement {
     this.project?.add(element);
   }
 
+  /**
+   * Removes a view from the diagram. This method does not cascade — use
+   * the view's `delete()` method to also remove the view from the project
+   * and delete the connector views attached to it.
+   *
+   * @returns `true` if the view was contained in the diagram.
+   */
+  removeView(view: View<any>): boolean {
+    return this._views.delete(view);
+  }
+
+  /**
+   * Deletes this diagram from its project, deleting every view it
+   * contains. The model elements depicted by the diagram are not affected.
+   *
+   * Deleting a diagram that was already deleted has no effect.
+   */
+  delete(): void {
+    if (!this.project.deregister(this)) {
+      return;
+    }
+
+    this.views.forEach(v => v.delete());
+  }
+
   /** Adds each of the given views to the diagram. */
   addElements(elements: View<any>[]): void {
     if (!elements) {
@@ -360,18 +385,5 @@ export class Diagram extends OntoumlElement implements ProjectElement {
     };
 
     return { ...object, ...super.toJSON() };
-  }
-
-  resolveReferences(elementReferenceMap: Map<string, OntoumlElement>): void {
-    const { owner } = this;
-
-    if (owner) {
-      this.owner = OntoumlElement.resolveReference(
-        owner,
-        elementReferenceMap,
-        this,
-        'owner'
-      );
-    }
   }
 }

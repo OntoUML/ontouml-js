@@ -1,11 +1,4 @@
-import {
-  Class,
-  Generalization,
-  GeneralizationSet,
-  Package,
-  Project,
-  Relation
-} from '../../src';
+import { Class, Generalization, GeneralizationSet, Project } from '../../src';
 
 describe(`Generalization set builder tests`, () => {
   let proj: Project;

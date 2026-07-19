@@ -1,9 +1,7 @@
 import {
-  OntoumlElement,
   Class,
   RelationStereotype,
   ModelElement,
-  Package,
   Property,
   Project,
   Classifier

@@ -5,8 +5,6 @@ import {
   Classifier,
   ModelElement,
   Property,
-  BEGIN,
-  END,
   DecoratableBuilder,
   PropertyStereotype
 } from '../..';
@@ -234,9 +232,9 @@ export class PropertyBuilder extends DecoratableBuilder<
    */
   override stereotype(stereotype: string): PropertyBuilder {
     switch (stereotype) {
-      case BEGIN:
+      case PropertyStereotype.BEGIN:
         return this.begin();
-      case END:
+      case PropertyStereotype.END:
         return this.end();
     }
 
@@ -253,7 +251,7 @@ export class PropertyBuilder extends DecoratableBuilder<
    * @returns this builder, for method chaining.
    */
   begin(): PropertyBuilder {
-    this._stereotype = BEGIN;
+    this._stereotype = PropertyStereotype.BEGIN;
     this.readOnly();
     this.one();
     return this;
@@ -269,7 +267,7 @@ export class PropertyBuilder extends DecoratableBuilder<
    * @returns this builder, for method chaining.
    */
   end(): PropertyBuilder {
-    this._stereotype = END;
+    this._stereotype = PropertyStereotype.END;
     this.readOnly();
     this.one();
     return this;

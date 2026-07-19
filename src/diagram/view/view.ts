@@ -1,4 +1,13 @@
-import { ModelElement, OntoumlElement, Shape } from '../..';
+import {
+  ModelElement,
+  OntoumlElement,
+  Shape,
+  Project,
+  BinaryConnectorView,
+  AnchorView,
+  NaryRelationView,
+  GeneralizationSetView
+} from '../..';
 
 /**
  * The abstract root of the view hierarchy in the OntoUML diagram
@@ -29,13 +38,57 @@ export abstract class View<T extends ModelElement> extends OntoumlElement {
   }
 
   /**
-   * Always throws, as reference resolution for deserialized views is not yet
-   * implemented.
+   * Deletes this view from its project and from the diagrams that contain
+   * it. The deletion cascades to the connector views that cannot exist
+   * without this one (e.g., the views of the relations and generalizations
+   * attached to a deleted class view), and this view is removed from the
+   * generalization view lists of the generalization set views that
+   * reference it. The depicted model element is not affected.
+   *
+   * Deleting a view that was already deleted has no effect.
    */
-  override resolveReferences(
-    elementReferenceMap: Map<string, OntoumlElement>
-  ): void {
-    throw new Error('Method not implemented.');
+  delete(): void {
+    const project = this.element.project;
+
+    if (!project.deregister(this)) {
+      return;
+    }
+
+    this.deleteDependentViews(project);
+    project.diagrams.forEach(d => d.removeView(this));
+  }
+
+  /**
+   * Deletes the views that cannot exist without this one: binary
+   * connector views attached to it, anchor views connected to it, and
+   * n-ary relation views among whose members it appears. Generalization
+   * set views are not deleted; this view is only removed from their
+   * generalization view lists.
+   */
+  private deleteDependentViews(project: Project): void {
+    for (const v of project.views) {
+      if (
+        v instanceof BinaryConnectorView &&
+        (v.source === this || v.target === this)
+      ) {
+        v.delete();
+      } else if (
+        v instanceof AnchorView &&
+        (v.noteView === (this as View<any>) ||
+          v.elementView === (this as View<any>))
+      ) {
+        v.delete();
+      } else if (
+        v instanceof NaryRelationView &&
+        v.members.includes(this as any)
+      ) {
+        v.delete();
+      } else if (v instanceof GeneralizationSetView) {
+        v.generalizations = v.generalizations.filter(
+          g => (g as View<any>) !== (this as View<any>)
+        );
+      }
+    }
   }
 
   /**

@@ -51,14 +51,18 @@ export abstract class OntoumlElementBuilder<
     return this.element!;
   }
 
-  // TODO: confirm whether this is adequate
   /**
    * Sets the identifier of the element, overriding the randomly generated
    * identifier assigned by default.
    *
    * @returns this builder, for method chaining.
+   * @throws an error if the identifier is empty or blank.
    */
   id(id: string): B {
+    if (!id || id.trim().length === 0) {
+      throw new Error('The id cannot be empty or blank.');
+    }
+
     this._id = id;
     return this as unknown as B;
   }

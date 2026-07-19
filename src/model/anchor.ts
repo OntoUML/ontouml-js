@@ -1,12 +1,4 @@
-import {
-  OntoumlType,
-  ModelElement,
-  Project,
-  OntoumlElement,
-  Package,
-  Note,
-  ProjectElement
-} from '..';
+import { OntoumlType, ModelElement, Project, Package, Note } from '..';
 
 /**
  * A link that attaches a {@link Note} to the {@link ModelElement} it

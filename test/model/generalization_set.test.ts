@@ -162,7 +162,54 @@ describe(`GeneralizationSet Tests`, () => {
   });
 
   describe(`Test getInstantiationRelations()`, () => {
-    // TODO: implement test
+    it('should return undefined if the set has no categorizer', () => {
+      expect(agentSet.getInstantiationRelations()).toBeUndefined();
+    });
+
+    it('should return the «instantiation» relations whose target is the categorizer', () => {
+      const agentType = proj.classBuilder().type().build();
+      agentSet.categorizer = agentType;
+
+      const instantiation = proj
+        .binaryRelationBuilder()
+        .instantiation()
+        .source(agent)
+        .target(agentType)
+        .build();
+
+      expect(agentSet.getInstantiationRelations()).toIncludeSameMembers([
+        instantiation
+      ]);
+    });
+
+    it('should not return relations targeting the categorizer that are not «instantiation»', () => {
+      const agentType = proj.classBuilder().type().build();
+      agentSet.categorizer = agentType;
+
+      proj
+        .binaryRelationBuilder()
+        .material()
+        .source(agent)
+        .target(agentType)
+        .build();
+
+      expect(agentSet.getInstantiationRelations()).toBeEmpty();
+    });
+  });
+
+  describe(`Test generalizations setter`, () => {
+    it('should replace previously grouped generalizations', () => {
+      agentSet.generalizations = [genPer];
+
+      expect(agentSet.generalizations).toIncludeSameMembers([genPer]);
+    });
+
+    it('should detach replaced generalizations from the set', () => {
+      agentSet.generalizations = [genPer];
+
+      expect(genOrg.generalizationSets).not.toContain(agentSet);
+      expect(genPer.generalizationSets).toContain(agentSet);
+    });
   });
 
   it(`Test setContainer()`, () => {

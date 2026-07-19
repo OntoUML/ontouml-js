@@ -1,5 +1,4 @@
 import {
-  OntoumlElement,
   OntoumlType,
   Class,
   Classifier,
@@ -7,8 +6,7 @@ import {
   Package,
   Relation,
   Project,
-  ModelElement,
-  ProjectElement
+  ModelElement
 } from '..';
 
 /**
@@ -52,6 +50,16 @@ export class Generalization extends ModelElement {
   }
 
   /**
+   * Removes this generalization from the generalization sets that group
+   * it, in addition to the reference clean-up performed for every model
+   * element. Generalization sets left empty by the removal are preserved.
+   */
+  protected override removeReferences(): void {
+    this.generalizationSets.forEach(gs => gs.removeGeneralization(this));
+    super.removeReferences();
+  }
+
+  /**
    * @returns `true` if both {@link general} and {@link specific} are
    *          {@link Class} instances.
    */
@@ -77,19 +85,5 @@ export class Generalization extends ModelElement {
     };
 
     return { ...super.toJSON(), ...object };
-  }
-
-  // FIXME
-  override resolveReferences(
-    elementReferenceMap: Map<string, OntoumlElement>
-  ): void {
-    // super.resolveReferences(elementReferenceMap);
-    // const { general, specific } = this;
-    // if (general) {
-    //   this.general = OntoumlElement.resolveReference(general, elementReferenceMap, this, 'general');
-    // }
-    // if (specific) {
-    //   this.specific = OntoumlElement.resolveReference(specific, elementReferenceMap, this, 'specific');
-    // }
   }
 }

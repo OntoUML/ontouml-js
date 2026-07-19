@@ -2,28 +2,8 @@ import {
   Package,
   ClassifierBuilder,
   RelationStereotype,
-  Relation,
   BinaryRelation,
   Classifier,
-  MATERIAL,
-  DERIVATION,
-  COMPARATIVE,
-  MEDIATION,
-  CHARACTERIZATION,
-  EXTERNAL_DEPENDENCE,
-  COMPONENT_OF,
-  MEMBER_OF,
-  SUBCOLLECTION_OF,
-  SUBQUANTITY_OF,
-  INSTANTIATION,
-  TERMINATION,
-  PARTICIPATIONAL,
-  PARTICIPATION,
-  HISTORICAL_DEPENDENCE,
-  CREATION,
-  MANIFESTATION,
-  BRINGS_ABOUT,
-  TRIGGERS,
   AggregationKind
 } from '../..';
 
@@ -229,43 +209,43 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    */
   override stereotype(stereotype: string): BinaryRelationBuilder {
     switch (stereotype) {
-      case MATERIAL:
+      case RelationStereotype.MATERIAL:
         return this.material();
-      case DERIVATION:
+      case RelationStereotype.DERIVATION:
         return this.derivation();
-      case COMPARATIVE:
+      case RelationStereotype.COMPARATIVE:
         return this.comparative();
-      case MEDIATION:
+      case RelationStereotype.MEDIATION:
         return this.mediation();
-      case CHARACTERIZATION:
+      case RelationStereotype.CHARACTERIZATION:
         return this.characterization();
-      case EXTERNAL_DEPENDENCE:
+      case RelationStereotype.EXTERNAL_DEPENDENCE:
         return this.externalDependence();
-      case COMPONENT_OF:
+      case RelationStereotype.COMPONENT_OF:
         return this.componentOf();
-      case MEMBER_OF:
+      case RelationStereotype.MEMBER_OF:
         return this.memberOf();
-      case SUBCOLLECTION_OF:
+      case RelationStereotype.SUBCOLLECTION_OF:
         return this.subCollectionOf();
-      case SUBQUANTITY_OF:
+      case RelationStereotype.SUBQUANTITY_OF:
         return this.subQuantityOf();
-      case INSTANTIATION:
+      case RelationStereotype.INSTANTIATION:
         return this.instantiation();
-      case TERMINATION:
+      case RelationStereotype.TERMINATION:
         return this.termination();
-      case PARTICIPATIONAL:
+      case RelationStereotype.PARTICIPATIONAL:
         return this.participational();
-      case PARTICIPATION:
+      case RelationStereotype.PARTICIPATION:
         return this.participation();
-      case HISTORICAL_DEPENDENCE:
+      case RelationStereotype.HISTORICAL_DEPENDENCE:
         return this.historicalDependence();
-      case CREATION:
+      case RelationStereotype.CREATION:
         return this.creation();
-      case MANIFESTATION:
+      case RelationStereotype.MANIFESTATION:
         return this.manifestation();
-      case BRINGS_ABOUT:
+      case RelationStereotype.BRINGS_ABOUT:
         return this.bringsAbout();
-      case TRIGGERS:
+      case RelationStereotype.TRIGGERS:
         return this.triggers();
     }
 
@@ -281,7 +261,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   material(): BinaryRelationBuilder {
-    this._stereotype = MATERIAL;
+    this._stereotype = RelationStereotype.MATERIAL;
     this.derived();
     return this;
   }
@@ -297,7 +277,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   derivation(): BinaryRelationBuilder {
-    this._stereotype = DERIVATION;
+    this._stereotype = RelationStereotype.DERIVATION;
     this.sourceCardinality('1');
     this.targetCardinality('1');
     return this;
@@ -313,7 +293,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   comparative(): BinaryRelationBuilder {
-    this._stereotype = COMPARATIVE;
+    this._stereotype = RelationStereotype.COMPARATIVE;
     this.derived();
     return this;
   }
@@ -329,7 +309,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   mediation(): BinaryRelationBuilder {
-    this._stereotype = MEDIATION;
+    this._stereotype = RelationStereotype.MEDIATION;
     this.sourceCardinality('1..*');
     this.targetCardinality('1');
     this.targetReadOnly();
@@ -348,7 +328,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   characterization(): BinaryRelationBuilder {
-    this._stereotype = CHARACTERIZATION;
+    this._stereotype = RelationStereotype.CHARACTERIZATION;
     this.sourceCardinality('1..*');
     this.targetCardinality('1');
     this.targetReadOnly();
@@ -367,7 +347,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   externalDependence(): BinaryRelationBuilder {
-    this._stereotype = EXTERNAL_DEPENDENCE;
+    this._stereotype = RelationStereotype.EXTERNAL_DEPENDENCE;
     this.sourceCardinality('0..*');
     this.targetCardinality('1');
     this.targetReadOnly();
@@ -385,7 +365,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   componentOf(): BinaryRelationBuilder {
-    this._stereotype = COMPONENT_OF;
+    this._stereotype = RelationStereotype.COMPONENT_OF;
     this.composition();
     this.sourceCardinality('1');
     this.targetCardinality('1..*');
@@ -404,7 +384,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   memberOf(): BinaryRelationBuilder {
-    this._stereotype = MEMBER_OF;
+    this._stereotype = RelationStereotype.MEMBER_OF;
     this.aggregation();
     this.sourceCardinality('1..*');
     this.targetCardinality('1..*');
@@ -423,7 +403,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   subCollectionOf(): BinaryRelationBuilder {
-    this._stereotype = SUBCOLLECTION_OF;
+    this._stereotype = RelationStereotype.SUBCOLLECTION_OF;
     this.composition();
     this.sourceCardinality('1');
     this.targetCardinality('1..*');
@@ -442,7 +422,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   subQuantityOf(): BinaryRelationBuilder {
-    this._stereotype = SUBQUANTITY_OF;
+    this._stereotype = RelationStereotype.SUBQUANTITY_OF;
     this.composition();
     this.sourceCardinality('1');
     this.targetCardinality('1');
@@ -460,7 +440,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   instantiation(): BinaryRelationBuilder {
-    this._stereotype = INSTANTIATION;
+    this._stereotype = RelationStereotype.INSTANTIATION;
     this.sourceCardinality('1..*');
     this.targetCardinality('0..*');
     return this;
@@ -476,7 +456,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   termination(): BinaryRelationBuilder {
-    this._stereotype = TERMINATION;
+    this._stereotype = RelationStereotype.TERMINATION;
     this.sourceCardinality('1');
     this.targetCardinality('1');
     return this;
@@ -493,7 +473,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   participational(): BinaryRelationBuilder {
-    this._stereotype = PARTICIPATIONAL;
+    this._stereotype = RelationStereotype.PARTICIPATIONAL;
     this.composition();
     this.sourceCardinality('1');
     this.targetCardinality('1..*');
@@ -510,7 +490,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   participation(): BinaryRelationBuilder {
-    this._stereotype = PARTICIPATION;
+    this._stereotype = RelationStereotype.PARTICIPATION;
     this.sourceCardinality('1..*');
     this.targetCardinality('1..*');
     return this;
@@ -527,7 +507,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   historicalDependence(): BinaryRelationBuilder {
-    this._stereotype = HISTORICAL_DEPENDENCE;
+    this._stereotype = RelationStereotype.HISTORICAL_DEPENDENCE;
     this.sourceCardinality('1');
     this.targetCardinality('1');
     return this;
@@ -543,7 +523,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   creation(): BinaryRelationBuilder {
-    this._stereotype = CREATION;
+    this._stereotype = RelationStereotype.CREATION;
     this.sourceCardinality('1');
     this.targetCardinality('1');
     return this;
@@ -560,7 +540,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   manifestation(): BinaryRelationBuilder {
-    this._stereotype = MANIFESTATION;
+    this._stereotype = RelationStereotype.MANIFESTATION;
     this.sourceCardinality('1');
     this.targetCardinality('1');
     return this;
@@ -576,7 +556,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   bringsAbout(): BinaryRelationBuilder {
-    this._stereotype = BRINGS_ABOUT;
+    this._stereotype = RelationStereotype.BRINGS_ABOUT;
     this.sourceCardinality('1');
     this.targetCardinality('1');
     return this;
@@ -592,7 +572,7 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   triggers(): BinaryRelationBuilder {
-    this._stereotype = TRIGGERS;
+    this._stereotype = RelationStereotype.TRIGGERS;
     this.sourceCardinality('1');
     this.targetCardinality('1');
     return this;

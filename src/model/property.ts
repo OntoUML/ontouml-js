@@ -1,11 +1,9 @@
 import {
-  OntoumlElement,
   OntoumlType,
   Cardinality,
   Class,
   Classifier,
   PropertyStereotype,
-  ModelElement,
   Relation,
   BinaryRelation,
   NaryRelation,
@@ -164,6 +162,43 @@ export class Property extends Decoratable<PropertyStereotype> {
     return Object.values(PropertyStereotype);
   }
 
+  /**
+   * Deletes the relation that owns this property when the property is a
+   * relation end — a relation cannot exist with a missing end — in
+   * addition to the dependents deleted for every model element (anchors
+   * and views).
+   */
+  protected override deleteDependents(): void {
+    if (this._container instanceof Relation) {
+      this._container.delete();
+    }
+
+    super.deleteDependents();
+  }
+
+  /**
+   * Removes this property from the subsetted and redefined property sets
+   * of every other property of the project, in addition to the reference
+   * clean-up performed for every model element.
+   */
+  protected override removeReferences(): void {
+    this.project.properties.forEach(p => {
+      p.removeSubsettedProperty(this);
+      p.removeRedefinedProperty(this);
+    });
+
+    super.removeReferences();
+  }
+
+  /** Detaches this property from the classifier that contains it. */
+  protected override detach(): void {
+    if (this._container instanceof Classifier) {
+      this._container.removeProperty(this);
+    }
+
+    this._container = undefined;
+  }
+
   /** Checks whether this property is an attribute of a {@link Class}. */
   isAttribute(): boolean {
     return this.container instanceof Class;
@@ -318,22 +353,5 @@ export class Property extends Decoratable<PropertyStereotype> {
       isOrdered: this.isOrdered ?? null,
       isReadOnly: this.isReadOnly ?? null
     };
-  }
-
-  override resolveReferences(
-    elementReferenceMap: Map<string, OntoumlElement>
-  ): void {
-    super.resolveReferences(elementReferenceMap);
-
-    const { propertyType } = this;
-
-    if (propertyType) {
-      this.propertyType = OntoumlElement.resolveReference(
-        propertyType,
-        elementReferenceMap,
-        this,
-        'propertyType'
-      );
-    }
   }
 }

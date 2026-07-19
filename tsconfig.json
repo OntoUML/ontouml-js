@@ -11,8 +11,13 @@
     "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
     "strict": true /* Enable all strict type-checking options. */,
+    "types": [
+      "jest",
+      "node"
+    ] /* Explicitly include global type packages. TypeScript 6+ (bundled with VS Code) no longer auto-includes all of node_modules/@types. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
-    "noImplicitOverride": true
+    "noImplicitOverride": true,
+    "ignoreDeprecations": "6.0" /* Silence TS5101 on 'baseUrl', which tsup injects into its DTS build config. */
   },
   "files": ["test/jest-extended.d.ts", "jest.setup.ts"],
   "include": ["src/**/*", "test/**/*"],

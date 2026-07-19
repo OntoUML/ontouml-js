@@ -1,7 +1,6 @@
 import {
   OntoumlType,
   Project,
-  Package,
   RelationStereotype,
   Property,
   Class,

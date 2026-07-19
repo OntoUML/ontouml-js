@@ -1,11 +1,4 @@
-import {
-  OntoumlType,
-  Package,
-  View,
-  Rectangle,
-  OntoumlElement,
-  Shape
-} from '../..';
+import { OntoumlType, Package, View, Rectangle, Shape } from '../..';
 
 /**
  * The view of a {@link Package} in a {@link Diagram}, rendered as a

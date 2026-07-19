@@ -199,7 +199,6 @@ export const ULTIMATE_SORTAL_STEREOTYPES: readonly ClassStereotype[] = [
   MODE
 ];
 
-// TODO: consider renaming "base" to "lower"
 /**
  * The stereotypes of base sortal classes: sortals that do not provide an
  * identity principle themselves, but inherit one from the ultimate sortal
@@ -222,11 +221,16 @@ export const SORTAL_STEREOTYPES: readonly ClassStereotype[] = [
   ...BASE_SORTAL_STEREOTYPES
 ];
 
-// TODO: review if we should consider as rigid/anti-rigid/semi-rigid only those stereotypes whose respective types specialize Rigid/Anti-Rigid/Semi-Rigid in UFO. This introduces breaks to the gUFO transformation
 /**
  * The stereotypes of rigid classes: types that necessarily apply to their
  * instances, i.e., that classify their instances in every world in which the
  * instances exist (e.g., a person can never cease to be a person).
+ *
+ * Note that this list adopts a broad notion of rigidity that includes
+ * stereotypes whose UFO counterparts do not specialize Rigid (e.g., «event»,
+ * «situation», «datatype»), as their instances also cannot cease to
+ * instantiate them. This broad notion is the one assumed by the
+ * OntoUML-to-gUFO transformation.
  */
 export const RIGID_STEREOTYPES: readonly ClassStereotype[] = [
   KIND,

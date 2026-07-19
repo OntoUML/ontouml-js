@@ -1,32 +1,9 @@
 import {
-  ABSTRACT,
-  CATEGORY,
-  COLLECTIVE,
   ClassStereotype,
-  DATATYPE,
-  ENUMERATION,
-  EVENT,
-  HISTORICAL_ROLE,
-  HISTORICAL_ROLE_MIXIN,
-  KIND,
-  MIXIN,
-  MODE,
-  PHASE,
-  PHASE_MIXIN,
-  QUALITY,
-  QUANTITY,
-  RELATOR,
-  ROLE,
-  ROLE_MIXIN,
-  SITUATION,
-  SUBKIND,
-  TYPE,
   Nature,
   Class,
   ORDERLESS_LEVEL,
-  Package,
   ClassifierBuilder,
-  Project,
   utils
 } from '../..';
 
@@ -140,47 +117,47 @@ export class ClassBuilder extends ClassifierBuilder<
    */
   override stereotype(stereotype: string): ClassBuilder {
     switch (stereotype) {
-      case KIND:
+      case ClassStereotype.KIND:
         return this.kind();
-      case COLLECTIVE:
+      case ClassStereotype.COLLECTIVE:
         return this.collective();
-      case QUANTITY:
+      case ClassStereotype.QUANTITY:
         return this.quantity();
-      case RELATOR:
+      case ClassStereotype.RELATOR:
         return this.relator();
-      case QUALITY:
+      case ClassStereotype.QUALITY:
         return this.quality();
-      case MODE:
+      case ClassStereotype.MODE:
         return this.mode();
-      case SUBKIND:
+      case ClassStereotype.SUBKIND:
         return this.subkind();
-      case ROLE:
+      case ClassStereotype.ROLE:
         return this.role();
-      case PHASE:
+      case ClassStereotype.PHASE:
         return this.phase();
-      case CATEGORY:
+      case ClassStereotype.CATEGORY:
         return this.category();
-      case MIXIN:
+      case ClassStereotype.MIXIN:
         return this.mixin();
-      case ROLE_MIXIN:
+      case ClassStereotype.ROLE_MIXIN:
         return this.roleMixin();
-      case PHASE_MIXIN:
+      case ClassStereotype.PHASE_MIXIN:
         return this.phaseMixin();
-      case EVENT:
+      case ClassStereotype.EVENT:
         return this.event();
-      case SITUATION:
+      case ClassStereotype.SITUATION:
         return this.situation();
-      case HISTORICAL_ROLE:
+      case ClassStereotype.HISTORICAL_ROLE:
         return this.historicalRole();
-      case HISTORICAL_ROLE_MIXIN:
+      case ClassStereotype.HISTORICAL_ROLE_MIXIN:
         return this.historicalRoleMixin();
-      case ENUMERATION:
+      case ClassStereotype.ENUMERATION:
         return this.enumeration();
-      case DATATYPE:
+      case ClassStereotype.DATATYPE:
         return this.datatype();
-      case ABSTRACT:
+      case ClassStereotype.ABSTRACT:
         return this.abstractClass();
-      case TYPE:
+      case ClassStereotype.TYPE:
         return this.type();
     }
 
@@ -198,7 +175,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   kind(): ClassBuilder {
-    this._stereotype = KIND;
+    this._stereotype = ClassStereotype.KIND;
     this.restrictedTo(Nature.FUNCTIONAL_COMPLEX);
     this.order(1);
     return this;
@@ -215,7 +192,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   collective(): ClassBuilder {
-    this._stereotype = COLLECTIVE;
+    this._stereotype = ClassStereotype.COLLECTIVE;
     this.restrictedTo(Nature.COLLECTIVE);
     this.order(1);
     return this;
@@ -232,7 +209,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   quantity(): ClassBuilder {
-    this._stereotype = QUANTITY;
+    this._stereotype = ClassStereotype.QUANTITY;
     this.restrictedTo(Nature.QUANTITY);
     this.order(1);
     return this;
@@ -249,7 +226,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   relator(): ClassBuilder {
-    this._stereotype = RELATOR;
+    this._stereotype = ClassStereotype.RELATOR;
     this.restrictedTo(Nature.RELATOR);
     this.order(1);
     return this;
@@ -266,7 +243,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   quality(): ClassBuilder {
-    this._stereotype = QUALITY;
+    this._stereotype = ClassStereotype.QUALITY;
     this.restrictedTo(Nature.QUALITY);
     this.order(1);
     return this;
@@ -283,7 +260,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   mode(): ClassBuilder {
-    this._stereotype = MODE;
+    this._stereotype = ClassStereotype.MODE;
     this.restrictedTo(Nature.INTRINSIC_MODE);
     this.order(1);
     return this;
@@ -297,7 +274,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   subkind(): ClassBuilder {
-    this._stereotype = SUBKIND;
+    this._stereotype = ClassStereotype.SUBKIND;
     return this;
   }
 
@@ -309,7 +286,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   role(): ClassBuilder {
-    this._stereotype = ROLE;
+    this._stereotype = ClassStereotype.ROLE;
     return this;
   }
 
@@ -321,7 +298,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   phase(): ClassBuilder {
-    this._stereotype = PHASE;
+    this._stereotype = ClassStereotype.PHASE;
     return this;
   }
 
@@ -336,7 +313,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   category(): ClassBuilder {
-    this._stereotype = CATEGORY;
+    this._stereotype = ClassStereotype.CATEGORY;
     this.restrictedTo(Nature.FUNCTIONAL_COMPLEX);
     this.abstract();
     return this;
@@ -353,7 +330,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   mixin(): ClassBuilder {
-    this._stereotype = MIXIN;
+    this._stereotype = ClassStereotype.MIXIN;
     this.restrictedTo(Nature.FUNCTIONAL_COMPLEX);
     this.abstract();
     return this;
@@ -370,7 +347,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   roleMixin(): ClassBuilder {
-    this._stereotype = ROLE_MIXIN;
+    this._stereotype = ClassStereotype.ROLE_MIXIN;
     this.restrictedTo(Nature.FUNCTIONAL_COMPLEX);
     this.abstract();
     return this;
@@ -387,7 +364,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   phaseMixin(): ClassBuilder {
-    this._stereotype = PHASE_MIXIN;
+    this._stereotype = ClassStereotype.PHASE_MIXIN;
     this.restrictedTo(Nature.FUNCTIONAL_COMPLEX);
     this.abstract();
     return this;
@@ -403,7 +380,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   event(): ClassBuilder {
-    this._stereotype = EVENT;
+    this._stereotype = ClassStereotype.EVENT;
     this.restrictedTo(Nature.EVENT);
     this.order(1);
     return this;
@@ -420,7 +397,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   situation(): ClassBuilder {
-    this._stereotype = SITUATION;
+    this._stereotype = ClassStereotype.SITUATION;
     this.restrictedTo(Nature.SITUATION);
     this.order(1);
     return this;
@@ -434,7 +411,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   historicalRole(): ClassBuilder {
-    this._stereotype = HISTORICAL_ROLE;
+    this._stereotype = ClassStereotype.HISTORICAL_ROLE;
     return this;
   }
 
@@ -449,7 +426,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   historicalRoleMixin(): ClassBuilder {
-    this._stereotype = HISTORICAL_ROLE_MIXIN;
+    this._stereotype = ClassStereotype.HISTORICAL_ROLE_MIXIN;
     this.restrictedTo(Nature.FUNCTIONAL_COMPLEX);
     this.abstract();
     return this;
@@ -466,7 +443,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   enumeration(): ClassBuilder {
-    this._stereotype = ENUMERATION;
+    this._stereotype = ClassStereotype.ENUMERATION;
     this.restrictedTo(Nature.ABSTRACT);
     this.order(1);
     return this;
@@ -482,7 +459,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   datatype(): ClassBuilder {
-    this._stereotype = DATATYPE;
+    this._stereotype = ClassStereotype.DATATYPE;
     this.restrictedTo(Nature.ABSTRACT);
     this.order(1);
     return this;
@@ -499,7 +476,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   abstractClass(): ClassBuilder {
-    this._stereotype = ABSTRACT;
+    this._stereotype = ClassStereotype.ABSTRACT;
     this.restrictedTo(Nature.ABSTRACT);
     this.order(1);
     return this;
@@ -515,7 +492,7 @@ export class ClassBuilder extends ClassifierBuilder<
    * @returns this builder, for method chaining.
    */
   type(): ClassBuilder {
-    this._stereotype = TYPE;
+    this._stereotype = ClassStereotype.TYPE;
     this.restrictedTo(Nature.TYPE);
     this.order(2);
     return this;

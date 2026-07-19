@@ -123,9 +123,10 @@ export abstract class NamedElementBuilder<
    * @param name - human-readable label of the creator.
    * @param language - language tag of `name` (e.g., `"en"`).
    * @returns this builder, for method chaining.
+   * @throws an error if both `uri` and `name` are absent.
    */
   creator(uri?: string, name?: string, language?: string): B {
-    this._creators.push(new Resource(uri, name, language));
+    this._creators.push(this.resource(uri, name, language));
     return this as unknown as B;
   }
 
@@ -137,9 +138,24 @@ export abstract class NamedElementBuilder<
    * @param name - human-readable label of the contributor.
    * @param language - language tag of `name` (e.g., `"en"`).
    * @returns this builder, for method chaining.
+   * @throws an error if both `uri` and `name` are absent.
    */
   contributor(uri?: string, name?: string, language?: string): B {
-    this._contributors.push(new Resource(uri, name, language));
+    this._contributors.push(this.resource(uri, name, language));
     return this as unknown as B;
+  }
+
+  /**
+   * Creates a {@link Resource} for a metadata field, rejecting resources that
+   * would carry no information at all.
+   *
+   * @throws an error if both `uri` and `name` are absent.
+   */
+  protected resource(uri?: string, name?: string, language?: string): Resource {
+    if (!uri && !name) {
+      throw new Error('A resource requires at least one of `uri` and `name`.');
+    }
+
+    return new Resource(uri, name, language);
   }
 }

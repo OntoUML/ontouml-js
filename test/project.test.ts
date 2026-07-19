@@ -8,6 +8,10 @@ import {
   Project,
   Property
 } from '../src';
+import Ajv from 'ajv';
+import addFormats from 'ajv-formats';
+
+const schema = require('ontouml-schema');
 
 describe('Project tests', () => {
   let proj: Project;
@@ -135,15 +139,17 @@ describe('Project tests', () => {
     expect(proj.getAllContents()).toIncludeSameMembers(proj.getContents());
   });
 
-  // TODO: Fix the serialization
   describe(`Test toJSON()`, () => {
     it('Should serialize without throwing an exception', () => {
       expect(() => JSON.stringify(proj)).not.toThrow();
     });
 
-    //TODO: Figure out how to handle validation
-    // it('Should serialize into an object compliant with the OntoUML JSON schema', () => {
-    //   expect(serializationUtils.validate(proj)).toBeTrue();
-    // });
+    it('Should serialize into an object compliant with the OntoUML JSON schema', () => {
+      const validator = addFormats(new Ajv()).compile(schema);
+      const isValid = validator(JSON.parse(JSON.stringify(proj)));
+
+      if (!isValid) console.log(validator.errors);
+      expect(isValid).toBeTrue();
+    });
   });
 });

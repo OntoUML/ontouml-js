@@ -34,6 +34,16 @@ export class Note extends ModelElement {
     return new AnchorBuilder(this.project!).note(this);
   }
 
+  /**
+   * Deletes the anchors that attach this note to model elements, in
+   * addition to the dependents deleted for every model element.
+   */
+  protected override deleteDependents(): void {
+    this.project.anchors.filter(a => a.note === this).forEach(a => a.delete());
+
+    super.deleteDependents();
+  }
+
   override toJSON(): any {
     const object: any = {
       type: OntoumlType.NOTE,

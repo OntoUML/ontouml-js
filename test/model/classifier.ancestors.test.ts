@@ -1,4 +1,4 @@
-import { Class, Relation, Project } from '../../src';
+import { Class, Project } from '../../src';
 
 describe('Class: test ancestor-related query methods', () => {
   let proj: Project;

@@ -1,5 +1,12 @@
 import _ from 'lodash';
-import { OntoumlElement, Project, NamedElement, ProjectElement } from '..';
+import {
+  OntoumlElement,
+  Project,
+  NamedElement,
+  ProjectElement,
+  Package,
+  PackageableElement
+} from '..';
 
 /**
  * The abstract base class of all elements that constitute an OntoUML model,
@@ -73,8 +80,63 @@ export abstract class ModelElement
     }
   }
 
-  resolveReferences(_elementReferenceMap: Map<string, OntoumlElement>): void {
-    // TODO: resolve references within propertyAssignments
+  /**
+   * Deletes this element from its project, keeping the model consistent:
+   * the deletion cascades to the elements that cannot exist without this
+   * one (see {@link deleteDependents}), every reference to this element
+   * held by other elements is cleaned up (see {@link removeReferences}),
+   * and the element is detached from its container and removed from the
+   * project's indexes.
+   *
+   * Deleting an element that was already deleted has no effect.
+   */
+  delete(): void {
+    if (!this.project.deregister(this)) {
+      return;
+    }
+
+    this.deleteDependents();
+    this.removeReferences();
+    this.detach();
+  }
+
+  /**
+   * Deletes the elements that cannot exist without this one: the anchors
+   * that attach notes to it and the views that depict it in diagrams.
+   * Subclasses extend this method with type-specific dependents (e.g.,
+   * classifiers also delete the generalizations and relations that connect
+   * them).
+   */
+  protected deleteDependents(): void {
+    this.project.anchors
+      .filter(a => a !== (this as ModelElement) && a.element === this)
+      .forEach(a => a.delete());
+
+    this.project.views.filter(v => v.element === this).forEach(v => v.delete());
+  }
+
+  /**
+   * Removes the non-containment references to this element held by other
+   * elements of the project. Subclasses extend this method with
+   * type-specific references (e.g., a class clears the categorizer field
+   * of the generalization sets it categorizes).
+   */
+  protected removeReferences(): void {
+    this.project.diagrams
+      .filter(d => d.owner === this)
+      .forEach(d => (d.owner = undefined));
+  }
+
+  /**
+   * Detaches this element from its container. Subclasses whose containers
+   * are not packages (e.g., properties and literals) override this method.
+   */
+  protected detach(): void {
+    if (this._container instanceof Package) {
+      this._container.removeContent(this as unknown as PackageableElement);
+    }
+
+    this._container = undefined;
   }
 
   override toJSON(): any {

@@ -2,36 +2,13 @@ import _ from 'lodash';
 import {
   ClassStereotype,
   Nature,
-  OntoumlElement,
   OntoumlType,
   utils,
   Literal,
   ModelElement,
-  Package,
   Property,
   GeneralizationSet,
   Project,
-  TYPE,
-  EVENT,
-  SITUATION,
-  ABSTRACT,
-  DATATYPE,
-  ENUMERATION,
-  KIND,
-  COLLECTIVE,
-  QUANTITY,
-  RELATOR,
-  QUALITY,
-  MODE,
-  SUBKIND,
-  PHASE,
-  ROLE,
-  HISTORICAL_ROLE,
-  CATEGORY,
-  PHASE_MIXIN,
-  ROLE_MIXIN,
-  HISTORICAL_ROLE_MIXIN,
-  MIXIN,
   EndurantNatures,
   ExtrinsicMomentNatures,
   IntrinsicMomentNatures,
@@ -46,11 +23,8 @@ import {
   BASE_SORTAL_STEREOTYPES,
   Classifier,
   PropertyBuilder,
-  LiteralBuilder,
-  ProjectElement
+  LiteralBuilder
 } from '..';
-
-// import { PropertyBuilder } from '../builder/property_builder';
 
 /**
  * A class in an OntoUML model, i.e., a type whose instances share common
@@ -102,9 +76,9 @@ export class Class extends Classifier<Class, ClassStereotype> {
    * @throws an error if the class is an enumeration.
    */
   assertNonEnumeration(): void {
-    if (this.stereotype === ENUMERATION)
+    if (this.stereotype === ClassStereotype.ENUMERATION)
       throw new Error(
-        `Prohibited method call on class decorated with «${ENUMERATION}».`
+        `Prohibited method call on class decorated with «${ClassStereotype.ENUMERATION}».`
       );
   }
 
@@ -114,9 +88,9 @@ export class Class extends Classifier<Class, ClassStereotype> {
    * @throws an error if the class is not an enumeration.
    */
   assertEnumeration(): void {
-    if (this.stereotype !== ENUMERATION)
+    if (this.stereotype !== ClassStereotype.ENUMERATION)
       throw new Error(
-        `Prohibited method call on class that is not decorated with «${ENUMERATION}».`
+        `Prohibited method call on class that is not decorated with «${ClassStereotype.ENUMERATION}».`
       );
   }
 
@@ -201,7 +175,6 @@ export class Class extends Classifier<Class, ClassStereotype> {
       order: this.getOrderAsString()
     };
 
-    // TODO: consider reorder this return to improve readability on debugging; we can either place the type first, or use a library to sort the object's keys
     return { type: OntoumlType.CLASS, ...super.toJSON(), ...object };
   }
 
@@ -270,6 +243,29 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
     this._literals.delete(literal);
     literal._container = undefined;
+  }
+
+  /**
+   * Deletes the literals owned by this class, in addition to the
+   * dependents deleted for every classifier (relations, generalizations,
+   * properties, anchors, and views).
+   */
+  protected override deleteDependents(): void {
+    this.literals.forEach(l => l.delete());
+    super.deleteDependents();
+  }
+
+  /**
+   * Clears the categorizer field of the generalization sets categorized by
+   * this class, in addition to the reference clean-up performed for every
+   * classifier.
+   */
+  protected override removeReferences(): void {
+    this.project.generalizationSets
+      .filter(gs => gs.categorizer === this)
+      .forEach(gs => (gs.categorizer = undefined));
+
+    super.removeReferences();
   }
 
   /** Checks whether this class owns at least one attribute. */
@@ -543,28 +539,27 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
   /** Checks whether this class is stereotyped as «type». */
   isType(): boolean {
-    return this.stereotype === TYPE;
+    return this.stereotype === ClassStereotype.TYPE;
   }
 
   /** Checks whether this class is stereotyped as «event». */
   isEvent(): boolean {
-    return this.stereotype === EVENT;
+    return this.stereotype === ClassStereotype.EVENT;
   }
 
   /** Checks whether this class is stereotyped as «situation». */
   isSituation(): boolean {
-    return this.stereotype === SITUATION;
+    return this.stereotype === ClassStereotype.SITUATION;
   }
 
-  // TODO
   /** Checks whether this class is stereotyped as «abstract». */
   isAbstractStereotype(): boolean {
-    return this.stereotype === ABSTRACT;
+    return this.stereotype === ClassStereotype.ABSTRACT;
   }
 
   /** Checks whether this class is stereotyped as «datatype». */
   isDatatype(): boolean {
-    return this.stereotype === DATATYPE;
+    return this.stereotype === ClassStereotype.DATATYPE;
   }
 
   /**
@@ -585,82 +580,82 @@ export class Class extends Classifier<Class, ClassStereotype> {
 
   /** Checks whether this class is stereotyped as «enumeration». */
   isEnumeration(): boolean {
-    return this.stereotype === ENUMERATION;
+    return this.stereotype === ClassStereotype.ENUMERATION;
   }
 
   /** Checks whether this class is stereotyped as «kind». */
   isKind(): boolean {
-    return this.stereotype === KIND;
+    return this.stereotype === ClassStereotype.KIND;
   }
 
   /** Checks whether this class is stereotyped as «collective». */
   isCollective(): boolean {
-    return this.stereotype === COLLECTIVE;
+    return this.stereotype === ClassStereotype.COLLECTIVE;
   }
 
   /** Checks whether this class is stereotyped as «quantity». */
   isQuantity(): boolean {
-    return this.stereotype === QUANTITY;
+    return this.stereotype === ClassStereotype.QUANTITY;
   }
 
   /** Checks whether this class is stereotyped as «relator». */
   isRelator(): boolean {
-    return this.stereotype === RELATOR;
+    return this.stereotype === ClassStereotype.RELATOR;
   }
 
   /** Checks whether this class is stereotyped as «quality». */
   isQuality(): boolean {
-    return this.stereotype === QUALITY;
+    return this.stereotype === ClassStereotype.QUALITY;
   }
 
   /** Checks whether this class is stereotyped as «mode». */
   isMode(): boolean {
-    return this.stereotype === MODE;
+    return this.stereotype === ClassStereotype.MODE;
   }
 
   /** Checks whether this class is stereotyped as «subkind». */
   isSubkind(): boolean {
-    return this.stereotype === SUBKIND;
+    return this.stereotype === ClassStereotype.SUBKIND;
   }
 
   /** Checks whether this class is stereotyped as «phase». */
   isPhase(): boolean {
-    return this.stereotype === PHASE;
+    return this.stereotype === ClassStereotype.PHASE;
   }
 
   /** Checks whether this class is stereotyped as «role». */
   isRole(): boolean {
-    return this.stereotype === ROLE;
+    return this.stereotype === ClassStereotype.ROLE;
   }
 
   /** Checks whether this class is stereotyped as «historicalRole». */
   isHistoricalRole(): boolean {
-    return this.stereotype === HISTORICAL_ROLE;
+    return this.stereotype === ClassStereotype.HISTORICAL_ROLE;
   }
 
   /** Checks whether this class is stereotyped as «category». */
   isCategory(): boolean {
-    return this.stereotype === CATEGORY;
+    return this.stereotype === ClassStereotype.CATEGORY;
   }
 
   /** Checks whether this class is stereotyped as «phaseMixin». */
   isPhaseMixin(): boolean {
-    return this.stereotype === PHASE_MIXIN;
+    return this.stereotype === ClassStereotype.PHASE_MIXIN;
   }
 
   /** Checks whether this class is stereotyped as «roleMixin». */
   isRoleMixin(): boolean {
-    return this.stereotype === ROLE_MIXIN;
+    return this.stereotype === ClassStereotype.ROLE_MIXIN;
   }
 
   /** Checks whether this class is stereotyped as «historicalRoleMixin». */
   isHistoricalRoleMixin(): boolean {
-    return this.stereotype === HISTORICAL_ROLE_MIXIN;
+    return this.stereotype === ClassStereotype.HISTORICAL_ROLE_MIXIN;
   }
 
   /** Checks whether this class is stereotyped as «mixin». */
   isMixin(): boolean {
-    return this.stereotype === MIXIN;
+    return this.stereotype === ClassStereotype.MIXIN;
   }
 
   /**

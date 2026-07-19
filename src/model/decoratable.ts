@@ -1,4 +1,4 @@
-import { Classifier, Package, Project, Stereotype, ModelElement } from '..';
+import { Project, Stereotype, ModelElement } from '..';
 
 /**
  * The abstract base class of model elements that can be decorated with an

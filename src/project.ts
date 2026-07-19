@@ -7,6 +7,7 @@ import {
   OntoumlElement,
   OntoumlType,
   Diagram,
+  View,
   ClassView,
   BinaryRelationView,
   GeneralizationView,
@@ -243,6 +244,20 @@ export class Project extends NamedElement {
   /** Retrieves the anchor with the given id, if any. */
   anchor(id: string): Anchor | undefined {
     return this._anchors[id];
+  }
+
+  /** The views contained in this project, across all of its diagrams. */
+  get views(): View<any>[] {
+    return [
+      ...Object.values(this._classViews),
+      ...Object.values(this._binaryRelationViews),
+      ...Object.values(this._nAryRelationViews),
+      ...Object.values(this._generalizationViews),
+      ...Object.values(this._generalizationSetViews),
+      ...Object.values(this._packageViews),
+      ...Object.values(this._noteViews),
+      ...Object.values(this._anchorViews)
+    ];
   }
 
   /** The diagrams contained in this project. */
@@ -755,6 +770,58 @@ export class Project extends NamedElement {
   }
 
   /**
+   * Removes an element from this project's indexes: the inverse of
+   * {@link add}. This method does not cascade — references to the element
+   * held by other elements are left untouched. To delete an element and
+   * clean up every reference to it, use the element's `delete()` method
+   * instead.
+   *
+   * @returns `true` if the element was registered in the project and has
+   *          been removed.
+   * @throws an error if the element is null or undefined.
+   */
+  deregister(e: OntoumlElement): boolean {
+    if (!e) {
+      throw new Error('Cannot deregister a null or undefined element.');
+    }
+
+    const maps: { [key: string]: OntoumlElement }[] = [
+      this._classes,
+      this._binaryRelations,
+      this._naryRelations,
+      this._generalizations,
+      this._generalizationSets,
+      this._packages,
+      this._properties,
+      this._literals,
+      this._notes,
+      this._anchors,
+      this._diagrams,
+      this._classViews,
+      this._binaryRelationViews,
+      this._nAryRelationViews,
+      this._generalizationViews,
+      this._generalizationSetViews,
+      this._packageViews,
+      this._noteViews,
+      this._anchorViews
+    ];
+
+    for (const map of maps) {
+      // the element may be indexed under a stale key if its id was
+      // reassigned after registration, so a lookup by id is not enough
+      const key = Object.keys(map).find(k => map[k] === e);
+
+      if (key !== undefined) {
+        delete map[key];
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * Creates a new {@link Diagram} and adds it to this project.
    */
   createDiagram(): Diagram {
@@ -852,7 +919,4 @@ export class Project extends NamedElement {
       elements: this.getContents().map(e => e.toJSON())
     };
   }
-
-  // No reference fields to resolve/replace
-  resolveReferences(_elementReferenceMap: Map<string, OntoumlElement>): void {}
 }

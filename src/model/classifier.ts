@@ -13,7 +13,6 @@ import {
   Decoratable
 } from '..';
 
-// TODO: check whether the first generics term "T" is really necessary; it seems redundant
 /**
  * The abstract base class of the model elements that can have instances and,
  * thus, can be specialized via {@link Generalization} — namely
@@ -21,6 +20,11 @@ import {
  * {@link Property} instances (attributes, in the case of classes; relation
  * ends, in the case of relations) and offers navigation methods over the
  * generalization hierarchy in which it participates.
+ *
+ * The self-referential type parameter `T` is the concrete classifier type,
+ * so that hierarchy navigation methods (e.g., {@link getParents},
+ * {@link getAncestors}) are typed with the subclass: `Class.getParents()`
+ * returns `Class[]` and `Relation.getParents()` returns `Relation[]`.
  */
 export abstract class Classifier<
   T extends Classifier<T, S>,
@@ -71,6 +75,41 @@ export abstract class Classifier<
   public removeProperty(p: Property): void {
     this._properties = this._properties.filter(property => property !== p);
     p._container = undefined;
+  }
+
+  /**
+   * Deletes the elements that cannot exist without this classifier: the
+   * relations in which it types an end, the generalizations in which it
+   * participates, and its own properties — in addition to the dependents
+   * deleted for every model element (anchors and views).
+   */
+  protected override deleteDependents(): void {
+    this.project.relations
+      .filter(
+        r =>
+          (r as Classifier<any, any>) !== this &&
+          r.properties.some(p => p.propertyType === this)
+      )
+      .forEach(r => r.delete());
+
+    this.getGeneralizations().forEach(g => g.delete());
+    this.properties.forEach(p => p.delete());
+
+    super.deleteDependents();
+  }
+
+  /**
+   * Clears the type of the properties typed by this classifier — the
+   * attributes whose type it is; the relation ends it types are deleted
+   * with their relations — in addition to the reference clean-up performed
+   * for every model element.
+   */
+  protected override removeReferences(): void {
+    this.project.properties
+      .filter(p => p.propertyType === this)
+      .forEach(p => (p.propertyType = undefined));
+
+    super.removeReferences();
   }
 
   /**
@@ -129,7 +168,6 @@ export abstract class Classifier<
       .build();
   }
 
-  // TODO: Update methods to use references instead.
   /**
    * Retrieves the generalizations in which this classifier participates,
    * either as general or as specific.
@@ -198,39 +236,64 @@ export abstract class Classifier<
 
   /**
    * Retrieves the direct and indirect supertypes of this classifier.
+   *
+   * @throws an error if the classifier is part of a circular generalization
+   *         chain (e.g., `A` specializes `B`, `B` specializes `C`, and `C`
+   *         specializes `A`), in which case the classifier would be an
+   *         ancestor of itself.
    */
   getAncestors(knownAncestors: T[] = []): T[] {
-    const ancestors = [...knownAncestors];
+    const ancestors = new Set(knownAncestors);
+    const queue = this.getParents();
 
-    // TODO: Replace with flatMap
-    this.getParents().forEach(parent => {
-      if (!ancestors.includes(parent)) {
-        ancestors.push(parent);
-        ancestors.push(...parent.getAncestors(ancestors));
+    while (queue.length > 0) {
+      const ancestor = queue.shift()!;
+
+      if ((ancestor as Classifier<any, any>) === this) {
+        throw new Error(
+          `Circular generalization chain: classifier '${this.id}' is an ancestor of itself.`
+        );
       }
-    });
 
-    return [...new Set(ancestors)];
+      if (!ancestors.has(ancestor)) {
+        ancestors.add(ancestor);
+        queue.push(...ancestor.getParents());
+      }
+    }
+
+    return [...ancestors];
   }
 
   /**
    * Retrieves the direct and indirect subtypes of this classifier.
+   *
+   * @throws an error if the classifier is part of a circular generalization
+   *         chain (e.g., `A` specializes `B`, `B` specializes `C`, and `C`
+   *         specializes `A`), in which case the classifier would be a
+   *         descendant of itself.
    */
   getDescendants(knownDescendants: T[] = []): T[] {
-    const descendants = [...knownDescendants];
+    const descendants = new Set(knownDescendants);
+    const queue = this.getChildren();
 
-    // TODO: Replace with flatMap
-    this.getChildren().forEach((child: T) => {
-      if (!descendants.includes(child)) {
-        descendants.push(child);
-        descendants.push(...child.getDescendants(descendants));
+    while (queue.length > 0) {
+      const descendant = queue.shift()!;
+
+      if ((descendant as Classifier<any, any>) === this) {
+        throw new Error(
+          `Circular generalization chain: classifier '${this.id}' is a descendant of itself.`
+        );
       }
-    });
 
-    return [...new Set(descendants)];
+      if (!descendants.has(descendant)) {
+        descendants.add(descendant);
+        queue.push(...descendant.getChildren());
+      }
+    }
+
+    return [...descendants];
   }
 
-  // TODO: Update with references
   /**
    * Retrieves the relations connected to this classifier, i.e., those in
    * which the classifier is the type of at least one relation end.

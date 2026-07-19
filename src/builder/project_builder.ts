@@ -86,9 +86,10 @@ export class ProjectBuilder extends NamedElementBuilder<ProjectBuilder> {
    * @param name - human-readable label of the publisher.
    * @param language - language tag of `name` (e.g., `"en"`).
    * @returns this builder, for method chaining.
+   * @throws an error if both `uri` and `name` are absent.
    */
   publisher(uri?: string, name?: string, language?: string): ProjectBuilder {
-    this._publisher = new Resource(uri, name, language);
+    this._publisher = this.resource(uri, name, language);
     return this;
   }
 
@@ -99,9 +100,10 @@ export class ProjectBuilder extends NamedElementBuilder<ProjectBuilder> {
    * @param name - human-readable label of the license (e.g., `"CC BY 4.0"`).
    * @param language - language tag of `name` (e.g., `"en"`).
    * @returns this builder, for method chaining.
+   * @throws an error if both `uri` and `name` are absent.
    */
   license(uri?: string, name?: string, language?: string): ProjectBuilder {
-    this._license = new Resource(uri, name, language);
+    this._license = this.resource(uri, name, language);
     return this;
   }
 
@@ -121,6 +123,7 @@ export class ProjectBuilder extends NamedElementBuilder<ProjectBuilder> {
    *        style is used.
    * @param language - language tag of `name` (e.g., `"en"`).
    * @returns this builder, for method chaining.
+   * @throws an error if both `uri` and `name` are absent.
    */
   representationStyle(
     uri?: string,
@@ -135,6 +138,8 @@ export class ProjectBuilder extends NamedElementBuilder<ProjectBuilder> {
    * Creates a {@link Resource}, filling in the official label of `uri` when
    * it identifies an individual of the OntoUML/UFO Catalog Metadata
    * Vocabulary and no `name` is provided.
+   *
+   * @throws an error if both `uri` and `name` are absent.
    */
   private vocabularyResource(
     uri?: string,
@@ -149,7 +154,7 @@ export class ProjectBuilder extends NamedElementBuilder<ProjectBuilder> {
       }
     }
 
-    return new Resource(uri, name, language);
+    return this.resource(uri, name, language);
   }
 
   /**
@@ -170,9 +175,10 @@ export class ProjectBuilder extends NamedElementBuilder<ProjectBuilder> {
    * @param name - human-readable label of the access right.
    * @param language - language tag of `name` (e.g., `"en"`).
    * @returns this builder, for method chaining.
+   * @throws an error if both `uri` and `name` are absent.
    */
   accessRight(uri?: string, name?: string, language?: string): ProjectBuilder {
-    this._accessRights.push(new Resource(uri, name, language));
+    this._accessRights.push(this.resource(uri, name, language));
     return this;
   }
 
@@ -191,6 +197,7 @@ export class ProjectBuilder extends NamedElementBuilder<ProjectBuilder> {
    *        official label of the context is used.
    * @param language - language tag of `name` (e.g., `"en"`).
    * @returns this builder, for method chaining.
+   * @throws an error if both `uri` and `name` are absent.
    */
   context(uri?: string, name?: string, language?: string): ProjectBuilder {
     this._contexts.push(this.vocabularyResource(uri, name, language));
@@ -212,6 +219,7 @@ export class ProjectBuilder extends NamedElementBuilder<ProjectBuilder> {
    *        purpose is used.
    * @param language - language tag of `name` (e.g., `"en"`).
    * @returns this builder, for method chaining.
+   * @throws an error if both `uri` and `name` are absent.
    */
   designedForTask(
     uri?: string,
@@ -237,6 +245,7 @@ export class ProjectBuilder extends NamedElementBuilder<ProjectBuilder> {
    *        of the type is used.
    * @param language - language tag of `name` (e.g., `"en"`).
    * @returns this builder, for method chaining.
+   * @throws an error if both `uri` and `name` are absent.
    */
   ontologyType(uri?: string, name?: string, language?: string): ProjectBuilder {
     this._ontologyTypes.push(this.vocabularyResource(uri, name, language));
@@ -251,9 +260,10 @@ export class ProjectBuilder extends NamedElementBuilder<ProjectBuilder> {
    * @param name - human-readable label of the theme.
    * @param language - language tag of `name` (e.g., `"en"`).
    * @returns this builder, for method chaining.
+   * @throws an error if both `uri` and `name` are absent.
    */
   theme(uri?: string, name?: string, language?: string): ProjectBuilder {
-    this._themes.push(new Resource(uri, name, language));
+    this._themes.push(this.resource(uri, name, language));
     return this;
   }
 

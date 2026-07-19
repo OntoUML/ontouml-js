@@ -74,6 +74,32 @@ describe('Project builder tests', () => {
     expect(proj.ontologyTypes[0].name.get('en')).toEqual('Domain Ontology');
   });
 
+  it('should reject resource-valued metadata without a uri and a name', () => {
+    const builder = new ProjectBuilder();
+
+    expect(() => builder.publisher()).toThrow();
+    expect(() => builder.license()).toThrow();
+    expect(() => builder.representationStyle()).toThrow();
+    expect(() => builder.accessRight()).toThrow();
+    expect(() => builder.context()).toThrow();
+    expect(() => builder.designedForTask()).toThrow();
+    expect(() => builder.ontologyType()).toThrow();
+    expect(() => builder.theme()).toThrow();
+    expect(() => builder.creator()).toThrow();
+    expect(() => builder.contributor()).toThrow();
+  });
+
+  it('should accept name-only resources', () => {
+    const proj = new ProjectBuilder()
+      .creator(undefined, 'Alice')
+      .publisher(undefined, 'Example Publisher')
+      .build();
+
+    expect(proj.creators[0].uri).toBeUndefined();
+    expect(proj.creators[0].name.get()).toEqual('Alice');
+    expect(proj.publisher?.name.get()).toEqual('Example Publisher');
+  });
+
   it('should not override explicit names of metadata vocabulary values', () => {
     const proj = new ProjectBuilder()
       .context(OntologyDevelopmentContext.INDUSTRY, 'Indústria', 'pt')

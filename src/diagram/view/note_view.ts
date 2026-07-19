@@ -1,4 +1,4 @@
-import { OntoumlType, View, Note, Text, OntoumlElement, Shape } from '../..';
+import { OntoumlType, View, Note, Text, Shape } from '../..';
 
 /**
  * The view of a {@link Note} in a {@link Diagram}, rendered as a

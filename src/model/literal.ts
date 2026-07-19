@@ -1,4 +1,4 @@
-import { OntoumlElement, OntoumlType, Class, ModelElement } from '..';
+import { OntoumlType, Class, ModelElement } from '..';
 
 /**
  * A value of an enumeration, i.e., one of the named values admitted by a
@@ -14,6 +14,15 @@ export class Literal extends ModelElement {
   /** The enumeration class that contains this literal. */
   public override get container(): Class {
     return this._container as Class;
+  }
+
+  /** Detaches this literal from the enumeration class that contains it. */
+  protected override detach(): void {
+    if (this._container instanceof Class) {
+      this._container.deleteLiteral(this);
+    }
+
+    this._container = undefined;
   }
 
   override toJSON() {
