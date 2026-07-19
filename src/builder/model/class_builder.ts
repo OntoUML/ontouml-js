@@ -48,6 +48,9 @@ export class ClassBuilder extends ClassifierBuilder<
    * - `isPowertype: false,`
    */
   override build(): Class {
+    this.assertNotBuilt();
+    this.assertSameProject(this._container);
+
     this.element = new Class(this.project);
     this.element.order = this._order;
     this.element.isPowertype = this._isPowertype;
@@ -619,9 +622,7 @@ export class ClassBuilder extends ClassifierBuilder<
   highOrderType(): ClassBuilder {
     this._restrictedTo.push(Nature.TYPE);
 
-    if (this.order === undefined) {
-      if (this._restrictedTo) this.order(2);
-    }
+    if (this._order < 2) this.order(2);
 
     return this;
   }

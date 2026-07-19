@@ -31,6 +31,9 @@ export class PackageBuilder extends ModelElementBuilder<PackageBuilder> {
    * - `contents: []`
    */
   override build(): Package {
+    this.assertNotBuilt();
+    this.assertSameProject(this._container, ...this._contents);
+
     this.element = new Package(this.project);
     this.element.contents = this._contents;
 

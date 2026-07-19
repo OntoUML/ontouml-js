@@ -42,6 +42,9 @@ export class NoteBuilder extends ModelElementBuilder<NoteBuilder> {
    * - `text: empty`
    */
   override build(): Note {
+    this.assertNotBuilt();
+    this.assertSameProject(this._container);
+
     this.element = new Note(this.project);
     this.element.text = this._text;
 

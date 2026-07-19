@@ -42,11 +42,15 @@ export class NaryRelationBuilder extends ClassifierBuilder<
    * - `isDerived: false,`
    */
   override build(): NaryRelation {
+    this.assertNotBuilt();
+
     if (this._members.length < 3) {
       throw new Error(
         'Cannot build an n-ary relation without at least 3 members.'
       );
     }
+
+    this.assertSameProject(this._container, ...this._members);
 
     this.element = new NaryRelation(this.project, this._members);
     this.element.properties.forEach(end => this.project.add(end));

@@ -38,6 +38,8 @@ export class LiteralBuilder extends ModelElementBuilder<LiteralBuilder> {
    * - `id: "randomly-generated-id",`
    */
   override build(): Literal {
+    this.assertNotBuilt();
+
     this.element = new Literal(this._container);
     super.build();
     return this.element;

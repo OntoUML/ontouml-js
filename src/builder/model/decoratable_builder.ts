@@ -1,4 +1,9 @@
-import { Decoratable, Stereotype, ModelElementBuilder } from '../..';
+import {
+  Cardinality,
+  Decoratable,
+  Stereotype,
+  ModelElementBuilder
+} from '../..';
 
 /**
  * A fluent builder for {@link Decoratable} instances.
@@ -77,5 +82,19 @@ export abstract class DecoratableBuilder<
   stereotype(stereotype: string | S): B {
     this._stereotype = stereotype as any;
     return this as unknown as B;
+  }
+
+  /**
+   * Asserts that the given cardinality expression is well-formed (e.g.,
+   * `"1"`, `"0..1"`, `"1..*"`, `"*"`).
+   *
+   * @throws an error if the expression is malformed.
+   */
+  protected assertValidCardinality(value: string): void {
+    if (!new Cardinality(value).isCardinalityStringValid()) {
+      throw new Error(
+        `Invalid cardinality expression: '${value}'. Expected expressions such as '1', '0..1', '1..*', or '*'.`
+      );
+    }
   }
 }

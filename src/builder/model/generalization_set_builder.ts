@@ -41,6 +41,13 @@ export class GeneralizationSetBuilder extends ModelElementBuilder<Generalization
    * - `isComplete: false,`
    */
   override build(): GeneralizationSet {
+    this.assertNotBuilt();
+    this.assertSameProject(
+      this._container,
+      this._categorizer,
+      ...this._generalizations
+    );
+
     this.element = new GeneralizationSet(this.project);
 
     this.element.isDisjoint = this._isDisjoint;

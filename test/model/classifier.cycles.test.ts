@@ -1,4 +1,4 @@
-import { Class, Project } from '../../src';
+import { Class, Generalization, Project } from '../../src';
 
 describe('Classifier: circular generalization chains', () => {
   let proj: Project;
@@ -75,9 +75,15 @@ describe('Classifier: circular generalization chains', () => {
   });
 
   describe('Self-generalization (A specializes A)', () => {
-    it('getAncestors() and getDescendants() should throw', () => {
+    it('the generalization builder should reject a self-generalization', () => {
       const a = proj.classBuilder().kind().name('A').build();
-      a.addParent(a);
+
+      expect(() => a.addParent(a)).toThrow(/cannot specialize itself/i);
+    });
+
+    it('getAncestors() and getDescendants() should throw on a self-generalization created without the builder (e.g., in a corrupted model)', () => {
+      const a = proj.classBuilder().kind().name('A').build();
+      proj.add(new Generalization(proj, a, a));
 
       expect(() => a.getAncestors()).toThrow(/circular/i);
       expect(() => a.getDescendants()).toThrow(/circular/i);

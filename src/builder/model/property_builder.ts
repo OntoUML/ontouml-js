@@ -67,6 +67,13 @@ export class PropertyBuilder extends DecoratableBuilder<
    * - `cardinality: "0..*"`
    */
   override build(): Property {
+    this.assertNotBuilt();
+    this.assertSameProject(
+      this._propertyType,
+      ...this._subsettedProperties,
+      ...this._redefinedProperties
+    );
+
     this.element = new Property(this.project);
 
     super.build();
@@ -179,8 +186,10 @@ export class PropertyBuilder extends DecoratableBuilder<
    *
    * @param value - the cardinality expression (e.g., `"1"`, `"0..*"`).
    * @returns this builder, for method chaining.
+   * @throws an error if the expression is malformed.
    */
   cardinality(value: string): PropertyBuilder {
+    this.assertValidCardinality(value);
     this._cardinality = new Cardinality(value);
     return this;
   }

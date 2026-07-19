@@ -56,6 +56,8 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    * - `isDerived: false,`
    */
   override build(): BinaryRelation {
+    this.assertNotBuilt();
+
     if (!this._source) {
       throw new Error('Cannot build a relation without a source.');
     }
@@ -63,6 +65,8 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
     if (!this._target) {
       throw new Error('Cannot build a relation without a target.');
     }
+
+    this.assertSameProject(this._container, this._source, this._target);
 
     this.element = new BinaryRelation(
       this.project,
@@ -113,8 +117,10 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    *
    * @param value - the cardinality expression (e.g., `"1"`, `"0..*"`).
    * @returns this builder, for method chaining.
+   * @throws an error if the expression is malformed.
    */
   sourceCardinality(value: string): BinaryRelationBuilder {
+    this.assertValidCardinality(value);
     this._sourceCardinality = value;
     return this;
   }
@@ -124,8 +130,10 @@ export class BinaryRelationBuilder extends ClassifierBuilder<
    *
    * @param value - the cardinality expression (e.g., `"1"`, `"0..*"`).
    * @returns this builder, for method chaining.
+   * @throws an error if the expression is malformed.
    */
   targetCardinality(value: string): BinaryRelationBuilder {
+    this.assertValidCardinality(value);
     this._targetCardinality = value;
     return this;
   }

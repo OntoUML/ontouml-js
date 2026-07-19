@@ -55,6 +55,8 @@ export class ProjectBuilder extends NamedElementBuilder<ProjectBuilder> {
    * - `created: new Date()`
    */
   override build(): Project {
+    this.assertNotBuilt();
+
     this.element = new Project();
 
     super.build();

@@ -46,8 +46,10 @@ export class AnchorBuilder extends ModelElementBuilder<AnchorBuilder> {
    * - `created: new Date()`
    */
   override build(): Anchor {
+    this.assertNotBuilt();
     this.assertNoteSet();
     this.assertElementSet();
+    this.assertSameProject(this._container, this._note, this._annotatedElement);
 
     this.element = new Anchor(
       this.project,

@@ -2,7 +2,6 @@ import {
   Classifier,
   Generalization,
   Package,
-  utils,
   ModelElementBuilder
 } from '../..';
 
@@ -40,9 +39,15 @@ export class GeneralizationBuilder extends ModelElementBuilder<GeneralizationBui
    * - `created: new Date()`
    */
   override build(): Generalization {
+    this.assertNotBuilt();
     this.assertGeneralSet();
     this.assertSpecificSet();
-    utils.assertSameProject(this._general!, this._specific!);
+
+    if (this._general === this._specific) {
+      throw new Error('A classifier cannot specialize itself.');
+    }
+
+    this.assertSameProject(this._container, this._general, this._specific);
 
     this.element = new Generalization(
       this.project,
