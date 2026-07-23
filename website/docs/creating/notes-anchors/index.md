@@ -95,5 +95,5 @@ independent link.
 - Read them back through `project.notes` and `project.anchors`; an anchor
   exposes `note` and `element`.
 
-That completes the model layer. Next, give your model a visual form in
-[Creating diagrams →](/diagrams/).
+Next: [project metadata →](/creating/project-metadata/), to make your model
+citable and FAIR.

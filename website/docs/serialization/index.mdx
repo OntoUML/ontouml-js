@@ -120,19 +120,21 @@ console.log(first === second); // true
 The library **produces** valid OntoUML JSON, so you rarely need to validate your
 own output. Validation matters when you ingest a file from somewhere else and
 want to fail fast on malformed input. `ontouml-js` doesn't bundle a validator —
-use any JSON-Schema validator together with the published schema. With
-[Ajv](https://ajv.js.org/):
+use any JSON-Schema validator together with the published schema, which is also
+available as the [`ontouml-schema`](https://www.npmjs.com/package/ontouml-schema)
+npm package. The schema targets **JSON Schema draft 2020-12** and uses string
+formats, so with [Ajv](https://ajv.js.org/) you need its 2020 build plus
+[`ajv-formats`](https://www.npmjs.com/package/ajv-formats):
 
 ```ts
-import Ajv from 'ajv';
+import Ajv from 'ajv/dist/2020';
+import addFormats from 'ajv-formats';
 import { Project } from 'ontouml-js';
 
-// Fetch the published schema once (or vendor it into your project).
-const schema = await fetch('https://w3id.org/ontouml/schema').then(r =>
-  r.json()
-);
+// npm install ontouml-schema — or fetch https://w3id.org/ontouml/schema
+const schema = require('ontouml-schema');
 
-const validate = new Ajv({ allErrors: true }).compile(schema);
+const validate = addFormats(new Ajv({ allErrors: true })).compile(schema);
 
 const project = new Project();
 project.packageBuilder().root().name('Model').build();
