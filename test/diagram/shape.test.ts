@@ -24,10 +24,10 @@ describe('Shape tests', () => {
       expect(text.height).toEqual(50);
     });
 
-    it('should reject non-positive dimensions', () => {
+    it('should reject negative dimensions', () => {
       const rectangle = new Rectangle();
 
-      expect(() => (rectangle.width = 0)).toThrow();
+      expect(() => (rectangle.width = -1)).toThrow();
       expect(() => (rectangle.height = -5)).toThrow();
     });
 

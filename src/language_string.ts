@@ -2,10 +2,11 @@ import tags from 'language-tags';
 
 /**
  * Throws an error if `language` is not a valid IETF BCP 47 language tag.
- * Empty, null, and undefined values are rejected as well.
+ * The empty tag (`""`) is accepted, denoting a value in an unknown language,
+ * as prescribed by the OntoUML JSON Schema; null and undefined are rejected.
  */
 function assertValidTag(language: string) {
-  if (!language || !tags.check(language)) {
+  if (language == null || (language !== '' && !tags.check(language))) {
     throw new Error('Invalid language tag: ' + language);
   }
 }
@@ -21,7 +22,7 @@ function assertValidTag(language: string) {
  * tag and the order in which languages are tried when retrieving a value
  * without specifying one.
  */
-export class MultilingualText {
+export class LanguageString {
   /** The language tag assumed when a value is added without one; `"en"` by
    * default. */
   static defaultLanguage: string = 'en';
@@ -58,7 +59,7 @@ export class MultilingualText {
       return this.textMap.get(language)!;
     }
 
-    for (const lang of MultilingualText.languagePreference) {
+    for (const lang of LanguageString.languagePreference) {
       if (this.textMap.has(lang)) {
         return this.textMap.get(lang)!;
       }
@@ -78,10 +79,7 @@ export class MultilingualText {
    *        {@link defaultLanguage}.
    * @throws an error if `language` is not a valid language tag.
    */
-  add(
-    value: string,
-    language: string = MultilingualText.defaultLanguage
-  ): void {
+  add(value: string, language: string = LanguageString.defaultLanguage): void {
     assertValidTag(language);
     this.textMap.set(language, value);
   }

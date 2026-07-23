@@ -34,6 +34,12 @@ describe('Note and anchor tests', () => {
     expect(raw.text).toEqual({ en: 'A remark.' });
   });
 
+  it('notes with no text should serialize an empty language string', () => {
+    // the schema requires `text` to be a language string object, not null
+    const emptyNote = new Note(proj);
+    expect(emptyNote.toJSON().text).toEqual({});
+  });
+
   it('anchors should serialize references to their note and element', () => {
     const raw = anchor.toJSON();
 

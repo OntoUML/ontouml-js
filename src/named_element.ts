@@ -1,9 +1,9 @@
-import { MultilingualText, OntoumlElement, Resource, utils } from '.';
+import { LanguageString, OntoumlElement, Resource, utils } from '.';
 
 /**
  * An {@link OntoumlElement} that can be named and annotated with
  * documentation metadata. Names, descriptions, alternative names, and
- * editorial notes are {@link MultilingualText} instances, so each can hold
+ * editorial notes are {@link LanguageString} instances, so each can hold
  * values in multiple languages. Creators and contributors are
  * {@link Resource} references to the agents (e.g., persons, organizations)
  * involved in authoring the element.
@@ -12,25 +12,25 @@ import { MultilingualText, OntoumlElement, Resource, utils } from '.';
  */
 export abstract class NamedElement extends OntoumlElement {
   /** The name of this element, possibly in multiple languages. */
-  name: MultilingualText;
+  name: LanguageString;
 
   /** A free-text account of this element, possibly in multiple languages. */
-  description: MultilingualText;
+  description: LanguageString;
 
-  private _alternativeNames: Set<MultilingualText> = new Set();
-  private _editorialNotes: Set<MultilingualText> = new Set();
+  private _alternativeNames: Set<LanguageString> = new Set();
+  private _editorialNotes: Set<LanguageString> = new Set();
   private _creators: Set<Resource> = new Set();
   private _contributors: Set<Resource> = new Set();
 
   constructor() {
     super();
 
-    this.name = new MultilingualText();
-    this.description = new MultilingualText();
+    this.name = new LanguageString();
+    this.description = new LanguageString();
   }
 
   /** The alternative names of this element, such as synonyms or aliases. */
-  get alternativeNames(): MultilingualText[] {
+  get alternativeNames(): LanguageString[] {
     return [...this._alternativeNames];
   }
 
@@ -40,7 +40,7 @@ export abstract class NamedElement extends OntoumlElement {
    * @throws an error if the array is null, undefined, or contains a null or
    *         undefined member.
    */
-  set alternativeNames(array: MultilingualText[]) {
+  set alternativeNames(array: LanguageString[]) {
     utils.assertArray(array);
     this._alternativeNames = new Set(array);
   }
@@ -50,7 +50,7 @@ export abstract class NamedElement extends OntoumlElement {
    *
    * @throws an error if the value is null or undefined.
    */
-  addAlternativeName(value: MultilingualText): void {
+  addAlternativeName(value: LanguageString): void {
     utils.assertValue(value);
     this._alternativeNames.add(value);
   }
@@ -60,12 +60,12 @@ export abstract class NamedElement extends OntoumlElement {
    *
    * @returns `true` if the value was present and removed.
    */
-  removeAlternativeName(value: MultilingualText): boolean {
+  removeAlternativeName(value: LanguageString): boolean {
     return this._alternativeNames.delete(value);
   }
 
   /** The editorial notes documenting the modeling of this element. */
-  get editorialNotes(): MultilingualText[] {
+  get editorialNotes(): LanguageString[] {
     return [...this._editorialNotes];
   }
 
@@ -75,7 +75,7 @@ export abstract class NamedElement extends OntoumlElement {
    * @throws an error if the array is null, undefined, or contains a null or
    *         undefined member.
    */
-  set editorialNotes(array: MultilingualText[]) {
+  set editorialNotes(array: LanguageString[]) {
     utils.assertArray(array);
     this._editorialNotes = new Set(array);
   }
@@ -86,7 +86,7 @@ export abstract class NamedElement extends OntoumlElement {
    *
    * @throws an error if the value is null or undefined.
    */
-  addEditorialNote(value: MultilingualText): void {
+  addEditorialNote(value: LanguageString): void {
     utils.assertValue(value);
     this._editorialNotes.add(value);
   }
@@ -96,7 +96,7 @@ export abstract class NamedElement extends OntoumlElement {
    *
    * @returns `true` if the value was present and removed.
    */
-  removeEditorialNote(value: MultilingualText): boolean {
+  removeEditorialNote(value: LanguageString): boolean {
     return this._editorialNotes.delete(value);
   }
 
@@ -178,7 +178,7 @@ export abstract class NamedElement extends OntoumlElement {
    *
    * @param language - language tag of the desired name (e.g., `"en"`); when
    *        omitted, the name is selected according to
-   *        {@link MultilingualText.languagePreference}.
+   *        {@link LanguageString.languagePreference}.
    */
   getNameOrId(language?: string): string {
     return this.name.get(language) || this.id;

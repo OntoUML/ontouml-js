@@ -46,11 +46,11 @@ export abstract class RectangularShape extends Shape {
 
   /**
    * Sets the width of the shape's bounding rectangle. Throws an error if the
-   * value is zero or negative.
+   * value is negative.
    */
   public set width(value: number) {
-    if (value <= 0) {
-      throw new Error('Cannot set a negative or zero width.');
+    if (value < 0) {
+      throw new Error('Cannot set a negative width.');
     }
 
     this._width = value;
@@ -63,11 +63,11 @@ export abstract class RectangularShape extends Shape {
 
   /**
    * Sets the height of the shape's bounding rectangle. Throws an error if
-   * the value is zero or negative.
+   * the value is negative.
    */
   public set height(value: number) {
-    if (value <= 0) {
-      throw new Error('Cannot set a negative or zero height.');
+    if (value < 0) {
+      throw new Error('Cannot set a negative height.');
     }
 
     this._height = value;

@@ -7,7 +7,7 @@ import {
   Cardinality,
   Class,
   GeneralizationSet,
-  MultilingualText,
+  LanguageString,
   Project,
   parseOrder,
   serializationUtils,
@@ -214,10 +214,17 @@ describe('Project diagram management', () => {
   });
 });
 
-describe('MultilingualText', () => {
-  it('rejects an empty-string language tag', () => {
-    const text = new MultilingualText();
-    expect(() => text.add('hello', '')).toThrow();
+describe('LanguageString', () => {
+  it('accepts the empty language tag for values in an unknown language', () => {
+    const text = new LanguageString();
+    text.add('hello', '');
+
+    expect(text.toJSON()).toEqual({ '': 'hello' });
+  });
+
+  it('rejects an invalid language tag', () => {
+    const text = new LanguageString();
+    expect(() => text.add('hello', 'not a tag!')).toThrow();
   });
 });
 

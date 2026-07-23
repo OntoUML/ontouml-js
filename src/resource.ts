@@ -1,4 +1,4 @@
-import { MultilingualText } from '.';
+import { LanguageString } from '.';
 
 /**
  * A reference to a resource on the semantic web, identified by its URI and
@@ -12,11 +12,11 @@ export class Resource {
 
   /** The human-readable name of the resource, possibly in multiple
    * languages. */
-  name: MultilingualText;
+  name: LanguageString;
 
   constructor(uri?: string, name?: string, language?: string) {
     this.uri = uri;
-    this.name = new MultilingualText(name, language);
+    this.name = new LanguageString(name, language);
   }
 
   /**

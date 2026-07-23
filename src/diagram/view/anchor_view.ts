@@ -1,4 +1,4 @@
-import { OntoumlType, View, Path, Anchor, NoteView, Shape } from '../..';
+import { OntoumlType, View, Path, Point, Anchor, NoteView, Shape } from '../..';
 
 /**
  * The view of an {@link Anchor} in a {@link Diagram}, rendered as a
@@ -18,7 +18,8 @@ export class AnchorView extends View<Anchor> {
   constructor(element: Anchor, noteView: NoteView, elementView: View<any>) {
     super(element);
 
-    this.path = new Path();
+    // paths have a minimum of two points in the OntoUML JSON Schema
+    this.path = new Path([new Point(0, 0), new Point(0, 0)]);
     this.noteView = noteView;
     this.elementView = elementView;
   }

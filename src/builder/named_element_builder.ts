@@ -1,4 +1,4 @@
-import { MultilingualText } from '../multilingual_text';
+import { LanguageString } from '../language_string';
 import { NamedElement } from '../named_element';
 import { Resource } from '../resource';
 import { OntoumlElementBuilder } from './ontouml_element_builder';
@@ -26,10 +26,10 @@ export abstract class NamedElementBuilder<
   B extends NamedElementBuilder<B>
 > extends OntoumlElementBuilder<B> {
   protected declare element?: NamedElement;
-  private _name: MultilingualText = new MultilingualText();
-  private _description: MultilingualText = new MultilingualText();
-  private _alternativeNames: MultilingualText[] = [];
-  private _editorialNotes: MultilingualText[] = [];
+  private _name: LanguageString = new LanguageString();
+  private _description: LanguageString = new LanguageString();
+  private _alternativeNames: LanguageString[] = [];
+  private _editorialNotes: LanguageString[] = [];
   private _creators: Resource[] = [];
   private _contributors: Resource[] = [];
 
@@ -58,10 +58,10 @@ export abstract class NamedElementBuilder<
    *
    * @param value - the name text.
    * @param language - language tag of `value`; defaults to
-   *        {@link MultilingualText.defaultLanguage}.
+   *        {@link LanguageString.defaultLanguage}.
    * @returns this builder, for method chaining.
    */
-  name(value: string, language: string = MultilingualText.defaultLanguage): B {
+  name(value: string, language: string = LanguageString.defaultLanguage): B {
     this._name.add(value, language);
     return this as unknown as B;
   }
@@ -71,12 +71,12 @@ export abstract class NamedElementBuilder<
    *
    * @param value - the description text.
    * @param language - language tag of `value`; defaults to
-   *        {@link MultilingualText.defaultLanguage}.
+   *        {@link LanguageString.defaultLanguage}.
    * @returns this builder, for method chaining.
    */
   description(
     value: string,
-    language: string = MultilingualText.defaultLanguage
+    language: string = LanguageString.defaultLanguage
   ): B {
     this._description.add(value, language);
     return this as unknown as B;
@@ -87,14 +87,14 @@ export abstract class NamedElementBuilder<
    *
    * @param value - the alternative name text.
    * @param language - language tag of `value`; defaults to
-   *        {@link MultilingualText.defaultLanguage}.
+   *        {@link LanguageString.defaultLanguage}.
    * @returns this builder, for method chaining.
    */
   alternativeName(
     value: string,
-    language: string = MultilingualText.defaultLanguage
+    language: string = LanguageString.defaultLanguage
   ): B {
-    this._alternativeNames.push(new MultilingualText(value, language));
+    this._alternativeNames.push(new LanguageString(value, language));
     return this as unknown as B;
   }
 
@@ -104,14 +104,14 @@ export abstract class NamedElementBuilder<
    *
    * @param value - the editorial note text.
    * @param language - language tag of `value`; defaults to
-   *        {@link MultilingualText.defaultLanguage}.
+   *        {@link LanguageString.defaultLanguage}.
    * @returns this builder, for method chaining.
    */
   editorialNote(
     value: string,
-    language: string = MultilingualText.defaultLanguage
+    language: string = LanguageString.defaultLanguage
   ): B {
-    this._editorialNotes.push(new MultilingualText(value, language));
+    this._editorialNotes.push(new LanguageString(value, language));
     return this as unknown as B;
   }
 

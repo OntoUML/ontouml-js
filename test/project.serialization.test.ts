@@ -1,12 +1,12 @@
 import {
   Generalization,
-  MultilingualText,
+  LanguageString,
   Package,
   Project,
   Resource,
   serializationUtils
 } from '../src';
-import Ajv from 'ajv';
+import Ajv from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
 
 const schema = require('ontouml-schema');
@@ -165,7 +165,7 @@ describe('Serialization tests', () => {
       );
       proj.acronyms = ['NP'];
       proj.languages = ['en', 'pt'];
-      proj.keywords = [new MultilingualText('testing')];
+      proj.keywords = [new LanguageString('testing')];
       proj.addCreator(new Resource('https://orcid.org/0000-0000', 'Someone'));
 
       const parsed = serializationUtils.parse(JSON.stringify(proj));
@@ -182,6 +182,19 @@ describe('Serialization tests', () => {
       expect(parsed.creators).toHaveLength(1);
       expect(parsed.creators[0].name.get()).toEqual('Someone');
       expect(JSON.stringify(parsed)).toEqual(JSON.stringify(proj));
+    });
+
+    it(`Should parse values in an unknown language (empty language tag)`, () => {
+      const proj = new Project();
+      const person = proj.classBuilder().kind().build();
+      person.name.add('Person', '');
+
+      const serialization = JSON.stringify(proj);
+      const parsed = serializationUtils.parse(serialization);
+      const parsedPerson = parsed.classes[0];
+
+      expect(parsedPerson.name.entries()).toEqual([['', 'Person']]);
+      expect(JSON.stringify(parsed)).toEqual(serialization);
     });
 
     it(`Should throw on inputs that are not serialized projects`, () => {

@@ -1,6 +1,6 @@
 import { Class, Project, Property } from '../../src';
 
-import Ajv from 'ajv';
+import Ajv from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
 const schema = require('ontouml-schema');
 

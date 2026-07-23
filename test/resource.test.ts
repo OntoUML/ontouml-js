@@ -1,11 +1,11 @@
-import { MultilingualText, Resource } from '../src';
+import { LanguageString, Resource } from '../src';
 
 describe('Resource tests', () => {
   it('should hold a URI and a multilingual name', () => {
     const resource = new Resource('https://example.org/thing', 'Thing', 'en');
 
     expect(resource.uri).toEqual('https://example.org/thing');
-    expect(resource.name).toBeInstanceOf(MultilingualText);
+    expect(resource.name).toBeInstanceOf(LanguageString);
     expect(resource.name.get('en')).toEqual('Thing');
   });
 

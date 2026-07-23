@@ -2,7 +2,7 @@ import uniqid from 'uniqid';
 import _ from 'lodash';
 import {
   Cardinality,
-  MultilingualText,
+  LanguageString,
   OntoumlElement,
   Project,
   ProjectElement,
@@ -104,7 +104,7 @@ export abstract class OntoumlElementBuilder<
    */
   private static cloneFieldValue(value: any): any {
     if (
-      value instanceof MultilingualText ||
+      value instanceof LanguageString ||
       value instanceof Cardinality ||
       value instanceof Resource
     ) {

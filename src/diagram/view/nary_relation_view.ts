@@ -1,6 +1,7 @@
 import {
   View,
   Path,
+  Point,
   OntoumlType,
   ClassView,
   Relation,
@@ -27,8 +28,11 @@ export class NaryRelationView extends View<Relation> {
     this._members = members;
     this.diamond = new Diamond();
 
-    // members and paths are matched by position
-    this._paths = this.members.map(view => new Path());
+    // members and paths are matched by position; paths have a minimum of
+    // two points in the OntoUML JSON Schema
+    this._paths = this.members.map(
+      () => new Path([new Point(0, 0), new Point(0, 0)])
+    );
   }
 
   /** The views of the classes connected by the relation. */

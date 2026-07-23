@@ -1,6 +1,6 @@
 import {
   ModelElementBuilder,
-  MultilingualText,
+  LanguageString,
   Note,
   Package,
   Project
@@ -24,7 +24,7 @@ import {
 export class NoteBuilder extends ModelElementBuilder<NoteBuilder> {
   protected declare element?: Note;
   protected declare _container?: Package;
-  private _text: MultilingualText = new MultilingualText();
+  private _text: LanguageString = new LanguageString();
 
   /**
    * Creates a builder whose built note will be contained in `project`.
@@ -69,12 +69,12 @@ export class NoteBuilder extends ModelElementBuilder<NoteBuilder> {
    *
    * @param value - the note text.
    * @param language - language tag of `value`; defaults to
-   *        {@link MultilingualText.defaultLanguage}.
+   *        {@link LanguageString.defaultLanguage}.
    * @returns this builder, for method chaining.
    */
   text(
     value: string,
-    language: string = MultilingualText.defaultLanguage
+    language: string = LanguageString.defaultLanguage
   ): NoteBuilder {
     this._text.add(value, language);
     return this;

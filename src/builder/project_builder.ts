@@ -1,6 +1,6 @@
 import {
   getMetadataLabel,
-  MultilingualText,
+  LanguageString,
   NamedElementBuilder,
   Project,
   Resource
@@ -36,8 +36,8 @@ export class ProjectBuilder extends NamedElementBuilder<ProjectBuilder> {
   private _designedForTasks: Resource[] = [];
   private _ontologyTypes: Resource[] = [];
   private _themes: Resource[] = [];
-  private _bibliographicCitations: MultilingualText[] = [];
-  private _keywords: MultilingualText[] = [];
+  private _bibliographicCitations: LanguageString[] = [];
+  private _keywords: LanguageString[] = [];
   private _acronyms: string[] = [];
   private _landingPages: string[] = [];
   private _languages: string[] = [];
@@ -274,14 +274,14 @@ export class ProjectBuilder extends NamedElementBuilder<ProjectBuilder> {
    *
    * @param value - the citation text.
    * @param language - language tag of `value`; defaults to
-   *        {@link MultilingualText.defaultLanguage}.
+   *        {@link LanguageString.defaultLanguage}.
    * @returns this builder, for method chaining.
    */
   bibliographicCitation(
     value: string,
-    language: string = MultilingualText.defaultLanguage
+    language: string = LanguageString.defaultLanguage
   ): ProjectBuilder {
-    this._bibliographicCitations.push(new MultilingualText(value, language));
+    this._bibliographicCitations.push(new LanguageString(value, language));
     return this;
   }
 
@@ -290,14 +290,14 @@ export class ProjectBuilder extends NamedElementBuilder<ProjectBuilder> {
    *
    * @param value - the keyword text.
    * @param language - language tag of `value`; defaults to
-   *        {@link MultilingualText.defaultLanguage}.
+   *        {@link LanguageString.defaultLanguage}.
    * @returns this builder, for method chaining.
    */
   keyword(
     value: string,
-    language: string = MultilingualText.defaultLanguage
+    language: string = LanguageString.defaultLanguage
   ): ProjectBuilder {
-    this._keywords.push(new MultilingualText(value, language));
+    this._keywords.push(new LanguageString(value, language));
     return this;
   }
 

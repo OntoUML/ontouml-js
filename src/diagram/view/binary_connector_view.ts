@@ -1,4 +1,4 @@
-import { ModelElement, View, Path, Shape } from '../..';
+import { ModelElement, View, Path, Point, Shape } from '../..';
 
 /**
  * The abstract base of views that depict a model element connecting exactly
@@ -22,7 +22,8 @@ export abstract class BinaryConnectorView<
   constructor(element: T, source: View<any>, target: View<any>) {
     super(element);
 
-    this.path = new Path();
+    // paths have a minimum of two points in the OntoUML JSON Schema
+    this.path = new Path([new Point(0, 0), new Point(0, 0)]);
     this.source = source;
     this.target = target;
   }

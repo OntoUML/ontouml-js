@@ -13,7 +13,7 @@ import {
   GeneralizationView,
   GeneralizationSetView,
   NamedElement,
-  Finder,
+  ModelElement,
   Class,
   Note,
   Anchor,
@@ -33,10 +33,11 @@ import {
   NoteBuilder,
   AnchorBuilder,
   ProjectBuilder,
-  MultilingualText,
+  LanguageString,
   Resource,
   utils
 } from '.';
+import { Queries, applyMixins } from './queries';
 
 /**
  * An OntoUML project: the top-level container of an ontology and the entry
@@ -66,11 +67,9 @@ import {
  *   .build();
  * ```
  */
-export class Project extends NamedElement {
-  /** A query helper that retrieves elements of this project by their
-   * stereotypes and other classification criteria. */
-  finder: Finder;
+export interface Project extends Queries {}
 
+export class Project extends NamedElement {
   /** The root package of the project, i.e., the package containing the whole
    * model, if any. */
   root?: Package;
@@ -112,10 +111,10 @@ export class Project extends NamedElement {
 
   private _accessRights: Set<Resource> = new Set();
   private _acronyms: Set<string> = new Set();
-  private _bibliographicCitations: Set<MultilingualText> = new Set();
+  private _bibliographicCitations: Set<LanguageString> = new Set();
   private _contexts: Set<Resource> = new Set();
   private _designedForTasks: Set<Resource> = new Set();
-  private _keywords: Set<MultilingualText> = new Set();
+  private _keywords: Set<LanguageString> = new Set();
   private _landingPages: Set<string> = new Set();
   private _languages: Set<string> = new Set();
   private _ontologyTypes: Set<Resource> = new Set();
@@ -124,8 +123,33 @@ export class Project extends NamedElement {
 
   constructor() {
     super();
+  }
 
-    this.finder = new Finder(this);
+  /** The classes in scope for {@link Queries}: every class in the project. */
+  protected queryableClasses(): Class[] {
+    return this.classes;
+  }
+
+  /** The binary relations in scope for {@link Queries}. */
+  protected queryableBinaryRelations(): BinaryRelation[] {
+    return this.binaryRelations;
+  }
+
+  /** The relations in scope for {@link Queries}, both binary and n-ary. */
+  protected queryableRelations(): Relation[] {
+    return this.relations;
+  }
+
+  /** The attributes in scope for {@link Queries}. */
+  protected queryableAttributes(): Property[] {
+    return this.attributes;
+  }
+
+  /** The model elements in scope for {@link Queries}. */
+  protected queryableModelElements(): ModelElement[] {
+    return this.getContents().filter(
+      e => e instanceof ModelElement
+    ) as ModelElement[];
   }
 
   /** The classes contained in this project. */
@@ -527,7 +551,7 @@ export class Project extends NamedElement {
 
   /** The bibliographic citations of the publications that document this
    * project. */
-  get bibliographicCitations(): MultilingualText[] {
+  get bibliographicCitations(): LanguageString[] {
     return [...this._bibliographicCitations];
   }
 
@@ -538,7 +562,7 @@ export class Project extends NamedElement {
    * @throws an error if the array is null, undefined, or contains a null or
    *         undefined member.
    */
-  set bibliographicCitations(array: MultilingualText[]) {
+  set bibliographicCitations(array: LanguageString[]) {
     utils.assertArray(array);
     this._bibliographicCitations = new Set(array);
   }
@@ -549,18 +573,18 @@ export class Project extends NamedElement {
    *
    * @throws an error if the value is null or undefined.
    */
-  addBibliographicCitation(value: MultilingualText) {
+  addBibliographicCitation(value: LanguageString) {
     utils.assertValue(value);
     this._bibliographicCitations.add(value);
   }
 
   /** Removes a bibliographic citation from this project. */
-  removeBibliographicCitation(value: MultilingualText) {
+  removeBibliographicCitation(value: LanguageString) {
     this._bibliographicCitations.delete(value);
   }
 
   /** The keywords describing the content of this project. */
-  get keywords(): MultilingualText[] {
+  get keywords(): LanguageString[] {
     return [...this._keywords];
   }
 
@@ -570,7 +594,7 @@ export class Project extends NamedElement {
    * @throws an error if the array is null, undefined, or contains a null or
    *         undefined member.
    */
-  set keywords(array: MultilingualText[]) {
+  set keywords(array: LanguageString[]) {
     utils.assertArray(array);
     this._keywords = new Set(array);
   }
@@ -580,13 +604,13 @@ export class Project extends NamedElement {
    *
    * @throws an error if the value is null or undefined.
    */
-  addKeyword(value: MultilingualText) {
+  addKeyword(value: LanguageString) {
     utils.assertValue(value);
     this._keywords.add(value);
   }
 
   /** Removes a keyword from this project. */
-  removeKeyword(value: MultilingualText) {
+  removeKeyword(value: LanguageString) {
     this._keywords.delete(value);
   }
 
@@ -936,7 +960,14 @@ export class Project extends NamedElement {
       sources: this.sources,
       themes: this.themes.map(r => r.toJSON()),
       root: this.root?.id ?? null,
-      elements: this.getContents().map(e => e.toJSON())
+      // shapes are contained by views rather than registered in the project,
+      // but the schema serializes them as project elements
+      elements: [
+        ...this.getContents(),
+        ...this.views.flatMap(v => v.shapes)
+      ].map(e => e.toJSON())
     };
   }
 }
+
+applyMixins(Project, [Queries]);

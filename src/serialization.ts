@@ -18,7 +18,7 @@ import {
   ModelElement,
   Decoratable,
   Classifier,
-  MultilingualText,
+  LanguageString,
   Resource,
   Cardinality,
   Nature,
@@ -33,24 +33,18 @@ import {
   GeneralizationView,
   NaryRelationView,
   GeneralizationSetView,
-  AnchorView
+  AnchorView,
+  Path,
+  Point,
+  RectangularShape
 } from '.';
-
-/** The discriminator values of shapes, which are contained by views and are
- * not accepted as top-level project elements. */
-const SHAPE_TYPES: string[] = [
-  OntoumlType.RECTANGLE,
-  OntoumlType.DIAMOND,
-  OntoumlType.TEXT,
-  OntoumlType.PATH
-];
 
 /**
  * Deserializes an object mapping language tags to text values into a
- * {@link MultilingualText}.
+ * {@link LanguageString}.
  */
-function textFromJSON(raw: any): MultilingualText {
-  const text = new MultilingualText();
+function textFromJSON(raw: any): LanguageString {
+  const text = new LanguageString();
 
   if (raw && typeof raw === 'object') {
     Object.entries(raw).forEach(([language, value]) =>
@@ -180,10 +174,10 @@ function getResolved<T extends OntoumlElement>(
  * OntoUML JSON Schema (https://w3id.org/ontouml/schema), and returns the
  * corresponding instance of {@link Project}.
  *
- * Model elements, diagrams, and views are fully supported. Shapes are not
- * part of the project serialization (the schema defines no container for
- * them), so the shapes of parsed views keep their serialized identifiers but
- * are recreated with default dimensions and positions.
+ * Model elements, diagrams, views, and shapes are fully supported. When the
+ * shapes referenced by a view are absent from the serialization, the view
+ * keeps the serialized shape identifiers but its shapes are recreated with
+ * default dimensions and positions.
  *
  * @param serializedProject - the JSON string to parse.
  * @throws an error if the string is not a serialized {@link Project} or if
@@ -225,13 +219,6 @@ function parse(serializedProject: string): Project {
 
   const rawElements: any[] = raw.elements ?? [];
 
-  const unsupported = rawElements.find(e => SHAPE_TYPES.includes(e?.type));
-  if (unsupported) {
-    throw new Error(
-      `Cannot parse element of type '${unsupported.type}'. Shapes are contained by views and are not supported as project elements.`
-    );
-  }
-
   const seenIds = new Set<string>();
   const duplicatedIds = new Set<string>();
 
@@ -259,6 +246,50 @@ function parse(serializedProject: string): Project {
 
   const register = (element: OntoumlElement) => {
     elements.set(element.id, element);
+  };
+
+  // Views create their shapes with default geometry; these helpers assign
+  // the serialized shape ids and restore the serialized geometry when the
+  // shapes are present among the project elements
+  const hydrateRectangularShape = (
+    shape: RectangularShape,
+    shapeId?: string
+  ) => {
+    if (!shapeId) return;
+
+    shape.id = shapeId;
+    const rawShape = rawById.get(shapeId);
+
+    if (rawShape) {
+      setOntoumlElementFields(shape, rawShape);
+
+      if (rawShape.topLeft) {
+        shape.setX(rawShape.topLeft.x ?? 0);
+        shape.setY(rawShape.topLeft.y ?? 0);
+      }
+
+      if (rawShape.width != null) shape.width = rawShape.width;
+      if (rawShape.height != null) shape.height = rawShape.height;
+    }
+
+    register(shape);
+  };
+
+  const hydratePath = (path: Path, shapeId?: string) => {
+    if (!shapeId) return;
+
+    path.id = shapeId;
+    const rawShape = rawById.get(shapeId);
+
+    if (rawShape) {
+      setOntoumlElementFields(path, rawShape);
+
+      if (Array.isArray(rawShape.points)) {
+        path.points = rawShape.points.map((p: any) => new Point(p.x, p.y));
+      }
+    }
+
+    register(path);
   };
 
   // Packages
@@ -512,7 +543,7 @@ function parse(serializedProject: string): Project {
       getResolved<Class>(elements, rawView.isViewOf, rawView.id, 'isViewOf')
     );
     setOntoumlElementFields(view, rawView);
-    if (rawView.rectangle) view.rectangle.id = rawView.rectangle;
+    hydrateRectangularShape(view.rectangle, rawView.rectangle);
     register(view);
   }
 
@@ -521,7 +552,7 @@ function parse(serializedProject: string): Project {
       getResolved<Package>(elements, rawView.isViewOf, rawView.id, 'isViewOf')
     );
     setOntoumlElementFields(view, rawView);
-    if (rawView.rectangle) view.rectangle.id = rawView.rectangle;
+    hydrateRectangularShape(view.rectangle, rawView.rectangle);
     register(view);
   }
 
@@ -530,7 +561,7 @@ function parse(serializedProject: string): Project {
       getResolved<Note>(elements, rawView.isViewOf, rawView.id, 'isViewOf')
     );
     setOntoumlElementFields(view, rawView);
-    if (rawView.text) view.text.id = rawView.text;
+    hydrateRectangularShape(view.text, rawView.text);
     register(view);
   }
 
@@ -587,7 +618,7 @@ function parse(serializedProject: string): Project {
         )
       );
       setOntoumlElementFields(view, rawView);
-      if (rawView.path) view.path.id = rawView.path;
+      hydratePath(view.path, rawView.path);
       register(view);
     } else if (rawView.type === OntoumlType.GENERALIZATION_VIEW) {
       const view = new GeneralizationView(
@@ -611,7 +642,7 @@ function parse(serializedProject: string): Project {
         )
       );
       setOntoumlElementFields(view, rawView);
-      if (rawView.path) view.path.id = rawView.path;
+      hydratePath(view.path, rawView.path);
       register(view);
     } else if (rawView.type === OntoumlType.NARY_RELATION_VIEW) {
       const members = (rawView.members ?? []).map((memberId: string) =>
@@ -627,10 +658,10 @@ function parse(serializedProject: string): Project {
         members
       );
       setOntoumlElementFields(view, rawView);
-      if (rawView.diamond) view.diamond.id = rawView.diamond;
+      hydrateRectangularShape(view.diamond, rawView.diamond);
       const paths = view.paths;
       (rawView.paths ?? []).forEach((pathId: string, index: number) => {
-        if (paths[index]) paths[index].id = pathId;
+        if (paths[index]) hydratePath(paths[index], pathId);
       });
       register(view);
     } else {
@@ -650,7 +681,7 @@ function parse(serializedProject: string): Project {
         )
       );
       setOntoumlElementFields(view, rawView);
-      if (rawView.path) view.path.id = rawView.path;
+      hydratePath(view.path, rawView.path);
       register(view);
     }
   }
@@ -666,7 +697,7 @@ function parse(serializedProject: string): Project {
       )
     );
     setOntoumlElementFields(view, rawView);
-    if (rawView.text) view.text.id = rawView.text;
+    hydrateRectangularShape(view.text, rawView.text);
     view.generalizations = (rawView.generalizations ?? []).map(
       (viewId: string) =>
         getResolved<GeneralizationView>(

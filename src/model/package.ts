@@ -24,6 +24,7 @@ import {
   AnchorBuilder,
   OntoumlElement
 } from '..';
+import { Queries, applyMixins } from '../queries';
 
 /** The union of the model element types that a {@link Package} can contain. */
 export type PackageableElement =
@@ -41,11 +42,43 @@ export type PackageableElement =
  * example, a `Payment` package may group the classes and relations
  * describing payments.
  */
+export interface Package extends Queries {}
+
 export class Package extends ModelElement {
   private _contents: PackageableElement[] = [];
 
   constructor(project: Project) {
     super(project);
+  }
+
+  /**
+   * The classes in scope for {@link Queries}: those in this package and its
+   * subpackages.
+   */
+  protected queryableClasses(): Class[] {
+    return this.getAllClasses();
+  }
+
+  /** The binary relations in scope for {@link Queries}. */
+  protected queryableBinaryRelations(): BinaryRelation[] {
+    return this.getAllBinaryRelations();
+  }
+
+  /** The relations in scope for {@link Queries}, both binary and n-ary. */
+  protected queryableRelations(): Relation[] {
+    return this.getAllRelations();
+  }
+
+  /** The attributes in scope for {@link Queries}. */
+  protected queryableAttributes(): Property[] {
+    return this.getAllAttributes();
+  }
+
+  /** The model elements in scope for {@link Queries}. */
+  protected queryableModelElements(): ModelElement[] {
+    return this.getAllContents().filter(
+      e => e instanceof ModelElement
+    ) as ModelElement[];
   }
 
   /** The model elements directly contained in this package. */
@@ -376,3 +409,5 @@ export class Package extends ModelElement {
     return new AnchorBuilder(this.project!).container(this);
   }
 }
+
+applyMixins(Package, [Queries]);

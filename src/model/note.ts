@@ -1,7 +1,7 @@
 import {
   OntoumlType,
   ModelElement,
-  MultilingualText,
+  LanguageString,
   Project,
   Package,
   AnchorBuilder
@@ -14,11 +14,11 @@ import {
  */
 export class Note extends ModelElement {
   /** The textual content of the note, possibly in multiple languages. */
-  text: MultilingualText;
+  text: LanguageString;
 
   constructor(project: Project) {
     super(project);
-    this.text = new MultilingualText();
+    this.text = new LanguageString();
   }
 
   /** The package that contains this note, if any. */
@@ -47,7 +47,8 @@ export class Note extends ModelElement {
   override toJSON(): any {
     const object: any = {
       type: OntoumlType.NOTE,
-      text: this.text.toJSON()
+      // the schema requires `text` to be a language string object, not null
+      text: this.text.toJSON() ?? {}
     };
 
     return { ...super.toJSON(), ...object };

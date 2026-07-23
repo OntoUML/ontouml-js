@@ -1,10 +1,10 @@
-import { MultilingualText } from '../src';
+import { LanguageString } from '../src';
 
-describe('MultilingualText Tests', () => {
-  let text: MultilingualText;
+describe('LanguageString Tests', () => {
+  let text: LanguageString;
 
   beforeEach(() => {
-    text = new MultilingualText();
+    text = new LanguageString();
   });
 
   it('addAll() saves values keyed by their language tags', () => {
@@ -74,7 +74,7 @@ describe('MultilingualText Tests', () => {
   it("when no language tag is provided, get() should return value using the default language preference (['it','pt','en'])", () => {
     text.add('Pessoa', 'pt');
     text.add('Person', 'en');
-    MultilingualText.languagePreference = ['it', 'pt', 'en'];
+    LanguageString.languagePreference = ['it', 'pt', 'en'];
     expect(text.get()).toBe('Pessoa');
   });
 
