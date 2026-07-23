@@ -1,0 +1,86 @@
+---
+sidebar_position: 1
+title: Projects & packages
+---
+
+# Projects & packages
+
+Everything in `ontouml-js` lives inside a **Project**, and every model element
+lives inside a **Package**. Before we get to classes and relations, let's look
+at these containers — because they're also how you _create_ everything else.
+
+:::info[Theory: what's a package for?]
+A package is just a named grouping of model elements. Large ontologies are
+split into packages by sub-domain (people, products, payments…) exactly as you'd
+split code into modules. One package per project is the **root** ("model")
+package; all others nest inside it.
+:::
+
+## Creating a project
+
+There are two equivalent ways. Use the constructor for quick work:
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+project.name.add('Library domain');
+```
+
+Or the fluent **ProjectBuilder** when you want to set catalog metadata
+(publisher, license, keywords) at creation time:
+
+```ts twoslash
+import { ProjectBuilder } from 'ontouml-js';
+
+const project = new ProjectBuilder()
+  .name('Library domain')
+  .keyword('libraries')
+  .language('en')
+  .license('https://creativecommons.org/licenses/by/4.0/')
+  .build();
+```
+
+## The root package, and nesting
+
+A project's elements hang off a single **root** package. Create it with
+`.root()`, then nest sub-packages inside it. Remember: **a package is a factory
+for its contents**, so you build classes and sub-packages _from_ the package
+they belong to.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+project.name.add('Library domain');
+
+const model = project.packageBuilder().root().name('Model').build();
+
+const people = model.packageBuilder().name('People').build();
+const catalog = model.packageBuilder().name('Catalog').build();
+
+people.classBuilder().kind().name('Person').build();
+people.classBuilder().kind().name('Librarian').build();
+catalog.classBuilder().kind().name('Book').build();
+
+const allClasses = project.classes;
+const peopleClasses = people.classes;
+
+console.log(allClasses.length); // 3
+console.log(peopleClasses.length); // 2
+```
+
+Hover `allClasses` above: the project's `classes` getter walks every nested
+package for you, so you rarely need to traverse the tree by hand. We'll go
+deeper on reading a model back in the [Querying](/querying/) chapter.
+
+## Key takeaways
+
+- A **Project** is the root; it holds exactly one **root Package**.
+- Packages **nest** and group elements by sub-domain.
+- A container is a **factory** — build contents from the package they live in,
+  and their `container` is wired up for you.
+- `project.classes` (and friends) query **across** the whole containment tree.
+
+Next: [classes & stereotypes →](/creating/classes-stereotypes/), where the
+modeling really begins.

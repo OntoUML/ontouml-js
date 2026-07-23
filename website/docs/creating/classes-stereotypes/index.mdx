@@ -1,0 +1,295 @@
+---
+sidebar_position: 1
+title: Classes & stereotypes
+---
+
+import OntoumlSandpack from '@site/src/components/OntoumlSandpack';
+
+# Classes & stereotypes
+
+This is the heart of OntoUML. A class is built from a package and carries an
+**ontological stereotype** that fixes _what kind of thing_ it represents — not
+just "a Person", but "a **kind** of substantial whose instances carry their own
+principle of identity". You already saw `.kind()` and `.relator()` in
+[Hello, model](/getting-started/hello-model); this chapter covers the full
+vocabulary.
+
+:::info[Theory: why stereotypes exist]
+Plain UML lets you draw a class called `Student` and a class called `Person`
+with no way to say that _being a student_ is a temporary phase while _being a
+person_ is permanent, or that a `Marriage` only exists because two people are
+married. OntoUML makes those distinctions first-class by tagging every class
+with a stereotype drawn from the **Unified Foundational Ontology (UFO)**. Three
+questions organize the whole vocabulary:
+
+- **Does it supply identity?** _Sortals_ provide or inherit a principle of
+  identity (you can count and re-identify their instances); _non-sortals_
+  merely aggregate properties across kinds.
+- **Is membership permanent?** _Rigid_ types apply to their instances
+  necessarily, for as long as they exist; _anti-rigid_ types apply only
+  contingently; _semi-rigid_ types are rigid for some instances and anti-rigid
+  for others.
+- **What is the instance — a substance, an aspect, or an occurrence?**
+  Substantials exist on their own; moments (relators, modes, qualities) inhere
+  in something else; events and situations happen.
+
+Every builder shortcut below encodes the answers and, crucially, applies the
+default `restrictedTo` nature and order that OntoUML prescribes — so `.kind()`
+is not just a label, it is a bundle of correct defaults.
+:::
+
+## Building a class
+
+Classes are built from a container — a `Project` or a `Package` — with
+`classBuilder()`. Pick a stereotype shortcut, give it a name, and `build()`.
+The shortcut does double duty: it sets the stereotype **and** the defaults for
+that stereotype.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('People').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+
+console.log(person.stereotype); // "kind"
+console.log(person.restrictedTo); // [ "functional-complex" ]
+console.log(person.isSortal()); // true
+console.log(person.isRigid()); // true
+```
+
+## Sortals that supply identity
+
+A **kind** is the backbone of a model: a rigid sortal whose instances are
+functional complexes carrying their own identity principle (`Person`, `Car`,
+`Organization`). Two variants supply identity for other kinds of substantial:
+**collective** (a whole whose parts play the same role — `Forest`, `Deck`) and
+**quantity** (an amount of matter — `Water`, `Gold`).
+
+A **subkind** is a rigid specialization that _inherits_ the identity of a kind
+above it (`Man` and `Woman` as subkinds of `Person`).
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Nature').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const forest = model.classBuilder().collective().name('Forest').build();
+const water = model.classBuilder().quantity().name('Water').build();
+
+// A subkind inherits identity from a kind above it.
+const man = model.classBuilder().subkind().name('Man').build();
+person.addChild(man);
+
+console.log(person.isIdentityProvider()); // true — a kind provides identity
+console.log(man.isIdentityProvider()); // false — a subkind only inherits it
+```
+
+:::tip[One identity provider per branch]
+Every sortal must ultimately specialize exactly one identity provider (a
+`kind`, `collective`, or `quantity`). Subkinds, roles, and phases never stand
+alone — they always sit beneath a kind. Building them without that hierarchy is
+valid TypeScript but an incomplete model; add the
+[generalizations](/creating/generalizations/) that root them.
+:::
+
+## Anti-rigid sortals: roles and phases
+
+Some classifications come and go during an instance's life. OntoUML splits
+these **anti-rigid sortals** by _what_ makes them apply:
+
+- **role** — a _relational_ condition: something is a `Student` only while
+  enrolled, a `Employee` only while employed. A role always depends on a
+  relation.
+- **phase** — an _intrinsic_ condition: something is a `Child` or an `Adult`
+  purely by its own properties (age), a `Puppy` by its stage of life.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('University').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+
+const student = model.classBuilder().role().name('Student').build();
+const child = model.classBuilder().phase().name('Child').build();
+person.addChild(student);
+person.addChild(child);
+
+console.log(student.isAntiRigid()); // true — being a student is temporary
+console.log(student.isRole()); // true
+console.log(child.isPhase()); // true
+```
+
+Their historical counterparts, **historicalRole** (`.historicalRole()`) and
+**historicalRoleMixin**, classify instances by _past_ participation — an
+`ExStudent` is no longer enrolled but was.
+
+## Non-sortals: categories and mixins
+
+**Non-sortals** don't provide identity of their own; they gather properties
+that instances of _different_ kinds share. They differ by rigidity:
+
+| Shortcut        | Stereotype   | Rigidity   | Example                         |
+| --------------- | ------------ | ---------- | ------------------------------- |
+| `.category()`   | «category»   | rigid      | `PhysicalObject` over Car, Rock |
+| `.mixin()`      | «mixin»      | semi-rigid | `Insurable` (essential to some) |
+| `.roleMixin()`  | «roleMixin»  | anti-rigid | `Customer` over Person, Company |
+| `.phaseMixin()` | «phaseMixin» | anti-rigid | `Living` over Person, Animal    |
+
+Each of these shortcuts also marks the class **abstract** — a non-sortal is
+never instantiated directly; only its sortal subtypes are.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Agents').build();
+
+const agent = model.classBuilder().category().name('Agent').build();
+const customer = model.classBuilder().roleMixin().name('Customer').build();
+
+console.log(agent.isNonSortal()); // true
+console.log(agent.isAbstract); // true — set for you by .category()
+console.log(customer.isAntiRigid()); // true
+```
+
+## Moments: relators, modes, and qualities
+
+Not everything stands on its own. **Moments** are aspects that existentially
+depend on a bearer:
+
+- **relator** — the truthmaker of a material relation; it binds two or more
+  entities (`Marriage`, `Enrollment`, `Employment`). You met relators in
+  [Hello, model](/getting-started/hello-model).
+- **mode** — an intrinsic aspect with no natural measurement scale (`Skill`,
+  `Belief`, `Symptom`).
+- **quality** — an intrinsic aspect that _is_ measurable on a value structure
+  (`Weight`, `Color`, `Temperature`).
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Marriage').build();
+
+const marriage = model.classBuilder().relator().name('Marriage').build();
+const skill = model.classBuilder().mode().name('Skill').build();
+const weight = model.classBuilder().quality().name('Weight').build();
+
+console.log(marriage.isRelator()); // true
+console.log(skill.isIntrinsicMomentType()); // true
+console.log(weight.isQualityType()); // true
+```
+
+The relations that tie a moment to its bearer — `«mediation»` for relators,
+`«characterization»` for modes and qualities — are covered under
+[binary relations](/creating/binary-relations/).
+
+## Events, situations, and higher-order types
+
+Beyond endurants (things that persist), OntoUML also types **events**
+(`.event()` — a `Wedding`, a `Purchase`), **situations** (`.situation()` — a
+configuration that can trigger events), and **high-order types** (`.type()` —
+classes whose instances are themselves types, like `CarModel`). Datatypes and
+enumerations are classes too, and get their own treatment in
+[Attributes](/creating/attributes/).
+
+## Ontological natures
+
+The stereotype fixes a class's _category_; the **`restrictedTo` natures** fix
+what its instances ultimately _are_. Each stereotype shortcut sets a sensible
+default (a kind ⇒ `functional-complex`, a relator ⇒ `relator`), but non-sortals
+often span several natures, and you set those explicitly with `restrictedTo` or
+the additive helpers.
+
+```ts twoslash
+import { Project, Nature } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Physical').build();
+
+// A category over any substantial (functional-complex, collective, quantity).
+const object = model
+  .classBuilder()
+  .category()
+  .name('PhysicalObject')
+  .restrictedTo([Nature.FUNCTIONAL_COMPLEX, Nature.COLLECTIVE, Nature.QUANTITY])
+  .build();
+
+console.log(object.restrictedTo.length); // 3
+console.log(object.isSubstantialType()); // true
+
+// The same thing, spelled with the additive shortcut:
+model.classBuilder().category().name('Substance').substantialType().build();
+```
+
+`allowsExactly`, `allowsSome`, and `allowsOnly` let you query a class's natures
+later — see [Querying](/querying/).
+
+## Now you try it
+
+Model a small fragment: `Person` is a **kind**; `Employee` is a **role** under
+it; `Employment` is the **relator** that makes someone an employee. Fill in the
+three `TODO`s, then open the **console**.
+
+export const starter = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Work').build();
+
+// Your turn:
+// 1. Build 'Person' as a kind.
+// 2. Build 'Employee' as a role, and make it a subtype of Person.
+// 3. Build 'Employment' as a relator.
+
+console.log(
+JSON.stringify(model.classes.map(c => [c.getNameOrId(), c.stereotype]), null, 2)
+);
+`;
+
+<OntoumlSandpack files={{ '/index.ts': starter }} />
+
+<details>
+<summary>Show the solution</summary>
+
+export const solution = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Work').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const employee = model.classBuilder().role().name('Employee').build();
+person.addChild(employee);
+const employment = model.classBuilder().relator().name('Employment').build();
+
+console.log(
+JSON.stringify(model.classes.map(c => [c.getNameOrId(), c.stereotype]), null, 2)
+);
+`;
+
+<OntoumlSandpack files={{ '/index.ts': solution }} readOnly />
+
+</details>
+
+## Key takeaways
+
+- A class carries an **ontological stereotype**; the builder shortcut sets the
+  stereotype **and** its prescribed defaults (`restrictedTo`, order,
+  abstractness).
+- **Sortals** provide (`kind`, `collective`, `quantity`) or inherit (`subkind`,
+  `role`, `phase`) a principle of identity; **non-sortals** (`category`,
+  `mixin`, `roleMixin`, `phaseMixin`) aggregate properties across kinds.
+- **Rigidity** tells you whether membership is permanent (`kind`, `category`),
+  temporary (`role`, `phase`, `roleMixin`), or mixed (`mixin`).
+- **Moments** — `relator`, `mode`, `quality` — depend on a bearer, unlike
+  self-standing substantials.
+- **`restrictedTo`** natures record what instances ultimately are; query them
+  with `isSortal()`, `isRigid()`, `allowsExactly()`, and friends.
+
+Next: [attributes →](/creating/attributes/), the intrinsic structure a class
+gives its instances.

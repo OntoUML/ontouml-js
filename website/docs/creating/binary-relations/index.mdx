@@ -1,0 +1,218 @@
+---
+sidebar_position: 1
+title: Binary relations
+---
+
+import OntoumlSandpack from '@site/src/components/OntoumlSandpack';
+
+# Binary relations
+
+A **binary relation** connects two classifiers — a **source** and a
+**target** — and, like a class, carries an OntoUML stereotype that fixes what
+kind of connection it is: a marriage's _mediation_ of a spouse, a car's _engine
+being a component of_ it, one mountain being _taller than_ another.
+
+:::info[Theory: relations are founded, not free]
+A distinctive idea in OntoUML is that most relations between endurants are not
+primitive — they are **founded** on something in the model. A `«material»`
+relation like _studies at_ holds only because a relator (an `Enrollment`)
+exists and _mediates_ the people and schools involved. So you rarely build a
+material relation alone: you build the relator, its `«mediation»` relations,
+and the material relation derived from them. The stereotypes below encode these
+patterns, and the builder applies each one's default cardinalities for you.
+:::
+
+## Building a relation
+
+Relations are built from a container — a `Project` or a `Package` — with
+`binaryRelationBuilder()`. Pick a stereotype shortcut, name it, and set the
+`source` and `target`. Both ends are required.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Marriage').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const marriage = model.classBuilder().relator().name('Marriage').build();
+
+// The relator mediates the people it binds…
+const husband = model
+  .binaryRelationBuilder()
+  .mediation()
+  .name('has husband')
+  .source(marriage)
+  .target(person)
+  .build();
+
+// …and the material relation is derived from that relator.
+const marriedTo = model
+  .binaryRelationBuilder()
+  .material()
+  .name('married to')
+  .source(person)
+  .target(person)
+  .build();
+
+console.log(marriedTo.isMaterial()); // true
+console.log(husband.isMediation()); // true
+```
+
+## The stereotype catalog
+
+Each shortcut sets the stereotype **and** applies the default meta-properties
+OntoUML prescribes for it (cardinalities, read-only ends, aggregation). The
+most common ones:
+
+| Shortcut                | Stereotype           | Connects…                                             |
+| ----------------------- | -------------------- | ----------------------------------------------------- |
+| `.material()`           | «material»           | endurants, founded on a relator (_studies at_)        |
+| `.mediation()`          | «mediation»          | a relator and an endurant it binds                    |
+| `.characterization()`   | «characterization»   | an intrinsic aspect (mode/quality) and its bearer     |
+| `.comparative()`        | «comparative»        | endurants compared by their qualities (_taller than_) |
+| `.externalDependence()` | «externalDependence» | an extrinsic mode and what it depends on              |
+| `.componentOf()`        | «componentOf»        | a functional part and its whole                       |
+| `.memberOf()`           | «memberOf»           | a member and the collective it belongs to             |
+| `.subCollectionOf()`    | «subCollectionOf»    | a sub-collective and its collective                   |
+| `.subQuantityOf()`      | «subQuantityOf»      | a sub-quantity and its quantity                       |
+| `.participation()`      | «participation»      | an endurant and an event it takes part in             |
+| `.termination()`        | «termination»        | an event and an endurant it ends                      |
+| `.creation()`           | «creation»           | an event and an endurant it brings into existence     |
+
+The remaining event- and situation-related stereotypes — `.instantiation()`,
+`.participational()`, `.historicalDependence()`, `.manifestation()`,
+`.bringsAbout()`, `.triggers()`, and `.derivation()` — follow the same
+pattern.
+
+:::tip[Defaults come with the stereotype]
+`.mediation()`, for instance, sets the source cardinality to `1..*`, the target
+to `1`, and marks the target end read-only — because a relator existentially
+depends on the entities it mediates. You can always override a default
+afterwards (see below).
+:::
+
+## Ends and cardinality
+
+A relation's two **ends are properties**, exactly like attributes — so the
+same multiplicity idea applies, one bound per end. Set them on the builder with
+`sourceCardinality` / `targetCardinality`, or adjust the built relation through
+`sourceEnd` and `targetEnd`.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('School').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const school = model.classBuilder().kind().name('School').build();
+
+const studiesAt = model
+  .binaryRelationBuilder()
+  .material()
+  .name('studies at')
+  .source(person)
+  .target(school)
+  .sourceCardinality('1..*')
+  .targetCardinality('1')
+  .build();
+
+// Equivalently, tweak the ends after building:
+studiesAt.sourceEnd.cardinality.setAsOneToMany();
+studiesAt.targetEnd.cardinality.setAsOneToOne();
+
+console.log(studiesAt.targetEnd.getOppositeEnd() === studiesAt.sourceEnd); // true
+```
+
+Read `Property.getOppositeEnd()` to walk from one end to the other — the basis
+for navigating a model, which the [Querying](/querying/) chapter builds on.
+
+## Parthood and aggregation
+
+Part-whole relations mark the **whole** end with an aggregation kind. The
+parthood stereotypes (`componentOf`, `memberOf`, …) set this for you, but you
+can also apply it directly:
+
+- `.composition()` — a _composite_ whole (UML's filled diamond); a part
+  belongs to at most one whole.
+- `.aggregation()` — a _shared_ whole (open diamond); a part may be shared.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Cars').build();
+
+const car = model.classBuilder().kind().name('Car').build();
+const engine = model.classBuilder().kind().name('Engine').build();
+
+const hasEngine = model
+  .binaryRelationBuilder()
+  .componentOf()
+  .name('has engine')
+  .source(engine)
+  .target(car)
+  .build();
+
+console.log(hasEngine.isPartWholeRelation()); // true
+console.log(hasEngine.targetEnd.isComposite()); // true
+```
+
+## Now you try it
+
+`Employment` is a relator connecting `Person` and `Company`. Add the two
+`«mediation»` relations that bind it — one to each class — then check the
+console.
+
+export const starter = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Work').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const company = model.classBuilder().kind().name('Company').build();
+const employment = model.classBuilder().relator().name('Employment').build();
+
+// Your turn: add two «mediation» relations from Employment — one to Person,
+// one to Company.
+
+console.log(JSON.stringify(project.binaryRelations.map(r => r.getNameOrId()), null, 2));
+`;
+
+<OntoumlSandpack files={{ '/index.ts': starter }} />
+
+<details>
+<summary>Show the solution</summary>
+
+export const solution = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Work').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const company = model.classBuilder().kind().name('Company').build();
+const employment = model.classBuilder().relator().name('Employment').build();
+
+model.binaryRelationBuilder().mediation().name('employs').source(employment).target(person).build();
+model.binaryRelationBuilder().mediation().name('employer').source(employment).target(company).build();
+
+console.log(JSON.stringify(project.binaryRelations.map(r => r.getNameOrId()), null, 2));
+`;
+
+<OntoumlSandpack files={{ '/index.ts': solution }} readOnly />
+
+</details>
+
+## Key takeaways
+
+- A binary relation connects a **source** and a **target**, both required.
+- Build it from a package with `binaryRelationBuilder()` and a **stereotype
+  shortcut** that also applies OntoUML's default meta-properties.
+- A relation's **ends are properties** — cardinality, ordering, and read-only
+  live on `sourceEnd` / `targetEnd`, reachable via `getOppositeEnd()`.
+- Parthood uses **aggregation** on the whole end: `.composition()` (exclusive)
+  or `.aggregation()` (shared).
+
+Next: [n-ary relations →](/creating/nary-relations/), for connections among
+three or more classes.

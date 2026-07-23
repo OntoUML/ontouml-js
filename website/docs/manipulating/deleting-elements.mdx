@@ -1,0 +1,196 @@
+---
+sidebar_position: 3
+title: Deleting elements
+---
+
+import OntoumlSandpack from '@site/src/components/OntoumlSandpack';
+
+# Deleting elements
+
+Removing an element is more than dropping it from a list. A model is a web of
+references — relations point at classes, generalizations connect classifiers,
+anchors tie notes to elements — and a delete has to leave that web consistent.
+`element.delete()` does the whole job.
+
+:::info[Theory: deletion cascades to dependents]
+Some elements cannot exist without the one you remove. A `«mediation»` relation
+is meaningless once one of the classes it connects is gone; a generalization
+needs both its general and its specific; a view has nothing to depict once its
+element is deleted. So `delete()` **cascades** to those dependents, then
+**clears** every remaining reference held by survivors (a generalization set's
+categorizer, a diagram's owner), and finally **detaches** the element from its
+container.
+:::
+
+## Deleting a single element
+
+Call `.delete()` on the element. It is removed from the project's indexes and
+from its container in one call.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Model').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const note = model.classBuilder().kind().name('Note').build();
+
+console.log(project.classes.length); // 2
+
+note.delete();
+
+console.log(project.classes.length); // 1
+console.log(model.contents.includes(note)); // false
+```
+
+Deleting an element that is already deleted is a **no-op** — safe to call twice,
+so you never have to guard against double removal.
+
+## What a class delete cascades to
+
+Deleting a classifier (a class or relation) is the far-reaching case. It removes
+everything that existentially depends on it:
+
+- the **relations** in which it types an end,
+- the **generalizations** it participates in,
+- its own **attributes** (or relation ends),
+- the **anchors** and **views** that reference it.
+
+Attributes elsewhere that were _typed by_ the class aren't deleted — instead
+their `propertyType` is cleared, since an attribute can outlive the loss of its
+type.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Model').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const student = model.classBuilder().role().name('Student').build();
+const enrollment = model.classBuilder().relator().name('Enrollment').build();
+
+person.addChild(student); // a generalization
+const mediates = model
+  .binaryRelationBuilder()
+  .mediation()
+  .source(enrollment)
+  .target(student)
+  .build();
+
+console.log(project.generalizations.length); // 1
+console.log(project.binaryRelations.length); // 1
+
+// Removing Student takes its generalization and its mediation with it.
+student.delete();
+
+console.log(project.generalizations.length); // 0 — cascaded
+console.log(project.binaryRelations.length); // 0 — cascaded
+```
+
+## Deleting a package
+
+Deleting a package deletes **everything it contains**, recursively — the natural
+way to drop an entire sub-domain. Delete a leaf element to remove just that one;
+delete its package to remove the whole subtree.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Model').build();
+const payments = model.packageBuilder().name('Payments').build();
+
+payments.classBuilder().kind().name('Invoice').build();
+payments.classBuilder().relator().name('Payment').build();
+
+console.log(project.classes.length); // 2
+
+payments.delete(); // takes Invoice and Payment with it
+
+console.log(project.classes.length); // 0
+console.log(model.contents.includes(payments)); // false
+```
+
+## Bulk cleanup with a query
+
+Because `delete()` is safe to call on any element, pairing it with a
+[query](/querying/) prunes a model in a single pass — a common step in a
+model-to-model transformation. Snapshot the query result into an array first,
+so you iterate over a stable list rather than one shifting under you.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Model').build();
+const person = model.classBuilder().kind().name('Person').build();
+model.classBuilder().role().name('Student').build();
+model.classBuilder().role().name('Teacher').build();
+
+// Drop every role — e.g. to derive a "rigid-only" projection of the model.
+const roles = [...project.getRoles()];
+roles.forEach(role => role.delete());
+
+console.log(project.classes.map(c => c.getNameOrId())); // [ "Person" ]
+```
+
+## Now you try it
+
+`LegacyData` is a package holding two classes you no longer want. Delete the
+whole package, then confirm the model is empty.
+
+export const starter = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Model').build();
+
+const legacy = model.packageBuilder().name('LegacyData').build();
+legacy.classBuilder().kind().name('OldRecord').build();
+legacy.classBuilder().kind().name('OldTag').build();
+
+// Your turn: delete the LegacyData package.
+
+console.log('classes left:', project.classes.length);
+console.log('model contents:', model.contents.length);
+`;
+
+<OntoumlSandpack files={{ '/index.ts': starter }} />
+
+<details>
+<summary>Show the solution</summary>
+
+export const solution = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Model').build();
+
+const legacy = model.packageBuilder().name('LegacyData').build();
+legacy.classBuilder().kind().name('OldRecord').build();
+legacy.classBuilder().kind().name('OldTag').build();
+
+legacy.delete();
+
+console.log('classes left:', project.classes.length);
+console.log('model contents:', model.contents.length);
+`;
+
+<OntoumlSandpack files={{ '/index.ts': solution }} readOnly />
+
+</details>
+
+## Key takeaways
+
+- `element.delete()` removes an element, cascades to its dependents, clears
+  references to it, and detaches it from its container.
+- Deleting a **classifier** also removes its relations, generalizations, and
+  own properties; attributes typed by it keep existing with a cleared type.
+- Deleting a **package** deletes its whole subtree recursively.
+- `delete()` on an already-deleted element is a **no-op**, so it composes
+  cleanly with a [query](/querying/) for bulk pruning — snapshot the results
+  into an array first.
+
+That completes editing a model. Next, learn to read one back in depth under
+[Querying](/querying/), or round-trip it to disk under
+[Serialization](/serialization).

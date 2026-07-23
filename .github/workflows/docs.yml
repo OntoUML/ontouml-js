@@ -1,0 +1,68 @@
+name: Deploy tutorial site
+
+on:
+  push:
+    branches: [main]
+    # Rebuild when the tutorial changes OR when the library API changes
+    # (snippets are type-checked against the freshly built library).
+    paths:
+      - 'website/**'
+      - 'src/**'
+      - 'package.json'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+# Allow GITHUB_TOKEN to deploy to GitHub Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment; don't cancel in-progress production deploys.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HUSKY: 0
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # 1. Build the library so website's `ontouml-js` (file:.. symlink) has
+      #    its dist/ + type declarations available to Twoslash.
+      - name: Build ontouml-js
+        run: |
+          npm ci
+          npm run build
+
+      # 2. Install and build the Docusaurus site.
+      - name: Build tutorial site
+        working-directory: website
+        run: |
+          npm install
+          npm run build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: website/build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

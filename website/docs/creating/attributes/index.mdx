@@ -1,0 +1,259 @@
+---
+sidebar_position: 1
+title: Attributes
+---
+
+import OntoumlSandpack from '@site/src/components/OntoumlSandpack';
+
+# Attributes
+
+A class describes its instances through **attributes** — the intrinsic, "owned"
+pieces of structure every instance carries: a person's `name`, a book's
+`isbn`, an account's `balance`.
+
+:::info[Theory: properties, attributes, and relation ends]
+In OntoUML (as in UML) the underlying concept is a **property**: a named,
+typed, multiplicity-bearing feature of a classifier. A property plays one of
+two roles depending on what contains it:
+
+- contained in a **class**, it is an **attribute** — the subject of this
+  chapter;
+- contained in a **relation**, it is a **relation end** — covered under
+  [binary](/creating/binary-relations/) and
+  [n-ary relations](/creating/nary-relations/).
+
+Same object, same builder, two roles. That's why cardinality, ordering, and
+read-only status show up in both places.
+:::
+
+## Building an attribute
+
+Attributes are created from the class that owns them, via
+`classBuilder`-style factories — here `class.propertyBuilder()`. An attribute
+needs a **type**, and in OntoUML a type is itself a class: usually one
+stereotyped `«datatype»` (or `«enumeration»`). There are no built-in
+primitives, so you declare the datatypes your model uses and point attributes
+at them.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Library').build();
+
+// Datatypes are ordinary classes stereotyped «datatype».
+const string = model.classBuilder().datatype().name('String').build();
+const date = model.classBuilder().datatype().name('Date').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+
+const name = person.propertyBuilder().name('name').type(string).one().build();
+const birthDate = person
+  .propertyBuilder()
+  .name('birthDate')
+  .type(date)
+  .optional()
+  .build();
+
+const attributes = person.attributes;
+console.log(attributes.length); // 2
+```
+
+Hover `attributes` above: `Class.attributes` returns the `Property[]` owned by
+the class. `person.hasAttributes()` is the quick boolean.
+
+## Cardinality
+
+Every attribute has a **cardinality** — how many values an instance may hold.
+The default is `0..*`. The builder gives you shortcuts for the common cases,
+plus `cardinality(...)` for an explicit bound:
+
+| Builder call           | Cardinality | Meaning                  |
+| ---------------------- | ----------- | ------------------------ |
+| `.one()`               | `1`         | exactly one (mandatory)  |
+| `.optional()`          | `0..1`      | at most one              |
+| `.some()`              | `1..*`      | at least one             |
+| `.many()`              | `0..*`      | any number (the default) |
+| `.cardinality('2..5')` | `2..5`      | a custom interval        |
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Library').build();
+const string = model.classBuilder().datatype().name('String').build();
+const book = model.classBuilder().kind().name('Book').build();
+
+const title = book.propertyBuilder().name('title').type(string).one().build();
+const authors = book
+  .propertyBuilder()
+  .name('authors')
+  .type(string)
+  .some()
+  .build();
+
+// The built property carries a Cardinality object with query and mutation
+// helpers.
+console.log(title.cardinality.isMandatory()); // true
+authors.cardinality.setAsOneToMany();
+```
+
+## Ordering and read-only
+
+Two further meta-properties apply to attributes:
+
+- **Ordered** (`.ordered()`) — the values form a meaningful sequence rather
+  than a set. Think of the ordered stops on a route.
+- **Read-only** (`.readOnly()`) — once assigned, a value cannot change.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Library').build();
+const string = model.classBuilder().datatype().name('String').build();
+const date = model.classBuilder().datatype().name('Date').build();
+const book = model.classBuilder().kind().name('Book').build();
+
+book
+  .propertyBuilder()
+  .name('editionHistory')
+  .type(string)
+  .many()
+  .ordered()
+  .build();
+
+book
+  .propertyBuilder()
+  .name('firstPublished')
+  .type(date)
+  .one()
+  .readOnly()
+  .build();
+```
+
+## Enumerations and literals
+
+An `«enumeration»` is a datatype whose value space is a fixed set of named
+**literals** — the OntoUML counterpart of a TypeScript string-union type.
+Literals are built from the enumeration class with `literalBuilder()`.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Library').build();
+
+const bookStatus = model
+  .classBuilder()
+  .enumeration()
+  .name('BookStatus')
+  .build();
+
+bookStatus.literalBuilder().name('Available').build();
+bookStatus.literalBuilder().name('OnLoan').build();
+bookStatus.literalBuilder().name('Lost').build();
+
+const book = model.classBuilder().kind().name('Book').build();
+book.propertyBuilder().name('status').type(bookStatus).one().build();
+
+console.log(bookStatus.literals.map(l => l.getNameOrId())); // Available, OnLoan, Lost
+```
+
+## Subsetting and redefining
+
+When a subtype refines an inherited attribute, two relationships let you say
+how. Both take another `Property` and are set on the builder:
+
+- `.subsets(p)` — this attribute's values are always among `p`'s values.
+- `.redefines(p)` — this attribute overrides the inherited `p` (a narrower
+  type or tighter cardinality).
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Library').build();
+const string = model.classBuilder().datatype().name('String').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const contacts = person
+  .propertyBuilder()
+  .name('contacts')
+  .type(string)
+  .many()
+  .build();
+
+const employee = model.classBuilder().role().name('Employee').build();
+person.addChild(employee);
+
+// An employee's work email is one of their contacts.
+employee
+  .propertyBuilder()
+  .name('workEmail')
+  .type(string)
+  .one()
+  .subsets(contacts)
+  .build();
+```
+
+## Now you try it
+
+`Loan` is a relator with no structure yet. Give it a `loanedOn` attribute of
+type `Date`, mandatory and read-only, then open the **console** to see it in
+the serialized JSON.
+
+export const starter = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Library').build();
+
+const date = model.classBuilder().datatype().name('Date').build();
+const loan = model.classBuilder().relator().name('Loan').build();
+
+// Your turn: add a 'loanedOn' attribute — type Date, cardinality 1, read-only.
+
+console.log(JSON.stringify(loan.attributes, null, 2));
+`;
+
+<OntoumlSandpack files={{ '/index.ts': starter }} />
+
+<details>
+<summary>Show the solution</summary>
+
+export const solution = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Library').build();
+
+const date = model.classBuilder().datatype().name('Date').build();
+const loan = model.classBuilder().relator().name('Loan').build();
+
+loan
+.propertyBuilder()
+.name('loanedOn')
+.type(date)
+.one()
+.readOnly()
+.build();
+
+console.log(JSON.stringify(loan.attributes, null, 2));
+`;
+
+<OntoumlSandpack files={{ '/index.ts': solution }} readOnly />
+
+</details>
+
+## Key takeaways
+
+- An **attribute** is a `Property` owned by a class; build it from
+  `class.propertyBuilder()`.
+- Attributes are **typed by classes** — usually `«datatype»` or
+  `«enumeration»` classes you declare yourself.
+- **Cardinality** shortcuts: `.one()`, `.optional()`, `.some()`, `.many()`, or
+  `.cardinality('a..b')`; `.ordered()` and `.readOnly()` add meta-properties.
+- **Enumerations** hold `«literal»` values built with `literalBuilder()`.
+- `.subsets()` and `.redefines()` relate an attribute to an inherited one.
+
+Next: [binary relations →](/creating/binary-relations/), where properties take
+on their other role — as relation ends.

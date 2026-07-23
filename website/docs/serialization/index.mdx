@@ -1,0 +1,197 @@
+---
+sidebar_position: 1
+title: Serialization & validation
+---
+
+import OntoumlSandpack from '@site/src/components/OntoumlSandpack';
+
+# Serialization & validation
+
+Everything you build in code round-trips to and from **OntoUML JSON** — the
+exact format the [visual editor](https://ontouml.org) reads and writes. That is
+what makes the library interoperable: a model authored in a script can be opened
+on a canvas, and a diagram drawn by hand can be loaded, queried, and
+transformed in code.
+
+:::info[Theory: one format, two tools]
+OntoUML JSON is specified by a public JSON Schema published at
+[`https://w3id.org/ontouml/schema`](https://w3id.org/ontouml/schema). A project
+serializes to a single object with a `type: "Project"` discriminator, its
+metadata, and a flat `elements` array — every class, relation, property,
+generalization, package, diagram, and view, each tagged with its own `type`.
+References between elements (a relation's ends, a generalization's general and
+specific, a package's contents) are stored **by id**, and the parser resolves
+them back into live object references when it reads the file.
+:::
+
+## Serializing
+
+Serialization is just `JSON.stringify` — every element implements `toJSON()`, so
+the standard call produces schema-conformant output. Pass a spacing argument for
+a human-readable file.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+project.name.add('School enrollment');
+const model = project.packageBuilder().root().name('Model').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const school = model.classBuilder().kind().name('School').build();
+
+model
+  .binaryRelationBuilder()
+  .material()
+  .name('studies at')
+  .source(person)
+  .target(school)
+  .build();
+
+// Compact — for storage or transport.
+const json = JSON.stringify(project);
+
+// Pretty-printed — for a file a human will read.
+const pretty = JSON.stringify(project, null, 2);
+
+console.log(json.slice(0, 24)); // {"type":"Project","id":…
+```
+
+Write `pretty` to a `.ontouml` file (or any `.json`) and it will open in the
+visual tools; the top-level `type: "Project"` is what identifies it.
+
+## Deserializing
+
+To go the other way, hand the JSON string to `serializationUtils.parse`. It
+rebuilds a live `Project` — with real object references, not ids — so the query
+and navigation methods work immediately on the result.
+
+```ts twoslash
+import { Project, serializationUtils } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Model').build();
+model.classBuilder().kind().name('Person').build();
+
+const json = JSON.stringify(project);
+
+// …later, or in another program:
+const restored = serializationUtils.parse(json);
+
+console.log(restored instanceof Project); // true
+console.log(restored.classes.map(c => c.getNameOrId())); // [ "Person" ]
+```
+
+`parse` throws a descriptive error rather than returning a broken model when the
+input is not a serialized project or when a reference cannot be resolved — for
+example, a relation whose end points at an id that is absent from `elements`.
+
+:::note[Diagrams round-trip, geometry included]
+Model elements, diagrams, views, and **shapes** (the concrete rectangles and
+paths carrying pixel geometry) are all serialized as project elements and
+fully preserved by `parse`. When a serialization omits the shapes referenced
+by its views, the parsed views keep the shape _ids_ but get default positions
+and sizes. See [Diagrams](/diagrams/overview) for details.
+:::
+
+## Round-trip fidelity
+
+Parsing a serialization and serializing it again yields byte-identical JSON: the
+parser registers elements in the order they appear in the file on purpose. That
+property is what lets you treat OntoUML JSON as a stable interchange format — a
+model edited in code and one edited on the canvas diff cleanly.
+
+```ts twoslash
+import { Project, serializationUtils } from 'ontouml-js';
+
+const project = new Project();
+project.name.add('Roundtrip');
+const model = project.packageBuilder().root().name('Model').build();
+model.classBuilder().kind().name('Person').build();
+
+const first = JSON.stringify(project);
+const second = JSON.stringify(serializationUtils.parse(first));
+
+console.log(first === second); // true
+```
+
+## Validating against the schema
+
+The library **produces** valid OntoUML JSON, so you rarely need to validate your
+own output. Validation matters when you ingest a file from somewhere else and
+want to fail fast on malformed input. `ontouml-js` doesn't bundle a validator —
+use any JSON-Schema validator together with the published schema. With
+[Ajv](https://ajv.js.org/):
+
+```ts
+import Ajv from 'ajv';
+import { Project } from 'ontouml-js';
+
+// Fetch the published schema once (or vendor it into your project).
+const schema = await fetch('https://w3id.org/ontouml/schema').then(r =>
+  r.json()
+);
+
+const validate = new Ajv({ allErrors: true }).compile(schema);
+
+const project = new Project();
+project.packageBuilder().root().name('Model').build();
+
+const json = JSON.parse(JSON.stringify(project));
+
+if (!validate(json)) {
+  console.error(validate.errors);
+  throw new Error('Model does not conform to the OntoUML schema.');
+}
+```
+
+:::tip[Structural vs. ontological validity]
+Schema validation only checks _structure_ — that ids resolve, types are known,
+cardinalities are well-formed. It does **not** check whether the model is
+ontologically sound (a role with no identity provider, a mediation on a
+non-relator). Those are OntoUML _anti-patterns_; the query methods in
+[Querying](/querying/) give you the raw material to write such checks yourself.
+:::
+
+## Now you try it
+
+The editor below builds a two-class model, serializes it, parses it back, and
+should report `true` for a clean round-trip. Add a third class of your own and
+confirm it survives the trip.
+
+export const starter = `import {Project, serializationUtils} from 'ontouml-js';
+
+const project = new Project();
+project.name.add('Demo');
+const model = project.packageBuilder().root().name('Model').build();
+
+model.classBuilder().kind().name('Person').build();
+model.classBuilder().kind().name('School').build();
+
+// Your turn: add a third class, then watch the round-trip stay true.
+
+const json = JSON.stringify(project);
+const restored = serializationUtils.parse(json);
+
+console.log('classes:', restored.classes.map(c => c.getNameOrId()));
+console.log('round-trips cleanly:', json === JSON.stringify(restored));
+`;
+
+<OntoumlSandpack files={{ '/index.ts': starter }} />
+
+## Key takeaways
+
+- Serialize with `JSON.stringify(project)` — every element implements
+  `toJSON()`, so the output conforms to the OntoUML JSON Schema.
+- Deserialize with `serializationUtils.parse(json)`, which rebuilds a live
+  `Project` and resolves all references, throwing on broken input.
+- The round-trip is **byte-identical**, making OntoUML JSON a stable
+  interchange format between code and the visual editor.
+- Shapes are serialized along with views, so diagram geometry round-trips.
+- Validate untrusted input with any JSON-Schema validator against
+  `https://w3id.org/ontouml/schema`; structural validity is not ontological
+  validity.
+
+That closes the tour. From here, revisit [Querying](/querying/) to turn models
+into analyses, or the [visual editor](https://ontouml.org) to see what you built
+on a canvas.
