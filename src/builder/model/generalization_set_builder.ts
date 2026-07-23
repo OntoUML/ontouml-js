@@ -24,8 +24,8 @@ import {
  * ```
  */
 export class GeneralizationSetBuilder extends ModelElementBuilder<GeneralizationSetBuilder> {
-  protected declare element?: GeneralizationSet;
-  protected declare _container?: Package;
+  declare protected element?: GeneralizationSet;
+  declare protected _container?: Package;
   private _isDisjoint: boolean = false;
   private _isComplete: boolean = false;
   private _categorizer?: Class;

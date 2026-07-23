@@ -310,7 +310,7 @@ function parse(serializedProject: string): Project {
     clazz.order =
       typeof rawClass.order === 'string'
         ? parseOrder(rawClass.order)
-        : rawClass.order ?? 1;
+        : (rawClass.order ?? 1);
 
     register(clazz);
   }
@@ -578,7 +578,7 @@ function parse(serializedProject: string): Project {
     const position = pendingConnectorViews.findIndex(rawView => {
       const endpoints =
         rawView.type === OntoumlType.NARY_RELATION_VIEW
-          ? rawView.members ?? []
+          ? (rawView.members ?? [])
           : [rawView.sourceView, rawView.targetView];
 
       return endpoints.every(

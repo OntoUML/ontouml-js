@@ -134,7 +134,7 @@ describe(`Attribute tests`, () => {
     });
 
     it('should break when invoked on an attribute', () => {
-      expect(() => start.getOppositeEnd()).toThrowError();
+      expect(() => start.getOppositeEnd()).toThrow();
     });
 
     it('should break when invoked on a relation end of an n-ary relation', () => {
@@ -143,7 +143,7 @@ describe(`Attribute tests`, () => {
         .members(concert, concert, concert)
         .build();
 
-      expect(() => naryRel.properties[0].getOppositeEnd()).toThrowError();
+      expect(() => naryRel.properties[0].getOppositeEnd()).toThrow();
     });
   });
 
@@ -161,7 +161,7 @@ describe(`Attribute tests`, () => {
     });
 
     it('should break when invoked on an attribute', () => {
-      expect(() => start.getOtherEnds()).toThrowError();
+      expect(() => start.getOtherEnds()).toThrow();
     });
 
     it('should return the other other ends when invoked on a relation end of an n-ary relation', () => {

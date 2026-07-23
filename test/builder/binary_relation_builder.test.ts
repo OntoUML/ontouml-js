@@ -48,19 +48,19 @@ describe(`Binary relation builder`, () => {
     it('the source is not set', () => {
       expect(() => {
         proj.binaryRelationBuilder().target(clazz).build();
-      }).toThrowError();
+      }).toThrow();
     });
 
     it('the target is not set', () => {
       expect(() => {
         proj.binaryRelationBuilder().source(clazz).build();
-      }).toThrowError();
+      }).toThrow();
     });
 
     it('the source and the target are not set', () => {
       expect(() => {
         proj.binaryRelationBuilder().build();
-      }).toThrowError();
+      }).toThrow();
     });
   });
 

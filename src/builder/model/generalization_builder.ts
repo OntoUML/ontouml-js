@@ -23,8 +23,8 @@ import {
  * ```
  */
 export class GeneralizationBuilder extends ModelElementBuilder<GeneralizationBuilder> {
-  protected declare element?: Generalization;
-  protected declare _container?: Package;
+  declare protected element?: Generalization;
+  declare protected _container?: Package;
   private _general?: Classifier<any, any>;
   private _specific?: Classifier<any, any>;
 

@@ -25,7 +25,7 @@ import { OntoumlElementBuilder } from './ontouml_element_builder';
 export abstract class NamedElementBuilder<
   B extends NamedElementBuilder<B>
 > extends OntoumlElementBuilder<B> {
-  protected declare element?: NamedElement;
+  declare protected element?: NamedElement;
   private _name: LanguageString = new LanguageString();
   private _description: LanguageString = new LanguageString();
   private _alternativeNames: LanguageString[] = [];

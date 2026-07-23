@@ -58,18 +58,18 @@ describe(`Nary relation builder tests`, () => {
   });
 
   it('build() should throw an exception if no member is supplied', () => {
-    expect(() => proj.naryRelationBuilder().build()).toThrowError();
+    expect(() => proj.naryRelationBuilder().build()).toThrow();
   });
 
   it('build() should throw an exception if 1 member is supplied', () => {
     expect(() =>
       proj.naryRelationBuilder().members(customer).build()
-    ).toThrowError();
+    ).toThrow();
   });
 
   it('build() should throw an exception if 2 member are supplied', () => {
     expect(() =>
       proj.naryRelationBuilder().members(customer, product).build()
-    ).toThrowError();
+    ).toThrow();
   });
 });

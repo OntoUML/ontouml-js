@@ -115,7 +115,7 @@ describe(`Package tests`, () => {
       pkgA.addContent(pkgB);
       pkgB.addContent(pkgA);
 
-      expect(() => pkgA.getAllContents()).toThrowError();
+      expect(() => pkgA.getAllContents()).toThrow();
     });
   });
 

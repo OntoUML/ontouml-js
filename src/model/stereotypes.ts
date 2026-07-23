@@ -5,9 +5,7 @@ import _ from 'lodash';
  * and properties.
  */
 export type Stereotype =
-  | ClassStereotype
-  | RelationStereotype
-  | PropertyStereotype;
+  ClassStereotype | RelationStereotype | PropertyStereotype;
 
 /**
  * The OntoUML stereotypes applicable to a {@link Class}. Each stereotype

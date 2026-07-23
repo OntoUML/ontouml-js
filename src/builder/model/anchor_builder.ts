@@ -25,8 +25,8 @@ import {
  * ```
  */
 export class AnchorBuilder extends ModelElementBuilder<AnchorBuilder> {
-  protected declare element?: Anchor;
-  protected declare _container?: Package;
+  declare protected element?: Anchor;
+  declare protected _container?: Package;
   private _note?: Note;
   private _annotatedElement?: ModelElement;
 

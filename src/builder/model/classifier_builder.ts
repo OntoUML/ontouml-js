@@ -23,7 +23,7 @@ export abstract class ClassifierBuilder<
   B extends ClassifierBuilder<B, S>,
   S extends Stereotype
 > extends DecoratableBuilder<B, S> {
-  protected declare element?: Classifier<any, any>;
+  declare protected element?: Classifier<any, any>;
   declare _container?: Package;
   protected _isAbstract: boolean = false;
 

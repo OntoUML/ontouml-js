@@ -25,7 +25,7 @@ import {
  * ```
  */
 export class ProjectBuilder extends NamedElementBuilder<ProjectBuilder> {
-  protected declare element?: Project;
+  declare protected element?: Project;
 
   private _publisher?: Resource;
   private _license?: Resource;

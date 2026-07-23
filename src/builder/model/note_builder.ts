@@ -22,8 +22,8 @@ import {
  * ```
  */
 export class NoteBuilder extends ModelElementBuilder<NoteBuilder> {
-  protected declare element?: Note;
-  protected declare _container?: Package;
+  declare protected element?: Note;
+  declare protected _container?: Package;
   private _text: LanguageString = new LanguageString();
 
   /**

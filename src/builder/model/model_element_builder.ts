@@ -21,7 +21,7 @@ import { ModelElement, NamedElementBuilder } from '../..';
 export abstract class ModelElementBuilder<
   B extends ModelElementBuilder<B>
 > extends NamedElementBuilder<B> {
-  protected declare element?: ModelElement;
+  declare protected element?: ModelElement;
   protected _container?: ModelElement;
   protected _customProperties: { [key: string]: any } = {};
 

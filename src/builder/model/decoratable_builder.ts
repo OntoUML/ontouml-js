@@ -29,7 +29,7 @@ export abstract class DecoratableBuilder<
   B extends DecoratableBuilder<B, S>,
   S extends Stereotype
 > extends ModelElementBuilder<B> {
-  protected declare element?: Decoratable<any>;
+  declare protected element?: Decoratable<any>;
   protected _stereotype?: S;
   protected _isDerived: boolean = false;
 

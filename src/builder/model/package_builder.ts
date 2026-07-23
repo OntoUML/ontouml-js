@@ -17,8 +17,8 @@ import { ModelElementBuilder, Package, PackageableElement } from '../..';
  * ```
  */
 export class PackageBuilder extends ModelElementBuilder<PackageBuilder> {
-  protected declare element?: Package;
-  protected declare _container?: Package;
+  declare protected element?: Package;
+  declare protected _container?: Package;
   private _contents: PackageableElement[] = [];
   private _isRoot: boolean = false;
 

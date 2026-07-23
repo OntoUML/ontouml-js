@@ -16,7 +16,7 @@ import { Class, Literal, ModelElement, ModelElementBuilder } from '../..';
  * ```
  */
 export class LiteralBuilder extends ModelElementBuilder<LiteralBuilder> {
-  protected declare element?: Literal;
+  declare protected element?: Literal;
   protected override readonly _container: Class;
 
   /**

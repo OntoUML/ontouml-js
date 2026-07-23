@@ -32,7 +32,7 @@ export class PropertyBuilder extends DecoratableBuilder<
   PropertyBuilder,
   PropertyStereotype
 > {
-  protected declare element?: Property;
+  declare protected element?: Property;
   protected override readonly _container: Classifier<any, any>;
   private _propertyType?: Classifier<any, any>;
   private _subsettedProperties: Set<Property> = new Set();
@@ -79,11 +79,11 @@ export class PropertyBuilder extends DecoratableBuilder<
     super.build();
 
     this.element.propertyType = this._propertyType;
-    this._subsettedProperties.forEach(
-      p => this.element?.addSubsettedProperty(p)
+    this._subsettedProperties.forEach(p =>
+      this.element?.addSubsettedProperty(p)
     );
-    this._redefinedProperties.forEach(
-      p => this.element?.addRedefinedProperty(p)
+    this._redefinedProperties.forEach(p =>
+      this.element?.addRedefinedProperty(p)
     );
     this.element.cardinality = this._cardinality;
     this.element.isOrdered = this._isOrdered;

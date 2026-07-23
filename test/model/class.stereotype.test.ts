@@ -50,7 +50,7 @@ describe('Test Class stereotype-related query methods', () => {
       c = proj.classBuilder().build();
 
       const func = () => c.isStereotypeOneOf(KIND);
-      expect(func).toThrowError();
+      expect(func).toThrow();
     });
 
     it('should be true if the class is decorated with one of the stereotypes listed in the input (one)', () => {
@@ -174,7 +174,7 @@ describe('Test Class stereotype-related query methods', () => {
 
     it('should throw an error if the class is not decorated with a stereotype', () => {
       c = proj.classBuilder().build();
-      expect(() => c.isRigid()).toThrowError();
+      expect(() => c.isRigid()).toThrow();
     });
   });
 
@@ -206,7 +206,7 @@ describe('Test Class stereotype-related query methods', () => {
 
     it('should throw an error if the class is not decorated with a stereotype', () => {
       c = proj.classBuilder().build();
-      expect(() => c.isSemiRigid()).toThrowError();
+      expect(() => c.isSemiRigid()).toThrow();
     });
   });
 
@@ -238,7 +238,7 @@ describe('Test Class stereotype-related query methods', () => {
 
     it('should throw an error if the class is not decorated with a stereotype', () => {
       c = proj.classBuilder().build();
-      expect(() => c.isAntiRigid()).toThrowError();
+      expect(() => c.isAntiRigid()).toThrow();
     });
   });
 
@@ -270,7 +270,7 @@ describe('Test Class stereotype-related query methods', () => {
 
     it('should throw an error if the class is not decorated with a stereotype', () => {
       c = proj.classBuilder().build();
-      expect(() => c.isNonSortal()).toThrowError();
+      expect(() => c.isNonSortal()).toThrow();
     });
   });
 
@@ -302,7 +302,7 @@ describe('Test Class stereotype-related query methods', () => {
 
     it('should throw an error if the class is not decorated with a stereotype', () => {
       c = proj.classBuilder().build();
-      expect(() => c.isSortal()).toThrowError();
+      expect(() => c.isSortal()).toThrow();
     });
   });
 
@@ -324,7 +324,7 @@ describe('Test Class stereotype-related query methods', () => {
 
     it('should throw an error if the class is not decorated with a stereotype', () => {
       c = proj.classBuilder().build();
-      expect(() => c.isIdentityProvider()).toThrowError();
+      expect(() => c.isIdentityProvider()).toThrow();
     });
   });
 
@@ -346,7 +346,7 @@ describe('Test Class stereotype-related query methods', () => {
 
     it('should throw an error if the class is not decorated with a stereotype', () => {
       c = proj.classBuilder().build();
-      expect(() => c.isBaseSortal()).toThrowError();
+      expect(() => c.isBaseSortal()).toThrow();
     });
   });
 });
