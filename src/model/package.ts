@@ -1,4 +1,4 @@
-import { remove } from 'lodash';
+import _ from 'lodash';
 import {
   OntoumlType,
   Class,
@@ -317,7 +317,7 @@ export class Package extends ModelElement {
    * @returns `true` if the element was contained in the package.
    */
   removeContent<T extends PackageableElement>(child: T): boolean {
-    let removed = remove(this._contents, x => child === x);
+    let removed = _.remove(this._contents, x => child === x);
 
     if (removed.length > 0) {
       child._container = undefined;

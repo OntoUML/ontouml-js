@@ -1,0 +1,47 @@
+name: Publish package to npm
+
+on:
+  # Publish when a GitHub Release is published.
+  release:
+    types: [published]
+  # Allow running the workflow manually from the Actions tab.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  # Required for npm Trusted Publishing (OIDC) — exchanges a short-lived
+  # token with npm at publish time, so no NPM_TOKEN secret is needed.
+  id-token: write
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    env:
+      HUSKY: 0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      # Trusted Publishing requires npm >= 11.5.1, newer than the version
+      # bundled with Node 22.
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm ci
+
+      # prepublishOnly type-checks (tsc), runs the test suite, and rebuilds
+      # dist/ before the package is published; the files whitelist in
+      # package.json keeps the tarball to dist/ (+ README and LICENSE).
+      # Trusted Publishing authenticates via OIDC and attaches provenance
+      # automatically — no token required.
+      - name: Publish
+        run: npm publish --access public
