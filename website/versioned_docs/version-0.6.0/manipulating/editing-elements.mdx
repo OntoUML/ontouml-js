@@ -1,0 +1,218 @@
+---
+sidebar_position: 1
+title: Editing elements & metadata
+---
+
+import OntoumlSandpack from '@site/src/components/OntoumlSandpack';
+
+# Editing elements & metadata
+
+Builders are for _creating_ elements. Once an element exists, you change it in
+place — no builder needed. Names, cardinalities, stereotypes, and structure are
+all mutable through plain properties and methods on the element itself.
+
+:::info[Builders create; elements mutate]
+A builder is single-use: it assembles an element and, after `.build()`, is
+spent. To adjust something afterwards you talk to the element directly.
+That split keeps construction declarative (a fluent chain that reads top to
+bottom) while leaving later edits explicit and localized.
+:::
+
+## Renaming — names are multilingual
+
+An element's `name` is not a string but a
+[`LanguageString`](/language-string): a set of values indexed by language
+tag. `add` sets (or replaces) the value for one language; call it again with a
+different tag to add a translation. `clear()` empties every language.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('People').build();
+const person = model.classBuilder().kind().name('Person').build();
+
+// Replace the English name…
+person.name.add('Human');
+
+// …and add a Portuguese one alongside it.
+person.name.add('Humano', 'pt');
+
+console.log(person.name.get()); // "Human" (default language)
+console.log(person.name.get('pt')); // "Humano"
+
+// Wipe all names.
+person.name.clear();
+console.log(person.getNameOrId()); // falls back to the id
+```
+
+The same applies to `description` and, on a project, to keywords and
+bibliographic citations — every human-readable text field is multilingual.
+
+## Cardinalities
+
+An attribute or a relation end carries a `cardinality`. The `Cardinality` object
+has shortcut setters for the common intervals, plus `setBounds` for an arbitrary
+one. Edit it in place; you don't reassign the field.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('School').build();
+const person = model.classBuilder().kind().name('Person').build();
+const school = model.classBuilder().kind().name('School').build();
+
+const studiesAt = model
+  .binaryRelationBuilder()
+  .material()
+  .name('studies at')
+  .source(person)
+  .target(school)
+  .build();
+
+// Named intervals:
+studiesAt.sourceEnd.cardinality.setAsOneToMany(); // 1..*
+studiesAt.targetEnd.cardinality.setAsZeroToOne(); // 0..1
+
+// An arbitrary interval — at least two, at most five:
+studiesAt.sourceEnd.cardinality.setBounds(2, 5);
+
+console.log(studiesAt.sourceEnd.cardinality.value); // "2..5"
+console.log(studiesAt.targetEnd.cardinality.isOptional()); // true
+```
+
+The same `cardinality` object lives on class attributes (`attribute.cardinality`)
+— see [Attributes](/creating/attributes/) for how it is set at build time.
+
+## Re-stereotyping
+
+A stereotype is a plain field. Reassign it to reclassify an element — for
+instance, when a modeling review decides a class you built as a `kind` is really
+a `subkind` of another kind.
+
+```ts twoslash
+import { Project, ClassStereotype } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('People').build();
+const person = model.classBuilder().kind().name('Person').build();
+const man = model.classBuilder().kind().name('Man').build();
+
+// On reflection, Man isn't its own kind — it's a subkind of Person.
+man.stereotype = ClassStereotype.SUBKIND;
+person.addChild(man);
+
+console.log(man.isSubkind()); // true
+```
+
+:::caution[Assigning the field skips the defaults]
+The builder shortcut `.subkind()` sets the stereotype _and_ any prescribed
+defaults; assigning `stereotype` directly changes **only** the label.
+`restrictedTo`, `order`, and `isAbstract` keep their old values, so adjust them
+too if the new stereotype implies different ones (e.g. a class you turn into a
+`category` should also be made abstract).
+:::
+
+## Attributes and literals
+
+Structure is edited by adding and removing the contained elements. Add an
+attribute the same way you create any — from the class, via
+`propertyBuilder()`. To remove one, call `.delete()` on it (covered next in
+[Deleting elements](/manipulating/deleting-elements)).
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Library').build();
+const string = model.classBuilder().datatype().name('String').build();
+const book = model.classBuilder().kind().name('Book').build();
+
+const title = book.propertyBuilder().name('title').type(string).one().build();
+book.propertyBuilder().name('subtitle').type(string).optional().build();
+
+console.log(book.attributes.length); // 2
+
+// Drop one — its container releases it.
+title.delete();
+console.log(book.attributes.map(a => a.getNameOrId())); // [ "subtitle" ]
+```
+
+Enumeration literals work the same way through `literalBuilder()` and
+`deleteLiteral()`.
+
+## Now you try it
+
+`Employee` was built as a role but should be renamed and given a Portuguese
+translation, and its `salary` attribute made mandatory (`1`). Make the three
+edits, then read the console.
+
+export const starter = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Work').build();
+
+const number = model.classBuilder().datatype().name('Number').build();
+const employee = model.classBuilder().role().name('Employee').build();
+const salary = employee
+.propertyBuilder()
+.name('salary')
+.type(number)
+.optional()
+.build();
+
+// Your turn:
+// 1. Rename the class to 'Staff member'.
+// 2. Add the Portuguese name 'Funcionário' (language tag 'pt').
+// 3. Make the salary mandatory (cardinality 1).
+
+console.log('name:', employee.name.get());
+console.log('pt:', employee.name.get('pt'));
+console.log('salary mandatory:', salary.cardinality.isMandatory());
+`;
+
+<OntoumlSandpack files={{ '/index.ts': starter }} />
+
+<details>
+<summary>Show the solution</summary>
+
+export const solution = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Work').build();
+
+const number = model.classBuilder().datatype().name('Number').build();
+const employee = model.classBuilder().role().name('Employee').build();
+const salary = employee
+.propertyBuilder()
+.name('salary')
+.type(number)
+.optional()
+.build();
+
+employee.name.add('Staff member');
+employee.name.add('Funcionário', 'pt');
+salary.cardinality.setBounds(1, 1);
+
+console.log('name:', employee.name.get());
+console.log('pt:', employee.name.get('pt'));
+console.log('salary mandatory:', salary.cardinality.isMandatory());
+`;
+
+<OntoumlSandpack files={{ '/index.ts': solution }} readOnly />
+
+</details>
+
+## Key takeaways
+
+- Names and descriptions are **multilingual**: `element.name.add(value, lang)`
+  to set or translate, `element.name.clear()` to empty.
+- Edit a **cardinality** in place with `setAsOneToMany()`, `setAsZeroToOne()`,
+  `setBounds(lo, hi)`, … — on both relation ends and class attributes.
+- **Re-stereotype** by assigning the `stereotype` field, but remember it changes
+  only the label — adjust `restrictedTo`/`isAbstract` yourself.
+- Add structure with the same builders you used to create it; remove it with
+  `.delete()`.
+
+Next: [moving elements between packages →](/manipulating/moving-elements).

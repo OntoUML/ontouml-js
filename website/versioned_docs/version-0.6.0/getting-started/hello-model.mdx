@@ -1,0 +1,151 @@
+---
+sidebar_position: 3
+title: 'Hello, model'
+---
+
+import OntoumlSandpack from '@site/src/components/OntoumlSandpack';
+
+# Hello, model
+
+Let's build a complete model end to end and serialize it — the classic
+"students enrolling at a school" example. Read the annotated code, then try it
+yourself in the live editor at the bottom.
+
+## The whole thing at once
+
+We'll model people who **study at** schools, where each **enrollment** ties a
+person to a school. `Person`, `School`, and `Enrollment` are classes;
+`studies at` is a relation between them.
+
+Hover any identifier below to see its inferred type — this snippet is
+type-checked against the real `ontouml-js` API when the page is built.
+
+```ts twoslash
+import { Project, serializationUtils } from 'ontouml-js';
+
+const project = new Project();
+project.name.add('School enrollment');
+
+const model = project.packageBuilder().root().name('Model').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const school = model.classBuilder().kind().name('School').build();
+const enrollment = model.classBuilder().relator().name('Enrollment').build();
+
+const studiesAt = model
+  .binaryRelationBuilder()
+  .material()
+  .name('studies at')
+  .source(person)
+  .target(school)
+  .build();
+
+model
+  .binaryRelationBuilder()
+  .mediation()
+  .source(enrollment)
+  .target(person)
+  .build();
+model
+  .binaryRelationBuilder()
+  .mediation()
+  .source(enrollment)
+  .target(school)
+  .build();
+
+studiesAt.sourceEnd.cardinality.setAsOneToMany();
+studiesAt.targetEnd.cardinality.setAsZeroToMany();
+
+const classes = model.classes;
+
+const json = JSON.stringify(project);
+const copy = serializationUtils.parse(json);
+```
+
+That's a real, valid OntoUML model in about twenty lines. Notice the shape of
+the API:
+
+- **Containers are factories.** `project.packageBuilder()`,
+  `model.classBuilder()`, `model.binaryRelationBuilder()` — you always build an
+  element _from_ the container it belongs to.
+- **Builders are fluent.** Each call returns the builder, so you chain
+  stereotype → name → references, then `.build()` to get the element.
+- **Everything serializes.** `JSON.stringify(project)` produces standard
+  OntoUML JSON; `serializationUtils.parse` reads it back.
+
+## Now you try it
+
+The editor below has the model _almost_ finished. Complete the three `TODO`s,
+then open the **console** to see the serialized JSON update.
+
+export const starter = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+project.name.add('School enrollment');
+const model = project.packageBuilder().root().name('Model').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const school = model.classBuilder().kind().name('School').build();
+const enrollment = model.classBuilder().relator().name('Enrollment').build();
+
+const studiesAt = model
+.binaryRelationBuilder()
+.material()
+.name('studies at')
+.source(person)
+.target(school)
+.build();
+
+// Your turn: mediate the relation with Enrollment (a mediation to person and
+// one to school), then set cardinalities — source one-to-many, target
+// zero-to-many.
+
+console.log(JSON.stringify(project, null, 2));
+`;
+
+<OntoumlSandpack files={{ '/index.ts': starter }} />
+
+<details>
+<summary>Show the solution</summary>
+
+export const solution = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+project.name.add('School enrollment');
+const model = project.packageBuilder().root().name('Model').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const school = model.classBuilder().kind().name('School').build();
+const enrollment = model.classBuilder().relator().name('Enrollment').build();
+
+const studiesAt = model
+.binaryRelationBuilder()
+.material()
+.name('studies at')
+.source(person)
+.target(school)
+.build();
+
+model.binaryRelationBuilder().mediation().source(enrollment).target(person).build();
+model.binaryRelationBuilder().mediation().source(enrollment).target(school).build();
+
+studiesAt.sourceEnd.cardinality.setAsOneToMany();
+studiesAt.targetEnd.cardinality.setAsZeroToMany();
+
+console.log(JSON.stringify(project, null, 2));
+`;
+
+<OntoumlSandpack files={{ '/index.ts': solution }} readOnly />
+
+</details>
+
+## What you learned
+
+- A model lives in a **Project** and a root **Package**.
+- Containers act as **builders/factories** for their contents.
+- Classes carry a **stereotype** (`kind`, `relator`, …).
+- **Relations** connect classes; their **ends** carry cardinalities.
+- Models **serialize** to and from OntoUML JSON.
+
+Next we'll slow down and look at each layer properly, starting with
+[projects & packages →](/creating/projects-packages/).

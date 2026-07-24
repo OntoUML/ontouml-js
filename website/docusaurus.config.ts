@@ -91,6 +91,24 @@ const config: Config = {
     locales: ['en']
   },
 
+  themes: [
+    // Offline, build-time full-text search (no external service required).
+    // Same setup as the ontouml-schema site.
+    [
+      '@easyops-cn/docusaurus-search-local',
+      {
+        // Kept false to match ontouml-schema, where `hashed: true` appends a
+        // `?_=<hash>` query that its `trailingSlash: true` redirect turns into
+        // a 404 (infinite search spinner).
+        hashed: false,
+        indexDocs: true,
+        indexBlog: false,
+        docsRouteBasePath: '/',
+        highlightSearchTermsOnTargetPage: true
+      } satisfies import('@easyops-cn/docusaurus-search-local').PluginOptions
+    ]
+  ],
+
   presets: [
     [
       'classic',
@@ -113,7 +131,7 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // TODO(branding): replace with an OntoUML social card + logo/favicon.
+    // TODO(branding): replace with an OntoUML social card.
     image: 'img/docusaurus-social-card.jpg',
     colorMode: {
       respectPrefersColorScheme: true
@@ -130,6 +148,10 @@ const config: Config = {
           sidebarId: 'tutorialSidebar',
           position: 'left',
           label: 'Tutorial'
+        },
+        {
+          type: 'docsVersionDropdown',
+          position: 'right'
         },
         {
           href: 'https://github.com/OntoUML/ontouml-js',
