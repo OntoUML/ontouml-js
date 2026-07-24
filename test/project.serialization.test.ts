@@ -81,6 +81,35 @@ describe('Serialization tests', () => {
     });
   });
 
+  describe(`Test serializationUtils.serialize() and validate()`, () => {
+    it(`serialize() should produce the same JSON as JSON.stringify`, () => {
+      const proj = buildFullProject();
+
+      expect(serializationUtils.serialize(proj)).toEqual(JSON.stringify(proj));
+      expect(serializationUtils.serialize(proj, 2)).toEqual(
+        JSON.stringify(proj, null, 2)
+      );
+    });
+
+    it(`validate() should not throw on valid serializations`, () => {
+      const proj = buildFullProject();
+
+      expect(() => serializationUtils.validate(proj.toJSON())).not.toThrow();
+      expect(() =>
+        serializationUtils.validate(JSON.stringify(proj))
+      ).not.toThrow();
+    });
+
+    it(`validate() should throw on schema violations`, () => {
+      const raw = buildFullProject().toJSON();
+      raw.elements = 'not-an-array';
+
+      expect(() => serializationUtils.validate(raw)).toThrow(
+        /OntoUML JSON Schema/
+      );
+    });
+  });
+
   describe(`Test serializationUtils.parse()`, () => {
     it(`Should parse an empty project`, () => {
       const proj = new Project();
@@ -204,6 +233,15 @@ describe('Serialization tests', () => {
       expect(() => serializationUtils.parse(JSON.stringify(clazz))).toThrow();
       expect(() => serializationUtils.parse('{}')).toThrow();
       expect(() => serializationUtils.parse('true')).toThrow();
+    });
+
+    it(`Should throw on inputs that violate the schema`, () => {
+      const raw = new Project().toJSON();
+      raw.elements = 'not-an-array';
+
+      expect(() => serializationUtils.parse(JSON.stringify(raw))).toThrow(
+        /OntoUML JSON Schema/
+      );
     });
 
     it(`Should throw on broken references`, () => {

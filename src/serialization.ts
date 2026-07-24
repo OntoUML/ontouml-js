@@ -38,6 +38,53 @@ import {
   Point,
   RectangularShape
 } from '.';
+import Ajv, { type ValidateFunction } from 'ajv/dist/2020.js';
+import addFormats from 'ajv-formats';
+import schema from 'ontouml-schema';
+
+/**
+ * Validator compiled on first use from the OntoUML JSON Schema; compiling is
+ * expensive, so the instance is cached for the lifetime of the module.
+ */
+let compiledValidator: ValidateFunction | undefined;
+
+function getValidator(): ValidateFunction {
+  if (!compiledValidator) {
+    compiledValidator = addFormats(new Ajv({ allErrors: true })).compile(
+      schema
+    );
+  }
+
+  return compiledValidator;
+}
+
+/**
+ * Validates a serialized {@link Project} against the OntoUML JSON Schema
+ * (https://w3id.org/ontouml/schema).
+ *
+ * @param serializedProject - the serialization to validate, either as a JSON
+ *        string or as the object resulting from parsing one.
+ * @throws an error listing the schema violations if the serialization is
+ *         invalid, or a `SyntaxError` if a string input is not valid JSON.
+ */
+function validate(serializedProject: object | string): void {
+  const raw =
+    typeof serializedProject === 'string'
+      ? JSON.parse(serializedProject)
+      : serializedProject;
+
+  const validator = getValidator();
+
+  if (!validator(raw)) {
+    const violations = (validator.errors ?? [])
+      .map(error => `'${error.instancePath || '/'}' ${error.message}`)
+      .join('; ');
+
+    throw new Error(
+      `Invalid serialization according to the OntoUML JSON Schema: ${violations}.`
+    );
+  }
+}
 
 /**
  * Deserializes an object mapping language tags to text values into a
@@ -170,9 +217,28 @@ function getResolved<T extends OntoumlElement>(
 }
 
 /**
+ * Serializes a {@link Project} into a JSON string conformant to the OntoUML
+ * JSON Schema (https://w3id.org/ontouml/schema), validating the result
+ * against the schema before returning it.
+ *
+ * @param project - the project to serialize.
+ * @param space - optional indentation passed to `JSON.stringify` for a
+ *        human-readable serialization.
+ * @throws an error listing the schema violations if the serialization is
+ *         invalid.
+ */
+function serialize(project: Project, space?: string | number): string {
+  const raw = project.toJSON();
+  validate(raw);
+
+  return JSON.stringify(raw, null, space);
+}
+
+/**
  * Parses a {@link Project} serialized into a string, as defined by the
  * OntoUML JSON Schema (https://w3id.org/ontouml/schema), and returns the
- * corresponding instance of {@link Project}.
+ * corresponding instance of {@link Project}. The input is validated against
+ * the schema before any element is deserialized.
  *
  * Model elements, diagrams, views, and shapes are fully supported. When the
  * shapes referenced by a view are absent from the serialization, the view
@@ -180,8 +246,9 @@ function getResolved<T extends OntoumlElement>(
  * default dimensions and positions.
  *
  * @param serializedProject - the JSON string to parse.
- * @throws an error if the string is not a serialized {@link Project} or if
- *         references between elements cannot be resolved.
+ * @throws an error if the string is not a schema-valid serialized
+ *         {@link Project} or if references between elements cannot be
+ *         resolved.
  */
 function parse(serializedProject: string): Project {
   const raw = JSON.parse(serializedProject);
@@ -191,6 +258,8 @@ function parse(serializedProject: string): Project {
       `Cannot parse element of type '${raw?.type}'. Only serialized projects are supported.`
     );
   }
+
+  validate(raw);
 
   const project = new Project();
   setNamedElementFields(project, raw);
@@ -758,15 +827,19 @@ function parse(serializedProject: string): Project {
 }
 
 /**
- * A utility module supporting the deserialization of {@link OntoumlElement}
- * objects serialized according to the OntoUML JSON Schema
- * (https://w3id.org/ontouml/schema).
+ * A utility module supporting the serialization, deserialization, and
+ * validation of {@link Project} objects according to the OntoUML JSON Schema
+ * (https://w3id.org/ontouml/schema). Both {@link serialize} and {@link parse}
+ * validate the serialization against the schema, throwing on invalid input.
  *
  * @example
  * ```typescript
- * const project = serializationUtils.parse(json);
+ * const json = serializationUtils.serialize(project);
+ * const parsed = serializationUtils.parse(json);
  * ```
  */
 export const serializationUtils = {
-  parse
+  parse,
+  serialize,
+  validate
 };

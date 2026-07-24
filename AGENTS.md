@@ -28,13 +28,17 @@ Guidance for AI agents (and humans) working in this repository.
 ## Schema compliance
 
 - The JSON serialization is defined by
-  [`ontouml-schema`](https://www.npmjs.com/package/ontouml-schema) (dev
+  [`ontouml-schema`](https://www.npmjs.com/package/ontouml-schema) (runtime
   dependency; also published at <https://w3id.org/ontouml/schema>). Every
   `toJSON()` and the parser in `src/serialization.ts` must stay in sync
   with it.
-- The schema targets **JSON Schema draft 2020-12**: tests must import Ajv
-  from `ajv/dist/2020` (the default `ajv` export cannot compile it) and
-  apply `ajv-formats`.
+- `serializationUtils.serialize()` and `parse()` validate against the schema
+  and throw on violations; `serializationUtils.validate()` exposes the check
+  directly. The Ajv validator is compiled lazily and cached in
+  `src/serialization.ts`.
+- The schema targets **JSON Schema draft 2020-12**: import Ajv from
+  `ajv/dist/2020.js` (the default `ajv` export cannot compile it, and the
+  ESM build needs the explicit `.js` extension) and apply `ajv-formats`.
 - Round-trips are **byte-identical** on purpose: `parse` registers elements
   in serialized order, and the serialization tests compare JSON strings.
   Preserve this property when touching serialization.

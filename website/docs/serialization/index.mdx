@@ -26,12 +26,14 @@ them back into live object references when it reads the file.
 
 ## Serializing
 
-Serialization is just `JSON.stringify` — every element implements `toJSON()`, so
-the standard call produces schema-conformant output. Pass a spacing argument for
-a human-readable file.
+Every element implements `toJSON()`, so plain `JSON.stringify` already produces
+schema-conformant output. Prefer `serializationUtils.serialize`, which does the
+same but **validates the result against the schema** before returning it —
+failing fast if the model ever produces a non-conformant serialization. Pass a
+spacing argument for a human-readable file.
 
 ```ts twoslash
-import { Project } from 'ontouml-js';
+import { Project, serializationUtils } from 'ontouml-js';
 
 const project = new Project();
 project.name.add('School enrollment');
@@ -48,11 +50,11 @@ model
   .target(school)
   .build();
 
-// Compact — for storage or transport.
-const json = JSON.stringify(project);
+// Compact — for storage or transport. Validated against the schema.
+const json = serializationUtils.serialize(project);
 
 // Pretty-printed — for a file a human will read.
-const pretty = JSON.stringify(project, null, 2);
+const pretty = serializationUtils.serialize(project, 2);
 
 console.log(json.slice(0, 24)); // {"type":"Project","id":…
 ```
@@ -83,8 +85,11 @@ console.log(restored.classes.map(c => c.getNameOrId())); // [ "Person" ]
 ```
 
 `parse` throws a descriptive error rather than returning a broken model when the
-input is not a serialized project or when a reference cannot be resolved — for
-example, a relation whose end points at an id that is absent from `elements`.
+input is not a serialized project, when it violates the JSON Schema, or when a
+reference cannot be resolved — for example, a relation whose end points at an id
+that is absent from `elements`. The schema check runs **before** any element is
+deserialized, so malformed input from an external source fails fast with a list
+of violations instead of surfacing as a confusing error halfway through parsing.
 
 :::note[Diagrams round-trip, geometry included]
 Model elements, diagrams, views, and **shapes** (the concrete rectangles and
@@ -117,35 +122,36 @@ console.log(first === second); // true
 
 ## Validating against the schema
 
-The library **produces** valid OntoUML JSON, so you rarely need to validate your
-own output. Validation matters when you ingest a file from somewhere else and
-want to fail fast on malformed input. `ontouml-js` doesn't bundle a validator —
-use any JSON-Schema validator together with the published schema, which is also
-available as the [`ontouml-schema`](https://www.npmjs.com/package/ontouml-schema)
-npm package. The schema targets **JSON Schema draft 2020-12** and uses string
-formats, so with [Ajv](https://ajv.js.org/) you need its 2020 build plus
-[`ajv-formats`](https://www.npmjs.com/package/ajv-formats):
+Both `serialize` and `parse` validate automatically, so most code never calls
+the validator by hand. When you want the check on its own — say, to vet a file
+before deciding what to do with it — use `serializationUtils.validate`. It
+accepts either a JSON string or an already-parsed object, returns silently on
+success, and throws an error listing every schema violation:
 
-```ts
-import Ajv from 'ajv/dist/2020';
-import addFormats from 'ajv-formats';
-import { Project } from 'ontouml-js';
-
-// npm install ontouml-schema — or fetch https://w3id.org/ontouml/schema
-const schema = require('ontouml-schema');
-
-const validate = addFormats(new Ajv({ allErrors: true })).compile(schema);
+```ts twoslash
+import { Project, serializationUtils } from 'ontouml-js';
 
 const project = new Project();
 project.packageBuilder().root().name('Model').build();
 
-const json = JSON.parse(JSON.stringify(project));
+// Passes silently: the library produces valid OntoUML JSON.
+serializationUtils.validate(JSON.stringify(project));
 
-if (!validate(json)) {
-  console.error(validate.errors);
-  throw new Error('Model does not conform to the OntoUML schema.');
+// Throws, listing the violations found by the schema.
+try {
+  serializationUtils.validate('{ "type": "Project" }');
+} catch (e) {
+  console.log((e as Error).message.split(':')[0]);
+  // Invalid serialization according to the OntoUML JSON Schema
 }
 ```
+
+Under the hood, the library ships the schema (published as the
+[`ontouml-schema`](https://www.npmjs.com/package/ontouml-schema) npm package and
+at [`https://w3id.org/ontouml/schema`](https://w3id.org/ontouml/schema)) and
+compiles it with [Ajv](https://ajv.js.org/) on first use. If you need to
+validate in another stack, the schema targets **JSON Schema draft 2020-12** and
+uses string formats, so any compliant validator works.
 
 :::tip[Structural vs. ontological validity]
 Schema validation only checks _structure_ — that ids resolve, types are known,
@@ -183,16 +189,17 @@ console.log('round-trips cleanly:', json === JSON.stringify(restored));
 
 ## Key takeaways
 
-- Serialize with `JSON.stringify(project)` — every element implements
-  `toJSON()`, so the output conforms to the OntoUML JSON Schema.
-- Deserialize with `serializationUtils.parse(json)`, which rebuilds a live
-  `Project` and resolves all references, throwing on broken input.
+- Serialize with `serializationUtils.serialize(project)` — the output is
+  validated against the OntoUML JSON Schema before it is returned.
+  (`JSON.stringify(project)` produces the same JSON, without the check.)
+- Deserialize with `serializationUtils.parse(json)`, which validates the input
+  against the schema, then rebuilds a live `Project` and resolves all
+  references — throwing on broken input at either step.
 - The round-trip is **byte-identical**, making OntoUML JSON a stable
   interchange format between code and the visual editor.
 - Shapes are serialized along with views, so diagram geometry round-trips.
-- Validate untrusted input with any JSON-Schema validator against
-  `https://w3id.org/ontouml/schema`; structural validity is not ontological
-  validity.
+- Use `serializationUtils.validate(input)` to run the schema check on its own;
+  structural validity is not ontological validity.
 
 That closes the tour. From here, revisit [Querying](/querying/) to turn models
 into analyses, or the [visual editor](https://ontouml.org) to see what you built
