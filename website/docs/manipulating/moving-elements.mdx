@@ -1,0 +1,156 @@
+---
+sidebar_position: 2
+title: Moving elements between packages
+---
+
+import OntoumlSandpack from '@site/src/components/OntoumlSandpack';
+
+# Moving elements between packages
+
+A model's containment tree isn't fixed. As a model grows you split it into
+sub-domains, and elements need to move with it — a class drafted in the root
+package gets re-homed under `Payments`, a cluster of related classes gets
+extracted into a new package together.
+
+:::info[Theory: one container at a time]
+Every packageable element (a class, relation, generalization, package, note, …)
+sits in **exactly one** package — its `container`. Moving is therefore a
+_transfer_: the element must leave its current package as it joins the new one,
+or it would appear in two places at once and serialize inconsistently. The
+`addContent` method performs both halves atomically.
+:::
+
+## Reassigning a container
+
+Use the destination package's `addContent`. It removes the element from its
+previous package (if any) and adds it here, updating the back-pointer in one
+step.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Model').build();
+
+// A dedicated sub-package for payment concerns.
+const payments = model.packageBuilder().name('Payments').build();
+
+// A class drafted at the root…
+const invoice = model.classBuilder().kind().name('Invoice').build();
+console.log(invoice.container === model); // true
+
+// …moved under Payments.
+payments.addContent(invoice);
+console.log(invoice.container === payments); // true
+console.log(model.contents.includes(invoice)); // false — left the root
+console.log(payments.contents.includes(invoice)); // true
+```
+
+:::caution[Prefer `addContent` over assigning `container`]
+Setting `element.container = pkg` directly updates the back-pointer but does
+**not** add the element to the package's contents, nor remove it from the old
+one — so the model ends up inconsistent and serializes wrong. Always move
+through `addContent` (or `addContents`), which keeps both packages' contents in
+sync.
+:::
+
+## Moving several elements at once
+
+`addContents` takes a list and transfers each element — the natural tool when
+you reorganize a group that belongs together.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Model').build();
+const payments = model.packageBuilder().name('Payments').build();
+
+const invoice = model.classBuilder().kind().name('Invoice').build();
+const payment = model.classBuilder().relator().name('Payment').build();
+const receipt = model.classBuilder().kind().name('Receipt').build();
+
+// Relocate the whole payment cluster in one call.
+payments.addContents([invoice, payment, receipt]);
+
+console.log(payments.classes.map(c => c.getNameOrId())); // Invoice, Receipt…
+console.log(payments.contents.length); // 3
+```
+
+## Removing without re-homing
+
+Occasionally you want to detach an element from its package _without_ placing it
+elsewhere — while restructuring, or before discarding it. `removeContent`
+clears the container and returns whether the element was there.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Model').build();
+const invoice = model.classBuilder().kind().name('Invoice').build();
+
+const removed = model.removeContent(invoice);
+console.log(removed); // true
+console.log(invoice.container); // undefined
+```
+
+A container-less element still belongs to the project but is orphaned in the
+tree; either re-home it with `addContent` or, if it's no longer needed, delete
+it — see [Deleting elements](/manipulating/deleting-elements).
+
+## Now you try it
+
+Two classes, `Order` and `LineItem`, live at the root. Create a `Sales`
+sub-package and move both into it.
+
+export const starter = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Model').build();
+
+const order = model.classBuilder().kind().name('Order').build();
+const lineItem = model.classBuilder().kind().name('LineItem').build();
+
+// Your turn:
+// 1. Create a 'Sales' sub-package of model.
+// 2. Move both Order and LineItem into it.
+
+console.log('root now holds:', model.classes.map(c => c.getNameOrId()));
+`;
+
+<OntoumlSandpack files={{ '/index.ts': starter }} />
+
+<details>
+<summary>Show the solution</summary>
+
+export const solution = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('Model').build();
+
+const order = model.classBuilder().kind().name('Order').build();
+const lineItem = model.classBuilder().kind().name('LineItem').build();
+
+const sales = model.packageBuilder().name('Sales').build();
+sales.addContents([order, lineItem]);
+
+console.log('root now holds:', model.classes.map(c => c.getNameOrId()));
+console.log('sales holds:', sales.classes.map(c => c.getNameOrId()));
+`;
+
+<OntoumlSandpack files={{ '/index.ts': solution }} readOnly />
+
+</details>
+
+## Key takeaways
+
+- Every packageable element has exactly one **container** package; moving is a
+  transfer, not a copy.
+- `targetPackage.addContent(el)` moves one element and detaches it from its old
+  package automatically; `addContents([...])` moves several.
+- Don't assign `element.container` directly — it leaves the contents arrays out
+  of sync. Use `addContent`.
+- `removeContent(el)` detaches an element without re-homing it.
+
+Next: [deleting elements →](/manipulating/deleting-elements).

@@ -1,0 +1,186 @@
+---
+sidebar_position: 3
+title: Language strings
+---
+
+import OntoumlSandpack from '@site/src/components/OntoumlSandpack';
+
+# Language strings
+
+Ontologies are often shared across languages, so in `ontouml-js` a name isn't a
+plain string — it's a **`LanguageString`**: a set of values, each tagged with
+an [IETF BCP 47](https://en.wikipedia.org/wiki/IETF_language_tag) language tag
+(`'en'`, `'pt'`, `'de'`, …). The same class can be `Person` in English and
+`Pessoa` in Portuguese at once.
+
+Names, **descriptions**, alternative names, and editorial notes are all
+`LanguageString`, so everything you learn here applies to each of them.
+
+## Naming in several languages
+
+At creation time, chain `.name()` once per language — it adds, rather than
+replaces:
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+const project = new Project();
+const model = project.packageBuilder().root().build();
+// ---cut---
+const person = model
+  .classBuilder()
+  .kind()
+  .name('Person', 'en')
+  .name('Pessoa', 'pt')
+  .build();
+```
+
+On an existing element, reach the `LanguageString` directly. `add` sets one
+language; `addAll` sets several at once:
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+const project = new Project();
+const model = project.packageBuilder().root().build();
+const person = model.classBuilder().kind().name('Person', 'en').build();
+// ---cut---
+person.name.add('Pessoa', 'pt');
+person.name.addAll({ de: 'Person', fr: 'Personne' });
+```
+
+## Reading a value back
+
+`get()` returns the value for a language. With no argument it follows the
+**language preference** (English by default); with a tag it returns that exact
+language. `getNameOrId()` is a safe shortcut that falls back to the element's id
+when it has no name.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+const project = new Project();
+const model = project.packageBuilder().root().build();
+const person = model
+  .classBuilder()
+  .kind()
+  .name('Person', 'en')
+  .name('Pessoa', 'pt')
+  .build();
+// ---cut---
+const preferred = person.name.get(); // 'Person' (preference order)
+const portuguese = person.name.get('pt'); // 'Pessoa'
+const everyValue = person.name.entries(); // [['en','Person'], ['pt','Pessoa']]
+const label = person.getNameOrId('pt'); // 'Pessoa', or the id if unnamed
+```
+
+:::warning
+`get('xx')` **throws** if there's no value for that exact tag. Use `get()` with
+no argument (preference-based, may return `null`) or `getNameOrId()` when you
+can't be sure a language is present.
+:::
+
+## Defaults and preference
+
+Two static fields on `LanguageString` tune the behaviour globally:
+
+```ts twoslash
+import { LanguageString } from 'ontouml-js';
+// ---cut---
+// Language assumed when you add a value without a tag (default: 'en')
+LanguageString.defaultLanguage = 'pt';
+
+// Order languages are tried when reading without a tag (default: ['en'])
+LanguageString.languagePreference = ['pt', 'en'];
+```
+
+So `builder.name('Pessoa')` with no tag stores it under `defaultLanguage`, and
+`text.get()` with no tag walks `languagePreference` until it finds a value.
+
+## It's not just names
+
+Descriptions, alternative names, and editorial notes are multilingual too:
+
+```ts twoslash
+import { Project, LanguageString } from 'ontouml-js';
+const project = new Project();
+const model = project.packageBuilder().root().build();
+const person = model.classBuilder().kind().name('Person').build();
+// ---cut---
+person.description.add('A human being.', 'en');
+person.description.add('Um ser humano.', 'pt');
+
+person.addAlternativeName(new LanguageString('Human', 'en'));
+```
+
+## In the serialized JSON
+
+A `LanguageString` serializes to an object keyed by language tag — the shape
+prescribed by the OntoUML JSON Schema:
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+const project = new Project();
+const model = project.packageBuilder().root().build();
+const person = model
+  .classBuilder()
+  .kind()
+  .name('Person', 'en')
+  .name('Pessoa', 'pt')
+  .build();
+// ---cut---
+const json = JSON.stringify(person.name);
+// {"en":"Person","pt":"Pessoa"}
+```
+
+## Now you try it
+
+Create a class named in **three** languages, then print the name in each — and
+the full list of entries.
+
+export const starter = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().build();
+
+// Your turn:
+// 1. build a «kind» named in English, Portuguese, and one more language
+// 2. print its name in each language
+// 3. print name.entries()
+
+`;
+
+<OntoumlSandpack files={{ '/index.ts': starter }} />
+
+<details>
+<summary>Show the solution</summary>
+
+export const solution = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().build();
+
+const person = model
+.classBuilder()
+.kind()
+.name('Person', 'en')
+.name('Pessoa', 'pt')
+.name('Persona', 'es')
+.build();
+
+console.log(person.name.get('en')); // Person
+console.log(person.name.get('pt')); // Pessoa
+console.log(person.name.get('es')); // Persona
+console.log(person.name.entries());
+`;
+
+<OntoumlSandpack files={{ '/index.ts': solution }} readOnly />
+
+</details>
+
+## Recap
+
+- Names and descriptions are **`LanguageString`**, not strings — one value per
+  BCP 47 language tag.
+- Set values with `.name(text, lang)` on a builder, or `add` / `addAll` on the
+  text itself.
+- Read with `get(lang)`, `get()` (preference order), or `getNameOrId(lang)`.
+- `LanguageString.defaultLanguage` and `languagePreference` control the
+  assumed language for writing and reading.

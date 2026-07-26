@@ -1,0 +1,9 @@
+{
+  "label": "Creating diagrams",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "slug": "/diagrams",
+    "description": "Give a model a concrete syntax: lay out diagrams and views that position classes, relations, generalizations, and notes with shapes and paths."
+  }
+}

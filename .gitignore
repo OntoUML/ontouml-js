@@ -13,6 +13,10 @@ coverage
 dist/
 bundle/
 
+# Docusaurus generated output
+website/build/
+website/.docusaurus/
+
 # VS Code
 .vscode
 !.vscode/tasks.js

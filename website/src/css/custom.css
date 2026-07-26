@@ -1,0 +1,77 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* OntoUML orange — same palette as the ontouml-schema site. */
+:root {
+  --ifm-color-primary: #ef6928;
+  --ifm-color-primary-dark: #e95811;
+  --ifm-color-primary-darker: #cf4e0f;
+  --ifm-color-primary-darkest: #b5440d;
+  --ifm-color-primary-light: #f0783d;
+  --ifm-color-primary-lighter: #f28753;
+  --ifm-color-primary-lightest: #f39668;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #ef6928;
+  --ifm-color-primary-dark: #e95811;
+  --ifm-color-primary-darker: #cf4e0f;
+  --ifm-color-primary-darkest: #b5440d;
+  --ifm-color-primary-light: #f0783d;
+  --ifm-color-primary-lighter: #f28753;
+  --ifm-color-primary-lightest: #f39668;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* --- Shiki + Twoslash ---------------------------------------------------- */
+/* Shiki renders the LIGHT theme inline (as literal colors) and exposes only a
+   `--shiki-dark` variable per token for dark mode. So light needs no CSS; for
+   dark we switch the token *color* to the dark variable. Crucially, we set the
+   dark *background* only on the code container (.shiki), NOT on every span —
+   setting it on spans paints a rectangle behind each token inside the Twoslash
+   hover/`^?` popups, which is what looked broken. */
+[data-theme='dark'] .shiki,
+[data-theme='dark'] .shiki span {
+  color: var(--shiki-dark);
+}
+[data-theme='dark'] .shiki {
+  background-color: var(--shiki-dark-bg);
+}
+
+.shiki {
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: var(--ifm-code-font-size);
+  margin-bottom: 1rem;
+}
+
+/* Twoslash type-on-hover popovers */
+.twoslash:hover .twoslash-hover {
+  border-bottom: 1px dotted currentColor;
+}
+.twoslash .twoslash-popup-container {
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  font-size: 0.85em;
+}
+.twoslash-popup-code {
+  font-family: var(--ifm-font-family-monospace);
+}
+/* Hover doc text should wrap as prose, not break mid-token */
+.twoslash .twoslash-popup-docs {
+  white-space: normal;
+  max-width: 40rem;
+  line-height: 1.5;
+}
+
+/* Twoslash error / query annotations */
+.twoslash .twoslash-error {
+  background: rgba(197, 34, 31, 0.12);
+}

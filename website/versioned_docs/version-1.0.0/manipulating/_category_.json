@@ -1,0 +1,9 @@
+{
+  "label": "Manipulating (editing) a model",
+  "position": 6,
+  "link": {
+    "type": "generated-index",
+    "slug": "/manipulating",
+    "description": "Change a model after it's built: rename and re-stereotype elements, move them between packages, and delete them."
+  }
+}

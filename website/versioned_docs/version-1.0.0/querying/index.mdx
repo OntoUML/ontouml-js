@@ -1,0 +1,296 @@
+---
+sidebar_position: 1
+title: Querying the model
+---
+
+import OntoumlSandpack from '@site/src/components/OntoumlSandpack';
+
+# Querying the model
+
+Building a model is half the story. The other half is **reading it back** — to
+compute metrics, validate rules, or drive a transformation into some other
+format. `ontouml-js` gives you five families of query methods, from "give me
+everything of type X" down to "walk this class's supertypes."
+
+Every example below runs against this small university model:
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('University').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const student = model.classBuilder().role().name('Student').build();
+const university = model.classBuilder().kind().name('University').build();
+const enrollment = model.classBuilder().relator().name('Enrollment').build();
+
+// Student is a subtype of Person
+person.addChild(student);
+
+// Enrollment mediates Student and University
+const involvesStudent = model
+  .binaryRelationBuilder()
+  .mediation()
+  .name('involves')
+  .source(enrollment)
+  .target(student)
+  .build();
+
+const enrolledAt = model
+  .binaryRelationBuilder()
+  .mediation()
+  .name('at')
+  .source(enrollment)
+  .target(university)
+  .build();
+```
+
+## 1. Collection getters
+
+A `Project` (and each `Package`) exposes typed getters that return **every**
+element of a given kind, anywhere in its containment tree. This is the fastest
+way to sweep the whole model.
+
+| Getter                       | Returns                       |
+| ---------------------------- | ----------------------------- |
+| `project.classes`            | `Class[]`                     |
+| `project.relations`          | `Relation[]` (binary + n-ary) |
+| `project.binaryRelations`    | `BinaryRelation[]`            |
+| `project.naryRelations`      | `NaryRelation[]`              |
+| `project.generalizations`    | `Generalization[]`            |
+| `project.generalizationSets` | `GeneralizationSet[]`         |
+| `project.packages`           | `Package[]`                   |
+| `project.attributes`         | `Property[]`                  |
+| `project.relationEnds`       | `Property[]`                  |
+| `project.literals`           | `Literal[]`                   |
+
+The same getters exist on a `Package`, scoped to that package's contents:
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+const project = new Project();
+const model = project.packageBuilder().root().name('University').build();
+model.classBuilder().kind().name('Person').build();
+// ---cut---
+const everyClass = project.classes; // every class in the project
+const inModel = model.classes; // only classes in this package
+```
+
+## 2. Look up a single element by id
+
+When you already know an element's `id`, fetch it directly. There's a typed
+lookup per element kind, plus `element(id)` for "any element."
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+const project = new Project();
+const model = project.packageBuilder().root().name('University').build();
+const person = model.classBuilder().kind().name('Person').build();
+// ---cut---
+const byClass = project.class(person.id); // Class | undefined
+const byAny = project.element(person.id); // OntoumlElement | undefined
+```
+
+Also available: `binaryRelation(id)`, `naryRelation(id)`, `generalization(id)`,
+`generalizationSet(id)`, `package(id)`, `property(id)`, and more.
+
+## 3. Query by stereotype and ontological category
+
+Projects and packages answer queries that retrieve classes and relations by
+their **stereotype** — and, more powerfully, by **ontological category** (all
+sortals, all rigid types, …), which would otherwise take a hand-written
+filter. On a project they range over the whole model; on a package, over that
+package and its subpackages.
+
+```ts twoslash
+import { Project, ClassStereotype } from 'ontouml-js';
+const project = new Project();
+const model = project.packageBuilder().root().name('University').build();
+model.classBuilder().kind().name('Person').build();
+model.classBuilder().role().name('Student').build();
+model.classBuilder().relator().name('Enrollment').build();
+// ---cut---
+// By exact stereotype
+const kinds = project.getKinds();
+const relators = project.getRelators();
+const mediations = project.getMediations();
+
+// By ontological category — no manual filtering needed
+const sortals = project.getSortals();
+const rigid = project.getRigidTypes();
+const antiRigid = project.getAntiRigidTypes();
+
+// By an explicit list of stereotypes
+const roles = project.getClassesByStereotype([ClassStereotype.ROLE]);
+
+// The same queries work on a package, scoped to its subtree
+const localKinds = model.getKinds();
+```
+
+A sampling of what's on offer:
+
+| Category         | Methods                                                                                       |
+| ---------------- | --------------------------------------------------------------------------------------------- |
+| Ultimate sortals | `getKinds`, `getCollectives`, `getQuantities`, `getRelators`, `getModes`, `getQualities`      |
+| Base sortals     | `getSubkinds`, `getRoles`, `getPhases`                                                        |
+| Non-sortals      | `getCategories`, `getMixins`, `getRoleMixins`, `getPhaseMixins`                               |
+| Meta-categories  | `getSortals`, `getNonSortals`, `getRigidTypes`, `getAntiRigidTypes`, `getSemiRigidTypes`      |
+| Relations        | `getMediations`, `getMaterialRelations`, `getCharacterizations`, `getComponentOfRelations`, … |
+| Explicit         | `getClassesByStereotype`, `getBinaryRelationsByStereotype`, `getAttributesByStereotype`       |
+
+## 4. Predicates: build your own filters
+
+Each `Class` answers a family of boolean predicates — the same ones the
+stereotype queries use internally. Combine them with `Array.filter` for
+queries the named methods don't cover directly.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+const project = new Project();
+const model = project.packageBuilder().root().name('University').build();
+model.classBuilder().role().name('Student').build();
+// ---cut---
+// Anti-rigid sortals: roles and phases
+const antiRigidSortals = project.classes.filter(
+  c => c.isSortal() && c.isAntiRigid()
+);
+```
+
+Predicates include `isKind`, `isSubkind`, `isRole`, `isPhase`, `isRelator`,
+`isSortal`, `isNonSortal`, `isRigid`, `isAntiRigid`, `isSemiRigid`, `isType`,
+and more.
+
+## 5. Navigation: taxonomy and relations
+
+The families above start from the whole project. Just as often you start from
+**one element** and walk its neighbourhood — its supertypes, subtypes, or the
+relations attached to it. These methods live on any `Classifier` (so, on every
+`Class` and `Relation`).
+
+| Method                                              | Returns                               |
+| --------------------------------------------------- | ------------------------------------- |
+| `getParents()` / `getChildren()`                    | direct super/subtypes                 |
+| `getAncestors()` / `getDescendants()`               | transitive super/subtypes             |
+| `getRelations()`                                    | relations attached to this classifier |
+| `getIncomingRelations()` / `getOutgoingRelations()` | binary relations by direction         |
+| `getOwnOppositeRelationEnds()`                      | the far ends of those relations       |
+
+And a `BinaryRelation` exposes its endpoints directly: `source`, `target`,
+`sourceEnd`, and `targetEnd`.
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+const project = new Project();
+const model = project.packageBuilder().root().name('University').build();
+const person = model.classBuilder().kind().name('Person').build();
+const student = model.classBuilder().role().name('Student').build();
+const university = model.classBuilder().kind().name('University').build();
+const enrollment = model.classBuilder().relator().name('Enrollment').build();
+person.addChild(student);
+model
+  .binaryRelationBuilder()
+  .mediation()
+  .source(enrollment)
+  .target(student)
+  .build();
+model
+  .binaryRelationBuilder()
+  .mediation()
+  .source(enrollment)
+  .target(university)
+  .build();
+// ---cut---
+// Walk up the taxonomy: Student -> Person
+const supertypes = student.getAncestors().map(c => c.getNameOrId());
+
+// What does the Enrollment relator connect to?
+const mediated = enrollment
+  .getOutgoingRelations()
+  .map(rel => rel.target?.getNameOrId());
+```
+
+## Putting it together: a lint rule
+
+Query families compose. Here's a real check — _every «role» should specialize
+at least one «kind»_ — written by combining stereotype queries, navigation,
+and predicates:
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+const project = new Project();
+const model = project.packageBuilder().root().name('University').build();
+const person = model.classBuilder().kind().name('Person').build();
+const student = model.classBuilder().role().name('Student').build();
+person.addChild(student);
+// ---cut---
+const orphanRoles = project
+  .getRoles()
+  .filter(role => !role.getAncestors().some(a => a.isKind()))
+  .map(role => role.getNameOrId());
+```
+
+This is the shape of most transformations and validators you'll write: pick a
+starting set with a stereotype query or a getter, `filter` with predicates,
+and `map`/navigate to produce your result.
+
+## Now you try it
+
+Write a query that lists, for **each relator**, the names of the classes it
+mediates. Open the console to see your result.
+
+export const starter = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('University').build();
+const student = model.classBuilder().role().name('Student').build();
+const university = model.classBuilder().kind().name('University').build();
+const enrollment = model.classBuilder().relator().name('Enrollment').build();
+model.binaryRelationBuilder().mediation().source(enrollment).target(student).build();
+model.binaryRelationBuilder().mediation().source(enrollment).target(university).build();
+
+// Your turn: for each relator (project.getRelators()), print its name
+// and the names of the classes reached by its outgoing relations.
+
+`;
+
+<OntoumlSandpack files={{ '/index.ts': starter }} />
+
+<details>
+<summary>Show the solution</summary>
+
+export const solution = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().name('University').build();
+const student = model.classBuilder().role().name('Student').build();
+const university = model.classBuilder().kind().name('University').build();
+const enrollment = model.classBuilder().relator().name('Enrollment').build();
+model.binaryRelationBuilder().mediation().source(enrollment).target(student).build();
+model.binaryRelationBuilder().mediation().source(enrollment).target(university).build();
+
+for (const relator of project.getRelators()) {
+const mediated = relator
+.getOutgoingRelations()
+.map(rel => rel.target?.getNameOrId());
+console.log(relator.getNameOrId(), '->', mediated);
+}
+`;
+
+<OntoumlSandpack files={{ '/index.ts': solution }} readOnly />
+
+</details>
+
+## Recap
+
+- **Collection getters** (`project.classes`, …) sweep the whole model by kind.
+- **`element(id)`** and its typed siblings fetch one known element.
+- **Stereotype queries** (`getKinds`, `getRigidTypes`, …) retrieve by
+  stereotype _and_ by ontological category, on a project or scoped to a
+  package.
+- **Predicates** (`isKind`, `isSortal`, …) power your own `filter`s.
+- **Navigation** (`getAncestors`, `getOutgoingRelations`, `relation.target`, …)
+  walks from one element to its neighbours.
+
+Next: [generalizations & generalization sets](/creating/generalizations/) go deeper on
+the taxonomy these navigation methods traverse.

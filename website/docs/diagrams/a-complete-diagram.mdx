@@ -1,0 +1,164 @@
+---
+sidebar_position: 6
+title: A complete diagram
+---
+
+import OntoumlSandpack from '@site/src/components/OntoumlSandpack';
+
+# A complete diagram
+
+Time to put the whole chapter together: take the _school enrollment_ model from
+[Hello, model](/getting-started/hello-model), lay it out on a diagram, and
+serialize the result — model **and** concrete syntax in one JSON document.
+
+## Model, then depiction
+
+Notice the two phases. First the abstract syntax (classes and relations),
+exactly as before; then the concrete syntax (a diagram, its class views, and a
+routed connector). The two never mix.
+
+```ts twoslash
+import { Project, serializationUtils } from 'ontouml-js';
+
+// 1. The model — abstract syntax.
+const project = new Project();
+project.name.add('School enrollment');
+const model = project.packageBuilder().root().name('Model').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const school = model.classBuilder().kind().name('School').build();
+const enrollment = model.classBuilder().relator().name('Enrollment').build();
+
+const studiesAt = model
+  .binaryRelationBuilder()
+  .material()
+  .name('studies at')
+  .source(person)
+  .target(school)
+  .build();
+
+model
+  .binaryRelationBuilder()
+  .mediation()
+  .source(enrollment)
+  .target(person)
+  .build();
+model
+  .binaryRelationBuilder()
+  .mediation()
+  .source(enrollment)
+  .target(school)
+  .build();
+
+// 2. The diagram — concrete syntax.
+const diagram = project.createDiagram('Overview');
+
+const personView = diagram.addClass(person);
+personView.rectangle.setX(60);
+personView.rectangle.setY(60);
+
+const schoolView = diagram.addClass(school);
+schoolView.rectangle.setX(360);
+schoolView.rectangle.setY(60);
+
+const enrollmentView = diagram.addClass(enrollment);
+enrollmentView.rectangle.setX(210);
+enrollmentView.rectangle.setY(220);
+
+const studiesAtView = diagram.addBinaryRelation(studiesAt);
+studiesAtView.path.moveTo(160, 85);
+studiesAtView.path.moveTo(360, 85);
+
+// 3. Round-trip the whole thing.
+const json = JSON.stringify(project);
+const copy = serializationUtils.parse(json);
+
+console.log(diagram.getClassViews().length); // 3
+```
+
+The serialized JSON now carries a `diagrams` array alongside the model — the
+same format the OntoUML visual tools read, so a model you lay out in code opens
+in the editor already positioned.
+
+## Now you try it
+
+The model and diagram are set up, but `Enrollment` is stacked on top of
+`Person` at the origin. Position its view at `(210, 220)` so it sits below and
+between the other two, then check the console.
+
+export const starter = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+project.name.add('School enrollment');
+const model = project.packageBuilder().root().name('Model').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const school = model.classBuilder().kind().name('School').build();
+const enrollment = model.classBuilder().relator().name('Enrollment').build();
+
+const diagram = project.createDiagram('Overview');
+
+const personView = diagram.addClass(person);
+personView.rectangle.setX(60);
+personView.rectangle.setY(60);
+
+const schoolView = diagram.addClass(school);
+schoolView.rectangle.setX(360);
+schoolView.rectangle.setY(60);
+
+const enrollmentView = diagram.addClass(enrollment);
+// Your turn: place the Enrollment view at x = 210, y = 220.
+
+console.log(JSON.stringify(project, null, 2));
+`;
+
+<OntoumlSandpack files={{ '/index.ts': starter }} />
+
+<details>
+<summary>Show the solution</summary>
+
+export const solution = `import {Project} from 'ontouml-js';
+
+const project = new Project();
+project.name.add('School enrollment');
+const model = project.packageBuilder().root().name('Model').build();
+
+const person = model.classBuilder().kind().name('Person').build();
+const school = model.classBuilder().kind().name('School').build();
+const enrollment = model.classBuilder().relator().name('Enrollment').build();
+
+const diagram = project.createDiagram('Overview');
+
+const personView = diagram.addClass(person);
+personView.rectangle.setX(60);
+personView.rectangle.setY(60);
+
+const schoolView = diagram.addClass(school);
+schoolView.rectangle.setX(360);
+schoolView.rectangle.setY(60);
+
+const enrollmentView = diagram.addClass(enrollment);
+enrollmentView.rectangle.setX(210);
+enrollmentView.rectangle.setY(220);
+
+console.log(JSON.stringify(project, null, 2));
+`;
+
+<OntoumlSandpack files={{ '/index.ts': solution }} readOnly />
+
+</details>
+
+## What you learned
+
+- A **project holds both** the model and its diagrams; serializing the project
+  captures both.
+- Build the **model first**, then create a diagram and add views for the
+  elements you want to depict.
+- Position class views through their `rectangle`; route relation views through
+  their `path`.
+- The output is standard OntoUML JSON — a code-built layout opens, positioned,
+  in the visual tools.
+
+That's the end of the diagrams chapter. From here, learn to
+[manipulate a model](/manipulating/) after it's built, or
+[query one](/querying/) to analyze and transform it.

@@ -1,0 +1,63 @@
+{
+  "name": "ontouml-js-tutorial",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "docusaurus": "docusaurus",
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "docusaurus deploy",
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
+    "write-translations": "docusaurus write-translations",
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "typecheck": "tsc",
+    "bundle-ontouml": "node scripts/bundle-ontouml.mjs",
+    "prestart": "npm run bundle-ontouml",
+    "prebuild": "npm run bundle-ontouml",
+    "pretypecheck": "npm run bundle-ontouml"
+  },
+  "dependencies": {
+    "@codesandbox/sandpack-react": "^2.20.0",
+    "@docusaurus/core": "3.10.2",
+    "@docusaurus/faster": "3.10.2",
+    "@docusaurus/preset-classic": "3.10.2",
+    "@easyops-cn/docusaurus-search-local": "^0.54.1",
+    "@mdx-js/react": "^3.0.0",
+    "@shikijs/rehype": "^4.3.1",
+    "@shikijs/twoslash": "^4.3.1",
+    "clsx": "^2.0.0",
+    "ontouml-js": "file:..",
+    "prism-react-renderer": "^2.3.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "shiki": "^4.3.1"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "3.10.2",
+    "@docusaurus/tsconfig": "3.10.2",
+    "@docusaurus/types": "3.10.2",
+    "@types/react": "^19.0.0",
+    "esbuild": "^0.28.1",
+    "typescript": "~6.0.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 3 chrome version",
+      "last 3 firefox version",
+      "last 5 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">=20.0"
+  },
+  "overrides": {
+    "serialize-javascript": "^7.0.5"
+  }
+}

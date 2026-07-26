@@ -1,65 +1,115 @@
-# OntoUML JS
+# ontouml-js
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/OntoUML/ontouml-js/Node%20CI?style=flat-square)
+[![CI](https://img.shields.io/github/actions/workflow/status/OntoUML/ontouml-js/ci.yml?style=flat-square&label=CI)](https://github.com/OntoUML/ontouml-js/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/ontouml-js?style=flat-square)](https://www.npmjs.com/package/ontouml-js)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square)](LICENSE)
 
-Javascript library utility for manipulating OntoUML models.
+A TypeScript/JavaScript library to **create, edit, query, and serialize
+[OntoUML](https://ontouml.org) models** programmatically. Models round-trip
+to and from [OntoUML JSON](https://w3id.org/ontouml/schema) — the interchange
+format shared with the OntoUML visual tools — with byte-identical
+serialization.
 
-## Getting Start
+**📖 Tutorial & documentation: <https://ontouml.github.io/ontouml-js/>** —
+a guided tour with live, editable code samples.
 
+## Installation
+
+```sh
+npm install ontouml-js
 ```
-npm install ontouml-js --save
 
-// yarn users
-yarn add ontouml-js
-```
+The package ships CommonJS and ES module builds with full TypeScript
+declarations; Node.js ≥ 18 is required.
 
 ## Usage
 
-This package is designed to support manipulating OntoUML models and their serialization into [`ontouml-schema`](https://github.com/OntoUML/ontouml-schema) compliant JSON files.
+Projects and their containers (packages, classes) act as factories of fluent
+builders for their contents:
 
 ```javascript
 import { Project, serializationUtils } from 'ontouml-js';
 
-// Every OntoUML element can be created from a constructor that can receive a partial object as references for its creation
-const project = new Project({ name: 'My Project' }); // creates an OntoUML projects
+// Create an OntoUML project
+const project = new Project();
+project.name.add('My Project');
 
-// Projects contain an instance of Package  dubbed model that contains all model elements in the project
-// Container elements, e.g., projects and packages, also serve as factories for their contents
-const model = project.createModel({ name: 'Model a.k.a. Root Package' }); // creates a "model" Package
+// Projects serve as factories of builders for their contents
+const model = project.packageBuilder().root().name('Model').build();
 
-// Instead of partial objects, "factory" methods receive more suitable lists of arguments to facilitating populating elements
-const person = model.createKind('Person');
-const school = model.createKind('School');
-const date = model.createDatatype('Date');
-const enrollment = model.createRelator('Enrollment');
-const studiesAt = model.createMaterialRelation(person, school, 'studies at');
+// Container elements, e.g., packages and classes, are also factories of
+// builders for their contents
+const person = model.classBuilder().kind().name('Person').build();
+const school = model.classBuilder().kind().name('School').build();
+const date = model.classBuilder().datatype().name('Date').build();
+const enrollment = model.classBuilder().relator().name('Enrollment').build();
 
-model.createMediationRelation(enrollment, person);
-model.createMediationRelation(enrollment, school);
+const studiesAt = model
+  .binaryRelationBuilder()
+  .material()
+  .name('studies at')
+  .source(person)
+  .target(school)
+  .build();
 
-// our API is constantly updated to include helpful methods to facilitate building OntoUML models
-studiesAt.getTargetEnd().name = 'school';
-studiesAt.getTargetEnd().setCardinalityToMany();
-studiesAt.getSourceEnd().name = 'student';
-studiesAt.getSourceEnd().cardinality = '1..*';
+model
+  .binaryRelationBuilder()
+  .mediation()
+  .source(enrollment)
+  .target(person)
+  .build();
 
-enrollment.createAttribute(date, 'enrollment date');
+// Relation ends and attributes are fully configurable
+studiesAt.sourceEnd.name.add('student');
+studiesAt.sourceEnd.cardinality.setAsOneToMany();
+studiesAt.targetEnd.name.add('school');
+studiesAt.targetEnd.cardinality.setAsZeroToMany();
 
-// Containers also include methods to easily support retrieving their contents
-model.getAllAttributes(); // returns all contained attributes
-model.getAllClasses(); // returns all contained classes
-model.getAllGeneralizations(); // returns all contained generalizations
+enrollment.propertyBuilder().type(date).name('enrollment date').build();
 
-// Any element can be easily serialized into JSON, and properly serialized elements can be deserialized just as easily
-const projectSerialization = JSON.stringify(project);
-const projectCopy = serializationUtils.parse(projectSerialization);
+// Containers expose their contents, and query methods span the model
+model.classes; // the classes in the package
+project.attributes; // every attribute in the project
+project.getRelatorTypes(); // every class stereotyped «relator»
+
+// Projects serialize into OntoUML JSON (https://w3id.org/ontouml/schema),
+// and serialized projects parse back — byte-identically
+const json = JSON.stringify(project);
+const copy = serializationUtils.parse(json);
 ```
+
+The library covers the full OntoUML metamodel: classes and their stereotypes,
+relations (binary and n-ary), attributes, generalizations and generalization
+sets, notes and anchors, diagrams with views and shapes, multilingual naming,
+and the [OntoUML/UFO Catalog](https://w3id.org/ontouml-models) metadata
+vocabulary. See the [tutorial](https://ontouml.github.io/ontouml-js/) for the
+complete tour.
+
+## Development
+
+```sh
+npm install
+npm test          # run the Jest suite
+npm run lint      # type-check with tsc
+npm run build     # bundle CJS + ESM + type declarations
+```
+
+The tutorial site lives in [`website/`](website/) and its code samples are
+type-checked against the library at build time. See [AGENTS.md](AGENTS.md)
+for repository conventions, and the
+[publish workflow](.github/workflows/publish.yml) for how releases reach npm.
 
 ## About
 
-If you are interested to know more, feel free to open an issue to provide feedback on the project or reach our team members for more specific cases:
- * [Claudenir M. Fonseca](https://github.com/claudenirmf)
- * [Tiago Prince Sales](https://github.com/tgoprince)
- * [Lucas Bassetti](https://github.com/LucasBassetti)
- * [Victor Viola](https://github.com/victorviola)
+`ontouml-js` is developed and maintained by the [OntoUML](https://ontouml.org)
+community. If you want to know more, feel free to open an issue to provide
+feedback on the project or reach our team members for more specific cases:
 
+- [Tiago Prince Sales](https://github.com/tgoprince)
+- [Claudenir M. Fonseca](https://github.com/claudenirmf)
+- [Lucas Bassetti](https://github.com/LucasBassetti)
+- [Victor Viola](https://github.com/victorviola)
+
+## License
+
+[Apache 2.0](LICENSE)

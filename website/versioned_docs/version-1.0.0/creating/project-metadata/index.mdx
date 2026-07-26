@@ -1,0 +1,181 @@
+---
+sidebar_position: 1
+title: Project metadata
+---
+
+import OntoumlSandpack from '@site/src/components/OntoumlSandpack';
+
+# Project metadata
+
+A model is more than its classes and relations — to be findable and reusable
+it needs to say **who made it, why, under which license, and what it is
+about**. `ontouml-js` covers this with the metadata fields of the
+[OntoUML/UFO Catalog Metadata Vocabulary](https://w3id.org/ontouml-models/vocabulary)
+(OCMV), the same fields used to catalog models in the
+[OntoUML/UFO Catalog](https://w3id.org/ontouml-models).
+
+:::info[Theory: FAIR models]
+These fields exist so a model can be published as a FAIR resource — Findable,
+Accessible, Interoperable, Reusable. Most map directly onto Dublin Core and
+DCAT terms (publisher, license, themes, landing pages), which is why they
+reference **resources** on the semantic web rather than plain strings.
+:::
+
+## Resources: named references
+
+Metadata fields that point at _things_ — a publisher, a license, a theme — are
+`Resource` objects: a URI plus a (multilingual) name.
+
+```ts twoslash
+import { Resource } from 'ontouml-js';
+
+const publisher = new Resource(
+  'https://www.utwente.nl',
+  'University of Twente'
+);
+
+console.log(publisher.uri); // https://www.utwente.nl
+console.log(publisher.name.get()); // University of Twente
+```
+
+Fields that hold _text_ — keywords, bibliographic citations — are
+[`LanguageString`](/language-string)s, so they can be written in several
+languages at once.
+
+## Setting metadata at creation time
+
+`Project.builder()` (or `new ProjectBuilder()`) exposes one fluent method per
+field. Singular methods can be chained repeatedly to add several values:
+
+```ts twoslash
+import { Project } from 'ontouml-js';
+
+const project = Project.builder()
+  .name('Library Ontology')
+  .acronym('LibO')
+  .keyword('libraries')
+  .keyword('bibliotecas', 'pt')
+  .language('en')
+  .language('pt')
+  .publisher('https://www.utwente.nl', 'University of Twente')
+  .license('https://creativecommons.org/licenses/by/4.0/', 'CC BY 4.0')
+  .landingPage('https://example.org/library-ontology')
+  .source('https://doi.org/10.3233/AO-150150')
+  .bibliographicCitation(
+    'Doe, J. (2026). The Library Ontology. Applied Ontology.'
+  )
+  .theme('https://id.loc.gov/authorities/classification/Z', 'Class Z')
+  .build();
+
+console.log(project.keywords.length); // 2
+console.log(project.license?.name.get()); // CC BY 4.0
+```
+
+## Controlled vocabularies
+
+Four fields take values from OCMV's controlled vocabularies, exported as
+enums: `OntologyDevelopmentContext` (where the model was developed),
+`OntologyPurpose` (why), `OntologyType` (its generality), and
+`OntologyRepresentationStyle` (OntoUML- vs. UFO-style). Pass an enum value and
+the builder resolves the official English label for you:
+
+```ts twoslash
+import {
+  Project,
+  OntologyDevelopmentContext,
+  OntologyPurpose,
+  OntologyType,
+  OntologyRepresentationStyle
+} from 'ontouml-js';
+
+const project = Project.builder()
+  .name('Library Ontology')
+  .context(OntologyDevelopmentContext.RESEARCH)
+  .designedForTask(OntologyPurpose.CONCEPTUAL_CLARIFICATION)
+  .ontologyType(OntologyType.DOMAIN)
+  .representationStyle(OntologyRepresentationStyle.ONTOUML)
+  .build();
+
+console.log(project.contexts[0].name.get()); // Research Context
+```
+
+Each of these methods also accepts a plain `(uri, name, language)` triple when
+you need a value outside the vocabulary.
+
+## Editing metadata on an existing project
+
+Every field is also a property of `Project`, with `add*`/`remove*` methods for
+the plural ones:
+
+```ts twoslash
+import { Project, Resource, LanguageString } from 'ontouml-js';
+
+const project = new Project();
+
+project.publisher = new Resource('https://www.utwente.nl', 'UT');
+project.namespace = 'https://example.org/libo#';
+project.addKeyword(new LanguageString('libraries'));
+project.addLanguage('en');
+project.addAcronym('LibO');
+
+console.log(project.acronyms); // [ "LibO" ]
+```
+
+`namespace` deserves a note: when set, `namespace + element.id` should form a
+resolvable URI for every element — this is how a serialized model becomes a
+set of FAIR digital objects.
+
+## Metadata on every element
+
+Authorship isn't limited to the project. Every named element — classes,
+relations, packages, even diagrams — carries `creators` and `contributors`
+(both `Resource` lists), plus `alternativeNames` and `editorialNotes`:
+
+```ts twoslash
+import { Project, Resource } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().build();
+const person = model.classBuilder().kind().name('Person').build();
+
+person.addCreator(
+  new Resource('https://orcid.org/0000-0000-0000-0000', 'Jane Doe')
+);
+
+console.log(person.creators[0].name.get()); // Jane Doe
+```
+
+## Now you try it
+
+Give the starter project a license, two keywords in different languages, and a
+research context — then check what the serialization looks like.
+
+export const starter = `import {Project, OntologyDevelopmentContext} from 'ontouml-js';
+
+const project = Project.builder()
+.name('My Cataloged Ontology')
+// Your turn: add .license(...), two .keyword(...) calls, and .context(...)
+.build();
+
+const raw = JSON.parse(JSON.stringify(project));
+console.log('license:', raw.license);
+console.log('keywords:', raw.keywords);
+console.log('contexts:', raw.contexts);
+`;
+
+<OntoumlSandpack files={{ '/index.ts': starter }} />
+
+## Key takeaways
+
+- Reference-valued fields (publisher, license, themes, …) are **`Resource`**
+  objects — a URI plus a multilingual name; text-valued fields (keywords,
+  citations) are **`LanguageString`**s.
+- Set everything fluently with **`Project.builder()`**, or field by field on
+  an existing project.
+- `context`, `designedForTask`, `ontologyType`, and `representationStyle`
+  accept **OCMV enum values** and auto-fill their official labels.
+- Every named element also carries `creators`, `contributors`,
+  `alternativeNames`, and `editorialNotes`.
+
+That completes the model layer. Next, give your model a visual form in
+[Creating diagrams →](/diagrams/).
