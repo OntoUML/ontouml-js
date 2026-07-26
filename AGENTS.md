@@ -6,7 +6,9 @@ Guidance for AI agents (and humans) working in this repository.
 
 - [`src/`](src/) — the library. `src/model/` holds the abstract syntax
   (classes, relations, generalizations, …), `src/diagram/` the concrete
-  syntax (diagrams, views, shapes), `src/builder/` the fluent builders, and
+  syntax (diagrams, views, shapes), `src/builder/` the fluent builders,
+  `src/service/` the generic contract for services processing OntoUML
+  projects, `src/verification/` the syntactical verification service, and
   `src/serialization.ts` the parser for OntoUML JSON.
 - [`test/`](test/) — Jest suites mirroring `src/`.
 - [`website/`](website/) — the Docusaurus tutorial site (its own npm
