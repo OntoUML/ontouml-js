@@ -1,6 +1,6 @@
 {
   "name": "ontouml-js",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Javascript library to create, edit, and query OntoUML models programmatically.",
   "license": "Apache-2.0",
   "repository": "github:OntoUML/ontouml-js",

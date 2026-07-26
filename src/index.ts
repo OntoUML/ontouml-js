@@ -59,4 +59,8 @@ export * from './builder/model/note_builder';
 export * from './builder/model/anchor_builder';
 export * from './builder/model/package_builder';
 export * from './builder/project_builder';
+export * from './service/service';
+export * from './service/service_issue';
+export * from './service/service_issue_severity';
+export * from './service/service_options';
 export * from './project';
