@@ -1,14 +1,21 @@
 name: Publish package to npm
 
 on:
-  # Publish when a GitHub Release is published.
+  # Release automatically when a merge to development bumps the version in
+  # package.json: the workflow publishes to npm and creates the matching
+  # GitHub Release. Merges that keep the version unchanged are a no-op.
+  push:
+    branches: [development]
+  # Fallbacks: publish a manually created GitHub Release, or run the
+  # workflow from the Actions tab. Both are safe to re-run — each step
+  # checks whether its outcome (npm version, git tag) already exists.
   release:
     types: [published]
-  # Allow running the workflow manually from the Actions tab.
   workflow_dispatch:
 
 permissions:
-  contents: read
+  # Required to create the GitHub Release and push the version tag.
+  contents: write
   # Required for npm Trusted Publishing (OIDC) — exchanges a short-lived
   # token with npm at publish time, so no NPM_TOKEN secret is needed.
   id-token: write
@@ -19,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       HUSKY: 0
+      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,7 +43,22 @@ jobs:
       - name: Update npm
         run: npm install -g npm@latest
 
+      - name: Determine version
+        id: version
+        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Check whether this version is already on npm
+        id: npm-check
+        run: |
+          if npm view "ontouml-js@${{ steps.version.outputs.version }}" version --json > /dev/null 2>&1; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "ontouml-js@${{ steps.version.outputs.version }} is already on npm; skipping publish."
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Install dependencies
+        if: steps.npm-check.outputs.published == 'false'
         run: npm ci
 
       # prepublishOnly type-checks (tsc), runs the test suite, and rebuilds
@@ -44,4 +67,19 @@ jobs:
       # Trusted Publishing authenticates via OIDC and attaches provenance
       # automatically — no token required.
       - name: Publish
+        if: steps.npm-check.outputs.published == 'false'
         run: npm publish --access public
+
+      # A Release created here with GITHUB_TOKEN does not re-trigger this
+      # workflow (GitHub suppresses recursive workflow events), which is why
+      # the npm publish above lives in the same run instead of a separate
+      # release-triggered one.
+      - name: Create GitHub Release
+        if: github.event_name == 'push'
+        run: |
+          TAG="v${{ steps.version.outputs.version }}"
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            echo "Release $TAG already exists; skipping."
+          else
+            gh release create "$TAG" --target "$GITHUB_SHA" --title "$TAG" --generate-notes
+          fi
