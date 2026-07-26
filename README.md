@@ -85,6 +85,22 @@ and the [OntoUML/UFO Catalog](https://w3id.org/ontouml-models) metadata
 vocabulary. See the [tutorial](https://ontouml.github.io/ontouml-js/) for the
 complete tour.
 
+### Verification
+
+The built-in syntactical verification service checks a project (or a single
+model element) against the OntoUML rules and reports issues:
+
+```javascript
+import { OntoumlVerification, Project } from 'ontouml-js';
+
+const project = new Project();
+const model = project.packageBuilder().root().build();
+model.classBuilder().subkind().name('Student').build(); // no identity provider
+
+const { result: issues } = new OntoumlVerification(project).run();
+issues.forEach(issue => console.log(issue.severity, issue.description));
+```
+
 ## Development
 
 ```sh
