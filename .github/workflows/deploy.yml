@@ -5,7 +5,7 @@ on:
   # when the tutorial changes OR when the library API changes, because the
   # code snippets are type-checked against the freshly built library.
   push:
-    branches: [main]
+    branches: [development]
     paths:
       - 'website/**'
       - 'src/**'
